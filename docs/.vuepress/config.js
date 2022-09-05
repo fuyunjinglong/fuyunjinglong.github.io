@@ -1,8 +1,8 @@
 module.exports = {
-  base: '/blog/' /* 基础虚拟路径 */,
+  base: '/' /* 基础虚拟路径 */,
   dest: 'docs/dist' /* 打包文件基础路径, 在命令所在目录下 */,
   title: 'yuman', // 标题
-  description: '尚硅谷前端研究院', // 标题下的描述
+  description: '前端研究院', // 标题下的描述
   themeConfig: {
     // 主题配置
     // logo: '/images/logo.png',
