@@ -8,7 +8,7 @@
     "origion-build": "cross-env NODE_ENV=production webpack --config build/webpack.config.js",
     "dev": "vuepress dev docs",
     "build": "vuepress build docs",
-    "deployGithub": "npm run build && node deploy.sh"
+    "docs:build": "vuepress build docs"
   },
   "keywords": [],
   "author": "",

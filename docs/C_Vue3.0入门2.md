@@ -17,7 +17,7 @@
 
 ![image-20220904122924529](C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20220904122924529.png)
 
-### TypeScript 的介绍
+### TypeScript 的介绍222
 
 TypeScript 是一种由微软开发的开源、跨平台的编程语言。它是 JavaScript 的超集，最终会被编译为 JavaScript 代码。
 
