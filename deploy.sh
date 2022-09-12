@@ -16,6 +16,8 @@ git init
 git add -A
 git commit -m 'deploy'
 
+#git remote add origin git@github.com:fuyunjinglong/fuyunjinglong.github.io.git
+#git pull origin vuePressPage
 # 如果发布到 https://<USERNAME>.github.io
 git push -f git@github.com:fuyunjinglong/fuyunjinglong.github.io.git vuePressPage
 
