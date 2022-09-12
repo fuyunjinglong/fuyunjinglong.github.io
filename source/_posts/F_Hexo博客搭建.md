@@ -166,22 +166,23 @@ pm2 stop all或pm2 delete all
 pm2 stop 1 
 ```
 
-# 部署Hexo
+# 部署Github Page
 
-- **创建远程仓库连接**
+## **创建远程仓库连接**
 
-- **部署Hexo**
+详情见Github入门的ssh秘钥
+
+## **引入deployer插件**
 
 要将hexo生成的文章部署到GitHub上，首先要编辑**站点配置文件**，将hexo和GitHub关联起来，其中`username`为GitHub用户名。
 在博客文件夹里，修改**站点配置文件**`_config.yml`，在文件最后加上（已有则修改）：
 
 ```
 deploy:
-  type: git
-  repository: https://github.com/username/username.github.io.git
-  branch: master
-  message: [description] #此行可省略
-  # message为自定义提交信息，默认为Site updated: YYYY-MM-DD HH:mm:ss
+  type: git # 提交类型git
+  repo: git@github.com:fuyunjinglong/fuyunjinglong.github.io.git # 提交仓库地址
+  branch: hexoPage # 分支GitHub的默认分支是main Gitee的分支是master 可以填branch让hexo默认提交
+  message: '初始化博客' # 提交信息
 ```
 
 **注意：**需要先安装Git部署插件，才能用命令部署到GitHub，输入以下命令安装`hexo-deployer-git`插件。
@@ -196,17 +197,21 @@ $ hexo generate #等于hexo g
 $ hexo deploy   #等于hexo d
 
 # 可将上述命令合并为“一键三连”
-$ hexo clean && hexo g && hexo d
+package.json配置
+"deployGithub": "hexo clean && hexo g && hexo d"
+一键部署github page
+npm run deployGithub
 ```
 
-当控制台输出下面信息时，则表明部署成功，浏览器中访问**`https://<username>.github.io`**即可看到你的博客了！！
+## github博客仓库设置
 
-```
-INFO Deploy done: git
+**博客仓库-settings-Pages,选择对应分支和访问目录**
 
-# 由于Windows字体问题，也可能是这种（问题不大）：
-←[32mINFO ←[39m Deploy done: ←[35mgit←[39m
-```
+<img src="C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20220912120301069.png" alt="image-20220912120301069" style="zoom:67%;" />
+
+浏览器中访问**`https://<username>.github.io`**即可看到你的博客了！！
+
+
 
 
 
