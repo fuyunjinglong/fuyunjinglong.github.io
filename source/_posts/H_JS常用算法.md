@@ -6,9 +6,57 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# 1.初级算法
+# 初级算法
 
-## 1.扁平数组转树
+递归遍历树形结构
+
+```
+// 用来保存id
+	var idArr = []
+	function getId(treeData, arr) {
+		data.forEach(ele => {
+			idArr.push(ele.id)
+			// 判断有子元素,并且子元素的长度大于0就再次调用自身
+			if (ele.children && ele.children.length > 0) {
+				getId(ele.children, arr)
+			}
+		})
+	}
+getId(data, idArr)
+
+var data = [{
+		name: 'a',
+		id: 101,
+		children: [{
+				name: 'bb',
+				id: 101101,
+				children: []
+			},
+			{
+				name: 'bb',
+				id: 101102,
+				children: [{
+					name: '101102101',
+					id: 101102101,
+					children: []
+				}]
+			},
+			{
+				name: 'bb',
+				id: 101103,
+				children: []
+			}, {
+				name: '101104',
+				id: 101104,
+				children: []
+			}
+		]
+	}];
+```
+
+
+
+## 扁平数组转树
 
 ```
 let arr = [

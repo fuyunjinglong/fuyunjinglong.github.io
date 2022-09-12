@@ -207,7 +207,7 @@ npm run deployGithub
 
 **博客仓库-settings-Pages,选择对应分支和访问目录**
 
-<img src="C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20220912120301069.png" alt="image-20220912120301069" style="zoom:67%;" />
+<img src="/img/image-20220912120301069.png" alt="image-20220912120301069" style="zoom:67%;" />
 
 浏览器中访问**`https://<username>.github.io`**即可看到你的博客了！！
 
@@ -285,7 +285,7 @@ hexo s -p 端口号,也可不加端口
 末尾两个空格表示换行
 
 7.本地图片使用服务器绝对路径
-C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\
+/img/
 /img/
 
 8.竖线段落

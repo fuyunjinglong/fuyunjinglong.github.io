@@ -24,7 +24,7 @@ toc: true # 是否启用内容索引
 
 ## 1. 初识 TypeScript
 
-![image-20220904122924529](C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20220904122924529.png)
+![image-20220904122924529](/img/image-20220904122924529.png)
 
 ### TypeScript 的介绍
 

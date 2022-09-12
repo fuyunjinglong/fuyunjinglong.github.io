@@ -368,6 +368,12 @@ console.log("a与b的并集：", f);
 
 0.1+0.2=0.300000001，注意要处理
 
+## 截取最后一个特定字符后面的字符串
+
+```
+var name=s.substring(s.lastIndexOf("/")+1);
+```
+
 # JS操作dom
 
 ## querySelector和getElementById
@@ -696,4 +702,10 @@ var c = fun(0).fun(1);  c.fun(2);  c.fun(3);//undefined,?,?,?
 
 > 根据前面两个例子，可以得知： fun(0)为执行第一层fun函数，.fun(1)执行的是fun(0)返回的第二层fun函数，这里语句结束，遂c存放的是fun(1)的返回值，而不是fun(0)的返回值，所以c中闭包的也是fun(1)第二次执行的n的值。c.fun(2)执行的是fun(1)返回的第二层fun函数，c.fun(3)执行的**也**是fun(1)返回的第二层fun函数。 遂： 在第一次调用第一层fun(0)时，o为undefined； 第二次调用 .fun(1)时m为1，此时fun闭包了外层函数的n，也就是第一次调用的n=0，即m=1，n=0，并在内部调用第一层fun函数fun(1,0);所以o为0； 第三次调用 .fun(2)时m为2，此时fun闭包的是第二次调用的n=1，即m=2，n=1，并在内部调用第一层fun函数fun(2,1);所以o为1； 第四次.fun(3)时同理，但依然是调用的第二次的返回值，遂最终调用第一层fun函数fun(3,1)，所以o还为1 即最终答案：undefined,0,1,1  
 
-JS
+# devDependencies 和 dependencies 的区别
+
+`devDependencies` 和 `dependencies`的区别核心体现在 **npm包** 中。
+
+只要开发的项目是**发npm包**提供给外部、其他业务项目使用的，需要非常注意依赖的安装地方，因为搞不好很容易在业务使用中会出现bug。dependencies的依赖包会被打入到npm包中，慎用。
+
+而如果只是自己项目用，**不需要发npm包**的话，把依赖安装到 `devDependencies` 或者 `dependencies` 中，实质上是没有任何区别的。

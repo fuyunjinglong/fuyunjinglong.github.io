@@ -31,12 +31,21 @@ toc: true # 是否启用内容索引
 **近年来的代表方案**
 
 - React Hooks
-
 - Vue Composition API
-
 - Svelte 3
-
 - Reactive Conrtrollers
+
+**基于依赖追踪的范式共同点**
+
+如：SolidJS,Vue Composition API,Enber的Starbeam
+
+- 一次调用，符合JS调用直觉
+- 自动追踪依赖，无需手动声明
+- 引用稳定，无需useCallback
+
+**基于编译的响应式系统**
+
+如：Svelte,Vue Reactivity Transform,solid-labels
 
 **React Hooks**
 
@@ -60,10 +69,11 @@ setCount(count + 1)
 *React Hooks的问题*
 
 - 执行原理与原生的JS心智模型冲突，即每次声明的hook都会重复加载执行
-  - 大量API如useEffect需要手动声明依赖，否则会产生过期闭包问题
-- 由于ConCurrent Mode并行模式 导致useEffect副作用处理存在大量负担，多任务的并行处理的野心
-- 受限于实现原理，依赖如userCallBack的手动性能优化
-- 和React的运行机制强耦合
+- 不能条件式调用
+- Stale Closure（过期闭包）的心智负担
+- 必须手动声明useEffecty依赖
+- 如何正确使用useEffect是个复杂问题
+- 需要useMemo/useCallback等手动优化
 
 *React团队的改善*
 
@@ -94,6 +104,22 @@ count.value++
 - 可追溯到Knockout.js
 - 近年有如Solid.js和Ember Starbeam这样的新实验
 
+*Vue Reactivity transform*实验性阶段
+
+```
+// 状态
+const count = $ref(0)//使用$的宏函数标记，转换为响应式代码
+// 副作用
+watchEffect(()=>console.log(count.value))
+// 状态更新
+count.value++
+```
+
+- 在“依赖追踪响应式系统”基础上添加“编译时响应式系统”
+- 类似Svelte的简洁语法
+- 遵循JS语义，和类型系统无缝连接
+- 可以同时在组件和普通TS/JS中使用
+
 **Svelte 3**
 
 ```
@@ -111,28 +137,47 @@ count++
 - 和组件上下文强耦合，只能在组件中使用
 - 组件外需要使用额外机制，影响重构和复用
 
-*Vue Reactivity transform*
-
-```
-// 状态
-const count = $ref(0)//使用$的宏函数标记，转换为响应式代码
-// 副作用
-watchEffect(()=>console.log(count.value))
-// 状态更新
-count.value++
-```
-
-- 在“依赖追踪响应式系统”基础上添加“编译时响应式系统”
-- 类似Svelte的简洁语法
-- 遵循JS语义，和类型系统无缝连接
-- 可以同时在组件和普通TS/JS中使用
-
 **Reactive Conrtrollers**
 
 - Google的Lit项目提出的逻辑复用模式
 - 基于Class和Interface的设计，理论上完全和宿主组件实现解耦
 - Web Components社区试图推广的标准
 - 需要手动触发更新，语法相对繁琐
+
+
+
+# 工具链
+
+**前端性能杀手**
+
+- webpack
+
+- TypeScript
+
+**原生语言在前端工具链中的使用**
+
+- esbuild（Go）
+- SWC（Rust）
+- Bun（Zig）
+- Parcel2（JS/Rust hybrid）
+- Vite（JS/Go hybrid via esbuild）
+- napi-rs（Rust）
+
+**原生语言开发是否为常态？**
+
+- 原生语言更适用于相对稳定情况，否则很难榨取最优性能
+- 原生语言会影响可扩展性，增加社区参与门槛，影响社区发展
+- JS/原生混合工具链将成为常态
+
+**工具链的抽象层次**
+
+- browserify/webpack/rolllup
+  - 专注于打包，抽象层次低
+- Parcel/Vue-CLI/CRA
+  - 专注于应用，抽象层次高
+- Vite
+  - CLI专注于应用，抽象层次高，方便开箱即用
+  - API专注于上层框架，抽象层次中，方便任意定制化
 
 # 运行机制
 
@@ -157,32 +202,6 @@ count.value++
 - 显著优化运行时大小和内存占用
 - 可在单个组件内使用(保留Virtual Dom兼容)，或全应用启动
 
-# 工具链
-
-**前端性能杀手**
-
-- webpack
-
-- TypeScript
-
-后续引发了新的基于原生JS编译的工具，如esbuild,SWC。
-
-> esbuild使用go语言编写
->
-> Vite是一种混合编译模式，大部分动态逻辑使用JS处理，但依赖预处理和JS转义层面使用Esbuild处理。将JS的灵活性和Esbuild性能结合。
->
-> 未来基于JS的编译器被其他原生语言替代，这基本不可能。
-
-**工具链的抽象层次**
-
-- browserify/webpack/rolllup
-  - 专注于打包，抽象层次低
-- Parcel/Vue-CLI/CRA
-  - 专注于应用，抽象层次高
-- Vite
-  - CLI专注于应用，抽象层次高，方便开箱即用
-  - API专注于上层框架，抽象层次中，方便任意定制化
-
 # 上层框架
 
 **下一代上层框架的通用工具链基础层是Vite**
@@ -195,3 +214,23 @@ count.value++
 - FastifyDx
 - Solid Start
 - Laravel新默认前端方案
+
+# JS全栈
+
+**数据的前后打通**
+
+- Next:getStaticProps/getServerSideProps
+- Nust:API routes+,useFetch+,Top level await
+- Remix:loader/action,+Enhanced,HTML Form
+
+**类型的前后端打通**
+
+- 通过显式引入共享类型
+- 自动基于DB schema生成类型
+- Nuxt 3:自动基于文件布局生成API/路由类型
+
+**JS全栈的代价**
+
+- 虽然数据已经渲染出html,但还需要额外发送一份数据用于Hydrate
+- 即使在客户端没有交互的组件依然会被打包发送至客户端
+- Hydrate影响页面交互指标TTI
