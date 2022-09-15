@@ -6,6 +6,16 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
+# JS的三座大山
+
+- 堆栈内存及闭包作用域
+- 面向对象OOP和this处理
+- DOM/BOM及事件处理机制
+
+<img src="C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20220912183546292.png" alt="image-20220912183546292" style="zoom:80%;" />
+
+
+
 # 最新的7种数据类型
 
 - Undefined；

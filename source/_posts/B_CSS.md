@@ -6,6 +6,151 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
+# 几大经典布局
+
+- 圣杯布局-左右固定，中间自适应
+- 双飞翼布局-左右固定，中间自适应
+- 使用flex布局
+
+圣杯式布局代码：
+
+```
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>圣杯式布局</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+       
+        .con{
+            padding-left:150px ;
+            padding-right: 190px;
+        }
+        .left {
+            width: 150px;
+            background: red;
+            float: left;
+            position: relative;
+            margin-left: -100%;
+            left: -150px;
+        }
+
+        .main {
+            width: 100%;
+            background: yellow;
+            float: left;
+        }
+
+        .right {
+            width: 190px;
+            background: tomato;
+            float: left;
+            position: relative;
+            margin-right: -190px;
+            left: -190px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="con"> 
+        <div class="main">main</div>
+        <div class="left">Left</div>
+       <div class="right">right</div>
+    </div>
+
+</body>
+</html>
+```
+
+双飞翼布局代码：
+
+```
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>双飞翼布局</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .left {
+            background: #E79F6D;
+            width: 150px;
+            float: left;
+            margin-left: -100%;
+        }
+
+        .main {
+            background: #D6D6D6;
+            width: 100%;
+            float: left;
+        }
+
+        .mc {
+            margin-left: 150px;
+            margin-right:190px;
+        }
+
+        .right {
+            background: #77BBDD;
+            width: 190px;
+            float: left;
+            margin-left: -190px;
+          
+        }
+    </style>
+</head>
+
+<body>
+    <div class="con">
+        <div class="main">
+            <div class="mc">Main</div>
+        </div>
+        <div class="left">Left</div>
+        <div class="right">Right</div>
+    </div>
+
+</body>
+</html>
+```
+
+flex布局代码：
+
+```
+.main{
+	display:flex;
+	justify-content:space-between;
+	height:100%;
+}
+.left,.right{
+	flex:0 0 200px;
+	height:200px;
+	background:lightblue;
+}
+.mc{
+	flex:1;
+	min-height:400px;
+	background:red;
+}
+```
+
 
 
 # Tailwind CSS

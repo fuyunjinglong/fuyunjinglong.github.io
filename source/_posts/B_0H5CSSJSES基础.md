@@ -6,9 +6,9 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# 1.HTML
+# HTML
 
-## 1.1web基础及演进史
+## web基础及演进史
 
 **(1)js组成**
  ECMAScript(js核心)，DOM(文档对象模型),BOM(浏览器对象模型)。
@@ -78,7 +78,7 @@ toc: true # 是否启用内容索引
  **缺点**：
  vue不支持IE8，生态比较差(语法提示不友好，插件数量比较少)
 
-## 1.2XML与JSON
+## XML与JSON
 
 最根本上来说，XML是一个markup language（标记语言），而JSON是一种用于数据交换（data-interchange）的序列化对象的语言。
 
@@ -128,7 +128,7 @@ JSON有2点优于XML：
 
 
 
-## 1.3BOM和DOM对象
+## BOM和DOM对象
 
 **1.BOM**
 
@@ -367,7 +367,7 @@ Event对象
     };
 ```
 
-## 1.5Web语义化
+## Web语义化
 
 Web语义化是指使用恰当语义的html标签、class类名等内容，让页面具有良好的结构与含义，从而让人和机器都能快速理解网页内容。语义化的web页面一方面可以让机器在更少的人类干预情况下收集并研究网页的信息，从而可以读懂网页的内容，然后将收集汇总的信息进行分析，结果为人类所用；另一方面它可以让开发人员读懂结构和用户以及屏幕阅读器（如果访客有视障）能够读懂内容。 简单来说就是利于 SEO，便于阅读维护理解。
 
@@ -378,9 +378,76 @@ Web语义化是指使用恰当语义的html标签、class类名等内容，让�
 - 无CSS样子时也容易阅读，便于阅读维护和理解
 - 便于浏览器、搜索引擎解析。 利于爬虫标记、利于SEO
 
-# 2.CSS
+# CSS
 
-## 2.0盒模型
+## 盒子的水平居中方案
+
+**五种方案**
+
+- 定位的三种
+- display:flex
+- javascript
+- display:table-cell
+
+```
+<body>
+	<div class="box" id="box"></div>
+</body>
+
+body{
+	position:relative;
+}
+// 定位方案1必须要有宽高
+.box{
+	position:absolute;
+	top:50%;
+	left:50%;
+	margin-top:-25px;
+	margin-left:-25px;
+}
+// 定位方案2必须要有宽高
+.box{
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	margin:auto;
+}
+// 定位方案3，不兼容IE
+.box{
+	position:absolute;
+	top:50%;
+	left:50%;
+	transform:translate(-50%,-50%);
+}
+
+JS方案
+let html = document.documentElement,
+	winW = html.clientWidth,
+	winH = html.clientHeight,
+	boxW = box.offsetWidth,.// box为id,可以直接用，不需要声明
+	boxH = box.offsetHeight
+box.style.position = 'absolute';
+box.style.left = (winW - boxW)/2 + 'px';
+box.style.top = (winH - boxH)/2 + 'px';
+
+table-cell方案，比较少用,要求父元素必须有宽高
+body{
+	display:table-cell;
+	vertical-align:middle;
+	tex-align:center;
+	width:500px;
+	height:300px;
+}
+.box{
+	display:inline-block;
+}
+```
+
+
+
+## 盒模型
 
 盒子由四个属性组成，从内到外分别是：**content 内容**、**padding 内填充**、**border 边框**、**外边距 margin**
 
@@ -396,8 +463,8 @@ Web语义化是指使用恰当语义的html标签、class类名等内容，让�
 
 **CSS 设置这两个模型:**
 
-- 标准盒模型  box-sizing：content-box,
-- 怪异盒模型 box-sizing: border-box
+- 标准盒模型  box-sizing：content-box,如果加了padding，高度会变化。
+- 怪异盒模型 box-sizing: border-box,比较方便，常用，大量第三方库默认使用此模型。
 
 **外边距合并**
 
@@ -405,7 +472,7 @@ Web语义化是指使用恰当语义的html标签、class类名等内容，让�
 
 [CSS 的两种盒模型](https://zhuanlan.zhihu.com/p/110617108)
 
-## 2.0Less/Sass等css预处理器
+## Less/Sass等css预处理器
 
  1)历史
  Sass:2007年诞生，对css层叠式样式的扩展。Scss是Sass3.0引入的新语法，是Sass CSS的简写。
@@ -419,7 +486,7 @@ Web语义化是指使用恰当语义的html标签、class类名等内容，让�
  2.less使用简单，没有裁剪css原特性；
  3.sass功能更强大，有配套的二次开发库Compass。
 
-## 2.1BFC和外边距重叠
+## BFC和外边距重叠
 
 三种常见方案：
 普通流 (normal flow)
@@ -444,12 +511,12 @@ BFC 即 Block Formatting Contexts (块级格式化上下文)，它属于上述�
 
 3.BFC 可以阻止元素被浮动元素覆盖
 
-## 2.2清除浮动
+## 清除浮动
 
 1.父级div定义 overflow: auto（注意：是父级div也就是这里的 div.outer），最常用。
 2.添加新的子元素 、应用 clear：both；
 
-## 3.3css2.0与css3.0
+## css2.0与css3.0
 
 css3加强了css2的功能，增加了新的属性和新的标签，并且删除了一些冗余的标签，在布局方面减少了代码量。
 
@@ -461,11 +528,11 @@ css3加强了css2的功能，增加了新的属性和新的标签，并且删除
 - css3能仅使用代码就实现的效果，css2需要使用图片来实现；
 - css2请求服务器次数高于css3；
 
-## 3.4css样式各种浏览器适配问题
+## css样式各种浏览器适配问题
 
 待续
 
-## 3.5[css modules和scoped区别](https://segmentfault.com/a/1190000021670036)
+## [css modules和scoped区别](https://segmentfault.com/a/1190000021670036)
 
 vue项目中有两种解决css冲突的方案，一种是比较常见的使用scoped。另一种就是css modules。
 
@@ -488,7 +555,7 @@ vue项目中有两种解决css冲突的方案，一种是比较常见的使用sc
 - scoped会使**标签选择器**渲染变慢很多倍，而使用class或id则不会。
 - 模块式 CSS 与 JS 有着很好的互操作性 (interoperability)，这一点不只局限于 CSS 类。
 
-## 3.6flex = 1问题
+## flex = 1问题
 
 flex: 1等价于`flex: 1 1 0`，也就是
 
@@ -557,7 +624,7 @@ flex: 1等价于`flex: 1 1 0`，也就是
 
 `flex-basis`指定项目占据主轴的空间，如果不设置，则等于内容本身的空间
 
-## 3.7回流和重绘
+## 回流和重绘
 
 **回流比重绘的代价要更高。**
 
@@ -632,7 +699,7 @@ CSS3 硬件加速（GPU加速），使用css3硬件加速，可以让transform�
 对具有复杂动画的元素使用绝对定位，使它脱离文档流，否则会引起父元素及后续元素频繁回流。
 ```
 
-## 3.8**first-child与:first-of-type的区别**
+## **first-child与:first-of-type的区别**
 
 > :first-child 匹配的是某父元素的第一个子元素，可以说是结构上的第一个子元素。
 
@@ -640,9 +707,9 @@ CSS3 硬件加速（GPU加速），使用css3硬件加速，可以让transform�
 
 同样类型的选择器 :last-child 和 :last-of-type、:nth-child(n) 和 :nth-of-type(n) 也可以这样去理解。
 
-# 3.JavaScript
+# JavaScript
 
-## 3.0模块化
+## 模块化
 
 > **(1)CommonJS规范---cjs**
 
@@ -706,7 +773,7 @@ CommonJS和es6区别
 
 
 
-## 3.1js预编译的步骤
+## js预编译的步骤
 
 JS有两个特性，一个是单线程，一个是解释性语言。
 
@@ -751,7 +818,7 @@ b:undefined,
 }
 ```
 
-## 3.2.this指向问题
+## this指向问题
 
 默认情况下，指向window对象，只有当有对象时，才指向对象。关键看调用的时候是fn()还是obj.fn()
 
@@ -821,7 +888,7 @@ var obj={
 console.log(obj.getAge());//指向obj，但遇到箭头函数this指向父级obj
 ```
 
-## 3.3.深浅拷贝
+## 深浅拷贝
 
 var obj={}
 
@@ -914,7 +981,7 @@ $.extend
 
 lodash deepClone
 
-## 3.4.原形、原形对象、原型链
+## 原形、原形对象、原型链
 
 **1.从属关系**
 
@@ -997,7 +1064,7 @@ function Test2(){
 
 test.constructor = Test2
 
-## 3.5.闭包
+## 闭包
 
 1.先要说到作用域和作用域链，即AO和GO
 
@@ -1029,7 +1096,7 @@ b的作用域scope:scope[0]=AO{bb},scope[1]=AO{aa,function b},scope[2]=GO{functi
 
 场景：setTimeout的函数携带参数；回调；变量封装
 
-## 3.6节流和防抖
+## 节流和防抖
 
 **本质上是优化高频率执行代码的一种手段**
 
@@ -1178,7 +1245,7 @@ b的作用域scope:scope[0]=AO{bb},scope[1]=AO{aa,function b},scope[2]=GO{functi
   - 滚动加载，加载更多或滚到底部监听
   - 搜索框，搜索联想功能
 
-## 3.7事件委托
+## 事件委托
 
 定义：当事件触发时，把要做的事委托给父元素来处理。
 
@@ -1206,7 +1273,7 @@ document.addEventListener("click", function (event) {
 
 使用“事件委托”时，并不是说把事件委托给的元素越靠近顶层就越好。事件冒泡的过程也需要耗时，越靠近顶层，事件的”事件传播链”越长，也就越耗时。
 
-## 3.8事件循环
+## 事件循环
 
 **1.JavaScript是单线程，非阻塞的**
 
@@ -1319,7 +1386,7 @@ async function async1() {
 - 只要微任务队列中还有任务，宏任务队列就只会等待微任务队列执行完毕后再执行；
 - 只有运行完 `await` 语句，才把 `await` 语句后面的全部代码加入到微任务行列；
 
-## **3.9创建对象的过程**
+## **创建对象的过程**
 
 - 1：检查类是否已经被加载，运行时常量池中查找该引用所指向的类有没有被加载；
 - 2：为对象分配内存空间，通过类元信息来确定类型和后面需要申请的内存大小；
@@ -1327,7 +1394,7 @@ async function async1() {
 - 4：对对象进行其他设置（设置对象头），类的元数据信息，对象的hashcode，GC分代年龄等；
 - 5：执行构造方法
 
-## 3.9ajax原理
+## ajax原理
 
 `AJAX`全称(Async Javascript and XML)即异步的`JavaScript` 和`XML`，是一种创建交互式网页应用的网页开发技术，可以在不重新加载整个网页的情况下，与服务器交换数据，并且更新部分网页.
 
@@ -1403,7 +1470,7 @@ readyState是XMLHttpRequest对象的一个属性，用来标识当前XMLHttpRequ
 
 5：服务端错误
 
-## 3.10setTimeout模拟setInterval
+## setTimeout模拟setInterval
 
 背景：
 
@@ -1429,7 +1496,7 @@ console.log(1)
 }
 ```
 
-## **3.11垃圾回收算法**
+## **垃圾回收算法**
 
 **(1)定义**
 
@@ -1581,7 +1648,7 @@ element.someObject=myObj;
 
 
 
-## 3.12内存溢出和内存泄漏
+## 内存溢出和内存泄漏
 
 **1.概念**
 
@@ -2065,7 +2132,7 @@ largeObj的第0个元素，被window全局变量x引用着。
 
 (2)在控制台使用ctrl+shift+p打开command menu，输入performance monitor来监听
 
-## **3.13V8引擎**
+## **V8引擎**
 
 1.定义
 
@@ -2176,7 +2243,7 @@ V8团队这样评价新架构：**它代表了V8团队通过实际测量Javascri
 
 
 
-## 3.14JS函数式编程思想
+## JS函数式编程思想
 
 **1.概述**
 
@@ -2276,7 +2343,7 @@ React官网中给出三点好处：
 
 不可变性最主要的优势在于它可以帮助我们在 React 中创建 pure components。我们可以很轻松的确定不可变数据是否发生了改变，从而确定何时对组件进行重新渲染。
 
-## 3.15穿梭框的实现
+## 穿梭框的实现
 
 原理：
 
@@ -2343,7 +2410,7 @@ mounted(){
 }
 ```
 
-## 3.16slice(),splice()两种方法
+## slice(),splice()两种方法
 
 slice(start,end)有两个参数(start必需,end选填),都是索引,返回值不包括end,**不改变原数组**
 
@@ -2361,7 +2428,7 @@ console.log(heroes.splice(1,2))//  [ "1", "2"]开始索引为1 删除2个元素
 console.log(heroes)// 不改变原数组  ["0",'3','4']
 ```
 
-## 3.18HTML页面乱码问题
+## HTML页面乱码问题
 
 HTML中的编码方式有三个：gb2312，gbk，utf-8；现在大部分浏览器默认编码的是utf-8。
 
@@ -2375,7 +2442,7 @@ HTML中的编码方式有三个：gb2312，gbk，utf-8；现在大部分浏览�
 
 ●　charset=utf-8 页面字符集，编码，eg:gb2312,iso-8859-1,utf-8
 
-## 3.19typeof 与 instanceof 区别
+## typeof 与 instanceof 区别
 
 6种基本数据类型：string,Number,boolean,undefined,null,symbol,其他类型如object,function,Array等
 
@@ -2426,7 +2493,7 @@ function getType(obj){
 getType('123')  // "string"
 ```
 
-## 3.20JS创建私有变量的方法
+## JS创建私有变量的方法
 
 **1.使用闭包**
 
@@ -2565,7 +2632,7 @@ console.log(button.getWidth()); // 600
 
 可以将 `TypeScript` 用作 JavaScript 的一种风格，可以使用 `private` 关键字从面向对象的语言中真正重新创建功能。
 
-## 3.21js中的new()做了什么？
+## js中的new()做了什么？
 
 专业解释：
 
@@ -2615,7 +2682,7 @@ function myNew(Con, ...args) {
 }
 ```
 
-## 3.22call，apply，bind
+## call，apply，bind
 
 `call` `apply` `bind`都可以改变函数调用的`this`指向
 
@@ -2682,9 +2749,9 @@ test2()
 > 3. 如果你要传递的参数很多，则可以用数组将参数整理好调用`fn.apply(thisObj, [arg1, arg2 ...])`
 > 4. 如果你想生成一个新的函数长期绑定某个函数给某个对象使用，则可以使用`const newFn = fn.bind(thisObj); newFn(arg1, arg2...)`
 
-# 4.ES6
+# ES6
 
-## 4.1set和map
+## set和map
 
 `Set`是一种叫做集合的数据结构，`Map`是一种叫做字典的数据结构.
 
@@ -3031,7 +3098,7 @@ return result;
 
 
 
-## 4.2Promise原理
+## Promise原理
 
 [promise原理及手写]: https://juejin.cn/post/6850037281206566919#heading-6
 
@@ -3812,7 +3879,7 @@ function timeoutWrapper(p, timeout = 2000) {
 }
 ```
 
-## 4.3Promise、Generator、Async三者的区别
+## Promise、Generator、Async三者的区别
 
 **Promise**
 
@@ -3869,7 +3936,7 @@ async/await 自动进行了 Generator 的流程控制。
 1. 使用async函数可以让代码简洁很多，不需要像Promise一样需要些then，不需要写匿名函数处理Promise的resolve值，也不需要定义多余的data变量，还避免了嵌套代码。
 2. 错误处理：Async/Await 让 try/catch 可以同时处理同步和异步错误。
 
-## 4.4reduce,every,some
+## reduce,every,some
 
 reduce累加器
 
@@ -3883,7 +3950,7 @@ some一真即真
 
 const flag=[ 0, 1, 2, 3 ].some(ele=> {    return ele>3 });
 
-## 4.5Symbol
+## Symbol
 
 ES6引入了一种新的原始数据类型Symbol，表示**独一无二的值**。
 
@@ -4032,7 +4099,7 @@ Symbol.keyFor(s2) // undefined
 
 
 
-## 4.7weakset 和 weakmap
+## weakset 和 weakmap
 
 ES6 考虑到防止内存泄漏，推出了两种新的数据结构： weakset 和 weakmap 。他们对值的引用都是不计入垃圾回收机制的，也就是说，如果其他对象都不再引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存。
 
@@ -4055,7 +4122,7 @@ ele.addEventListener('click', listener.get(ele), false)
 
 代码 2 比起代码 1 的好处是：由于监听函数是放在 WeakMap 里面，一旦 dom 对象 ele 消失，与它绑定的监听函数 handler 也会自动消失。
 
-## 4.8for in、for of、forEach的区别
+## for in、for of、forEach的区别
 
 **for…of与for…in的区别**
 
@@ -4149,9 +4216,9 @@ for(var prop in obj){
 
 
 
-# 5Jquery
+# Jquery
 
-## 5.1 unbind 和off的区别
+## unbind 和off的区别
 
 off() 方法移除用.on()绑定的事件处理程序。
 
@@ -4163,7 +4230,7 @@ unbind() 方法移除用.bind()绑定的事件处理程序。
 
 从 jQuery 1.7开始， .on() 和 .off()方法是最好的元素上附加和移除事件处理程序的方法
 
-# 6.TypeScript
+# TypeScript
 
 **1.概念**
 
@@ -4176,7 +4243,7 @@ unbind() 方法移除用.bind()绑定的事件处理程序。
  4)特征
  静态类型批注和编译时类型检查，类、接口等
 
-# 7.高阶函数
+# 高阶函数
 
 - 纯函数
 - 柯里化
