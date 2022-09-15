@@ -6,7 +6,7 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# 1.张鑫旭极简JS拖拽
+# 张鑫旭极简JS拖拽
 
 [原文](https://gitee.com/zhangxinxu/zxx-drag)
 
@@ -274,7 +274,7 @@ demo.html
 </html>
 ```
 
-# 2.原生实现拖拽
+# 原生实现拖拽
 
 ## Mouse事件实现拖拽
 

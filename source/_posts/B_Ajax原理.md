@@ -14,7 +14,7 @@ AJAX即“Asynchronous Javascript And XML”，是指一种创建交互式网页
 
 其中最核心的依赖是浏览器提供的XMLHttpRequest对象。
 
-## 1.创建XMLHttpRequest
+## 创建XMLHttpRequest
 
 ```
 	1. var xhr=null;  
@@ -27,7 +27,7 @@ AJAX即“Asynchronous Javascript And XML”，是指一种创建交互式网页
 
 ```
 
-## 2.向服务器发送请求
+## 向服务器发送请求
 
 ```
     1. xhr.open(method,url,async);  
@@ -44,7 +44,7 @@ xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 xhr.send("fname=Henry&lname=Ford");  //post请求参数放在send里面，即请求体
 ```
 
-## 3.服务器响应处理
+## 服务器响应处理
 
 返回数据类型：
 
