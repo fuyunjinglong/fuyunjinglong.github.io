@@ -564,7 +564,7 @@ if (config.cancelToken) {
 
 # 5.Fetch网络请求及xhr、ajax、axios
 
-## 1.Fetch是什么
+## Fetch是什么
 
 `fetch()`是 XMLHttpRequest 的升级版，用于在 JavaScript 脚本里面发出 HTTP 请求。
 
@@ -582,7 +582,7 @@ fetch与xmlHttpRequest区别：
 
 - 对IE的兼容性很不友好
 
-## 2.常用写法
+## 常用写法
 
 ```js
 fetch('https://api.github.com/users/ruanyf')
@@ -603,7 +603,7 @@ async function getJSON() {
 }
 ```
 
-## 3.fetch完整配置参数
+## fetch完整配置参数
 
 ```js
 const response = fetch(url, {
@@ -671,7 +671,7 @@ const response = fetch(url, {
 > };
 > ```
 
-## 4.取消网络请求
+## 取消网络请求
 
 首先新建 AbortController 实例，然后发送`fetch()`请求，配置对象的`signal`属性必须指定接收 AbortController 实例发送的信号`controller.signal`。
 
@@ -694,7 +694,7 @@ try {
 }
 ```
 
-## 5.fetch与xhr、ajax、axios比较
+## fetch与xhr、ajax、axios比较
 
 **XMLHttpRequest对象**
 
