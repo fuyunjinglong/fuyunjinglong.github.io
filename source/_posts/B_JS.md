@@ -18,12 +18,23 @@ toc: true # 是否启用内容索引
 
 # 最新的7种数据类型
 
+基本类型
+
+- Number；
+- String；
+- Boolean；
+
 - Undefined；
 - Null；
-- Boolean；
-- String；
-- Number；
+
+引用类型
+
+- Function
+
 - Object；
+
+ES6的新引入类型
+
 - Symbol(ES6新加入的)；
 
 **Undefined、Null的区别**
