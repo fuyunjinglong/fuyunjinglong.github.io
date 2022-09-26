@@ -8,11 +8,11 @@ toc: true # 是否启用内容索引
 
 # windows环境
 
-## 1.下载nodejs
+## 下载nodejs
 
 官网下载https://nodejs.org/en/
 
-## 2.安装及配置
+## 安装及配置
 
 最好安装到非系统盘，依赖后续会越来越大。
 
@@ -66,7 +66,7 @@ vue init是vuecli2的初始化方式
 
 vue create 是vuecli3的初始化方式
 
-## 3.安装常见镜像
+## 安装常见镜像
 
 **npm淘宝镜像**
 
@@ -88,7 +88,7 @@ cnpm安装依赖包的方式和npm是一样，只是npm的命令变成cnpm
 
 以上两种模式的对比，cnpm在安装某些包的时候，package环境不是很正确，所以推荐使用npm安装淘宝镜像即可
 
-## 5.卸载nodejs重装
+## 卸载nodejs重装
 
 1.卸载程序卸载nodejs应用程序
 
@@ -103,7 +103,7 @@ C:\Users\{User}\AppData\Roaming\npm-cache（或%appdata%\npm-cache）
 
 4.重启
 
-## 6常见问题
+## 常见问题
 
 **1.安装依赖报错npm EPERM mkdir**
 
@@ -119,7 +119,7 @@ npm config set strict-ssl false
 
 <img src="/img/image-20220904121713944.png" alt="image-20220904121713944" style="zoom:67%;" />
 
-## 7.npm太慢就用yarn
+## npm太慢就用yarn
 
 ```
 npm install -g yarn --registry=https://registry.npm.taobao.org
