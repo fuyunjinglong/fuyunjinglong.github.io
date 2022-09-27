@@ -1156,7 +1156,7 @@ Watcher.prototype.update = function () {
 
 # Vue3的优化
 
-### 1.源码优化
+## 源码优化
 
 **a.使用monorepo来管理源码**
 
@@ -1168,7 +1168,7 @@ Watcher.prototype.update = function () {
 - Vue.js 2.x 选用 Flow 做类型检查，来避免一些因类型问题导致的错误，但是 Flow 对于一些复杂场景类型的检查，支持得并不好。
 - Vue.js 3.0 抛弃了 Flow ，使用 TypeScript 重构了整个项目。 TypeScript 提供了更好的类型检查，能支持复杂的类型推导；由于源码就使用 TypeScript 编写，也省去了单独维护 d.ts 文件的麻烦。
 
-### 2.性能优化
+## 性能优化
 
 **a.引入tree-shaking的技术**
 
@@ -1178,7 +1178,7 @@ Watcher.prototype.update = function () {
 
 - Vue.js 3.0 兼容了 Vue.js 2.x 绝大部分的api，但还是移除了一些比较冷门的feature：如 keyCode 支持作为 v-on 的修饰符、$on，$off 和 $once 实例方法、filter过滤、内联模板等。
 
-### 3.响应式实现优化
+## 响应式实现优化
 
 **a.改用proxy api做数据劫持**
 
@@ -1190,7 +1190,7 @@ Watcher.prototype.update = function () {
 - 在 Vue.js 2.x 中，对于一个深层属性嵌套的对象，要劫持它内部深层次的变化，就需要递归遍历这个对象，执行 Object.defineProperty 把每一层对象数据都变成响应式的，这无疑会有很大的性能消耗。
 - 在 Vue.js 3.0 中，使用 Proxy API 并不能监听到对象内部深层次的属性变化，因此它的处理方式是在 getter 中去递归响应式，这样的好处是真正访问到的内部属性才会变成响应式，简单的可以说是按需实现响应式，就没有那么大的性能消耗。
 
-### 4.编译优化
+## 编译优化
 
 **a.生成block tree**
 
@@ -1206,7 +1206,7 @@ Watcher.prototype.update = function () {
 
 - 能力有限，说不清楚，可以看下这篇文章：[https://blog.csdn.net/weixin_48726650/article/details/107019164](https://link.segmentfault.com/?enc=JB6w6BefnVmd%2B0QsX2EQzA%3D%3D.eCcJr9vxZG27O%2FYVW1R%2BoltEGvZMeR4t3f8NVcSPktHkpjIWL8YVqkcr1Mo2kT7MLTmkRCGlt03PhoNoPOMHZQ%3D%3D)
 
-### 5.语法api优化
+## 语法api优化
 
 **a.优化逻辑组织**
 
