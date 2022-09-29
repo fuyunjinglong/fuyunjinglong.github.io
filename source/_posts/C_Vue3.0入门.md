@@ -14,7 +14,7 @@ toc: true # 是否启用内容索引
 
 [Vue,React，Angular三大框架google热度](https://trends.google.com/trends/explore?cat=31&q=Vue.js,React,Angular)
 
-## 2020年9月18日**Vue 3.0** 正式发布
+# 2020年9月18日**Vue 3.0** 正式发布
 
 [我要成为海贼王的男人](https://github.com/vue3/vue3-News#%E6%88%91%E6%98%AF%E8%A6%81%E6%88%90%E4%B8%BA%E6%B5%B7%E8%B4%BC%E7%8E%8B%E7%9A%84%E7%94%B7%E4%BA%BA)
 
@@ -30,7 +30,7 @@ toc: true # 是否启用内容索引
 - 重写了虚拟 Dom 的实现，对编译模板进行优化、组件初始化更高效， 性能上有较大的提升；Vue.js2 对象式组件存在一些问题：难以复用逻辑代码、难以拆分超大型组件、代码无法被压缩和优化、数据类型难以推倒等问题；而 CompositionAPI 则是基于函数理念，去解决上述问题，使用函数可以将统一逻辑的组件代码收拢一起达到复用，也更有利于构建时的 tree-shaking 检测，这个使用起来有些类似于 React 的 hook；
 - 以上变化都秉持着 VUE 的“渐进式框架“ 理念， Vue.js3.0 持续开发兼容旧的版本，即使升级了 Vue.js3.0 也可以按照之前的组件开发模式进行开发。
 
-## Vue3.0开发旅程
+# Vue3.0开发旅程
 
 **2** 年
 
@@ -71,7 +71,7 @@ RFC 概念最早在 互联网 标准指定领域出现。在互联网技术标�
 
 较新的开源项目，会考虑使用 Github + RFC + IM/论坛 机制来实现 Feature 管理。比如 Rust、React。
 
-### [开源项目 RFC 的基本流程](https://www.rectcircle.cn/series/software-project-management/use-rfc-manage/#开源项目-rfc-的基本流程)
+**[开源项目 RFC 的基本流程](https://www.rectcircle.cn/series/software-project-management/use-rfc-manage/#开源项目-rfc-的基本流程)**
 
 角色
 
