@@ -22,7 +22,7 @@ toc: true # 是否启用内容索引
 - 泛 Web 容器时代：采用类 Web 标准进行开发，但在运行时把绘制和渲染交由原生系统接管的技术，代表框架有 React Native、Weex 和快应用，广义的还包括天猫的 Virtual View 等。
 - 自绘引擎时代：自带渲染引擎，客户端仅提供一块画布即可获得从业务逻辑到功能呈现的多端高度一致的渲染体验。Flutter，是为数不多的代表。
 
-## **(1)WebApp:PWA**
+## **WebApp:PWA**
 
 Web App 是指基于 Web 的应用，运行于网络和标准浏览器上，相当于一个网页然后加一个 App 的壳。主要采用的是原生应用内嵌浏览器控件 WebView（iOS 为 UIWebView 或 WKWebView，Android 为 WebView）的方式进行 HTML5 页面渲染，并定义 HTML5 与原生代码交互协议，将部分原生系统能力暴露给 HTML5，从而扩展 HTML5 的边界。
 
@@ -43,7 +43,7 @@ PWA 的主要的能力就是离线、推送、桌面访问，可以说 PWA 赋�
 - 国内一些手机厂商对 Android 系统各种魔改，对 PWA 的兼容性不好，甚至不支持 PWA
 - 平台的竞争，iOS 对 PWA 的支持力度远远低于 Android，所以 PWA 在 iOS 上的体验打了折扣。PWA 面对类似的微信小程序和快应用的竞争中，并没有优势
 
-## **(2)Hybrid APP:Cordova，Ionic,VasSonic**
+## **Hybrid APP:Cordova，Ionic,VasSonic**
 
 HTML5 + 原生来进行混合开发，这就是 Hybrid。
 
@@ -64,11 +64,11 @@ Ionic是一个开源的移动应用程序开发框架，它可以轻松地使用
 
 腾讯开发的产品，专注于提升页面首屏加载速度，完美支持静态直出页面和动态直出页面，兼容离线包等方案
 
-## **(3)语言编译转换:Xamarin**
+## **语言编译转换:Xamarin**
 
 Xamarin 是一个开放源代码平台，用于通过 .NET 构建适用于 iOS、Android 和 Windows 的新式高性能应用程序。 Xamarin 是一个抽象层，可管理共享代码与基础平台代码的通信。 Xamarin 在提供便利（如内存分配和垃圾回收）的托管环境中运行。
 
-## **(4)原生渲染：React Native,Weex,Dcloud**
+## **原生渲染：React Native,Weex,Dcloud**
 
 **React Native**
 
@@ -101,7 +101,7 @@ uni-app是双渲染引擎，在 App端内置了一个webview和一个基于 weex
 - 如果使用vue页面，则使用webview渲染
 - 如果使用nvue页面(native vue的缩写)，则使用原生渲染
 
-## **(5)自渲染：Flutter**
+## **自渲染：Flutter**
 
 Flutter 是 Google 开源的 UI 工具包，帮助开发者通过一套代码库高效构建多平台精美应用，支持移动、Web、桌面和嵌入式平台。
 
@@ -116,7 +116,7 @@ Flutter 是 Google 开源的 UI 工具包，帮助开发者通过一套代码库
 | 支持平平台实现 | JS 引擎解释执行JS代码 | JS 引擎解释执行JS代码 | JS 引擎解释执行JS代码  | JS 引擎解释执行JS代码    | JS 引擎解释执行JS代码 | Dart 代码编译成目标机器码     |
 | 适应性         | Web开发学习成本低     | .NET C#工程师开发     | Web开发学习成本低      | Web开发学习成本低        | Web开发学习成本低     | Java、C++、C#、开发学习成本低 |
 
-## **(6)其他**
+## **其他**
 
 **小程序**
 
