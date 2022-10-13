@@ -6,7 +6,7 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# 1.介绍
+# 介绍
 
 Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章。
 
@@ -39,7 +39,7 @@ Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown（�
 └── test
 ```
 
-# 2.Hexo命令总览
+# Hexo命令总览
 
 - hexo-cli
 - hexo core
@@ -62,7 +62,7 @@ Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown（�
 - 扩展hexo命令的参数，如`hexo-server`
 - 扩展hexo解析文件的”能力”，如增加jade模版解析功能的hexo-render-jade插件
 
-# 3.Hexo的模板引擎
+# Hexo的模板引擎
 
 模板引擎的作用，就是将界面与数据分离。最简单的原理是将模板内容中指定的地方替换成数据，实现业务代码与逻辑代码分离。
 
@@ -91,7 +91,7 @@ Hexo 的模板引擎是默认使用 ejs 编写的。hexo首先会解析 md 文�
 
 
 
-# 4.从markdown到html的旅程
+# 从markdown到html的旅程
 
 hexo中，从markdown到html的generate过程中做了两件事：模板渲染和模板渲染。
 
@@ -101,7 +101,7 @@ hexo中，从markdown到html的generate过程中做了两件事：模板渲染�
 
 第二次渲染:需要引入对应模板文件格式的插件，如.ejs文件就需要使用hexo-render-ejs插件，.jade文件需要使用hexo-render-jade插件，而.sass文件则需要hexo-render-sass插件来转换成css文件。hexo的这一设计有点类似webpack中的loader。
 
-# 5.Hexo 每次部署的流程
+# Hexo 每次部署的流程
 
 1. hexo g：生成静态文件。将我们的数据和界面相结合生成静态文件的过程。会遍历主题文件中的 `source` 文件夹（js、css、img 等静态资源），然后建立索引，然后根据索引生成 `pubild` 文件夹中，此时的 `publid` 文件是由 html、 js、css、img 建立的纯静态文件可以通过 `index.html` 作为入口访问你的博客。
 2. hexo d：部署文件。部署主要是根据在 `_config.yml` 中配置的 `git` 仓库或者 `coding` 的地址，将 `public` 文件上传至 github 或者 coding 中。然后再根据上面的 github 提供的 pages 服务呈现出页面。当然你也可以直接将你生成的 `public` 文件上传至你自己的服务器上。

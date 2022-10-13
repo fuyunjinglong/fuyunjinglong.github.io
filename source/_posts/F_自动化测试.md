@@ -17,7 +17,7 @@ toc: true # 是否启用内容索引
 - 黑盒测试一般也被称为功能测试，黑盒测试要求测试人员将程序看作一个整体，不考虑其内部结构和特性，只是按照期望验证程序是否能正常工作
 - 白盒测试是基于代码本身的测试，一般指对代码逻辑结构的测试。
 
-## 1.单元测试（Unit Test）
+## 单元测试（Unit Test）
 
 单元测试是最容易实现的：代码中多个组件共用的工具类库、多个组件共用的子组件等。
 
@@ -25,13 +25,13 @@ toc: true # 是否启用内容索引
 
 能进行单元测试的函数/组件，一定是低耦合的。
 
-## 2.集成测试（Integration Test）
+## 集成测试（Integration Test）
 
 集成测试通常被应用在：耦合度较高的函数/组件、经过二次封装的函数/组件、多个函数/组件组合而成的函数/组件等。
 
 集成测试的目的在于，测试经过单元测试后的各个模块组合在一起是否能正常工作。会对组合之后的代码整体暴露在外接口进行测试，查看组合后的代码工作是否符合预期。
 
-## 3.UI 测试（UI Test）
+## UI 测试（UI Test）
 
 UI 测试（UI Test）和端到端测试（E2E Test）区别：
 
@@ -100,7 +100,7 @@ Augular 的默认测试框架就是 Karma + Jasmine，而 React 的默认测试�
 
 # 5.测试解决方案落地
 
-## 1.单元测试从 Jest 到 Karma+Mocha+Chai
+## 单元测试从 Jest 到 Karma+Mocha+Chai
 
 引子：Jest 的运行环境是 JSDOM，一个伪 DOM 引擎。JSDOM 不能理解 DOM 的布局，尺寸，样式，以及浏览器的高级 API，例如 `ResizeObserver`，`matchMedia()`。我们无法在代码中避免使用它们，于是只能去 Mock 很多东西。结果，我们欺骗了我们自己写的测试。即使你达成了 100% 测试覆盖，所有测试用例都通过，还是会怀疑代码是否在真实环境中会出错…更不要提浏览器兼容性测试了。
 
@@ -119,7 +119,7 @@ Karma 不能单独使用。你至少需要一个测试框架（例如 Mocha）�
 | 断言库 Assertion Library          | Chai/Expect.js                | Jest                         |
 | React 测试工具 React Test Utility | Enzyme/React-Testing-Library  | Enzyme/React-Testing-Library |
 
-## 2.鱼与熊掌
+## 鱼与熊掌
 
 **单元测试和集成测试选择：**
 

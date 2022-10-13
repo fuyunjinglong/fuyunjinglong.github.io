@@ -157,7 +157,7 @@ module.exports = {
 #1 所以采用手动上传编译后的文件到vuePressPage仓库
 ```
 
-## **1.手动部署**
+## **手动部署**
 
 *本地编译*
 
@@ -177,7 +177,7 @@ git commit -m 'hello' // 提交代表到本地仓
 git push -u origin vuePressPage // 推送代码
 ```
 
-## **2.自动部署到gh-pages分支**
+## **自动部署到gh-pages分支**
 
 ```bash
 # 下载工具包
