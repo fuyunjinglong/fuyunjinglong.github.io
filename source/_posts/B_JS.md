@@ -16,26 +16,22 @@ toc: true # 是否启用内容索引
 
 
 
-# 最新的7种数据类型
+# 最新的9种数据类型
 
 基本类型
 
 - Number；
 - String；
 - Boolean；
-
 - Undefined；
 - Null；
+- Symbol
 
 引用类型
 
 - Function
-
+- Array
 - Object；
-
-ES6的新引入类型
-
-- Symbol(ES6新加入的)；
 
 **Undefined、Null的区别**
 
