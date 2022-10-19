@@ -711,6 +711,8 @@ CSS3 硬件加速（GPU加速），使用css3硬件加速，可以让transform�
 
 ## 三大山-堆栈内存及闭包作用域
 
+<img src="C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20220912183546292.png" alt="image-20220912183546292" style="zoom:80%;" />
+
 ### JS的8种数据类型
 
 ### JS堆栈内存运行机制
@@ -1148,6 +1150,16 @@ function a(){
     return  b;
 }
 var t=a();
+
+var a = 0, b = 0;
+function A(a) {
+  A = function (b) {
+    alert(a + b++);
+  };
+  alert(a++);
+}
+A(1);
+A(2); // ‘1’，‘4’
 ```
 
 a的作用域scope：scope[0]=AO{aa,function b},scope[1]=GO{function a}
