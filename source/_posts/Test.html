@@ -1,0 +1,13 @@
+<script>
+
+    for(var i =0;i<5;i++){
+        setTimeout(()=>{
+            console.log('var的事件循环机制:',i);// 输出55555
+        },500)
+    }
+    for(let j =0;j<5;j++){
+        setTimeout(()=>{
+            console.log('let的块级作用域：',j);// 输出01234
+        },500)
+    }
+</script>

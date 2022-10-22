@@ -1559,7 +1559,9 @@ npm run dev
 
 ## 1. Composition API(常用部分)
 
-> [composition-api 文档:](https://composition-api.vuejs.org/zh/api.html)
+> [composition-api 文档](https://composition-api.vuejs.org/zh/api.html)
+>
+> [Vue3的8种组件通信](https://segmentfault.com/a/1190000041240135)
 
 ### 1) setup
 

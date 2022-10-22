@@ -14,39 +14,6 @@ toc: true # 是否启用内容索引
 
 <img src="C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20220912183546292.png" alt="image-20220912183546292" style="zoom:80%;" />
 
-
-
-# 最新的9种数据类型
-
-基本类型
-
-- Number；
-- String；
-- Boolean；
-- Undefined；
-- Null；
-- Symbol
-
-引用类型
-
-- Function
-- Array
-- Object；
-
-**Undefined、Null的区别**
-
-- Undefined 类型表示未定义，它的类型只有一个值，就是 undefined，判空：if(a===undefined)
-
-- Null表示的是：“定义了但是为空”,判空：if(a)
-
-**0.1+0.2不能=0.3**
-
-浮点数运算的精度问题导致等式左右的结果并不是严格相等，而是相差了个微小的值
-
- console.log( Math.abs(0.1 + 0.2 - 0.3) <= Number.EPSILON);结果为true
-
-
-
 # JavaScript对象的两类属性
 
 第一类属性，数据属性具有四个特征
