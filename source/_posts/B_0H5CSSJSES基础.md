@@ -1386,7 +1386,126 @@ function myNew(Con, ...args) {
 }
 ```
 
-### call/apply/bind
+### JS的this五种情况的梳理
+
+- 事件绑定
+- 普通函数执行
+- 构造函数执行
+- 箭头函数
+- `call、apply、bind`
+
+**情况一：事件绑定**
+
+`this`：给元素的某个事件行为绑定方法，事件触发，方法执行，此时方法中的 *`this`一般都是当前元素本身*
+
+```
+    <button id="btn">点我</button>
+    <script>  
+    // 方法一
+     btn.onclick=function anonymous(){
+  		console.log(this);   
+     }
+     // 方法二
+      btn.addEventListener('click',function anonymous(){
+   		console.log(this); 
+     },false)
+     // 方法三，兼容iE 6/7/8 DOM2事件绑定
+     btn.attachEvent('onclick',function anonymous(){
+      console.log(this);//this指向window
+     })
+     // 方法四
+     function fn(){
+         console.log(this);
+     }
+     btn.onclick=fn.bind(window)
+    </script>
+```
+
+**情况二：普通函数执行**
+
+**'点'前面是谁this就是谁** 普通函数执行，它里面的`this`是谁，取决于方法执行前面是否有`"点"` 有的话，`“点”前面`是谁`this`就是谁，没有`this`指向`window`（严格模式下是`undefined`）。
+
+默认情况下，指向window对象，只有当有对象时，才指向对象。关键看调用的时候是fn()还是obj.fn()
+
+```js
+function get (p){
+console.log(p);
+}
+get('黄山');
+等效于get.call(window,'大理')---this指向window
+var person={
+    name:'凤凰',
+    fn:function(a){
+        console.log(`我在${this.name}${a}`);
+    }
+}
+person.fn('划水');
+person.fn.call(person,'划水');---this指向person
+```
+
+```js
+var name =222;
+var a={
+    name:111,
+    say:function(){
+        console.log(this.name);
+    }
+}
+var fun=a.say;
+fun(); //window 222
+a.say();// a 111
+var b={
+    name:333,
+    say:function(fn){
+        fn();
+    }
+}
+b.say(a.say);//window 222
+b.say=a.say;
+b.say();//b 333
+```
+
+**情况三：构造函数执行(new xxx)**
+
+函数中的this是当前类的实列。
+
+<script>
+    function Fn(){
+        console.log(this);
+          //this.xxx=xxx是给当前实列设置私有属性
+      }
+      let f= new Fn;
+</script>
+
+**情况四：箭头函数**
+
+箭头函数中this在定义函数的时候就绑定了，而不是在执行函数时候绑定。
+
+箭头函数中，this指向的固定化，并不是因为箭头函数有绑定this机制。是因为箭头函数中根本没有自己的this.它所用的this，是共用父继承下来的this。所以也不能作构造函数
+
+```js
+var x=11;
+var obj={
+    x:22,
+    say:()=>{
+        console.log(this.x); // 同级是obj内部
+    }
+}
+obj.say();//指向obj，但this指向父级，同级是obj，父级是window,11
+
+var obj={
+    birth:1990,
+    getAge:function(){
+        var birth=0;
+        var b = this.birth;
+        var fn = ()=>new Date().getFullYear()-b//同级是getAge内部
+        return fn()
+    }
+}
+console.log(obj.getAge());//指向obj，但遇到箭头函数this指向父级obj
+```
+
+**情况五：、call、apply、bind**
 
 `call` `apply` `bind`都可以改变函数调用的`this`指向
 
@@ -1453,75 +1572,7 @@ test2()
 > 3. 如果你要传递的参数很多，则可以用数组将参数整理好调用`fn.apply(thisObj, [arg1, arg2 ...])`
 > 4. 如果你想生成一个新的函数长期绑定某个函数给某个对象使用，则可以使用`const newFn = fn.bind(thisObj); newFn(arg1, arg2...)`
 
-### JS的this五种情况的梳理
-
-默认情况下，指向window对象，只有当有对象时，才指向对象。关键看调用的时候是fn()还是obj.fn()
-
-```js
-function get (p){
-console.log(p);
-}
-get('黄山');
-get.call(window,'大理')
-var person={
-    name:'凤凰',
-    fn:function(a){
-        console.log(`我在${this.name}${a}`);
-    }
-}
-person.fn('划水');
-person.fn.call(person,'划水');
-```
-
-```js
-var name =222;
-var a={
-    name:111,
-    say:function(){
-        console.log(this.name);
-    }
-}
-var fun=a.say;
-fun(); //window 222
-a.say();// a 111
-var b={
-    name:333,
-    say:function(fn){
-        fn();
-    }
-}
-b.say(a.say);//window 222
-b.say=a.say;
-b.say();//b 333
-```
-
-**箭头函数**
-
-箭头函数中this在定义函数的时候就绑定了，而不是在执行函数时候绑定。
-
-箭头函数中，this指向的固定化，并不是因为箭头函数有绑定this机制。是因为箭头函数中根本没有自己的this.它所用的this，是共用父继承下来的this。所以也不能作构造函数
-
-```js
-var x=11;
-var obj={
-    x:22,
-    say:()=>{
-        console.log(this.x); // 同级是obj内部
-    }
-}
-obj.say();//指向obj，但this指向父级，同级是obj，父级是window,11
-
-var obj={
-    birth:1990,
-    getAge:function(){
-        var birth=0;
-        var b = this.birth;
-        var fn = ()=>new Date().getFullYear()-b//同级是getAge内部
-        return fn()
-    }
-}
-console.log(obj.getAge());//指向obj，但遇到箭头函数this指向父级obj
-```
+### 
 
 ### JS的四大数据类型检查方案
 
@@ -1759,7 +1810,6 @@ async function async1() {
   return function () {
       let context = this; // 保存this指向
       let args = arguments; // 拿到event对象
-
       clearTimeout(timeout)
     timeout = setTimeout(function(){
           func.apply(context, args)
@@ -1776,7 +1826,6 @@ async function async1() {
   return function () {
       let context = this;
       let args = arguments;
-  
       if (timeout) clearTimeout(timeout); // timeout 不为null
       if (immediate) {
           let callNow = !timeout; // 第一次会立即执行，以后只有事件执行后才会再次触发

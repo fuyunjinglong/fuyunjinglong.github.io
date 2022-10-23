@@ -566,21 +566,20 @@ if (config.cancelToken) {
 
 ## Fetch是什么
 
-`fetch()`是 XMLHttpRequest 的升级版，用于在 JavaScript 脚本里面发出 HTTP 请求。
+fetch是一个低层次的API,等效原生的XHR即XmlHttpRequest。
 
-fetch与xmlHttpRequest区别：
+**优点**
 
-（1）`fetch()`使用 Promise，不使用回调函数，因此大大简化了写法，写起来更简洁。
+- 语法简洁，更加语义化
+- 基于标准Promise实现，支持async/await
+- 更加底层，提供丰富API(request,response)
+- 脱离了XHR，是ES规范新的实现方式，更符合es6语法
 
-（2）`fetch()`采用模块化设计，API 分散在多个对象上（Response 对象、Request 对象、Headers 对象），更合理一些；相比之下，XMLHttpRequest 的 API 设计并不是很好，输入、输出、状态都在同一个接口管理，容易写出非常混乱的代码。
+**缺点**
 
-（3）`fetch()`通过数据流（Stream 对象）处理数据，可以分块读取，有利于提高网站性能表现，减少内存占用，对于请求大文件或者网速慢的场景相当有用。XMLHTTPRequest 对象不支持数据流，所有的数据必须放在缓存里，不支持分块读取，必须等待全部拿到后，再一次性吐出来。
-
-**Fetch致命的两个问题**
-
+- fetch只对网络请求报错，对404,400,500都不报错
 - 返回值被promise包裹了2层
-
-- 对IE的兼容性很不友好
+- fetch默认不会携带cookie，不能原生监测请求的进度
 
 ## 常用写法
 
@@ -694,7 +693,7 @@ try {
 }
 ```
 
-## fetch与xhr、ajax、axios比较
+## 其他xhr、ajax、axios
 
 **XMLHttpRequest对象**
 
@@ -744,36 +743,6 @@ try {
 缺点：
 
 > 1. 只持现代代浏览器.
-
-**fetch**
-
-`Fetch API`提供了一个 `JavaScript` 接口，用于访问和操作`HTTP`管道的部分，例如请求和响应。它还提供了一个全局`fetch()`方法，该方法提供了一种简单，合理的方式来跨网络异步获取资源。
-`fetch`是低层次的API，代替`XHR`，可以轻松处理各种格式，非文本化格式。可以很容易的被其他技术使用，例如`Service Workers`。但是想要很好的使用`fetch`，需要做一些封装处理。
-
-优点：
-
-> 在配置中，添加`mode： 'no-cors'`就可以跨域了
-
-缺点：
-
-> 1. `fetch`只对网络请求报错，对`400`，`500`都当做成功的请求，需要封装去处理
-> 2. `fetch`默认不会带`cookie`，需要添加配置项。
-> 3. `fetch`不支持`abort`，不支持超时控制，使用`setTimeout`及`Promise.reject`的实现超时控制并不能阻止请求过程继续在后台运行，造成了流量的浪费。
-> 4. `fetch`没有办法原生监测请求的进度，而`XHR`可以。
-> 5. 不能直接传递`JavaScript`对象作为参数
-> 6. 需要自己判断返回值类型，并执行响应获取返回值的方法
-> 7. 获取返回值方法只能调用一次，不能多次调用
-> 8. 无法正常的捕获异常
-> 9. 老版浏览器不会默认携带`cookie`
-> 10. 不支持`jsonp`
-
-注意：
-
-> 请注意，`fetch`规范与`jQuery.ajax()`主要有两种方式的不同，牢记：
->
-> -. 当接收到一个代表错误的 `HTTP 状态码`时，从 `fetch()`返回的 `Promise` **不会被标记为 reject**， 即使该 HTTP 响应的状态码是 `404` 或 `500`。相反，它会将 `Promise 状态`标记为 `resolve` （但是会将 `resolve`的返回值的 `ok` 属性设置为 `false` ），仅当网络故障时或请求被阻止时，才会标记为 `reject`。
->
-> -. 默认情况下，`fetch` **不会从服务端发送或接收任何 cookies**, 如果站点依赖于用户 `session`，则会导致未经认证的请求（要发送 `cookies`，必须设置 `credentials` 选项）。
 
 ## 参考
 

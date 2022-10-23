@@ -322,5 +322,3 @@ csrf例子：假如一家银行用以运行转账操作的URL地址如下： htt
 
 > - 对于csrf来说，cookie容易被自动携带，token则不容易被自动携带。所以token防止csrf攻击。
 > - 对于xss来说，cookie和token都被获取的话，全都的完蛋。
-
-# 
