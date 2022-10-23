@@ -1572,11 +1572,14 @@ test2()
 > 3. 如果你要传递的参数很多，则可以用数组将参数整理好调用`fn.apply(thisObj, [arg1, arg2 ...])`
 > 4. 如果你想生成一个新的函数长期绑定某个函数给某个对象使用，则可以使用`const newFn = fn.bind(thisObj); newFn(arg1, arg2...)`
 
-### 
-
 ### JS的四大数据类型检查方案
 
 ### JS的四大继承方案
+
+- 原型链继承
+- 构造函数继承
+- 组合式继承
+- 寄生组合式继承
 
 ## 三大山-DOM和BOM及事件处理机制
 
@@ -4404,6 +4407,12 @@ for(var prop in obj){
 //a
 //b
 //c
+
+var obj= {
+a:1,
+[Symbol('level')]:2
+}
+Reflect.ownKeys(obj) // 遍历所有属性，包括Symbol
 ```
 
 
