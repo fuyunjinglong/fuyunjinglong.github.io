@@ -1581,6 +1581,89 @@ test2()
 - 组合式继承
 - 寄生组合式继承
 
+**原型链继承**
+
+定义：让子类的原型指向父类的实列。
+
+- 弊端：父类的某个实例的修改，会影响到所有子类的实例
+
+```js
+    // 原型链继承
+function Parent(){
+    this.name = '李连杰'
+}
+Parent.prototype.getName=function(){
+    return this.name
+}
+function Child(){}
+// 子类的原形指向父类的实例
+Child.prototype = new Parent()
+const child = new Child()
+console.log(child.name);//李连杰
+console.log(child.getName());//李连杰
+// 弊端：父类的某个实例的修改，会影响到所有子类的实例
+const child2 = new Child()
+child2.name = '成龙'
+console.log(child2.name);//成龙
+console.log(child.name);//成龙
+```
+
+**构造函数继承**
+
+定义：在子类构造函数中，执行父类的构造函数，并为其绑定子类的this(改变this指向)
+
+- 弊端：子类无法继承父类的属性和方法
+
+```
+    // 构造函数继承
+function Animals(name){
+    this.name = name
+}
+Animals.prototype.age=3
+Animals.prototype.getName=function(){
+    return this.name
+}
+function Dog(){
+    Animals.call(this,'柴犬')// call的应用
+}
+
+const dog = new Dog()
+const dog1 = new Dog()
+dog.name = '金毛'
+console.log(dog.name);//金毛
+console.log(dog1.name);//柴犬
+// 弊端:子类无法继承父类的属性和方法
+dog.age
+dog.getName()
+```
+
+**组合式继承**
+
+定义：结合了原型链继承和构造函数继承
+
+```
+    // 组合式继承：结合了原型链继承和构造函数继承
+function Car(name){
+    this.name = name
+}
+Car.prototype.getName=function(){
+    return this.name
+}
+// 结合了构造函数继承
+function Bmw(name){
+    Car.call(this,name)// call的应用
+}
+// 结合了原型链继承
+Bmw.prototype = new Car()
+const bmw1 = new Bmw('宝马3系')
+const bmw2 = new Bmw('宝马7系')
+bmw1.name = '宝马5系'
+console.log(bmw1.name);//宝马5系
+console.log(bmw2.name);//宝马7系
+```
+
+**寄生组合式继承**
+
 ## 三大山-DOM和BOM及事件处理机制
 
 ### DOM/BOM的核心操作
