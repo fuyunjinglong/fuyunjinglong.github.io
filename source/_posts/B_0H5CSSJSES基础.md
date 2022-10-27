@@ -84,7 +84,7 @@ toc: true # 是否启用内容索引
 
 标记语言除了文本信息，还包括了一些元信息，这些元信息用来标注如何处理文本信息，比如：
 
-```
+```js
 <Document>
     <Paragraph Align="Center">         Align是元信息
         Here <Bold>is</Bold> some text.
@@ -94,7 +94,7 @@ toc: true # 是否启用内容索引
 
 假如试图用JSON完完整整的表述上述的信息：
 
-```
+```json
 {
     "Paragraphs": [
         {
@@ -144,7 +144,7 @@ window对象核心
 
 (1)window对象
 
-```
+```js
 alert()            显示带有一段消息和一个确认按钮的警告框。
 confirm()          显示带有一段消息以及确认按钮和取消按钮的对话框。
 prompt()           显示可提示用户输入的对话框。
@@ -161,7 +161,7 @@ clearTimeout()     取消由 setTimeout() 方法设置的 timeout。
 
 Location 对象包含有关当前 URL 的信息。
 
-```
+```js
 location.reload()  //重新加载页面，即刷新
 // 跳转到指定页面（可以返回上一个页面）
 location.assign("URL")
@@ -174,7 +174,7 @@ location.replace("URL")
 
 History 对象包含用户（在浏览器窗口中）访问过的 URL。
 
-```
+```js
 history.forward()  // 前进一页
 history.back()  // 后退一页
 ```
@@ -192,7 +192,7 @@ history.back()  // 后退一页
 
 **(1)查找标签**
 
-```
+```js
 document.getElementsByClassName   根据class属性获取
 document.getElementsByTagName     根据标签名获取标签合集
 document.getElementById           根据id属性值获取一个标签
