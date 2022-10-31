@@ -6,7 +6,7 @@
 
 闭包就是能够读取其他函数内部变量的函数。确定吗？
 
-```
+```js
 function funOne(){    // 外部函数
     var num = 0;      // 局部变量
     function funTwo(){   // 内部函数
@@ -30,7 +30,7 @@ var fun = funOne();
 
 本质：funOne()的执行结果赋给了全局变量fun,导致的结果是funTwo和num始终在内存中没有回收。
 
-```
+```js
 function funOne(){    // 外部函数
     var num = 0;      // 局部变量
     function funTwo(){   // 内部函数
@@ -59,7 +59,7 @@ fun()
 
 **闭包拥有自己独立的作用域**
 
-```
+```js
 var fun = funOne();
 var fun2 = funOne();
 fun() // 1
