@@ -12,6 +12,8 @@ function Bmw(name){
 }
 // 结合了原型链继承
 Bmw.prototype = new Car()
+// 原型链的一个规则
+Bmw.prototype.constructor = Bmw
 const bmw1 = new Bmw('宝马3系')
 const bmw2 = new Bmw('宝马7系')
 bmw1.name = '宝马5系'
