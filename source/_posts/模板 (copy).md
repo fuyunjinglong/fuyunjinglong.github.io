@@ -77,7 +77,7 @@ fun2() // 2
 
 原始代码
 
-```
+```js
 function sendData(mobile, password) {
       const xmlHttp = new XMLHttpRequest();
       xmlHttp.open('post', '//localhost:3333/form');
@@ -93,7 +93,7 @@ function sendData(mobile, password) {
 
 闭包封装改造
 
-```
+```js
 http() {
       // 对sendData简单封装
       const xmlHttp = new XMLHttpRequest();
@@ -132,7 +132,7 @@ http_.request(method, url, data, success, error);
 
 再看个例子
 
-```
+```js
 var foo = ( function() {
     var secret = 'secret';
     // “闭包”内的函数可以访问 secret 变量，而 secret 变量对于外部却是隐藏的
@@ -196,7 +196,7 @@ LTAI5tMHUUxWUcHvwTcWXFXE密L8GJS9zpIkLKY4FyoubjoOra5kL0l5
 
 **题目：打印int类型数据的32位信息**
 
-```
+```java
 public static void code_print(int num){
         // 打印int类型数据的32位信息
         for(int i = 31; i >=0;i--){
@@ -220,7 +220,7 @@ public static void code_print(int num){
 - 无符号：0---2的32次方即共有2的32次方个数
 - 有符号：-2的31次方---2的31次方-1即共有2的32次方个数，相当于把无符号中的一半分给了负数。
 
-```
+```java
 // 最小值，10000000000000000000000000000000
 int a = Integer.MIN_VALUE;
 // 最大值，01111111111111111111111111111111
@@ -261,7 +261,7 @@ int c = -a或 ~a+1即取反加1
 
 解法一：先计算当前阶层值，然后求和
 
-```
+```java
 //两层for循环
 public static long code_f1(int num){
      int ans = 0;
@@ -281,7 +281,7 @@ public static long code_f1(int num){
 
 解法二：每一个阶层值可以看成前一个阶层*当前N
 
-```
+```java
 //一层for循环
 public static long code_f2(int num){
      int ans = 0;//求和
@@ -324,7 +324,7 @@ public static long code_f2(int num){
 
 ### 通用排序算法代码
 
-```
+```java
 /* package codechef; // don't place package name! */
 
 import java.util.*;
@@ -368,7 +368,7 @@ class Codechef
 
 ...
 
-```
+```java
 public static void swap(int[]arr,int i,int j){
      // 常规交换
      int tem = arr[i];
