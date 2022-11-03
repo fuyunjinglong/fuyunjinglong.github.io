@@ -408,7 +408,7 @@ public static void code_SelectionSort(int [] arr){
 
 ...
 
-```
+```java
 public static void code_BubbleSort(int [] arr){
  // 冒泡排序
      if(arr == null||arr.length<2){
@@ -439,7 +439,7 @@ public static void code_BubbleSort(int [] arr){
 
 ...
 
-```
+```java
 // while版本
  public static void code_InsertSort(int [] arr){
  // 插入排序
