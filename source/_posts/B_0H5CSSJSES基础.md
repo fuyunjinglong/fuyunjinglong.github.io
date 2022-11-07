@@ -1666,6 +1666,42 @@ console.log(bmw2.name);//宝马7系
 
 **寄生组合式继承**
 
+定义：父类原形赋值给子类原形
+
+- 弊端：如果没有Object.create浅拷贝，这里父类的实例可以调用子类的方法
+
+  car.getCar()
+
+```js
+<script>
+    // 寄生式组合：父类原形赋值给子类原形
+function Car(name){
+    this.name = name
+}
+// 结合了构造函数继承
+function Bmw(name){
+    Car.call(this,name)// call的应用
+}
+Bmw.prototype.getCar=function(){
+    console.log("这是子类的getCar()");
+}
+// 寄生式组合的关键，利用Object.create浅拷贝，父类原形赋值给子类原形
+Bmw.prototype = Object.create(Car.prototype)
+// 原型链的一个规则
+Bmw.prototype.constructor = Bmw
+const bmw1 = new Bmw('宝马3系')
+const bmw2 = new Bmw('宝马7系')
+bmw1.name = '宝马5系'
+console.log(bmw1.name);//宝马5系
+console.log(bmw2.name);//宝马7系
+let car = new Car()
+// 弊端：如果没有Object.create浅拷贝，这里父类的实例可以调用子类的方法
+car.getCar()
+</script>
+```
+
+
+
 ## 三大山-DOM和BOM及事件处理机制
 
 ### DOM/BOM的核心操作
