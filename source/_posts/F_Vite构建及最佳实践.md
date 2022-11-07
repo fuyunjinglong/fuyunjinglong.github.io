@@ -151,7 +151,7 @@ raw-loader插件  -> rollup-plugin-string
 - 转换阶段：resolveId、load、transform；**handleHotUpdate、transformIndexHtml**
 - 构建结束：buildEnd、closeBundle
 
-```
+```js
 export default function myPlugin() {
     return {
         name: 'my-plugin', // 插件名称
