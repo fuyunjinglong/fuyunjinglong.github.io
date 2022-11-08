@@ -1,25 +1,34 @@
 <script>
-    // 寄生式组合：父类原形赋值给子类原形
-function Car(name){
-    this.name = name
+let shoeObj = {}
+shoeObj.list = []
+// 增加订阅者
+shoeObj.listen = function(key, fn){
+    if(!this.list[key]){
+        // 如果不存在key的订阅事件，则置为空
+        this.list[key] = []
+    }
+    // 把函数fn加入回调数组
+    this.list[key].push(fn)
 }
-// 结合了构造函数继承
-function Bmw(name){
-    Car.call(this,name)// call的应用
+// 发布消息
+shoeObj.trigger=function(){
+    // 取出key
+    let key = Array.prototype.shift.call(arguments)
+    let fns =this.list[key]
+    // 遍历数组，执行函数fn
+    if(!fns||!fns.length){
+        return
+    }
+    for(let i = 0;i<fns.length;i++){
+        fns[i].apply(this,arguments)
+    }
 }
-Bmw.prototype.getCar=function(){
-    console.log("这是子类的getCar()");
-}
-// 寄生式组合的关键，利用Object.create浅拷贝，父类原形赋值给子类原形
-Bmw.prototype = Object.create(Car.prototype)
-// 原型链的一个规则
-Bmw.prototype.constructor = Bmw
-const bmw1 = new Bmw('宝马3系')
-const bmw2 = new Bmw('宝马7系')
-bmw1.name = '宝马5系'
-console.log(bmw1.name);//宝马5系
-console.log(bmw2.name);//宝马7系
-let car = new Car()
-// 弊端：如果没有Object.create浅拷贝，这里父类的实例可以调用子类的方法
-car.getCar()
+shoeObj.listen('red',function(size){
+ console.log(`小红订阅了${size}`);
+})
+shoeObj.listen('blue',function(size){
+ console.log(`小蓝订阅了${size}`);
+})
+shoeObj.trigger('red',12)
+shoeObj.trigger('blue',18)
 </script>

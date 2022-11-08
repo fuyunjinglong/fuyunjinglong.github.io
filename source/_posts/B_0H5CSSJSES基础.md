@@ -3065,6 +3065,47 @@ console.log(button.getWidth()); // 600
 
 可以将 `TypeScript` 用作 JavaScript 的一种风格，可以使用 `private` 关键字从面向对象的语言中真正重新创建功能。
 
+## 手写发布订阅
+
+```js
+<script>
+let shoeObj = {}
+shoeObj.list = []
+// 增加订阅者
+shoeObj.listen = function(key, fn){
+    if(!this.list[key]){
+        // 如果不存在key的订阅事件，则置为空
+        this.list[key] = []
+    }
+    // 把函数fn加入回调数组
+    this.list[key].push(fn)
+}
+// 发布消息
+shoeObj.trigger=function(){
+    // 取出key
+    let key = Array.prototype.shift.call(arguments)
+    let fns =this.list[key]
+    // 遍历数组，执行函数fn
+    if(!fns||!fns.length){
+        return
+    }
+    for(let i = 0;i<fns.length;i++){
+        fns[i].apply(this,arguments)
+    }
+}
+shoeObj.listen('red',function(size){
+ console.log(`小红订阅了${size}`);
+})
+shoeObj.listen('blue',function(size){
+ console.log(`小蓝订阅了${size}`);
+})
+shoeObj.trigger('red',12)
+shoeObj.trigger('blue',18)
+</script>
+```
+
+
+
 # ES6
 
 ## set和map
