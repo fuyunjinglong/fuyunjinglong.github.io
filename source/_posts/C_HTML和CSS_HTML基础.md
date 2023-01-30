@@ -1,0 +1,381 @@
+---
+title: HTML基础
+date: 2022-09-12 07:33:16
+categories:
+- C_HTML和CSS
+toc: true # 是否启用内容索引
+---
+
+# HTML
+
+## web基础及演进史
+
+**(1)js组成**
+ ECMAScript(js核心)，DOM(文档对象模型),BOM(浏览器对象模型)。
+ ECMAScript：主要定义JS的语法和数据类型。
+ DOM：一套操作页面的API.
+ BOM:一套操作浏览器功能的API.
+
+**(2)web技术演进史**
+ (1.1)历史进程
+
+-  2005年以前：前后端耦合；
+-  2005年Ajax时代：前后端分离；
+-  2006-2012Jquery时代；
+-  2009年nodejs服务端能力发布；
+-  2012-2016后jquery时代：模块化，MV架构；
+-  2016至今三大框架；
+
+ 1)前端耦合
+ 前端代码只是View视图层。
+ 2)Ajax时代，允许客户端向服务器异步发送请求，处理后，异步局部刷新页面。划时代意义：前后端分离，服务端更专注于数据处理，前端更专注于数据展示。
+ 3)Jquery时代，精简dom操作和浏览器兼容性
+ 4)NodeJs时代
+ 开始用js开发服务端程序，同时构建了用NPM包管理工具的NodeJs生态系统。
+ 5)后Jquery时代
+ 前端引入模块化。具体有CMD/AMD/commonJS，后面ES6 Module。
+ **AMD/CMD**：异步的，主要用于浏览器。模块定义和加载机制稍有不同。AMD推崇前置依赖，CMD推崇就近依赖。AMD是定义时声明依赖，CMD是懒加载，仅在require时才会加载。
+ **CommonJS**:是同步的，主要服务端。
+ **ES6 Module**:满足ES6标准的模块化输出，设计思想静态化。编译时就确定了依赖关系，是浏览器和服务端的通用模块解决方案。
+ **MV*框架**
+ 前端的复杂功能驱动MV*框架引入。
+ **MVC框架**
+ View指令传送到Controller;
+ Controller完成业务逻辑后，要求Model改变;
+ Model将新的数据发送到View，用户得到反馈
+ **MVVM框架**
+ 双向绑定，view改变自动反馈到viewmodel。view与model不发生联系。
+ **(1.2)三大框架介绍**
+ **1)angular**
+ **历史**:2012开始1.0版本，16年升级2.0版本。新版本支持es6和ts。
+ **基本特点**：
+ 双向绑定；
+ 依赖注入；
+ 基于ts的组件；
+ 良好的应用架构；
+ 工具生态完整，angular-cli用于创建、开发、测试等。有整套的解决方案，适合大型项目。
+ **缺点**：中文文档较少，框架较重，学习成本高。
+ **2)react**
+ **历史**：2013年facebook发布版本。2015年版本稳定，同年发布reacr-native。
+ **基本特点**：
+ 虚拟dom，跨浏览器兼容，性能较好；
+ 组件化，代码复用;
+ JSX,js语法的扩展，模板简单、直接、语义化。
+ 单项数据流：数据流清晰，组件状态更可控。
+ **缺点**：
+ 本身只是view，大型项目需要加上React Router和Redux。
+ **3)VUE**
+ **历史**：
+ 2015年1.0版本发布，同年vue-router、vuex、vue-cli出现，标志从一个视图层发展成一个渐进式框架。
+ 2016年vue2.0发布，引入虚拟dom，性能大幅提升。
+ 2019年vue2.0公布源码。
+ **基本特点**：
+ 渐进式、轻量级框架;
+ 简单易用;
+ 双向数据绑定;
+ 组件化;
+ 轻量高效(使用虚拟dom，压缩后只有20kb)
+ **缺点**：
+ vue不支持IE8，生态比较差(语法提示不友好，插件数量比较少)
+
+## XML与JSON
+
+最根本上来说，XML是一个markup language（标记语言），而JSON是一种用于数据交换（data-interchange）的序列化对象的语言。
+
+标记语言除了文本信息，还包括了一些元信息，这些元信息用来标注如何处理文本信息，比如：
+
+```js
+<Document>
+    <Paragraph Align="Center">         Align是元信息
+        Here <Bold>is</Bold> some text.
+    </Paragraph>
+</Document>
+```
+
+假如试图用JSON完完整整的表述上述的信息：
+
+```json
+{
+    "Paragraphs": [
+        {
+            "align": "center",
+            "content": [
+                "Here ", {
+                    "style" : "bold",
+                    "content": [ "is" ]
+                },
+                " some text."
+            ]
+        }
+    ]
+}
+```
+
+原因在于，JSON里面没有**元数据和数据的区别**，**所有的东西都是数据**。同样的，XML也不擅长做JSON所擅长做的事，那就是序列化对象。
+
+JSON有2点优于XML：
+
+- 对象的内部结构一目了然，简洁明了。
+- JSON语法规定[]是数组，{}是对象，而XML没有如此的语法规定，我们只能临时发明一种方式来表示数组，然后自己添加代码来识别这个数组。
+
+作用为：
+
+**两者比较：***JSON**比**XML**更小，更快，更易解析**
+
+**两者作用范围：***JSON**适用于简单的传值，**XML**适用于元数据的标识。*
+
+![image-20211107230640963](/img/image-20211107230640963.png)
+
+
+
+## BOM和DOM对象
+
+**1.BOM**
+
+BOM（Browser Object Model）是指浏览器对象模型，可以对浏览器窗口进行访问和操作。
+
+window对象核心
+
+- Location对象
+- History对象 
+- document
+- navigation
+- screen
+
+(1)window对象
+
+```js
+alert()            显示带有一段消息和一个确认按钮的警告框。
+confirm()          显示带有一段消息以及确认按钮和取消按钮的对话框。
+prompt()           显示可提示用户输入的对话框。
+
+open()             打开一个新的浏览器窗口或查找一个已命名的窗口。
+close()            关闭浏览器窗口。
+setInterval()      按照指定的周期（以毫秒计）来调用函数或计算表达式。
+clearInterval()    取消由 setInterval() 设置的 timeout。
+setTimeout()       在指定的毫秒数后调用函数或计算表达式。
+clearTimeout()     取消由 setTimeout() 方法设置的 timeout。
+```
+
+(2)Location对象
+
+Location 对象包含有关当前 URL 的信息。
+
+```js
+location.reload()  //重新加载页面，即刷新
+// 跳转到指定页面（可以返回上一个页面）
+location.assign("URL")
+location.href="URL"
+// 跳转到指定页面（不可以返回上一个页面）
+location.replace("URL")
+```
+
+(3)History对象 
+
+History 对象包含用户（在浏览器窗口中）访问过的 URL。
+
+```js
+history.forward()  // 前进一页
+history.back()  // 后退一页
+```
+
+**2.DOM**
+
+根据 W3C 的 HTML DOM 标准，HTML 文档中的所有内容都是节点(NODE)：
+
+导航属性：
+
+- parentNode - 节点（元素）的父节点 （一般用这个）
+- firstChild – 节点下第一个子元素
+- lastChild – 节点下最后一个子元素
+- childNodes - 节点（元素）的子节点
+
+**(1)查找标签**
+
+```js
+document.getElementsByClassName   根据class属性获取
+document.getElementsByTagName     根据标签名获取标签合集
+document.getElementById           根据id属性值获取一个标签
+document.getElementsByName()      根据name属性值获取一个标签
+```
+
+间接查找
+
+```
+parentElement　　　　　　　//父节点标签元素
+children　　　　  　　　　 //所有子标签
+firstElementChild　　　　 //第一个子标签元素
+lastElementChild　　　　  //最后一个子标签元素
+nextElementtSibling　　  //下一个兄弟标签元素
+previousElementSibling  //上一个兄弟标签元素
+
+示例:
+var ele1=document.getElementsByTagName("a")[0];
+var ele2=ele1.parentElement;
+console.log(ele2);
+```
+
+**(2)节点操作**
+
+创建节点
+
+```
+var divEle = document.createElement("div");
+```
+
+添加节点
+
+```
+// 追加一个子节点（作为最后的子节点）
+Anode.appendChild(Bnode)；
+// 把增加的节点放到某个节点的前边。
+Anode.insertBefore(Bnode,Cnode); // 在Anode节点下，将Cnode节点插入Bnode节点前面
+// 示例
+var imgEle = document.createElement("img");
+imgEle.src = "#"; 
+var d1Ele = document.getElementById("d1");
+d1Ele.appendChild(imgEle);
+```
+
+替换节点
+
+```
+Anode.replaceChild(Bnode,Cnode);
+```
+
+属性节点
+
+```
+// 获取文本节点的值
+var ele = document.getElementById("d1")
+// 1.如果id为d1的标签内嵌套其他标签
+ele.innerText  // 只取d1标签内的所有文本内容
+ele.innerHTML  // d1标签内嵌套的标签和所有文本内容都取
+```
+
+设置文本节点的值
+
+```
+var ele = document.getElementById("d1")
+ele.innerText = "在干嘛"
+ele.innerHTML = "<p>在干嘛<p/>"
+```
+
+attribute操作
+
+```
+var ele = document.getElementsByClassName("c1")[0];
+ele.setAttribute("hobby","swimming");
+console.log(ele.getAttribute("hobby"));
+ele.removeAttribute("hobby");
+// 自带的属性可以直接.属性名来获取和设置
+ele.id;
+ele.id = "xxx";
+```
+
+获取值操作
+
+```
+var ele = document.getElementById("i1");
+console.log(ele.value);
+```
+
+class的操作
+
+```
+// elementNode（节点名，简化用ele，像上面那样）
+ele.className  获取所有样式类名(字符串)
+ele.classList.remove(cls)    删除指定类
+ele.classList.add(cls)       添加类
+ele.classList.contains(cls)  存在返回true，否则返回false
+ele.classList.toggle(cls)    存在就删除，否则添加
+```
+
+指定CSS操作
+
+```
+var ele = document.getElementById("d1");
+ele.style.color = "red";
+```
+
+JS操作CSS属性的规律
+
+①对于没有中横线的CSS属性一般直接使用style.属性名即可。如：
+
+```
+ele.style.margin
+ele.style.width
+ele.style.left
+ele.style.position
+```
+
+②对含有中横线的CSS属性，将中横线后面的第一个字母换成大写即可。如：
+
+```
+ele.style.marginTop
+ele.style.borderLeftWidth
+ele.style.zIndex
+ele.style.fontFamily
+```
+
+事件
+
+```
+onclick        当用户点击某个对象时调用的事件句柄。
+ondblclick     当用户双击某个对象时调用的事件句柄。
+
+onfocus        元素获得焦点。  //练习：输入框
+onblur         元素失去焦点。  //应用场景：用于表单验证，用户离开某个输入框时，代表已经输入完了，我们可以对它进行验证。
+onchange       域的内容被改变。//应用场景：通常用于表单元素,当元素内容被改变时触发，（三级联动）
+
+onkeydown      某个键盘按键被按下。//应用场景: 当用户在最后一个输入框按下回车按键时，表单提交。
+onkeypress     某个键盘按键被按下并松开。
+onkeyup        某个键盘按键被松开。
+onload         一张页面或一幅图像完成加载。
+onmousedown    鼠标按钮被按下。
+onmousemove    鼠标被移动。
+onmouseout     鼠标从某元素移开。
+onmouseover    鼠标移到某元素之上。
+onmouseleave   鼠标从元素离开
+
+onselect       文本被选中。
+onsubmit       确认按钮被点击。
+```
+
+绑定方式
+
+```
+<div id="d1" onclick="changeColor(this);">点我字体变颜色</div>
+
+var ele= document.getElementById("d1");
+    ele.onclick = function () {
+    this.innerText="想干嘛呢？";
+    }
+```
+
+Event对象
+
+```
+ var ele1 = document.getElementsByClassName("inner")[0];
+    ele1.onclick = function (e) {
+        alert("I am inner!");
+        e.stopPropagation();
+    };
+    var ele2 = document.getElementsByClassName("outer")[0];
+    ele2.onclick = function () {
+        alert("I am outer!")
+    };
+```
+
+## Web语义化
+
+Web语义化是指使用恰当语义的html标签、class类名等内容，让页面具有良好的结构与含义，从而让人和机器都能快速理解网页内容。语义化的web页面一方面可以让机器在更少的人类干预情况下收集并研究网页的信息，从而可以读懂网页的内容，然后将收集汇总的信息进行分析，结果为人类所用；另一方面它可以让开发人员读懂结构和用户以及屏幕阅读器（如果访客有视障）能够读懂内容。 简单来说就是利于 SEO，便于阅读维护理解。
+
+总结起来就是：
+
+- 正确的标签做正确的事情
+- 页面内容结构化
+- 无CSS样子时也容易阅读，便于阅读维护和理解
+- 便于浏览器、搜索引擎解析。 利于爬虫标记、利于SEO
+
+# 

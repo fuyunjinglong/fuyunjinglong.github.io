@@ -1,5 +1,5 @@
 ---
-title: A_团队规范
+title: 团队规范
 date: 2022-05-05 06:33:16
 categories:
 - A_编码规范
