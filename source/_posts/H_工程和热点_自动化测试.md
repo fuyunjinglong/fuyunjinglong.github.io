@@ -6,6 +6,60 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
+# 前端测试
+
+## 测试思想
+
+**TDD：Test-Driven Development（测试驱动开发）**
+
+- TDD：Test-Driven Development（测试驱动开发）：TDD 则要求在编写某个功能的代码之前先编写测试代码，然后只编写使测试通过的功能代码，通过测试来推动整个开发的进行
+
+**BDD：Behavior-Driven Development（行为驱动开发）**
+
+- BDD：Behavior-Driven Development（行为驱动开发）：BDD 可以让项目成员（甚至是不懂编程的）使用自然语言来描述系统功能和业务逻辑，从而根据这些描述步骤进行系统自动化的测试
+
+## 为什么要测试
+
+**测试自动化的好处在于反馈及时，能够极大地提高前端的开发效率。**
+
+- 提高代码质量
+- 准确定位问题
+- 方便迭代/重构
+- 最大程度保证产品符合预期
+- 减少回归流程
+- 提升开发者信心和安全感
+
+## 单元测试
+
+单元测试的工具可分为三类：
+
+- 测试运行器（Test Runner）：可以模拟各种浏览器环境，自定义配置测试框架和断言库等，如Karma.
+- 测试框架：提供单元测试的功能模块，常见的框架有Jest, mocha, Jasmine, QUnit.
+- 工具库：assert, should.js, expect.js, chai.js等断言库，enzyme渲染库，Istanbul覆盖率计算。
+
+## 实战:vue-test-utils + jest
+
+`vue-test-utils` 是 Vue 官方的测试库，并将在本指南中贯穿始终。它在浏览器和 Node.js 环境中皆可运行，并能配合任何 test runner 使用。
+
+**配置测试覆盖率**
+
+在 `jest.config.js` 里新增配置：
+
+```
+collectCoverage: true,
+collectCoverageFrom: ["**/*.{js,vue}", "!**/node_modules/**"],
+```
+
+测试覆盖了表格含义：
+
+- 语句覆盖率（statement coverage）是否每个语句都执行了？
+
+- 分支覆盖率（branch coverage）是否每个函数都调用了？
+
+- 函数覆盖率（function coverage）是否每个if代码块都执行了？
+
+- 行覆盖率（line coverage) 是否每一行都执行了？
+
 # 1.测试类型
 
 主要分为 3 种：**UI 测试（UI Test）**，**集成测试（Integration Test）**、**单元测试（Unit Test）**。分别占比20%,35%,45%
