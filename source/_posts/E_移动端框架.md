@@ -2,7 +2,7 @@
 title: 移动端框架
 date: 2022-05-12 06:33:16
 categories:
-- E_移动端
+- I_移动端
 toc: true # 是否启用内容索引
 ---
 

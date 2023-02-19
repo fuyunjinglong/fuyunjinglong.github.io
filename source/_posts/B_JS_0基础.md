@@ -1,5 +1,5 @@
 ---
-title: 0JS基础
+title: 0基础
 date: 2022-05-29 07:33:16
 categories:
 - B_JS

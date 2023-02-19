@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang=cn>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>移动端框架 | Hexo</title>
+  <meta name="description" content="一个完整 HTML5 页面的展示要经历浏览器控件的加载、解析和渲染三大过程，性能消耗要比原生开发增加 N 个数量级。 1.发展史 WebApp:PWA Hybrid APP:Cordova，Ionic,VasSonic 语言编译转换:Xamarin 原生渲染：React,Native,Weex,Dcloud 自渲染：Flutter  还有一个笼统划分：Web 容器时代，泛 Web 容器时代，自绘引">
+<meta property="og:type" content="article">
+<meta property="og:title" content="移动端框架">
+<meta property="og:url" content="http://anandasuper.top/2022/05/12/E_%E7%A7%BB%E5%8A%A8%E7%AB%AF%E6%A1%86%E6%9E%B6/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一个完整 HTML5 页面的展示要经历浏览器控件的加载、解析和渲染三大过程，性能消耗要比原生开发增加 N 个数量级。 1.发展史 WebApp:PWA Hybrid APP:Cordova，Ionic,VasSonic 语言编译转换:Xamarin 原生渲染：React,Native,Weex,Dcloud 自渲染：Flutter  还有一个笼统划分：Web 容器时代，泛 Web 容器时代，自绘引">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-05-11T22:33:16.000Z">
+<meta property="article:modified_time" content="2023-02-19T09:25:37.780Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://anandasuper.top/2022/05/12/E_%E7%A7%BB%E5%8A%A8%E7%AB%AF%E6%A1%86%E6%9E%B6/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">Books</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">Links</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/G-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">G_性能优化</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9/">H_工程和热点</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E9%A2%98/">前端高频面试题</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a><span class="archive-list-count">11</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9/">H_工程和热点</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/01/12/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_%E6%8F%92%E4%BB%B6/" class="title">插件</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-01-11T23:33:16.000Z" itemprop="datePublished">2023-01-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/12/11/%E6%A8%A1%E6%9D%BF2/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-12-11T04:20:22.712Z" itemprop="datePublished">2022-12-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/13/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_%E5%B7%A6%E7%A5%9E/" class="title">E_左神</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-12T23:33:16.000Z" itemprop="datePublished">2022-11-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/10/22/Test/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-10-22T08:05:41.618Z" itemprop="datePublished">2022-10-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/09/12/Z_%E4%B9%A6%E5%8D%95/" class="title">书单</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-09-12T00:33:16.000Z" itemprop="datePublished">2022-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">Catalogue</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%8F%91%E5%B1%95%E5%8F%B2"><span class="toc-number">1.</span> <span class="toc-text">1.发展史</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#WebApp-PWA"><span class="toc-number">1.1.</span> <span class="toc-text">WebApp:PWA</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hybrid-APP-Cordova%EF%BC%8CIonic-VasSonic"><span class="toc-number">1.2.</span> <span class="toc-text">Hybrid APP:Cordova，Ionic,VasSonic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E8%A8%80%E7%BC%96%E8%AF%91%E8%BD%AC%E6%8D%A2-Xamarin"><span class="toc-number">1.3.</span> <span class="toc-text">语言编译转换:Xamarin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%94%9F%E6%B8%B2%E6%9F%93%EF%BC%9AReact-Native-Weex-Dcloud"><span class="toc-number">1.4.</span> <span class="toc-text">原生渲染：React Native,Weex,Dcloud</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E6%B8%B2%E6%9F%93%EF%BC%9AFlutter"><span class="toc-number">1.5.</span> <span class="toc-text">自渲染：Flutter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">1.6.</span> <span class="toc-text">其他</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80"><span class="toc-number">2.</span> <span class="toc-text">2.编程语言</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-E_移动端框架" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      移动端框架
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/05/12/E_%E7%A7%BB%E5%8A%A8%E7%AB%AF%E6%A1%86%E6%9E%B6/" class="article-date">
+	  <time datetime="2022-05-11T22:33:16.000Z" itemprop="datePublished">2022-05-12</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/05/12/E_%E7%A7%BB%E5%8A%A8%E7%AB%AF%E6%A1%86%E6%9E%B6/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p><strong>一个完整 HTML5 页面的展示要经历浏览器控件的加载、解析和渲染三大过程，性能消耗要比原生开发增加 N 个数量级</strong>。</p>
+<h1 id="1-发展史"><a href="#1-发展史" class="headerlink" title="1.发展史"></a><strong>1.发展史</strong></h1><ul>
+<li>WebApp:PWA</li>
+<li>Hybrid APP:Cordova，Ionic,VasSonic</li>
+<li>语言编译转换:Xamarin</li>
+<li>原生渲染：React,Native,Weex,Dcloud</li>
+<li>自渲染：Flutter</li>
+</ul>
+<p>还有一个<strong>笼统划分</strong>：Web 容器时代，泛 Web 容器时代，自绘引擎时代</p>
+<ul>
+<li>Web 容器时代：基于 Web 相关技术通过浏览器组件来实现界面及功能，典型的框架包括 Cordova(PhoneGap)、Ionic 和微信小程序。</li>
+<li>泛 Web 容器时代：采用类 Web 标准进行开发，但在运行时把绘制和渲染交由原生系统接管的技术，代表框架有 React Native、Weex 和快应用，广义的还包括天猫的 Virtual View 等。</li>
+<li>自绘引擎时代：自带渲染引擎，客户端仅提供一块画布即可获得从业务逻辑到功能呈现的多端高度一致的渲染体验。Flutter，是为数不多的代表。</li>
+</ul>
+<h2 id="WebApp-PWA"><a href="#WebApp-PWA" class="headerlink" title="WebApp:PWA"></a><strong>WebApp:PWA</strong></h2><p>Web App 是指基于 Web 的应用，运行于网络和标准浏览器上，相当于一个网页然后加一个 App 的壳。主要采用的是原生应用内嵌浏览器控件 WebView（iOS 为 UIWebView 或 WKWebView，Android 为 WebView）的方式进行 HTML5 页面渲染，并定义 HTML5 与原生代码交互协议，将部分原生系统能力暴露给 HTML5，从而扩展 HTML5 的边界。</p>
+<ul>
+<li>性能低，操作体验不好</li>
+<li>无法调用原生 API，很多功能无法实现，</li>
+<li>依赖于网络，网速慢时体验很差，并且没有离线功能，优化不好的话会消耗流量</li>
+<li>只能做为一个临时的入口，用户留存率低</li>
+</ul>
+<p><strong>PWA</strong>是web App的进化型，<code>PWA（Progressive Web App，渐进式增强 Web 应用）</code>。它不是一门技术，而是一个概念，他的意思就是使用多种技术来增强 Web App 的功能</p>
+<p>PWA 的主要的能力就是离线、推送、桌面访问，可以说 PWA 赋予 Web App 原生的体验，但是 PWA 一直不温不火的原因主要有以下几点：</p>
+<ul>
+<li>用 Service Worker + HTTPS +Cache Api + indexedDB 等一系列 web 技术实现离线加载和缓存</li>
+<li>实现了推送和通知</li>
+<li>可以直接添加到手机的桌面上</li>
+<li>使用 Service Worker 可以进行后台同步</li>
+<li>游览器对 PWA 技术支持还不够全面， 不是每一款游览器都能 100% 的支持 PWA</li>
+<li>国内一些手机厂商对 Android 系统各种魔改，对 PWA 的兼容性不好，甚至不支持 PWA</li>
+<li>平台的竞争，iOS 对 PWA 的支持力度远远低于 Android，所以 PWA 在 iOS 上的体验打了折扣。PWA 面对类似的微信小程序和快应用的竞争中，并没有优势</li>
+</ul>
+<h2 id="Hybrid-APP-Cordova，Ionic-VasSonic"><a href="#Hybrid-APP-Cordova，Ionic-VasSonic" class="headerlink" title="Hybrid APP:Cordova，Ionic,VasSonic"></a><strong>Hybrid APP:Cordova，Ionic,VasSonic</strong></h2><p>HTML5 + 原生来进行混合开发，这就是 Hybrid。</p>
+<p><strong>Cordova</strong></p>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>跨平台，开发简单，学习成本低</td>
+<td>WebView性能低下时，用户体验差，反应慢</td>
+</tr>
+<tr>
+<td>框架多，插件多，可自定义插件</td>
+<td>国外的框架，中文文档资源少</td>
+</tr>
+<tr>
+<td>发展最早，社区资源丰富</td>
+<td>调试不方便，既不像原生那种调试，也不像纯web那种热重载式的调试</td>
+</tr>
+<tr>
+<td>相同代码通过编译就能跑在各平台，大大提高了多平台开发的效率</td>
+<td>App store相关政策存在风险？</td>
+</tr>
+</tbody></table>
+<p><strong>Ionic</strong></p>
+<p>Ionic是一个开源的移动应用程序开发框架，它可以轻松地使用web技术构建高质量的跨平台的移动应用。</p>
+<p><strong>VasSonic</strong></p>
+<p>腾讯开发的产品，专注于提升页面首屏加载速度，完美支持静态直出页面和动态直出页面，兼容离线包等方案</p>
+<h2 id="语言编译转换-Xamarin"><a href="#语言编译转换-Xamarin" class="headerlink" title="语言编译转换:Xamarin"></a><strong>语言编译转换:Xamarin</strong></h2><p>Xamarin 是一个开放源代码平台，用于通过 .NET 构建适用于 iOS、Android 和 Windows 的新式高性能应用程序。 Xamarin 是一个抽象层，可管理共享代码与基础平台代码的通信。 Xamarin 在提供便利（如内存分配和垃圾回收）的托管环境中运行。</p>
+<h2 id="原生渲染：React-Native-Weex-Dcloud"><a href="#原生渲染：React-Native-Weex-Dcloud" class="headerlink" title="原生渲染：React Native,Weex,Dcloud"></a><strong>原生渲染：React Native,Weex,Dcloud</strong></h2><p><strong>React Native</strong></p>
+<p>React Native (简称RN)是Facebook于2015年4月开源的跨平台移动应用开发框架,支持iOS和安卓.</p>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>复用了 React 的思想，有利于前端开发者涉足移动端。</td>
+<td>做不到 Write once, Run everywhere</td>
+</tr>
+<tr>
+<td>能够利用 JavaScript 动态更新的特性，快速迭代。</td>
+<td>不能做到完全屏蔽 iOS 端或 Android 的细节</td>
+</tr>
+<tr>
+<td>相比于原生平台，开发速度更快，相比于 Hybrid 框架，性能更好。</td>
+<td>由于 Objective-C 与 JavaScript 之间切换存在固定的时间开销，所以性能必定不及原生</td>
+</tr>
+</tbody></table>
+<p><strong>Weex</strong></p>
+<p>Weex是alibaba于2015年推出的一款跨平台开发框架,支持Android、iOS 和 Web。目前支持Vue.js 和 Rax框架的完善开发。</p>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>国内团队开发，中文文档齐全</td>
+<td>动画实现、API丰富程度及事件机制上略逊于RN</td>
+</tr>
+<tr>
+<td>Vue作为前端开发语言，学习成本低</td>
+<td>不支持横竖屏切换</td>
+</tr>
+<tr>
+<td>与RN不同，Weex的框架较轻</td>
+<td>阿里将其捐赠给Apache，后续维护频率低（KPI产品）</td>
+</tr>
+</tbody></table>
+<p><strong>Dcloud（uni-app）</strong></p>
+<p>uni-app 是一个使用 Vue.js 开发所有前端应用的框架，开发者编写一套代码，可发布到iOS、Android、Web（响应式）、以及各种小程序（微信/支付宝/百度/头条/QQ/钉钉/淘宝）、快应用等多个平台。</p>
+<p>uni-app是双渲染引擎，在 App端内置了一个webview和一个基于 weex 改进的原生渲染引擎，提供了原生渲染能力。</p>
+<p>在App端：</p>
+<ul>
+<li>如果使用vue页面，则使用webview渲染</li>
+<li>如果使用nvue页面(native vue的缩写)，则使用原生渲染</li>
+</ul>
+<h2 id="自渲染：Flutter"><a href="#自渲染：Flutter" class="headerlink" title="自渲染：Flutter"></a><strong>自渲染：Flutter</strong></h2><p>Flutter 是 Google 开源的 UI 工具包，帮助开发者通过一套代码库高效构建多平台精美应用，支持移动、Web、桌面和嵌入式平台。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>Cordova</th>
+<th>Xamarin</th>
+<th>React Native</th>
+<th>Weex</th>
+<th>Uniapp</th>
+<th>Flutter</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>性能</td>
+<td>低</td>
+<td>高</td>
+<td>较高</td>
+<td>中</td>
+<td>高</td>
+<td>高</td>
+</tr>
+<tr>
+<td>上手难度</td>
+<td>容易</td>
+<td>较高</td>
+<td>较高</td>
+<td>容易</td>
+<td>容易</td>
+<td>中</td>
+</tr>
+<tr>
+<td>核心</td>
+<td>JavaScript</td>
+<td>.NET</td>
+<td>React</td>
+<td>Weex</td>
+<td>vue</td>
+<td>Dart</td>
+</tr>
+<tr>
+<td>框架轻重</td>
+<td>轻</td>
+<td>较重</td>
+<td>较重</td>
+<td>较轻</td>
+<td>轻</td>
+<td>重</td>
+</tr>
+<tr>
+<td>特点</td>
+<td>适合单页面</td>
+<td>适合开发整体App</td>
+<td>适合开发整体App</td>
+<td>适合单页面</td>
+<td>适合开发整体App</td>
+<td>适合开发整体App</td>
+</tr>
+<tr>
+<td>社区</td>
+<td>活跃度较低</td>
+<td>活跃度低</td>
+<td>活跃度高，Facebook维护</td>
+<td>活跃度中，目前托管apache</td>
+<td>活跃度高，Dcloud维护</td>
+<td>活跃度高，Google维护</td>
+</tr>
+<tr>
+<td>支持平平台实现</td>
+<td>JS 引擎解释执行JS代码</td>
+<td>JS 引擎解释执行JS代码</td>
+<td>JS 引擎解释执行JS代码</td>
+<td>JS 引擎解释执行JS代码</td>
+<td>JS 引擎解释执行JS代码</td>
+<td>Dart 代码编译成目标机器码</td>
+</tr>
+<tr>
+<td>适应性</td>
+<td>Web开发学习成本低</td>
+<td>.NET C#工程师开发</td>
+<td>Web开发学习成本低</td>
+<td>Web开发学习成本低</td>
+<td>Web开发学习成本低</td>
+<td>Java、C++、C#、开发学习成本低</td>
+</tr>
+</tbody></table>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a><strong>其他</strong></h2><p><strong>小程序</strong></p>
+<p>小程序开发本质上还是前端 <code>HTML + CSS + JS</code> 那一套逻辑，它基于 WebView 和微信自己定义的一套 <code>JS/WXML/WXSS/JSON</code> 来开发和渲染页面。</p>
+<ul>
+<li>在 iOS 上，小程序的 JavaScript 代码是运行在 <code>JavaScriptCore</code> 中，是由 <code>WKWebView</code> 来渲染的，环境有 iOS 8+；</li>
+<li>在 Android 上，小程序的 JavaScript 代码是通过 <code>X5 JSCore</code> 来解析，是由 X5 基于 <code>Mobile Chrome 53/57</code> 内核来渲染的；</li>
+<li>在 开发工具上， 小程序的 JavaScript 代码是运行在 <code>nwjs</code> 中，是由 <code>Chrome Webview</code> 来渲染的。</li>
+</ul>
+<h1 id="2-编程语言"><a href="#2-编程语言" class="headerlink" title="2.编程语言"></a><strong>2.编程语言</strong></h1><p>编程语言分为两大阵营:</p>
+<ul>
+<li>解释型 - 需要解释器提供“实时翻译”。如 python、JavaScript、Dart</li>
+<li>编译型 - 需要预编译，执行效率高，但跨平台能力差。如 C/C++、Java、Dart</li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://anandasuper.top/2022/05/12/E_%E7%A7%BB%E5%8A%A8%E7%AB%AF%E6%A1%86%E6%9E%B6/" title="移动端框架" target="_blank" rel="external">http://anandasuper.top/2022/05/12/E_移动端框架/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/05/13/D_%E6%A1%86%E6%9E%B6_%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/" title="登录鉴权"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2022/05/12/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_Vite%E6%9E%84%E5%BB%BA%E5%8F%8A%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="Vite构建及最佳实践"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="Catalogue" role="button">    <span>[&nbsp;</span><span>Catalogue</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>$</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>Maybe you could buy me a cup of coffee.</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> wechat payment</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

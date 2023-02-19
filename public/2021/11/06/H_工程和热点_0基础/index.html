@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang=cn>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>0基础 | Hexo</title>
+  <meta name="description" content="1前端工程化、模块化、组件化1.工程化 (1)工程化本质 DevOps即Development和Operations的组合词，是一组过程、方法与系统的统称。 从DevOps软件开发角度出发，设计-》开发-》联调-》测试-》发布。 (2)工程化解决的问题效率&amp;质量 项目立项-》需求分析-》产品原型-》开发实施-》测试部署-》上线运行 通过各种工具和技术，提高开发效率和质量。  安全内容安全策">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0基础">
+<meta property="og:url" content="http://anandasuper.top/2021/11/06/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_0%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1前端工程化、模块化、组件化1.工程化 (1)工程化本质 DevOps即Development和Operations的组合词，是一组过程、方法与系统的统称。 从DevOps软件开发角度出发，设计-》开发-》联调-》测试-》发布。 (2)工程化解决的问题效率&amp;质量 项目立项-》需求分析-》产品原型-》开发实施-》测试部署-》上线运行 通过各种工具和技术，提高开发效率和质量。  安全内容安全策">
+<meta property="og:locale">
+<meta property="og:image" content="http://anandasuper.top/img/image-20211225211541701.png">
+<meta property="og:image" content="http://anandasuper.top/img/image-20211225211824003.png">
+<meta property="article:published_time" content="2021-11-05T22:33:16.000Z">
+<meta property="article:modified_time" content="2023-02-19T09:35:19.840Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://anandasuper.top/img/image-20211225211541701.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://anandasuper.top/2021/11/06/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_0%E5%9F%BA%E7%A1%80/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">Books</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">Links</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/G-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">G_性能优化</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9/">H_工程和热点</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E9%A2%98/">前端高频面试题</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a><span class="archive-list-count">11</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9/">H_工程和热点</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/01/12/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_%E6%8F%92%E4%BB%B6/" class="title">插件</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-01-11T23:33:16.000Z" itemprop="datePublished">2023-01-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/12/11/%E6%A8%A1%E6%9D%BF2/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-12-11T04:20:22.712Z" itemprop="datePublished">2022-12-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/13/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_%E5%B7%A6%E7%A5%9E/" class="title">E_左神</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-12T23:33:16.000Z" itemprop="datePublished">2022-11-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/10/22/Test/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-10-22T08:05:41.618Z" itemprop="datePublished">2022-10-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/09/12/Z_%E4%B9%A6%E5%8D%95/" class="title">书单</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-09-12T00:33:16.000Z" itemprop="datePublished">2022-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">Catalogue</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96%E3%80%81%E6%A8%A1%E5%9D%97%E5%8C%96%E3%80%81%E7%BB%84%E4%BB%B6%E5%8C%96"><span class="toc-number">1.</span> <span class="toc-text">1前端工程化、模块化、组件化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E7%9A%84%E4%BE%9D%E6%8D%AE"><span class="toc-number">2.</span> <span class="toc-text">2技术选型的依据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%E5%BE%AE%E5%89%8D%E7%AB%AF%E5%92%8C%E4%BD%8E%E4%BB%A3%E7%A0%81"><span class="toc-number">3.</span> <span class="toc-text">3微前端和低代码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4Web-Components"><span class="toc-number">4.</span> <span class="toc-text">4Web Components</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5SPA%E5%92%8CMPA"><span class="toc-number">5.</span> <span class="toc-text">5SPA和MPA</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6Iaas-Paas-Saas"><span class="toc-number">6.</span> <span class="toc-text">6Iaas,Paas,Saas</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7MVC%E3%80%81MVP%E3%80%81MVVM%E7%9A%84%E6%BC%94%E8%BF%9B%E8%BF%87%E7%A8%8B"><span class="toc-number">7.</span> <span class="toc-text">7MVC、MVP、MVVM的演进过程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-Polyfill%E9%BB%91%E8%AF%9D"><span class="toc-number">8.</span> <span class="toc-text">8.Polyfill黑话</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-Web%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B8%BB%E5%8A%A8%E6%8E%A8%E9%80%81%E6%95%B0%E6%8D%AE%EF%BC%9F"><span class="toc-number">9.</span> <span class="toc-text">9.Web应用服务端主动推送数据？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E8%BD%AE%E8%AF%A2"><span class="toc-number">9.1.</span> <span class="toc-text">1. 轮询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E9%95%BF%E8%BD%AE%E8%AF%A2"><span class="toc-number">9.2.</span> <span class="toc-text">2. 长轮询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-HTTP%E6%B5%81"><span class="toc-number">9.3.</span> <span class="toc-text">3. HTTP流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-SSE"><span class="toc-number">9.4.</span> <span class="toc-text">4. SSE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Web-Sockets"><span class="toc-number">9.5.</span> <span class="toc-text">5. Web Sockets</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-%E4%BB%8EPWA%E5%88%B0Service-Worker"><span class="toc-number">10.</span> <span class="toc-text">10.从PWA到Service Worker</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PWA"><span class="toc-number">10.1.</span> <span class="toc-text">PWA</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Service-Worker"><span class="toc-number">10.2.</span> <span class="toc-text">Service Worker</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFService-Worker"><span class="toc-number">10.2.1.</span> <span class="toc-text">什么是Service Worker</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF%E5%8F%8A%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">10.2.2.</span> <span class="toc-text">优势及应用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E7%82%B9"><span class="toc-number">10.2.3.</span> <span class="toc-text">注意点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E4%BE%8B%E5%AD%90"><span class="toc-number">10.2.4.</span> <span class="toc-text">一个简单例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">10.2.5.</span> <span class="toc-text">参考</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-SEO%E6%8E%92%E5%90%8D"><span class="toc-number">11.</span> <span class="toc-text">11.SEO排名</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-H_工程和热点_0基础" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      0基础
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/11/06/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_0%E5%9F%BA%E7%A1%80/" class="article-date">
+	  <time datetime="2021-11-05T22:33:16.000Z" itemprop="datePublished">2021-11-06</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9/">H_工程和热点</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/11/06/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_0%E5%9F%BA%E7%A1%80/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="1前端工程化、模块化、组件化"><a href="#1前端工程化、模块化、组件化" class="headerlink" title="1前端工程化、模块化、组件化"></a>1前端工程化、模块化、组件化</h1><p><strong>1.工程化</strong></p>
+<p><strong>(1)工程化本质</strong></p>
+<p>DevOps即Development和Operations的组合词，是一组<strong>过程、方法与系统</strong>的统称。</p>
+<p>从DevOps软件开发角度出发，设计-》开发-》联调-》测试-》发布。</p>
+<p><strong>(2)工程化解决的问题效率&amp;质量</strong></p>
+<p>项目立项-》需求分析-》产品原型-》开发实施-》测试部署-》上线运行</p>
+<p>通过各种工具和技术，提高开发效率和质量。</p>
+<ul>
+<li>安全内容安全策略=》如ie的activeX策略、</li>
+<li>代码管理代码实践=》如前后端分离,项目结构、代码结构、代码检查、CI/CD配置，编译器、版本控制、项目配置、系统环境</li>
+<li>性能问题=》压缩、打包、线上线下优化措施</li>
+<li>代码复用=》组件化、模块化、服务化</li>
+<li>多设备兼容=》pollyfill,shim,auto-prefixer,响应式，如android,ios,手表电视，IOT设备的兼容性、分辨率</li>
+<li>跨平台=》React Native、Weex、Flutter、Hybrid、Electron、uniapp,如android,ios,手表电视，IOT设备的兼容性、分辨率</li>
+<li>跨端=》web,Node.js,IOT,如移动端，IOT设备等</li>
+<li>跨场景=》WebXR，WebRTC，WebSocket，如直播场景j跨语言WebAssembly</li>
+</ul>
+<p><strong>重要节点的技术</strong></p>
+<p>uglifyjs,jQuery的前后端分离年代-》V8、nodejs的创世纪-》grunt、gulp本地执行的任务流管理器，产生大量包-》npm和Bower-》css的sass和less优化-》webpack、rollup.js编译打包-》eslint和ts规范-》跨段的方案React Native、Weex、Flutter-》微信小程序、支付宝小程序、百度小程序-》WebAssembly-》PWA-》vite-》deno-》docker4.react的优雅UI=fn(state),一个输入对应一个输出，可以事先知道</p>
+<p><strong>前端在发力的事情</strong></p>
+<p>淘宝直播(webRTC)，webXR(ARVR)、Electron、Flutter,SSR优化、ServiceWorker、 GraphQL 、WebAssembly、Serverless</p>
+<p><strong>(3)工程化内容：</strong></p>
+<p>脚手架工具:专用工具(vue-cli,create-react-app,angular-cli,vite),通用工具(Yeoman+generator,Plop)</p>
+<p>自动化构建:npm script&amp;script hooks,Grunt，Gulp,FIS</p>
+<p>模块化打包：webpack,Rollup,Parcel</p>
+<p>标准化规范：Eslint,StyleLint,Prettier</p>
+<p>自动化测试：Mocha,Jest,Enzyme,Cypress,Nightmare,Puppeteer</p>
+<p>自动化部署：Git Hook，Lint-staged,CI/CD</p>
+<p><strong>2.模块化</strong></p>
+<p><strong>一个模块就是一个实现特定功能的文件</strong></p>
+<p>优势：</p>
+<ul>
+<li>避免变量污染，命名冲突</li>
+<li>提高代码复用率</li>
+<li>提高维护性</li>
+<li>依赖关系的管理</li>
+</ul>
+<p>JS模块化方案很多有AMD/CommonJS/UMD/ES6 Module。CSS模块化开发大多是在less、sass、stylus等预处理器的import/mixin特性。</p>
+<p><strong>3.组件化</strong></p>
+<p>①页面上的每个独立的、可视/可交互区域视为一个组件;<br>②每个组件对应一个工程目录,组件所需的各种资源都在这个目录下就近维护;<br>③由于组件具有独立性,因此组件与组件之间可以 自由组合;<br>④页面只不过是组件的容器,负责组合组件形成功能完整的界面;<br>⑤当不需要某个组件,或者想要替换组件时,可以整个目录删除/替换。</p>
+<h1 id="2技术选型的依据"><a href="#2技术选型的依据" class="headerlink" title="2技术选型的依据"></a>2技术选型的依据</h1><ol>
+<li>可控性</li>
+<li>稳定性</li>
+<li>适用性</li>
+<li>易用性</li>
+</ol>
+<p><strong>可控性</strong></p>
+<p>可控性是技术选型中非常重要的一个指标。可控，就是指如果这门技术因为 BUG 对项目造成了影响，团队中有人能够解决它，而不是等待官方修复。作为技术团队的负责人，一定要是能够兜底的那个人。如果团队解决不了，你必须能够解决。</p>
+<p>例如一些公司内部独有的由于“个性化”需求产生的各种魔改版 Vue、React，就完美体现了可控性。</p>
+<p><strong>稳定性</strong></p>
+<p>稳定性，表示一门技术更新迭代比较稳定，不会有特别大的修改，比较靠谱。即使有，也很容易做到向后兼容（迁移简单、成本小）。</p>
+<p>做为一名程序员，我想大家都有过这种想法。希望自己在做项目时能用上最新、最热门的技术，这样就可以一边工作一边学习了。可是理想很美好，现实却是骨干的。新技术往往意味着不确定性，很有可能一步一坑。所以不建议在核心项目中使用新技术。</p>
+<p>使用成熟稳定的技术，意味着你的项目比较安全。在这一点上有两个很典型的反例，那就是 Angular 和 python。例如 python2 升级到 python3，除了语法、API 不兼容之外，python3 的各个版本之间也有差异，直到现在才逐渐稳定下来。</p>
+<p>从稳定性上来看，该如何进行技术造型呢？可以根据以下四点来进行选择：</p>
+<ul>
+<li>官方文档是否齐全。</li>
+<li>社区是否活跃、配套插件是否丰富。</li>
+<li>是否经常维护，issue是否经常更新，可以通过 git commit 查看。</li>
+<li>更新是稳定、小步的迭代，而不是非常激进的更新。</li>
+</ul>
+<p>刚才说到不建议在核心项目中使用新技术，但为了团队成员自身的发展抑或为了其他原因，是可以尝试一下新技术的。但一定要在边缘项目或者小项目上进行尝试，尝试完如果发现这门新技术非常适合你们的项目，那就可以进一步考虑是否在核心项目中使用了。</p>
+<p><strong>适用性</strong></p>
+<p>适用性，是指需要根据业务场景和团队成员来选择技术。</p>
+<p>生命周期：<br>从项目的生命周期来看，并不是所有的项目都需要做到滴水不漏的。例如节假日特定的活动页面，生命周期只有一两天。这种页面就算用 JQuery 写也是可以的，唯一的要求就是快。<br>与之相反的是，公司需要长期维护的核心项目。它们需要使用成熟稳定的技术栈，在开发语言上也要使用 TypeScript 而不是 JavaScript。</p>
+<p>兼容性：<br>由于项目必须在各种各样的设备上运行，所以兼容性也是一个需要考虑的点。<br>web 项目需要考虑不同浏览器的兼容性，app 需要考虑 IOS 和 Android 的兼容性。除了必须保证不能有死机、白屏、卡顿等明显 BUG 外，样式也需要尽量保持一致。</p>
+<p>团队成员：<br>团队成员不一定所有人都使用相同的技术栈，在这一点上需要权衡大家的长短处进行选择。</p>
+<p>但我建议尽量将团队成员的权重放到比较低的位置，选择约束性比较强的技术是一个更好的选择（如果团队成员不会，就让他学）。要用长远的眼光来为团队考虑，太过自由的技术，往往会造成灾难。例如使用 TypeScript 已经被很多大公司和开源项目证明过是一个更好的选择。</p>
+<p><strong>易用性</strong></p>
+<p>易用性，顾名思义就是这门技术好不好上手，容不容易理解。如果两门技术各方面指标及应用场景差不多，易用性强的将成为赢家。</p>
+<p>最典型的例子就是 Angular 和 Vue。Angular 学习曲线陡峭，需要比较长的学习时间；而 Vue 在熟练掌握 JavaScript 的情况下，看文档一两天就能上手干活。</p>
+<p>从 Google、百度的趋势图就能看出来，它们在国内的受欢迎程度有相当大的差别。</p>
+<h1 id="3微前端和低代码"><a href="#3微前端和低代码" class="headerlink" title="3微前端和低代码"></a>3微前端和低代码</h1><p><strong>1.微前端</strong><br> <strong>(1)微前端是什么？</strong><br> (1.1)定义<br> 微前端只是管理这种复杂性的一种方法，通过将产品拆分为更小、更简单的应用程序，这些应用程序可以由独立的自治团队一直交付到生产环境。<br> 微前端是一种整合项目框架和组织结构的架构思维和方法，不是一种技术。<br> 缺点：<br> 前端模块包使用npm构建发布使用。<br> 开发和维护成本比较高;<br> 团队协作之间不规范；<br> 特点：<br> 独立部署、增量迁移、团队自治、松耦合代码。<br> <strong>(1.2)解决的问题</strong><br> 大型项目，复杂项目的更新维护。<br> 解决场景：<br> 拆分巨型应用，使应用变得更加可维护;<br> 兼容历史应用，实现增量开发;<br> <strong>(1.3)微前端架构方案</strong><br> 主要有3种：<br> 自由组织模式，不借助任何框架，自己开发解决第三方依赖问题;<br> 基座模式，需要容器作为基座，基于Single-spa的乾坤;<br> 去中心模式，webpack5新出的模块联邦特性,实现跨技术栈调用，相同技术栈之间实现更加深度的定制;<br> 1)Systemjs模块化解决方案<br> 此类解决方案使用的不多。使用起来很不友好。<br> 关键配置：<br> //指定构建所需要的库<br> out:{<br> libraryTarget:’system’<br> },<br> //排除打包react,因为要system<br> externals:[‘react’]<br>2)Single-spa微前端框架实战<br> (1.1)Single-spa最重要三种类型的微前端应用<br> single-spa-application:微前端架构中的微应用，可以使用vue,react等。<br> single-spa root config:创建微前端容器应用。<br> utility modules：公共模块应用，非渲染组件，用于跨应用共享业务逻辑<br> (1.3)Single-spa的2.3版本<br> 执行create-single-spa命令。<br> 1)初始化相关的两个函数，registerApplication和start<br> 主入口引入基座，基座引入子应用。<br> //注册子应用<br> registerApplication({<br> name:”@study/navbar”,//这里是@团队/应用名称<br> app:()=&gt;System.import(“@study/navbar”),//应用原地址<br> activeWhen:[“/“]//应用路径<br> })<br> //子应用另一个写法，精准匹配<br> registerApplication(<br> “@single-spa/welcome”,<br> ()=&gt;System.import(“<a target="_blank" rel="noopener" href="https://unpkg.com/single-spa-welcome/dist/single-spa-welcome.js">https://unpkg.com/single-spa-welcome/dist/single-spa-welcome.js</a>),<br> location=&gt;location.pathname===’/‘<br> )<br> //设置基座<br> start({<br> uurlRerouteOnly:true<br> })<br> 3)基于Module Federation的微前端架构<br> 模块联邦的应用，比较少。</p>
+<p><strong>2.低代码Low Code</strong><br> <strong>(1)简介</strong><br> (1.1)定义<br> 一个创建应用软件的开发环境，更好维护和易用的可视化IDE。<br> (1.2)特点<br> 全栈可视化编程-what you see is what you get.<br> 低代码扩展能力：组件、主题、模板、逻辑。<br> 全生命周期管理：开发、构建、测试、部署、运维、运营。<br> (1.3)难点<br> 参考阿里技术专家汪凤震跨端经验(PC、H5、Hybird、小程序、RN 类)《探索低代码的未来》<br> 一是自身是不是适合可视化<br> 搞清核心诉求，不要什么功能都要。<br> 如果是研发这类工具，如没有相关研发资源的重投(5人以上，周期1年以上)，不建议开发<br> 二是可视化引入的难点<br> 低代码一般是全生命周期，本身就是个挑战;<br> 开发周期长;<br> 除了依赖技术底蕴，更要过硬的产品思维<br> <strong>(2)可视化搭建技术</strong><br> 三部曲<br> IDE的鼠标拖拽=》生成JSON文件=》渲染页面<br> (1.1)设计原则<br> 组件可嵌套<br> 所见即所得<br> 低侵入性(比如组件包括渲染和编辑，应该是组件只负责渲染，组件编辑留给系统做，而不是组件内部做，组件不关心编辑属性，否则陷入强耦合逻辑。)<br> 组件渲染(深度优先遍历，逐层向上渲染。具体：组件名称-&gt;加载-&gt;注册-&gt;属性拼装-&gt;创建实例)<br> (3)高级低代码平台搭建<br> 阿里的Sula</p>
+<h1 id="4Web-Components"><a href="#4Web-Components" class="headerlink" title="4Web Components"></a>4Web Components</h1><p>待续</p>
+<h1 id="5SPA和MPA"><a href="#5SPA和MPA" class="headerlink" title="5SPA和MPA"></a>5SPA和MPA</h1><p><strong>1.单页应用SPA</strong></p>
+<p>第一次进入页面的时候会请求一个<code>html</code>文件，刷新清除一下。切换到其他组件，此时路径也相应变化，但是并没有新的<code>html</code>文件请求，页面内容也变化了。</p>
+<p><strong>为什么页面切换快？</strong> 页面每次切换跳转时，并不需要做<code>html</code>文件的请求，这样就节约了很多<code>http</code>发送时延，我们在切换页面的时候速度很快。</p>
+<p><strong>缺点：首屏时间慢，SEO差</strong></p>
+<p>单页应用的首屏时间慢，首屏时需要请求一次<code>html</code>，同时还要发送一次<code>js</code>请求，两次请求回来了，首屏才会展示出来。相对于多页应用，首屏时间慢。 SEO效果差，因为搜索引擎只认识<code>html</code>里的内容，不认识<code>js</code>的内容，而单页应用的内容都是靠<code>js</code>渲染生成出来的，搜索引擎不识别这部分内容，也就不会给一个好的排名，会导致单页应用做出来的网页在百度和谷歌上的排名差。</p>
+<p><strong>2.多页面应用MPA</strong></p>
+<p>每一次页面跳转的时候，后台服务器都会给返回一个新的html文档，这种类型的网站也就是多页网站，也叫做多页应用。</p>
+<p><strong>为什么多页应用的首屏时间快？</strong> 首屏时间叫做页面首个屏幕的内容展现的时间，当我们访问页面的时候，服务器返回一个html，页面就会展示出来，这个过程只经历了一个HTTP请求，所以页面展示的速度非常快。</p>
+<p><strong>为什么搜索引擎优化效果好（SEO）？</strong> 搜索引擎在做网页排名的时候，要根据网页内容才能给网页权重，来进行网页的排名。搜索引擎是可以识别html内容的，而我们每个页面所有的内容都放在Html中，所以这种多页应用，seo排名效果好。</p>
+<table>
+<thead>
+<tr>
+<th align="center">比较</th>
+<th align="center">单页SPA</th>
+<th align="center">多页MPA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">定义</td>
+<td align="center">页面跳转-&gt;JS渲染</td>
+<td align="center">页面跳转-&gt;HTML渲染</td>
+</tr>
+<tr>
+<td align="center">构成</td>
+<td align="center">一个html和多个html片段</td>
+<td align="center">多个html</td>
+</tr>
+<tr>
+<td align="center">优点</td>
+<td align="center">页面切换慢</td>
+<td align="center">首屏时间快，SEO好</td>
+</tr>
+<tr>
+<td align="center">缺点</td>
+<td align="center">首屏时间慢，SEO差</td>
+<td align="center">页面切换慢</td>
+</tr>
+<tr>
+<td align="center">数据通信</td>
+<td align="center"><code>借助vuex</code>或<code>storage</code>之类</td>
+<td align="center">依赖<code>URL</code>、<code>cookie</code>或者<code>localstorage</code>麻烦</td>
+</tr>
+</tbody></table>
+<h1 id="6Iaas-Paas-Saas"><a href="#6Iaas-Paas-Saas" class="headerlink" title="6Iaas,Paas,Saas"></a>6Iaas,Paas,Saas</h1><p>sass,paas,laas这都是云服务的一种，是一种租赁的关系，而不是买卖的关系。我只关注使用，不需要维护。一次性收费变为按批次周期性服务。云服务本质就是把大家通用的一些服务，放到云端操作。</p>
+<p>aas即as a Service以什么东西作为服务，</p>
+<p>xass即anything as a Service一切即服务</p>
+<p>SaaS即Software as  a Service软件即服务，如：salesforce的CRM客户关系管理、google docs。</p>
+<p>PaaS即Platform as a Service平台即服务，如：Google的App Engine、微软的windows Server on Azure、AWS Elastic Beanstalk。IaaS读依亚S即Infrastructure as a Service基础设施即服务，如：Amazon S3、微软Azure、Google的Compute Engine</p>
+<p>三者合称为SPI模式。</p>
+<p>还有其他的服务，DaaS数据即服务，DBaaS数据库即服务，DWaaS数据仓库即服务，FaaS功能即服务，AI PaaS人工智能平台即服务，BaaS后端即服务，NaaS网络即服务。</p>
+<h1 id="7MVC、MVP、MVVM的演进过程"><a href="#7MVC、MVP、MVVM的演进过程" class="headerlink" title="7MVC、MVP、MVVM的演进过程"></a>7MVC、MVP、MVVM的演进过程</h1><p>这三个框架模式表示了web领域的发展进程，从最早的前后端.net,jsp到分离的ajax,再到完全的前后端分离，再到响应式。</p>
+<p>这三者共同的目标都是为了职责划分，代码分层，解决维护问题，目标是为了解决Mode和View的耦合问题。</p>
+<p><strong>1.MVC</strong></p>
+<p><img src="/img/image-20211225211541701.png" alt="image-20211225211541701"></p>
+<p>MVC最早出现在服务端，如springmvc，在前端早期也有应用，如Backbone.js,优点是分层清晰，缺点是数据流混乱，灵活性带来了维护问题。缺点所有通信都是单向的，用户主要通过<strong>控制view或controller</strong>发送指令。</p>
+<ul>
+<li>视图（View）：用户界面。</li>
+<li>控制器（Controller）：业务逻辑</li>
+<li>模型（Model）：数据保存</li>
+</ul>
+<ol>
+<li>View 传送指令到 Controller</li>
+<li>Controller 完成业务逻辑后，要求 Model 改变状态</li>
+<li>Model 将新的数据发送到 View，用户得到反馈</li>
+</ol>
+<p><strong>2.MVP</strong></p>
+<p>MVP 模式将 Controller 改名为 Presenter，同时改变了通信方向。解决MV的耦合性问题，但P层过于臃肿。</p>
+<p>View 与 Model 不发生联系，View 非常薄，不部署任何业务逻辑。</p>
+<p><img src="/img/image-20211225211824003.png" alt="image-20211225211824003"></p>
+<p><strong>3.MVVM</strong></p>
+<p>MVVM 模式将 Presenter 改名为 ViewModel，基本上与 MVP 模式完全一致。</p>
+<p>唯一的区别是，它采用双向绑定（data-binding）：View的变动，自动反映在 ViewModel</p>
+<p>MVVM广泛应用于前端领域，不仅解决MV耦合问题，还解决了两者映射关系复杂和DOM操作代码，提高开发效率、代码可读性。</p>
+<h1 id="8-Polyfill黑话"><a href="#8-Polyfill黑话" class="headerlink" title="8.Polyfill黑话"></a>8.Polyfill黑话</h1><p><code>Polyfill</code>或者<code>Polyfiller</code>，是英国Web开发者 <a target="_blank" rel="noopener" href="https://remysharp.com/">Remy Sharp</a> 在咖啡店蹲坑的时候拍脑袋造出来的。当时他想用一个词来形容”用JavaScript来<strong>实现一些浏览器不支持的原生API</strong>“。</p>
+<p><code>Polyfill</code>的准确意思为：<strong>用于实现浏览器并不支持的原生API的代码。</strong></p>
+<p><code>querySelectorAll</code>是很多现代浏览器都支持的原生Web API，但是有些古老的浏览器并不支持。假设有人写了库，只要用了这个库， 你就可以在古老的浏览器里面使用<code>document.querySelectorAll</code>，使用方法跟现代浏览器原生API无异。那么这个库就可以称为<code>Polyfill</code>或者<code>Polyfiller</code>。</p>
+<h1 id="9-Web应用服务端主动推送数据？"><a href="#9-Web应用服务端主动推送数据？" class="headerlink" title="9.Web应用服务端主动推送数据？"></a>9.Web应用服务端主动推送数据？</h1><p>HTTP协议遵循经典的客户端-服务器模型，客户端发送一个请求，然后等待服务器端的响应，服务器端只能在接收到客户端的请求之后进行响应，不能主动的发送数据到客户端。</p>
+<p>客户端想要在不刷新页面的情况下实时获取到服务器端最新的数据，可以通过以下途径:</p>
+<ol>
+<li>轮询</li>
+<li>长轮询</li>
+<li>HTTP流</li>
+<li>SSE</li>
+<li>Web Sockets</li>
+</ol>
+<h2 id="1-轮询"><a href="#1-轮询" class="headerlink" title="1. 轮询"></a><strong>1. 轮询</strong></h2><p>轮询是在特定的的时间间隔（如每1秒），由浏览器对服务器发出HTTP request，然后由服务器返回最新的数据给客户端的浏览器。这种传统的HTTP request 的模式带来很明显的缺点 – 浏览器需要不断的向服务器发出请求，然而HTTP request 的header是非常长的，里面包含的有用数据可能只是一个很小的值，这样会占用很多的带宽。</p>
+<p>客户端（浏览器）定时向服务器端发送请求，获取最新的数据。可以通过在一个定时器中触发ajax请求来实现：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">showUnreadNews</span>(<span class="params"></span>)  &#123;  </span><br><span class="line">    $(<span class="variable language_">document</span>).<span class="title function_">ready</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;  </span><br><span class="line">        $.<span class="title function_">ajax</span>(&#123;  </span><br><span class="line">            <span class="attr">type</span>: <span class="string">&quot;POST&quot;</span>,  </span><br><span class="line">            <span class="attr">url</span>: <span class="string">&quot;unread_list.js&quot;</span>,  </span><br><span class="line">            <span class="attr">dataType</span>: <span class="string">&quot;json&quot;</span>,  </span><br><span class="line">            <span class="attr">success</span>: <span class="keyword">function</span>(<span class="params">data</span>) &#123;  </span><br><span class="line">                <span class="title function_">alert</span>(data);  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;);  </span><br><span class="line">    &#125;);  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="built_in">setInterval</span>(<span class="string">&#x27;showUnreadNews()&#x27;</span>,<span class="number">5000</span>);  <span class="comment">//轮询执行，5000ms一次  </span></span><br></pre></td></tr></table></figure>
+
+<p><strong>优点：</strong></p>
+<p>实现简单，JS端进行一些更改即可，无需后端服务任何改动</p>
+<p><strong>缺点：</strong></p>
+<p>轮询的间隔过长，会导致用户不能及时接收到更新的数据；轮询的间隔过短，会导致查询请求过多，增加服务器端的负担</p>
+<h2 id="2-长轮询"><a href="#2-长轮询" class="headerlink" title="2. 长轮询"></a><strong>2. 长轮询</strong></h2><p>长轮询方法实现原理如下：</p>
+<ol>
+<li>客户端发起一个请求到服务器端(http request)</li>
+<li>服务器端一直保持连接打开，直到有数据数据可发送给客户端，再返回这个请求(http response)</li>
+<li>客户端收到服务器端返回的数据后，处理数据，并立马发起一个新的请求</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//客户端示例js</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">showUnreadNews</span>(<span class="params"></span>)  &#123;  </span><br><span class="line">    $.<span class="title function_">ajax</span>(&#123;  </span><br><span class="line">        <span class="attr">type</span>: <span class="string">&quot;POST&quot;</span>,  </span><br><span class="line">        <span class="attr">url</span>: <span class="string">&quot;unread_list.js&quot;</span>,  </span><br><span class="line">        <span class="attr">dataType</span>: <span class="string">&quot;json&quot;</span>,  </span><br><span class="line">        <span class="attr">success</span>: <span class="keyword">function</span>(<span class="params">data</span>) &#123;         </span><br><span class="line">            <span class="comment">//处理返回数据</span></span><br><span class="line">            <span class="title function_">alert</span>(data);</span><br><span class="line">            <span class="comment">//再次请求</span></span><br><span class="line">            <span class="title function_">showUnreadNews</span>();</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">complete</span>:<span class="keyword">function</span>(<span class="params">XMLHttpRequest,textStatus</span>)&#123;  </span><br><span class="line">            <span class="keyword">if</span>(textStatus==<span class="string">&#x27;timeout&#x27;</span>)&#123;<span class="comment">//判断是否超时</span></span><br><span class="line">                <span class="title function_">showUnreadNews</span>();<span class="comment">//超时，重新请求</span></span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);   </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//server端示例(nodejs)</span></span><br><span class="line"><span class="keyword">var</span> aTargets = [];</span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/notification&#x27;</span>, <span class="keyword">function</span>(<span class="params">req, res</span>) &#123;</span><br><span class="line">    aTargets.<span class="title function_">push</span>(res);</span><br><span class="line">  <span class="comment">//res.end();  这里不调用res.end(),让http request连接一直存活着</span></span><br><span class="line">&#125;)<span class="comment">//此方法会在有新的数据时调用</span></span><br><span class="line">onNewNotification : <span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">  aTargets.<span class="title function_">forEach</span>(<span class="keyword">function</span>(<span class="params">res</span>)&#123;</span><br><span class="line">    res.<span class="title function_">send</span>(data);<span class="comment">//当有新的数据时，再调用res.send(data)返回最新的数据,结束一次http请求</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>优点：</strong></p>
+<ul>
+<li>可以及时获取到最新的数据</li>
+<li>相较于轮询策略，减少了请求数量</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<p>服务器端要一直保持连接，不能释放，由于一个服务器能够处理的连接数有限，当达到服务器处理的上限的时候，服务器将无法响应新的请求</p>
+<h2 id="3-HTTP流"><a href="#3-HTTP流" class="headerlink" title="3. HTTP流"></a><strong>3. HTTP流</strong></h2><p>HTTP流区别于轮询和长轮询方法，它在客户端网页的生命周期内，只需要使用一个HTTP连接，也就是只会向服务器发送一个请求，对于这个请求，服务器会保持HTTP连接（不返回response），然后周期性的向浏览器发送数据。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//server端示例(nodejs)</span></span><br><span class="line"><span class="keyword">let</span> express = <span class="built_in">require</span>(<span class="string">&quot;express&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> app = <span class="title function_">express</span>();app.<span class="title function_">use</span>(express.<span class="title function_">static</span>(<span class="string">&quot;resources&quot;</span>));</span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&quot;/httpstream&quot;</span>,<span class="keyword">function</span>(<span class="params">req, res</span>)&#123;</span><br><span class="line">    <span class="keyword">var</span> x = <span class="number">0</span>;</span><br><span class="line">    res.<span class="title function_">setHeader</span>(<span class="string">&#x27;Connection&#x27;</span>, <span class="string">&#x27;Transfer-Encoding&#x27;</span>);</span><br><span class="line">  res.<span class="title function_">setHeader</span>(<span class="string">&#x27;Content-Type&#x27;</span>, <span class="string">&#x27;text/html; charset=utf-8&#x27;</span>);</span><br><span class="line">  res.<span class="title function_">setHeader</span>(<span class="string">&#x27;Transfer-Encoding&#x27;</span>, <span class="string">&#x27;chunked&#x27;</span>);<span class="comment">//声明数据传输编码为chunked，让浏览器及时处理</span></span><br><span class="line">    <span class="built_in">setInterval</span>(<span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">        res.<span class="title function_">write</span>(x+++<span class="string">&quot;|&quot;</span>); <span class="comment">//每隔2s向客户端发送一次数据</span></span><br><span class="line">    &#125;,<span class="number">2000</span>);</span><br><span class="line">&#125;);app.<span class="title function_">listen</span>(<span class="number">3000</span>);</span><br></pre></td></tr></table></figure>
+
+<p>服务器端接收到请求后，每隔两秒向客户端输出一点文字，但是不会使用<code>res.end()</code>或者<code>res.send()</code>结束当前http请求。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//客户端示例js</span></span><br><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br><span class="line"><span class="keyword">var</span> received = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">var</span> result = <span class="string">&quot;&quot;</span>;</span><br><span class="line">xhr.<span class="title function_">open</span>(<span class="string">&quot;get&quot;</span>,<span class="string">&quot;/httpstream&quot;</span>,<span class="literal">true</span>);</span><br><span class="line">xhr.<span class="property">onreadystatechange</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (xhr.<span class="property">readyState</span> == <span class="number">3</span>) &#123; <span class="comment">//readystate 3 表示正在解析数据</span></span><br><span class="line">    result = xhr.<span class="property">responseText</span>.<span class="title function_">substring</span>(received);<span class="comment">//截取最新的数据</span></span><br><span class="line">    received += result.<span class="property">length</span>;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(result);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">xhr.<span class="title function_">send</span>();</span><br></pre></td></tr></table></figure>
+
+<p>随着不断从服务器端接收到数据，客户端的<code>readyState</code>会周期性的变成<code>3</code>，<code>responseText</code>包含所有的数据源。通过<code>received</code>来记录之前已经处理过的数据长度，然后在<code>responseText</code>中截取最新的数据。</p>
+<p><strong>优点：</strong></p>
+<p>页面的整个生命周期内，只需要建立一个http连接</p>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>如果接入的客户端过多，服务器端会因为http连接有限而无法为新的客户端提供服务</li>
+<li>客户端接收到的数据流会越来越大，最终可能会引发页面的性能问题</li>
+</ul>
+<h2 id="4-SSE"><a href="#4-SSE" class="headerlink" title="4. SSE"></a><strong>4. SSE</strong></h2><p>SSE(Server-Sent Events)是基于HTTP实现的一套服务器向客户端发送数据的API。他是针对上面说到的三种方法（轮询，长轮询，HTTP流）的一个标准API实现。</p>
+<p>使用SSE API可以创建到服务器端的但相连接，服务器可以通过这个连接发送任意数据。它有以下特点：</p>
+<ul>
+<li>断开自动连接</li>
+<li>服务器响应的MIME类型必须是<code>text/event-stream</code></li>
+<li>需要浏览器API支持(参考<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://developer.mozilla.org/zh-CN/docs/Server-sent_events/EventSource%23%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9%E6%80%A7">浏览器兼容性</a>)</li>
+</ul>
+<p><strong>使用方法如下：</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//客户端js</span></span><br><span class="line"><span class="keyword">var</span> source = <span class="keyword">new</span> <span class="title class_">EventSource</span>(url);</span><br><span class="line"><span class="comment">//建立连接时触发</span></span><br><span class="line">source.<span class="property">onopen</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">//do something here</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//从服务器端接收到新的事件时触发</span></span><br><span class="line">source.<span class="property">onmessage</span> = <span class="keyword">function</span> (<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> data = event.<span class="property">data</span>; <span class="comment">//服务器返回的数据存放在event.data中</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//连接异常时触发</span></span><br><span class="line">source.<span class="property">onerror</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">//do something here</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>客户端创建一个EventSource对象，绑定到对应的url，然后监听该对象的onmessage事件就可以获取到最新的数据。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//server端示例(nodejs)</span></span><br><span class="line"><span class="keyword">let</span> express = <span class="built_in">require</span>(<span class="string">&quot;express&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> app = <span class="title function_">express</span>();app.<span class="title function_">use</span>(express.<span class="title function_">static</span>(<span class="string">&quot;resources&quot;</span>));</span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&quot;/httpstream&quot;</span>,<span class="keyword">function</span>(<span class="params">req, res</span>)&#123;</span><br><span class="line">    <span class="keyword">var</span> x = <span class="number">0</span>;</span><br><span class="line">  res.<span class="title function_">writeHead</span>(<span class="number">200</span>, &#123;</span><br><span class="line">      <span class="string">&quot;Content-Type&quot;</span>:<span class="string">&quot;text/event-stream&quot;</span>,</span><br><span class="line">      <span class="string">&quot;Cache-Control&quot;</span>:<span class="string">&quot;no-cache&quot;</span>,</span><br><span class="line">      <span class="string">&quot;Connection&quot;</span>:<span class="string">&quot;keep-alive&quot;</span></span><br><span class="line">    &#125;);</span><br><span class="line">  <span class="comment">//每个1s往客户端发送一条数据</span></span><br><span class="line">  <span class="built_in">setInterval</span>(<span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">      res.<span class="title function_">write</span>(<span class="string">&quot;data: &quot;</span> + x++ + <span class="string">&quot;\n\n&quot;</span>);<span class="comment">//发送的数据格式必须是&quot;data: &lt;内容&gt;/n/n&quot;</span></span><br><span class="line">  &#125;,<span class="number">1000</span>);</span><br><span class="line">&#125;);app.<span class="title function_">listen</span>(<span class="number">3000</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-Web-Sockets"><a href="#5-Web-Sockets" class="headerlink" title="5. Web Sockets"></a><strong>5. Web Sockets</strong></h2><p>不同于SSE，Web Sockets 采用了一套全新的协议（<code>ws/wss</code>）来建立客户端到服务器端的全双工、双向通信连接。</p>
+<p><strong>WebSocket的定义：</strong></p>
+<p>WebSocket是Web应用程序的传输协议，它提供了双向的，按序到达的数据流。他是一个Html5协议，WebSocket的连接是持久的，他通过在客户端和服务器之间保持双工连接，服务器的更新可以被及时推送给客户端，而不需要客户端以一定时间间隔去轮询</p>
+<p><strong>为什么需要WebSocket？</strong></p>
+<ul>
+<li>HTTP 协议是一种无状态的、无连接的、单向的应用层协议；</li>
+<li>它采用了请求/响应模型；</li>
+<li>通信请求只能由客户端发起，服务端对请求做出应答处理；</li>
+<li>这种通信模型有一个弊端：HTTP 协议无法实现服务器主动向客户端发起消息；</li>
+<li>这种单向请求的特点，注定了如果服务器有连续的状态变化，客户端要获知就非常麻烦；</li>
+<li>大多数 Web 应用程序将通过频繁的异步JavaScript和XML（AJAX）请求实现长轮询；</li>
+<li>轮询的效率低，非常浪费资源（因为必须不停连接，或者 HTTP 连接始终打开），因此WebSocket应运而生，需要一种可以保持连接、进行全双工通信的协议；</li>
+<li>WebSocket 连接允许客户端和服务器之间进行全双工通信，以便任一方都可以通过建立的连接将数据推送到另一端；</li>
+<li>WebSocket 只需要建立一次连接，就可以一直保持连接状态，这相比于轮询方式的不停建立连接显然效率要大大提高。</li>
+</ul>
+<p><strong>WebSocket的应用场景：</strong></p>
+<p>实时性要求高的场景：社交聊天、弹幕、多玩家游戏、协同编辑、股票基金实时报价、体育实况更新、视频会议/聊天、基于位置的应用、在线教育、智能家居等需要高实时的场景。</p>
+<p>WebSocket表示当前状态的readyState属性，属性值如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">WebSocket</span>.<span class="title function_">OPENING</span>(<span class="number">0</span>)：正在连接</span><br><span class="line"><span class="title class_">WebSocket</span>.<span class="title function_">OPEN</span>(<span class="number">1</span>):已经建立连接</span><br><span class="line"><span class="title class_">WebSocket</span>.<span class="title function_">CLOSING</span>(<span class="number">2</span>):正在关闭连接</span><br><span class="line"><span class="title class_">WebSocket</span>.<span class="title function_">CLOSE</span>(<span class="number">3</span>)：已经关闭连接</span><br></pre></td></tr></table></figure>
+
+<p>WebSocket发送数据：send(任意字符串)，复杂数据需要将数据系列化，如下面所示：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> message =&#123;</span><br><span class="line">   <span class="attr">time</span>:<span class="keyword">new</span> <span class="title class_">Date</span>(),</span><br><span class="line">   <span class="attr">text</span>:<span class="string">&#x27;hi&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">socket.<span class="title function_">send</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(message));</span><br></pre></td></tr></table></figure>
+
+<p>WebSocket接收数据：服务器向客户端发送信息，触发message()事件，把数据存在event.data中</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">socket.<span class="property">onmessage</span>=<span class="keyword">function</span>(<span class="params">event</span>)&#123;</span><br><span class="line">    <span class="keyword">var</span> data = event.<span class="property">data</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> ws;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">WebSocketTest</span>(<span class="params"></span>)&#123;</span><br><span class="line">   <span class="keyword">if</span> (<span class="string">&quot;WebSocket&quot;</span> <span class="keyword">in</span> <span class="variable language_">window</span>)&#123;</span><br><span class="line">      <span class="title function_">alert</span>(<span class="string">&quot;您的浏览器支持 WebSocket!&quot;</span>);</span><br><span class="line">      <span class="comment">// 打开一个 web socket</span></span><br><span class="line">      ws = <span class="keyword">new</span> <span class="title class_">WebSocket</span>(<span class="string">&quot;ws://localhost:9998/echo&quot;</span>);</span><br><span class="line">      ws.<span class="property">onopen</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">         <span class="comment">// Web Socket 已连接上，使用 send() 方法发送数据</span></span><br><span class="line">         ws.<span class="title function_">send</span>(<span class="string">&quot;发送数据&quot;</span>);</span><br><span class="line">         <span class="title function_">alert</span>(<span class="string">&quot;数据发送中...&quot;</span>);</span><br><span class="line">      &#125;;</span><br><span class="line">      ws.<span class="property">onmessage</span> = <span class="keyword">function</span> (<span class="params">evt</span>) &#123; </span><br><span class="line">         <span class="keyword">var</span> received_msg = evt.<span class="property">data</span>;</span><br><span class="line">         <span class="title function_">alert</span>(<span class="string">&quot;数据已接收...&quot;</span> + received_msg);</span><br><span class="line">      &#125;;</span><br><span class="line">      ws.<span class="property">onerror</span> = <span class="keyword">function</span> (<span class="params">evt</span>) &#123;</span><br><span class="line">          <span class="comment">//出错</span></span><br><span class="line">          <span class="title function_">alert</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(evt));</span><br><span class="line">      &#125;</span><br><span class="line">      ws.<span class="property">onclose</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123; </span><br><span class="line">         <span class="comment">// 关闭 websocket</span></span><br><span class="line">         <span class="title function_">alert</span>(<span class="string">&quot;连接已关闭...&quot;</span>); </span><br><span class="line">      &#125;;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">else</span>&#123;</span><br><span class="line">      <span class="comment">// 浏览器不支持 WebSocket</span></span><br><span class="line">      <span class="title function_">alert</span>(<span class="string">&quot;您的浏览器不支持 WebSocket!&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">ws.<span class="title function_">close</span>();<span class="comment">//关闭连接</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>WebSocket其他事件：</strong><br>open():在成功建立连接时触发<br>error():在发生错误时触发，连接不能持续<br>close():在连接关闭时触发</p>
+<p><strong>优点：</strong></p>
+<ul>
+<li>双向通信，实时连接</li>
+<li>相较于HTTP请求更加高效(不需要握手，连接始终存在；无需携带头部信息)</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>稳定性和成熟度问题</li>
+</ul>
+<h1 id="10-从PWA到Service-Worker"><a href="#10-从PWA到Service-Worker" class="headerlink" title="10.从PWA到Service Worker"></a>10.从PWA到Service Worker</h1><h2 id="PWA"><a href="#PWA" class="headerlink" title="PWA"></a>PWA</h2><p>PWA全称Progressive Web Apps（渐进式WebApp），是通过现代API来构建和增强的，这些API提供了与原生App相似的能力、可靠性、可安装性，而且具备一套代码即可触达任何人、任何地方、任何设备</p>
+<p>三大特性：</p>
+<ul>
+<li>功能性（capable）</li>
+<li>可靠性（reliable）</li>
+<li>可安装性（installable）</li>
+</ul>
+<p>PWA同时具备这三大特性，这也让PWA的应用体验更接近原生。</p>
+<p><strong>功能性</strong></p>
+<p>Web App当今时代已经具备了丰富的功能，你可以基于 <code>WebRTC</code> 开发一个视频聊天工具，可以使用 <code>Geolocation API</code> 开发一个地图软件，也可以使用 <code>Notification API</code> 来给你的APP推送消息，让用户可以在APP之外接收到通知。你也可以使用 <code>WebGL</code> 和 <code>WebVR</code> 来虚拟化这些场景。通过 <code>Web Assembly</code>，你可以步入其他生态，比如：C和C++等，给Web生态带来更多能力。</p>
+<p><strong>可靠性</strong></p>
+<p>可靠的App需要对网络无依赖。用户会期望在弱网或者无网络的情况下打开App。他们期望看到上次他们加载的内容，就像是音频或者视频播放到某个特定时间点，即使网络连接困难，还是要保持可靠和可用。如果请求失败了，比起默默地失败或者崩溃，给用户合理的提示才是最佳。</p>
+<p><strong>可安装性</strong></p>
+<p>安装好的PWA应用可以在一个独立的窗口启动，而不用在浏览器中。它们也可以从主页、docks或者任务栏启动。</p>
+<p><strong>小结</strong></p>
+<p>PWA的核心还是WebApp，通过渐进式增强，新的功能被现代浏览器实现。通过使用 <code>service worker</code> 和 <code>app manifest</code>，可以让你的WebApp具备可靠性和可安装性。如果浏览器不支持这些功能，你的网站的核心功能也不受影响。</p>
+<p>如果说一个30M的原生App换成PWA，可能只有3M不到。另外，PWA的应用的可触达性是继承了WebApp的，可以通过搜索引擎让触达更多用户，或者通过分享的方式。最后，PWA的应用可随时更新，无需用户下载安装。</p>
+<p><strong>简单总结：PWA是Web应用的自然进化，Service Worker是PWA的关键。</strong></p>
+<h2 id="Service-Worker"><a href="#Service-Worker" class="headerlink" title="Service Worker"></a>Service Worker</h2><h3 id="什么是Service-Worker"><a href="#什么是Service-Worker" class="headerlink" title="什么是Service Worker"></a>什么是Service Worker</h3><p>Service Worker是一项比较新的Web技术，是Chromium团队在吸收了ChromePackaged App的Event Page机制，同时吸取了HTML5 AppCache标准失败的教训之后，提出一套新的W3C规范，旨在提高WebApp的离线缓存能力，缩小WebApp与NativeApp之间差距。</p>
+<p>Service Worker从英文翻译过来就是一个服务工人，服务于前端页面的后台线程，基于Web Worker实现。有着独立的js运行环境，分担、协助前端页面完成前端开发者分配的需要在后台悄悄执行的任务。基于它可以实现拦截和处理网络请求、消息推送、静默更新、事件同步等服务。</p>
+<h3 id="优势及应用场景"><a href="#优势及应用场景" class="headerlink" title="优势及应用场景"></a>优势及应用场景</h3><ul>
+<li>后台数据的同步</li>
+<li>从其他域获取资源请求</li>
+<li>接受计算密集型数据的更新，多页面共享该数据</li>
+<li>客户端编译与依赖管理</li>
+<li>后端服务的hook机制</li>
+<li>根据URL模式，自定义模板</li>
+<li>性能优化</li>
+<li>消息推送</li>
+<li>定时默认更新</li>
+<li>地理围栏</li>
+</ul>
+<p>1、离线缓存：可以将H5应用中不变化的资源或者很少变化的资源长久的存储在用户端，提升加载速度、降低流量消耗、降低服务器压力。如中重度的H5游戏、框架数据独立的web资讯客户端、web邮件客户端等</p>
+<p>2、消息推送：激活沉睡的用户，推送即时消息、公告通知，激发更新等。如web资讯客户端、web即时通讯工具、h5游戏等运营产品。</p>
+<p>3、事件同步：确保web端产生的任务即使在用户关闭了web页面也可以顺利完成。如web邮件客户端、web即时通讯工具等。</p>
+<p>4、定时同步：周期性的触发Service Worker脚本中的定时同步事件，可借助它提前刷新缓存内容。如web资讯客户端。</p>
+<h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><p>1、Service Worker线程运行的是js，有着独立的js环境，不能直接操作DOM树，但可以通过postMessage与其服务的前端页面通信。</p>
+<p>2、Service Worker服务的不是单个页面，它服务的是当前网络path下所有的页面，只要当前path 的Service Worker被安装，用户访问当前path下的任意页面均会启动该Service Worker。当一段时间没有事件过来，浏览器会自动停止Service Worker来节约资源，所以Service Worker线程中不能保存需要持久化的信息。</p>
+<p>3、Service Worker安装是在后台悄悄执行，更新也是如此。每次新唤起Service Worker线程，它都会去检查Service Worker脚本是否有更新，如有一个字节的变化，它都会新起一个Service Worker线程类似于安装一样去安装新的Service Worker脚本，当旧的Service Worker所服务的页面都关闭后，新的Service Worker便会生效。</p>
+<p>简单使用</p>
+<p><strong>a.</strong> 首先在页面注册一个service worker</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">if (&#x27;serviceWorker&#x27; in navigator) &#123;</span><br><span class="line">  navigator.serviceWorker.register(&#x27;./index.js&#x27;).then((reg) =&gt; &#123;</span><br><span class="line">    console.log(&#x27;register a service worker: &#x27;, reg)</span><br><span class="line">  &#125;).catch((err) =&gt; &#123;</span><br><span class="line">    console.log(&#x27;err: &#x27;, err);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>b.</strong> 接着就可以在Service worker中尽情畅想</p>
+<p>以页面的离线应用为出发点，说明sw如实做到离线应用的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">const cacheUrl = [</span><br><span class="line">  &#x27;/base.css&#x27;,</span><br><span class="line">  &#x27;/france.html&#x27;</span><br><span class="line">];</span><br><span class="line">const cacheName = &#x27;my-site-cache&#x27;;</span><br><span class="line"></span><br><span class="line">// install阶段</span><br><span class="line">self.addEventListener(&#x27;install&#x27;, (event) =&gt; &#123;</span><br><span class="line">  console.log(&#x27;sw event: install&#x27;);</span><br><span class="line">  event.waitUntil(</span><br><span class="line">    caches.open(cacheName).then((cache) =&gt; &#123;</span><br><span class="line">      console.log(&#x27;open cache&#x27;);</span><br><span class="line">      return cache.addAll(cacheUrl);</span><br><span class="line">    &#125;)</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">self.addEventListener(&#x27;fetch&#x27;, (event) =&gt; &#123;</span><br><span class="line">  event.respondWith(caches.match(event.request).then(res =&gt; &#123;</span><br><span class="line">    if (res) &#123;</span><br><span class="line">      console.log(&#x27;match&#x27;);</span><br><span class="line">      return res;</span><br><span class="line">    &#125;</span><br><span class="line">    return fetch(event.request);</span><br><span class="line">  &#125;));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="一个简单例子"><a href="#一个简单例子" class="headerlink" title="一个简单例子"></a>一个简单例子</h3><p><a target="_blank" rel="noopener" href="https://x5.tencent.com/product/service-worker.html">Service Worker离线案例</a></p>
+<p>使用Service Worker只需要三大步：</p>
+<p>切入到https；由于Service Worker可以劫持连接，伪造和过滤响应，所以保证其在传输过程中不被篡改非常重要。</p>
+<p>2、在页面加载的恰当时机注册Service Worker；示例中在index页面的body onload事件中注册了同path下的serviceworker.js作为index页面的服务线程。</p>
+<p>3、编写serviceworker脚本逻辑；serviceworker是事件驱动型服务线程，所以serviceworker脚本逻辑中基本都是以事件监听作为逻辑入口，示例中在serviceworker脚本被安装的install事件中缓存index页面主资源及子资源，在fetch事件中，拦截前端页面发起的资源请求并到之前缓存的cache中匹配。</p>
+<p>该示例部署到服务器上之后，用户第一次打开index页面，仍然会从服务器上拉取，之后便去安装Service Worker，执行Service Worker中的install事件，浏览器会再次拉取需要缓存的资源，这一次的缓存是否从网络拉取取决于资源设置的过期时间。当install事件中的资源均拉取成功，Service Worker算是安装成功。如果有一个资源拉取失败，此次Service Worker安装失败，若用户下次再打开该页面，浏览器仍然会重复之前的安装流程尝试安装。</p>
+<p>如果index页面的Service Worker安装成功，用户再次打开index页面发起的资源请求便会先经过Service Woker脚本的fetch事件，在该事件中前端开发可以通过编写逻辑控制请求从网络拉取还是从cache中读取或者自己构造一个response丢给前端。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Service_Worker_API/Using_Service_Workers">Service Worker 官方案例</a></p>
+<p>[Service Worker生命周期](</p>
+<h1 id="11-SEO排名"><a href="#11-SEO排名" class="headerlink" title="11.SEO排名"></a>11.SEO排名</h1><p><strong>定义</strong></p>
+<p>SEO（Search Engine Optimization），中文翻译为“<strong>搜索引擎优化</strong>”，从本质上来说，其实就是如何迎合搜索引擎的规则，使得网站在搜索结果中能有更好的排名。比如一个PDA行业网站，当用户输入“PDA数据采集器”，在没有进行SEO优化的情况下，也许这个网站排在第2页或者第3页之后，通过用户行为分析，我们得知，用户在搜索的时候，基本80%左右的用户在浏览完第一页之后就会放弃继续浏览，这样对一个公司来说，如何让你的网站排在尽可能靠前的位置，获得更多流量，就意味着能有更多展示公司产品和品牌的机会。简单一句话，SEO就是让网站，在搜索引擎自然排序中能尽量排在靠前的位置。</p>
+<p><strong>参考</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.seozen.top/seo-course-first-step.html">SEO禅专注SEO优化</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.yyisyou.tw/5ac95a76/">台湾加强网站SEO</a></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://anandasuper.top/2021/11/06/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_0%E5%9F%BA%E7%A1%80/" title="0基础" target="_blank" rel="external">http://anandasuper.top/2021/11/06/H_工程和热点_0基础/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/11/07/G_%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96_0%E5%9F%BA%E7%A1%80/" title="0基础"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/11/06/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BAHexo/" title="Hexo博客搭建"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="Catalogue" role="button">    <span>[&nbsp;</span><span>Catalogue</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>$</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>Maybe you could buy me a cup of coffee.</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> wechat payment</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
