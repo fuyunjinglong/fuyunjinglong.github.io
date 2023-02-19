@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang=cn>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>登录鉴权 | Hexo</title>
+  <meta name="description" content="0.cookie,sessionStorage,localStorage   特性 cookie sessionStorage localStorage session    来源 服务端设置到客户端，客户端保存。服务端响应头set-cookie保存sid,请求头携带sid访问服务器 会话中存在 除非手动删除，否则一直存在 服务端   大小 4k 5M 5M    与服务器交互 同源的http请求">
+<meta property="og:type" content="article">
+<meta property="og:title" content="登录鉴权">
+<meta property="og:url" content="http://anandasuper.top/2022/05/13/D_%E6%A1%86%E6%9E%B6_%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="0.cookie,sessionStorage,localStorage   特性 cookie sessionStorage localStorage session    来源 服务端设置到客户端，客户端保存。服务端响应头set-cookie保存sid,请求头携带sid访问服务器 会话中存在 除非手动删除，否则一直存在 服务端   大小 4k 5M 5M    与服务器交互 同源的http请求">
+<meta property="og:locale">
+<meta property="og:image" content="http://anandasuper.top/img/image-20220602070007978.png">
+<meta property="og:image" content="http://anandasuper.top/img/image-20220602070819745.png">
+<meta property="og:image" content="http://anandasuper.top/img/image-20220602070206100.png">
+<meta property="og:image" content="http://anandasuper.top/img/image-20220602072359920.png">
+<meta property="og:image" content="http://anandasuper.top/img/image-20220602072505173.png">
+<meta property="og:image" content="http://anandasuper.top/img/image-20220602072615066.png">
+<meta property="og:image" content="http://anandasuper.top/img/image-20220602072721885.png">
+<meta property="og:image" content="http://anandasuper.top/img/image-20220602072800696.png">
+<meta property="article:published_time" content="2022-05-12T22:33:16.000Z">
+<meta property="article:modified_time" content="2022-12-11T09:57:14.715Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://anandasuper.top/img/image-20220602070007978.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://anandasuper.top/2022/05/13/D_%E6%A1%86%E6%9E%B6_%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">Books</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">Links</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/G-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">G_性能优化</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9/">H_工程和热点</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF%E9%AB%98%E9%A2%91%E9%9D%A2%E8%AF%95%E9%A2%98/">前端高频面试题</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">October 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a><span class="archive-list-count">11</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9/">H_工程和热点</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/01/12/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_%E6%8F%92%E4%BB%B6/" class="title">插件</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-01-11T23:33:16.000Z" itemprop="datePublished">2023-01-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/12/11/%E6%A8%A1%E6%9D%BF2/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-12-11T04:20:22.712Z" itemprop="datePublished">2022-12-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/13/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_%E5%B7%A6%E7%A5%9E/" class="title">E_左神</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-12T23:33:16.000Z" itemprop="datePublished">2022-11-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/10/22/Test/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-10-22T08:05:41.618Z" itemprop="datePublished">2022-10-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/09/12/Z_%E4%B9%A6%E5%8D%95/" class="title">书单</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-09-12T00:33:16.000Z" itemprop="datePublished">2022-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">Catalogue</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0-cookie-sessionStorage-localStorage"><span class="toc-number">1.</span> <span class="toc-text">0.cookie,sessionStorage,localStorage</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83%E7%9A%843%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">1.登录鉴权的3种方式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#session-cookie"><span class="toc-number">2.1.</span> <span class="toc-text">session-cookie</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Token-%E9%AA%8C%E8%AF%81-JWT"><span class="toc-number">2.2.</span> <span class="toc-text">Token 验证(JWT)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OAuth"><span class="toc-number">2.3.</span> <span class="toc-text">OAuth</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">2.4.</span> <span class="toc-text">注意事项</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%953%E7%A7%8D%E6%96%B9%E6%A1%88%EF%BC%88SSO%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">2.单点登录3种方案（SSO）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Cookies%E3%80%81Session-%E5%90%8C%E6%AD%A5"><span class="toc-number">3.1.</span> <span class="toc-text">Cookies、Session 同步</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F-Session-%E6%96%B9%E5%BC%8F"><span class="toc-number">3.2.</span> <span class="toc-text">分布式 Session 方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E8%AE%A4%E8%AF%81%E6%8E%88%E6%9D%83"><span class="toc-number">3.3.</span> <span class="toc-text">统一认证授权</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8"><span class="toc-number">3.4.</span> <span class="toc-text">实际应用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%85%B3%E4%BA%8E%E8%B4%AD%E7%89%A9%E8%BD%A6%E6%95%B0%E6%8D%AE"><span class="toc-number">4.</span> <span class="toc-text">3.关于购物车数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-cookie%E3%80%81token%E4%B8%8Ecsrf%E3%80%81xss%E5%85%B3%E7%B3%BB"><span class="toc-number">5.</span> <span class="toc-text">4.cookie、token与csrf、xss关系</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-D_框架_登录鉴权" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      登录鉴权
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/05/13/D_%E6%A1%86%E6%9E%B6_%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/" class="article-date">
+	  <time datetime="2022-05-12T22:33:16.000Z" itemprop="datePublished">2022-05-13</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/05/13/D_%E6%A1%86%E6%9E%B6_%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/#comments" class="article-comment-link">Comments</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="0-cookie-sessionStorage-localStorage"><a href="#0-cookie-sessionStorage-localStorage" class="headerlink" title="0.cookie,sessionStorage,localStorage"></a>0.cookie,sessionStorage,localStorage</h1><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>cookie</th>
+<th>sessionStorage</th>
+<th>localStorage</th>
+<th>session</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>来源</td>
+<td>服务端设置到客户端，客户端保存。服务端响应头set-cookie保存sid,请求头携带sid访问服务器</td>
+<td>会话中存在</td>
+<td>除非手动删除，否则一直存在</td>
+<td>服务端</td>
+</tr>
+<tr>
+<td>大小</td>
+<td>4k</td>
+<td>5M</td>
+<td>5M</td>
+<td></td>
+</tr>
+<tr>
+<td>与服务器交互</td>
+<td>同源的http请求中携带</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>类型</td>
+<td>会话cookie(随会话产生和丢失)和过期cookie(随过期时间)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>场景</td>
+<td>非重要信息</td>
+<td>用户登录信息</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>安全性</td>
+<td>容易被窃取，采用session-cookie认证鉴权</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>特点</td>
+<td>存在客户端，不可跨域</td>
+<td></td>
+<td></td>
+<td><strong>SessionID 是连接 Cookie 和 Session 的一道桥梁</strong></td>
+</tr>
+</tbody></table>
+<h1 id="1-登录鉴权的3种方式"><a href="#1-登录鉴权的3种方式" class="headerlink" title="1.登录鉴权的3种方式"></a>1.<strong>登录鉴权的3种方式</strong></h1><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903864458543111#heading-0">前端鉴权（Cookie/Session、Token和OAuth）原文</a></p>
+<ol>
+<li>session-cookie</li>
+<li>Token 验证(JWT)</li>
+<li>OAuth(开放授权)</li>
+</ol>
+<h2 id="session-cookie"><a href="#session-cookie" class="headerlink" title="session-cookie"></a>session-cookie</h2><p><strong>cookie</strong></p>
+<p>  Http协议是一个无状态的协议，服务器不会知道到底是哪一台浏览器访问了它，因此需要一个标识用来让服务器区分不同的浏览器。cookie就是这个管理服务器与客户端之间状态的标识。<br>  cookie的原理是，浏览器第一次向服务器发送请求时，服务器在response头部设置Set-Cookie字段，浏览器收到响应就会设置cookie并存储，在下一次该浏览器向服务器发送请求时，就会在request头部自动带上Cookie字段，服务器端收到该cookie用以区分不同的浏览器。当然，这个cookie与某个用户的对应关系应该在第一次访问时就存在服务器端，这时就需要session了。</p>
+<p><strong>session</strong></p>
+<p>  session是会话的意思，浏览器第一次访问服务端，服务端就会创建一次会话，在会话中保存标识该浏览器的信息。它与cookie的区别就是session是缓存在服务端的，cookie 则是缓存在客户端，他们都由服务端生成，为了弥补Http协议无状态的缺陷。</p>
+<p><strong>session-cookie认证</strong></p>
+<ol>
+<li>服务器在接受客户端首次访问时在服务器端创建seesion，然后保存seesion(我们可以将seesion保存在 内存中，也可以保存在redis中，推荐使用后者)，然后给这个session生成一个唯一的标识字符串,然后在 响应头中种下这个唯一标识字符串。</li>
+<li>签名。这一步通过秘钥对sid进行签名处理，避免客户端修改sid。(非必需步骤)</li>
+<li>浏览器中收到请求响应的时候会解析响应头，然后将sid保存在本地cookie中，浏览器在下次http请求的 请求头中会带上该域名下的cookie信息。</li>
+<li>服务器在接受客户端请求时会去解析请求头cookie中的sid，然后根据这个sid去找服务器端保存的该客 户端的session，然后判断该请求是否合法。</li>
+</ol>
+<img src="/img/image-20220602070007978.png" alt="image-20220602070007978" style="zoom:67%;" />
+
+<p><strong>用户登录认证</strong></p>
+<p>  使用session-cookie做登录认证时，登录时存储session，退出登录时删除session，而其他的需要登录后才能操作的接口需要提前验证是否存在session，存在才能跳转页面，不存在则回到登录页面。<br>  在koa中做一个验证的中间件，在需要验证的接口中使用该中间件。</p>
+<h2 id="Token-验证-JWT"><a href="#Token-验证-JWT" class="headerlink" title="Token 验证(JWT)"></a>Token 验证(JWT)</h2><img src="/img/image-20220602070819745.png" alt="image-20220602070819745" style="zoom:80%;" />
+
+<p> token是一个令牌，浏览器第一次访问服务端时会签发一张令牌，之后浏览器每次携带这张令牌访问服务端就会认证该令牌是否有效，只要服务端可以解密该令牌，就说明请求是合法的，令牌中包含的用户信息还可以区分不同身份的用户。一般token由用户信息、时间戳和由hash算法加密的签名构成。</p>
+<p><strong>阮一峰老师的 <a href="https://link.juejin.cn/?target=http://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html">JSON Web Token 入门教程</a> 讲的非常通俗易懂</strong></p>
+<p><strong>Token认证流程</strong></p>
+<ol>
+<li>客户端使用用户名跟密码请求登录</li>
+<li>服务端收到请求，去验证用户名与密码</li>
+<li>验证成功后，服务端会签发一个 Token，再把这个 Token 发送给客户端</li>
+<li>客户端收到 Token 以后可以把它存储起来，比如放在 Cookie 里或者 Local Storage 里</li>
+<li>客户端每次向服务端请求资源的时候需要带着服务端签发的 Token</li>
+<li>服务端收到请求，然后去验证客户端请求里面带着的 Token（request头部添加Authorization），如果验证成功，就向客户端返回请求的数据，如果不成功返回401错误码，鉴权失败。</li>
+</ol>
+<p><strong>Token和session的区别</strong></p>
+<ol>
+<li>session-cookie的缺点：（1）认证方式局限于在浏览器中使用，cookie是浏览器端的机制，如果在app端就无法使用cookie。（2）为了满足全局一致性，我们最好把session存储在redis中做持久化，而在分布式环境下，我们可能需要在每个服务器上都备份，占用了大量的存储空间。（3）在不是Https协议下使用cookie，容易受到CSRF跨站点请求伪造攻击。</li>
+<li>token的缺点：（1）加密解密消耗使得token认证比session-cookie更消耗性能。（2）token比sessionId大，更占带宽。</li>
+<li>两者对比，它们的区别显而易见：（1）token认证不局限于cookie，这样就使得这种认证方式可以支持多种客户端，而不仅是浏览器。且不受同源策略的影响。（2）不使用cookie就可以规避CSRF攻击。（3）token不需要存储，token中已包含了用户信息，服务器端变成无状态，服务器端只需要根据定义的规则校验这个token是否合法就行。这也使得token 的可扩展性更强。</li>
+</ol>
+<p><strong>JWT（JSON Web Token）</strong></p>
+<p>  JWT 的原理是，服务器认证以后，生成一个 JSON 对象，这个JSON对象肯定不能裸传给用户，那谁都可以篡改这个对象发送请求。因此这个JSON对象会被服务器端签名加密后返回给用户，返回的内容就是一张令牌，以后用户每次访问服务器端就带着这张令牌。<br>  这个JSON对象可能包含的内容就是用户的信息，用户的身份以及令牌的过期时间。</p>
+<p><strong>JWT的组成部分</strong></p>
+<p>  在该网站<a href="https://link.juejin.cn/?target=https://jwt.io">JWT</a>，可以解码或编码一个JWT。一个JWT形如：</p>
+<img src="/img/image-20220602070206100.png" alt="image-20220602070206100" style="zoom:80%;" />
+
+<p>它由三部分组成：Header（头部）、Payload（负载）、Signature（签名）。</p>
+<ol>
+<li>Header部分是一个JSON对象，描述JWT的元数据。一般描述信息为该Token的加密算法以及Token的类型。<code>&#123;&quot;alg&quot;: &quot;HS256&quot;,&quot;typ&quot;: &quot;JWT&quot;&#125;</code>的意思就是，该token使用HS256加密，token类型是JWT。这个部分基本相当于明文，它将这个JSON对象做了一个Base64转码，变成一个字符串。Base64编码解码是有算法的，解码过程是可逆的。头部信息默认携带着两个字段。</li>
+<li>Payload 部分也是一个 JSON 对象，用来存放实际需要传递的数据。有7个官方字段，还可以在这个部分定义私有字段。一般存放用户名、用户身份以及一些JWT的描述字段。它也只是做了一个Base64编码，因此肯定不能在其中存放秘密信息，比如说登录密码之类的。</li>
+<li>Signature是对前面两个部分的签名，防止数据篡改，如果前面两段信息被人修改了发送给服务器端，此时服务器端是可利用签名来验证信息的正确性的。签名需要密钥，密钥是服务器端保存的，用户不知道。算出签名以后，把 Header、Payload、Signature 三个部分拼成一个字符串，每个部分之间用”点”（.）分隔，就可以返回给用户。</li>
+</ol>
+<p><strong>JWT的特点</strong></p>
+<ol>
+<li>JWT 默认是不加密，但也是可以加密的。生成原始 Token 以后，可以用密钥再加密一次。</li>
+<li>JWT 不加密的情况下，不能将秘密数据写入 JWT。</li>
+<li>JWT 不仅可以用于认证，也可以用于交换信息。有效使用 JWT，可以降低服务器查询数据库的次数。</li>
+<li>JWT 的最大缺点是，由于服务器不保存 session 状态，因此无法在使用过程中废止某个 token，或者更改 token 的权限。也就是说，一旦 JWT 签发了，在到期之前就会始终有效，除非服务器部署额外的逻辑。</li>
+<li>JWT 本身包含了认证信息，一旦泄露，任何人都可以获得该令牌的所有权限。为了减少盗用，JWT 的有效期应该设置得比较短。对于一些比较重要的权限，使用时应该再次对用户进行认证。</li>
+<li>为了减少盗用，JWT 不应该使用 HTTP 协议明码传输，要使用 HTTPS 协议传输。</li>
+</ol>
+<p><strong>JWT验证用户登录</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">//前端代码</span><br><span class="line">//axios的请求拦截器，在每个request请求头上加JWT认证信息</span><br><span class="line">axios.interceptors.request.use(</span><br><span class="line">    config =&gt; &#123;</span><br><span class="line">        const token = window.localStorage.getItem(&quot;token&quot;);</span><br><span class="line">        if (token) &#123;</span><br><span class="line">        // 判断是否存在token，如果存在的话，则每个http header都加上token</span><br><span class="line">        // Bearer是JWT的认证头部信息</span><br><span class="line">            config.headers.common[&quot;Authorization&quot;] = &quot;Bearer &quot; + token;</span><br><span class="line">        &#125;</span><br><span class="line">        return config;</span><br><span class="line">    &#125;,</span><br><span class="line">    err =&gt; &#123;</span><br><span class="line">        return Promise.reject(err);</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line">//登录方法：在将后端返回的JWT存入localStorage</span><br><span class="line">async login() &#123;</span><br><span class="line">    const res = await axios.post(&quot;/login-token&quot;, &#123;</span><br><span class="line">        username: this.username,</span><br><span class="line">        password: this.password</span><br><span class="line">    &#125;);</span><br><span class="line">    localStorage.setItem(&quot;token&quot;, res.data.token);</span><br><span class="line">&#125;,</span><br><span class="line">//登出方法：删除JWT</span><br><span class="line">async logout() &#123;</span><br><span class="line">    localStorage.removeItem(&quot;token&quot;);</span><br><span class="line">&#125;,</span><br><span class="line">async getUser() &#123;</span><br><span class="line">    await axios.get(&quot;/getUser-token&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="OAuth"><a href="#OAuth" class="headerlink" title="OAuth"></a>OAuth</h2><p>  三方登入主要基于OAuth 2.0。OAuth协议为用户资源的授权提供了一个安全的、开放而又简易的标 准。与以往的授权方式不同之处是OAuth的授权不会使第三方触及到用户的帐号信息(如用户名与密码)， 即第三方无需使用用户的用户名与密码就可以申请获得该用户资源的授权，因此OAuth是安全的。我们常见的提供OAuth认证服务的厂商有支付宝、QQ、微信。这样的授权方式使得用户使用门槛低，可以更好的推广自己的应用。<br>  OAuth相关文章推荐阮一峰老师的一系列文章<a href="https://link.juejin.cn/?target=http://www.ruanyifeng.com/blog/2019/04/oauth_design.html">OAuth 2.0 </a>。</p>
+<p><strong>OAuth认证流程</strong></p>
+<p>  OAuth就是一种授权机制。数据的所有者告诉系统，同意授权第三方应用进入系统，获取这些数据。系统从而产生一个短期的进入令牌（token），用来代替密码，供第三方应用使用。<br>  OAuth有四种获取令牌的方式，不管哪一种授权方式，第三方应用申请令牌之前，都必须先到系统备案，说明自己的身份，然后会拿到两个身份识别码：客户端 ID（client ID）和客户端密钥（client secret）。这是为了防止令牌被滥用，没有备案过的第三方应用，是不会拿到令牌的。<br>  在前后端分离的情境下，我们常使用授权码方式，指的是第三方应用先申请一个授权码，然后再用该码获取令牌。</p>
+<p><strong>GitHub第三方登录示例</strong></p>
+<p>  我们用例子来理清授权码方式的流程。</p>
+<ol>
+<li>在GitHub中备案第三方应用，拿到属于它的客户端ID和客户端密钥。</li>
+</ol>
+<p>  在github-settings-developer settings中创建一个OAuth App。并填写相关内容。填写完成后Github会给你一个客户端ID和客户端密钥。</p>
+<ol start="2">
+<li>此时在你的第三方网站就可以提供一个Github登录链接，用户点击该链接后会跳转到Github。这一步拿着客户端ID向Github请求授权码code。</li>
+<li>用户跳转到Github，输入Github的用户名密码，表示用户同意使用Github身份登录第三方网站。此时就会带着授权码code跳回第三方网站。跳回的地址在创建该OAuth时已经设置好了。<code>http://localhost:3000/github/callback</code></li>
+<li>第三方网站收到授权码，就可以拿着授权码、客户端ID和客户端密钥去向Github请求access_token令牌。</li>
+<li>Github收到请求，向第三方网站颁发令牌。</li>
+<li>第三方网站收到令牌，就可以暂时拥有Github一些请求的权限，比如说拿到用户信息，拿到这个用户信息之后就可以构建自己第三方网站的token，做相关的鉴权操作。</li>
+</ol>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p><strong>使用 cookie 时需要考虑的问题</strong></p>
+<ul>
+<li>因为存储在客户端，容易被客户端篡改，使用前需要验证合法性</li>
+<li>不要存储敏感数据，比如用户密码，账户余额</li>
+<li>使用 httpOnly 在一定程度上提高安全性</li>
+<li>尽量减少 cookie 的体积，能存储的数据量不能超过 4kb</li>
+<li>设置正确的 domain 和 path，减少数据传输</li>
+<li><strong>cookie 无法跨域</strong></li>
+<li>一个浏览器针对一个网站最多存 20 个Cookie，浏览器一般只允许存放 300 个Cookie</li>
+<li><strong>移动端对 cookie 的支持不是很好，而 session 需要基于 cookie 实现，所以移动端常用的是 token</strong></li>
+</ul>
+<p><strong>使用 session 时需要考虑的问题</strong></p>
+<ul>
+<li>将 session 存储在服务器里面，当用户同时在线量比较多时，这些 session 会占据较多的内存，需要在服务端定期的去清理过期的 session</li>
+<li>当网站采用<strong>集群部署</strong>的时候，会遇到多台 web 服务器之间如何做 session 共享的问题。因为 session 是由单个服务器创建的，但是处理用户请求的服务器不一定是那个创建 session 的服务器，那么该服务器就无法拿到之前已经放入到 session 中的登录凭证之类的信息了。</li>
+<li>当多个应用要共享 session 时，除了以上问题，还会遇到跨域问题，因为不同的应用可能部署的主机不一样，需要在各个应用做好 cookie 跨域的处理。</li>
+<li><strong>sessionId 是存储在 cookie 中的，假如浏览器禁止 cookie 或不支持 cookie 怎么办？</strong> 一般会把 sessionId 跟在 url 参数后面即重写 url，所以 session 不一定非得需要靠 cookie 实现</li>
+<li><strong>移动端对 cookie 的支持不是很好，而 session 需要基于 cookie 实现，所以移动端常用的是 token</strong></li>
+</ul>
+<p><strong>使用 token 时需要考虑的问题</strong></p>
+<ul>
+<li>如果你认为用数据库来存储 token 会导致查询时间太长，可以选择放在内存当中。比如 redis 很适合你对 token 查询的需求。</li>
+<li><strong>token 完全由应用管理，所以它可以避开同源策略</strong></li>
+<li><strong>token 可以避免 CSRF 攻击(因为不需要 cookie 了)</strong></li>
+<li><strong>移动端对 cookie 的支持不是很好，而 session 需要基于 cookie 实现，所以移动端常用的是 token</strong></li>
+</ul>
+<p><strong>使用 JWT 时需要考虑的问题</strong></p>
+<ul>
+<li>因为 JWT 并不依赖 Cookie 的，所以你可以使用任何域名提供你的 API 服务而不需要担心跨域资源共享问题（CORS）</li>
+<li>JWT 默认是不加密，但也是可以加密的。生成原始 Token 以后，可以用密钥再加密一次。</li>
+<li>JWT 不加密的情况下，不能将秘密数据写入 JWT。</li>
+<li>JWT 不仅可以用于认证，也可以用于交换信息。有效使用 JWT，可以降低服务器查询数据库的次数。</li>
+<li>JWT 最大的优势是服务器不再需要存储 Session，使得服务器认证鉴权业务可以方便扩展。但这也是 JWT 最大的缺点：由于服务器不需要存储 Session 状态，因此使用过程中无法废弃某个 Token 或者更改 Token 的权限。也就是说一旦 JWT 签发了，到期之前就会始终有效，除非服务器部署额外的逻辑。</li>
+<li>JWT 本身包含了认证信息，一旦泄露，任何人都可以获得该令牌的所有权限。为了减少盗用，JWT的有效期应该设置得比较短。对于一些比较重要的权限，使用时应该再次对用户进行认证。</li>
+<li>JWT 适合一次性的命令认证，颁发一个有效期极短的 JWT，即使暴露了危险也很小，由于每次操作都会生成新的 JWT，因此也没必要保存 JWT，真正实现无状态。</li>
+<li>为了减少盗用，JWT 不应该使用 HTTP 协议明码传输，要使用 HTTPS 协议传输。</li>
+</ul>
+<p><strong>使用加密算法时需要考虑的问题</strong></p>
+<ul>
+<li>绝不要以<strong>明文存储</strong>密码</li>
+<li><strong>永远使用 哈希算法 来处理密码，绝不要使用 Base64 或其他编码方式来存储密码，这和以明文存储密码是一样的，使用哈希，而不要使用编码</strong>。编码以及加密，都是双向的过程，而密码是保密的，应该只被它的所有者知道， 这个过程必须是单向的。哈希正是用于做这个的，从来没有解哈希这种说法， 但是编码就存在解码，加密就存在解密。</li>
+<li>绝不要使用弱哈希或已被破解的哈希算法，像 MD5 或 SHA1 ，只使用强密码哈希算法。</li>
+<li>绝不要以明文形式显示或发送密码，即使是对密码的所有者也应该这样。如果你需要 “忘记密码” 的功能，可以随机生成一个新的 <strong>一次性的</strong>（这点很重要）密码，然后把这个密码发送给用户。</li>
+</ul>
+<h1 id="2-单点登录3种方案（SSO）"><a href="#2-单点登录3种方案（SSO）" class="headerlink" title="2.单点登录3种方案（SSO）"></a>2.<strong>单点登录3种方案（SSO）</strong></h1><p>单点登录（Single Sign On，简称 SSO），是指在多系统应用群中登录一个系统，便可在其他所有系统中得到授权，无需再次登录。</p>
+<p>这种技术目前得到了广泛使用，它核心解决了一个问题：用户只需要登录一次，就可以访问所有相互信任的应用系统。</p>
+<ol>
+<li>Cookies、Session 同步</li>
+<li>分布式 Session 方式</li>
+<li>统一认证授权方式</li>
+</ol>
+<h2 id="Cookies、Session-同步"><a href="#Cookies、Session-同步" class="headerlink" title="Cookies、Session 同步"></a>Cookies、Session 同步</h2><p><strong>基于 Cookie 的单点登录</strong></p>
+<p>基于 Cookie 的单点登录是最简单的单点登录实现方式，它使用 Cookie 作为媒介，存放用户凭证。</p>
+<p>用户登录父应用之后，应用返回一个加密的 Cookie，用户访问子应用的时候，携带上这个 Cookie，授权应用解密 Cookie 并进行校验，校验通过则登录当前用户。</p>
+<p>这种方式虽然实现简单，但 Cookie 不够安全，容易泄漏，且不能跨域实现免登。</p>
+<h2 id="分布式-Session-方式"><a href="#分布式-Session-方式" class="headerlink" title="分布式 Session 方式"></a>分布式 Session 方式</h2><p>分布式 Session 实现单点登录原理是将用户认证信息保存于 Session 中，即以 Session 内存储的值为用户凭证，一般采用 Cache 中间件实现（如 Redis）。用户再次登录时，应用服务端获取分布式 Session 来校验用户信息。如图所示：</p>
+<img src="/img/image-20220602072359920.png" alt="image-20220602072359920" style="zoom:50%;" />
+
+<p>一般情况下都是基于 Redis 实现 Session 共享，将 Session 存储于 Redis 上，然后将整个系统的全局 Cookie Domain 设置于顶级域名上，这样 SessionID 就能在各个子系统间共享。</p>
+<p>这种方式也有一个问题，共享 Session 无法处理跨顶级域名。</p>
+<h2 id="统一认证授权"><a href="#统一认证授权" class="headerlink" title="统一认证授权"></a>统一认证授权</h2><img src="/img/image-20220602072505173.png" alt="image-20220602072505173" style="zoom: 80%;" />
+
+<p>由图可知，通过统一认证授权方式实现单点登录，需要有一个独立的认证系统。</p>
+<p>用户第一次访问应用系统时，由于还未登录，被引导到认证系统中进行登录，认证系统接受用户名密码等安全信息，生成访问令牌（ticket）。用户通过 ticket 访问应用系统，应用系统接受到请求之后会访问认证系统检查 ticket 的合法性，如果检查通过，用户就可以在不用再次登录的情况下访问应用系统资源。</p>
+<h2 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h2><p><strong>1.使用 JWT 实现单点登录</strong></p>
+<p>JWT （JSON Web Token）是一个开放标准（RFC7519），它是一个含签名并携带用户相关信息的加密串。页面请求校验登录接口时，请求头中携带 JWT 串到后端服务，后端通过签名加密串匹配校验，保证信息未被篡改，校验通过则认为是可靠的请求，将正常返回数据。</p>
+<p>DataSimba（奇点云数据中台产品）结合 JWT 与分布式 session，实现多域多空间单点登录。通过 JWT 生成和校验令牌，将刷新令牌存储在 redis 中，网关统一校验令牌，校验通过后将用户信息设置在请求头中，应用在拦截器中获取到用户信息后即可验证通过。</p>
+<p>不同域中的 DataSimba 共用一套密钥并且实时同步用户信息，通过 JWT 生成和校验令牌，用户登录其中一个域后，前端获取 JWT 加密串并存储在 Local Storage 中，当用户切换到其他域时前端传入加密串，后端网关校验，由此实现免登录访问其他域资源，如下图所示：</p>
+<img src="/img/image-20220602072615066.png" alt="image-20220602072615066" style="zoom:80%;" />
+
+<p><strong>2.使用 OAuth2.0 实现单点登录</strong></p>
+<p>OAuth 2.0 是一种认证授权机制，主要用来颁发令牌（token），OAuth 的核心就是向第三方应用颁发令牌，OAuth2.0 就是对应上文 2.3（统一认证授权方式实现单点登录）中的认证系统。</p>
+<p>OAuth 在“客户端”与“服务端”之间，设置了一个授权层（Authorization Layer）, “客户端”通过登录授权层获取令牌，通过令牌即可访问服务端资源。</p>
+<p>OAuth2.0 单点登录流程同上文介绍的“统一认证授权方式”流程一致：用户首次访问服务端资源时未登录，被引导到认证系统中进行登录授权，登录成功后获取令牌，用户获取令牌后可以通过令牌获取用户信息。客户端必须获取到用户授权，才能获取令牌。</p>
+<p>OAuth2.0 定义了 4 种授权方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">授权码模式（authorization code）</span><br><span class="line">简化模式（implicit）</span><br><span class="line">密码模式（resource owner password credentials）</span><br><span class="line">客户端模式（client credentials）</span><br></pre></td></tr></table></figure>
+
+<img src="/img/image-20220602072721885.png" alt="image-20220602072721885" style="zoom:80%;" />
+
+<p><strong>3.集成 LDAP 实现统一认证登录</strong></p>
+<p>LDAP（Lightweight Directory Access Protocol），它是基于 X.500 标准的轻量级目录访问协议。LDAP 目录服务是由目录数据库和一套访问协议组成的系统。</p>
+<p>日常办公经常会有多套系统，如果各个系统各自维护一套用户认证，用户需要记住多个用户名密码。系统各自管理用户认证的方式，不但会有重复建设的问题，用户体验也会差——经常会有用户忘记密码的情况。通过 LDAP，我们可以管理企业级账号，认证用户名密码，实现统一账号登录，只需一个用户名密码就可以登录所有系统。</p>
+<img src="/img/image-20220602072800696.png" alt="image-20220602072800696" style="zoom:80%;" />
+
+<p>LDAP 主要是用来实现统一身份认证的技术，目前市面上大部分的开源系统都支持 LDAP，因此通过 LDAP 能够统一管理和维护公司的账号，极大地提高了运维的工作效率。</p>
+<h1 id="3-关于购物车数据"><a href="#3-关于购物车数据" class="headerlink" title="3.关于购物车数据"></a>3.<strong>关于购物车数据</strong></h1><p>当用户登录状态时，添加产品到购物时，查看Basket中是否有Status为True的购物车，没有则添加一条新的Basket记录，并将产品信息相关数据添加至BasketDetail表中。<br>当用户未登录时，使用cookie记录一个BasketId值，不往Basket表中插入数据，只往BasketDetail插入数据，其中的BasketId值使用cookie中的BasketId值，当用户登录后，查看Basket中是否有Status为True的购物车记录，有则合并（更新cookie和BasketDetail中的BasketId为查询出来的Basket表中的BasketId值），无则添加一条新的Basket记录，并将BasketId值置为Cookie中记录的basketid值。</p>
+<h1 id="4-cookie、token与csrf、xss关系"><a href="#4-cookie、token与csrf、xss关系" class="headerlink" title="4.cookie、token与csrf、xss关系"></a>4.cookie、token与csrf、xss关系</h1><blockquote>
+<p>cookie：登陆后后端生成一个sessionid放在cookie中返回给客户端，并且服务端一直记录着这个sessionid，客户端以后每次请求都会带上这个sessionid，服务端通过这个sessionid来验证身份之类的操作。所以别人拿到了cookie拿到了sessionid后，就可以完全替代你。</p>
+</blockquote>
+<blockquote>
+<p>token：登陆后后端不返回一个token给客户端，客户端将这个token存储起来，然后每次客户端请求都需要开发者手动将token放在header中带过去，服务端每次只需要对这个token进行验证就能使用token中的信息来进行下一步操作了。</p>
+</blockquote>
+<blockquote>
+<p>csrf：跨站请求攻击，简单地说，是攻击者通过一些技术手段欺骗用户的浏览器去访问一个自己曾经认证过的网站并运行一些操作（如发邮件，发消息，甚至财产操作如转账和购买商品）。由于浏览器曾经认证过，所以被访问的网站会认为是真正的用户操作而去运行。这利用了web中用户身份验证的一个漏洞：<strong>简单的身份验证只能保证请求发自某个用户的浏览器，却不能保证请求本身是用户自愿发出的</strong>。csrf并不能够拿到用户的任何信息，它只是欺骗用户浏览器，让其以用户的名义进行操作。</p>
+</blockquote>
+<blockquote>
+<p>xss：用户通过各种方式将恶意代码注入到其他用户的页面中。就可以通过脚本获取信息，发起请求，之类的操作。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">csrf例子：假如一家银行用以运行转账操作的URL地址如下： http://www.examplebank.com/withdraw?account=AccoutName&amp;amount=1000&amp;for=PayeeName</span><br><span class="line">那么，一个恶意攻击者可以在另一个网站上放置如下代码： &lt;img src=&quot;&lt;http://www.examplebank.com/withdraw?account=Alice&amp;amount=1000&amp;for=Badman&gt;&quot;&gt;</span><br><span class="line">如果有账户名为Alice的用户访问了恶意站点，而她之前刚访问过银行不久，登录信息尚未过期，那么她就会损失1000资金。</span><br></pre></td></tr></table></figure>
+
+<p>以上面的csrf攻击为例：</p>
+<ul>
+<li>cookie：用户点击了链接，cookie未失效，导致发起请求后后端以为是用户正常操作，于是进行扣款操作。</li>
+<li>token：用户点击链接，由于浏览器不会自动带上token，所以即使发了请求，后端的token验证不会通过，所以不会进行扣款操作。</li>
+</ul>
+<blockquote>
+<ul>
+<li>对于csrf来说，cookie容易被自动携带，token则不容易被自动携带。所以token防止csrf攻击。</li>
+<li>对于xss来说，cookie和token都被获取的话，全都的完蛋。</li>
+</ul>
+</blockquote>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://anandasuper.top/2022/05/13/D_%E6%A1%86%E6%9E%B6_%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/" title="登录鉴权" target="_blank" rel="external">http://anandasuper.top/2022/05/13/D_框架_登录鉴权/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/05/13/Z_%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F_%E5%89%8D%E7%AB%AF%E8%B6%8B%E5%8A%BF%E5%8F%8A%E8%81%8C%E4%B8%9A%E8%A7%84%E5%88%92/" title="前端趋势及职业规划"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;Newer</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2022/05/12/E_%E7%A7%BB%E5%8A%A8%E7%AB%AF%E6%A1%86%E6%9E%B6/" title="移动端框架"><span>Older&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="Catalogue" role="button">    <span>[&nbsp;</span><span>Catalogue</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>$</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>Maybe you could buy me a cup of coffee.</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open alipay app scan this qrcode, buy me a coffee!</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="Scan Qrcode" title="Scan" />
+              </div>
+              <p class="text-muted mv">Scan this qrcode</p>
+              <p class="text-grey">Open wechat app scan this qrcode, buy me a coffee!</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> alipay</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> wechat payment</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
