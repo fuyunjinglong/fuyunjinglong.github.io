@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Vite构建及最佳实践 | Hexo</title>
+  <meta name="description" content="1.Vite是什么？esbuild官图   Vite官网 下一代前端开发与构建工具。 Vite（法语意思是 “快”，发音为 &#x2F;vit&#x2F;，类似 veet）是一种全新的前端构建工具。你可以把它理解为一个开箱即用的开发服务器 + 打包工具的组合，但是更轻更快。Vite 利用浏览器原生的 ES 模块支持和用编译到原生的语言开发的工具（如 esbuild）来提供一个快速且现代的开发体验。 两个组成部分：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vite构建及最佳实践">
+<meta property="og:url" content="http://anandasuper.top/2022/05/12/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_Vite%E6%9E%84%E5%BB%BA%E5%8F%8A%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1.Vite是什么？esbuild官图   Vite官网 下一代前端开发与构建工具。 Vite（法语意思是 “快”，发音为 &#x2F;vit&#x2F;，类似 veet）是一种全新的前端构建工具。你可以把它理解为一个开箱即用的开发服务器 + 打包工具的组合，但是更轻更快。Vite 利用浏览器原生的 ES 模块支持和用编译到原生的语言开发的工具（如 esbuild）来提供一个快速且现代的开发体验。 两个组成部分：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://anandasuper.top/img/image-20220522183940056.png">
+<meta property="og:image" content="http://anandasuper.top/img/image-20220522185619495.png">
+<meta property="og:image" content="http://anandasuper.top/img/image-20220522184628295.png">
+<meta property="og:image" content="http://anandasuper.top/img/image-20220522185938638.png">
+<meta property="article:published_time" content="2022-05-11T22:33:16.000Z">
+<meta property="article:modified_time" content="2022-12-11T09:44:10.982Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://anandasuper.top/img/image-20220522183940056.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://anandasuper.top/2022/05/12/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_Vite%E6%9E%84%E5%BB%BA%E5%8F%8A%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/G-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">G_性能优化</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9/">H_工程和热点</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">11</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9/">H_工程和热点</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/01/12/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_%E6%8F%92%E4%BB%B6/" class="title">插件</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-01-11T23:33:16.000Z" itemprop="datePublished">2023-01-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/12/11/%E6%A8%A1%E6%9D%BF2/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-12-11T04:20:22.712Z" itemprop="datePublished">2022-12-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/13/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_%E5%B7%A6%E7%A5%9E/" class="title">E_左神</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-12T23:33:16.000Z" itemprop="datePublished">2022-11-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/10/22/Test/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-10-22T08:05:41.618Z" itemprop="datePublished">2022-10-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/09/12/Z_%E4%B9%A6%E5%8D%95/" class="title">书单</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-09-12T00:33:16.000Z" itemprop="datePublished">2022-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Vite%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">1.Vite是什么？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Vite%E5%8E%9F%E7%90%86"><span class="toc-text">2.Vite原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ES-Modules"><span class="toc-text">ES Modules</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vite%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E5%92%8C%E5%86%B7%E5%90%AF%E5%8A%A8"><span class="toc-text">vite的工作流和冷启动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vite%E7%9A%84hmr%E7%83%AD%E6%9B%B4%E6%96%B0"><span class="toc-text">vite的hmr热更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vite%E7%9A%84%E6%8C%89%E9%9C%80%E5%8A%A0%E8%BD%BD"><span class="toc-text">vite的按需加载</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Vite%E8%BF%81%E7%A7%BB%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-text">3.Vite迁移最佳实践</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Vite%E6%8F%92%E4%BB%B6%E4%BB%8B%E7%BB%8D"><span class="toc-text">4.Vite插件介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F"><span class="toc-text">5.构建工具的前世今生</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Gulp"><span class="toc-text">Gulp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Webpack"><span class="toc-text">Webpack</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%89%8D%E6%89%93%E5%8C%85%E7%9A%84%E5%9B%B0%E5%A2%83"><span class="toc-text">目前打包的困境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vite%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="toc-text">Vite的优势</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-Vite%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="toc-text">6.Vite核心原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Vite%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">Vite是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-text">前置知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="toc-text">核心原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E-ESM-%E7%9A%84-Dev-server"><span class="toc-text">基于 ESM 的 Dev server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E-ESM-%E7%9A%84-HMR-%E7%83%AD%E6%9B%B4%E6%96%B0"><span class="toc-text">基于 ESM 的 HMR 热更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E-esbuild-%E7%9A%84%E4%BE%9D%E8%B5%96%E9%A2%84%E7%BC%96%E8%AF%91%E4%BC%98%E5%8C%96"><span class="toc-text">基于 esbuild 的依赖预编译优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-text">小结</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-H_工程和热点_Vite构建及最佳实践" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Vite构建及最佳实践
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/05/12/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_Vite%E6%9E%84%E5%BB%BA%E5%8F%8A%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" class="article-date">
+	  <time datetime="2022-05-11T22:33:16.000Z" itemprop="datePublished">2022-05-12</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9/">H_工程和热点</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/05/12/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_Vite%E6%9E%84%E5%BB%BA%E5%8F%8A%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="1-Vite是什么？"><a href="#1-Vite是什么？" class="headerlink" title="1.Vite是什么？"></a>1.Vite是什么？</h1><p><a target="_blank" rel="noopener" href="https://esbuild.github.io/">esbuild官图</a></p>
+<img src="/img/image-20220522183940056.png" alt="image-20220522183940056" style="zoom:67%;" />
+
+<p><a target="_blank" rel="noopener" href="https://cn.vitejs.dev/guide/why.html#slow-updates">Vite官网</a></p>
+<p>下一代前端开发与构建工具。</p>
+<p>Vite（法语意思是 “快”，发音为 /vit/，类似 veet）是一种全新的前端构建工具。你可以把它理解为一个开箱即用的开发服务器 + 打包工具的组合，但是更轻更快。Vite 利用浏览器原生的 ES 模块支持和用编译到原生的语言开发的工具（如 esbuild）来提供一个快速且现代的开发体验。</p>
+<p>两个组成部分：</p>
+<ol>
+<li>开发环境：No-Bundle 开发服务器即不需要打包的</li>
+</ol>
+<p>&gt;提供一个静态服务器，源⽂件⽆需打包，直接以 原⽣ ES modules 的形式加载</p>
+<ol start="2">
+<li>⽣产构建 </li>
+</ol>
+<p>&gt;提供一套构建指令，基于预配置好的Rollup ，针对⽣产环境⾼度优化的打包命令</p>
+<p>And More:</p>
+<p>&gt;基于原生 ESM 的极速热更新，ms级别</p>
+<p>&gt;基于 esbuild 的依赖预构建</p>
+<p>&gt;兼容 Rollup 的插件机制</p>
+<p>&gt;内置 SSR 支持</p>
+<p>&gt;…</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>**     <a href="mailto:&#86;&#105;&#116;&#101;&#64;&#50;&#x2e;&#48;&#x2e;&#51;">&#86;&#105;&#116;&#101;&#64;&#50;&#x2e;&#48;&#x2e;&#51;</a>**</th>
+<th><strong><a href="mailto:&#x57;&#x65;&#x62;&#x70;&#97;&#x63;&#107;&#64;&#53;&#x2e;&#x32;&#x34;&#46;&#x32;">&#x57;&#x65;&#x62;&#x70;&#97;&#x63;&#107;&#64;&#53;&#x2e;&#x32;&#x34;&#46;&#x32;</a></strong></th>
+<th><strong><a href="mailto:&#x53;&#110;&#111;&#119;&#112;&#x61;&#x63;&#107;&#x40;&#x33;&#x2e;&#x30;&#46;&#x31;&#51;">&#x53;&#110;&#111;&#119;&#112;&#x61;&#x63;&#107;&#x40;&#x33;&#x2e;&#x30;&#46;&#x31;&#51;</a></strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>支持Vue2</td>
+<td>非官方支持:   <a target="_blank" rel="noopener" href="https://github.com/underfin/vite-plugin-vue2">https</a><a target="_blank" rel="noopener" href="https://github.com/underfin/vite-plugin-vue2">://github.com/underfin/vite-plugin-vue2</a></td>
+<td>支持：vue-loader@^15.0.0</td>
+<td>非官方支持：   <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=https://www.npmjs.com/package/@lepzulnag/snowpack-plugin-vue-2">https</a><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=https://www.npmjs.com/package/@lepzulnag/snowpack-plugin-vue-2">://www.npmjs.com/package/@lepzulnag/Snowpack-plugin-vue-2</a></td>
+</tr>
+<tr>
+<td>支持Vue3</td>
+<td>支持</td>
+<td>支持：vue-loader@^16.0.0(<a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=https://github.com/Jamie-Yang/vue3-boilerplate">https://github.com/Jamie-Yang/vue3-boilerplate</a>)</td>
+<td>支持：   <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=https://www.npmjs.com/package/@snowpack/plugin-vue">https</a><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=https://www.npmjs.com/package/@snowpack/plugin-vue">://www.npmjs.com/package/@Snowpack/plugin-vue</a></td>
+</tr>
+<tr>
+<td>支持Typescript</td>
+<td>支持：ESbuild （默认无类型检查）</td>
+<td>支持：ts-loader</td>
+<td>支持：   <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=https://github.com/snowpackjs/snowpack/tree/main/create-snowpack-app/app-template-vue-typescript">https</a><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=https://github.com/snowpackjs/snowpack/tree/main/create-snowpack-app/app-template-vue-typescript">://github.com/Snowpackjs/Snowpack/tree/main/create-Snowpack-app/app-template-vue-typescript</a></td>
+</tr>
+<tr>
+<td>支持CSS预处理器</td>
+<td>支持：  <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=https://vitejs.dev/guide/features.html">https</a><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=https://vitejs.dev/guide/features.html">://vitejs.dev/guide/features.html#css-pre-processors</a></td>
+<td>支持：  <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=https://vue-loader.vuejs.org/guide/pre-processors.html">https</a><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?url=https://vue-loader.vuejs.org/guide/pre-processors.html">://vue-loader.vuejs.org/guide/pre-processors.html</a></td>
+<td>部分支持：官方仅提供了Sass和Postcss，且存在未解决BUG</td>
+</tr>
+<tr>
+<td>开发环境</td>
+<td>no-bundle  native ESM（CJS → ESM）</td>
+<td>bundle（CJS/UMD/ESM）</td>
+<td>no-bundle  native ESM（CJS → ESM）</td>
+</tr>
+<tr>
+<td>HMR</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>生产环境</td>
+<td><strong>Rollup</strong></td>
+<td>Webpack</td>
+<td><strong>Webpack</strong><strong>,  Rollup, or</strong> <strong>ESbuild</strong></td>
+</tr>
+<tr>
+<td>Node  API 调用能力</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+</tbody></table>
+<h1 id="2-Vite原理"><a href="#2-Vite原理" class="headerlink" title="2.Vite原理"></a>2.Vite原理</h1><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6983587446541778957#heading-15">vite 下一代前端开发与构建工具</a></p>
+<h2 id="ES-Modules"><a href="#ES-Modules" class="headerlink" title="ES Modules"></a>ES Modules</h2><p>vite的成功得益于现代浏览器对于基于ECMAScript 标准原生模块系统（ES Modules）实现。 目前主流浏览器(IE11除外)都已经支持。他允许我们在浏览器使用export、import 的方式导入和导出模块，在 script 标签里设置 type=”module”</p>
+<script type="module">
+  import { createApp } from './main.js‘
+  createApp()
+</script>
+
+<p>浏览器会识别添加type=”module”的 <code>&lt;script&gt; </code>元素，浏览器会把这段内联 script 或者外链 script 认为是 ECMAScript 模块。然后浏览器会被这里面的import引用发起一个http请求，请求获取文件中的内容。 因此我们对于第三方的模块，可以不用打包合并,而是通过import 这种方式去发起http 请求，获取代码。这也是vite的主要实现思路。 如果你对ES Modules 不够了解。可以去看看<a href="https://link.juejin.cn/?target=https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Modules">ES Modules的规范</a></p>
+<h2 id="vite的工作流和冷启动"><a href="#vite的工作流和冷启动" class="headerlink" title="vite的工作流和冷启动"></a>vite的工作流和冷启动</h2><img src="/img/image-20220522185619495.png" alt="image-20220522185619495" style="zoom: 67%;" />
+
+<ol>
+<li>首先是启动一个静态资源服务器</li>
+<li>找到项目的入口，开始加载入口文件</li>
+<li>当声明一个 script 标签类型为 module 时，浏览器就会像服务器发起一个GET</li>
+<li>Vite 通过劫持浏览器<code>劫持浏览器</code>劫持浏览器的这些请求，并在后端进行相应的处理，将项目中使用的文件通过简单的分解与整合，然后再返回给浏览器。</li>
+</ol>
+<p>从上面的分析可知: vite主要做了以下事情</p>
+<ul>
+<li><ol>
+<li>启动了一个静态资源服务器</li>
+</ol>
+</li>
+<li><ol>
+<li>只需要在浏览器请求源码时进行转换并按需提供源码</li>
+</ol>
+</li>
+</ul>
+<p>vite整个过程中没有对文件进行打包编译，至于其他加载的工作就交给了浏览器,所以其运行速度比原始的webpack开发编译速度快出许多。</p>
+<h2 id="vite的hmr热更新"><a href="#vite的hmr热更新" class="headerlink" title="vite的hmr热更新"></a>vite的hmr热更新</h2><p>传统打包器是将项目打包之后的资源存入电脑的内存之中，这样他们只需要在文件更改的时候，将对应的模块进行失活，但是它仍然需要重新构建并重载页面。 所以像webpack这类的打包工具支持了动态模块热重载(HMR)，允许一个模块替换自己，而对其余页面没有影响。但是在实践中。我们发现HMR的速度会随着项目的增大而降低(原因在 <code>目前打包工具的困境</code> 这一节已经分析过了)</p>
+<p>而在vite中HMR 是在原生 ESM 上执行的。当编辑一个文件时，Vite 只需要精确地使已编辑的模块与其最近的 HMR 边界之间的链失效（大多数时候只需要模块本身），使 HMR 更新始终快速，无论应用的大小。</p>
+<h2 id="vite的按需加载"><a href="#vite的按需加载" class="headerlink" title="vite的按需加载"></a>vite的按需加载</h2><p>为什么说vite才是真正的按需加载呢？难道webpack不是真正的按需加载吗？<br> 如果你想知道，那么你可以看看去看看webpack的原理，这里我简单介绍一下 webpack其实在开始构建打包的时候，还是对所有的文件进行一次打包构建，只是在webpack遇到 import( * ) 这种语法的时候,会另外生成一个chunk; 只有在合适的时候去加载import中的内容<br> 从上面的分析可以知道。不管我们这段import的代码何时执行，我们对需要对它进行一定的打包</p>
+<p>但是vite不一样，只有在你真正的需要加载的时候，浏览器才会发送import请求，去请求文件中的内容，所以才说vite才是真正的按需加载</p>
+<h1 id="3-Vite迁移最佳实践"><a href="#3-Vite迁移最佳实践" class="headerlink" title="3.Vite迁移最佳实践"></a>3.Vite迁移最佳实践</h1><p>•项目地址： <a target="_blank" rel="noopener" href="https://github.com/originjs/webpack-to-vite">https://</a><a target="_blank" rel="noopener" href="https://github.com/originjs/webpack-to-vite">github.com/originjs/webpack-to-vite</a></p>
+<p>•使用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">\&gt;npm i @originjs/webpack-to-vite –g</span><br><span class="line"></span><br><span class="line">\&gt;webpack-to-vite -d &lt;project path&gt;</span><br></pre></td></tr></table></figure>
+
+<p>迁移常见问题</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">1.CommonJS支持问题</span><br><span class="line">使用插件 @originjs/vite-plugin-commonjs</span><br><span class="line">2.~@双别名问题</span><br><span class="line">可配置别名 &#123;  find: /^~@/,        replacement: path.resolve(__dirname,&#x27;src&#x27;)    &#125;</span><br><span class="line">~用法已被废弃，建议删除~</span><br><span class="line">3.Jsx支持</span><br><span class="line">.vue文件中必须显示声明&lt;script lang=&quot;jsx&quot;&gt;&lt;/script&gt;</span><br><span class="line">3.Webpack require.context</span><br><span class="line">使用插件 @originjs/vite-plugin-require-context</span><br><span class="line">require.context 改为 import.meta.globEager</span><br><span class="line">4.Webpack插件在vite生态中的替代插件</span><br><span class="line">将markdown文件转为vue组件 -&gt; vite-plugin-md</span><br><span class="line">raw-loader插件  -&gt; rollup-plugin-string</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-Vite插件介绍"><a href="#4-Vite插件介绍" class="headerlink" title="4.Vite插件介绍"></a>4.Vite插件介绍</h1><p>•@vitejs/plugin-vue / @vite-plugin-vue2</p>
+<p>&gt;Vue3/Vue2支持</p>
+<p>•@vitejs/plugin-vue-jsx</p>
+<p>&gt;提供 Vue 3 JSX 支持</p>
+<p>•@vitejs/plugin-legacy</p>
+<p>&gt;为打包后的文件提供传统浏览器兼容性支持</p>
+<p><strong>开发一个自己的Vite插件</strong></p>
+<p>本质：编写基于Vite或Rollup的钩子函数。命名一般为vite-plugin- 前缀，rollup-plugin-前缀</p>
+<p>插件钩子函数(普通字体为Rollup钩子，加粗为Vite钩子)</p>
+<ul>
+<li>配置阶段：<strong>config、configResolved、configureServer</strong></li>
+<li>构建启动：options、buildStart</li>
+<li>转换阶段：resolveId、load、transform；<strong>handleHotUpdate、transformIndexHtml</strong></li>
+<li>构建结束：buildEnd、closeBundle</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">myPlugin</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="attr">name</span>: <span class="string">&#x27;my-plugin&#x27;</span>, <span class="comment">// 插件名称</span></span><br><span class="line">        <span class="attr">enforce</span>: <span class="string">&#x27;pre&#x27;</span>, <span class="comment">//调整插件被执行顺序</span></span><br><span class="line">        <span class="attr">apply</span>: <span class="string">&quot;build | serve&quot;</span>, <span class="comment">// 指定插件应用情景</span></span><br><span class="line">        <span class="title function_">options</span>(<span class="params">options</span>) &#123;</span><br><span class="line">            <span class="comment">//服务器启动时被调用</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="title function_">buildStart</span>(<span class="params">options</span>) &#123;</span><br><span class="line">            <span class="comment">//服务器启动时被调用</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="title function_">resolveId</span>(<span class="params">id</span>) &#123;</span><br><span class="line">            <span class="comment">//每个传入请求时被调用</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="title function_">load</span>(<span class="params">id</span>) &#123;</span><br><span class="line">            <span class="comment">//定义一个自定义加载器,对代码需要使用特性编译器解析可以使用</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="title function_">transform</span>(<span class="params">src, id</span>) &#123;</span><br><span class="line">            <span class="comment">//这个钩子可以对解析后的代码进行加工处理</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="title function_">buildEnd</span>(<span class="params">error</span>) &#123;</span><br><span class="line">            <span class="comment">//服务器关闭时被调用</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="title function_">closeBundle</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="comment">//这个是最终执行的钩子，可以用于清理等工作      </span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="title function_">config</span>(<span class="params">config, env</span>) &#123;</span><br><span class="line">            <span class="comment">//在被解析之前修改 Vite 配置。</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="title function_">configResolved</span>(<span class="params">config</span>) &#123;</span><br><span class="line">            <span class="comment">//在解析 Vite 配置后调用。     </span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="title function_">configureServer</span>(<span class="params">server</span>) &#123;</span><br><span class="line">            <span class="comment">//用于配置开发服务器的钩子。</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="title function_">transformIndexHtml</span>(<span class="params">html, ctx</span>) &#123;</span><br><span class="line">            <span class="comment">//转换 index.html 的专用钩子。        &#125;,</span></span><br><span class="line">        <span class="title function_">handleHotUpdate</span>(<span class="params">ctx</span>) &#123;</span><br><span class="line">            <span class="comment">//执行自定义 HMR 更新处理。</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>插件执行顺序</p>
+<p>-Alias</p>
+<p>-带有 enforce: ‘pre’ 的用户插件</p>
+<p>-Vite 核心插件</p>
+<p>-没有 enforce 值的用户插件</p>
+<p>-Vite 构建用的插件</p>
+<p>-带有 enforce: ‘post’ 的用户插件</p>
+<p>-Vite 后置构建插件（最小化，manifest，报告）</p>
+<h1 id="5-构建工具的前世今生"><a href="#5-构建工具的前世今生" class="headerlink" title="5.构建工具的前世今生"></a>5.构建工具的前世今生</h1><p>构建工具:用来让我们不再做机械重复的事情，解放我们的双手的。<br> 在早期开发过程中。有很多令我们不爽的地方</p>
+<ul>
+<li><ol>
+<li>js是弱类型</li>
+</ol>
+</li>
+<li><ol>
+<li>手动维护依赖很麻烦</li>
+</ol>
+</li>
+<li><ol>
+<li>浏览器的兼容性</li>
+</ol>
+</li>
+<li><ol>
+<li>没有热更新</li>
+</ol>
+</li>
+</ul>
+<p>…….</p>
+<p>于是 前端构建工具应运而生。构建工具可以帮助我们做以下工作</p>
+<ul>
+<li><ol>
+<li>代码检查</li>
+</ol>
+</li>
+<li><ol>
+<li>代码压缩，混淆</li>
+</ol>
+</li>
+<li><ol>
+<li>依赖分析，打包</li>
+</ol>
+</li>
+<li><ol>
+<li>语言编译(比如ts转化js,scss转化css)</li>
+</ol>
+</li>
+</ul>
+<p>前端的构建工具有很多。比如 Grunt Gulp FIS3 Webpack Rollup Parcel snowpack vite </p>
+<h2 id="Gulp"><a href="#Gulp" class="headerlink" title="Gulp"></a>Gulp</h2><p>Gulp.js 是一个自动化构建工具，开发者可以使用它在项目开发过程中自动执行常见任务。Gulp.js 是基于 Node.js 构建的，利用 Node.js 流的威力，你可以快速构建项目</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>);</span><br><span class="line">    <span class="keyword">var</span> jshint = <span class="built_in">require</span>(<span class="string">&#x27;gulp-jshint&#x27;</span>);</span><br><span class="line">    <span class="keyword">var</span> concat = <span class="built_in">require</span>(<span class="string">&#x27;gulp-concat&#x27;</span>);</span><br><span class="line">    <span class="keyword">var</span> rename = <span class="built_in">require</span>(<span class="string">&#x27;gulp-rename&#x27;</span>);</span><br><span class="line">    <span class="keyword">var</span> uglify = <span class="built_in">require</span>(<span class="string">&#x27;gulp-uglify&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Lint JS</span></span><br><span class="line">    gulp.<span class="title function_">task</span>(<span class="string">&#x27;lint&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> gulp.<span class="title function_">src</span>(<span class="string">&#x27;src/*.js&#x27;</span>)</span><br><span class="line">        .<span class="title function_">pipe</span>(<span class="title function_">jshint</span>())</span><br><span class="line">        .<span class="title function_">pipe</span>(jshint.<span class="title function_">reporter</span>(<span class="string">&#x27;default&#x27;</span>));</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Concat &amp; Minify JS</span></span><br><span class="line">    gulp.<span class="title function_">task</span>(<span class="string">&#x27;minify&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> gulp.<span class="title function_">src</span>(<span class="string">&#x27;src/*.js&#x27;</span>)</span><br><span class="line">        .<span class="title function_">pipe</span>(<span class="title function_">concat</span>(<span class="string">&#x27;all.js&#x27;</span>))</span><br><span class="line">        .<span class="title function_">pipe</span>(gulp.<span class="title function_">dest</span>(<span class="string">&#x27;dist&#x27;</span>))</span><br><span class="line">        .<span class="title function_">pipe</span>(<span class="title function_">rename</span>(<span class="string">&#x27;all.min.js&#x27;</span>))</span><br><span class="line">        .<span class="title function_">pipe</span>(<span class="title function_">uglify</span>())</span><br><span class="line">        .<span class="title function_">pipe</span>(gulp.<span class="title function_">dest</span>(<span class="string">&#x27;dist&#x27;</span>));</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Watch Our Files</span></span><br><span class="line">    gulp.<span class="title function_">task</span>(<span class="string">&#x27;watch&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">        gulp.<span class="title function_">watch</span>(<span class="string">&#x27;src/*.js&#x27;</span>, [<span class="string">&#x27;lint&#x27;</span>, <span class="string">&#x27;minify&#x27;</span>]);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Default</span></span><br><span class="line">    gulp.<span class="title function_">task</span>(<span class="string">&#x27;default&#x27;</span>, [<span class="string">&#x27;lint&#x27;</span>, <span class="string">&#x27;minify&#x27;</span>, <span class="string">&#x27;watch&#x27;</span>]);</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>gulp的执行是从上倒下的执行一个个任务。然后文件内容通过管道。进行传递。如果你想了解更多gulp的知识，可以去gulp官网</p>
+<h2 id="Webpack"><a href="#Webpack" class="headerlink" title="Webpack"></a>Webpack</h2><p>webpack 是一个用于现代 JavaScript 应用程序的 静态模块打包工具。当 webpack 处理应用程序时，它会在内部构建一个 依赖图(dependency graph)，此依赖图对应映射到项目所需的每个模块，并生成一个或多个 bundle。<br> 接下来我们看看Webpack的工作原理图</p>
+<img src="/img/image-20220522184628295.png" alt="image-20220522184628295" style="zoom: 80%;" />
+
+<p>webpack打包流程主要5步：</p>
+<ol>
+<li><p>查找入口文件</p>
+<p>从webpack的配置文件中查找entry的配置，从而找到入口文件</p>
+</li>
+<li><p>分析依赖关系</p>
+<p>接到入口文件之后，从入口文件出发，分析入口文件中依赖了哪些文件，并且这些依赖的文件中还可能依赖别的文件，就这么递归的找下去。</p>
+</li>
+<li><p>模块函数</p>
+<p>找到依赖中的所有文件，把这些文件转化成模块的函数，为了方便后面webpack进行调用</p>
+</li>
+<li><p>打包</p>
+<p>打包完毕的文件可以产出到配置文件的output指定路径里，生成一个bundle</p>
+</li>
+<li><p>启动服务</p>
+<p>node创建本地服务器并启动静态页面</p>
+</li>
+</ol>
+<h2 id="目前打包的困境"><a href="#目前打包的困境" class="headerlink" title="目前打包的困境"></a>目前打包的困境</h2><p>在目前的工作中,我们主要利用webpack+vue(webpack+react)进行项目开发。然而，当我们构建越来越大型的应用的时候，打包工具需要处理的javascript代码量也呈指数级增长。在大型项目中包含几百甚至几千个模块的情况也越来越多。我们开始遇到性能瓶颈，使用javascript的工具通常需要很长的时间,才能启动开发服务器</p>
+<p>这是我工作中的一个真实项目, 项目不大，但是启动服务器的时间花了30s。这作为一个讲究效率的程序员肯定是无法忍受的</p>
+<p>当项目越来越大，项目的hmr热更新速度越来越慢。有时候甚至改动一个字段，页面几十秒之后才会进行热更新。</p>
+<p><strong>为什么产生这种问题？</strong></p>
+<p>其实这和webpack打包的原理有关系，我们前面其实已经大概了解webpack的主要工作流，这里就不在详细讲解</p>
+<ol>
+<li>启动服务器慢，是因为在每次服务器启动之前。webpack需要执行一系列的事情。找模块间的依赖,将各个模块进行合并，生成一个build,存入内存中，最后在启动服务器。所以速度上随着项目的增加，速度会越来越慢</li>
+<li>webpack的hmr。当你改动一个文件的时候，Webpack 的热更新会以当前修改的文件为入口重新 build 打包，所有涉及到的依赖也都会被重新加载一次。所以速度也随着项目的增加而降低(后面会写一遍文章专门介绍webpack的hmr的实现)</li>
+</ol>
+<p><strong>为何不用 ESBuild 打包？</strong></p>
+<p>虽然 <code>esbuild</code> 快得惊人，并且已经是一个在构建库方面比较出色的工具，但一些针对构建 <em>应用</em> 的重要功能仍然还在持续开发中 —— 特别是代码分割和 CSS 处理方面。就目前来说，Rollup 在应用打包方面更加成熟和灵活。尽管如此，当未来这些功能稳定后，我们也不排除使用 <code>esbuild</code> 作为生产构建器的可能。</p>
+<h2 id="Vite的优势"><a href="#Vite的优势" class="headerlink" title="Vite的优势"></a>Vite的优势</h2><p>vite的三大特点</p>
+<ul>
+<li><ol>
+<li>快速的冷启动 在开发预览中，它是不进行打包的。</li>
+</ol>
+</li>
+<li><ol>
+<li>即时热模块更新（HMR，Hot Module Replacement）</li>
+</ol>
+</li>
+<li><ol>
+<li>真正按需进行加载</li>
+</ol>
+</li>
+</ul>
+<p>当然vite也有一定的问题,</p>
+<ol>
+<li>vite的生态还不够完善。</li>
+<li>在生产模式下仍然需要打包。尽管原生 ESM 现在得到了广泛支持，但由于嵌套导入会导致额外的网络往返，在生产环境中发布未打包的 ESM 仍然效率低下（即使使用 HTTP/2）。为了在生产环境中获得最佳的加载性能，最好还是将代码进行 tree-shaking、懒加载和 chunk 分割（以获得更好的缓存）。</li>
+</ol>
+<p><strong>vite和webpack编译过后文件的区别</strong></p>
+<img src="/img/image-20220522185938638.png" alt="image-20220522185938638" style="zoom:80%;" />
+
+<h1 id="6-Vite核心原理"><a href="#6-Vite核心原理" class="headerlink" title="6.Vite核心原理"></a>6.Vite核心原理</h1><h2 id="Vite是什么？"><a href="#Vite是什么？" class="headerlink" title="Vite是什么？"></a>Vite是什么？</h2><p>利用浏览器ESM特性导入组织代码，在服务器端按需编译返回，完全跳过了打包这个概念，服务器随起随用。生产中利用Rollup作为打包工具，号称下一代的前端构建工具。</p>
+<p>特点：</p>
+<ul>
+<li>快速的冷启动: No Bundle + esbuild 预构建</li>
+<li>即时的模块热更新: 基于ESM的HMR，同时利用浏览器缓存策略提升速度</li>
+<li>真正的按需加载: 利用浏览器ESM支持，实现真正的按需加载</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>开发环境</th>
+<th>生产环境</th>
+<th>Dev启动速度</th>
+<th>Git Star</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Vite</td>
+<td>No Bundle<br />(CJS-ESM)</td>
+<td>Rollup</td>
+<td>快</td>
+<td>36.2k</td>
+</tr>
+<tr>
+<td>Snowpack</td>
+<td>No Bundle<br />(CJS-ESM)</td>
+<td>可选<br />(webpack/Rollup/Esbuild)</td>
+<td>快</td>
+<td>19.6k</td>
+</tr>
+<tr>
+<td>webpack</td>
+<td>Bundle<br />(CJS/UMD/ESM)</td>
+<td>webpack</td>
+<td>慢</td>
+<td>30k</td>
+</tr>
+</tbody></table>
+<p><strong>VS Webapck</strong></p>
+<p>Vite相比于Webpack而言，没有打包的过程，而是直接启动了一个开发服务器 devServer。Vite劫持浏览器的HTTP请求，在后端进行相应的处理将项目中使用的文件通过简单的分解与整合，然后再返回给浏览器(整个过程没有对文件进行打包编译)。所以编译速度很快。</p>
+<p> <strong>VS SnowPack</strong></p>
+<p>Snowpack 首次提出利用浏览器原生ESM能力的打包工具，其理念就是减少或避免整个bundle的打包。默认在 dev 和 production 环境都使用 unbundle 的方式来部署应用。但是它的构建时却是交给用户自己选择，整体的打包体验显得有点支离破碎。</p>
+<p>而 Vite 直接整合了 Rollup，为用户提供了完善、开箱即用的解决方案，并且由于这些集成，也方便扩展更多的高级功能。</p>
+<p>两者较大的区别是在需要bundle打包的时候Vite 使用 Rollup 内置配置，而 Snowpack 通过其他插件将其委托给 Parcel/“webpack。</p>
+<h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><p><strong>ESM</strong></p>
+<p>ESM是JavaScript提出的官方标准化模块系统，不同于之前的CJS，AMD，CMD等等，ESM提供了更原生以及更动态的模块加载方案，最重要的就是它是浏览器原生支持的，也就是说我们可以直接在浏览器中去执行import，动态引入我们需要的模块，而不是把所有模块打包在一起。</p>
+<p>ESM执行分为3步：</p>
+<ul>
+<li>构建: 确定从哪里下载该模块文件、下载并将所有的文件解析为模块记录</li>
+<li>实例化: 将模块记录转换为一个模块实例，为所有的模块分配内存空间，依照导出、导入语句把模块指向对应的内存地址。</li>
+<li>运行：运行代码，将内存空间填充</li>
+</ul>
+<p>从上面实例化的过程可以看出，ESM使用实时绑定的模式，导出和导入的模块都指向相同的内存地址，也就是值引用。而CJS采用的是值拷贝，即所有导出值都是拷贝值。</p>
+<p><strong>Esbuild</strong></p>
+<p><a target="_blank" rel="noopener" href="https://esbuild.github.io/getting-started/">Esbuild官网</a></p>
+<p>Vite底层使用Esbuild实现对.“ts、jsx、.“js代码文件的转化，所以先看下什么是es-build。</p>
+<p>Esbuild是一个JavaScript“ Bundler打包和压缩工具，它提供了与Webpack、Rollup等工具相似的资源打包能力。可以将JavaScript 和TypeScript代码打包分发在网页上运行。但其打包速度却是其他工具的 10～100 倍。</p>
+<p>esbuild总共提供了四个函数：transform、build、buildSync、Service</p>
+<p><strong>Rollup</strong></p>
+<p><a target="_blank" rel="noopener" href="https://rollupjs.org/guide/en/">Rollup官网</a></p>
+<p>Rollup是基于ESM的JavaScript打包工具。相比于其他打包工具如Webpack，他总是能打出更小、更快的包。因为 Rollup 基于 ESM 模块，比 Webpack 和 Browserify 使用的 CommonJS模块机制更高效。Rollup的亮点在于同一个地方，一次性加载。能针对源码进行 Tree Shaking(去除那些已被定义但没被使用的代码)，以及 Scope Hoisting 以减小输出文件大小提升运行性能。</p>
+<p>Rollup分为build（构建）阶段和output generate（输出生成）阶段。主要过程如下：</p>
+<ol>
+<li>获取入口文件的内容，包装成module，生成抽象语法树</li>
+<li>对入口文件抽象语法树进行依赖解析</li>
+<li>生成最终代码</li>
+</ol>
+<p>如果你的项目（特别是类库）只有JavaScript，而没有其他的静态资源文件，使用Webpack就有点大才小用了。因为Webpack 打包的文件的体积略大，运行略慢，可读性略低。这时候Rollup也不失为一个好选择。</p>
+<h2 id="核心原理"><a href="#核心原理" class="headerlink" title="核心原理"></a>核心原理</h2><p>详细阐述下：</p>
+<ol>
+<li><p>当声明一个 script标签类型为 module 时,如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=&quot;module&quot; src=&quot;/src/main.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>当浏览器解析资源时，会往当前域名发起一个GET请求main.js文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// main.js</span><br><span class="line">import &#123; createApp &#125; from &#x27;vue&#x27;</span><br><span class="line">import App from &#x27;./App.vue&#x27;</span><br><span class="line">createApp(App).mount(&#x27;#app&#x27;)</span><br></pre></td></tr></table></figure></li>
+<li><p>请求到了main.js文件，会检测到内部含有import引入的包，又会import 引用发起HTTP请求获取模块的内容文件，如App.vue、vue文件</p>
+</li>
+</ol>
+<p>Vite其核心原理是利用浏览器现在已经支持ES6的import,碰见import就会发送一个HTTP请求去加载文件，Vite启动一个 koa 服务器拦截这些请求，并在后端进行相应的处理将项目中使用的文件通过简单的分解与整合，然后再以ESM格式返回返回给浏览器。Vite整个过程中没有对文件进行打包编译，做到了真正的按需加载，所以其运行速度比原始的webpack开发编译速度快出许多！</p>
+<h3 id="基于-ESM-的-Dev-server"><a href="#基于-ESM-的-Dev-server" class="headerlink" title="基于 ESM 的 Dev server"></a>基于 ESM 的 Dev server</h3><p>在Vite出来之前，传统的打包工具如Webpack是先解析依赖、打包构建再启动开发服务器，Dev Server 必须等待所有模块构建完成，当我们修改了 bundle模块中的一个子模块， 整个 bundle 文件都会重新打包然后输出。项目应用越大，启动时间越长。</p>
+<p>而Vite利用浏览器对ESM的支持，当 import 模块时，浏览器就会下载被导入的模块。先启动开发服务器，当代码执行到模块加载时再请求对应模块的文件,本质上实现了动态加载。灰色部分是暂时没有用到的路由，所有这部分不会参与构建过程。随着项目里的应用越来越多，增加route，也不会影响其构建速度。</p>
+<h3 id="基于-ESM-的-HMR-热更新"><a href="#基于-ESM-的-HMR-热更新" class="headerlink" title="基于 ESM 的 HMR 热更新"></a>基于 ESM 的 HMR 热更新</h3><p>目前所有的打包工具实现热更新的思路都大同小异：主要是通过WebSocket创建浏览器和服务器的通信监听文件的改变，当文件被修改时，服务端发送消息通知客户端修改相应的代码，客户端对应不同的文件进行不同的操作的更新。</p>
+<p><strong>VS Webpack</strong></p>
+<p>Webpack: 重新编译，请求变更后模块的代码，客户端重新加载</p>
+<p>Vite: 请求变更的模块，再重新加载</p>
+<p>Vite 通过 chokidar 来监听文件系统的变更，只用对发生变更的模块重新加载， 只需要精确的使相关模块与其临近的 HMR边界连接失效即可，这样HMR 更新速度就不会因为应用体积的增加而变慢而 Webpack 还要经历一次打包构建。所以 HMR 场景下，Vite 表现也要好于 Webpack。</p>
+<p><strong>核心流程</strong></p>
+<p>热更新四步曲：</p>
+<ol>
+<li><p>创建一个websocket服务端和client文件，启动服务</p>
+</li>
+<li><p>通过chokidar监听文件变更</p>
+</li>
+<li><p>当代码变更后，服务端进行判断并推送到客户端</p>
+</li>
+<li><p>客户端根据推送的信息执行不同操作的更新</p>
+</li>
+</ol>
+<h3 id="基于-esbuild-的依赖预编译优化"><a href="#基于-esbuild-的依赖预编译优化" class="headerlink" title="基于 esbuild 的依赖预编译优化"></a>基于 esbuild 的依赖预编译优化</h3><p><strong>预构建</strong></p>
+<ul>
+<li>支持commonJS依赖</li>
+</ul>
+<p>上面提到Vite是基于浏览器原生支持ESM的能力实现的，但要求用户的代码模块必须是ESM模块，因此必须将commonJs的文件提前处理，转化成 ESM 模块并缓存入 node_modules/.vite</p>
+<ul>
+<li>减少模块和请求数量</li>
+</ul>
+<p>除此之外，我们常用的lodash工具库，里面有很多包通过单独的文件相互导入，而 lodash-es这种包会有几百个子模块，当代码中出现 import { debounce } from ‘lodash-es’ 会发出几百个 HTTP 请求，这些请求会造成网络堵塞，影响页面的加载。Vite 将有许多内部模块的 ESM 依赖关系转换为单个模块，以提高后续页面加载性能。通过预构建 lodash-es 成为一个模块，也就只需要一个 HTTP 请求了！</p>
+<p><strong>Esbuild强于webpack</strong></p>
+<ul>
+<li>编译运行 VS 解释运行</li>
+</ul>
+<p>大多数前端打包工具都是基于 JavaScript 实现的，大家都知道JavaScript是解释型语言，边运行边解释。而 Esbuild 则选择使用 Go 语言编写，该语言可以编译为原生代码,在编译的时候都将语言转为机器语言，在启动的时候直接执行即可，在 CPU 密集场景下，Go 更具性能优势。</p>
+<ul>
+<li>多线程 VS 单线程</li>
+</ul>
+<p>JavaScript 本质上是一门单线程语言，直到引入 WebWorker 之后才有可能在浏览器、Node 中实现多线程操作。就我对Webpack的源码理解，其源码也并未使用 WebWorker 提供的多线程能力。而GO天生的多线程优势。</p>
+<ul>
+<li>对构建流程进行了优化，充分利用 CPU 资源</li>
+</ul>
+<p><strong>实现原理</strong></p>
+<p>Vite预编译之后，将文件缓存在node_modules/.vite/文件夹下。根据以下地方来决定是否需要重新执行预构建。</p>
+<ul>
+<li>package.json中：dependencies发生变化</li>
+<li>包管理器的lockfile</li>
+</ul>
+<p><strong>核心代码</strong></p>
+<ul>
+<li>通过createServer创建server对象后，当服务器启动会执行httpServer.listen方法</li>
+<li>在执行createServer时，Vite底层会重写server.listen方法:首先调用插件的buildStart再执行runOptimize()方法</li>
+<li>runOptimize()调用optimizeDeps()和createMissingImporterRegisterFn()方法</li>
+<li>optimizeDeps()主要是根据配置文件生成hash，获取上次预购建的内容(存放在_metadata.json文件)。如果不是强预构建就对比_metadata.json文件的hash和新生成的hash：一致就返回_metadata.json文件的内容，否则清空缓存文件调用Esbuild构建模块再次存入_metadata.json文件</li>
+</ul>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>优点：</p>
+<ul>
+<li>快速的冷启动: 采用No Bundle和esbuild预构建，速度远快于Webpack </li>
+<li>高效的热更新：基于ESM实现，同时利用HTTP头来加速整个页面的重新加载，增加缓存策略</li>
+<li>真正的按需加载: 基于浏览器ESM的支持，实现真正的按需加载</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>生态：目前Vite的生态不如Webapck，不过我觉得生态也只是时间上的问题。</li>
+<li>生产环境由于esbuild对css和代码分割不友好使用Rollup进行打包</li>
+</ul>
+<p>Vite.js虽然才在构建打包场景兴起，但在很多场景下基本都会优于现有的解决方案。如果有生态、想要丰富的loader、plugins的要求可以考虑成熟的Webpack。在其余情况下，Vite.js不失为一个打包构建工具的好选择。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://anandasuper.top/2022/05/12/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_Vite%E6%9E%84%E5%BB%BA%E5%8F%8A%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="Vite构建及最佳实践" target="_blank" rel="external">http://anandasuper.top/2022/05/12/H_工程和热点_Vite构建及最佳实践/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/05/12/E_%E7%A7%BB%E5%8A%A8%E7%AB%AF%E6%A1%86%E6%9E%B6/" title="移动端框架"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2022/05/10/B_JS_%E6%8B%96%E6%8B%BD%E6%96%B9%E6%A1%88/" title="拖拽方案"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

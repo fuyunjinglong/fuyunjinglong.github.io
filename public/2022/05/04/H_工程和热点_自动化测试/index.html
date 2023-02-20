@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>自动化测试 | Hexo</title>
+  <meta name="description" content="前端测试测试思想TDD：Test-Driven Development（测试驱动开发）  TDD：Test-Driven Development（测试驱动开发）：TDD 则要求在编写某个功能的代码之前先编写测试代码，然后只编写使测试通过的功能代码，通过测试来推动整个开发的进行  BDD：Behavior-Driven Development（行为驱动开发）  BDD：Behavior-Driven">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自动化测试">
+<meta property="og:url" content="http://anandasuper.top/2022/05/04/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前端测试测试思想TDD：Test-Driven Development（测试驱动开发）  TDD：Test-Driven Development（测试驱动开发）：TDD 则要求在编写某个功能的代码之前先编写测试代码，然后只编写使测试通过的功能代码，通过测试来推动整个开发的进行  BDD：Behavior-Driven Development（行为驱动开发）  BDD：Behavior-Driven">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-03T22:33:16.000Z">
+<meta property="article:modified_time" content="2023-01-30T14:50:56.100Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://anandasuper.top/2022/05/04/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/G-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">G_性能优化</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9/">H_工程和热点</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">11</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9/">H_工程和热点</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/01/12/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_%E6%8F%92%E4%BB%B6/" class="title">插件</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-01-11T23:33:16.000Z" itemprop="datePublished">2023-01-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/12/11/%E6%A8%A1%E6%9D%BF2/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-12-11T04:20:22.712Z" itemprop="datePublished">2022-12-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/13/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_%E5%B7%A6%E7%A5%9E/" class="title">E_左神</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-12T23:33:16.000Z" itemprop="datePublished">2022-11-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/10/22/Test/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-10-22T08:05:41.618Z" itemprop="datePublished">2022-10-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/09/12/Z_%E4%B9%A6%E5%8D%95/" class="title">书单</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-09-12T00:33:16.000Z" itemprop="datePublished">2022-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E6%B5%8B%E8%AF%95"><span class="toc-text">前端测试</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E6%80%9D%E6%83%B3"><span class="toc-text">测试思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%B5%8B%E8%AF%95"><span class="toc-text">为什么要测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-text">单元测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E6%88%98-vue-test-utils-jest"><span class="toc-text">实战:vue-test-utils + jest</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%B5%8B%E8%AF%95%E7%B1%BB%E5%9E%8B"><span class="toc-text">1.测试类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%EF%BC%88Unit-Test%EF%BC%89"><span class="toc-text">单元测试（Unit Test）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95%EF%BC%88Integration-Test%EF%BC%89"><span class="toc-text">集成测试（Integration Test）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UI-%E6%B5%8B%E8%AF%95%EF%BC%88UI-Test%EF%BC%89"><span class="toc-text">UI 测试（UI Test）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%93%AA%E4%BA%9B%E9%A1%B9%E7%9B%AE%E9%80%82%E5%90%88%E5%BC%95%E5%85%A5%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95"><span class="toc-text">2.哪些项目适合引入自动化测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E4%B8%BB%E8%A6%81%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7"><span class="toc-text">3.主要测试工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Mocha"><span class="toc-text">Mocha</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ava"><span class="toc-text">Ava</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Jasmine"><span class="toc-text">Jasmine</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Jest"><span class="toc-text">Jest</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Karma"><span class="toc-text">Karma</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%E6%B5%8B%E8%AF%95%E8%A6%86%E7%9B%96%E7%8E%87"><span class="toc-text">4测试覆盖率</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E6%B5%8B%E8%AF%95%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E8%90%BD%E5%9C%B0"><span class="toc-text">5.测试解决方案落地</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E4%BB%8E-Jest-%E5%88%B0-Karma-Mocha-Chai"><span class="toc-text">单元测试从 Jest 到 Karma+Mocha+Chai</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%B1%BC%E4%B8%8E%E7%86%8A%E6%8E%8C"><span class="toc-text">鱼与熊掌</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-H_工程和热点_自动化测试" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      自动化测试
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/05/04/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/" class="article-date">
+	  <time datetime="2022-05-03T22:33:16.000Z" itemprop="datePublished">2022-05-04</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9/">H_工程和热点</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/05/04/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="前端测试"><a href="#前端测试" class="headerlink" title="前端测试"></a>前端测试</h1><h2 id="测试思想"><a href="#测试思想" class="headerlink" title="测试思想"></a>测试思想</h2><p><strong>TDD：Test-Driven Development（测试驱动开发）</strong></p>
+<ul>
+<li>TDD：Test-Driven Development（测试驱动开发）：TDD 则要求在编写某个功能的代码之前先编写测试代码，然后只编写使测试通过的功能代码，通过测试来推动整个开发的进行</li>
+</ul>
+<p><strong>BDD：Behavior-Driven Development（行为驱动开发）</strong></p>
+<ul>
+<li>BDD：Behavior-Driven Development（行为驱动开发）：BDD 可以让项目成员（甚至是不懂编程的）使用自然语言来描述系统功能和业务逻辑，从而根据这些描述步骤进行系统自动化的测试</li>
+</ul>
+<h2 id="为什么要测试"><a href="#为什么要测试" class="headerlink" title="为什么要测试"></a>为什么要测试</h2><p><strong>测试自动化的好处在于反馈及时，能够极大地提高前端的开发效率。</strong></p>
+<ul>
+<li>提高代码质量</li>
+<li>准确定位问题</li>
+<li>方便迭代/重构</li>
+<li>最大程度保证产品符合预期</li>
+<li>减少回归流程</li>
+<li>提升开发者信心和安全感</li>
+</ul>
+<h2 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h2><p>单元测试的工具可分为三类：</p>
+<ul>
+<li>测试运行器（Test Runner）：可以模拟各种浏览器环境，自定义配置测试框架和断言库等，如Karma.</li>
+<li>测试框架：提供单元测试的功能模块，常见的框架有Jest, mocha, Jasmine, QUnit.</li>
+<li>工具库：assert, should.js, expect.js, chai.js等断言库，enzyme渲染库，Istanbul覆盖率计算。</li>
+</ul>
+<h2 id="实战-vue-test-utils-jest"><a href="#实战-vue-test-utils-jest" class="headerlink" title="实战:vue-test-utils + jest"></a>实战:vue-test-utils + jest</h2><p><code>vue-test-utils</code> 是 Vue 官方的测试库，并将在本指南中贯穿始终。它在浏览器和 Node.js 环境中皆可运行，并能配合任何 test runner 使用。</p>
+<p><strong>配置测试覆盖率</strong></p>
+<p>在 <code>jest.config.js</code> 里新增配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">collectCoverage: true,</span><br><span class="line">collectCoverageFrom: [&quot;**/*.&#123;js,vue&#125;&quot;, &quot;!**/node_modules/**&quot;],</span><br></pre></td></tr></table></figure>
+
+<p>测试覆盖了表格含义：</p>
+<ul>
+<li><p>语句覆盖率（statement coverage）是否每个语句都执行了？</p>
+</li>
+<li><p>分支覆盖率（branch coverage）是否每个函数都调用了？</p>
+</li>
+<li><p>函数覆盖率（function coverage）是否每个if代码块都执行了？</p>
+</li>
+<li><p>行覆盖率（line coverage) 是否每一行都执行了？</p>
+</li>
+</ul>
+<h1 id="1-测试类型"><a href="#1-测试类型" class="headerlink" title="1.测试类型"></a>1.测试类型</h1><p>主要分为 3 种：<strong>UI 测试（UI Test）</strong>，<strong>集成测试（Integration Test）</strong>、<strong>单元测试（Unit Test）</strong>。分别占比20%,35%,45%</p>
+<p>大多数公司的测试金字塔是倒过来的，由人工进行<strong>UI 测试</strong>反而是最多的，<strong>集成测试</strong>和<strong>单元测试</strong>却大多被忽略。</p>
+<p>其他分类：黑盒测试和白盒测试</p>
+<ul>
+<li>黑盒测试一般也被称为功能测试，黑盒测试要求测试人员将程序看作一个整体，不考虑其内部结构和特性，只是按照期望验证程序是否能正常工作</li>
+<li>白盒测试是基于代码本身的测试，一般指对代码逻辑结构的测试。</li>
+</ul>
+<h2 id="单元测试（Unit-Test）"><a href="#单元测试（Unit-Test）" class="headerlink" title="单元测试（Unit Test）"></a>单元测试（Unit Test）</h2><p>单元测试是最容易实现的：代码中多个组件共用的工具类库、多个组件共用的子组件等。</p>
+<p><strong>单元测试也应该是项目中数量最多、覆盖率最高</strong></p>
+<p>能进行单元测试的函数/组件，一定是低耦合的。</p>
+<h2 id="集成测试（Integration-Test）"><a href="#集成测试（Integration-Test）" class="headerlink" title="集成测试（Integration Test）"></a>集成测试（Integration Test）</h2><p>集成测试通常被应用在：耦合度较高的函数/组件、经过二次封装的函数/组件、多个函数/组件组合而成的函数/组件等。</p>
+<p>集成测试的目的在于，测试经过单元测试后的各个模块组合在一起是否能正常工作。会对组合之后的代码整体暴露在外接口进行测试，查看组合后的代码工作是否符合预期。</p>
+<h2 id="UI-测试（UI-Test）"><a href="#UI-测试（UI-Test）" class="headerlink" title="UI 测试（UI Test）"></a>UI 测试（UI Test）</h2><p>UI 测试（UI Test）和端到端测试（E2E Test）区别：</p>
+<ul>
+<li>UI 测试（UI Test）只是对于前端的测试，是脱离真实后端环境的，仅仅只是将前端放在真实环境中运行，而后端和数据都应该使用 Mock 的。</li>
+<li>端到端测试（E2E Test）则是将整个应用放到真实的环境中运行，包括数据在内也是需要使用真实的。</li>
+</ul>
+<h1 id="2-哪些项目适合引入自动化测试"><a href="#2-哪些项目适合引入自动化测试" class="headerlink" title="2.哪些项目适合引入自动化测试"></a>2.哪些项目适合引入自动化测试</h1><ul>
+<li>公共库类的开发维护</li>
+<li>中长期项目的迭代/重构</li>
+<li>引用了不可控的第三方依赖</li>
+</ul>
+<h1 id="3-主要测试工具"><a href="#3-主要测试工具" class="headerlink" title="3.主要测试工具"></a>3.主要测试工具</h1><ul>
+<li>单元测试（Unit Test）有 Mocha, Ava, Karma, Jest, Jasmine 等</li>
+<li>集成测试（Integration Test）和 UI 测试（UI Test）有 ReactTestUtils, Test Render, Enzyme, React-Testing-Library, Vue-Test-Utils 等</li>
+</ul>
+<ol>
+<li>提供<strong>测试结构</strong>：<a target="_blank" rel="noopener" href="https://mochajs.org/">Mocha</a>, <a target="_blank" rel="noopener" href="http://jasmine.github.io/">Jasmine</a>, <a target="_blank" rel="noopener" href="https://facebook.github.io/jest/">Jest</a>, <a target="_blank" rel="noopener" href="https://github.com/cucumber/cucumber-jshttps://github.com/cucumber/cucumber-js">Cucumber</a></li>
+<li>有<strong>断言</strong>测试：<a target="_blank" rel="noopener" href="http://chaijs.com/">Chai</a>, <a target="_blank" rel="noopener" href="http://jasmine.github.io/">Jasmine</a>, <a target="_blank" rel="noopener" href="https://facebook.github.io/jest/">Jest</a>, <a target="_blank" rel="noopener" href="http://unexpected.js.org/">Unexpected</a></li>
+<li>生成、<strong>展示和监控</strong>测试结果：<a target="_blank" rel="noopener" href="https://mochajs.org/">Mocha</a>, <a target="_blank" rel="noopener" href="http://jasmine.github.io/">Jasmine</a>, <a target="_blank" rel="noopener" href="https://facebook.github.io/jest/">Jest</a>, <a target="_blank" rel="noopener" href="https://karma-runner.github.io/">Karma</a></li>
+<li>通过对比生成的组件和数据结构的快照，确保更改是来自前一次运行的：<a target="_blank" rel="noopener" href="https://facebook.github.io/jest/">Jest</a>, <a target="_blank" rel="noopener" href="https://github.com/avajs/ava">Ava</a></li>
+<li>提供 <strong>Mocks、Spies 和 Stubs</strong>：<a target="_blank" rel="noopener" href="http://sinonjs.org/">Sinon</a>, <a target="_blank" rel="noopener" href="http://jasmine.github.io/">Jasmine</a>, <a target="_blank" rel="noopener" href="http://airbnb.io/enzyme/docs/api/">enzyme</a>, <a target="_blank" rel="noopener" href="https://facebook.github.io/jest/">Jest</a>, <a target="_blank" rel="noopener" href="https://github.com/testdouble/testdouble.js">testdouble</a></li>
+<li>生成<strong>代码覆盖</strong>报告：<a target="_blank" rel="noopener" href="https://gotwarlost.github.io/istanbul/">Istanbul</a>, <a target="_blank" rel="noopener" href="https://facebook.github.io/jest/">Jest</a>, <a target="_blank" rel="noopener" href="http://blanketjs.org/">Blanket</a></li>
+<li>提供一个<strong>浏览器或类浏览器环境</strong>，并提供接口可以控制它们的执行场景：<a target="_blank" rel="noopener" href="http://www.protractortest.org/">Protractor</a><strong>,</strong> <a target="_blank" rel="noopener" href="http://nightwatchjs.org/">Nightwatch</a>, <a target="_blank" rel="noopener" href="http://phantomjs.org/">Phantom</a><strong>,</strong> <a target="_blank" rel="noopener" href="http://casperjs.org/">Casper</a></li>
+</ol>
+<p><strong>主流工具比较</strong></p>
+<table>
+<thead>
+<tr>
+<th>框架</th>
+<th>断言</th>
+<th>仿真</th>
+<th>快照</th>
+<th>异步测试</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Mocha</td>
+<td>默认不支持，可配置</td>
+<td>默认不支持，可配置</td>
+<td>默认不支持，可配置</td>
+<td>友好</td>
+</tr>
+<tr>
+<td>Ava</td>
+<td>默认支持</td>
+<td>不支持，需第三方配置</td>
+<td>默认支持</td>
+<td>友好</td>
+</tr>
+<tr>
+<td>Jasmine</td>
+<td>默认支持</td>
+<td>默认支持</td>
+<td>默认支持</td>
+<td>不友好</td>
+</tr>
+<tr>
+<td>Jest</td>
+<td>默认支持</td>
+<td>默认支持</td>
+<td>默认支持</td>
+<td>友好</td>
+</tr>
+<tr>
+<td>Karma</td>
+<td>不支持，需第三方配置</td>
+<td>不支持，需第三方配置</td>
+<td>不支持，需第三方配置</td>
+<td>不支持，需第三方配置</td>
+</tr>
+</tbody></table>
+<h3 id="Mocha"><a href="#Mocha" class="headerlink" title="Mocha"></a><strong>Mocha</strong></h3><ul>
+<li>Mocha 是生态最好，使用最广泛的单测框架，但是他需要较多的配置来实现它的高扩展性。</li>
+</ul>
+<h3 id="Ava"><a href="#Ava" class="headerlink" title="Ava"></a>Ava</h3><ul>
+<li>Ava 是更轻量高效简单的单测框架，但是自身不够稳定，并发运行文件多的时候会撑爆 CPU</li>
+</ul>
+<h3 id="Jasmine"><a href="#Jasmine" class="headerlink" title="Jasmine"></a>Jasmine</h3><ul>
+<li>Jasmine 是单测框架的“元老”，开箱即用，但是异步测试支持较弱。</li>
+</ul>
+<h3 id="Jest"><a href="#Jest" class="headerlink" title="Jest"></a>Jest</h3><ul>
+<li>Jest 基于 Jasmine, 做了大量修改并添加了很多特性，同样开箱即用，但异步测试支持良好。</li>
+<li>jest⾃自带覆盖率，如果⽤用的 mocha，需要使⽤用 istanbul来统计覆盖率。（所以我推荐jest）</li>
+</ul>
+<h3 id="Karma"><a href="#Karma" class="headerlink" title="Karma"></a>Karma</h3><ul>
+<li>Karma 能在真实的浏览器中测试，强大适配器，可配置其他单测框架，一般会配合 Mocha 或 Jasmine 等一起使用。</li>
+</ul>
+<p>Augular 的默认测试框架就是 Karma + Jasmine，而 React 的默认测试框架是 <strong>Jest</strong>。</p>
+<p><strong>React/Vue 官方推荐的单元测试工具都是 Jest</strong></p>
+<h1 id="4测试覆盖率"><a href="#4测试覆盖率" class="headerlink" title="4测试覆盖率"></a>4测试覆盖率</h1><p>按照上面的测试用例跑一轮，测试覆盖率肯定是 100% 的，这是在简单组件上测试才有这样的效果。</p>
+<p>事实上在实际应用当中，测试覆盖率很难达到 100%，能够达到百分之八九十就已经是很高的覆盖率了。</p>
+<h1 id="5-测试解决方案落地"><a href="#5-测试解决方案落地" class="headerlink" title="5.测试解决方案落地"></a>5.测试解决方案落地</h1><h2 id="单元测试从-Jest-到-Karma-Mocha-Chai"><a href="#单元测试从-Jest-到-Karma-Mocha-Chai" class="headerlink" title="单元测试从 Jest 到 Karma+Mocha+Chai"></a>单元测试从 Jest 到 Karma+Mocha+Chai</h2><p>引子：Jest 的运行环境是 JSDOM，一个伪 DOM 引擎。JSDOM 不能理解 DOM 的布局，尺寸，样式，以及浏览器的高级 API，例如 <code>ResizeObserver</code>，<code>matchMedia()</code>。我们无法在代码中避免使用它们，于是只能去 Mock 很多东西。结果，我们欺骗了我们自己写的测试。即使你达成了 100% 测试覆盖，所有测试用例都通过，还是会怀疑代码是否在真实环境中会出错…更不要提浏览器兼容性测试了。</p>
+<p>Karma 是 Google 开发的测试运行工具。当人们无法忍受太多 Mock，他们通常会转投 Karma 然后发现它真香！你不需要再 Mock 浏览器的特性，便可获得更真实的测试结果，甚至能做浏览器兼容性测试。更重要的是，从 Jest 到 Karma 的迁移并不难。</p>
+<p>Karma 不能单独使用。你至少需要一个测试框架（例如 Mocha）和一个断言库（例如 Chai）。</p>
+<p><strong>两种工具集对比</strong></p>
+<table>
+<thead>
+<tr>
+<th>Karma 系</th>
+<th>Jest 系</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>测试运行环境 Test Runtime</td>
+<td>Chrome/Firefox/Safari/Edge/IE</td>
+<td>JSDOM + Node.js</td>
+</tr>
+<tr>
+<td>代码转译器 Transpiler</td>
+<td>TypeScript</td>
+<td>TypeScript</td>
+</tr>
+<tr>
+<td>测试运行工具 Test Runner</td>
+<td>Karma</td>
+<td>Jest</td>
+</tr>
+<tr>
+<td>测试框架 Test Framework</td>
+<td>Mocha/Jasmine</td>
+<td>Jest</td>
+</tr>
+<tr>
+<td>断言库 Assertion Library</td>
+<td>Chai/Expect.js</td>
+<td>Jest</td>
+</tr>
+<tr>
+<td>React 测试工具 React Test Utility</td>
+<td>Enzyme/React-Testing-Library</td>
+<td>Enzyme/React-Testing-Library</td>
+</tr>
+</tbody></table>
+<h2 id="鱼与熊掌"><a href="#鱼与熊掌" class="headerlink" title="鱼与熊掌"></a>鱼与熊掌</h2><p><strong>单元测试和集成测试选择：</strong></p>
+<p>*简而言之，如果你是想踏出测试的第一步，或者想为大型项目配备足以快速上手的框架，建议使用 <strong>Jest</strong>。<br>想要灵活性高可扩展性好，那就用 <strong>Mocha</strong>。<br>想再简单点，就用 <strong>Ava</strong>。<br>想做底层的测试，用 <strong>tape</strong>。*</p>
+<p><strong>UI测试选择：</strong></p>
+<p><em>简而言之，如果你想立刻着手在多个运行环境下尝试下功能测试，想要一个 all-in-one 的工具，试试 <strong>TestCafe</strong>。<br>如果你希望测试流程完整，还有强大的社区支持。<strong>WebdriverIO</strong> 是个不错的选择。</em> *如果不需要测试跨浏览器的支持性，推荐使用 <strong>Puppeteer</strong>。<br>如果你的应用没有复杂的界面和交互逻辑，比如一个全是表单和导航的系统。换言之，是相对较容易测试de的场景。可以使用 headless 浏览器工具，比如 <strong>Casper</strong>，高效完成测试。*</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://anandasuper.top/2022/05/04/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/" title="自动化测试" target="_blank" rel="external">http://anandasuper.top/2022/05/04/H_工程和热点_自动化测试/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/05/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_%E9%9B%86%E7%BA%BF%E5%99%A8%E4%BA%A4%E6%8D%A2%E6%9C%BA%E8%B7%AF%E7%94%B1%E5%99%A8%E7%AD%89/" title="集线器交换机路由器等"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2022/05/03/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_%E6%AD%A3%E5%90%91%E5%8F%8D%E5%90%91DNSCDN%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%89/" title="正向反向DNSCDN负载均衡"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

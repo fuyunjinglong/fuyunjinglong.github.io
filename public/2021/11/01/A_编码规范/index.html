@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>编码规范 | Hexo</title>
+  <meta name="description" content="常规命名，命名全小写，多个单词用中划线-间隔，用于：class,id，属性，组件名，文件名camelCase小驼峰，首字母小写，其他大写，用于：函数PascalCase 帕斯卡，首字母全大写，用于：常量 1.通用编码规范规则12345678910规则1 访问外部对象时，需先判断该对象是否为空规则2 功能失效时必须彻底删除对应的功能代码规则3 禁止注释中含有员工个人信息规则4 禁止硬编码用户账户密码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编码规范">
+<meta property="og:url" content="http://anandasuper.top/2021/11/01/A_%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="常规命名，命名全小写，多个单词用中划线-间隔，用于：class,id，属性，组件名，文件名camelCase小驼峰，首字母小写，其他大写，用于：函数PascalCase 帕斯卡，首字母全大写，用于：常量 1.通用编码规范规则12345678910规则1 访问外部对象时，需先判断该对象是否为空规则2 功能失效时必须彻底删除对应的功能代码规则3 禁止注释中含有员工个人信息规则4 禁止硬编码用户账户密码">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://anandasuper.top/img/image-20211130234536293.png">
+<meta property="article:published_time" content="2021-10-31T22:33:16.000Z">
+<meta property="article:modified_time" content="2022-12-11T09:49:30.102Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://anandasuper.top/img/image-20211130234536293.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://anandasuper.top/2021/11/01/A_%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/G-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">G_性能优化</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9/">H_工程和热点</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">11</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9/">H_工程和热点</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/01/12/H_%E5%B7%A5%E7%A8%8B%E5%92%8C%E7%83%AD%E7%82%B9_%E6%8F%92%E4%BB%B6/" class="title">插件</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-01-11T23:33:16.000Z" itemprop="datePublished">2023-01-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/12/11/%E6%A8%A1%E6%9D%BF2/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-12-11T04:20:22.712Z" itemprop="datePublished">2022-12-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/11/13/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_%E5%B7%A6%E7%A5%9E/" class="title">E_左神</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-11-12T23:33:16.000Z" itemprop="datePublished">2022-11-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/10/22/Test/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-10-22T08:05:41.618Z" itemprop="datePublished">2022-10-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/09/12/Z_%E4%B9%A6%E5%8D%95/" class="title">书单</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-09-12T00:33:16.000Z" itemprop="datePublished">2022-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E9%80%9A%E7%94%A8%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83%E8%A7%84%E5%88%99"><span class="toc-text">1.通用编码规范规则</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-HTML%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83"><span class="toc-text">2.HTML编码规范</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-CSS%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83"><span class="toc-text">3.CSS编码规范</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-eslint%E7%BC%96%E7%A0%81"><span class="toc-text">4.eslint编码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-ES6%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83"><span class="toc-text">5.ES6编码规范</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-vue%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83"><span class="toc-text">6.vue编码规范</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-A_编码规范" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      编码规范
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/11/01/A_%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/" class="article-date">
+	  <time datetime="2021-10-31T22:33:16.000Z" itemprop="datePublished">2021-11-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/11/01/A_%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>常规命名，命名全小写，多个单词用中划线-间隔，用于：class,id，属性，组件名，文件名<br>camelCase小驼峰，首字母小写，其他大写，用于：函数<br>PascalCase 帕斯卡，首字母全大写，用于：常量</p>
+<h1 id="1-通用编码规范规则"><a href="#1-通用编码规范规则" class="headerlink" title="1.通用编码规范规则"></a>1.通用编码规范规则</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">规则1 访问外部对象时，需先判断该对象是否为空</span><br><span class="line">规则2 功能失效时必须彻底删除对应的功能代码</span><br><span class="line">规则3 禁止注释中含有员工个人信息</span><br><span class="line">规则4 禁止硬编码用户账户密码</span><br><span class="line">规则5 在客户端对外部输入进行校验，对输入字符转义，防止sql注入和XSS注入</span><br><span class="line">规则7 禁止使用eval()函数，IE9下使用eval()存在内存泄露问题</span><br><span class="line">规则8 禁止直接对不可信的JS对象进行序列化，可能有代码注入的安全漏洞</span><br><span class="line">规则10 禁止未验证的输入作为重定向URL</span><br><span class="line">规则12 禁止直接将不可信数据插入到WEB页面中，防止XSS攻击盗取cookie和会话信息。可以先转义js，再插入dom</span><br><span class="line">规则13 禁止在 localStorage存储敏感信息。开发人员可能希望在旅游应用程序中使用多个浏览器选项卡或实例,以支持用户打开多个选项卡来比较住宿选择，同时保留用户最初的搜索条件。开发人员必须多加小心，以免将敏感信息从 sessionStorage 范围移至 localStorage。</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-HTML编码规范"><a href="#2-HTML编码规范" class="headerlink" title="2.HTML编码规范"></a><strong>2.HTML编码规范</strong></h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">规则1：语法规范，嵌套的节点应该缩进； • 在属性上，使用双引号，不要使用单引号； • 属性名全小写，用中划线做分隔符；</span><br><span class="line">规则3：文件编码，所有的文件以UTF-8的方式进行编码</span><br><span class="line">规则4：文件命名，命名全小写，多个单词用中划线-间隔，注意：class,id，属性，组件名等命名规格也要这样</span><br><span class="line">规则2：Class 与 ID，应以功能或内容命名，规则同文件，id作为唯一标识</span><br><span class="line">规则3：属性顺序， • id • class • name • data-xxx • src, for, type, href • title, alt • aria-xxx, role规则7：多媒体标签的alt属性，资源无法加载时，指定备份文字</span><br><span class="line">规则8：正确使用闭合标签，自定义标签一定要闭合，void element标签不要闭合。如：&lt;br标签&gt; 。根据w3的规范，void元素有area，base，br，col，command，embed，hr，img，input，keygen，link，meta，param，source，track，wbr。</span><br><span class="line">规则9：IE 兼容模式。IE 支持通过特定的标签来确定绘制当前页面所应该采用的IE版本。除非有强烈的特殊需求，否则最好是设置为 edge mode，从而通知 IE 采用其所支持的最新的模式。</span><br><span class="line">规则12：层级简单，避免多余的父元素，html尽量简化</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-CSS编码规范"><a href="#3-CSS编码规范" class="headerlink" title="3.CSS编码规范"></a>3.CSS编码规范</h1><p>（1）代码规范</p>
+<ul>
+<li><a href="https://link.juejin.cn/?target=https://github.com/fex-team/styleguide/blob/master/css.md">styleguide 2.3k</a></li>
+<li><a href="https://link.juejin.cn/?target=https://github.com/ecomfe/spec/blob/master/css-style-guide.md">spec 3.9k</a></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">规则1：代码缩进，4个空格缩进，不能使用tab字符</span><br><span class="line">规则1：css文件的引用总是放在head区</span><br><span class="line">规则4：css加限定。针对多级class时，避免直接使用class,要带层级的访问。</span><br><span class="line">规则8：属性值前用空格分开，选择器后用空格分开</span><br><span class="line">规则9：不同css规则之间用空行隔开</span><br><span class="line">规则13：选择器。当一个 rule 包含多个 selector 时，每个选择器声明必须独占一行。</span><br><span class="line">规则15：属性书写顺序。以Formatting Model（布局方式、位置） &gt; Box Model（尺寸） &gt; Typographic（文本相关） &gt; Visual（视觉效果） 的顺序书写，以提高代码的可读性。 • Formatting Model 相关属性包括：position / top / right / bottom / left / float / display / overflow 等 • Box Model 相关属性包括：border / margin / padding / width / height 等 • Typographic 相关属性包括：font / line-height / text-align / word-wrap 等 • Visual 相关属性包括：background / color / transition / list-style 等</span><br></pre></td></tr></table></figure>
+
+<p>其中LESS编码规则:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">规则2：@import 语句。.less 后缀不得省略。@import &quot;mixins/size.less&quot;;</span><br><span class="line">规则4：避免嵌套层级过多。嵌套深度限制在2级</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-eslint编码"><a href="#4-eslint编码" class="headerlink" title="4.eslint编码"></a>4.eslint编码</h1><p><strong>(1)js代码规范</strong></p>
+<ul>
+<li><a href="https://link.juejin.cn/?target=https://github.com/lin-123/javascript">airbnb-中文版</a>，更为主流</li>
+<li><a href="https://link.juejin.cn/?target=https://github.com/standard/standard/blob/master/docs/README-zhcn.md">standard (24.5k star) 中文版</a></li>
+<li><a href="https://link.juejin.cn/?target=https://github.com/ecomfe/spec">百度前端编码规范 3.9k</a></li>
+</ul>
+<p><strong>(2)eslint-config-airbnb规则</strong></p>
+<p>eslint-config-airbnb规则， airbnb官方的规则过于庞大，有10多个规则文件。维护起来成本较高。</p>
+<p>大型团队和小团队（或独立开发者）的差异性：</p>
+<p>技术层面上：</p>
+<ul>
+<li><strong>技术场景更加广泛：</strong>对于大型团队，其开发场景一般不会局限在传统 Web 领域内，往往还会涉及 Node.js、React Native、小程序、桌面应用（例如 Electron）等更广泛的技术场景。</li>
+<li><strong>技术选型更加分散：</strong>团队内工程技术选型往往并不统一，如 React/Vue、JavaScript/TypeScript 等。</li>
+<li><strong>工程数量的增加和工程方案离散化导致 ESLint 方案的复杂度提升：</strong>这样会进一步增加工程接入成本、升级成本和方案维护成本。</li>
+</ul>
+<p>在团队层面，随着人员的增加和组织结构的复杂化：</p>
+<ul>
+<li>人员风格差异性更大、沟通协调成本更高。</li>
+<li>方案宣导更难触达，难以保证规范执行的落实。</li>
+<li>执行状况和效果难以统计和分析。</li>
+</ul>
+<p>因为存在诸多差异，我们在设计具体方案时，需要考虑和解决更多问题，以保证规范的落实。针对上述分析，我们梳理了以下需要解决的问题：</p>
+<ul>
+<li>如何制定统一的代码规范和对应的 ESLint 配置？<ul>
+<li><strong>场景支撑：</strong>如何实现对场景差异的支持？如何保证不同场景间一致部分（例如 JavaScript 基础语法）的规范一致性？</li>
+<li><strong>技术选型支撑：</strong>如何在支撑不同技术选型的前提下，保证基础规则（例如缩进）的一致性？</li>
+<li><strong>可维护性：</strong>具体到规则配置上，能否提升可复用性？在方案升级迭代时成本是否可控？</li>
+</ul>
+</li>
+</ul>
+<p>该配置架构采用了分层、分类的结构，其中：</p>
+<ul>
+<li><strong>基础层：</strong>制定统一的基础语法和格式规范，提供通用的代码风格和语法规则配置，例如缩进、尾逗号等等。</li>
+<li><strong>框架支撑层（可选）：</strong>提供对通用的一些技术场景、框架的支持，包括 Node.js、React、Vue、React Native 等；这一层借助开源社区的各种插件进行配置，并对各种框架的规则都进行了一定的调整。</li>
+<li><strong>TypeScript 层（可选）：</strong>这一层借助 typescript-eslint，提供对 TypeScript 的支持。</li>
+<li><strong>适配层（可选）：</strong>提供对特殊场景的定制化支持，例如 MRN（美团内部的 React Native 定制化方案）、配合 prettier 使用、或者某些团队的特殊规则诉求。</li>
+</ul>
+<p>具体的实际项目中，可以灵活的选择各层级、各类型的搭配，获得和项目匹配的 ESLint 规则集。例如，对于使用 TypeScript 语言的 React 项目，可以将基础层、框架层的 React 分支、以及 TypeScript 支撑层的 React 分支层叠到一起，最终形成适用于该项目的 ESLint 配置。如果项目不再使用 TypeScript 语言，只需要将 ts-react 这一层去掉即可。</p>
+<p>最终，形成了如下所示的 ESLint 配置集：</p>
+<p><img src="/img/image-20211130234536293.png" alt="image-20211130234536293"></p>
+<h1 id="5-ES6编码规范"><a href="#5-ES6编码规范" class="headerlink" title="5.ES6编码规范"></a>5.ES6编码规范</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">规则1 导出默认的函数使用驼峰式命名</span><br><span class="line">规则2 导出单例、函数库、空对象时使用帕斯卡式命名即所有首字母大写</span><br><span class="line">规则5 变量必须显式声明作用域，尽量使用const,let，慎用var</span><br><span class="line">规则9 使用对象属性值的简写.ES6 允许在对象之中，只写属性名，不写属性值。这时，属性值等于属性名所代表的变量。const obj = &#123;    lukeSkywalker,&#125;;</span><br><span class="line">规则13 不要使用 arguments。可以选择 rest 语法 ... 替代.// 不推荐function concatenateAll() &#123;    const args = Array.prototype.slice.call(arguments);    return args.join(&#x27;&#x27;);  &#125;// 推荐function concatenateAll(...args) &#123;    return args.join(&#x27;&#x27;);&#125;</span><br><span class="line">规则14 直接给函数的形参数指定默认值</span><br><span class="line">规则16 使用大括号包裹所有的多行代码块</span><br><span class="line">规则18 代码中总是使用ES6标准的模块(import/export)方式， 而不是使用非标准的模块化加载器commonjs。</span><br><span class="line">规则19 不要使用通配符 * 的 import。确保被import的模块只有一个默认的export项。</span><br><span class="line">规则24 如果一个函数适合用一行写出并且只有一个参数，那就把花括号、圆括号和 return 都省略掉。</span><br><span class="line">规则27 使用解构存取和使用多属性对象或数组</span><br><span class="line">规则31 构建字符串时，使用字符串模板而不是字符串连接</span><br></pre></td></tr></table></figure>
+
+<h1 id="6-vue编码规范"><a href="#6-vue编码规范" class="headerlink" title="6.vue编码规范"></a>6.vue编码规范</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">prop定义尽量详细，如require,default等</span><br><span class="line">v-for设置键值避免 v-if 和 v-for 同时使用</span><br><span class="line">为组件样式设置作用域基础组件名，使用Base</span><br><span class="line">和父组件紧密耦合的子组件应该以父组件名作为前缀命名</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://anandasuper.top/2021/11/01/A_%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/" title="编码规范" target="_blank" rel="external">http://anandasuper.top/2021/11/01/A_编码规范/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/11/01/AA_%E9%9D%A2%E8%AF%95_%E9%9D%A2%E8%AF%95%E9%A2%98-1/" title="面试题-1"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/11/01/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_0%E5%9F%BA%E7%A1%80/" title="0基础"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

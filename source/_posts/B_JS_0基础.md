@@ -6,13 +6,9 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# JavaScript
+# 基础
 
-## 三大山-堆栈内存及闭包作用域
-
-<img src="C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20220912183546292.png" alt="image-20220912183546292" style="zoom:80%;" />
-
-### JS的8种数据类型
+## 8种数据类型
 
 - 基本类型：Number,String,Boolean,Null,undefined,symbol
 - 引用类型：Object,Array,function
@@ -23,7 +19,13 @@ toc: true # 是否启用内容索引
 
 - Null表示的是：“定义了但是为空”,判空：if(a)
 
-### JS堆栈内存运行机制-深浅拷贝
+# 三大山-原型和原型链
+
+# 三大山-作用域和闭包
+
+作用域
+
+## 深浅拷贝
 
 var obj={}
 
@@ -138,6 +140,22 @@ $.extend
 
 lodash deepClone
 
+# 三大山-异步和单线程
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### 变量提升机制
 
 var上升为全局，let是块级作用域，作用于当前。
@@ -157,8 +175,6 @@ var上升为全局，let是块级作用域，作用于当前。
         },500)
     }
 ```
-
-### 作用域和作用域链
 
 ### 闭包的两大作用：保存、保护
 
