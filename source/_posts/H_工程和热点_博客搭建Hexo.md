@@ -290,4 +290,15 @@ hexo s -p 端口号,也可不加端口
 
 8.竖线段落
 使用>回车即可
+
+9.页面跳转定位
+内部跳转页面
+{% post_link E_数据结构_0基础 可点击%}
+内部跳转页面锚点
+<a href="{% post_path 'E_数据结构_0基础' %}#LRU-K">LRU-K</a>
+
+10.取消文章目录的自动编号
+./node_modules/hexo/lib/plugins/helper/toc.js
+list_number: false
 ```
+
