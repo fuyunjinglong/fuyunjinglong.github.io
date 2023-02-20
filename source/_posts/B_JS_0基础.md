@@ -23,7 +23,112 @@ toc: true # 是否启用内容索引
 
 # 三大山-作用域和闭包
 
-作用域
+## 作用域-变量提升
+
+var上升为全局，let是块级作用域，作用于当前。
+
+- var：声明提升，没有局部作用域，声明覆盖
+- let:
+
+```
+    for(var i =0;i<5;i++){
+        setTimeout(()=>{
+            console.log('var的事件循环机制:',i);// 输出55555
+        },500)
+    }
+    for(let j =0;j<5;j++){
+        setTimeout(()=>{
+            console.log('let的块级作用域：',j);// 输出01234
+        },500)
+    }
+```
+
+## 作用域-VO/AO/GO
+
+JS有两个特性，一个是单线程，一个是解释性语言。
+
+JS运行步骤：1.语法分析2.预编译3.解释执行
+
+函数执行四部曲：
+
+1.创建AO对象，供js引擎自己去访问
+
+activation object （活跃对象/执行期上下文）
+
+2.找变量和形参的声明，作为AO对象的属性名，值是undefined
+
+3.实参和形参相统一，实参赋值给形参
+
+4.找函数声明(注意不是函数表达式)，会覆盖变量的声明。
+
+```js
+   function fn(a,c){
+console.log(a);//function a(){}
+var a=123;
+console.log(a);//123
+console.log(c);//function c(){}
+function a(){}
+if(false){
+var d= 678;
+}
+console.log(d);//undefined
+console.log(b);//undefined
+var b=function(){}
+console.log(b);//function (){}
+function c(){}
+console.log(c);//function c(){}
+}
+fn(1,2);
+
+AO{
+a:undefined,1,function a(){}
+c:undefined,2,function c(){}
+d:undefined,
+b:undefined,
+}
+```
+
+## 闭包-作用:保存和保护
+
+1.先要说到作用域和作用域链，即AO和GO
+
+js代码在预编译阶段，会有一个AO函数作用域和GO全局作用域。
+
+AO是指函数作用域，GO是指全局作用域。
+
+```js
+function a(){
+    var aa=111;
+    function b(){
+        var bb=22;
+        console.log(aa)
+    }
+    return  b;
+}
+var t=a();
+
+var a = 0, b = 0;
+function A(a) {
+  A = function (b) {
+    alert(a + b++);
+  };
+  alert(a++);
+}
+A(1);
+A(2); // ‘1’，‘4’
+```
+
+a的作用域scope：scope[0]=AO{aa,function b},scope[1]=GO{function a}
+
+b的作用域scope:scope[0]=AO{bb},scope[1]=AO{aa,function b},scope[2]=GO{function a}
+
+通俗理解：**闭包函数(被包裹的函数)中必须要使用到外部函数中的变量**
+
+优点：1.读取函数内部变量；2.让这些变量的值始终保持在内存中，不会在f1调用后被自动清除；
+
+缺点：滥用闭包导致内存泄漏，能不用尽量不用，即时释放内存。（闭包会加深作用域链，加长变量查找时间）
+
+场景：setTimeout的函数携带参数；回调；变量封装
 
 ## 深浅拷贝
 
@@ -155,113 +260,6 @@ lodash deepClone
 
 
 
-
-### 变量提升机制
-
-var上升为全局，let是块级作用域，作用于当前。
-
-- var：声明提升，没有局部作用域，声明覆盖
-- let:
-
-```
-    for(var i =0;i<5;i++){
-        setTimeout(()=>{
-            console.log('var的事件循环机制:',i);// 输出55555
-        },500)
-    }
-    for(let j =0;j<5;j++){
-        setTimeout(()=>{
-            console.log('let的块级作用域：',j);// 输出01234
-        },500)
-    }
-```
-
-### 闭包的两大作用：保存、保护
-
-1.先要说到作用域和作用域链，即AO和GO
-
-js代码在预编译阶段，会有一个AO函数作用域和GO全局作用域。
-
-AO是指函数作用域，GO是指全局作用域。
-
-```js
-function a(){
-    var aa=111;
-    function b(){
-        var bb=22;
-        console.log(aa)
-    }
-    return  b;
-}
-var t=a();
-
-var a = 0, b = 0;
-function A(a) {
-  A = function (b) {
-    alert(a + b++);
-  };
-  alert(a++);
-}
-A(1);
-A(2); // ‘1’，‘4’
-```
-
-a的作用域scope：scope[0]=AO{aa,function b},scope[1]=GO{function a}
-
-b的作用域scope:scope[0]=AO{bb},scope[1]=AO{aa,function b},scope[2]=GO{function a}
-
-通俗理解：**闭包函数(被包裹的函数)中必须要使用到外部函数中的变量**
-
-优点：1.读取函数内部变量；2.让这些变量的值始终保持在内存中，不会在f1调用后被自动清除；
-
-缺点：滥用闭包导致内存泄漏，能不用尽量不用，即时释放内存。（闭包会加深作用域链，加长变量查找时间）
-
-场景：setTimeout的函数携带参数；回调；变量封装
-
-### JS编译机制：VO/AO/GO
-
-JS有两个特性，一个是单线程，一个是解释性语言。
-
-JS运行步骤：1.语法分析2.预编译3.解释执行
-
-函数执行四部曲：
-
-1.创建AO对象，供js引擎自己去访问
-
-activation object （活跃对象/执行期上下文）
-
-2.找变量和形参的声明，作为AO对象的属性名，值是undefined
-
-3.实参和形参相统一，实参赋值给形参
-
-4.找函数声明(注意不是函数表达式)，会覆盖变量的声明。
-
-```js
-   function fn(a,c){
-console.log(a);//function a(){}
-var a=123;
-console.log(a);//123
-console.log(c);//function c(){}
-function a(){}
-if(false){
-var d= 678;
-}
-console.log(d);//undefined
-console.log(b);//undefined
-var b=function(){}
-console.log(b);//function (){}
-function c(){}
-console.log(c);//function c(){}
-}
-fn(1,2);
-
-AO{
-a:undefined,1,function a(){}
-c:undefined,2,function c(){}
-d:undefined,
-b:undefined,
-}
-```
 
 ### JS高阶编程技巧：惰性函数/柯里化/高阶函数
 
