@@ -6,96 +6,6 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# 闭包
-
-## **定义**
-
-闭包就是能够读取其他函数内部变量的函数
-
-闭包的形成条件是内部函数需要通过外部函数 return 给返回出来，如下例所示：
-
-```js
-function funOne(){    // 外部函数
-    var num = 0;      // 局部变量
-    function funTwo(){   // 内部函数
-        num++;                 
-        return num;
-    }
-    return funTwo;
-}
-var fun = funOne();             // 返回函数 funTwo
-```
-
-**js链式作用域**
-
-子对象会一级一级向上寻找所有父对象的变量，反之不行
-
-## **闭包的作用**
-
-- 读取函数内部的变量
-- 让这些变量的值始终保持在内存中
-- 方便调用上下文的局部变量，利于代码封装
-
-## **闭包的使用场景**
-
-### **1.闭包结合匿名函数使用，如setTimeout**
-
-```js
-//原生的setTimeout传递的第一个函数不能带参数
- //通过闭包可以实现传参效果
-    function func(param){
-        return function(){
-            alert(param)
-        }
-    }
-    var f1 = func(1);
-    setTimeout(f1,1000);
-```
-
-### **2.参数回调**
-
-```js
-function changeSize(size){
-        return function(){
-            document.body.style.fontSize = size + 'px';
-        };
-    }
-
-    var size12 = changeSize(12);
-    ocument.getElementById('size-12').onclick = size12;
-```
-
-### **3.封装变量**
-
-```js
-//用闭包定义能访问私有函数和私有变量的公有函数。
-    var counter = (function(){
-        var privateCounter = 0; //私有变量
-        function change(val){
-            privateCounter += val;
-        }
-        return {
-            increment:function(){   //三个闭包共享一个词法环境
-                change(1);
-            },
-            decrement:function(){
-                change(-1);
-            },
-            value:function(){
-                return privateCounter;
-            }
-        };
-    })();
-counter.increment();
-counter.increment();//2
-```
-
-闭包相关例子
-
-[闭包例子1](https://cnodejs.org/topic/5d39c5259969a529571d73a8)
-
-
-
 # 原形
 
 js之父在设计js原型、原型链的时候遵从以下**两个准则**
@@ -457,7 +367,7 @@ console.log(Object.prototype.__proto__) // null
 
 这已经是原型链的顶端了，指向null
 
-# JS的7种继承方式
+# 7种继承方式
 
 **前言：**
 
@@ -753,3 +663,162 @@ s1.showName()
 **缺点**：
 
 - 并不是所有的浏览器都支持class关键字
+
+# 闭包
+
+## **定义**
+
+闭包就是能够读取其他函数内部变量的函数
+
+闭包的形成条件是内部函数需要通过外部函数 return 给返回出来，如下例所示：
+
+```js
+function funOne(){    // 外部函数
+    var num = 0;      // 局部变量
+    function funTwo(){   // 内部函数
+        num++;                 
+        return num;
+    }
+    return funTwo;
+}
+var fun = funOne();             // 返回函数 funTwo
+```
+
+首先要理解全局变量和局部变量，函数内部可以读取全局变量，但函数外部无法读取函数内部局部变量。
+
+闭包就是能够读取其他函数内部变量的函数。确定吗？
+
+```js
+function funOne(){    // 外部函数
+    var num = 0;      // 局部变量
+    function funTwo(){   // 内部函数
+        num++; 
+        console.log(num);           
+    }
+     funTwo();
+}
+执行funOne();//不是闭包
+
+function funOne(){    // 外部函数
+    var num = 0;      // 局部变量
+    num++; 
+    return num
+}
+var fun = funOne();
+执行fun;//不是闭包
+```
+
+真正的闭包：闭包是将函数内部和函数外部连接的桥梁。
+
+本质：funOne()的执行结果赋给了全局变量fun,导致的结果是funTwo和num始终在内存中没有回收。
+
+```js
+function funOne(){    // 外部函数
+    var num = 0;      // 局部变量
+    function funTwo(){   // 内部函数
+        num++; 
+        console.log('打印：'+num);           
+        return num;//对于闭包来说，可有可无
+    }
+    return funTwo;
+}
+// funOne()的执行结果是闭包
+var fun = funOne();
+fun()
+
+简化写法：
+function funOne(){    // 外部函数
+    var num = 0;      // 局部变量
+    return function (){   // 内部函数
+        num++; 
+        console.log('打印：'+num);           
+        return num;//对于闭包来说，可有可无
+    }
+}
+var fun = funOne();
+fun()
+```
+
+**闭包拥有自己独立的作用域**
+
+```js
+var fun = funOne();
+var fun2 = funOne();
+fun() // 1
+fun() // 2
+fun() // 3
+fun2() // 1
+fun2() // 2
+```
+
+## 为什么需要闭包
+
+局部变量无法共享和长久保存，而全局变量可能造成变量污染，当我们希望有一种机制既可以长久保存变量，又不会造成全局污染，所有有了闭包。
+
+## **闭包的作用**
+
+- 读取函数内部的变量
+- 让这些变量的值始终保持在内存中
+- 方便调用上下文的局部变量，利于代码封装
+
+## **闭包的使用场景**
+
+**1.闭包结合匿名函数使用，如setTimeout**
+
+```js
+//原生的setTimeout传递的第一个函数不能带参数
+ //通过闭包可以实现传参效果
+    function func(param){
+        return function(){
+            alert(param)
+        }
+    }
+    var f1 = func(1);
+    setTimeout(f1,1000);
+```
+
+**2.参数回调**
+
+```js
+function changeSize(size){
+        return function(){
+            document.body.style.fontSize = size + 'px';
+        };
+    }
+
+    var size12 = changeSize(12);
+    ocument.getElementById('size-12').onclick = size12;
+```
+
+**3.封装变量**
+
+```js
+//用闭包定义能访问私有函数和私有变量的公有函数。
+    var counter = (function(){
+        var privateCounter = 0; //私有变量
+        function change(val){
+            privateCounter += val;
+        }
+        return {
+            increment:function(){   //三个闭包共享一个词法环境
+                change(1);
+            },
+            decrement:function(){
+                change(-1);
+            },
+            value:function(){
+                return privateCounter;
+            }
+        };
+    })();
+counter.increment();
+counter.increment();//2
+```
+
+闭包相关例子
+
+[闭包例子1](https://cnodejs.org/topic/5d39c5259969a529571d73a8)
+
+
+
+# 

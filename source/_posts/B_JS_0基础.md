@@ -19,470 +19,7 @@ toc: true # 是否启用内容索引
 
 - Null表示的是：“定义了但是为空”,判空：if(a)
 
-# 三大山-原型和原型链
-
-# 三大山-作用域和闭包
-
-## 作用域-变量提升
-
-var上升为全局，let是块级作用域，作用于当前。
-
-- var：声明提升，没有局部作用域，声明覆盖
-- let:
-
-```
-    for(var i =0;i<5;i++){
-        setTimeout(()=>{
-            console.log('var的事件循环机制:',i);// 输出55555
-        },500)
-    }
-    for(let j =0;j<5;j++){
-        setTimeout(()=>{
-            console.log('let的块级作用域：',j);// 输出01234
-        },500)
-    }
-```
-
-## 作用域-VO/AO/GO
-
-JS有两个特性，一个是单线程，一个是解释性语言。
-
-JS运行步骤：1.语法分析2.预编译3.解释执行
-
-函数执行四部曲：
-
-1.创建AO对象，供js引擎自己去访问
-
-activation object （活跃对象/执行期上下文）
-
-2.找变量和形参的声明，作为AO对象的属性名，值是undefined
-
-3.实参和形参相统一，实参赋值给形参
-
-4.找函数声明(注意不是函数表达式)，会覆盖变量的声明。
-
-```js
-   function fn(a,c){
-console.log(a);//function a(){}
-var a=123;
-console.log(a);//123
-console.log(c);//function c(){}
-function a(){}
-if(false){
-var d= 678;
-}
-console.log(d);//undefined
-console.log(b);//undefined
-var b=function(){}
-console.log(b);//function (){}
-function c(){}
-console.log(c);//function c(){}
-}
-fn(1,2);
-
-AO{
-a:undefined,1,function a(){}
-c:undefined,2,function c(){}
-d:undefined,
-b:undefined,
-}
-```
-
-## 闭包-作用:保存和保护
-
-1.先要说到作用域和作用域链，即AO和GO
-
-js代码在预编译阶段，会有一个AO函数作用域和GO全局作用域。
-
-AO是指函数作用域，GO是指全局作用域。
-
-```js
-function a(){
-    var aa=111;
-    function b(){
-        var bb=22;
-        console.log(aa)
-    }
-    return  b;
-}
-var t=a();
-
-var a = 0, b = 0;
-function A(a) {
-  A = function (b) {
-    alert(a + b++);
-  };
-  alert(a++);
-}
-A(1);
-A(2); // ‘1’，‘4’
-```
-
-a的作用域scope：scope[0]=AO{aa,function b},scope[1]=GO{function a}
-
-b的作用域scope:scope[0]=AO{bb},scope[1]=AO{aa,function b},scope[2]=GO{function a}
-
-通俗理解：**闭包函数(被包裹的函数)中必须要使用到外部函数中的变量**
-
-优点：1.读取函数内部变量；2.让这些变量的值始终保持在内存中，不会在f1调用后被自动清除；
-
-缺点：滥用闭包导致内存泄漏，能不用尽量不用，即时释放内存。（闭包会加深作用域链，加长变量查找时间）
-
-场景：setTimeout的函数携带参数；回调；变量封装
-
-## 深浅拷贝
-
-var obj={}
-
-obj存放在栈内存中，{}实例存在在堆中。
-
-```
-//example 1
-let a={}, b='0', c=0;
-a[b]='珠峰';
-a[c]='培训';
-console.log(a[b]); // '培训', 对象的key数字和字符串等效
-
-// ---------------------
-//example 2
-let a={}, b=Symbol('1'), c=Symbol('1');
-a[b]='珠峰';
-a[c]='培训';
-console.log(a[b]); // '珠峰', Symbol的特点，都是唯一的
-
-// ---------------------
-//example 3
-let a={}, b={n:'1'}, c={m:'2'};
-a[b]='珠峰';
-a[c]='培训';
-console.log(a[b]); // '培训', key会转化成字符串[Obejct object]
-```
-
-**赋值、浅拷贝、深拷贝**
-
-赋值：把一个对象赋给一个新变量，赋的其实是该对象在栈中的地址，所有值都会相互影响
-
-浅拷贝：重新在堆中创建内存，拷贝后的基本数据类型不影响，但是引用类型属性是相互影响共用
-
-深拷贝：重新在堆中创建内存，所有值都不相互影响
-
-```js
-//赋值，全部影响
-var person={
-    name:'jack',
-    play:['篮球','足球']
-}
-var person2 =person;
-person2.name='lucy';
-person2.play[0]='爵士';
-console.log(person);
-console.log(person2);
-```
-
-```js
-//浅拷贝，基本类型不影响，引用类型数据共用
-var person={
-    name:'jack',
-    play:['篮球','足球']
-}
-function qian(obj){
-var target={};
-for(var key in obj){
-    if(obj.hasOwnProperty(key)){
-        target[key]= obj[key];
-    }
-}
-return target;
-}
-var person2 =qian(person);
-person2.name='lucy';
-person2.play[0]='爵士';
-console.log(person);
-console.log(person2);
-```
-
-```js
-//深拷贝，所有数据不影响
-var person={
-    name:'jack',
-    play:['篮球','足球'],
-    date:new RegExp('\\w+'),
-    function(){}
-}
-function deep(obj){
-var target={};
-if(obj === null) return obj;
-if(obj instanceof Date)return new Date(obj);// a instanceof b一句话表示:b的prototypey在a的原型链上
-if(obj instanceof RegExp)return new RegExp(obj);
-if(typeof obj !== 'object')return obj;
-for(var key in obj){
-    if(obj.hasOwnProperty(key)){
-        target[key]= deep(obj[key]);
-    }
-}
-return target;
-}
-var person2 =deep(person);
-person2.name='lucy';
-person2.play[0]='爵士';
-console.log(person);
-console.log(person2);
-```
-
-JSON.parse()对于正则和函数无法拷贝
-
-**浅拷贝的实现方式**
-
-Object.assign()
-
-...扩展运算符
-
-lodash clone
-
-**深拷贝的实现**
-
-$.extend
-
-lodash deepClone
-
-# 三大山-异步和单线程
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### JS高阶编程技巧：惰性函数/柯里化/高阶函数
-
-**JS函数式编程思想**
-
-**1.概述**
-
-中心思想是指：**一个函数的返回值，仅仅依赖于参数的值，而不会因为其他外部的状态而不同。**
-
-我们很难将所有函数都构建成符合函数式编程思维的范式，但如果应用函数式编程，则它的好处主要体现于：
-
-- 引用透明（Referential Transparency）
-- 无副作用（No Side Effect）
-- 无竞争态 (No Race Condition)
-- 惰性求值 (Lazy Evaluation)
-
-**(1)无副作用（no side effects）**
-
-任意一个函数，只要输入是确定的，输出就是确定的，这种**纯函数**称之为没有副作用的。
-
- 函数在表现方式上，我们可以将其区分为 `纯函数` 和 `非纯函数`。他们有以下区分：
-
-```
-纯函数：返回值仅依赖于参数，输入相同的值，便会得到相同的值的函数。
-let seed = 0; // 定义一个外部变量
-// 一个用于求和的函数
-const sum = (x, y) => x + y;
-
-非纯函数：在参数一致的情况下，返回值可能不一致的函数。
-let seed = 0; // 定义一个外部变量
-// 另一个用于求和的函数
-const sum = (x, y) => x + y + (++seed);
-```
-
-```
-纯函数` 和 `非纯函数` 最大的两个不同的表现在于：`副作用性` 和 `引用透明性
-```
-
-`副作用性` 是指，该函数的调用过程中，是否对主函数（调用者）产生了附加影响，例如修改了函数外的变量或参数，我们就认为该函数是 `有副作用` 的函数。
-
-**副作用主要表现于：**
-
-- **I/O 操作**：其结果本身就是无法预估的，因此无法判断给定了的参数，是否能给予我们预期的返回结果；比如接收输入、或者将结果输出。
-- **改变全局变量原有值**，或者**改变参数对象值及其属性**：其执行结果也是带有副作用的。
-- **抛出异常或以错误中止**：函数除了返回一个值之外，还可能发生不太确定的执行结果。
-
-**(2)引用透明**
-
-引用透明（Referential transparency），指的是函数的运行不依赖于外部变量或"状态"，只依赖于输入的参数，任何时候只要参数相同，引用函数所得到的返回值总是相同的。
-
-非纯函数造成的最大的问题，就是其 `不可预知性` 。如果代码比较复杂时，会为我们梳理程序运行逻辑造成一定的困难。因此，在函数式编程思维中，我们应尽可能的确保我们编写的函数是 `纯函数`。
-
-```
-JavaScript内置对象中的 非纯函数有：
-Math.random()
-console.log()
-element.addEventListener()
-Date.now()
-Array.prototype.sort()
-ajax操作等
-```
-
-在一段程序中，我们无法保证所有的函数都是纯函数。但纯函数的覆盖面越大，对于调试、缓存数据及线程安全都会提供越多的便利。有一种说法是，保证80%的函数是纯函数即可。
-
-**(3)数据不可变**
-
-在React中，强调一个组件不能去修改传入的prop值，这遵循了Immutable的原则
-
-```
-let a = 1;
-let b = a + 1;
-=> a = 1  b = 2;
-```
-
-变量b出现，虽然使用了变量a的值，但是没有修改a的值。
-
-再看我们熟悉的react中的代码，假如初始化了this.state = { count: 1 }
-
-```
-componentDidMount() {
-    const newState = { ...state, count: 2 }; // { count: 2 }
-    this.setState(newState);
-}
-```
-
-虽然我们使用了this.state，但是没有修改this.state的引用地址和直接修改count的值，对待this.props也一样。
-
-React官网中给出三点好处：
-
-- 简化复杂的功能
-
-不可变性使得复杂的特性更容易实现。
-
-- 跟踪数据的改变
-
-如果直接修改数据，那么就很难跟踪到数据的改变。跟踪数据的改变需要可变对象可以与改变之前的版本进行对比，这样整个对象树都需要被遍历一次。
-
-跟踪不可变数据的变化相对来说就容易多了。如果发现对象变成了一个新对象，那么我们就可以说对象发生改变了。
-
-- 确定在 React 中何时重新渲染
-
-不可变性最主要的优势在于它可以帮助我们在 React 中创建 pure components。我们可以很轻松的确定不可变数据是否发生了改变，从而确定何时对组件进行重新渲染。
-
-
-
-- 纯函数
-- 柯里化
-- 高阶函数
-
-**1.尾调用**
-
-**PS:ES6尾调用优化只能在严格模式下使用，详见[尾调用优化 阮一峰](https://link.jianshu.com/?t=http%3A%2F%2Fwww.ruanyifeng.com%2Fblog%2F2015%2F04%2Ftail-call.html)**
-
-**定义：**某个函数的最后一步是调用另一个函数。
-
-```
-function f(x){
-  return g(x);
-}//尾调用
-// 情况一 非尾调用
-function f(x){
-  let y = g(x);
-  return y;
-}
-// 情况二 非尾调用
-function f(x){
-  return g(x) + 1;
-}
-//尾调用不一定出现在函数尾部，只要是最后一步操作即可。
-    function f(x) {
-  if (x > 0) {
-    return m(x)
-  }
-  return n(x);
-}
-```
-
-(1)尾调用优化（Tail call optimization）
-
-如图所示，函数调用会在内存形成[调用栈（call stack）](https://link.jianshu.com?t=http%3A%2F%2Fzh.wikipedia.org%2Fwiki%2F%E8%B0%83%E7%94%A8%E6%A0%88)，尾调用由于是函数的最后一步操作，所以不需要保留外层函数的调用记录，因为调用位置、内部变量等信息都不会再用到了，只要直接用内层函数的调用记录，取代外层函数的调用记录就可以了。
-
-**优点：**减小调用栈，节省内存使用。
-
-![image-20220114072242443](/img/image-20220114072242443.png)
-
-```
-function f() {
-  let m = 1;
-  let n = 2;
-  return g(m + n);
-}
-f();
-// 等同于
-function f() {
-  return g(3);
-}
-f();
-// 等同于
-g(3);
-```
-
-(2)尾递归
-
-**定义：**尾调用自身。
- "尾调用优化"对递归操作意义重大。ES6中第一次明确规定，所有 ECMAScript 的实现，都必须部署"尾调用优化"。这就是说，在 ES6 中，只要使用尾递归（在严格模式下），就不会发生栈溢出，相对节省内存
-
-**2.柯里化**
-
-**柯里化是把多参数的函数转换成少参数的函数的过程。**
-
-```
-function sum(a) {
-  return function (b) {
-    return function(c) {
-        return a + b + c;
-        } 
-    }
-}
-// 调用
-let sum1 = sum(1);
-let sum2 = sum1(2);
-sum2(3); // 6
-```
-
-高阶柯里化：
-
-```
-function curry(func) {
-  return function curried(...args) {
-    if (args.length >= func.length) {
-      return func.apply(this, args);
-    } else {
-      return function(...args2) {
-        return curried.apply(this, args.concat(args2));
-      }
-    }
-  };
-}
-
-function sum(a, b, c) {
-  return a + b + c;
-}
-
-let curriedSum = curry(sum);
-let cu1 = curriedSum(1)
-alert( curriedSum( 1,2, 3) );// 6 任意柯里化
-alert( cu1( 2, 3) );// 6 任意柯里化
-```
-
-当我们运行它时，这里有两个 `if` 执行分支：
-
-1. 现在调用：如果传入的 `args` 长度与原始函数所定义的（`func.length`）相同或者更长，那么只需要将调用传递给它即可。
-2. 获取一个偏函数：否则，`func` 还没有被调用。取而代之的是，返回另一个包装器 `pass`，它将重新应用 `curried`，将之前传入的参数与新的参数一起传入。然后，在一个新的调用中，再次，我们将获得一个新的偏函数（如果参数不足的话），或者最终的结果。
-
-例如，让我们看看 `sum(a, b, c)` 这个例子。它有三个参数，所以 `sum.length = 3`。
-
-对于调用 `curried(1)(2)(3)`：
-
-1. 第一个调用 `curried(1)` 将 `1` 保存在词法环境中，然后返回一个包装器 `pass`。
-2. 包装器 `pass` 被调用，参数为 `(2)`：它会获取之前的参数 `(1)`，将它与得到的 `(2)` 连在一起，并一起调用 `curried(1, 2)`。由于参数数量仍小于 3，`curry` 函数依然会返回 `pass`。
-3. 包装器 `pass` 再次被调用，参数为 `(3)`，在接下来的调用中，`pass(3)` 会获取之前的参数 (`1`, `2`) 并将 `3` 与之合并，执行调用 `curried(1, 2, 3)` — 最终有 `3` 个参数，它们被传入最原始的函数中
-
-### 模块化思想
+## 模块化思想
 
 > **(1)CommonJS规范---cjs**
 
@@ -544,15 +81,216 @@ CommonJS和es6区别
 - 关于模块顶层的`this`指向问题，在CommonJS顶层，`this`指向当前模块；而在ES6模块中，`this`指向`undefined`；
 ```
 
-## 三大山-面向对象和this处理
+## slice(),splice()两种方法
 
-### 单例设计模式
+slice(start,end)有两个参数(start必需,end选填),都是索引,返回值不包括end,**不改变原数组**
 
-### constructor构造函数模式
+```
+var heroes=["0",'1','2','3','4'];
+console.log(heroes.slice(1,4))//  [ "1", "2", "3" ]开始索引为1 结束索引为4(不包括4)
+console.log(heroes)// 不改变原数组  ["0",'1','2','3','4']
+```
 
-### 类和实例
+splice(index,howmany,item1...itemX)只返回被删除的数据,类型为数组(**改变原数组**)
 
-### 原形和原型链
+```
+var heroes=["0",'1','2','3','4'];
+console.log(heroes.splice(1,2))//  [ "1", "2"]开始索引为1 删除2个元素
+console.log(heroes)// 不改变原数组  ["0",'3','4']
+```
+
+## typeof 与 instanceof 区别
+
+6种基本数据类型：string,Number,boolean,undefined,null,symbol,其他类型如object,function,Array等
+
+- `typeof`会返回一个变量的基本类型，typeof '1' // 'string'
+- `instanceof` 可以准确地判断复杂引用数据类型，[1] instanceof Array //true
+
+其中instance原理参考：
+
+```
+function myInstanceof(left, right) {
+    // 这里先用typeof来判断基础数据类型，如果是，直接返回false
+    if(typeof left !== 'object' || left === null) return false;
+    // getProtypeOf是Object对象自带的API，能够拿到参数的原型对象
+    let proto = Object.getPrototypeOf(left);
+    while(true) {                  
+        if(proto === null) return false;
+        if(proto === right.prototype) return true;//找到相同原型对象，返回true
+        proto = Object.getPrototypeof(proto);
+    }
+}
+```
+
+终极检查数据类型工具
+
+```
+Object.prototype.toString({})       // "[object Object]"
+Object.prototype.toString.call({})  // 同上结果，加上call也ok
+Object.prototype.toString.call(1)    // "[object Number]"
+Object.prototype.toString.call('1')  // "[object String]"
+Object.prototype.toString.call(true)  // "[object Boolean]"
+Object.prototype.toString.call(function(){})  // "[object Function]"
+Object.prototype.toString.call(null)   //"[object Null]"
+Object.prototype.toString.call(undefined) //"[object Undefined]"
+Object.prototype.toString.call(/123/g)    //"[object RegExp]"
+Object.prototype.toString.call(new Date()) //"[object Date]"
+Object.prototype.toString.call([])       //"[object Array]"
+Object.prototype.toString.call(document)  //"[object HTMLDocument]"
+Object.prototype.toString.call(window)   //"[object Window]"
+
+function getType(obj){
+  let type  = typeof obj;
+  if (type !== "object") {    // 先进行typeof判断，如果是基础数据类型，直接返回
+    return type;
+  }
+  // 对于typeof返回结果是object的，再进行如下的判断，正则返回结果
+  return Object.prototype.toString.call(obj).replace(/^\[object (\S+)\]$/, '$1'); 
+}
+getType('123')  // "string"
+```
+
+## JS对象的两类属性
+
+第一类属性，数据属性具有四个特征
+
+- value：就是属性的值。
+- writable：决定属性能否被赋值。
+- enumerable：决定for in能否枚举该属性。
+- configurable：决定该属性能否被删除或者改变特征值。
+
+第二类属性是访问器（getter/setter）属性，它也有四个特征。
+
+- getter：函数或undefined，在取属性值时被调用。
+- setter：函数或undefined，在设置属性值时被调用。
+- enumerable：决定for in能否枚举该属性。
+- configurable：决定该属性能否被删除或者改变特征值。
+
+## JavaScript、ES5、ES6
+
+**什么是JavaScript**
+
+JavaScript一种动态类型、弱类型、基于原型的客户端脚本语言，用来给HTML网页增加动态功能
+
+JavaScript由三部分组成：
+
+- ECMAScript（核心）
+- DOM（文档对象模型）
+- BOM （浏览器对象模型）
+
+> 1.ECMAScript（核心）
+
+作为核心，它规定了语言的组成部分：语法、类型、语句、关键字、保留字、操作符、对象
+
+> 2.DOM（文档对象模型）
+
+DOM把整个页面映射为一个多层节点结果，开发人员可借助DOM提供的API，轻松地删除、添加、替换或修改任何节点。
+
+PS：DOM也有级别，分为DOM1、DOM2、DOM3，拓展不少规范和新接口。
+
+> 3.BOM （浏览器对象模型）
+
+支持可以访问和操作浏览器窗口的浏览器对象模型，开发人员可以控制浏览器显示的页面以外的部分。
+
+PS：BOM未形成规范
+
+**什么是ES5**
+
+作为ECMAScript第五个版本（第四版因为过于复杂废弃了），浏览器支持情况可看第一副图，增加特性如下：
+
+> 1.strict模式
+
+严格模式，限制一些用法，'use strict';
+
+> 2.Array增加方法
+
+增加了every、some 、forEach、filter 、indexOf、lastIndexOf、isArray、map、reduce、reduceRight方法
+
+PS： 还有其他方法 Function.prototype.bind、String.prototype.trim、Date.now
+
+> 3.Object方法
+
+Object.getPrototypeOf
+
+Object.create
+
+Object.getOwnPropertyNames
+
+Object.defineProperty
+
+Object.getOwnPropertyDescriptor
+
+Object.defineProperties
+
+Object.keys
+
+Object.preventExtensions / Object.isExtensible
+
+Object.seal / Object.isSealed
+
+Object.freeze / Object.isFrozen
+
+PS：只讲有什么，不讲是什么。
+
+**什么是ES6**
+
+ECMAScript6在保证向下兼容的前提下，提供大量新特性：
+
+> 1.块级作用域 关键字let, 常量const
+
+> 2.对象字面量的属性赋值简写（property value shorthand）
+
+> 3.赋值解构
+
+> 4.函数参数 - 默认值、参数打包、 数组展开（Default 、Rest 、Spread）
+
+> 5.箭头函数 Arrow functions
+
+(1).简化了代码形式，默认return表达式结果。
+
+(2).自动绑定语义this，即定义函数时的this。如上面例子中，forEach的匿名函数参数中用到的this。
+
+> 6.字符串模板 Template strings
+
+> 7.Iterators（迭代器）+ for..of
+
+迭代器有个next方法，调用会返回：
+
+(1).返回迭代对象的一个元素：{ done: false, value: elem }
+
+(2).如果已到迭代对象的末端：{ done: true, value: retVal }
+
+> 8.生成器 （Generators）
+
+> 9.Class,有constructor、extends、super，但本质上是语法糖（对语言的功能并没有影响，但是更方便程序员使用）
+
+> 10.Modules
+
+ES6的内置模块功能借鉴了CommonJS和AMD各自的优点：
+
+(1).具有CommonJS的精简语法、唯一导出出口(single exports)和循环依赖(cyclic dependencies)的特点。
+
+(2).类似AMD，支持异步加载和可配置的模块加载。
+
+> 11.Map + Set + WeakMap + WeakSet
+
+四种集合类型，WeakMap、WeakSet作为属性键的对象如果没有别的变量在引用它们，则会被回收释放掉。
+
+> 12.Math + Number + String + Array + Object APIs
+
+> 13.Proxy,使用代理（Proxy）监听对象的操作，然后可以做一些相应事情。
+
+可监听的操作： get、set、has、deleteProperty、apply、construct、getOwnPropertyDescriptor、defineProperty、getPrototypeOf、setPrototypeOf、enumerate、ownKeys、preventExtensions、isExtensible。
+
+> 14.Symbols
+
+Symbol是一种基本类型。Symbol 通过调用symbol函数产生，它接收一个可选的名字参数，该函数返回的symbol是唯一的。
+
+> 15.Promises,Promises是处理异步操作的对象，使用了 Promise 对象之后可以用一种链式调用的方式来组织代码，让代码更加直观（类似jQuery的deferred 对象）。
+
+# 三大山-原型和原型链
+
+## 原形和原型链
 
 **1.从属关系**
 
@@ -635,7 +373,7 @@ function Test2(){
 
 test.constructor = Test2
 
-### new运算符的实现机制
+## New运算符的实现机制
 
 - 1：检查类是否已经被加载，运行时常量池中查找该引用所指向的类有没有被加载；
 - 2：为对象分配内存空间，通过类元信息来确定类型和后面需要申请的内存大小；
@@ -693,7 +431,7 @@ function myNew(Con, ...args) {
 }
 ```
 
-### JS的this五种情况的梳理
+## this五种情况的梳理
 
 - 事件绑定
 - 普通函数执行
@@ -783,6 +521,7 @@ b.say();//b 333
       }
       let f= new Fn;
 </script>
+
 
 
 **情况四：箭头函数**
@@ -880,9 +619,7 @@ test2()
 > 3. 如果你要传递的参数很多，则可以用数组将参数整理好调用`fn.apply(thisObj, [arg1, arg2 ...])`
 > 4. 如果你想生成一个新的函数长期绑定某个函数给某个对象使用，则可以使用`const newFn = fn.bind(thisObj); newFn(arg1, arg2...)`
 
-### JS的四大数据类型检查方案
-
-### JS的四大继承方案
+## 四大继承方案
 
 - 原型链继承
 - 构造函数继承
@@ -1008,402 +745,429 @@ car.getCar()
 </script>
 ```
 
+# 三大山-作用域和闭包
 
+## 作用域-变量提升
 
-## 三大山-DOM和BOM及事件处理机制
+var上升为全局，let是块级作用域，作用于当前。
 
-### DOM/BOM的核心操作
-
-### DOM2级事件的核心运行机制
-
-### 事件委托
-
-定义：当事件触发时，把要做的事委托给父元素来处理。
-
-事件传播分成三个阶段：
-
-- 捕获阶段：从window对象传导到目标节点（上层传到底层）称为“捕获阶段”（capture phase），捕获阶段不会响应任何事件；
-- 目标阶段：在目标节点上触发，称为“目标阶段”
-- 冒泡阶段：从目标节点传导回window对象（从底层传回上层），称为“冒泡阶段”（bubbling phase）。事件代理即是利用事件冒泡的机制把里层所需要响应的事件绑定到外层；
-
-```js
-document.addEventListener("click", function (event) {
-      var target = event.target;
-      switch (target.id) {
-        case "doSomething":
-          document.title = "事件委托";
-          break;
-        case "goSomewhere":
-          location.href = "http://www.baidu.com";
-          break;
-        case "sayHi": alert("hi");
-          break;
-      }
-    })
-```
-
-使用“事件委托”时，并不是说把事件委托给的元素越靠近顶层就越好。事件冒泡的过程也需要耗时，越靠近顶层，事件的”事件传播链”越长，也就越耗时。
-
-### 事件循环
-
-**1.JavaScript是单线程，非阻塞的**
-
-单线程：JavaScript的主要用途是与用户互动，以及操作DOM。如果它是多线程的会有很多复杂的问题要处理.
-
-非租塞：多线程和异步是通过通过 event loop 实现。
-
-**2.任务类型**
-
-**同步任务**指的是，在主线程上排队执行的任务，只有前一个任务执行完毕，才能执行后一个任务；
-
-**异步任务**指的是，不进入主线程、而进入"任务队列"（task queue）的任务，只有"任务队列"通知主线程，某个异步任务可以执行了，该任务才会进入主线程执行。
-
-异步任务**按照优先级**，又分为微任务和宏任务。
-
-**宏任务**:每次执行栈执行的代码就是一个宏任务（包括每次从事件队列中获取一个事件回调并放到执行栈中执行）
-
-```js
-主代码块
-setTimeout
-setInterval
-postMessage
-MessageChannel
-setImmediate(Node.js 环境)
-script(可以理解为外层同步代码)
-I/O（Node.js）
-UI交互事件
-```
-
-**微任务**：当前宏任务执行结束后立即执行的任务
-
-```js
-Promise.then
-MutationObserver
-Object.observe（已废弃；Proxy 对象替代）
-process.nextTick(Node.js 环境)
-```
-
-**3.Event Loop执行流程**
-
-定义："**Event Loop是一个程序结构，用于等待和发送消息和事件。**
-
-主要涉及**调用栈**(call stack是一个存储函数调用的**栈结构**，遵循**先进后出**的原则)、**宏任务队列**(macrotaskqueue)、**微任务队列**(microtask quene).
-
-**特别强调**：根据规范，**宏任务**的队列可以有多个，而**微任务**队列只能有一个。这个过程中，如果产生新的微任务，是可以加入到微任务队列，但如果产生宏任务，则需要添加到下一个宏任务队列。**与先微任务后宏任务流程一致**
-
-
-
-在一次Tick循环中，执行流程：**当前执行栈即也属于宏任务-当前微任务**-声明的(下一个)宏任务-声明的(下一个)宏任务。。。无限循环
-
-- 执行**一个宏任务**（栈中没有就从事件队列中获取）
-- 执行过程中如果遇到微任务，就将它添加到**微任务的任务队列**中
-- 宏任务执行完毕后，立即执行当前微任务队列中的所有微任务（依次执行）
-- 当前宏任务执行完毕，开始检查渲染，然后GUI线程接管渲染
-- 渲染完毕后，JS线程继续接管，开始**下一个宏任务(主线程中当前执行栈的宏任务就是下一个宏任务，所以当前执行栈总是先执行执行栈，然后微任务，再(下一个)宏任务)**（从事件队列中获取，也就是 callbacke queue）**与先微任务后宏任务流程一致**
-
-![image-20211024222114449](/img/image-20211024222114449.png)
-
-![image-20220123200002149](/img/image-20220123200002149.png)
+- var：声明提升，没有局部作用域，声明覆盖
+- let:
 
 ```
-加强版练习
-console.log('script start')
-async function async1() {
-  await async2()
-  console.log('async1 end')
-}
-async function async2() {
-  console.log('async2 end')
-}
-async1()
-setTimeout(function() {
-  console.log('setTimeout')
-}, 0)
-new Promise(resolve => {
-  console.log('Promise')
-  resolve()
-})
-  .then(function() {
-    console.log('promise1')
-  })
-  .then(function() {
-    console.log('promise2')
-  })
-console.log('script end')
-```
-
-async await 本身就是 promise+generator 的语法糖。所以 await 后面的代码是 microtask。所以对于上面代码中的
-
-```
-async function async1() {
-	console.log('async1 start');
-	await async2();
-	console.log('async1 end');
-}
-等价于
-async function async1() {
-	console.log('async1 start');
-	Promise.resolve(async2()).then(() => {
-                console.log('async1 end');
-        })
-}
-```
-
-总结：
-
-- 微任务队列优先于宏任务队列执行；
-- 微任务队列上创建的宏任务会被后添加到当前宏任务队列的尾端；
-- 微任务队列中创建的微任务会被添加到微任务队列的尾端；
-- 只要微任务队列中还有任务，宏任务队列就只会等待微任务队列执行完毕后再执行；
-- 只有运行完 `await` 语句，才把 `await` 语句后面的全部代码加入到微任务行列；
-
-## 节流和防抖
-
-**本质上是优化高频率执行代码的一种手段**
-
-- 节流: n 秒内只运行一次，若在 n 秒内重复触发，只有一次生效
-
-- 防抖: n 秒后在执行该事件，若在 n 秒内被重复触发，则重新计时
-
-  一个经典的比喻:
-
-  想象每天上班大厦底下的电梯。把电梯完成一次运送，类比为一次函数的执行和响应
-
-  假设电梯有两种运行策略 `debounce` 和 `throttle`，超时设定为15秒，不考虑容量限制
-
-  电梯第一个人进来后，15秒后准时运送一次，这是**节流**
-
-  电梯第一个人进来后，等待15秒。如果过程中又有人进来，15秒等待重新计时，直到15秒后开始运送，这是**防抖**
-
-  **节流**
-
-  完成节流可以使用**时间戳与定时器**的写法
-
-  使用时间戳写法，事件会立即执行，停止触发后没有办法再次执行
-
-  ```js
-  function throttled1(fn, delay = 500) {
-      let oldtime = Date.now()
-      return function (...args) {
-          let newtime = Date.now()
-          if (newtime - oldtime >= delay) {
-              fn.apply(null, args)
-              oldtime = Date.now()
-          }
-      }
-  }
-  ```
-
-  使用定时器写法，`delay`毫秒后第一次执行，第二次事件停止触发后依然会再一次执行
-
-  ```js
-  function throttled2(fn, delay = 500) {
-      let timer = null
-      return function (...args) {
-          if (!timer) {
-              timer = setTimeout(() => {
-                  fn.apply(this, args)
-                  timer = null
-              }, delay);
-        }
-      }
-  }
-  ```
-
-  可以将时间戳写法的特性与定时器写法的特性相结合，实现一个更加精确的节流。实现如下
-
-  ```js
-  function throttled(fn, delay) {
-      let timer = null
-      let starttime = Date.now()
-      return function () {
-          let curTime = Date.now() // 当前时间
-          let remaining = delay - (curTime - starttime)  // 从上一次到现在，还剩下多少多余时间
-          let context = this
-          let args = arguments
-          clearTimeout(timer)
-          if (remaining <= 0) {
-              fn.apply(context, args)
-              starttime = Date.now()
-        } else {
-              timer = setTimeout(fn, remaining);
-        }
-      }
-  }
-  ```
-
-**防抖**
-
-  简单版本
-
-  ```js
-  function debounce(func, wait) {
-      let timeout;
-  return function () {
-      let context = this; // 保存this指向
-      let args = arguments; // 拿到event对象
-      clearTimeout(timeout)
-    timeout = setTimeout(function(){
-          func.apply(context, args)
-    }, wait);
-  }
+    for(var i =0;i<5;i++){
+        setTimeout(()=>{
+            console.log('var的事件循环机制:',i);// 输出55555
+        },500)
     }
-  ```
-
-  防抖如果需要立即执行，可加入第三个参数用于判断，实现如下：
-
-  ```js
-  function debounce(func, wait, immediate) {
-  let timeout;
-  return function () {
-      let context = this;
-      let args = arguments;
-      if (timeout) clearTimeout(timeout); // timeout 不为null
-      if (immediate) {
-          let callNow = !timeout; // 第一次会立即执行，以后只有事件执行后才会再次触发
-          timeout = setTimeout(function () {
-              timeout = null;
-          }, wait)
-          if (callNow) {
-              func.apply(context, args)
-          }
-      }
-      else {
-        timeout = setTimeout(function () {
-              func.apply(context, args)
-        }, wait);
-      }
-}
-  }
-  ```
-
-  **区别**
-
-  相同点：
-
-  - 都可以通过使用 `setTimeout` 实现
-  - 目的都是，降低回调执行频率。节省计算资源
-
-  不同点：
-
-  - 函数防抖，在一段连续操作结束后，处理回调，利用`clearTimeout `和 `setTimeout`实现。函数节流，在一段连续操作中，每一段时间只执行一次，频率较高的事件中使用来提高性能
-
-- 函数防抖关注一定时间连续触发的事件，只在最后执行一次，而函数节流一段时间内只执行一次
-
-  **应用场景**
-
-防抖在连续的事件，只需触发一次回调的场景有：
-
-- 搜索框搜索输入。只需用户最后一次输入完，再发送请求
-
-  - 手机号、邮箱验证输入检测
-  - 窗口大小`resize`。只需窗口调整完成后，计算窗口大小。防止重复渲染。
-
-  节流在间隔一段时间执行一次回调的场景有：
-
-  - 滚动加载，加载更多或滚到底部监听
-  - 搜索框，搜索联想功能
-
-## Ajax原理
-
-`AJAX`全称(Async Javascript and XML)即异步的`JavaScript` 和`XML`，是一种创建交互式网页应用的网页开发技术，可以在不重新加载整个网页的情况下，与服务器交换数据，并且更新部分网页.
-
-```
-(1)创建对象
-
-var xhr = new XMLHttpRequest();
-
-(2)打开请求
-
-xhr.open('GET', 'example.txt', true);
-
-(3)发送请求
-
-xhr.send(); 发送请求到服务器
-
-(4)接收响应
-
-xhr.onreadystatechange =function(){}
-
-(1)当readystate值从一个值变为另一个值时，都会触发readystatechange事件。
-
-(2)当readystate==4时，表示已经接收到全部响应数据。
-
-(3)当status ==200时，表示服务器成功返回页面和数据。
-
-(4)如果(2)和(3)内容同时满足，则可以通过xhr.responseText，获得服务器返回的内容。
-```
-
-**服务器响应处理**
-
-同步处理
-
-```
-	1. xhr.open("GET","info.txt",false);  
-	2. xhr.send();  
-	3. document.getElementById("myDiv").innerHTML=xhr.responseText; //获取数据直接显示在页面上
-```
-
-异步处理
-
-```
-	1. xhr.onreadystatechange=function()  { 
-	2.    if (xhr.readyState==4 &&xhr.status==200)  { 
-	3.       document.getElementById("myDiv").innerHTML=xhr.responseText;  
-	4.      }
-	5.    } 
-```
-
-什么是**readyState**？
-
-readyState是XMLHttpRequest对象的一个属性，用来标识当前XMLHttpRequest对象处于什么状态。 readyState总共有5个状态值，分别为0~4，每个值代表了不同的含义。
-
-0：未初始化 -- 尚未调用.open()方法；
-
-1：启动 -- 已经调用.open()方法，但尚未调用.send()方法；
-
-2：发送 -- 已经调用.send()方法，但尚未接收到响应；
-
-3：接收 -- 已经接收到部分响应数据；
-
-4：完成 -- 已经接收到全部响应数据，而且已经可以在客户端使用了；
-
-**什么是status？**
-
-1：服务器收到请求
-
-2：成功
-
-3：重定向
-
-4：客户端错误
-
-5：服务端错误
-
-setTimeout模拟setInterval
-
-背景：
-
-某些间隔会被跳过（丢帧现象）
-定时器之间的间隔会比预期小
-
-核心思想：递归调用+闭包
-
-```
-function mySetInterval(func,millisecond){
-//使用闭包，如果没有闭包，则没办法递归调用下去
-    function inside(){
-    	func();
-		setTimeout(inside,millisecond);
+    for(let j =0;j<5;j++){
+        setTimeout(()=>{
+            console.log('let的块级作用域：',j);// 输出01234
+        },500)
     }
-    // 如果是inside();则没有人任务队列的概念，第一次就会立即执行
-    setTimeout(inside,millisecond);
-}
+```
 
-mySetInterval(like,100);
-function like(){
-console.log(1)
+## 作用域-VO/AO/GO
+
+JS有两个特性，一个是单线程，一个是解释性语言。
+
+JS运行步骤：1.语法分析2.预编译3.解释执行
+
+函数执行四部曲：
+
+1.创建AO对象，供js引擎自己去访问
+
+activation object （活跃对象/执行期上下文）
+
+2.找变量和形参的声明，作为AO对象的属性名，值是undefined
+
+3.实参和形参相统一，实参赋值给形参
+
+4.找函数声明(注意不是函数表达式)，会覆盖变量的声明。
+
+```js
+   function fn(a,c){
+console.log(a);//function a(){}
+var a=123;
+console.log(a);//123
+console.log(c);//function c(){}
+function a(){}
+if(false){
+var d= 678;
 }
+console.log(d);//undefined
+console.log(b);//undefined
+var b=function(){}
+console.log(b);//function (){}
+function c(){}
+console.log(c);//function c(){}
+}
+fn(1,2);
+
+AO{
+a:undefined,1,function a(){}
+c:undefined,2,function c(){}
+d:undefined,
+b:undefined,
+}
+```
+
+## 作用域链
+
+再说第三个fun函数之前需要先说下，在*函数表达式*内部能不能访问存放当前函数的变量。  **测试1，对象内部的函数表达式：**
+
+```
+var o={
+  fn:function (){
+    console.log(fn);
+  }
+};
+o.fn();//ERROR报错
+```
+
+**测试2，非对象内部的函数表达式：**
+
+```
+var fn=function (){
+  console.log(fn);
+};
+fn();//function (){console.log(fn);};正确
+```
+
+结论是：使用var或是非对象内部的函数表达式内，可以访问到存放当前函数的变量；在对象内部的不能访问到。 原因也非常简单，因为**函数作用域链**的问题，采用var的是在外部创建了一个fn变量，函数内部当然可以在内部寻找不到fn后向上册作用域查找fn，而在创建对象内部时，因为没有在函数作用域内创建fn，所以无法访问。  所以综上所述，可以得知，**最内层的return出去的fun函数不是第二层fun函数，是最外层的fun函数**。 所以，三个fun函数的关系也理清楚了，第一个等于第三个，他们都不等于第二个。  
+
+**到底在调用哪个函数？**
+
+再看下原题，现在知道了程序中有两个fun函数(第一个和第三个相同)，遂接下来的问题是搞清楚，运行时他执行的是哪个fun函数？
+
+```
+function fun(n,o) {
+  console.log(o)
+  return {
+    fun:function(m){
+      return fun(m,n);
+    }
+  };
+}
+var a = fun(0);  a.fun(1);  a.fun(2);  a.fun(3);//undefined,?,?,?
+var b = fun(0).fun(1).fun(2).fun(3);//undefined,?,?,?
+var c = fun(0).fun(1);  c.fun(2);  c.fun(3);//undefined,?,?,?
+//问:三行a,b,c的输出分别是什么？
+```
+
+ **1、第一行a**
+
+```
+var a = fun(0);  a.fun(1);  a.fun(2);  a.fun(3);
+```
+
+> 可以得知，第一个fun(0)是在调用**第一层fun函数**。第二个fun(1)是在调用前一个fun的返回值的fun函数，所以： 第后面几个fun(1),fun(2),fun(3),函数都是在调用**第二层fun函数**。 遂： 在第一次调用fun(0)时，o为undefined； 第二次调用fun(1)时m为1，此时fun闭包了外层函数的n，也就是第一次调用的n=0，即m=1，n=0，并在内部调用第一层fun函数fun(1,0);所以o为0； 第三次调用fun(2)时m为2，但依然是调用a.fun，所以还是闭包了第一次调用时的n，所以内部调用第一层的fun(2,0);所以o为0 第四次同理； 即：最终答案为undefined,0,0,0  
+
+**2、第二行b**
+
+```
+var b = fun(0).fun(1).fun(2).fun(3);//undefined,?,?,?
+```
+
+> 先从fun(0)开始看，肯定是调用的第一层fun函数；而他的返回值是一个对象，所以第二个fun(1)调用的是第二层fun函数，后面几个也是调用的第二层fun函数。 遂： 在第一次调用第一层fun(0)时，o为undefined； 第二次调用 .fun(1)时m为1，此时fun闭包了外层函数的n，也就是第一次调用的n=0，即m=1，n=0，并在内部调用第一层fun函数fun(1,0);所以o为0； 第三次调用 .fun(2)时m为2，此时当前的fun函数不是第一次执行的返回对象，而是**第二次执行的返回对象**。而在第二次执行第一层fun函数时时(1,0)所以n=1,o=0,返回时闭包了第二次的n，遂在第三次调用第三层fun函数时m=2,n=1，即调用第一层fun函数fun(2,1)，所以o为1； 第四次调用 .fun(3)时m为3，闭包了第三次调用的n，同理，最终调用第一层fun函数为fun(3,2)；所以o为2； 即最终答案：undefined,0,1,2  
+
+**3、第三行c**
+
+```
+var c = fun(0).fun(1);  c.fun(2);  c.fun(3);//undefined,?,?,?
+```
+
+> 根据前面两个例子，可以得知： fun(0)为执行第一层fun函数，.fun(1)执行的是fun(0)返回的第二层fun函数，这里语句结束，遂c存放的是fun(1)的返回值，而不是fun(0)的返回值，所以c中闭包的也是fun(1)第二次执行的n的值。c.fun(2)执行的是fun(1)返回的第二层fun函数，c.fun(3)执行的**也**是fun(1)返回的第二层fun函数。 遂： 在第一次调用第一层fun(0)时，o为undefined； 第二次调用 .fun(1)时m为1，此时fun闭包了外层函数的n，也就是第一次调用的n=0，即m=1，n=0，并在内部调用第一层fun函数fun(1,0);所以o为0； 第三次调用 .fun(2)时m为2，此时fun闭包的是第二次调用的n=1，即m=2，n=1，并在内部调用第一层fun函数fun(2,1);所以o为1； 第四次.fun(3)时同理，但依然是调用的第二次的返回值，遂最终调用第一层fun函数fun(3,1)，所以o还为1 即最终答案：undefined,0,1,1  
+
+## 闭包-作用:保存和保护
+
+1.先要说到作用域和作用域链，即AO和GO
+
+js代码在预编译阶段，会有一个AO函数作用域和GO全局作用域。
+
+AO是指函数作用域，GO是指全局作用域。
+
+```js
+function a(){
+    var aa=111;
+    function b(){
+        var bb=22;
+        console.log(aa)
+    }
+    return  b;
+}
+var t=a();
+
+var a = 0, b = 0;
+function A(a) {
+  A = function (b) {
+    alert(a + b++);
+  };
+  alert(a++);
+}
+A(1);
+A(2); // ‘1’，‘4’
+```
+
+a的作用域scope：scope[0]=AO{aa,function b},scope[1]=GO{function a}
+
+b的作用域scope:scope[0]=AO{bb},scope[1]=AO{aa,function b},scope[2]=GO{function a}
+
+通俗理解：**闭包函数(被包裹的函数)中必须要使用到外部函数中的变量**
+
+优点：1.读取函数内部变量；2.让这些变量的值始终保持在内存中，不会在f1调用后被自动清除；
+
+缺点：滥用闭包导致内存泄漏，能不用尽量不用，即时释放内存。（闭包会加深作用域链，加长变量查找时间）
+
+场景：setTimeout的函数携带参数；回调；变量封装
+
+## 奇葩的JS闭包面试题
+
+```
+function fun(n,o) {
+  console.log(o)
+  return {
+    fun:function(m){
+      return fun(m,n);
+    }
+  };
+}
+var a = fun(0);  a.fun(1);  a.fun(2);  a.fun(3);//undefined,?,?,?
+var b = fun(0).fun(1).fun(2).fun(3);//undefined,?,?,?
+var c = fun(0).fun(1);  c.fun(2);  c.fun(3);//undefined,?,?,?
+```
+
+ 这是一道非常典型的JS闭包问题。其中嵌套了三层fun函数，搞清楚每层fun的函数是那个fun函数尤为重要。 可以先在纸上或其他地方写下你认为的结果，然后展开看看正确答案是什么？
+
+```
+//答案：
+//a: undefined,0,0,0
+//b: undefined,0,1,2
+//c: undefined,0,1,1
+```
+
+## 深浅拷贝
+
+var obj={}
+
+obj存放在栈内存中，{}实例存在在堆中。
+
+```
+//example 1
+let a={}, b='0', c=0;
+a[b]='珠峰';
+a[c]='培训';
+console.log(a[b]); // '培训', 对象的key数字和字符串等效
+
+// ---------------------
+//example 2
+let a={}, b=Symbol('1'), c=Symbol('1');
+a[b]='珠峰';
+a[c]='培训';
+console.log(a[b]); // '珠峰', Symbol的特点，都是唯一的
+
+// ---------------------
+//example 3
+let a={}, b={n:'1'}, c={m:'2'};
+a[b]='珠峰';
+a[c]='培训';
+console.log(a[b]); // '培训', key会转化成字符串[Obejct object]
+```
+
+**赋值、浅拷贝、深拷贝**
+
+赋值：把一个对象赋给一个新变量，赋的其实是该对象在栈中的地址，所有值都会相互影响
+
+浅拷贝：重新在堆中创建内存，拷贝后的基本数据类型不影响，但是引用类型属性是相互影响共用
+
+深拷贝：重新在堆中创建内存，所有值都不相互影响
+
+```js
+//赋值，全部影响
+var person={
+    name:'jack',
+    play:['篮球','足球']
+}
+var person2 =person;
+person2.name='lucy';
+person2.play[0]='爵士';
+console.log(person);
+console.log(person2);
+```
+
+```js
+//浅拷贝，基本类型不影响，引用类型数据共用
+var person={
+    name:'jack',
+    play:['篮球','足球']
+}
+function qian(obj){
+var target={};
+for(var key in obj){
+    if(obj.hasOwnProperty(key)){
+        target[key]= obj[key];
+    }
+}
+return target;
+}
+var person2 =qian(person);
+person2.name='lucy';
+person2.play[0]='爵士';
+console.log(person);
+console.log(person2);
+```
+
+```js
+//深拷贝，所有数据不影响
+var person={
+    name:'jack',
+    play:['篮球','足球'],
+    date:new RegExp('\\w+'),
+    function(){}
+}
+function deep(obj){
+var target={};
+if(obj === null) return obj;
+if(obj instanceof Date)return new Date(obj);// a instanceof b一句话表示:b的prototypey在a的原型链上
+if(obj instanceof RegExp)return new RegExp(obj);
+if(typeof obj !== 'object')return obj;
+for(var key in obj){
+    if(obj.hasOwnProperty(key)){
+        target[key]= deep(obj[key]);
+    }
+}
+return target;
+}
+var person2 =deep(person);
+person2.name='lucy';
+person2.play[0]='爵士';
+console.log(person);
+console.log(person2);
+```
+
+JSON.parse()对于正则和函数无法拷贝
+
+**浅拷贝的实现方式**
+
+Object.assign()
+
+...扩展运算符
+
+lodash clone
+
+**深拷贝的实现**
+
+$.extend
+
+lodash deepClone
+
+## **V8引擎**
+
+1.定义
+
+`V8`是一个由`Google`开源的采用`C++`编写的高性能`JavaScript`和`WebAssembly`引擎。
+
+主要工作：
+
+- 编译和执行js代码，即将js代码转换为机器代码；
+- 处理调用栈；
+- 内存分配和垃圾回收；
+
+2.原理
+
+`V8`的内部有很多模块，其中最重要的4个：
+
+- **Parser**解析器:负责将js源代码解析成AST抽象语法树
+- **Interpreter**解释器:负责将AST解释为bytecode字节码文件，同时也有直接解释执行bytecode能力
+- **complier**编译器:负责编译出运行更加高效的机器代码
+- **Orinoco**: 垃圾回收器，负责进行内存空间回收
+
+![image-20211209072317064](/img/image-20211209072317064.png)
+
+(1)AST抽象语法树
+
+![image-20211209072730664](/img/image-20211209072730664.png)
+
+Parser解析器在转换过程中有两个重要的阶段：`词法分析（Lexical Analysis）`和`语法分析（Syntax Analysis）`.
+
+- 词法分析,也称为分词，是将字符串形式的代码转换为标记（token）序列的过程。
+- 语法分析,语法分心是将词法分析产生的`token`按照某种给定的形式文法转换成`AST`的过程。也就是把单词组合成句子的过程.
+
+(2)byteCode
+
+![image-20211209072755682](/img/image-20211209072755682.png)
+
+(3)machine code
+
+![image-20211209072828890](/img/image-20211209072828890.png)
+
+3.V8发展史
+
+(1)早期的V8
+
+早期的版本5.8以前，V8没有解释器，只有2个编译器。
+
+所以流程是这样的：
+
+- 解析器对js解析成AST，**Full-codegen**编译器(也叫基准编译器)对AST编译成机器代码(省去了bytecode，执行效率更高)。
+- 在执行的过程，有分析线程对机器代码进行优化，需要解析器对js解析成AST，**Crankshaft**编译器(也称为优化编译器)对代码进行优化。
+
+```
+优点：省去了bytecode的转化，直接生成更加高效的machine code机器代码.
+
+缺点：V8团队的官方博客这样说,
+a.生成的机器码占用了大量内存
+b.缺少中间层的bytecode，很多性能优化策略无法实施
+c.js引擎无法很好的支持新的语法
+```
+
+![image-20211209073441948](/img/image-20211209073441948.png)
+
+(2)2017年4月新的V8架构
+
+V8团队这样评价新架构：**它代表了V8团队通过实际测量Javascript性能，并仔细研究Full-codegen和Crankshaft的缺点后收集到的共同见解的顶峰**。
+
+所以新的流程是这样的：
+
+- 解析器对js解析成AST，**Igniton**基准解释器解释成bytecode字节码，并执行
+- 执行一段时间后，**TruboFan**优化编译对bytecode字节码优化为更加高效的机器码
+
+有几个优化点：
+
+1.函数**只声明未被调用**，不会被解析成AST
+
+2.函数**只被调用一次**，bytecode直接被解释执行，TruboFan不会进行优化编译
+
+3.函数**被调用多次**，可能被标记为热点函数，可能被编译成机器代码
+
+![image-20211209074403859](/img/image-20211209074403859.png)
+
+(3)新架构的特点
+
+将优化后的bytecode和machine code形成共存的状态。
+
+这里要注意**deoptimization**即回退字节码，即由解释器解释执行。函数类型发生变化时，**Igniton**会检测到变化，会将字节码回退，重新解释为新的字节码。
+
+建议：
+
+1.不要将函数的类型变来变去，尽量保证类型一致，如sum(x,y) x一会是int,一会儿是num
+
+优点：
+
+1.第一次执行，直接使用中间层的字节码，省去了机器码，同时编译器生成字节码的速度远远大于机器码
+
+2.优化线程不需要从源码从新编译，而是从bytecode字节码开始优化就可以了。同时**deoptimization**只需要回退到字节码即可。
+
+优化点：
+
+```
+1.隐藏类（hidden class）
+2.内联缓存（incline caching）
+3.优化 Orinoco
+3.1增量标记 - Incremental marking
+3.2懒性清理 - Lazy sweeping
+3.3并发 - Concurrent
+3.4并行 - Parallel
 ```
 
 ## **垃圾回收算法**
@@ -2042,199 +1806,7 @@ largeObj的第0个元素，被window全局变量x引用着。
 
 (2)在控制台使用ctrl+shift+p打开command menu，输入performance monitor来监听
 
-## **V8引擎**
-
-1.定义
-
-`V8`是一个由`Google`开源的采用`C++`编写的高性能`JavaScript`和`WebAssembly`引擎。
-
-主要工作：
-
-- 编译和执行js代码，即将js代码转换为机器代码；
-- 处理调用栈；
-- 内存分配和垃圾回收；
-
-2.原理
-
-`V8`的内部有很多模块，其中最重要的4个：
-
-- **Parser**解析器:负责将js源代码解析成AST抽象语法树
-- **Interpreter**解释器:负责将AST解释为bytecode字节码文件，同时也有直接解释执行bytecode能力
-- **complier**编译器:负责编译出运行更加高效的机器代码
-- **Orinoco**: 垃圾回收器，负责进行内存空间回收
-
-![image-20211209072317064](/img/image-20211209072317064.png)
-
-(1)AST抽象语法树
-
-![image-20211209072730664](/img/image-20211209072730664.png)
-
-Parser解析器在转换过程中有两个重要的阶段：`词法分析（Lexical Analysis）`和`语法分析（Syntax Analysis）`.
-
-- 词法分析,也称为分词，是将字符串形式的代码转换为标记（token）序列的过程。
-- 语法分析,语法分心是将词法分析产生的`token`按照某种给定的形式文法转换成`AST`的过程。也就是把单词组合成句子的过程.
-
-(2)byteCode
-
-![image-20211209072755682](/img/image-20211209072755682.png)
-
-(3)machine code
-
-![image-20211209072828890](/img/image-20211209072828890.png)
-
-3.V8发展史
-
-(1)早期的V8
-
-早期的版本5.8以前，V8没有解释器，只有2个编译器。
-
-所以流程是这样的：
-
-- 解析器对js解析成AST，**Full-codegen**编译器(也叫基准编译器)对AST编译成机器代码(省去了bytecode，执行效率更高)。
-- 在执行的过程，有分析线程对机器代码进行优化，需要解析器对js解析成AST，**Crankshaft**编译器(也称为优化编译器)对代码进行优化。
-
-```
-优点：省去了bytecode的转化，直接生成更加高效的machine code机器代码.
-
-缺点：V8团队的官方博客这样说,
-a.生成的机器码占用了大量内存
-b.缺少中间层的bytecode，很多性能优化策略无法实施
-c.js引擎无法很好的支持新的语法
-```
-
-![image-20211209073441948](/img/image-20211209073441948.png)
-
-(2)2017年4月新的V8架构
-
-V8团队这样评价新架构：**它代表了V8团队通过实际测量Javascript性能，并仔细研究Full-codegen和Crankshaft的缺点后收集到的共同见解的顶峰**。
-
-所以新的流程是这样的：
-
-- 解析器对js解析成AST，**Igniton**基准解释器解释成bytecode字节码，并执行
-- 执行一段时间后，**TruboFan**优化编译对bytecode字节码优化为更加高效的机器码
-
-有几个优化点：
-
-1.函数**只声明未被调用**，不会被解析成AST
-
-2.函数**只被调用一次**，bytecode直接被解释执行，TruboFan不会进行优化编译
-
-3.函数**被调用多次**，可能被标记为热点函数，可能被编译成机器代码
-
-![image-20211209074403859](/img/image-20211209074403859.png)
-
-(3)新架构的特点
-
-将优化后的bytecode和machine code形成共存的状态。
-
-这里要注意**deoptimization**即回退字节码，即由解释器解释执行。函数类型发生变化时，**Igniton**会检测到变化，会将字节码回退，重新解释为新的字节码。
-
-建议：
-
-1.不要将函数的类型变来变去，尽量保证类型一致，如sum(x,y) x一会是int,一会儿是num
-
-优点：
-
-1.第一次执行，直接使用中间层的字节码，省去了机器码，同时编译器生成字节码的速度远远大于机器码
-
-2.优化线程不需要从源码从新编译，而是从bytecode字节码开始优化就可以了。同时**deoptimization**只需要回退到字节码即可。
-
-优化点：
-
-```
-1.隐藏类（hidden class）
-2.内联缓存（incline caching）
-3.优化 Orinoco
-3.1增量标记 - Incremental marking
-3.2懒性清理 - Lazy sweeping
-3.3并发 - Concurrent
-3.4并行 - Parallel
-```
-
-## HTML页面乱码问题
-
-HTML中的编码方式有三个：gb2312，gbk，utf-8；现在大部分浏览器默认编码的是utf-8。
-
-```
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-```
-
-●　http-equiv="Content-Type"表示描述文档类型
-
-●　content="text/HTML;文档类型，这里为html,如果JS就是text/javascript，
-
-●　charset=utf-8 页面字符集，编码，eg:gb2312,iso-8859-1,utf-8
-
-## slice(),splice()两种方法
-
-slice(start,end)有两个参数(start必需,end选填),都是索引,返回值不包括end,**不改变原数组**
-
-```
-var heroes=["0",'1','2','3','4'];
-console.log(heroes.slice(1,4))//  [ "1", "2", "3" ]开始索引为1 结束索引为4(不包括4)
-console.log(heroes)// 不改变原数组  ["0",'1','2','3','4']
-```
-
-splice(index,howmany,item1...itemX)只返回被删除的数据,类型为数组(**改变原数组**)
-
-```
-var heroes=["0",'1','2','3','4'];
-console.log(heroes.splice(1,2))//  [ "1", "2"]开始索引为1 删除2个元素
-console.log(heroes)// 不改变原数组  ["0",'3','4']
-```
-
-## typeof 与 instanceof 区别
-
-6种基本数据类型：string,Number,boolean,undefined,null,symbol,其他类型如object,function,Array等
-
-- `typeof`会返回一个变量的基本类型，typeof '1' // 'string'
-- `instanceof` 可以准确地判断复杂引用数据类型，[1] instanceof Array //true
-
-其中instance原理参考：
-
-```
-function myInstanceof(left, right) {
-    // 这里先用typeof来判断基础数据类型，如果是，直接返回false
-    if(typeof left !== 'object' || left === null) return false;
-    // getProtypeOf是Object对象自带的API，能够拿到参数的原型对象
-    let proto = Object.getPrototypeOf(left);
-    while(true) {                  
-        if(proto === null) return false;
-        if(proto === right.prototype) return true;//找到相同原型对象，返回true
-        proto = Object.getPrototypeof(proto);
-    }
-}
-```
-
-终极检查数据类型工具
-
-```
-Object.prototype.toString({})       // "[object Object]"
-Object.prototype.toString.call({})  // 同上结果，加上call也ok
-Object.prototype.toString.call(1)    // "[object Number]"
-Object.prototype.toString.call('1')  // "[object String]"
-Object.prototype.toString.call(true)  // "[object Boolean]"
-Object.prototype.toString.call(function(){})  // "[object Function]"
-Object.prototype.toString.call(null)   //"[object Null]"
-Object.prototype.toString.call(undefined) //"[object Undefined]"
-Object.prototype.toString.call(/123/g)    //"[object RegExp]"
-Object.prototype.toString.call(new Date()) //"[object Date]"
-Object.prototype.toString.call([])       //"[object Array]"
-Object.prototype.toString.call(document)  //"[object HTMLDocument]"
-Object.prototype.toString.call(window)   //"[object Window]"
-
-function getType(obj){
-  let type  = typeof obj;
-  if (type !== "object") {    // 先进行typeof判断，如果是基础数据类型，直接返回
-    return type;
-  }
-  // 对于typeof返回结果是object的，再进行如下的判断，正则返回结果
-  return Object.prototype.toString.call(obj).replace(/^\[object (\S+)\]$/, '$1'); 
-}
-getType('123')  // "string"
-```
-
-## JS创建私有变量的方法
+## 如何创建私有变量
 
 **1.使用闭包**
 
@@ -2373,1894 +1945,299 @@ console.log(button.getWidth()); // 600
 
 可以将 `TypeScript` 用作 JavaScript 的一种风格，可以使用 `private` 关键字从面向对象的语言中真正重新创建功能。
 
-## 手写发布订阅
+# 三大山-异步和单线程
+
+## 事件委托
+
+定义：当事件触发时，把要做的事委托给父元素来处理。
+
+事件传播分成三个阶段：
+
+- 捕获阶段：从window对象传导到目标节点（上层传到底层）称为“捕获阶段”（capture phase），捕获阶段不会响应任何事件；
+- 目标阶段：在目标节点上触发，称为“目标阶段”
+- 冒泡阶段：从目标节点传导回window对象（从底层传回上层），称为“冒泡阶段”（bubbling phase）。事件代理即是利用事件冒泡的机制把里层所需要响应的事件绑定到外层；
 
 ```js
-<script>
-let shoeObj = {}
-shoeObj.list = []
-// 增加订阅者
-shoeObj.listen = function(key, fn){
-    if(!this.list[key]){
-        // 如果不存在key的订阅事件，则置为空
-        this.list[key] = []
-    }
-    // 把函数fn加入回调数组
-    this.list[key].push(fn)
-}
-// 发布消息
-shoeObj.trigger=function(){
-    // 取出key
-    let key = Array.prototype.shift.call(arguments)
-    let fns =this.list[key]
-    // 遍历数组，执行函数fn
-    if(!fns||!fns.length){
-        return
-    }
-    for(let i = 0;i<fns.length;i++){
-        fns[i].apply(this,arguments)
-    }
-}
-shoeObj.listen('red',function(size){
- console.log(`小红订阅了${size}`);
-})
-shoeObj.listen('blue',function(size){
- console.log(`小蓝订阅了${size}`);
-})
-shoeObj.trigger('red',12)
-shoeObj.trigger('blue',18)
-</script>
-```
-
-
-
-# ES6
-
-## set和map
-
-`Set`是一种叫做集合的数据结构，`Map`是一种叫做字典的数据结构.
-
-Set是由一堆无序的、相关联的，且不重复的内存结构;
-
-Map是一些元素的集合。每个元素有一个称作key 的域，不同元素的key 各不相同
-
-**Set**
-
-set常用方法：add(),delete();has();clear();
-
-遍历方法：keys();values();entires();foreach();
-
-扩展运算符和` Set` 结构相结合实现数组或字符串去重
-
-```js
-// 数组
-let arr = [3, 5, 2, 2, 5, 5];
-let unique = [...new Set(arr)]; // [3, 5, 2]
-```
-
-实现并集、交集、和差集
-
-```js
-// 并集
-let union = new Set([...a, ...b]);
-// Set {1, 2, 3, 4}
-
-// 交集
-let intersect = new Set([...a].filter(x => b.has(x)));
-// set {2, 3}
-
-// （a 相对于 b 的）差集
-let difference = new Set([...a].filter(x => !b.has(x)));
-```
-
-手写set
-
-```
-class Set {
-  //Symbol.iterator 为每个对象定义了默认的迭代器。
-  //该迭代器可以被for... of循环使用
-  constructor(iterator = []) {
-    //传递的对象必须是一个可迭代对象
-    //所以需要判断传递的参数是否是可迭代对象
-    if (typeof iterator[Symbol.iterator] !== 'function') {
-      //不是可迭代对象就抛出一个错误
-      throw new TypeError(`您所提供的 ${iterator}不是一个可迭代对象`)
-    }
-    //创建一个空数组
-    this._datas = []
-    //取出数组iterator里面的值，用for of循环
-    for (const item of iterator) {
-      // 将值添加到空数组中
-      this.add(item)
-    }
-  }
-
-  //判断两个值是否相等
-  isEqual(data1, data2) {
-    //1.存在两个都为0的情况
-    if (data1 === 0 && data2 === 0) {
-      return true
-    }
-    //2.Object.is()方法判断两个值是否为同一个值
-    return Object.is(data1, data2)
-  }
-
-  //判断数据是否存在数组中
-  has(data) {
-    //遍历数组中的值(用for of)
-    for (const item of this._datas) {
-      //调用isEqual()方法判断 data(输入的数据)跟item(数组中的数据)
-      if (this.isEqual(data, item)) {
-        //相同返回true
-        return true
-      }
-      //不相同返回false
-      return false
-    }
-  }
-
-  //添加数据的方法
-  add(data) {
-    //首先判断添加的值是否存在在当前数组中，存在的话就默认返回undefined，
-    //不存在就把数据添加到之前定义的空数组中，
-    // 此时已经不是空数组，而是存入了item值
-    if (!this.has(data)) {
-      //不存在就添加到数组中
-      this._datas.push(data)
-    }
-    return this._datas
-  }
-
-  // 删除数据，返回结果true/false,删除成功/删除失败
-  delete(data) {
-    //遍历数组中的数据,i为下标,element为每个数据
-    for (let i = 0; i < this._datas.length; i++) {
-      const element = this._datas[i]
-      //判断data跟element是否相同,相同说明数组中存在数据，可以删除
-      if (this.isEqual(data, element)) {
-        //删除数据利用splice()方法
-        this._datas.splice(i, 1)
-        //删除成功
-        return true
-      }
-    }
-    //删除失败
-    return false
-  }
-
-  //清除数据
-  clear() {
-    //数组长度为0
-    this._datas.length = 0
-    return this._datas
-  }
-
-  //获取数组长度
-  get size() {
-    return this._datas.length
-  }
-
-  //forEach方法(里层用for of)
-  forEach(callback) {
-    for (const item of this._datas) {
-      callback(item, item, this)
-    }
-  }
-
-  values() {
-    return this._datas
-  }
-  entries() {
-    return this._datas.map(item => [item, item])
-  }
-
-  //*[Sysbol.iterator]
-  *[Symbol.iterator]() {
-    for (const item of this._datas) {
-      yield item
-    }
-  }
-}
-
-const s = new Set([1, 1, '1'])
-console.log([...s]) // [ 1, '1' ]
-console.log(s.size) // 2
-s.clear() // 清空重新来
-console.log(s.size) // 0
-s.add(1)
-console.log(s.size) // 1
-s.add(1) // 检测重复
-console.log(s.size) // 1
-s.add('1') // 检测 数字1 与 字符串 '1'
-console.log(s.size) // 2
-console.log(s.values()) // [ 1, '1' ]
-s.add(2)
-console.log(s.size) // 3
-console.log(s.values()) //[ 1, '1', 2 ]
-console.log(s.entries()) // [ [ 1, 1 ], [ '1', '1' ], [ 2, 2 ] ]
-console.log([...s]) // [ 1, '1', 2 ]
-s.delete(1)
-console.log(s.size) // 2
-s.clear()
-console.log(s.size) // 0
-```
-
-**Map**
-
-size 属性,set();get();has();delete();clear()
-
-遍历：同set
-
-手写map
-
-map函数接收两个参数,迭代器函数fn和迭代器函数的this指向
-
-```
-class Map {
-  //Symbol.iterator 为每个对象定义了默认的迭代器。
-  //该迭代器可以被for... of循环使用
-  constructor(iterator = []) {
-    //传递的对象必须是一个可迭代对象
-    //所以需要判断传递的参数是否是可迭代对象
-    if (typeof iterator[Symbol.iterator] !== 'function') {
-      //不是可迭代对象就抛出一个错误
-      throw new TypeError(`您所提供的 ${iterator}不是一个可迭代对象`)
-    }
-    //创建一个空数组
-    this._datas = []
-    //取出数组iterator里面的值，用for of循环
-    for (const item of iterator) {
-      const [k, v] = item
-      // 将值添加到空数组中
-      this.set(k, v)
-    }
-  }
-
-  //判断两个值是否相等
-  isEqual(data1, data2) {
-    //1.存在两个都为0的情况
-    if (data1 === 0 && data2 === 0) {
-      return true
-    }
-    //2.Object.is()方法判断两个值是否为同一个值
-    return Object.is(data1, data2)
-  }
-
-  //判断数据是否存在数组中
-  has(key) {
-    //遍历数组中的值(用for of)
-    for (const [k, _] of this._datas) {
-      //调用isEqual()方法判断 data(输入的数据)跟item(数组中的数据)
-      if (this.isEqual(key, k)) {
-        //相同返回true
-        return true
-      }
-      //不相同返回false
-      return false
-    }
-  }
-
-  //添加数据的方法
-  set(key, val) {
-    //首先判断添加的值是否存在在当前数组中，存在的话就默认返回undefined，
-    //不存在就把数据添加到之前定义的空数组中，
-    // 此时已经不是空数组，而是存入了item值
-    if (!this.has(key)) {
-      //不存在就添加到数组中
-      this._datas.push([key, val])
-    } else {
-      const item = this._datas.find(([k, _]) => k === key)
-      item[1] = val
-    }
-    return this._datas
-  }
-  //添加数据的方法
-  get(key) {
-    //首先判断添加的值是否存在在当前数组中，存在的话就默认返回undefined，
-    //不存在就把数据添加到之前定义的空数组中，
-    // 此时已经不是空数组，而是存入了item值
-    if (!this.has(key)) {
-      //不存在就添加到数组中
-      return undefined
-    }
-    const item = this._datas.find(([k, _]) => k === key)
-    return item[1]
-  }
-
-  // 删除数据，返回结果true/false,删除成功/删除失败
-  delete(key) {
-    if (!this.has(key)) {
-      //不存在返回false
-      return false
-    }
-    const idx = this._datas.findIndex(([k, _]) => k === key)
-    //删除数据利用splice()方法
-    this._datas.splice(idx, 1)
-    //删除成功，返回true
-    return true
-  }
-
-  //清除数据
-  clear() {
-    //数组长度为0
-    this._datas.length = 0
-    return this._datas
-  }
-
-  //获取数组长度
-  get size() {
-    return this._datas.length
-  }
-
-  //forEach方法(里层用for of)
-  forEach(callback) {
-    for (const [k, v] of this._datas) {
-      callback(v, k, this)
-    }
-  }
-
-  keys() {
-    return this._datas.reduce((acc, cur) => {
-      acc.push(cur[0])
-      return acc
-    }, [])
-  }
-  values() {
-    return this._datas.reduce((acc, cur) => {
-      acc.push(cur[1])
-      return acc
-    }, [])
-  }
-  entries() {
-    return this._datas.reduce((acc, cur) => {
-      acc.push([cur[0], cur[1]])
-      return acc
-    }, [])
-  }
-
-  //*[Sysbol.iterator]
-  *[Symbol.iterator]() {
-    for (const item of this._datas) {
-      yield item
-    }
-  }
-}
-
-const m = new Map([[1], [2, 3]])
-console.log([...m]) // [ [ 1, undefined ], [ 2, 3 ] ]
-console.log(m.keys()) // [ 1, 2 ]
-console.log(m.values()) // [ undefined, 3 ]
-console.log(m.entries()) // [ [ 1, undefined ], [ 2, 3 ] ]
-console.log(m.size) // [ [ 1, undefined ], [ 2, 3 ] ]
-m.clear()
-m.set(1, 2)
-console.log(m.entries()) // [ [ 1, 2 ] ]
-m.set(1, 3)
-console.log(m.entries()) // [ [ 1, 3 ] ]
-m.delete(1)
-console.log(m.entries()) // []
-```
-
-1 迭代器函数 ，该函数有三个参数
-数组项的值
-数组项下标
-数组对象本身
-2 迭代器函数的this指向
-（注：当传了该值，迭代器函数不能为箭头函数了。原因是箭头函数没有this隐式指向。箭头函数在定义时候就已经绑定了上层上下文中非箭头函数this）
-
-```
-Array.prototype.copyMap = function (fn, toThis) {
-let arr = this;
-const result = [];
-const redirectThis = toThis || Object.create(null);
-for (let i = 0; i < arr.length; i++) {
-const item = fn.call(redirectThis, arr[i], i, arr);
-result.push(item);
-}
-return result;
-};
-```
-
-
-
-## Promise原理
-
-[promise原理及手写]: https://juejin.cn/post/6850037281206566919#heading-6
-
-1.promise解决的问题
-
-它是一个异步解决方案，比如：以前嵌套调用即回调地域，处理多个异步请求并发。现在可以消灭嵌套调用和合并多个任务请求。
-
-以前异步方案有四种：
-
-- calllback回调函数；
-- generator+co库；
-- promise;
-- aysnc+await;
-
-2.promise/A+规范
-
-- **解决（fulfill）**：指一个 promise 成功时进行的一系列操作，如状态的改变、回调的执行。虽然规范中用 `fulfill` 来表示解决，但在后世的 promise 实现多以 `resolve` 来指代之。
-- **拒绝（reject）**：指一个 promise 失败时进行的一系列操作。
-- **终值（eventual value）**：所谓终值，指的是 promise 被**解决**时传递给解决回调的值，由于 promise 有**一次性**的特征，因此当这个值被传递时，标志着 promise 等待态的结束，故称之终值，有时也直接简称为值（value）。
-- **据因（reason）**：也就是拒绝原因，指在 promise 被**拒绝**时传递给拒绝回调的值。
-
-[promise/A+]: http://www.ituring.com.cn/article/66566
-
-promise状态有三种：等待态（Pending）、执行态（Fulfilled）和拒绝态（Rejected）。
-
-promise提供一个 then 方法以访问其当前值、终值和据因。入参分别是 promise 成功的回调 onFulfilled, 和 promise 失败的回调 onRejected
-
-3.原理
-
-new promise时， 需要传递一个executor()执行器，入参是resolve和reject函数。结合settimeout异步+回调数组实现then异步，then的new promise实现链式调用
-
-4.手写promise
-
-4.1基础版
-
-```js
-Promise.js
-class Promise{
-    constructor(executor){
-        if(typeof executor !=='function')
-        throw new TypeError('executor 不是一个函数');
-        const resolve =(value)=>{
-            //接收终值，成功时回调
-            console.log('接收终值');
-        };
-        const reject=(res)=>{
-            //接收据因，失败时回调
-            console.log('接收据因');
-        };
-        executor(resolve,reject);
-    }
-}
-module.exports= Promise
-
-index.js
-const  Promise = require('./promise.js') 
-new Promise((resolve,reject)=>{
-    console.log('开始了');
-    resolve(1)
-})
-```
-
-代码优化版本
-
-```js
-class Promise{
-    constructor(executor){
-        if(typeof executor !=='function')
-        throw new TypeError('executor 不是一个函数');
-
-        this.initValue();
-        this.initBind();
-        executor(this.resolve,this.reject);
-    }
-    initValue(){
-        //初始化
-        this.value = null;//终值
-        this.reason=null;//据因
-        this.state='pending';//状态
-    }
-    initBind(){
-        // 初始化改变this指向
-        //如果是箭头函数，就不要改变this指向，因为箭头函数自动继承父的this即当前实例
-        this.resolve = this.resolve.bind(this);
-        this.reject = this.reject.bind(this);
-    }
-    resolve(value){
-        //接收终值，成功时回调
-        console.log('接收终值');
-        if(this.state='pending'){
-            this.state='fulfilled';
-            this.value = value;
-        }
-    }
-    reject(reason){
-        //接收据因，失败时回调
-        console.log('接收据因');
-        if(this.state='pending'){
-            this.state='fulfilled';
-            this.reason = reason;
-        }
-    }
-}
-
-module.exports= Promise
-```
-
-4.2then异步实现
-
-先上同步代码
-
-```js
-class Promise{
-    constructor(executor){
-        if(typeof executor !=='function')
-        throw new TypeError('executor 不是一个函数');
-
-        this.initValue();
-        this.initBind();
-        executor(this.resolve,this.reject);
-    }
-    initValue(){
-        //初始化
-        this.value = null;//终值
-        this.reason=null;//据因
-        this.state=Promise.PENDING;//状态
-    }
-    initBind(){
-        // 初始化改变this指向
-        //如果是箭头函数，就不要改变this指向，因为箭头函数自动继承父的this即当前实例
-        this.resolve = this.resolve.bind(this);
-        this.reject = this.reject.bind(this);
-    }
-    resolve(value){
-        //接收终值，成功时回调
-        console.log('接收终值');
-        if(this.state=Promise.PENDING){
-            this.state=Promise.FULFILLED;
-            this.value = value;
-        }
-    }
-    reject(reason){
-        //接收据因，失败时回调
-        console.log('接收据因');
-        if(this.state=Promise.PENDING){
-            this.state=Promise.REJECTED;
-            this.reason = reason;
-        }
-    }
-    then(onFulfilled,onRejected){
-        //参数校验
-        if(typeof onFulfilled !=='function' ){
-            //不是函数则返回一个函数
-            onFulfilled = function(value){
-                return value;
-            }
-        }
-        if(typeof onRejected !=='function' ){
-            //不是函数则返回一个函数
-            onRejected = function(reason){
-                return reason;
-            }
-        }
-        if(this.state ===Promise.FULFILLED){
-            //有结果后，直接回调
-            onFulfilled(this.value);
-        }
-        if(this.state ===Promise.REJECTED){
-            onRejected(this.reason);
-        }
-
-    }
-}
-
-//也称为魔法数字
-Promise.PENDING = 'pending';
-Promise.FULFILLED = 'fulfilled';
-Promise.REJECTED = 'rejected';
-module.exports= Promise
-
-
-console.log(1);
-const  Promise = require('./promise.js') 
-new Promise((resolve,reject)=>{
-    console.log(2);
-    setTimeout(()=>{
-        resolve('我要执行')
-    })
-}).then(value=>{
-    console.log(4);
-    console.log('value:',value);
-},reason=>{
-    console.log('reason:',reason); 
-})
-console.log(3);
-打印
-1,2,3； 4不执行了，这是不对的
-```
-
-上异步代码
-
-```
-class Promise{
-    constructor(executor){
-        if(typeof executor !=='function')
-        throw new TypeError('executor 不是一个函数');
-
-        this.initValue();
-        this.initBind();
-        executor(this.resolve,this.reject);
-    }
-    initValue(){
-        //初始化
-        this.value = null;//终值
-        this.reason=null;//据因
-        this.state=Promise.PENDING;//状态
-        this.onFulfilledCallbacks=[];//成功回调数组
-        this.onRejectedCallbacks=[];//失败回调数组
-    }
-    initBind(){
-        // 初始化改变this指向
-        //如果是箭头函数，就不要改变this指向，因为箭头函数自动继承父的this即当前实例
-        this.resolve = this.resolve.bind(this);
-        this.reject = this.reject.bind(this);
-    }
-    resolve(value){
-        //接收终值，成功时回调
-        console.log('接收终值');
-        if(this.state=Promise.PENDING){
-            this.state=Promise.FULFILLED;
-            this.value = value;
-            // 成功后，执行成功的回调数组
-            this.onFulfilledCallbacks.forEach(fn=>fn(this.value));
-        }
-    }
-    reject(reason){
-        //接收据因，失败时回调
-        console.log('接收据因');
-        if(this.state=Promise.PENDING){
-            this.state=Promise.REJECTED;
-            this.reason = reason;
-            this.onRejectedCallbacks.forEach(fn=>fn(this.reason));
-        }
-    }
-    then(onFulfilled,onRejected){
-        //参数校验
-        if(typeof onFulfilled !=='function' ){
-            //不是函数则返回一个函数
-            onFulfilled = function(value){
-                return value;
-            }
-        }
-        if(typeof onRejected !=='function' ){
-            //不是函数则返回一个函数
-            onRejected = function(reason){
-                return reason;
-            }
-        }
-        if(this.state ===Promise.FULFILLED){
-            //有结果后，直接回调
-            onFulfilled(this.value);
-        }
-        if(this.state ===Promise.REJECTED){
-            onRejected(this.reason);
-        }
-
-        if(this.state ===Promise.PENDING){
-            //还在执行中，将异步回调函数加入到数组中存放起来
-            this.onFulfilledCallbacks.push(value=>{
-                setTimeout(()=>{
-                    onFulfilled(value);
-                })
-            })
-            this.onRejectedCallbacks.push(reason=>{
-                setTimeout(()=>{
-                    onRejected(reason);
-                })
-            })
-        }
-
-    }
-}
-
-//也称为魔法数字
-Promise.PENDING = 'pending';
-Promise.FULFILLED = 'fulfilled';
-Promise.REJECTED = 'rejected';
-module.exports= Promise
-```
-
-4.3链式调用
-
-```
-promise.js文件
-class Promise{
-    constructor(executor){
-        if(typeof executor !=='function')
-        throw new TypeError('executor 不是一个函数');
-
-        this.initValue();
-        this.initBind();
-        executor(this.resolve,this.reject);
-    }
-    initValue(){
-        //初始化
-        this.value = null;//终值
-        this.reason=null;//据因
-        this.state=Promise.PENDING;//状态
-        this.onFulfilledCallbacks=[];//成功回调数组
-        this.onRejectedCallbacks=[];//失败回调数组
-    }
-    initBind(){
-        // 初始化改变this指向
-        //如果是箭头函数，就不要改变this指向，因为箭头函数自动继承父的this即当前实例
-        this.resolve = this.resolve.bind(this);
-        this.reject = this.reject.bind(this);
-    }
-    resolve(value){
-        //接收终值，成功时回调
-        console.log('接收终值');
-        if(this.state=Promise.PENDING){
-            this.state=Promise.FULFILLED;
-            this.value = value;
-            // 成功后，执行成功的回调数组
-            this.onFulfilledCallbacks.forEach(fn=>fn(this.value));
-        }
-    }
-    reject(reason){
-        //接收据因，失败时回调
-        console.log('接收据因');
-        if(this.state=Promise.PENDING){
-            this.state=Promise.REJECTED;
-            this.reason = reason;
-            this.onRejectedCallbacks.forEach(fn=>fn(this.reason));
-        }
-    }
-    then(onFulfilled,onRejected){
-        //参数校验
-        if(typeof onFulfilled !=='function' ){
-            //不是函数则返回一个函数
-            onFulfilled = function(value){
-                return value;
-            }
-        }
-        if(typeof onRejected !=='function' ){
-            //不是函数则返回一个函数
-            onRejected = function(reason){
-                return reason;
-            }
-        }
-
-        //链式调用，需要返回一个新实例
-        let promise2=new Promise((resolve,reject)=>{
-            if(this.state ===Promise.FULFILLED){
-                //有结果后，直接回调
-              try {
-                const x=  onFulfilled(this.value);
-                resolve(x);
-              } catch (e) {
-                  reject(e);
-              }
-            }
-            if(this.state ===Promise.REJECTED){
-                try {
-                    const x= onRejected(this.reason);
-                    resolve(x);
-                } catch (e) {
-                    reject(e);
-                }
-                
-            }
-    
-            if(this.state ===Promise.PENDING){
-                //还在执行中，将异步回调函数加入到数组中存放起来
-                this.onFulfilledCallbacks.push(value=>{
-                    setTimeout(()=>{
-                        try {
-                            const x = onFulfilled(value);
-                        resolve(x);
-                        } catch (e) {
-                            reject(e);
-                        }
-                        
-                    })
-                })
-                this.onRejectedCallbacks.push(reason=>{
-                    setTimeout(()=>{
-                        try {
-                            const x=  onRejected(reason);
-                        resolve(x);
-                        } catch (e) {
-                            reject(e);
-                        }
-                        
-                    })
-                })
-            }
-        })
-        return promise2
-
-    }
-}
-
-//也称为魔法数字
-Promise.PENDING = 'pending';
-Promise.FULFILLED = 'fulfilled';
-Promise.REJECTED = 'rejected';
-module.exports= Promise
-
-index.js文件
-console.log(1);
-const  Promise = require('./promise.js') 
-new Promise((resolve,reject)=>{
-    console.log(2);
-    setTimeout(()=>{
-        resolve('我要执行')
-    })
-}).then(value=>{
-    console.log(4);
-    console.log('value:',value);
-},reason=>{
-    console.log('reason:',reason); 
-}).then(value=>{
-    console.log(5);
-    console.log('value:',value);
-})
-console.log(3);
-```
-
-4.4终极解决方案
-
-解决promise的then返回一个promise和循环递归调用自己
-
-```js
-Promise.js文件
-class Promise{
-    constructor(executor){
-        if(typeof executor !=='function')
-        throw new TypeError('executor 不是一个函数');
-
-        this.initValue();
-        this.initBind();
-        executor(this.resolve,this.reject);
-    }
-    initValue(){
-        //初始化
-        this.value = null;//终值
-        this.reason=null;//据因
-        this.state=Promise.PENDING;//状态
-        this.onFulfilledCallbacks=[];//成功回调数组
-        this.onRejectedCallbacks=[];//失败回调数组
-    }
-    initBind(){
-        // 初始化改变this指向
-        //如果是箭头函数，就不要改变this指向，因为箭头函数自动继承父的this即当前实例
-        this.resolve = this.resolve.bind(this);
-        this.reject = this.reject.bind(this);
-    }
-    resolve(value){
-        //接收终值，成功时回调
-        console.log('接收终值');
-        if(this.state=Promise.PENDING){
-            this.state=Promise.FULFILLED;
-            this.value = value;
-            // 成功后，执行成功的回调数组
-            this.onFulfilledCallbacks.forEach(fn=>fn(this.value));
-        }
-    }
-    reject(reason){
-        //接收据因，失败时回调
-        console.log('接收据因');
-        if(this.state=Promise.PENDING){
-            this.state=Promise.REJECTED;
-            this.reason = reason;
-            this.onRejectedCallbacks.forEach(fn=>fn(this.reason));
-        }
-    }
-    then(onFulfilled,onRejected){
-        //参数校验
-        if(typeof onFulfilled !=='function' ){
-            //不是函数则返回一个函数
-            onFulfilled = function(value){
-                return value;
-            }
-        }
-        if(typeof onRejected !=='function' ){
-            //不是函数则返回一个函数
-            onRejected = function(reason){
-                return reason;
-            }
-        }
-
-        //链式调用，需要返回一个新实例
-        let promise2=new Promise((resolve,reject)=>{
-            if(this.state ===Promise.FULFILLED){
-                //有结果后，直接回调
-              try {
-                const x=  onFulfilled(this.value);
-                // x可能是一个proimise
-                Promise.resolvePromise(promise2, x, resolve, reject);
-              } catch (e) {
-                  reject(e);
-              }
-            }
-            if(this.state ===Promise.REJECTED){
-                try {
-                    const x= onRejected(this.reason);
-                    // x可能是一个proimise
-                    Promise.resolvePromise(promise2, x, resolve, reject);
-                } catch (e) {
-                    reject(e);
-                }
-                
-            }
-    
-            if(this.state ===Promise.PENDING){
-                //还在执行中，将异步回调函数加入到数组中存放起来
-                this.onFulfilledCallbacks.push(value=>{
-                    setTimeout(()=>{
-                        try {
-                            const x = onFulfilled(value);
-                        // x可能是一个proimise
-                        Promise.resolvePromise(promise2, x, resolve, reject);
-                        } catch (e) {
-                            reject(e);
-                        }
-                        
-                    })
-                })
-                this.onRejectedCallbacks.push(reason=>{
-                    setTimeout(()=>{
-                        try {
-                            const x=  onRejected(reason);
-                        // x可能是一个proimise
-                        Promise.resolvePromise(promise2, x, resolve, reject);
-                        } catch (e) {
-                            reject(e);
-                        }
-                        
-                    })
-                })
-            }
-        })
-        return promise2
-
-    }
-}
-
-//也称为魔法数字
-Promise.PENDING = 'pending';
-Promise.FULFILLED = 'fulfilled';
-Promise.REJECTED = 'rejected';
-// 循环调用
-Promise.resolvePromise=function(promise2,x,resolve,reject){
-// x与promise相等，说明自己在调用自己
-let called; //是否调用过，防止无限循环调用
-if(promise2===x){
-    reject(new TypeError('Chaining cycle detected for promise'));
-}
- if(x instanceof Promise){
-//判断x是promise
-x.then(value=>{
-    // 如果返回的是promise,则要继续调用
-    if(called) return;
-    called = true;
-    Promise.resolvePromise(promise2,value,resolve,reject);
-},reason=>{
-reject(reason);
-})
-}else if(x !==null && (typeof x ==='object'||typeof x ==='function')){
-// x为对象或函数
-let then = x.then;//官方推荐这么写，不明原因
-if(typeof then === 'function'){
-then.call(x,value=>{
-    // 如果返回的是promise,则要继续调用
-    if(called) return;
-    called = true;
-    Promise.resolvePromise(promise2,value,resolve,reject);
-},reason=>{
-    reject(reason);
-})
-}else{
-    reject(x);
-}
-}else{
-    resolve(x);
-}
-}
-module.exports= Promise
-
-index.js文件
-console.log(1);
-const  Promise = require('./promise.js') 
-new Promise((resolve,reject)=>{
-    console.log(2);
-    setTimeout(()=>{
-        resolve('我要执行')
-    })
-}).then(value=>{
-    console.log(4);
-    console.log('value:',value);
-    // then返回一个promise
-    return new Promise(resolve=>{
-        resolve('promise');
-    })
-},reason=>{
-    console.log('reason:',reason); 
-}).then(value=>{
-    console.log(5);
-    console.log('value:',value);
-})
-console.log(3);
-```
-
-```js
-//循环调用
-// let p1=new Promise(resolve=>{
-//     console.log('p1');
-//     resolve(1);
-// })
-// let p2=p1.then(()=>{
-//     console.log('p2');
-//     return p2
-// })
-```
-
-```js
-//简约版手写Promise
-class MyPromise {
-  constructor(executor) {
-    this.status = 'pending' // 初始状态为等待
-    this.value = null // 成功的值
-    this.reason = null // 失败的原因
-    this.onFulfilledCallbacks = [] // 成功的回调函数数组
-    this.onRejectedCallbacks = [] // 失败的回调函数数组
-    let resolve = value => {
-      if (this.status === 'pending') {
-        this.status = 'fulfilled'
-        this.value = value;
-        this.onFulfilledCallbacks.forEach(fn => fn()) // 调用成功的回调函数
-      }
-    }
-    let reject = reason => {
-      if (this.status === 'pending') {
-        this.status = 'rejected'
-        this.reason = reason
-        this.onRejectedCallbacks.forEach(fn => fn()) // 调用失败的回调函数
-      }
-    };
-    try {
-      executor(resolve, reject)
-    } catch (err) {
-      reject(err)
-    }
-  }
-  then(onFulfilled, onRejected) {
-    return new MyPromise((resolve, reject) => {
-      if (this.status === 'fulfilled') {
-        setTimeout(() => {
-          const x = onFulfilled(this.value);
-          x instanceof MyPromise ? x.then(resolve, reject) : resolve(x)
-        })
-      }
-      if (this.status === 'rejected') {
-        setTimeout(() => {
-          const x = onRejected(this.reason)
-          x instanceof MyPromise ? x.then(resolve, reject) : resolve(x)
-        })
-      }
-      if (this.status === 'pending') {
-        this.onFulfilledCallbacks.push(() => { // 将成功的回调函数放入成功数组
-          setTimeout(() => {
-            const x = onFulfilled(this.value)
-            x instanceof MyPromise ? x.then(resolve, reject) : resolve(x)
-          })
-        })
-        this.onRejectedCallbacks.push(() => { // 将失败的回调函数放入失败数组
-          setTimeout(() => {
-            const x = onRejected(this.reason)
-            x instanceof MyPromise ? x.then(resolve, reject) : resolve(x)
-          })
-        })
+document.addEventListener("click", function (event) {
+      var target = event.target;
+      switch (target.id) {
+        case "doSomething":
+          document.title = "事件委托";
+          break;
+        case "goSomewhere":
+          location.href = "http://www.baidu.com";
+          break;
+        case "sayHi": alert("hi");
+          break;
       }
     })
-  }
-}
+```
 
-// 测试
-function p1() {
-  return new MyPromise((resolve, reject) => {
-    setTimeout(resolve, 1000, 1)
+使用“事件委托”时，并不是说把事件委托给的元素越靠近顶层就越好。事件冒泡的过程也需要耗时，越靠近顶层，事件的”事件传播链”越长，也就越耗时。
+
+## 事件循环
+
+**1.JavaScript是单线程，非阻塞的**
+
+单线程：JavaScript的主要用途是与用户互动，以及操作DOM。如果它是多线程的会有很多复杂的问题要处理.
+
+非租塞：多线程和异步是通过通过 event loop 实现。
+
+**2.任务类型**
+
+**同步任务**指的是，在主线程上排队执行的任务，只有前一个任务执行完毕，才能执行后一个任务；
+
+**异步任务**指的是，不进入主线程、而进入"任务队列"（task queue）的任务，只有"任务队列"通知主线程，某个异步任务可以执行了，该任务才会进入主线程执行。
+
+异步任务**按照优先级**，又分为微任务和宏任务。
+
+**宏任务**:每次执行栈执行的代码就是一个宏任务（包括每次从事件队列中获取一个事件回调并放到执行栈中执行）
+
+```js
+主代码块
+setTimeout
+setInterval
+postMessage
+MessageChannel
+setImmediate(Node.js 环境)
+script(可以理解为外层同步代码)
+I/O（Node.js）
+UI交互事件
+```
+
+**微任务**：当前宏任务执行结束后立即执行的任务
+
+```js
+Promise.then
+MutationObserver
+Object.observe（已废弃；Proxy 对象替代）
+process.nextTick(Node.js 环境)
+```
+
+**3.Event Loop执行流程**
+
+定义："**Event Loop是一个程序结构，用于等待和发送消息和事件。**
+
+主要涉及**调用栈**(call stack是一个存储函数调用的**栈结构**，遵循**先进后出**的原则)、**宏任务队列**(macrotaskqueue)、**微任务队列**(microtask quene).
+
+**特别强调**：根据规范，**宏任务**的队列可以有多个，而**微任务**队列只能有一个。这个过程中，如果产生新的微任务，是可以加入到微任务队列，但如果产生宏任务，则需要添加到下一个宏任务队列。**与先微任务后宏任务流程一致**
+
+
+
+在一次Tick循环中，执行流程：**当前执行栈即也属于宏任务-当前微任务**-声明的(下一个)宏任务-声明的(下一个)宏任务。。。无限循环
+
+- 执行**一个宏任务**（栈中没有就从事件队列中获取）
+- 执行过程中如果遇到微任务，就将它添加到**微任务的任务队列**中
+- 宏任务执行完毕后，立即执行当前微任务队列中的所有微任务（依次执行）
+- 当前宏任务执行完毕，开始检查渲染，然后GUI线程接管渲染
+- 渲染完毕后，JS线程继续接管，开始**下一个宏任务(主线程中当前执行栈的宏任务就是下一个宏任务，所以当前执行栈总是先执行执行栈，然后微任务，再(下一个)宏任务)**（从事件队列中获取，也就是 callbacke queue）**与先微任务后宏任务流程一致**
+
+![image-20211024222114449](/img/image-20211024222114449.png)
+
+![image-20220123200002149](/img/image-20220123200002149.png)
+
+```
+加强版练习
+console.log('script start')
+async function async1() {
+  await async2()
+  console.log('async1 end')
+}
+async function async2() {
+  console.log('async2 end')
+}
+async1()
+setTimeout(function() {
+  console.log('setTimeout')
+}, 0)
+new Promise(resolve => {
+  console.log('Promise')
+  resolve()
+})
+  .then(function() {
+    console.log('promise1')
   })
-}
-function p2() {
-  return new MyPromise((resolve, reject) => {
-    setTimeout(resolve, 1000, 2)
+  .then(function() {
+    console.log('promise2')
   })
+console.log('script end')
+```
+
+async await 本身就是 promise+generator 的语法糖。所以 await 后面的代码是 microtask。所以对于上面代码中的
+
+```
+async function async1() {
+	console.log('async1 start');
+	await async2();
+	console.log('async1 end');
 }
-p1().then(res => {
-  console.log(res) // 1
-  return p2()
-}).then(ret => {
-  console.log(ret) // 2
-})
-```
-
-4.5自动化测试Promise代码
-
-```
-Promise.defer = Promise.deferred = function () {
-  let dfd = {};
-  dfd.promise = new Promise((resolve,reject)=>{
-      dfd.resolve = resolve;
-      dfd.reject = reject;
-  })
-  return dfd;
+等价于
+async function async1() {
+	console.log('async1 start');
+	Promise.resolve(async2()).then(() => {
+                console.log('async1 end');
+        })
 }
-
 ```
 
-安装测试脚本
+总结：
 
-```
-npm install -g promises-aplus-tests
-```
+- 微任务队列优先于宏任务队列执行；
+- 微任务队列上创建的宏任务会被后添加到当前宏任务队列的尾端；
+- 微任务队列中创建的微任务会被添加到微任务队列的尾端；
+- 只要微任务队列中还有任务，宏任务队列就只会等待微任务队列执行完毕后再执行；
+- 只有运行完 `await` 语句，才把 `await` 语句后面的全部代码加入到微任务行列；
 
-执行自动化脚本
+## 节流和防抖
 
-```
-promises-aplus-tests promise.js
-```
+**本质上是优化高频率执行代码的一种手段**
 
-4.6promise.all原理
+- 节流: n 秒内只运行一次，若在 n 秒内重复触发，只有一次生效
 
-```
-Promise.all = function(values) {
-  if (!Array.isArray(values)) {
-    const type = typeof values;
-    return new TypeError(`TypeError: ${type} ${values} is not iterable`)
-  }
-  
-  return new Promise((resolve, reject) => {
-    let resultArr = [];
-    let orderIndex = 0;
-    const processResultByKey = (value, index) => {
-      resultArr[index] = value;
-      if (++orderIndex === values.length) {
-          resolve(resultArr)
+- 防抖: n 秒后在执行该事件，若在 n 秒内被重复触发，则重新计时
+
+  一个经典的比喻:
+
+  想象每天上班大厦底下的电梯。把电梯完成一次运送，类比为一次函数的执行和响应
+
+  假设电梯有两种运行策略 `debounce` 和 `throttle`，超时设定为15秒，不考虑容量限制
+
+  电梯第一个人进来后，15秒后准时运送一次，这是**节流**
+
+  电梯第一个人进来后，等待15秒。如果过程中又有人进来，15秒等待重新计时，直到15秒后开始运送，这是**防抖**
+
+  **节流**
+
+  完成节流可以使用**时间戳与定时器**的写法
+
+  使用时间戳写法，事件会立即执行，停止触发后没有办法再次执行
+
+  ```js
+  function throttled1(fn, delay = 500) {
+      let oldtime = Date.now()
+      return function (...args) {
+          let newtime = Date.now()
+          if (newtime - oldtime >= delay) {
+              fn.apply(null, args)
+              oldtime = Date.now()
+          }
       }
-    }
-    for (let i = 0; i < values.length; i++) {
-      let value = values[i];
-      if (value && typeof value.then === 'function') {
-        value.then((value) => {
-          processResultByKey(value, i);
-        }, reject);
-      } else {
-        processResultByKey(value, i);
+  }
+  ```
+
+  使用定时器写法，`delay`毫秒后第一次执行，第二次事件停止触发后依然会再一次执行
+
+  ```js
+  function throttled2(fn, delay = 500) {
+      let timer = null
+      return function (...args) {
+          if (!timer) {
+              timer = setTimeout(() => {
+                  fn.apply(this, args)
+                  timer = null
+              }, delay);
+        }
       }
+  }
+  ```
+
+  可以将时间戳写法的特性与定时器写法的特性相结合，实现一个更加精确的节流。实现如下
+
+  ```js
+  function throttled(fn, delay) {
+      let timer = null
+      let starttime = Date.now()
+      return function () {
+          let curTime = Date.now() // 当前时间
+          let remaining = delay - (curTime - starttime)  // 从上一次到现在，还剩下多少多余时间
+          let context = this
+          let args = arguments
+          clearTimeout(timer)
+          if (remaining <= 0) {
+              fn.apply(context, args)
+              starttime = Date.now()
+        } else {
+              timer = setTimeout(fn, remaining);
+        }
+      }
+  }
+  ```
+
+**防抖**
+
+  简单版本
+
+  ```js
+  function debounce(func, wait) {
+      let timeout;
+  return function () {
+      let context = this; // 保存this指向
+      let args = arguments; // 拿到event对象
+      clearTimeout(timeout)
+    timeout = setTimeout(function(){
+          func.apply(context, args)
+    }, wait);
+  }
     }
-  });
+  ```
+
+  防抖如果需要立即执行，可加入第三个参数用于判断，实现如下：
+
+  ```js
+  function debounce(func, wait, immediate) {
+  let timeout;
+  return function () {
+      let context = this;
+      let args = arguments;
+      if (timeout) clearTimeout(timeout); // timeout 不为null
+      if (immediate) {
+          let callNow = !timeout; // 第一次会立即执行，以后只有事件执行后才会再次触发
+          timeout = setTimeout(function () {
+              timeout = null;
+          }, wait)
+          if (callNow) {
+              func.apply(context, args)
+          }
+      }
+      else {
+        timeout = setTimeout(function () {
+              func.apply(context, args)
+        }, wait);
+      }
 }
-
-```
-
-4.7如何中断promise
-
-注意这里是中断而不是终止，因为 Promise 无法终止，这个中断的意思是：在合适的时候，把 pending 状态的 promise 给 reject 掉。例如一个常见的应用场景就是希望给网络请求设置超时时间，一旦超时就就中断，我们这里用定时器模拟一个网络请求，随机 3 秒之内返回
-
-```js
-function timeoutWrapper(p, timeout = 2000) {
-  const wait = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      reject('请求超时')
-    }, timeout)
-  })
-  return Promise.race([p, wait])
-}
-```
-
-## Promise、Generator、Async三者的区别
-
-**Promise**
-
-Promise有三种状态：pending(进行中)、resolved(成功)、rejected(失败)。
-
-缺点：
-
-- 无法取消Promise，一旦新建它就会立即执行，无法中途取消。
-- 如果不设置回调函数，Promise内部抛出的错误，不会反应到外部。
-- 当处于Pending状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。
-- Promise 真正执行回调的时候，定义 Promise 那部分实际上已经走完了，所以 Promise 的报错堆栈上下文不太友好。
-
-**Generator**
-
-Generator 是ES6引入的新语法，Generator是一个可以暂停和继续执行的函数。
-
-简单的用法，可以当做一个Iterator来用，进行一些遍历操作。复杂一些的用法，他可以在内部保存一些状态，成为一个状态机。
-
-```
-Generator 基本语法包含两部分：函数名前要加一个星号；函数内部用 yield 关键字返回值。
-yield，表达式本身没有返回值，或者说总是返回undefined。
-next，方法可以带一个参数，该参数就会被当作上一个yield表达式的返回值。
-```
-
-```
-function * foo(x) {
-    var y = 2 * (yield (x + 1));
-    var z = yield (y / 3);
-    return (x + y + z);
-
-}
-
-var b = foo(5); 
-b.next() // { value:6, done:false }
-b.next(12) // { value:8, done:false } 
-b.next(13) // { value:42, done:true }
-
-```
-
-**Async(推荐使用～～)**
-
-async await 本身就是 promise+generator 的语法糖
-
-Async 是 Generator 的一个语法糖。
-
-async 对应的是 * 。
-
-await 对应的是 yield 。
-
-async/await 自动进行了 Generator 的流程控制。
-
-**为什么Async/Await更好？**
-
-1. 使用async函数可以让代码简洁很多，不需要像Promise一样需要些then，不需要写匿名函数处理Promise的resolve值，也不需要定义多余的data变量，还避免了嵌套代码。
-2. 错误处理：Async/Await 让 try/catch 可以同时处理同步和异步错误。
-
-## reduce,every,some
-
-reduce累加器
-
-var total = [ 0, 1, 2, 3 ].reduce(( acc, cur ) => {    return acc + cur }, 0);
-
-every一假即假
-
-const flag=[ 0, 1, 2, 3 ].every(ele=> {    return ele>3 });
-
-some一真即真
-
-const flag=[ 0, 1, 2, 3 ].some(ele=> {    return ele>3 });
-
-## Symbol
-
-ES6引入了一种新的原始数据类型Symbol，表示**独一无二的值**。
-
-基本数据类型有6种：Undefined、Null、布尔值（Boolean）、字符串（String）、数值（Number）、对象（Object）。
-
-`Symbol`函数前不能使用`new`命令，否则会报错。这是因为生成的Symbol是一个原始类型的值，不是对象。
-
-```
-// 没有参数的情况
-var s1 = Symbol();
-var s2 = Symbol();
-s1 === s2 // false
-
-// 有参数的情况
-var s1 = Symbol("foo");
-var s2 = Symbol("foo");
-s1 === s2 // false
-```
-
-**1)应用场景1：使用Symbol来作为对象属性名(key)**
-
-```
-const PROP_NAME = Symbol()
-const PROP_AGE = Symbol()
-
-let obj = {
-  [PROP_NAME]: "一斤代码"
-}
-obj[PROP_AGE] = 18
-obj[PROP_NAME] // '一斤代码'
-obj[PROP_AGE] // 18
-```
-
-Symbol类型的key是不能通过`Object.keys()`或者`for...in`来枚举的，它未被包含在对象自身的属性名集合(property names)之中。所以，利用该特性，我们可以把一些不需要对外操作和访问的属性使用Symbol来定义。
-
-也正因为这样一个特性，当使用`JSON.stringify()`将对象转换成JSON字符串的时候，Symbol属性也会被排除在输出内容之外。
-
-```
-let obj = {
-   [Symbol('name')]: '一斤代码',
-   age: 18,
-   title: 'Engineer'
-}
-
-Object.keys(obj)   // ['age', 'title']
-
-for (let p in obj) {
-   console.log(p)   // 分别会输出：'age' 和 'title'
-}
-
-Object.getOwnPropertyNames(obj)   // ['age', 'title']
-JSON.stringify(obj)  // {"age":18,"title":"Engineer"}
-```
-
-还是会有一些专门针对Symbol的API
-
-```
-// 使用Object的API
-Object.getOwnPropertySymbols(obj) // [Symbol(name)]
-
-// 使用新增的反射API
-Reflect.ownKeys(obj) // [Symbol(name), 'age', 'title']
-```
-
-**2)应用场景2：使用Symbol来替代常量**
-
-```
-const TYPE_AUDIO = Symbol()
-const TYPE_VIDEO = Symbol()
-const TYPE_IMAGE = Symbol()
-
-function handleFileResource(resource) {
-  switch(resource.type) {
-    case TYPE_AUDIO:
-      playAudio(resource)
-      break
-    case TYPE_VIDEO:
-      playVideo(resource)
-      break
-    case TYPE_IMAGE:
-      previewImage(resource)
-      break
-    default:
-      throw new Error('Unknown type of resource')
   }
-}
-```
+  ```
 
-**3)应用场景3：使用Symbol定义类的私有属性/方法**
+  **区别**
 
-在JavaScript中，是没有如Java等面向对象语言的访问控制关键字`private`的，类上所有定义的属性或方法都是可公开访问的。因此这对我们进行API的设计时造成了一些困扰。
+  相同点：
 
-而有了`Symbol`以及`模块化机制`，类的私有属性和方法才变成可能。例如：
+  - 都可以通过使用 `setTimeout` 实现
+  - 目的都是，降低回调执行频率。节省计算资源
 
-```
-a.js
-const PASSWORD = Symbol()
+  不同点：
 
-class Login {
-  constructor(username, password) {
-    this.username = username
-    this[PASSWORD] = password
-  }
+  - 函数防抖，在一段连续操作结束后，处理回调，利用`clearTimeout `和 `setTimeout`实现。函数节流，在一段连续操作中，每一段时间只执行一次，频率较高的事件中使用来提高性能
 
-  checkPassword(pwd) {
-      return this[PASSWORD] === pwd
-  }
-}
+- 函数防抖关注一定时间连续触发的事件，只在最后执行一次，而函数节流一段时间内只执行一次
 
-export default Login
-```
+  **应用场景**
 
-```
-b.js
-import Login from './a'
+防抖在连续的事件，只需触发一次回调的场景有：
 
-const login = new Login('admin', '123456')
+- 搜索框搜索输入。只需用户最后一次输入完，再发送请求
 
-login.checkPassword('admin')  // true
+  - 手机号、邮箱验证输入检测
+  - 窗口大小`resize`。只需窗口调整完成后，计算窗口大小。防止重复渲染。
 
-login.PASSWORD  // oh!no!
-login[PASSWORD] // oh!no!
-login["PASSWORD"] // oh!no!
-```
+  节流在间隔一段时间执行一次回调的场景有：
 
-**4)Symbol.for()，Symbol.keyFor()**
+  - 滚动加载，加载更多或滚到底部监听
+  - 搜索框，搜索联想功能
 
-**Symbol.for**机制有点类似于单例模式，首先在全局中搜索有没有以该参数作为名称的Symbol值，如果有，就返回这个Symbol值，否则就新建并返回一个以该字符串为名称的Symbol值。和直接的Symbol就点不同了。
+# DOM
 
-```
-var s1 = Symbol.for('foo');
-var s2 = Symbol.for('foo');
-
-s1 === s2 // true
-```
-
-**Symbol.keyFor**方法返回一个已登记的Symbol类型值的key。实质就是检测该Symbol是否已创建
-
-```
-var s1 = Symbol.for("foo");
-Symbol.keyFor(s1) // "foo"
-
-var s2 = Symbol("foo");
-Symbol.keyFor(s2) // undefined
-```
-
-
-
-## weakset 和 weakmap
-
-ES6 考虑到防止内存泄漏，推出了两种新的数据结构： weakset 和 weakmap 。他们对值的引用都是不计入垃圾回收机制的，也就是说，如果其他对象都不再引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存。
-
-```
-const wm = new WeakMap()const element = document.getElementById('example') vm.set(element, 'something') vm.get(element)
-```
-
-上面代码中，先新建一个 Weakmap 实例。然后，将一个 DOM 节点作为键名存入该实例，并将一些附加信息作为键值，一起存放在 WeakMap 里面。这时，WeakMap 里面对 element 的引用就是弱引用，不会被计入垃圾回收机制。
-
-注册监听事件的 listener 对象很适合用 WeakMap 来实现。
-
-```
-// 代码1
-ele.addEventListener('click', handler, false)// 
-代码2
-const listener = new WeakMap() 
-listener.set(ele, handler) 
-ele.addEventListener('click', listener.get(ele), false)
-```
-
-代码 2 比起代码 1 的好处是：由于监听函数是放在 WeakMap 里面，一旦 dom 对象 ele 消失，与它绑定的监听函数 handler 也会自动消失。
-
-## for in、for of、forEach的区别
-
-**for…of与for…in的区别**
-
-- for…in循环会遍历（当前对象及其原型上的）每一个**属性名称**。
-- for…of只能应用于**可迭代对象**，循环遍历（当前对象上的）每一个属性值.
-
-**forEach**
-
-是数组的一个方法，用于遍历数组的每一项，没有返回值，返回值总是undefined。
-
-**for…of**
-
-ES6提出的语句，在**可迭代对象**（Array，Map，Set，String，TypedArray，arguments）上创建一个迭代循环。
-
-```
-//遍历数组
-let array = [10,20];
-for(let val of array){
-    console.log(val);
-}
-// 10
-// 20
-
-//遍历字符串
-let str = "bo";
-for(let val of str){
-    console.log(val);
-}
-// "b"
-// "o"
-
-//遍历map
-let map = new Map([["a", 1], ["b", 2], ["c", 3]]);
-for(let entry of map){
-    console.log(entry);
-}
-// ["a", 1]
-// ["b", 2]
-// ["c", 3]
-
-for(let [key,value] of map){
-    console.log(value);
-}
-// 1
-// 2
-// 3
-
-//遍历set
-let set = new Set([1,1,2,2,3,3]);
-for(let value of set){
-    console.log(value);
-}
-// 1
-// 2
-// 3
-
-//遍历DOM
-let divs = document.querySelectorAll("div");
-for(let div of divs){
-    div.className = "red";
-}
-
-//遍历生成器
-function* fibonacci(){
-    let [prev,curr] = [0,1];
-    for(;;){
-        [prev,curr] = [curr,curr+prev];
-        yield curr;
-    }
-}
-
-for(let n of fibonacci()){
-    if(n>1000) break;
-    console.log(n);
-}
-```
-
-**for…in**
-
-for…in 语句以任意顺序遍历**一个对象的可枚举属性的属性名**。所有可枚举属性和从它原型继承而来的可枚举属性，因此如果想要仅迭代对象本身的属性，要结合hasOwnProperty（）来使用
-
-```
-var obj = {a:1, b:2, c:3};
-for(var prop in obj){
-    console.log(prop);
-}
-//a
-//b
-//c
-
-var obj= {
-a:1,
-[Symbol('level')]:2
-}
-Reflect.ownKeys(obj) // 遍历所有属性，包括Symbol
-```
-
-
-
-# Jquery
-
-## unbind 和off的区别
-
-off() 方法移除用.on()绑定的事件处理程序。
-
-unbind() 方法移除用.bind()绑定的事件处理程序。
-
-对比发现off 和unbind的 差别不大， 但是off多一个[selector] 可以过滤指定元素。
-
-查看jQuery源码可知，.unbind()是通过.off()来实现的。
-
-从 jQuery 1.7开始， .on() 和 .off()方法是最好的元素上附加和移除事件处理程序的方法
-
-# TypeScript
-
-**1.概念**
-
-1)定义
- JavaScript的超集，支持es6标准，可以编译成普通js，可以在任何浏览器和操作系统上运行。
- 2)历史
- 2012年公开0.8第一个版本。
- 3)背景
- JS设计最初是用于脚本语言，缺少大型项目的基础特性，如静态类型、类、模块等。最初ts是微软内部项目，致力于提升大型JS项目可靠性和维护性.
- 4)特征
- 静态类型批注和编译时类型检查，类、接口等
-
-# JavaScript对象的两类属性
-
-第一类属性，数据属性具有四个特征
-
-- value：就是属性的值。
-- writable：决定属性能否被赋值。
-- enumerable：决定for in能否枚举该属性。
-- configurable：决定该属性能否被删除或者改变特征值。
-
-第二类属性是访问器（getter/setter）属性，它也有四个特征。
-
-- getter：函数或undefined，在取属性值时被调用。
-- setter：函数或undefined，在设置属性值时被调用。
-- enumerable：决定for in能否枚举该属性。
-- configurable：决定该属性能否被删除或者改变特征值。
-
-# 浅谈JavaScript、ES5、ES6
-
-**什么是JavaScript**
-
-JavaScript一种动态类型、弱类型、基于原型的客户端脚本语言，用来给HTML网页增加动态功能
-
-JavaScript由三部分组成：
-
-- ECMAScript（核心）
-- DOM（文档对象模型）
-- BOM （浏览器对象模型）
-
-> 1.ECMAScript（核心）
-
-作为核心，它规定了语言的组成部分：语法、类型、语句、关键字、保留字、操作符、对象
-
-> 2.DOM（文档对象模型）
-
-DOM把整个页面映射为一个多层节点结果，开发人员可借助DOM提供的API，轻松地删除、添加、替换或修改任何节点。
-
-PS：DOM也有级别，分为DOM1、DOM2、DOM3，拓展不少规范和新接口。
-
-> 3.BOM （浏览器对象模型）
-
-支持可以访问和操作浏览器窗口的浏览器对象模型，开发人员可以控制浏览器显示的页面以外的部分。
-
-PS：BOM未形成规范
-
-**什么是ES5**
-
-作为ECMAScript第五个版本（第四版因为过于复杂废弃了），浏览器支持情况可看第一副图，增加特性如下：
-
-> 1.strict模式
-
-严格模式，限制一些用法，'use strict';
-
-> 2.Array增加方法
-
-增加了every、some 、forEach、filter 、indexOf、lastIndexOf、isArray、map、reduce、reduceRight方法
-
-PS： 还有其他方法 Function.prototype.bind、String.prototype.trim、Date.now
-
-> 3.Object方法
-
-Object.getPrototypeOf
-
-Object.create
-
-Object.getOwnPropertyNames
-
-Object.defineProperty
-
-Object.getOwnPropertyDescriptor
-
-Object.defineProperties
-
-Object.keys
-
-Object.preventExtensions / Object.isExtensible
-
-Object.seal / Object.isSealed
-
-Object.freeze / Object.isFrozen
-
-PS：只讲有什么，不讲是什么。
-
-**什么是ES6**
-
-ECMAScript6在保证向下兼容的前提下，提供大量新特性：
-
-> 1.块级作用域 关键字let, 常量const
-
-> 2.对象字面量的属性赋值简写（property value shorthand）
-
-> 3.赋值解构
-
-> 4.函数参数 - 默认值、参数打包、 数组展开（Default 、Rest 、Spread）
-
-> 5.箭头函数 Arrow functions
-
-(1).简化了代码形式，默认return表达式结果。
-
-(2).自动绑定语义this，即定义函数时的this。如上面例子中，forEach的匿名函数参数中用到的this。
-
-> 6.字符串模板 Template strings
-
-> 7.Iterators（迭代器）+ for..of
-
-迭代器有个next方法，调用会返回：
-
-(1).返回迭代对象的一个元素：{ done: false, value: elem }
-
-(2).如果已到迭代对象的末端：{ done: true, value: retVal }
-
-> 8.生成器 （Generators）
-
-> 9.Class,有constructor、extends、super，但本质上是语法糖（对语言的功能并没有影响，但是更方便程序员使用）
-
-> 10.Modules
-
-ES6的内置模块功能借鉴了CommonJS和AMD各自的优点：
-
-(1).具有CommonJS的精简语法、唯一导出出口(single exports)和循环依赖(cyclic dependencies)的特点。
-
-(2).类似AMD，支持异步加载和可配置的模块加载。
-
-> 11.Map + Set + WeakMap + WeakSet
-
-四种集合类型，WeakMap、WeakSet作为属性键的对象如果没有别的变量在引用它们，则会被回收释放掉。
-
-> 12.Math + Number + String + Array + Object APIs
-
-> 13.Proxy,使用代理（Proxy）监听对象的操作，然后可以做一些相应事情。
-
-可监听的操作： get、set、has、deleteProperty、apply、construct、getOwnPropertyDescriptor、defineProperty、getPrototypeOf、setPrototypeOf、enumerate、ownKeys、preventExtensions、isExtensible。
-
-> 14.Symbols
-
-Symbol是一种基本类型。Symbol 通过调用symbol函数产生，它接收一个可选的名字参数，该函数返回的symbol是唯一的。
-
-> 15.Promises,Promises是处理异步操作的对象，使用了 Promise 对象之后可以用一种链式调用的方式来组织代码，让代码更加直观（类似jQuery的deferred 对象）。
-
-
-
-# requestAnimationFrame 与 requestIdleCallback
-
-**1.视觉暂留**
-
-眼睛的另一个重要特是视觉惰，即光象一旦在视网膜上形成，视觉将会对这个光象的感觉维持一个有限的时间，这种生理现象叫做**`视觉暂留`**。对于中等亮度的光刺激，视觉暂留时间约为`50ms`至`200ms`。当我们看屏幕的时候，虽然你什么也没做，但是屏幕还是以特定的频率在不停刷新，只是这个刷新过程我们肉眼识别到他的细微变化，这就是我们接下来要说的 **`屏幕刷新频率`**
-
-**2.屏幕刷新频率**
-
-我们日常的显示器，一般频率在`60Hz`左右，意味着我们的屏幕每`1`秒需要刷新`60`次，也就是说每`1000ms`需要更新`60`次的屏幕图像，那么我们由此可以得出，屏幕图像更新一次所需要的时间间隔也就是`16.7ms(1000/60≈16.7)`。
-由于人的眼睛具有**`视觉暂留效应`**，且暂留时间为`50ms`至`200ms`，也就是说人在看屏幕的时候，还没等到你的大脑印象消失，电脑屏幕就已经更新了，所以这个间隔让你感觉不到变化。
-那么屏幕刷新频率是不是越大越好？我们可以大胆假设一下，假如我有三个显示器，刷新频率分别为`1Hz`、`60Hz`、`200Hz`、那么对应的更新周期时间分别为`1000ms`、`16.7ms`、`5ms`。**也就是频率越大，图像更新的间隔就越短，我们看到的画面就会越稳定，**当达到一秒更新一次的时候，这个时候我们就能够感觉到明显的屏幕闪烁，带来视觉疲劳。
-
-与`setTimeout`相比，`requestAnimationFrame`***最大的优势是由浏览器来决定回调函数的执行时机，即紧跟浏览器的刷新步调。\***
-
-具体一点讲，如果屏幕刷新频率是60Hz，那么回调函数每16.7ms被执行一次，如果屏幕刷新频率是75Hz，那么这个时间间隔就变成了1000/75=13.3ms。它能保证回调函数在屏幕每一次的刷新间隔中只被执行一次，这样就不会引起丢帧现象，自然不会导致动画的卡顿。
-
-## **requestAnimationFrame**
-
-requestAnimationFrame是浏览器用于定时循环操作的一个接口，类似于setTimeout，主要用途是按帧对网页进行重绘。
-
-设置这个API的目的是为了让各种网页动画效果（DOM动画、Canvas动画、SVG动画、WebGL动画）能够有一个统一的刷新机制，从而节省系统资源，提高系统性能，改善视觉效果。代码中使用这个API，就是告诉浏览器希望执行一个动画，让浏览器在下一个动画帧安排一次网页重绘。
-
-requestAnimationFrame的优势，在于充分利用显示器的刷新机制，比较节省系统资源。显示器有固定的刷新频率（60Hz或75Hz），也就是说，每秒最多只能重绘60次或75次，requestAnimationFrame的基本思想就是与这个刷新频率保持同步，利用这个刷新频率进行页面重绘。此外，使用这个API，一旦页面不处于浏览器的当前标签，就会自动停止刷新。这就节省了CPU、GPU和电力。
-
-不过有一点需要注意，requestAnimationFrame是在主线程上完成。这意味着，如果主线程非常繁忙，requestAnimationFrame的动画效果会大打折扣。
-
-requestAnimationFrame使用一个回调函数作为参数。这个回调函数会在浏览器重绘之前调用。
-
-```
-window.requestAnimationFrame(callback)
-```
-
-- **参数：** 其中`callback`接受一个参数`DOMHighResTimeStamp`参数，表示该`callback`执行的时间。
-- **返回值：** 返回值requestID：是一个long integer 类型的值。 可以使用`window.cancelAnimationFrame(requestID)`来取消这个回调。
-
-***requestAnimationFrame 比起 setTimeout、setInterval 的比较***
-
-> **优点：**
->
-> - requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就实现，并且重绘或回流的工夫距离紧紧追随浏览器的刷新频率，一般来说，这个频率为每秒 60 帧。
-> - 在暗藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
-
-
-
-## **requestIdleCallback**
-
-> MDN上的解释：`requestIdleCallback()`方法将在浏览器的空闲时段内调用的函数排队。这使开发者能够在主事件循环上执行后台和低优先级工作，而不会影响延迟关键事件，如动画和输入响应。函数一般会按先进先调用的顺序执行，然而，如果回调函数指定了执行超时时间timeout，则有可能为了在超时前执行函数而打乱执行顺序。
-
-```
-var requestID = window.requestIdleCallback(callback[, options])
-```
-
-- **options：** 是一个对象，现在只有一个属性被定义：`timeout` 表示该回调超过这个时间扔未执行，就会强制执行，不必等空闲时间，这个请看**下面代码示例**。
-
-- **callback参数：** 是IdleDeadline对象，包含两个属性： 1：`didTimeout`是一个只读布尔值，表示是否超时。
-
-  2： `timeRemaining()`，是一个方法，返回当前帧还剩多少空余时间。如果没有时间就返回0。
-
-- **返回值：** 返回值requestID可以使用`window.cancelIdleCallback(requestID)`来取消这个回调。
-
-***requestIdleCallback 的比较***
-
-> 优点：常用来切割长任务，利用空闲时间执行，避免主线程长时间阻塞
->
-> 缺点：这个办法实践上可行，但为什么 React 团队又 polyfill 这个办法呢？
->
-> 1. 浏览器兼容不好的问题
-> 2. requestIdleCallback 的 FPS 只有 20，也就是 50ms 刷新一次，远远低于页面晦涩度的要求，所以 React 团队须要本人实现。
-
-> 留神：timeRemaining 最大为 50ms，是有依据钻研得出的，即是说人对用户输出的 100 毫秒以内的响应通常被认为是刹时的，不会被人察觉到。将闲暇工夫限度在 50ms 内意味着即便在闲置工作开始后立刻产生用户操作，用户代理依然有残余的 50ms 能够在其中响应用户输出而不会产生用户可察觉的滞后。
-
-**为什么须要 requestIdleCallback**
-
-> 在网页运行中，有很多耗时但又不是那么重要的工作。这些工作和重要的工作如对用户的输出作出及时响应的之类的工作，它们共享事件队列。如果两者发生冲突，用户体验会很蹩脚。
->
-> requestIdleCallback 就解决了这个痛点，requestIdleCallback 会在每一帧完结时并且有闲暇工夫执行回调。
->
-> 假如须要大量波及到 DOM 的操作的计算，在运算时，浏览器可能就会呈现显著的卡顿行为，甚至不能进行任何操作，因为是 JS 单线程，就算用在输出解决，给定帧渲染和合成之后，用户的主线程就会变得闲暇，直到下一帧的开始。
->
-> 而这些闲暇工夫能够拿来解决低优先级的工作，React16 的调度策略异步可中断，其中要害就靠的这个（polyfill）办法性能；React 把工作细分（工夫切片），在浏览器闲暇的工夫去执行，从而尽可能地进步渲染性能。
->
-> 工夫切片的实质是模仿实现 requestIdleCallback
->
-> 讲到这里，从 React15 到 React16 Fiber，对整体性能来说是大优化了；但要晓得的是，React16 绝对 15 做出的优化，并不是大大减少了任务量，你写的代码的工作总量并没有变动，只是把闲暇工夫利用起来了，不停的干活，就能更快的把活干完；这只是其中一个角度，React 还做了辨别优先级执行等等。
->
-> `requestAnimationFrame`会在每次屏幕刷新的时候被调用，而`requestIdleCallback`则会在每次屏幕刷新时，判断当前帧是否还有多余的时间，如果有，则会调用`requestAnimationFrame`的回调函数
->
-> 图片中是两个连续的执行帧，大致可以理解为两个帧的持续时间大概为16.67，图中黄色部分就是空闲时间。所以，`requestIdleCallback`中的回调函数仅会在每次屏幕刷新并且有空闲时间时才会被调用.
->
-> 利用这个特性，我们可以在动画执行的期间，利用每帧的空闲时间来进行数据发送的操作，或者一些优先级比较低的操作，此时不会使影响到动画的性能，或者和requestAnimationFrame搭配，可以实现一些页面性能方面的的优化，
-
-> react 的 `fiber` 架构也是基于 `requestIdleCallback` 实现的, 并且在不支持的浏览器中提供了 polyfill
-
-`requestIdleCallback()`常用来切割长任务，利用空闲时间执行，避免主线程长时间阻塞。
-
-**两者应用场景比较**
-
-`requestAnimationFrame`：操作DOM，动画，回调会在每一帧确定执行，属于高优先级工作
-
-`requestIdleCallback`: 回调则不肯定，有闲暇工夫才执行，属于低优先级工作；因为它发生在一帧的最后，此时页面布局已经完成，所以不建议在 requestIdleCallback 里再操作 DOM，这样会导致页面再次重绘。
-
-# Set、Map、WeakSet 和 WeakMap 的区别
-
-**Set**
-
-几个关键点：
-
-- 集合中的元素无序且唯一
-- 集合中的元素可以是任何类型，无论是原始值还是对象引用
-
-**WeakSet**
-
-与 Set 的区别
-
-- WeakSet 中的元素只能是对象，不能是其他类型的值
-- WeakSet 中的对象都是弱引用，即垃圾回收机制不考虑 WeakSet 对该对象的引用，也就是说，如果该对象不在被其他变量引用，那么垃圾回收机制就会自动回收该对象所占用内存，所以只要 WeakSet 成员对象在外部消失，它们在 WeakSet 里面的引用就会自动消失。
-- 由于 WeakSet 内部有多少个成员，取决于垃圾回收机制有没有运行，运行前后很可能成员个数是不一样的，而垃圾回收机制何时运行是不可预测的，因此 ES6 规定 WeakSet 不可遍历。
-
-**WeakMap**
-
-WeakMap 和 Map 区别
-
-- WeakMap 只接受对象作为键名（不包括null）
-- WeakMap 键名所指向的对象，不计入垃圾回收机制（同 WeakSet）
-
-**小结：**
-
-Set、Map、WeakSet、WeakMap、都是一种集合的数据结构
-
-Set 和 WeakSet 是一种值-值的集合，且元素唯一不重复
-
-Map 和 WeakMap 是一种键-值对的集合，Map 的键可以是任意类型，WeakMap 的键只能是对象类型。
-
-Set 和 Map可遍历，WeakSet 和 WeakMap不可遍历
-
-WeakSet 和 WeakMap 键名所指向的对象，不计入垃圾回收机制
-
-# 常用技巧方法
-
-## split 方法获取地址栏参数
-
-```js
-function getParams(url) {
-  const res = {}
-  if (url.includes('?')) {
-    const str = url.split('?')[1]
-    const arr = str.split('&')
-    arr.forEach(item => {
-      const key = item.split('=')[0]
-      const val = item.split('=')[1]
-      res[key] = decodeURIComponent(val) // 解码
-    })
-  }
-  return res
-}
-
-// 测试
-const user = getParams('http://www.baidu.com?user=%E9%98%BF%E9%A3%9E&age=16')
-console.log(user) // { user: '阿飞', age: '16' }
-```
-
-## 随机生成10以下正数
-
-```
-Math.floor(Math.random()*10)
-```
-
-## 数组的交集，差集，并集，补集
-
-```js
-var a = [1,2,3,4,5]
-var b = [2,4,6,8,10]
- 
-//交集
-var c = a.filter(function(v){ return b.indexOf(v) > -1 })
- 
-//差集
-var d = a.filter(function(v){ return b.indexOf(v) == -1 })
- 
-//补集
-var e = a.filter(function(v){ return !(b.indexOf(v) > -1) })
-        .concat(b.filter(function(v){ return !(a.indexOf(v) > -1)}))
- 
-//并集
-var f = a.concat(b.filter(function(v){ return !(a.indexOf(v) > -1)}));
- 
-console.log("数组a：", a);
-console.log("数组b：", b);
-console.log("a与b的交集：", c);
-console.log("a与b的差集：", d);
-console.log("a与b的补集：", e);
-console.log("a与b的并集：", f);
-```
-
-## JS中小数相加存在小数位的问题
-
-0.1+0.2=0.300000001，注意要处理
-
-## 截取最后一个特定字符后面的字符串
-
-```
-var name=s.substring(s.lastIndexOf("/")+1);
-```
-
-# JS操作dom
-
-## querySelector和getElementById
+## 获取节点
 
 querySelector() 方法选择指定 CSS 选择器的第一个元素；
 
@@ -4388,57 +2365,115 @@ yarn add @juggle/resize-observer
 import ResizeObserver from '@juggle/resize-observer';
 ```
 
-# 奇葩的JavaScript闭包面试题
+# Ajax原理
+
+`AJAX`全称(Async Javascript and XML)即异步的`JavaScript` 和`XML`，是一种创建交互式网页应用的网页开发技术，可以在不重新加载整个网页的情况下，与服务器交换数据，并且更新部分网页.
 
 ```
-function fun(n,o) {
-  console.log(o)
-  return {
-    fun:function(m){
-      return fun(m,n);
+(1)创建对象
+var xhr = new XMLHttpRequest();
+
+(2)打开请求
+xhr.open('GET', 'example.txt', true);
+
+(3)发送请求
+xhr.send(); 发送请求到服务器
+
+(4)接收响应
+xhr.onreadystatechange =function(){}
+
+(1)当readystate值从一个值变为另一个值时，都会触发readystatechange事件。
+(2)当readystate==4时，表示已经接收到全部响应数据。
+(3)当status ==200时，表示服务器成功返回页面和数据。
+(4)如果(2)和(3)内容同时满足，则可以通过xhr.responseText，获得服务器返回的内容。
+```
+
+**服务器响应处理**
+
+同步处理
+
+```
+	1. xhr.open("GET","info.txt",false);  
+	2. xhr.send();  
+	3. document.getElementById("myDiv").innerHTML=xhr.responseText; //获取数据直接显示在页面上
+```
+
+异步处理
+
+```
+	1. xhr.onreadystatechange=function()  { 
+	2.    if (xhr.readyState==4 &&xhr.status==200)  { 
+	3.       document.getElementById("myDiv").innerHTML=xhr.responseText;  
+	4.      }
+	5.    } 
+```
+
+什么是**readyState**？
+
+readyState是XMLHttpRequest对象的一个属性，用来标识当前XMLHttpRequest对象处于什么状态。 readyState总共有5个状态值，分别为0~4，每个值代表了不同的含义。
+
+0：未初始化 -- 尚未调用.open()方法；
+
+1：启动 -- 已经调用.open()方法，但尚未调用.send()方法；
+
+2：发送 -- 已经调用.send()方法，但尚未接收到响应；
+
+3：接收 -- 已经接收到部分响应数据；
+
+4：完成 -- 已经接收到全部响应数据，而且已经可以在客户端使用了；
+
+**什么是status？**
+
+1：服务器收到请求
+
+2：成功
+
+3：重定向
+
+4：客户端错误
+
+5：服务端错误
+
+# 手写发布订阅
+
+```js
+<script>
+let shoeObj = {}
+shoeObj.list = []
+// 增加订阅者
+shoeObj.listen = function(key, fn){
+    if(!this.list[key]){
+        // 如果不存在key的订阅事件，则置为空
+        this.list[key] = []
     }
-  };
+    // 把函数fn加入回调数组
+    this.list[key].push(fn)
 }
-var a = fun(0);  a.fun(1);  a.fun(2);  a.fun(3);//undefined,?,?,?
-var b = fun(0).fun(1).fun(2).fun(3);//undefined,?,?,?
-var c = fun(0).fun(1);  c.fun(2);  c.fun(3);//undefined,?,?,?
-```
-
- 这是一道非常典型的JS闭包问题。其中嵌套了三层fun函数，搞清楚每层fun的函数是那个fun函数尤为重要。 可以先在纸上或其他地方写下你认为的结果，然后展开看看正确答案是什么？
-
-```
-//答案：
-//a: undefined,0,0,0
-//b: undefined,0,1,2
-//c: undefined,0,1,1
-```
-
-## JS中有几种函数
-
-首先，在此之前需要了解的是，在JS中函数可以分为两种，**具名函数（命名函数）**和**匿名函数**。 区分这两种函数的方法非常简单，可以通过输出 fn.name 来判断，有name的就是具名函数，没有name的就是匿名函数
-
-> 注意：在低版本IE上无法获取具名函数的name，会返回undefined，建议在火狐或是谷歌浏览器上测试
-
-或是采用兼容IE的获取函数name方法来获取函数名称：
-
-```
-/**
-    * 获取指定函数的函数名称（用于兼容IE）
-    * @param {Function} fun 任意函数
-    */
-function getFunctionName(fun) {
-    if (fun.name !== undefined)
-        return fun.name;
-    var ret = fun.toString();
-    ret = ret.substr('function '.length);
-    ret = ret.substr(0, ret.indexOf('('));
-    return ret;
+// 发布消息
+shoeObj.trigger=function(){
+    // 取出key
+    let key = Array.prototype.shift.call(arguments)
+    let fns =this.list[key]
+    // 遍历数组，执行函数fn
+    if(!fns||!fns.length){
+        return
+    }
+    for(let i = 0;i<fns.length;i++){
+        fns[i].apply(this,arguments)
+    }
 }
+shoeObj.listen('red',function(size){
+ console.log(`小红订阅了${size}`);
+})
+shoeObj.listen('blue',function(size){
+ console.log(`小蓝订阅了${size}`);
+})
+shoeObj.trigger('red',12)
+shoeObj.trigger('blue',18)
+</script>
 ```
 
-遂用上述函数测试是否为匿名函数： [![image](http://images2015.cnblogs.com/blog/746158/201511/746158-20151124155220468-1074861494.png)](http://images2015.cnblogs.com/blog/746158/201511/746158-20151124155219640-2082081917.png) 可以得知变量fn1是具名函数，fn2是匿名函数
-
-## 创建函数的几种方式
+# 创建函数的几种方式
 
 说完函数的类型，还需要了解JS中创建函数都有几种创建方法。
 
@@ -4498,7 +2533,7 @@ fn1();
 
 **6、其他创建函数的方法** 当然还有其他创建函数或执行函数的方法，这里不再多说，比如采用 eval ， setTimeout ， setInterval 等非常用方法，这里不做过多介绍，属于非标准方法，这里不做过多展开  
 
-## 三个fun函数的关系是什么？
+**三个fun函数的关系是什么？**
 
 说完函数类型与创建函数的方法后，就可以回归主题，看这道面试题。 这段代码中出现了三个fun函数，所以第一步先搞清楚，这三个fun函数的关系，哪个函数与哪个函数是相同的。
 
@@ -4519,72 +2554,226 @@ function fun(n,o) {
 
 所以第一个fun函数与第二个fun函数不相同，均为新创建的函数。  
 
-## 函数作用域链的问题
+# 高阶函数
 
-再说第三个fun函数之前需要先说下，在*函数表达式*内部能不能访问存放当前函数的变量。  **测试1，对象内部的函数表达式：**
+**JS函数式编程思想**
+
+**1.概述**
+
+中心思想是指：**一个函数的返回值，仅仅依赖于参数的值，而不会因为其他外部的状态而不同。**
+
+我们很难将所有函数都构建成符合函数式编程思维的范式，但如果应用函数式编程，则它的好处主要体现于：
+
+- 引用透明（Referential Transparency）
+- 无副作用（No Side Effect）
+- 无竞争态 (No Race Condition)
+- 惰性求值 (Lazy Evaluation)
+
+**(1)无副作用（no side effects）**
+
+任意一个函数，只要输入是确定的，输出就是确定的，这种**纯函数**称之为没有副作用的。
+
+ 函数在表现方式上，我们可以将其区分为 `纯函数` 和 `非纯函数`。他们有以下区分：
 
 ```
-var o={
-  fn:function (){
-    console.log(fn);
+纯函数：返回值仅依赖于参数，输入相同的值，便会得到相同的值的函数。
+let seed = 0; // 定义一个外部变量
+// 一个用于求和的函数
+const sum = (x, y) => x + y;
+
+非纯函数：在参数一致的情况下，返回值可能不一致的函数。
+let seed = 0; // 定义一个外部变量
+// 另一个用于求和的函数
+const sum = (x, y) => x + y + (++seed);
+```
+
+```
+纯函数` 和 `非纯函数` 最大的两个不同的表现在于：`副作用性` 和 `引用透明性
+```
+
+`副作用性` 是指，该函数的调用过程中，是否对主函数（调用者）产生了附加影响，例如修改了函数外的变量或参数，我们就认为该函数是 `有副作用` 的函数。
+
+**副作用主要表现于：**
+
+- **I/O 操作**：其结果本身就是无法预估的，因此无法判断给定了的参数，是否能给予我们预期的返回结果；比如接收输入、或者将结果输出。
+- **改变全局变量原有值**，或者**改变参数对象值及其属性**：其执行结果也是带有副作用的。
+- **抛出异常或以错误中止**：函数除了返回一个值之外，还可能发生不太确定的执行结果。
+
+**(2)引用透明**
+
+引用透明（Referential transparency），指的是函数的运行不依赖于外部变量或"状态"，只依赖于输入的参数，任何时候只要参数相同，引用函数所得到的返回值总是相同的。
+
+非纯函数造成的最大的问题，就是其 `不可预知性` 。如果代码比较复杂时，会为我们梳理程序运行逻辑造成一定的困难。因此，在函数式编程思维中，我们应尽可能的确保我们编写的函数是 `纯函数`。
+
+```
+JavaScript内置对象中的 非纯函数有：
+Math.random()
+console.log()
+element.addEventListener()
+Date.now()
+Array.prototype.sort()
+ajax操作等
+```
+
+在一段程序中，我们无法保证所有的函数都是纯函数。但纯函数的覆盖面越大，对于调试、缓存数据及线程安全都会提供越多的便利。有一种说法是，保证80%的函数是纯函数即可。
+
+**(3)数据不可变**
+
+在React中，强调一个组件不能去修改传入的prop值，这遵循了Immutable的原则
+
+```
+let a = 1;
+let b = a + 1;
+=> a = 1  b = 2;
+```
+
+变量b出现，虽然使用了变量a的值，但是没有修改a的值。
+
+再看我们熟悉的react中的代码，假如初始化了this.state = { count: 1 }
+
+```
+componentDidMount() {
+    const newState = { ...state, count: 2 }; // { count: 2 }
+    this.setState(newState);
+}
+```
+
+虽然我们使用了this.state，但是没有修改this.state的引用地址和直接修改count的值，对待this.props也一样。
+
+React官网中给出三点好处：
+
+- 简化复杂的功能
+
+不可变性使得复杂的特性更容易实现。
+
+- 跟踪数据的改变
+
+如果直接修改数据，那么就很难跟踪到数据的改变。跟踪数据的改变需要可变对象可以与改变之前的版本进行对比，这样整个对象树都需要被遍历一次。
+
+跟踪不可变数据的变化相对来说就容易多了。如果发现对象变成了一个新对象，那么我们就可以说对象发生改变了。
+
+- 确定在 React 中何时重新渲染
+
+不可变性最主要的优势在于它可以帮助我们在 React 中创建 pure components。我们可以很轻松的确定不可变数据是否发生了改变，从而确定何时对组件进行重新渲染。
+
+
+
+- 纯函数
+- 柯里化
+- 高阶函数
+
+**1.尾调用**
+
+**PS:ES6尾调用优化只能在严格模式下使用，详见[尾调用优化 阮一峰](https://link.jianshu.com/?t=http%3A%2F%2Fwww.ruanyifeng.com%2Fblog%2F2015%2F04%2Ftail-call.html)**
+
+**定义：**某个函数的最后一步是调用另一个函数。
+
+```
+function f(x){
+  return g(x);
+}//尾调用
+// 情况一 非尾调用
+function f(x){
+  let y = g(x);
+  return y;
+}
+// 情况二 非尾调用
+function f(x){
+  return g(x) + 1;
+}
+//尾调用不一定出现在函数尾部，只要是最后一步操作即可。
+    function f(x) {
+  if (x > 0) {
+    return m(x)
   }
-};
-o.fn();//ERROR报错
+  return n(x);
+}
 ```
 
-**测试2，非对象内部的函数表达式：**
+(1)尾调用优化（Tail call optimization）
+
+如图所示，函数调用会在内存形成[调用栈（call stack）](https://link.jianshu.com?t=http%3A%2F%2Fzh.wikipedia.org%2Fwiki%2F%E8%B0%83%E7%94%A8%E6%A0%88)，尾调用由于是函数的最后一步操作，所以不需要保留外层函数的调用记录，因为调用位置、内部变量等信息都不会再用到了，只要直接用内层函数的调用记录，取代外层函数的调用记录就可以了。
+
+**优点：**减小调用栈，节省内存使用。
+
+![image-20220114072242443](/img/image-20220114072242443.png)
 
 ```
-var fn=function (){
-  console.log(fn);
-};
-fn();//function (){console.log(fn);};正确
+function f() {
+  let m = 1;
+  let n = 2;
+  return g(m + n);
+}
+f();
+// 等同于
+function f() {
+  return g(3);
+}
+f();
+// 等同于
+g(3);
 ```
 
-结论是：使用var或是非对象内部的函数表达式内，可以访问到存放当前函数的变量；在对象内部的不能访问到。 原因也非常简单，因为**函数作用域链**的问题，采用var的是在外部创建了一个fn变量，函数内部当然可以在内部寻找不到fn后向上册作用域查找fn，而在创建对象内部时，因为没有在函数作用域内创建fn，所以无法访问。  所以综上所述，可以得知，**最内层的return出去的fun函数不是第二层fun函数，是最外层的fun函数**。 所以，三个fun函数的关系也理清楚了，第一个等于第三个，他们都不等于第二个。  
+(2)尾递归
 
-## 到底在调用哪个函数？
+**定义：**尾调用自身。
+ "尾调用优化"对递归操作意义重大。ES6中第一次明确规定，所有 ECMAScript 的实现，都必须部署"尾调用优化"。这就是说，在 ES6 中，只要使用尾递归（在严格模式下），就不会发生栈溢出，相对节省内存
 
-再看下原题，现在知道了程序中有两个fun函数(第一个和第三个相同)，遂接下来的问题是搞清楚，运行时他执行的是哪个fun函数？
+**2.柯里化**
+
+**柯里化是把多参数的函数转换成少参数的函数的过程。**
 
 ```
-function fun(n,o) {
-  console.log(o)
-  return {
-    fun:function(m){
-      return fun(m,n);
+function sum(a) {
+  return function (b) {
+    return function(c) {
+        return a + b + c;
+        } 
+    }
+}
+// 调用
+let sum1 = sum(1);
+let sum2 = sum1(2);
+sum2(3); // 6
+```
+
+高阶柯里化：
+
+```
+function curry(func) {
+  return function curried(...args) {
+    if (args.length >= func.length) {
+      return func.apply(this, args);
+    } else {
+      return function(...args2) {
+        return curried.apply(this, args.concat(args2));
+      }
     }
   };
 }
-var a = fun(0);  a.fun(1);  a.fun(2);  a.fun(3);//undefined,?,?,?
-var b = fun(0).fun(1).fun(2).fun(3);//undefined,?,?,?
-var c = fun(0).fun(1);  c.fun(2);  c.fun(3);//undefined,?,?,?
-//问:三行a,b,c的输出分别是什么？
+
+function sum(a, b, c) {
+  return a + b + c;
+}
+
+let curriedSum = curry(sum);
+let cu1 = curriedSum(1)
+alert( curriedSum( 1,2, 3) );// 6 任意柯里化
+alert( cu1( 2, 3) );// 6 任意柯里化
 ```
 
- **1、第一行a**
+当我们运行它时，这里有两个 `if` 执行分支：
 
-```
-var a = fun(0);  a.fun(1);  a.fun(2);  a.fun(3);
-```
+1. 现在调用：如果传入的 `args` 长度与原始函数所定义的（`func.length`）相同或者更长，那么只需要将调用传递给它即可。
+2. 获取一个偏函数：否则，`func` 还没有被调用。取而代之的是，返回另一个包装器 `pass`，它将重新应用 `curried`，将之前传入的参数与新的参数一起传入。然后，在一个新的调用中，再次，我们将获得一个新的偏函数（如果参数不足的话），或者最终的结果。
 
-> 可以得知，第一个fun(0)是在调用**第一层fun函数**。第二个fun(1)是在调用前一个fun的返回值的fun函数，所以： 第后面几个fun(1),fun(2),fun(3),函数都是在调用**第二层fun函数**。 遂： 在第一次调用fun(0)时，o为undefined； 第二次调用fun(1)时m为1，此时fun闭包了外层函数的n，也就是第一次调用的n=0，即m=1，n=0，并在内部调用第一层fun函数fun(1,0);所以o为0； 第三次调用fun(2)时m为2，但依然是调用a.fun，所以还是闭包了第一次调用时的n，所以内部调用第一层的fun(2,0);所以o为0 第四次同理； 即：最终答案为undefined,0,0,0  
+例如，让我们看看 `sum(a, b, c)` 这个例子。它有三个参数，所以 `sum.length = 3`。
 
-**2、第二行b**
+对于调用 `curried(1)(2)(3)`：
 
-```
-var b = fun(0).fun(1).fun(2).fun(3);//undefined,?,?,?
-```
-
-> 先从fun(0)开始看，肯定是调用的第一层fun函数；而他的返回值是一个对象，所以第二个fun(1)调用的是第二层fun函数，后面几个也是调用的第二层fun函数。 遂： 在第一次调用第一层fun(0)时，o为undefined； 第二次调用 .fun(1)时m为1，此时fun闭包了外层函数的n，也就是第一次调用的n=0，即m=1，n=0，并在内部调用第一层fun函数fun(1,0);所以o为0； 第三次调用 .fun(2)时m为2，此时当前的fun函数不是第一次执行的返回对象，而是**第二次执行的返回对象**。而在第二次执行第一层fun函数时时(1,0)所以n=1,o=0,返回时闭包了第二次的n，遂在第三次调用第三层fun函数时m=2,n=1，即调用第一层fun函数fun(2,1)，所以o为1； 第四次调用 .fun(3)时m为3，闭包了第三次调用的n，同理，最终调用第一层fun函数为fun(3,2)；所以o为2； 即最终答案：undefined,0,1,2  
-
-**3、第三行c**
-
-```
-var c = fun(0).fun(1);  c.fun(2);  c.fun(3);//undefined,?,?,?
-```
-
-> 根据前面两个例子，可以得知： fun(0)为执行第一层fun函数，.fun(1)执行的是fun(0)返回的第二层fun函数，这里语句结束，遂c存放的是fun(1)的返回值，而不是fun(0)的返回值，所以c中闭包的也是fun(1)第二次执行的n的值。c.fun(2)执行的是fun(1)返回的第二层fun函数，c.fun(3)执行的**也**是fun(1)返回的第二层fun函数。 遂： 在第一次调用第一层fun(0)时，o为undefined； 第二次调用 .fun(1)时m为1，此时fun闭包了外层函数的n，也就是第一次调用的n=0，即m=1，n=0，并在内部调用第一层fun函数fun(1,0);所以o为0； 第三次调用 .fun(2)时m为2，此时fun闭包的是第二次调用的n=1，即m=2，n=1，并在内部调用第一层fun函数fun(2,1);所以o为1； 第四次.fun(3)时同理，但依然是调用的第二次的返回值，遂最终调用第一层fun函数fun(3,1)，所以o还为1 即最终答案：undefined,0,1,1  
+1. 第一个调用 `curried(1)` 将 `1` 保存在词法环境中，然后返回一个包装器 `pass`。
+2. 包装器 `pass` 被调用，参数为 `(2)`：它会获取之前的参数 `(1)`，将它与得到的 `(2)` 连在一起，并一起调用 `curried(1, 2)`。由于参数数量仍小于 3，`curry` 函数依然会返回 `pass`。
+3. 包装器 `pass` 再次被调用，参数为 `(3)`，在接下来的调用中，`pass(3)` 会获取之前的参数 (`1`, `2`) 并将 `3` 与之合并，执行调用 `curried(1, 2, 3)` — 最终有 `3` 个参数，它们被传入最原始的函数中
 
 # devDependencies 和 dependencies 的区别
 
@@ -4593,3 +2782,60 @@ var c = fun(0).fun(1);  c.fun(2);  c.fun(3);//undefined,?,?,?
 只要开发的项目是**发npm包**提供给外部、其他业务项目使用的，需要非常注意依赖的安装地方，因为搞不好很容易在业务使用中会出现bug。dependencies的依赖包会被打入到npm包中，慎用。
 
 而如果只是自己项目用，**不需要发npm包**的话，把依赖安装到 `devDependencies` 或者 `dependencies` 中，实质上是没有任何区别的。
+
+# 常用技巧方法
+
+## 获取地址栏参数
+
+```js
+function getParams(url) {
+  const res = {}
+  if (url.includes('?')) {
+    const str = url.split('?')[1]
+    const arr = str.split('&')
+    arr.forEach(item => {
+      const key = item.split('=')[0]
+      const val = item.split('=')[1]
+      res[key] = decodeURIComponent(val) // 解码
+    })
+  }
+  return res
+}
+
+// 测试
+const user = getParams('http://www.baidu.com?user=%E9%98%BF%E9%A3%9E&age=16')
+console.log(user) // { user: '阿飞', age: '16' }
+```
+
+## 随机生成10以下正数
+
+```
+Math.floor(Math.random()*10)
+```
+
+## 数组的交集，差集，并集，补集
+
+```js
+var a = [1,2,3,4,5]
+var b = [2,4,6,8,10]
+ 
+//交集
+var c = a.filter(function(v){ return b.indexOf(v) > -1 })
+ 
+//差集
+var d = a.filter(function(v){ return b.indexOf(v) == -1 })
+ 
+//补集
+var e = a.filter(function(v){ return !(b.indexOf(v) > -1) })
+        .concat(b.filter(function(v){ return !(a.indexOf(v) > -1)}))
+ 
+//并集
+var f = a.concat(b.filter(function(v){ return !(a.indexOf(v) > -1)}));
+ 
+console.log("数组a：", a);
+console.log("数组b：", b);
+console.log("a与b的交集：", c);
+console.log("a与b的差集：", d);
+console.log("a与b的补集：", e);
+console.log("a与b的并集：", f);
+```
