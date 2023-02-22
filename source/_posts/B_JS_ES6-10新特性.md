@@ -6,33 +6,268 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# 参考
+# let
 
-[ES6、ES7、ES8、ES9、ES10新特性](https://juejin.cn/post/6844903811622912014#heading-56)
+**暂时性死区定义**
 
-# Set、Map、WeakSet 和 WeakMap 的区别
+[let 暂时性死区详解](https://segmentfault.com/a/1190000015603779)
 
-**Set**
+```
+注意：let和const声明定义的变量作用在当前执行上下文的词法环境中。变量在他们的词法环境被初始化的时候被创建，但是在变量的词法绑定被执行前他们不能被以任何形式被访问。以带有初始化器的词法绑定形式定义的变量，在词法绑定被执行的时候用他的初始化器的赋值表达式的计算结果来赋值，而不是在变量被创建的时候赋值。如果一个let声明的词法绑定没有初始化器，那么这个变量在初始化绑定被执行的时候会被用undefined赋值。
+```
 
-几个关键点：
+*ES6规定，`let/const` 命令会使区块形成封闭的作用域。若在声明之前使用变量，就会报错。*
+*总之，在代码块内，使用 `let` 命令声明变量之前，该变量都是不可用的。*
+*这在语法上，称为 **“暂时性死区”**（ temporal dead zone，简称 **TDZ**）。*
 
-- 集合中的元素无序且唯一
-- 集合中的元素可以是任何类型，无论是原始值还是对象引用
+# 数组的扩展
 
-**WeakSet**
+**reduce累加器**
 
-与 Set 的区别
+var total = [ 0, 1, 2, 3 ].reduce(( acc, cur ) => {    return acc + cur }, 0);
 
-- WeakSet 中的元素只能是对象，不能是其他类型的值
-- WeakSet 中的对象都是弱引用，即垃圾回收机制不考虑 WeakSet 对该对象的引用，也就是说，如果该对象不在被其他变量引用，那么垃圾回收机制就会自动回收该对象所占用内存，所以只要 WeakSet 成员对象在外部消失，它们在 WeakSet 里面的引用就会自动消失。
-- 由于 WeakSet 内部有多少个成员，取决于垃圾回收机制有没有运行，运行前后很可能成员个数是不一样的，而垃圾回收机制何时运行是不可预测的，因此 ES6 规定 WeakSet 不可遍历。
+**every一假即假**
+
+const flag=[ 0, 1, 2, 3 ].every(ele=> {    return ele>3 });
+
+**some一真即真**
+
+const flag=[ 0, 1, 2, 3 ].some(ele=> {    return ele>3 });
+
+# Set
+
+`Set` 本身是一个构造函数，用来生成 `Set` 数据结构。`Set` 对象允许你存储任何类型的值，但是成员的值都是唯一的，没有重复的值。
+
+**Set 中的特殊值**
+
+`Set` 对象存储的值总是唯一的，所以需要判断两个值是否恒等。有几个特殊值需要特殊对待：
+
+- +0 与 -0 在存储判断唯一性的时候是恒等的，所以不重复
+- `undefined` 与 `undefined` 是恒等的，所以不重复
+- `NaN` 与 `NaN` 是不恒等的，但是在 `Set` 中认为 `NaN` 与 `NaN` 相等，所有只能存在一个，不重复。
+
+**Set 实例对象的方法**
+
+- `add(value)`：添加某个值，返回 `Set` 结构本身(可以链式调用)。
+- `delete(value)`：删除某个值，删除成功返回 `true`，否则返回 `false`。
+- `has(value)`：返回一个布尔值，表示该值是否为 `Set` 的成员。
+- `clear()`：清除所有成员，没有返回值。
+
+**遍历方法**
+
+- `keys()`：返回键名的遍历器。
+- `values()`：返回键值的遍历器。
+- `entries()`：返回键值对的遍历器。
+- `forEach()`：使用回调函数遍历每个成员。
+
+**Array 和 Set 对比**
+
+- `Array` 的 `indexOf` 方法比 `Set` 的 `has` 方法效率低下
+- `Set` 不含有重复值（可以利用这个特性实现对一个数组的去重）
+- `Set` 通过 `delete` 方法删除某个值，而 `Array` 只能通过 `splice`。两者的使用方便程度前者更优
+- `Array` 的很多新方法 `map`、`filter`、`some`、`every` 等是 `Set` 没有的（但是通过两者可以互相转换来使用）
+
+**Set 的应用**
+
+1、`Array.from` 方法可以将 `Set` 结构转为数组。
+
+```js
+const items = new Set([1, 2, 3, 4, 5])
+const array = Array.from(items)
+```
+
+2、数组去重
+
+```js
+// 去除数组的重复成员
+;[...new Set(array)]
+Array.from(new Set(array))
+复制代码
+```
+
+3、数组的 `map` 和 `filter` 方法也可以间接用于 `Set`
+
+```js
+let set = new Set([1, 2, 3])
+set = new Set([...set].map((x) => x * 2))
+// 返回Set结构：{2, 4, 6}
+let set = new Set([1, 2, 3, 4, 5])
+set = new Set([...set].filter((x) => x % 2 == 0))
+// 返回Set结构：{2, 4}
+```
+
+4、实现并集 `(Union)`、交集 `(Intersect)` 和差集
+
+```js
+let a = new Set([1, 2, 3])
+let b = new Set([4, 3, 2])
+// 并集
+let union = new Set([...a, ...b])
+// Set {1, 2, 3, 4}
+// 交集
+let intersect = new Set([...a].filter((x) => b.has(x)))
+// set {2, 3}
+// 差集
+let difference = new Set([...a].filter((x) => !b.has(x)))
+// Set {1}
+```
+
+**weakSet**
+
+`WeakSet` 结构与 `Set` 类似，也是不重复的值的集合。
+
+- 成员都是数组和类似数组的对象，若调用 `add()` 方法时传入了非数组和类似数组的对象的参数，就会抛出错误。
+
+```js
+const b = [1, 2, [1, 2]]
+new WeakSet(b) // Uncaught TypeError: Invalid value used in weak set
+复制代码
+```
+
+- 成员都是弱引用，可以被垃圾回收机制回收，可以用来保存 DOM 节点，不容易造成内存泄漏。
+- `WeakSet` 不可迭代，因此不能被用在 `for-of` 等循环中。
+- `WeakSet` 没有 `size` 属性。
+
+# Map
+
+`Map` 中存储的是 `key-value` 形式的键值对, 其中的 `key` 和 `value` 可以是任何类型的
+
+**Map 和 Object 的区别**
+
+1. `Object` 对象有原型， 也就是说他有默认的 `key` 值在对象上面， 除非我们使用 `Object.create(null)`创建一个没有原型的对象；
+2. 在 `Object` 对象中， 只能把 `String` 和 `Symbol` 作为 `key` 值， 但是在 `Map` 中，`key` 值可以是任何基本类型(`String`, `Number`, `Boolean`, `undefined`, `NaN`….)，或者对象(`Map`, `Set`, `Object`, `Function` , `Symbol` , `null`….);
+3. 通过 `Map` 中的 `size` 属性， 可以很方便地获取到 `Map` 长度， 要获取 `Object` 的长度， 你只能手动计算
+
+**Map 对象的方法**
+
+- `set(key, val)`: 向 `Map` 中添加新元素
+- `get(key)`: 通过键值查找特定的数值并返回
+- `has(key)`: 判断 `Map` 对象中是否有 `Key` 所对应的值，有返回 `true`，否则返回 `false`
+- `delete(key)`: 通过键值从 `Map` 中移除对应的数据
+- `clear()`: 将这个 `Map` 中的所有元素删除
+
+**遍历方法**
+
+- `keys()`：返回键名的遍历器
+- `values()`：返回键值的遍历器
+- `entries()`：返回键值对的遍历器
+- `forEach()`：使用回调函数遍历每个成员
+
+**数据类型转化**
+
+Map 转为数组
+
+```js
+let map = new Map()
+let arr = [...map]
+复制代码
+```
+
+数组转为 Map
+
+```js
+Map: map = new Map(arr)
+复制代码
+```
+
+Map 转为对象
+
+```js
+let obj = {}
+for (let [k, v] of map) {
+  obj[k] = v
+}
+复制代码
+```
+
+对象转为 Map
+
+```js
+for( let k of Object.keys(obj)）{
+  map.set(k,obj[k])
+}
+```
+
+**Map的应用**
+
+Map 会保留所有元素的顺序, 是在基于可迭代的基础上构建的，如果考虑到元素迭代或顺序保留或键值类型丰富的情况下都可以使用。
+
+下面摘抄自 vue3 源码中依赖收集的核心实现 
+
+```js
+let depsMap = targetMap.get(target)  
+ if (!depsMap) {  
+   targetMap.set(target, (depsMap = new Map()))  
+ }  
+ let dep = depsMap.get(key)  
+ if (!dep) {  
+   depsMap.set(key, (dep = new Set()))  
+ }  
+ if (!dep.has(activeEffect)) {  
+   dep.add(activeEffect)  
+   activeEffect.deps.push(dep)  
+   ...  
+ } 
+```
 
 **WeakMap**
 
-WeakMap 和 Map 区别
+`WeakMap` 结构与 `Map` 结构类似，也是用于生成键值对的集合。
 
-- WeakMap 只接受对象作为键名（不包括null）
-- WeakMap 键名所指向的对象，不计入垃圾回收机制（同 WeakSet）
+- 只接受对象作为键名（`null` 除外），不接受其他类型的值作为键名
+- 键名是弱引用，键值可以是任意的，键名所指向的对象可以被垃圾回收，此时键名是无效的
+- 不能遍历，方法有 `get`、`set`、`has`、`delete`
+
+# Set、WeakSet 、Map、WeakMap 比较
+
+Set
+
+- 是一种叫做集合的数据结构(ES6新增的)
+- 成员唯一、无序且不重复
+- `[value, value]`，键值与键名是一致的（或者说只有键值，没有键名）
+- 允许储存任何类型的唯一值，无论是原始值或者是对象引用
+- 可以遍历，方法有：`add`、`delete`、`has`、`clear`
+
+WeakSet
+
+- 成员都是对象
+- 成员都是弱引用，可以被垃圾回收机制回收，可以用来保存 `DOM` 节点，不容易造成内存泄漏
+- 不能遍历，方法有 `add`、`delete`、`has`
+
+Map
+
+- 是一种类似于字典的数据结构，本质上是键值对的集合
+- 可以遍历，可以跟各种数据格式转换
+- 操作方法有:`set`、`get`、`has`、`delete`、`clear`
+
+WeakMap
+
+- 只接受对象作为键名（`null` 除外），不接受其他类型的值作为键名
+- 键名是弱引用，键值可以是任意的，键名所指向的对象可以被垃圾回收，此时键名是无效的
+- 不能遍历，方法有 `get`、`set`、`has`、`delete`
+
+**weakset 和 weakmap**
+
+ES6 考虑到防止内存泄漏，推出了两种新的数据结构： weakset 和 weakmap 。他们对值的引用都是不计入垃圾回收机制的，也就是说，如果其他对象都不再引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存。
+
+```
+const wm = new WeakMap()const element = document.getElementById('example') vm.set(element, 'something') vm.get(element)
+```
+
+上面代码中，先新建一个 Weakmap 实例。然后，将一个 DOM 节点作为键名存入该实例，并将一些附加信息作为键值，一起存放在 WeakMap 里面。这时，WeakMap 里面对 element 的引用就是弱引用，不会被计入垃圾回收机制。
+
+注册监听事件的 listener 对象很适合用 WeakMap 来实现。
+
+```
+// 代码1
+ele.addEventListener('click', handler, false)// 
+代码2
+const listener = new WeakMap() 
+listener.set(ele, handler) 
+ele.addEventListener('click', listener.get(ele), false)
+```
+
+代码 2 比起代码 1 的好处是：由于监听函数是放在 WeakMap 里面，一旦 dom 对象 ele 消失，与它绑定的监听函数 handler 也会自动消失。
 
 **小结：**
 
@@ -46,1208 +281,7 @@ Set 和 Map可遍历，WeakSet 和 WeakMap不可遍历
 
 WeakSet 和 WeakMap 键名所指向的对象，不计入垃圾回收机制
 
-# ES6
-
-## set和map
-
-`Set`是一种叫做集合的数据结构，`Map`是一种叫做字典的数据结构.
-
-Set是由一堆无序的、相关联的，且不重复的内存结构;
-
-Map是一些元素的集合。每个元素有一个称作key 的域，不同元素的key 各不相同
-
-**Set**
-
-set常用方法：add(),delete();has();clear();
-
-遍历方法：keys();values();entires();foreach();
-
-扩展运算符和` Set` 结构相结合实现数组或字符串去重
-
-```js
-// 数组
-let arr = [3, 5, 2, 2, 5, 5];
-let unique = [...new Set(arr)]; // [3, 5, 2]
-```
-
-实现并集、交集、和差集
-
-```js
-// 并集
-let union = new Set([...a, ...b]);
-// Set {1, 2, 3, 4}
-
-// 交集
-let intersect = new Set([...a].filter(x => b.has(x)));
-// set {2, 3}
-
-// （a 相对于 b 的）差集
-let difference = new Set([...a].filter(x => !b.has(x)));
-```
-
-手写set
-
-```
-class Set {
-  //Symbol.iterator 为每个对象定义了默认的迭代器。
-  //该迭代器可以被for... of循环使用
-  constructor(iterator = []) {
-    //传递的对象必须是一个可迭代对象
-    //所以需要判断传递的参数是否是可迭代对象
-    if (typeof iterator[Symbol.iterator] !== 'function') {
-      //不是可迭代对象就抛出一个错误
-      throw new TypeError(`您所提供的 ${iterator}不是一个可迭代对象`)
-    }
-    //创建一个空数组
-    this._datas = []
-    //取出数组iterator里面的值，用for of循环
-    for (const item of iterator) {
-      // 将值添加到空数组中
-      this.add(item)
-    }
-  }
-
-  //判断两个值是否相等
-  isEqual(data1, data2) {
-    //1.存在两个都为0的情况
-    if (data1 === 0 && data2 === 0) {
-      return true
-    }
-    //2.Object.is()方法判断两个值是否为同一个值
-    return Object.is(data1, data2)
-  }
-
-  //判断数据是否存在数组中
-  has(data) {
-    //遍历数组中的值(用for of)
-    for (const item of this._datas) {
-      //调用isEqual()方法判断 data(输入的数据)跟item(数组中的数据)
-      if (this.isEqual(data, item)) {
-        //相同返回true
-        return true
-      }
-      //不相同返回false
-      return false
-    }
-  }
-
-  //添加数据的方法
-  add(data) {
-    //首先判断添加的值是否存在在当前数组中，存在的话就默认返回undefined，
-    //不存在就把数据添加到之前定义的空数组中，
-    // 此时已经不是空数组，而是存入了item值
-    if (!this.has(data)) {
-      //不存在就添加到数组中
-      this._datas.push(data)
-    }
-    return this._datas
-  }
-
-  // 删除数据，返回结果true/false,删除成功/删除失败
-  delete(data) {
-    //遍历数组中的数据,i为下标,element为每个数据
-    for (let i = 0; i < this._datas.length; i++) {
-      const element = this._datas[i]
-      //判断data跟element是否相同,相同说明数组中存在数据，可以删除
-      if (this.isEqual(data, element)) {
-        //删除数据利用splice()方法
-        this._datas.splice(i, 1)
-        //删除成功
-        return true
-      }
-    }
-    //删除失败
-    return false
-  }
-
-  //清除数据
-  clear() {
-    //数组长度为0
-    this._datas.length = 0
-    return this._datas
-  }
-
-  //获取数组长度
-  get size() {
-    return this._datas.length
-  }
-
-  //forEach方法(里层用for of)
-  forEach(callback) {
-    for (const item of this._datas) {
-      callback(item, item, this)
-    }
-  }
-
-  values() {
-    return this._datas
-  }
-  entries() {
-    return this._datas.map(item => [item, item])
-  }
-
-  //*[Sysbol.iterator]
-  *[Symbol.iterator]() {
-    for (const item of this._datas) {
-      yield item
-    }
-  }
-}
-
-const s = new Set([1, 1, '1'])
-console.log([...s]) // [ 1, '1' ]
-console.log(s.size) // 2
-s.clear() // 清空重新来
-console.log(s.size) // 0
-s.add(1)
-console.log(s.size) // 1
-s.add(1) // 检测重复
-console.log(s.size) // 1
-s.add('1') // 检测 数字1 与 字符串 '1'
-console.log(s.size) // 2
-console.log(s.values()) // [ 1, '1' ]
-s.add(2)
-console.log(s.size) // 3
-console.log(s.values()) //[ 1, '1', 2 ]
-console.log(s.entries()) // [ [ 1, 1 ], [ '1', '1' ], [ 2, 2 ] ]
-console.log([...s]) // [ 1, '1', 2 ]
-s.delete(1)
-console.log(s.size) // 2
-s.clear()
-console.log(s.size) // 0
-```
-
-**Map**
-
-size 属性,set();get();has();delete();clear()
-
-遍历：同set
-
-手写map
-
-map函数接收两个参数,迭代器函数fn和迭代器函数的this指向
-
-```
-class Map {
-  //Symbol.iterator 为每个对象定义了默认的迭代器。
-  //该迭代器可以被for... of循环使用
-  constructor(iterator = []) {
-    //传递的对象必须是一个可迭代对象
-    //所以需要判断传递的参数是否是可迭代对象
-    if (typeof iterator[Symbol.iterator] !== 'function') {
-      //不是可迭代对象就抛出一个错误
-      throw new TypeError(`您所提供的 ${iterator}不是一个可迭代对象`)
-    }
-    //创建一个空数组
-    this._datas = []
-    //取出数组iterator里面的值，用for of循环
-    for (const item of iterator) {
-      const [k, v] = item
-      // 将值添加到空数组中
-      this.set(k, v)
-    }
-  }
-
-  //判断两个值是否相等
-  isEqual(data1, data2) {
-    //1.存在两个都为0的情况
-    if (data1 === 0 && data2 === 0) {
-      return true
-    }
-    //2.Object.is()方法判断两个值是否为同一个值
-    return Object.is(data1, data2)
-  }
-
-  //判断数据是否存在数组中
-  has(key) {
-    //遍历数组中的值(用for of)
-    for (const [k, _] of this._datas) {
-      //调用isEqual()方法判断 data(输入的数据)跟item(数组中的数据)
-      if (this.isEqual(key, k)) {
-        //相同返回true
-        return true
-      }
-      //不相同返回false
-      return false
-    }
-  }
-
-  //添加数据的方法
-  set(key, val) {
-    //首先判断添加的值是否存在在当前数组中，存在的话就默认返回undefined，
-    //不存在就把数据添加到之前定义的空数组中，
-    // 此时已经不是空数组，而是存入了item值
-    if (!this.has(key)) {
-      //不存在就添加到数组中
-      this._datas.push([key, val])
-    } else {
-      const item = this._datas.find(([k, _]) => k === key)
-      item[1] = val
-    }
-    return this._datas
-  }
-  //添加数据的方法
-  get(key) {
-    //首先判断添加的值是否存在在当前数组中，存在的话就默认返回undefined，
-    //不存在就把数据添加到之前定义的空数组中，
-    // 此时已经不是空数组，而是存入了item值
-    if (!this.has(key)) {
-      //不存在就添加到数组中
-      return undefined
-    }
-    const item = this._datas.find(([k, _]) => k === key)
-    return item[1]
-  }
-
-  // 删除数据，返回结果true/false,删除成功/删除失败
-  delete(key) {
-    if (!this.has(key)) {
-      //不存在返回false
-      return false
-    }
-    const idx = this._datas.findIndex(([k, _]) => k === key)
-    //删除数据利用splice()方法
-    this._datas.splice(idx, 1)
-    //删除成功，返回true
-    return true
-  }
-
-  //清除数据
-  clear() {
-    //数组长度为0
-    this._datas.length = 0
-    return this._datas
-  }
-
-  //获取数组长度
-  get size() {
-    return this._datas.length
-  }
-
-  //forEach方法(里层用for of)
-  forEach(callback) {
-    for (const [k, v] of this._datas) {
-      callback(v, k, this)
-    }
-  }
-
-  keys() {
-    return this._datas.reduce((acc, cur) => {
-      acc.push(cur[0])
-      return acc
-    }, [])
-  }
-  values() {
-    return this._datas.reduce((acc, cur) => {
-      acc.push(cur[1])
-      return acc
-    }, [])
-  }
-  entries() {
-    return this._datas.reduce((acc, cur) => {
-      acc.push([cur[0], cur[1]])
-      return acc
-    }, [])
-  }
-
-  //*[Sysbol.iterator]
-  *[Symbol.iterator]() {
-    for (const item of this._datas) {
-      yield item
-    }
-  }
-}
-
-const m = new Map([[1], [2, 3]])
-console.log([...m]) // [ [ 1, undefined ], [ 2, 3 ] ]
-console.log(m.keys()) // [ 1, 2 ]
-console.log(m.values()) // [ undefined, 3 ]
-console.log(m.entries()) // [ [ 1, undefined ], [ 2, 3 ] ]
-console.log(m.size) // [ [ 1, undefined ], [ 2, 3 ] ]
-m.clear()
-m.set(1, 2)
-console.log(m.entries()) // [ [ 1, 2 ] ]
-m.set(1, 3)
-console.log(m.entries()) // [ [ 1, 3 ] ]
-m.delete(1)
-console.log(m.entries()) // []
-```
-
-1 迭代器函数 ，该函数有三个参数
-数组项的值
-数组项下标
-数组对象本身
-2 迭代器函数的this指向
-（注：当传了该值，迭代器函数不能为箭头函数了。原因是箭头函数没有this隐式指向。箭头函数在定义时候就已经绑定了上层上下文中非箭头函数this）
-
-```
-Array.prototype.copyMap = function (fn, toThis) {
-let arr = this;
-const result = [];
-const redirectThis = toThis || Object.create(null);
-for (let i = 0; i < arr.length; i++) {
-const item = fn.call(redirectThis, arr[i], i, arr);
-result.push(item);
-}
-return result;
-};
-```
-
-
-
-## Promise原理
-
-[promise原理及手写]: https://juejin.cn/post/6850037281206566919#heading-6
-
-1.promise解决的问题
-
-它是一个异步解决方案，比如：以前嵌套调用即回调地域，处理多个异步请求并发。现在可以消灭嵌套调用和合并多个任务请求。
-
-以前异步方案有四种：
-
-- calllback回调函数；
-- generator+co库；
-- promise;
-- aysnc+await;
-
-2.promise/A+规范
-
-- **解决（fulfill）**：指一个 promise 成功时进行的一系列操作，如状态的改变、回调的执行。虽然规范中用 `fulfill` 来表示解决，但在后世的 promise 实现多以 `resolve` 来指代之。
-- **拒绝（reject）**：指一个 promise 失败时进行的一系列操作。
-- **终值（eventual value）**：所谓终值，指的是 promise 被**解决**时传递给解决回调的值，由于 promise 有**一次性**的特征，因此当这个值被传递时，标志着 promise 等待态的结束，故称之终值，有时也直接简称为值（value）。
-- **据因（reason）**：也就是拒绝原因，指在 promise 被**拒绝**时传递给拒绝回调的值。
-
-[promise/A+]: http://www.ituring.com.cn/article/66566
-
-promise状态有三种：等待态（Pending）、执行态（Fulfilled）和拒绝态（Rejected）。
-
-promise提供一个 then 方法以访问其当前值、终值和据因。入参分别是 promise 成功的回调 onFulfilled, 和 promise 失败的回调 onRejected
-
-3.原理
-
-new promise时， 需要传递一个executor()执行器，入参是resolve和reject函数。结合settimeout异步+回调数组实现then异步，then的new promise实现链式调用
-
-4.手写promise
-
-4.1基础版
-
-```js
-Promise.js
-class Promise{
-    constructor(executor){
-        if(typeof executor !=='function')
-        throw new TypeError('executor 不是一个函数');
-        const resolve =(value)=>{
-            //接收终值，成功时回调
-            console.log('接收终值');
-        };
-        const reject=(res)=>{
-            //接收据因，失败时回调
-            console.log('接收据因');
-        };
-        executor(resolve,reject);
-    }
-}
-module.exports= Promise
-
-index.js
-const  Promise = require('./promise.js') 
-new Promise((resolve,reject)=>{
-    console.log('开始了');
-    resolve(1)
-})
-```
-
-代码优化版本
-
-```js
-class Promise{
-    constructor(executor){
-        if(typeof executor !=='function')
-        throw new TypeError('executor 不是一个函数');
-
-        this.initValue();
-        this.initBind();
-        executor(this.resolve,this.reject);
-    }
-    initValue(){
-        //初始化
-        this.value = null;//终值
-        this.reason=null;//据因
-        this.state='pending';//状态
-    }
-    initBind(){
-        // 初始化改变this指向
-        //如果是箭头函数，就不要改变this指向，因为箭头函数自动继承父的this即当前实例
-        this.resolve = this.resolve.bind(this);
-        this.reject = this.reject.bind(this);
-    }
-    resolve(value){
-        //接收终值，成功时回调
-        console.log('接收终值');
-        if(this.state='pending'){
-            this.state='fulfilled';
-            this.value = value;
-        }
-    }
-    reject(reason){
-        //接收据因，失败时回调
-        console.log('接收据因');
-        if(this.state='pending'){
-            this.state='fulfilled';
-            this.reason = reason;
-        }
-    }
-}
-
-module.exports= Promise
-```
-
-4.2then异步实现
-
-先上同步代码
-
-```js
-class Promise{
-    constructor(executor){
-        if(typeof executor !=='function')
-        throw new TypeError('executor 不是一个函数');
-
-        this.initValue();
-        this.initBind();
-        executor(this.resolve,this.reject);
-    }
-    initValue(){
-        //初始化
-        this.value = null;//终值
-        this.reason=null;//据因
-        this.state=Promise.PENDING;//状态
-    }
-    initBind(){
-        // 初始化改变this指向
-        //如果是箭头函数，就不要改变this指向，因为箭头函数自动继承父的this即当前实例
-        this.resolve = this.resolve.bind(this);
-        this.reject = this.reject.bind(this);
-    }
-    resolve(value){
-        //接收终值，成功时回调
-        console.log('接收终值');
-        if(this.state=Promise.PENDING){
-            this.state=Promise.FULFILLED;
-            this.value = value;
-        }
-    }
-    reject(reason){
-        //接收据因，失败时回调
-        console.log('接收据因');
-        if(this.state=Promise.PENDING){
-            this.state=Promise.REJECTED;
-            this.reason = reason;
-        }
-    }
-    then(onFulfilled,onRejected){
-        //参数校验
-        if(typeof onFulfilled !=='function' ){
-            //不是函数则返回一个函数
-            onFulfilled = function(value){
-                return value;
-            }
-        }
-        if(typeof onRejected !=='function' ){
-            //不是函数则返回一个函数
-            onRejected = function(reason){
-                return reason;
-            }
-        }
-        if(this.state ===Promise.FULFILLED){
-            //有结果后，直接回调
-            onFulfilled(this.value);
-        }
-        if(this.state ===Promise.REJECTED){
-            onRejected(this.reason);
-        }
-
-    }
-}
-
-//也称为魔法数字
-Promise.PENDING = 'pending';
-Promise.FULFILLED = 'fulfilled';
-Promise.REJECTED = 'rejected';
-module.exports= Promise
-
-
-console.log(1);
-const  Promise = require('./promise.js') 
-new Promise((resolve,reject)=>{
-    console.log(2);
-    setTimeout(()=>{
-        resolve('我要执行')
-    })
-}).then(value=>{
-    console.log(4);
-    console.log('value:',value);
-},reason=>{
-    console.log('reason:',reason); 
-})
-console.log(3);
-打印
-1,2,3； 4不执行了，这是不对的
-```
-
-上异步代码
-
-```
-class Promise{
-    constructor(executor){
-        if(typeof executor !=='function')
-        throw new TypeError('executor 不是一个函数');
-
-        this.initValue();
-        this.initBind();
-        executor(this.resolve,this.reject);
-    }
-    initValue(){
-        //初始化
-        this.value = null;//终值
-        this.reason=null;//据因
-        this.state=Promise.PENDING;//状态
-        this.onFulfilledCallbacks=[];//成功回调数组
-        this.onRejectedCallbacks=[];//失败回调数组
-    }
-    initBind(){
-        // 初始化改变this指向
-        //如果是箭头函数，就不要改变this指向，因为箭头函数自动继承父的this即当前实例
-        this.resolve = this.resolve.bind(this);
-        this.reject = this.reject.bind(this);
-    }
-    resolve(value){
-        //接收终值，成功时回调
-        console.log('接收终值');
-        if(this.state=Promise.PENDING){
-            this.state=Promise.FULFILLED;
-            this.value = value;
-            // 成功后，执行成功的回调数组
-            this.onFulfilledCallbacks.forEach(fn=>fn(this.value));
-        }
-    }
-    reject(reason){
-        //接收据因，失败时回调
-        console.log('接收据因');
-        if(this.state=Promise.PENDING){
-            this.state=Promise.REJECTED;
-            this.reason = reason;
-            this.onRejectedCallbacks.forEach(fn=>fn(this.reason));
-        }
-    }
-    then(onFulfilled,onRejected){
-        //参数校验
-        if(typeof onFulfilled !=='function' ){
-            //不是函数则返回一个函数
-            onFulfilled = function(value){
-                return value;
-            }
-        }
-        if(typeof onRejected !=='function' ){
-            //不是函数则返回一个函数
-            onRejected = function(reason){
-                return reason;
-            }
-        }
-        if(this.state ===Promise.FULFILLED){
-            //有结果后，直接回调
-            onFulfilled(this.value);
-        }
-        if(this.state ===Promise.REJECTED){
-            onRejected(this.reason);
-        }
-
-        if(this.state ===Promise.PENDING){
-            //还在执行中，将异步回调函数加入到数组中存放起来
-            this.onFulfilledCallbacks.push(value=>{
-                setTimeout(()=>{
-                    onFulfilled(value);
-                })
-            })
-            this.onRejectedCallbacks.push(reason=>{
-                setTimeout(()=>{
-                    onRejected(reason);
-                })
-            })
-        }
-
-    }
-}
-
-//也称为魔法数字
-Promise.PENDING = 'pending';
-Promise.FULFILLED = 'fulfilled';
-Promise.REJECTED = 'rejected';
-module.exports= Promise
-```
-
-4.3链式调用
-
-```
-promise.js文件
-class Promise{
-    constructor(executor){
-        if(typeof executor !=='function')
-        throw new TypeError('executor 不是一个函数');
-
-        this.initValue();
-        this.initBind();
-        executor(this.resolve,this.reject);
-    }
-    initValue(){
-        //初始化
-        this.value = null;//终值
-        this.reason=null;//据因
-        this.state=Promise.PENDING;//状态
-        this.onFulfilledCallbacks=[];//成功回调数组
-        this.onRejectedCallbacks=[];//失败回调数组
-    }
-    initBind(){
-        // 初始化改变this指向
-        //如果是箭头函数，就不要改变this指向，因为箭头函数自动继承父的this即当前实例
-        this.resolve = this.resolve.bind(this);
-        this.reject = this.reject.bind(this);
-    }
-    resolve(value){
-        //接收终值，成功时回调
-        console.log('接收终值');
-        if(this.state=Promise.PENDING){
-            this.state=Promise.FULFILLED;
-            this.value = value;
-            // 成功后，执行成功的回调数组
-            this.onFulfilledCallbacks.forEach(fn=>fn(this.value));
-        }
-    }
-    reject(reason){
-        //接收据因，失败时回调
-        console.log('接收据因');
-        if(this.state=Promise.PENDING){
-            this.state=Promise.REJECTED;
-            this.reason = reason;
-            this.onRejectedCallbacks.forEach(fn=>fn(this.reason));
-        }
-    }
-    then(onFulfilled,onRejected){
-        //参数校验
-        if(typeof onFulfilled !=='function' ){
-            //不是函数则返回一个函数
-            onFulfilled = function(value){
-                return value;
-            }
-        }
-        if(typeof onRejected !=='function' ){
-            //不是函数则返回一个函数
-            onRejected = function(reason){
-                return reason;
-            }
-        }
-
-        //链式调用，需要返回一个新实例
-        let promise2=new Promise((resolve,reject)=>{
-            if(this.state ===Promise.FULFILLED){
-                //有结果后，直接回调
-              try {
-                const x=  onFulfilled(this.value);
-                resolve(x);
-              } catch (e) {
-                  reject(e);
-              }
-            }
-            if(this.state ===Promise.REJECTED){
-                try {
-                    const x= onRejected(this.reason);
-                    resolve(x);
-                } catch (e) {
-                    reject(e);
-                }
-                
-            }
-    
-            if(this.state ===Promise.PENDING){
-                //还在执行中，将异步回调函数加入到数组中存放起来
-                this.onFulfilledCallbacks.push(value=>{
-                    setTimeout(()=>{
-                        try {
-                            const x = onFulfilled(value);
-                        resolve(x);
-                        } catch (e) {
-                            reject(e);
-                        }
-                        
-                    })
-                })
-                this.onRejectedCallbacks.push(reason=>{
-                    setTimeout(()=>{
-                        try {
-                            const x=  onRejected(reason);
-                        resolve(x);
-                        } catch (e) {
-                            reject(e);
-                        }
-                        
-                    })
-                })
-            }
-        })
-        return promise2
-
-    }
-}
-
-//也称为魔法数字
-Promise.PENDING = 'pending';
-Promise.FULFILLED = 'fulfilled';
-Promise.REJECTED = 'rejected';
-module.exports= Promise
-
-index.js文件
-console.log(1);
-const  Promise = require('./promise.js') 
-new Promise((resolve,reject)=>{
-    console.log(2);
-    setTimeout(()=>{
-        resolve('我要执行')
-    })
-}).then(value=>{
-    console.log(4);
-    console.log('value:',value);
-},reason=>{
-    console.log('reason:',reason); 
-}).then(value=>{
-    console.log(5);
-    console.log('value:',value);
-})
-console.log(3);
-```
-
-4.4终极解决方案
-
-解决promise的then返回一个promise和循环递归调用自己
-
-```js
-Promise.js文件
-class Promise{
-    constructor(executor){
-        if(typeof executor !=='function')
-        throw new TypeError('executor 不是一个函数');
-
-        this.initValue();
-        this.initBind();
-        executor(this.resolve,this.reject);
-    }
-    initValue(){
-        //初始化
-        this.value = null;//终值
-        this.reason=null;//据因
-        this.state=Promise.PENDING;//状态
-        this.onFulfilledCallbacks=[];//成功回调数组
-        this.onRejectedCallbacks=[];//失败回调数组
-    }
-    initBind(){
-        // 初始化改变this指向
-        //如果是箭头函数，就不要改变this指向，因为箭头函数自动继承父的this即当前实例
-        this.resolve = this.resolve.bind(this);
-        this.reject = this.reject.bind(this);
-    }
-    resolve(value){
-        //接收终值，成功时回调
-        console.log('接收终值');
-        if(this.state=Promise.PENDING){
-            this.state=Promise.FULFILLED;
-            this.value = value;
-            // 成功后，执行成功的回调数组
-            this.onFulfilledCallbacks.forEach(fn=>fn(this.value));
-        }
-    }
-    reject(reason){
-        //接收据因，失败时回调
-        console.log('接收据因');
-        if(this.state=Promise.PENDING){
-            this.state=Promise.REJECTED;
-            this.reason = reason;
-            this.onRejectedCallbacks.forEach(fn=>fn(this.reason));
-        }
-    }
-    then(onFulfilled,onRejected){
-        //参数校验
-        if(typeof onFulfilled !=='function' ){
-            //不是函数则返回一个函数
-            onFulfilled = function(value){
-                return value;
-            }
-        }
-        if(typeof onRejected !=='function' ){
-            //不是函数则返回一个函数
-            onRejected = function(reason){
-                return reason;
-            }
-        }
-
-        //链式调用，需要返回一个新实例
-        let promise2=new Promise((resolve,reject)=>{
-            if(this.state ===Promise.FULFILLED){
-                //有结果后，直接回调
-              try {
-                const x=  onFulfilled(this.value);
-                // x可能是一个proimise
-                Promise.resolvePromise(promise2, x, resolve, reject);
-              } catch (e) {
-                  reject(e);
-              }
-            }
-            if(this.state ===Promise.REJECTED){
-                try {
-                    const x= onRejected(this.reason);
-                    // x可能是一个proimise
-                    Promise.resolvePromise(promise2, x, resolve, reject);
-                } catch (e) {
-                    reject(e);
-                }
-                
-            }
-    
-            if(this.state ===Promise.PENDING){
-                //还在执行中，将异步回调函数加入到数组中存放起来
-                this.onFulfilledCallbacks.push(value=>{
-                    setTimeout(()=>{
-                        try {
-                            const x = onFulfilled(value);
-                        // x可能是一个proimise
-                        Promise.resolvePromise(promise2, x, resolve, reject);
-                        } catch (e) {
-                            reject(e);
-                        }
-                        
-                    })
-                })
-                this.onRejectedCallbacks.push(reason=>{
-                    setTimeout(()=>{
-                        try {
-                            const x=  onRejected(reason);
-                        // x可能是一个proimise
-                        Promise.resolvePromise(promise2, x, resolve, reject);
-                        } catch (e) {
-                            reject(e);
-                        }
-                        
-                    })
-                })
-            }
-        })
-        return promise2
-
-    }
-}
-
-//也称为魔法数字
-Promise.PENDING = 'pending';
-Promise.FULFILLED = 'fulfilled';
-Promise.REJECTED = 'rejected';
-// 循环调用
-Promise.resolvePromise=function(promise2,x,resolve,reject){
-// x与promise相等，说明自己在调用自己
-let called; //是否调用过，防止无限循环调用
-if(promise2===x){
-    reject(new TypeError('Chaining cycle detected for promise'));
-}
- if(x instanceof Promise){
-//判断x是promise
-x.then(value=>{
-    // 如果返回的是promise,则要继续调用
-    if(called) return;
-    called = true;
-    Promise.resolvePromise(promise2,value,resolve,reject);
-},reason=>{
-reject(reason);
-})
-}else if(x !==null && (typeof x ==='object'||typeof x ==='function')){
-// x为对象或函数
-let then = x.then;//官方推荐这么写，不明原因
-if(typeof then === 'function'){
-then.call(x,value=>{
-    // 如果返回的是promise,则要继续调用
-    if(called) return;
-    called = true;
-    Promise.resolvePromise(promise2,value,resolve,reject);
-},reason=>{
-    reject(reason);
-})
-}else{
-    reject(x);
-}
-}else{
-    resolve(x);
-}
-}
-module.exports= Promise
-
-index.js文件
-console.log(1);
-const  Promise = require('./promise.js') 
-new Promise((resolve,reject)=>{
-    console.log(2);
-    setTimeout(()=>{
-        resolve('我要执行')
-    })
-}).then(value=>{
-    console.log(4);
-    console.log('value:',value);
-    // then返回一个promise
-    return new Promise(resolve=>{
-        resolve('promise');
-    })
-},reason=>{
-    console.log('reason:',reason); 
-}).then(value=>{
-    console.log(5);
-    console.log('value:',value);
-})
-console.log(3);
-```
-
-```js
-//循环调用
-// let p1=new Promise(resolve=>{
-//     console.log('p1');
-//     resolve(1);
-// })
-// let p2=p1.then(()=>{
-//     console.log('p2');
-//     return p2
-// })
-```
-
-```js
-//简约版手写Promise
-class MyPromise {
-  constructor(executor) {
-    this.status = 'pending' // 初始状态为等待
-    this.value = null // 成功的值
-    this.reason = null // 失败的原因
-    this.onFulfilledCallbacks = [] // 成功的回调函数数组
-    this.onRejectedCallbacks = [] // 失败的回调函数数组
-    let resolve = value => {
-      if (this.status === 'pending') {
-        this.status = 'fulfilled'
-        this.value = value;
-        this.onFulfilledCallbacks.forEach(fn => fn()) // 调用成功的回调函数
-      }
-    }
-    let reject = reason => {
-      if (this.status === 'pending') {
-        this.status = 'rejected'
-        this.reason = reason
-        this.onRejectedCallbacks.forEach(fn => fn()) // 调用失败的回调函数
-      }
-    };
-    try {
-      executor(resolve, reject)
-    } catch (err) {
-      reject(err)
-    }
-  }
-  then(onFulfilled, onRejected) {
-    return new MyPromise((resolve, reject) => {
-      if (this.status === 'fulfilled') {
-        setTimeout(() => {
-          const x = onFulfilled(this.value);
-          x instanceof MyPromise ? x.then(resolve, reject) : resolve(x)
-        })
-      }
-      if (this.status === 'rejected') {
-        setTimeout(() => {
-          const x = onRejected(this.reason)
-          x instanceof MyPromise ? x.then(resolve, reject) : resolve(x)
-        })
-      }
-      if (this.status === 'pending') {
-        this.onFulfilledCallbacks.push(() => { // 将成功的回调函数放入成功数组
-          setTimeout(() => {
-            const x = onFulfilled(this.value)
-            x instanceof MyPromise ? x.then(resolve, reject) : resolve(x)
-          })
-        })
-        this.onRejectedCallbacks.push(() => { // 将失败的回调函数放入失败数组
-          setTimeout(() => {
-            const x = onRejected(this.reason)
-            x instanceof MyPromise ? x.then(resolve, reject) : resolve(x)
-          })
-        })
-      }
-    })
-  }
-}
-
-// 测试
-function p1() {
-  return new MyPromise((resolve, reject) => {
-    setTimeout(resolve, 1000, 1)
-  })
-}
-function p2() {
-  return new MyPromise((resolve, reject) => {
-    setTimeout(resolve, 1000, 2)
-  })
-}
-p1().then(res => {
-  console.log(res) // 1
-  return p2()
-}).then(ret => {
-  console.log(ret) // 2
-})
-```
-
-4.5自动化测试Promise代码
-
-```
-Promise.defer = Promise.deferred = function () {
-  let dfd = {};
-  dfd.promise = new Promise((resolve,reject)=>{
-      dfd.resolve = resolve;
-      dfd.reject = reject;
-  })
-  return dfd;
-}
-
-```
-
-安装测试脚本
-
-```
-npm install -g promises-aplus-tests
-```
-
-执行自动化脚本
-
-```
-promises-aplus-tests promise.js
-```
-
-4.6promise.all原理
-
-```
-Promise.all = function(values) {
-  if (!Array.isArray(values)) {
-    const type = typeof values;
-    return new TypeError(`TypeError: ${type} ${values} is not iterable`)
-  }
-  
-  return new Promise((resolve, reject) => {
-    let resultArr = [];
-    let orderIndex = 0;
-    const processResultByKey = (value, index) => {
-      resultArr[index] = value;
-      if (++orderIndex === values.length) {
-          resolve(resultArr)
-      }
-    }
-    for (let i = 0; i < values.length; i++) {
-      let value = values[i];
-      if (value && typeof value.then === 'function') {
-        value.then((value) => {
-          processResultByKey(value, i);
-        }, reject);
-      } else {
-        processResultByKey(value, i);
-      }
-    }
-  });
-}
-
-```
-
-4.7如何中断promise
-
-注意这里是中断而不是终止，因为 Promise 无法终止，这个中断的意思是：在合适的时候，把 pending 状态的 promise 给 reject 掉。例如一个常见的应用场景就是希望给网络请求设置超时时间，一旦超时就就中断，我们这里用定时器模拟一个网络请求，随机 3 秒之内返回
-
-```js
-function timeoutWrapper(p, timeout = 2000) {
-  const wait = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      reject('请求超时')
-    }, timeout)
-  })
-  return Promise.race([p, wait])
-}
-```
-
-## Promise、Generator、Async三者的区别
-
-**Promise**
-
-Promise有三种状态：pending(进行中)、resolved(成功)、rejected(失败)。
-
-缺点：
-
-- 无法取消Promise，一旦新建它就会立即执行，无法中途取消。
-- 如果不设置回调函数，Promise内部抛出的错误，不会反应到外部。
-- 当处于Pending状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。
-- Promise 真正执行回调的时候，定义 Promise 那部分实际上已经走完了，所以 Promise 的报错堆栈上下文不太友好。
-
-**Generator**
-
-Generator 是ES6引入的新语法，Generator是一个可以暂停和继续执行的函数。
-
-简单的用法，可以当做一个Iterator来用，进行一些遍历操作。复杂一些的用法，他可以在内部保存一些状态，成为一个状态机。
-
-```
-Generator 基本语法包含两部分：函数名前要加一个星号；函数内部用 yield 关键字返回值。
-yield，表达式本身没有返回值，或者说总是返回undefined。
-next，方法可以带一个参数，该参数就会被当作上一个yield表达式的返回值。
-```
-
-```
-function * foo(x) {
-    var y = 2 * (yield (x + 1));
-    var z = yield (y / 3);
-    return (x + y + z);
-
-}
-
-var b = foo(5); 
-b.next() // { value:6, done:false }
-b.next(12) // { value:8, done:false } 
-b.next(13) // { value:42, done:true }
-
-```
-
-**Async(推荐使用～～)**
-
-async await 本身就是 promise+generator 的语法糖
-
-Async 是 Generator 的一个语法糖。
-
-async 对应的是 * 。
-
-await 对应的是 yield 。
-
-async/await 自动进行了 Generator 的流程控制。
-
-**为什么Async/Await更好？**
-
-1. 使用async函数可以让代码简洁很多，不需要像Promise一样需要些then，不需要写匿名函数处理Promise的resolve值，也不需要定义多余的data变量，还避免了嵌套代码。
-2. 错误处理：Async/Await 让 try/catch 可以同时处理同步和异步错误。
-
-## reduce,every,some
-
-reduce累加器
-
-var total = [ 0, 1, 2, 3 ].reduce(( acc, cur ) => {    return acc + cur }, 0);
-
-every一假即假
-
-const flag=[ 0, 1, 2, 3 ].every(ele=> {    return ele>3 });
-
-some一真即真
-
-const flag=[ 0, 1, 2, 3 ].some(ele=> {    return ele>3 });
-
-## Symbol
+# Symbol
 
 ES6引入了一种新的原始数据类型Symbol，表示**独一无二的值**。
 
@@ -1394,43 +428,75 @@ var s2 = Symbol("foo");
 Symbol.keyFor(s2) // undefined
 ```
 
+# Promise、Generator、Async比较
 
+**Promise**
 
-## weakset 和 weakmap
+Promise有三种状态：pending(进行中)、resolved(成功)、rejected(失败)。
 
-ES6 考虑到防止内存泄漏，推出了两种新的数据结构： weakset 和 weakmap 。他们对值的引用都是不计入垃圾回收机制的，也就是说，如果其他对象都不再引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存。
+缺点：
+
+- 无法取消Promise，一旦新建它就会立即执行，无法中途取消。
+- 如果不设置回调函数，Promise内部抛出的错误，不会反应到外部。
+- 当处于Pending状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。
+- Promise 真正执行回调的时候，定义 Promise 那部分实际上已经走完了，所以 Promise 的报错堆栈上下文不太友好。
+
+**Generator**
+
+Generator 是ES6引入的新语法，Generator是一个可以暂停和继续执行的函数。
+
+简单的用法，可以当做一个Iterator来用，进行一些遍历操作。复杂一些的用法，他可以在内部保存一些状态，成为一个状态机。
 
 ```
-const wm = new WeakMap()const element = document.getElementById('example') vm.set(element, 'something') vm.get(element)
+Generator 基本语法包含两部分：函数名前要加一个星号；函数内部用 yield 关键字返回值。
+yield，表达式本身没有返回值，或者说总是返回undefined。
+next，方法可以带一个参数，该参数就会被当作上一个yield表达式的返回值。
 ```
 
-上面代码中，先新建一个 Weakmap 实例。然后，将一个 DOM 节点作为键名存入该实例，并将一些附加信息作为键值，一起存放在 WeakMap 里面。这时，WeakMap 里面对 element 的引用就是弱引用，不会被计入垃圾回收机制。
+```
+function * foo(x) {
+    var y = 2 * (yield (x + 1));
+    var z = yield (y / 3);
+    return (x + y + z);
 
-注册监听事件的 listener 对象很适合用 WeakMap 来实现。
+}
+
+var b = foo(5); 
+b.next() // { value:6, done:false }
+b.next(12) // { value:8, done:false } 
+b.next(13) // { value:42, done:true }
 
 ```
-// 代码1
-ele.addEventListener('click', handler, false)// 
-代码2
-const listener = new WeakMap() 
-listener.set(ele, handler) 
-ele.addEventListener('click', listener.get(ele), false)
-```
 
-代码 2 比起代码 1 的好处是：由于监听函数是放在 WeakMap 里面，一旦 dom 对象 ele 消失，与它绑定的监听函数 handler 也会自动消失。
+**Async(推荐使用～～)**
 
-## for in、for of、forEach的区别
+async await 本身就是 promise+generator 的语法糖
 
-**for…of与for…in的区别**
+Async 是 Generator 的一个语法糖。
+
+async 对应的是 * 。
+
+await 对应的是 yield 。
+
+async/await 自动进行了 Generator 的流程控制。
+
+**为什么Async/Await更好？**
+
+1. 使用async函数可以让代码简洁很多，不需要像Promise一样需要些then，不需要写匿名函数处理Promise的resolve值，也不需要定义多余的data变量，还避免了嵌套代码。
+2. 错误处理：Async/Await 让 try/catch 可以同时处理同步和异步错误。
+
+**for in、for of、forEach的比较**
+
+**1.for…of与for…in的区别**
 
 - for…in循环会遍历（当前对象及其原型上的）每一个**属性名称**。
 - for…of只能应用于**可迭代对象**，循环遍历（当前对象上的）每一个属性值.
 
-**forEach**
+**2.forEach**
 
 是数组的一个方法，用于遍历数组的每一项，没有返回值，返回值总是undefined。
 
-**for…of**
+**3.for…of**
 
 ES6提出的语句，在**可迭代对象**（Array，Map，Set，String，TypedArray，arguments）上创建一个迭代循环。
 
@@ -1497,7 +563,7 @@ for(let n of fibonacci()){
 }
 ```
 
-**for…in**
+**4.for…in**
 
 for…in 语句以任意顺序遍历**一个对象的可枚举属性的属性名**。所有可枚举属性和从它原型继承而来的可枚举属性，因此如果想要仅迭代对象本身的属性，要结合hasOwnProperty（）来使用
 
@@ -1524,18 +590,6 @@ ES2020引入了链判断运算符 ?. 来简化这个操作：
 ```
 const firstName = message?.body?.user?.firstName || 'default';
 ```
-
-# [let 暂时性死区详解](https://segmentfault.com/a/1190000015603779)
-
-## 暂时性死区定义
-
-```
-注意：let和const声明定义的变量作用在当前执行上下文的词法环境中**。变量在他们的词法环境被初始化的时候被创建**，但是在变量的词法绑定被执行前他们不能被以任何形式被访问。以带有初始化器的词法绑定形式定义的变量，在词法绑定被执行的时候用他的初始化器的赋值表达式的计算结果来赋值，而不是在变量被创建的时候赋值。如果一个let声明的词法绑定没有初始化器，那么这个变量在初始化绑定被执行的时候会被用undefined赋值。
-```
-
-*ES6规定，`let/const` 命令会使区块形成封闭的作用域。若在声明之前使用变量，就会报错。*
-*总之，在代码块内，使用 `let` 命令声明变量之前，该变量都是不可用的。*
-*这在语法上，称为 **“暂时性死区”**（ temporal dead zone，简称 **TDZ**）。*
 
 # 作用域与变量提升
 
@@ -1722,220 +776,6 @@ for (let [key, value] of entries(obj)) {
 }
 ```
 
-# Set与Map
-
-## Set
-
-`Set` 本身是一个构造函数，用来生成 `Set` 数据结构。`Set` 对象允许你存储任何类型的值，但是成员的值都是唯一的，没有重复的值。
-
-### Set 中的特殊值
-
-`Set` 对象存储的值总是唯一的，所以需要判断两个值是否恒等。有几个特殊值需要特殊对待：
-
-- +0 与 -0 在存储判断唯一性的时候是恒等的，所以不重复
-- `undefined` 与 `undefined` 是恒等的，所以不重复
-- `NaN` 与 `NaN` 是不恒等的，但是在 `Set` 中认为 `NaN` 与 `NaN` 相等，所有只能存在一个，不重复。
-
-### Set 实例对象的方法
-
-- `add(value)`：添加某个值，返回 `Set` 结构本身(可以链式调用)。
-- `delete(value)`：删除某个值，删除成功返回 `true`，否则返回 `false`。
-- `has(value)`：返回一个布尔值，表示该值是否为 `Set` 的成员。
-- `clear()`：清除所有成员，没有返回值。
-
-### 遍历方法
-
-- `keys()`：返回键名的遍历器。
-- `values()`：返回键值的遍历器。
-- `entries()`：返回键值对的遍历器。
-- `forEach()`：使用回调函数遍历每个成员。
-
-### Array 和 Set 对比
-
-- `Array` 的 `indexOf` 方法比 `Set` 的 `has` 方法效率低下
-- `Set` 不含有重复值（可以利用这个特性实现对一个数组的去重）
-- `Set` 通过 `delete` 方法删除某个值，而 `Array` 只能通过 `splice`。两者的使用方便程度前者更优
-- `Array` 的很多新方法 `map`、`filter`、`some`、`every` 等是 `Set` 没有的（但是通过两者可以互相转换来使用）
-
-### Set 的应用
-
-1、`Array.from` 方法可以将 `Set` 结构转为数组。
-
-```js
-const items = new Set([1, 2, 3, 4, 5])
-const array = Array.from(items)
-```
-
-2、数组去重
-
-```js
-// 去除数组的重复成员
-;[...new Set(array)]
-Array.from(new Set(array))
-复制代码
-```
-
-3、数组的 `map` 和 `filter` 方法也可以间接用于 `Set`
-
-```js
-let set = new Set([1, 2, 3])
-set = new Set([...set].map((x) => x * 2))
-// 返回Set结构：{2, 4, 6}
-let set = new Set([1, 2, 3, 4, 5])
-set = new Set([...set].filter((x) => x % 2 == 0))
-// 返回Set结构：{2, 4}
-```
-
-4、实现并集 `(Union)`、交集 `(Intersect)` 和差集
-
-```js
-let a = new Set([1, 2, 3])
-let b = new Set([4, 3, 2])
-// 并集
-let union = new Set([...a, ...b])
-// Set {1, 2, 3, 4}
-// 交集
-let intersect = new Set([...a].filter((x) => b.has(x)))
-// set {2, 3}
-// 差集
-let difference = new Set([...a].filter((x) => !b.has(x)))
-// Set {1}
-```
-
-### weakSet
-
-`WeakSet` 结构与 `Set` 类似，也是不重复的值的集合。
-
-- 成员都是数组和类似数组的对象，若调用 `add()` 方法时传入了非数组和类似数组的对象的参数，就会抛出错误。
-
-```js
-const b = [1, 2, [1, 2]]
-new WeakSet(b) // Uncaught TypeError: Invalid value used in weak set
-复制代码
-```
-
-- 成员都是弱引用，可以被垃圾回收机制回收，可以用来保存 DOM 节点，不容易造成内存泄漏。
-- `WeakSet` 不可迭代，因此不能被用在 `for-of` 等循环中。
-- `WeakSet` 没有 `size` 属性。
-
-## Map
-
-`Map` 中存储的是 `key-value` 形式的键值对, 其中的 `key` 和 `value` 可以是任何类型的
-
-### Map 和 Object 的区别
-
-1. `Object` 对象有原型， 也就是说他有默认的 `key` 值在对象上面， 除非我们使用 `Object.create(null)`创建一个没有原型的对象；
-2. 在 `Object` 对象中， 只能把 `String` 和 `Symbol` 作为 `key` 值， 但是在 `Map` 中，`key` 值可以是任何基本类型(`String`, `Number`, `Boolean`, `undefined`, `NaN`….)，或者对象(`Map`, `Set`, `Object`, `Function` , `Symbol` , `null`….);
-3. 通过 `Map` 中的 `size` 属性， 可以很方便地获取到 `Map` 长度， 要获取 `Object` 的长度， 你只能手动计算
-
-### Map 对象的方法
-
-- `set(key, val)`: 向 `Map` 中添加新元素
-- `get(key)`: 通过键值查找特定的数值并返回
-- `has(key)`: 判断 `Map` 对象中是否有 `Key` 所对应的值，有返回 `true`，否则返回 `false`
-- `delete(key)`: 通过键值从 `Map` 中移除对应的数据
-- `clear()`: 将这个 `Map` 中的所有元素删除
-
-### 遍历方法
-
-- `keys()`：返回键名的遍历器
-- `values()`：返回键值的遍历器
-- `entries()`：返回键值对的遍历器
-- `forEach()`：使用回调函数遍历每个成员
-
-### 数据类型转化
-
-Map 转为数组
-
-```js
-let map = new Map()
-let arr = [...map]
-复制代码
-```
-
-数组转为 Map
-
-```js
-Map: map = new Map(arr)
-复制代码
-```
-
-Map 转为对象
-
-```js
-let obj = {}
-for (let [k, v] of map) {
-  obj[k] = v
-}
-复制代码
-```
-
-对象转为 Map
-
-```js
-for( let k of Object.keys(obj)）{
-  map.set(k,obj[k])
-}
-```
-
-### Map的应用
-
-Map 会保留所有元素的顺序, 是在基于可迭代的基础上构建的，如果考虑到元素迭代或顺序保留或键值类型丰富的情况下都可以使用。
-
-下面摘抄自 vue3 源码中依赖收集的核心实现 
-
-```js
-let depsMap = targetMap.get(target)  
- if (!depsMap) {  
-   targetMap.set(target, (depsMap = new Map()))  
- }  
- let dep = depsMap.get(key)  
- if (!dep) {  
-   depsMap.set(key, (dep = new Set()))  
- }  
- if (!dep.has(activeEffect)) {  
-   dep.add(activeEffect)  
-   activeEffect.deps.push(dep)  
-   ...  
- } 
-```
-
-### WeakMap
-
-`WeakMap` 结构与 `Map` 结构类似，也是用于生成键值对的集合。
-
-- 只接受对象作为键名（`null` 除外），不接受其他类型的值作为键名
-- 键名是弱引用，键值可以是任意的，键名所指向的对象可以被垃圾回收，此时键名是无效的
-- 不能遍历，方法有 `get`、`set`、`has`、`delete`
-
-## 小结：
-
-Set
-
-- 是一种叫做集合的数据结构(ES6新增的)
-- 成员唯一、无序且不重复
-- `[value, value]`，键值与键名是一致的（或者说只有键值，没有键名）
-- 允许储存任何类型的唯一值，无论是原始值或者是对象引用
-- 可以遍历，方法有：`add`、`delete`、`has`、`clear`
-
-WeakSet
-
-- 成员都是对象
-- 成员都是弱引用，可以被垃圾回收机制回收，可以用来保存 `DOM` 节点，不容易造成内存泄漏
-- 不能遍历，方法有 `add`、`delete`、`has`
-
-Map
-
-- 是一种类似于字典的数据结构，本质上是键值对的集合
-- 可以遍历，可以跟各种数据格式转换
-- 操作方法有:`set`、`get`、`has`、`delete`、`clear`
-
-WeakMap
-
-- 只接受对象作为键名（`null` 除外），不接受其他类型的值作为键名
-- 键名是弱引用，键值可以是任意的，键名所指向的对象可以被垃圾回收，此时键名是无效的
-- 不能遍历，方法有 `get`、`set`、`has`、`delete`
-
 # ES6你倒是用啊！
 
 **1.关于获取对象属性值的吐槽**
@@ -2107,3 +947,7 @@ export { function1, function2 };
 // Empty import (for modules with side effects)
 import './lib0';
 ```
+
+# 参考
+
+[ES6、ES7、ES8、ES9、ES10新特性](https://juejin.cn/post/6844903811622912014#heading-56)
