@@ -6,6 +6,14 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
+# **链判断运算符**
+
+ES2020引入了链判断运算符 ?. 来简化这个操作：
+
+```
+const firstName = message?.body?.user?.firstName || 'default';
+```
+
 # let
 
 **暂时性死区定义**
@@ -19,6 +27,66 @@ toc: true # 是否启用内容索引
 *ES6规定，`let/const` 命令会使区块形成封闭的作用域。若在声明之前使用变量，就会报错。*
 *总之，在代码块内，使用 `let` 命令声明变量之前，该变量都是不可用的。*
 *这在语法上，称为 **“暂时性死区”**（ temporal dead zone，简称 **TDZ**）。*
+
+**一、作用域**
+
+作用域 (scope) 可以被理解为是标识符（变量）在程序中的可见性范围。
+
+**作用域类型**
+
+动态作用域：动态作用域是在代码运行时确定的，关注函数从何处调用。javascript 并不具有动态作用域，但是this机制某种程度上很像动态作用域。
+
+静态作用域：静态作用域在函数定义时决定了，关注函数在何处声明。静态作用域又叫词法作用域，JS就是静态作用域。
+
+**作用域种类**
+
+ES2015 / ES6出现之前，作用域分为函数作用域和全局作用域，es6增加了块级作用域。
+
+**作用域链**
+
+访问变量时，如果当前作用域没有，会一级一级往上找，一直到全局作用域，这就是作用域链。
+
+**作用域链延长**
+
+大部分情况下，作用域链有多长主要看它当前嵌套的层数，但是有些语句可以在作用域链的前端临时增加一个变量对象，这个变量对象在代码执行完后移除，这就是作用域延长了。
+
+能够导致作用域延长的语句有两种:`try...catch`的`catch`块和`with`语句。
+
+**二、变量提升**
+
+变量声明的提升是以变量所处的第一层词法作用域为“单位”的，即全局作用域中声明的变量会提升至全局最顶层，函数内声明的变量只会提升至该函数作用域最顶层。
+
+说变量完全不提升是不准确的。只是 **let 和 const 所在的块级作用域变量提升后的行为跟`var`不一样，`var`是读到一个`undefined`，而块级作用域的提升行为是会制造一个暂时性死区。**
+
+**三、函数提升**
+
+有了上面变量提升的说明，函数提升理解起来就比较容易了，但较之变量提升，函数的提升还是有区别的。即：**函数提升只会提升函数声明，而不会提升函数表达式。**
+
+```
+console.log(foo1) // [Function: foo1]
+foo1() // foo1
+console.log(foo2) // undefined
+foo2() // TypeError: foo2 is not a function
+function foo1 () {
+  console.log("foo1")
+}
+var foo2 = function () {
+  console.log("foo2")
+} // foo2在这里是一个函数表达式且不会被提升
+```
+
+以上代码中，函数 `foo1` 是一个函数声明，在执行前会预解析，所以会提升至全局作用域，输出函数本身。但是`foo2` 是一个表达式，是在执行阶段才进行的赋值操作，所以不能预解析。
+
+**小结var 和 let、const**
+
+总结一下var 和 let、const的区别：
+
+- `var`变量会进行申明提前，在赋值前可以访问到这个变量，值是`undefined`。
+- 块级作用域也有“变量提升”，但是行为跟`var`不一样，块级作用域里面的“变量提升”会形成“暂时性死区”，在申明前访问会直接报错。
+- var 定义的变量可以反复去定义，let 和 const 不可以
+- var 定义的变量在循环过程中无法保存，let 和 const 可以
+- const 不能在 for 循环中定义，对于`for...in`和`for...of`循环是没问题的
+- var声明的变量会挂载到 window 全局对象上，let 和 const 不会
 
 # 数组的扩展
 
@@ -428,6 +496,133 @@ var s2 = Symbol("foo");
 Symbol.keyFor(s2) // undefined
 ```
 
+# Iterator迭代器
+
+说`Iterator`迭代器的原因是，为后面`async/await`的文章做铺垫，因为我`async/await`是由`Generator`+`Promise`共同构成，而其中的`Generator`就是依赖于迭代器`Iterator`。
+
+**一、定义**
+
+`Iterator`迭代器就是为了解决这个问题，它提供统一的接口，为**不同的数据结构提供统一的访问机制**。(目前Map、Set、Array支持`Iterator`)。常用的`for...of`就是依赖与`Iterator`迭代器。
+
+**核心：**
+
+1. **`Iterator`迭代器就是一个接口方法，它为不同的数据结构提供了一个统一的访问机制**
+2. **使得数据结构的成员能够按某种次序排列，并逐个被访问**
+
+```
+// 阮一峰 ECMAScript 6 入门
+// 模拟next方法返回值
+var it = makeIterator(['a', 'b']);
+
+it.next() // { value: "a", done: false }
+it.next() // { value: "b", done: false }
+it.next() // { value: undefined, done: true }
+
+function makeIterator(array) {
+  var nextIndex = 0;
+  return {
+    next: function() {
+      return nextIndex < array.length ?
+        {value: array[nextIndex++], done: false} :
+        {value: undefined, done: true}
+    }
+  }
+}
+```
+
+上面的`makeIterator`函数，它就是一个`迭代器生成函数`，作用就是返回一个**迭代器对象**。对数组执行这个函数，就会返回该数组的**迭代器对象it**。
+
+通过调用`next`函数，返回`value`和`done`两个属性；value属性返回当前位置的成员，done属性是一个布尔值，表示遍历是否结束，即是否还有必要再一次调用next方法；当`done`为true时，即遍历完成。
+
+**二、Iterator规范**
+
+迭代器对象`it`包含一个`next()` 方法，调用`next()`方法，返回两个属性：布尔值`done`和值`value`，value的类型无限制。
+
+要成为可迭代对象， 一个对象必须实现`@@iterator`方法。这意味着对象（或者它原型链上的某个对象）必须有一个键为`@@iterator`的属性，可通过常量 `Symbol.iterator` 访问该属性。
+
+```
+let myIterable = {
+    a: 1,
+    b: 2,
+    c: 3
+}
+myIterable[Symbol.iterator] = function() {
+  let self = this;
+  let arr = Object.keys(self);
+  let index = 0;
+  return {
+    next() {
+      return index < arr.length ? {value: self[arr[index++]], done: false} : {value: undefined, done: true};
+    }
+  }
+}
+var it = myIterable[Symbol.iterator]();
+it.next();
+for(const i of myIterable) {
+  console.log(i);
+}
+```
+
+将`myIterable`对象添加`Symbol.iterator`属性，同时在返回的`next`方法中，添加两个属性，既让它成为了一个可迭代对象。
+
+关键：包含一个`next()`方法，两个属性：`done`和`value`；定义一个对象的`Symbol.iterator`属性
+
+**三、Iterator和Generator**
+
+`Generator`和`Promise`一样，都是提供异步编程解决方案。
+
+Generator函数本质就是一个**普通函数**，但有2个特征：
+
+- function关键字与函数名之间有一个星号*
+- 函数内部使用yield表达式，定义不同的内部状态
+
+```
+function* helloWorldGenerator() {
+  yield 'hello';
+  yield 'world';
+  return 'ending';
+}
+var hw = helloWorldGenerator();
+hw.next()
+// { value: 'hello', done: false }
+hw.next()
+// { value: 'world', done: false }
+hw.next()
+// { value: 'ending', done: true }
+hw.next()
+// { value: undefined, done: true }
+```
+
+`Generator`函数执行后，会返回一个`Iterator`对象。在`Generator`中的yield表达式，yield会记住当前代码运行的状态和位置，等在调用这串代码的时候会依次往后走。
+
+`Iterator`（迭代器）就是一个可迭代的对象，而`Generator`（生成器）使用了yield或者生成器表达式，生成iterator对象，用一种方便的方法实现了iterator，在for循环取数据或使用next()取数据.
+
+小结：`Generator`（生成器）可以理解为是对`Iterator`（迭代器）的一种实现
+
+**四、Iterator应用**
+
+`Generator`（生成器）就是其中最典型的一个应用，当然还有其他，例如：Map、Set、Array等原生具备`Iterator`（迭代器），支持`for...of`循环。
+
+**Obejct实现`Iterator`接口**
+
+Object对象虽然不支持`Iterator`（迭代器），但我们可以使用`Generator`（生成器）进行包装。
+
+```
+let obj = {a: 1, b: 2, c: 3}
+function* entries(obj) {
+  for (let key of Object.keys(obj)) {
+    yield [key, obj[key]];
+  }
+}
+for (let [key, value] of entries(obj)) {
+  console.log(key, '->', value);
+}
+```
+
+**参考**
+
+[弄懂!!ES6中的Iterator迭代器](https://segmentfault.com/a/1190000022894514)
+
 # Promise、Generator、Async比较
 
 **Promise**
@@ -583,244 +778,11 @@ a:1,
 Reflect.ownKeys(obj) // 遍历所有属性，包括Symbol
 ```
 
-# **链判断运算符**
-
-ES2020引入了链判断运算符 ?. 来简化这个操作：
-
-```
-const firstName = message?.body?.user?.firstName || 'default';
-```
-
-# 作用域与变量提升
-
-## 作用域
-
-作用域 (scope) 可以被理解为是标识符（变量）在程序中的可见性范围。
-
-**作用域类型**
-
-动态作用域：动态作用域是在代码运行时确定的，关注函数从何处调用。javascript 并不具有动态作用域，但是this机制某种程度上很像动态作用域。
-
-静态作用域：静态作用域在函数定义时决定了，关注函数在何处声明。静态作用域又叫词法作用域，JS就是静态作用域。
-
-**作用域种类**
-
-ES2015 / ES6出现之前，作用域分为函数作用域和全局作用域，es6增加了块级作用域。
-
-**作用域链**
-
-访问变量时，如果当前作用域没有，会一级一级往上找，一直到全局作用域，这就是作用域链。
-
-**作用域链延长**
-
-大部分情况下，作用域链有多长主要看它当前嵌套的层数，但是有些语句可以在作用域链的前端临时增加一个变量对象，这个变量对象在代码执行完后移除，这就是作用域延长了。
-
-能够导致作用域延长的语句有两种:`try...catch`的`catch`块和`with`语句。
-
-## 变量提升
-
-变量声明的提升是以变量所处的第一层词法作用域为“单位”的，即全局作用域中声明的变量会提升至全局最顶层，函数内声明的变量只会提升至该函数作用域最顶层。
-
-说变量完全不提升是不准确的。只是 **let 和 const 所在的块级作用域变量提升后的行为跟`var`不一样，`var`是读到一个`undefined`，而块级作用域的提升行为是会制造一个暂时性死区。**
-
-## 函数提升
-
-有了上面变量提升的说明，函数提升理解起来就比较容易了，但较之变量提升，函数的提升还是有区别的。即：**函数提升只会提升函数声明，而不会提升函数表达式。**
-
-```
-console.log(foo1) // [Function: foo1]
-foo1() // foo1
-console.log(foo2) // undefined
-foo2() // TypeError: foo2 is not a function
-function foo1 () {
-  console.log("foo1")
-}
-var foo2 = function () {
-  console.log("foo2")
-} // foo2在这里是一个函数表达式且不会被提升
-```
-
-以上代码中，函数 `foo1` 是一个函数声明，在执行前会预解析，所以会提升至全局作用域，输出函数本身。但是`foo2` 是一个表达式，是在执行阶段才进行的赋值操作，所以不能预解析。
-
-## 小结var 和 let、const
-
-总结一下var 和 let、const的区别：
-
-- `var`变量会进行申明提前，在赋值前可以访问到这个变量，值是`undefined`。
-- 块级作用域也有“变量提升”，但是行为跟`var`不一样，块级作用域里面的“变量提升”会形成“暂时性死区”，在申明前访问会直接报错。
-- var 定义的变量可以反复去定义，let 和 const 不可以
-- var 定义的变量在循环过程中无法保存，let 和 const 可以
-- const 不能在 for 循环中定义，对于`for...in`和`for...of`循环是没问题的
-- var声明的变量会挂载到 window 全局对象上，let 和 const 不会
-
-# [Iterator迭代器](https://segmentfault.com/a/1190000022894514)
-
-说`Iterator`迭代器的原因是，为后面`async/await`的文章做铺垫，因为我`async/await`是由`Generator`+`Promise`共同构成，而其中的`Generator`就是依赖于迭代器`Iterator`。
-
-## 定义
-
-`Iterator`迭代器就是为了解决这个问题，它提供统一的接口，为**不同的数据结构提供统一的访问机制**。(目前Map、Set、Array支持`Iterator`)。常用的`for...of`就是依赖与`Iterator`迭代器。
-
-**核心：**
-
-1. **`Iterator`迭代器就是一个接口方法，它为不同的数据结构提供了一个统一的访问机制**
-2. **使得数据结构的成员能够按某种次序排列，并逐个被访问**
-
-```
-// 阮一峰 ECMAScript 6 入门
-// 模拟next方法返回值
-var it = makeIterator(['a', 'b']);
-
-it.next() // { value: "a", done: false }
-it.next() // { value: "b", done: false }
-it.next() // { value: undefined, done: true }
-
-function makeIterator(array) {
-  var nextIndex = 0;
-  return {
-    next: function() {
-      return nextIndex < array.length ?
-        {value: array[nextIndex++], done: false} :
-        {value: undefined, done: true}
-    }
-  }
-}
-```
-
-上面的`makeIterator`函数，它就是一个`迭代器生成函数`，作用就是返回一个**迭代器对象**。对数组执行这个函数，就会返回该数组的**迭代器对象it**。
-
-通过调用`next`函数，返回`value`和`done`两个属性；value属性返回当前位置的成员，done属性是一个布尔值，表示遍历是否结束，即是否还有必要再一次调用next方法；当`done`为true时，即遍历完成。
-
-## Iterator规范
-
-迭代器对象`it`包含一个`next()` 方法，调用`next()`方法，返回两个属性：布尔值`done`和值`value`，value的类型无限制。
-
-要成为可迭代对象， 一个对象必须实现`@@iterator`方法。这意味着对象（或者它原型链上的某个对象）必须有一个键为`@@iterator`的属性，可通过常量 `Symbol.iterator` 访问该属性。
-
-```
-let myIterable = {
-    a: 1,
-    b: 2,
-    c: 3
-}
-myIterable[Symbol.iterator] = function() {
-  let self = this;
-  let arr = Object.keys(self);
-  let index = 0;
-  return {
-    next() {
-      return index < arr.length ? {value: self[arr[index++]], done: false} : {value: undefined, done: true};
-    }
-  }
-}
-var it = myIterable[Symbol.iterator]();
-it.next();
-for(const i of myIterable) {
-  console.log(i);
-}
-```
-
-将`myIterable`对象添加`Symbol.iterator`属性，同时在返回的`next`方法中，添加两个属性，既让它成为了一个可迭代对象。
-
-关键：包含一个`next()`方法，两个属性：`done`和`value`；定义一个对象的`Symbol.iterator`属性
-
-## Iterator和Generator
-
-`Generator`和`Promise`一样，都是提供异步编程解决方案。
-
-Generator函数本质就是一个**普通函数**，但有2个特征：
-
-- function关键字与函数名之间有一个星号*
-- 函数内部使用yield表达式，定义不同的内部状态
-
-```
-function* helloWorldGenerator() {
-  yield 'hello';
-  yield 'world';
-  return 'ending';
-}
-var hw = helloWorldGenerator();
-hw.next()
-// { value: 'hello', done: false }
-hw.next()
-// { value: 'world', done: false }
-hw.next()
-// { value: 'ending', done: true }
-hw.next()
-// { value: undefined, done: true }
-```
-
-`Generator`函数执行后，会返回一个`Iterator`对象。在`Generator`中的yield表达式，yield会记住当前代码运行的状态和位置，等在调用这串代码的时候会依次往后走。
-
-`Iterator`（迭代器）就是一个可迭代的对象，而`Generator`（生成器）使用了yield或者生成器表达式，生成iterator对象，用一种方便的方法实现了iterator，在for循环取数据或使用next()取数据.
-
-小结：`Generator`（生成器）可以理解为是对`Iterator`（迭代器）的一种实现
-
-## Iterator应用
-
-`Generator`（生成器）就是其中最典型的一个应用，当然还有其他，例如：Map、Set、Array等原生具备`Iterator`（迭代器），支持`for...of`循环。
-
-**Obejct实现`Iterator`接口**
-
-Object对象虽然不支持`Iterator`（迭代器），但我们可以使用`Generator`（生成器）进行包装。
-
-```
-let obj = {a: 1, b: 2, c: 3}
-function* entries(obj) {
-  for (let key of Object.keys(obj)) {
-    yield [key, obj[key]];
-  }
-}
-for (let [key, value] of entries(obj)) {
-  console.log(key, '->', value);
-}
-```
-
-# ES6你倒是用啊！
-
-**1.关于获取对象属性值的吐槽**
-
-```
-const name = obj && obj.name;
-复制代码
-```
-
-**吐槽**
-
-ES6中的可选链操作符会使用么？
-
-**改进**
-
-```
-const name = obj?.name;
-```
-
-**2.关于输入框非空的判断**
-
-在处理输入框相关业务时，往往会判断输入框未输入值的场景。
-
-```
-if(value !== null && value !== undefined && value !== ''){
-    //...
-}
-复制代码
-```
-
-**吐槽**
-
-ES6中新出的空值合并运算符了解过吗，要写那么多条件吗？
-
-```
-if((value??'') !== ''){
-  //...
-}
-```
-
-# ES6的export&import模块化导入导出
+# Module模块化语法
 
 注意：导入导出均可使用as别名
 
-## **exports**
+**一、exports**
 
 **1.命名导出（Named exports）**
 
@@ -871,7 +833,7 @@ import { default as lib } from './lib1';
 lib.sqrt
 ```
 
-## import
+**二、import**
 
 **1.别名引入（Aliasing named imports）**
 
@@ -901,7 +863,7 @@ import * as coreLib0 from 'lib0';
 coreLib0.sqrt//优雅
 ```
 
-## 最佳实践
+**三、最佳实践**
 
 **1.Combinations exports (混合导出)**
 

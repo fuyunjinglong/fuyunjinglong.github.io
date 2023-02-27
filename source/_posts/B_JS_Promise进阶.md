@@ -1,5 +1,5 @@
 ---
-title: Promise原理
+title: Promise进阶
 date: 2022-05-29 07:33:16
 categories:
 - B_JS

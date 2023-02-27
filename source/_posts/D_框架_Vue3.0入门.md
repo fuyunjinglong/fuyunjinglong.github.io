@@ -14,6 +14,223 @@ toc: true # 是否启用内容索引
 
 [Vue,React，Angular三大框架google热度](https://trends.google.com/trends/explore?cat=31&q=Vue.js,React,Angular)
 
+
+
+# 入门
+
+# 进阶
+
+## 双向绑定
+
+**第一种**
+
+父组件
+
+```
+// Users.vue
+<template>
+  <div class="user-wrap">
+    <Son v-model="message" />
+    <h1>{{ message }}</h1>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref } from 'vue'
+import Son from './son.vue'
+export default defineComponent({
+  name: 'user',
+  components: {
+    Son
+  },
+  setup() {
+    let message = ref('')
+    return {
+      message,
+    }
+  }
+})
+</script>
+```
+
+子组件
+
+```
+// Son.vue
+<template>
+  <div>
+    <input type="text" :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)"
+    />
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+export default defineComponent({
+  props: ['modelValue'],
+  emits: ['update:modelValue'],
+})
+</script>
+```
+
+**第二种: 通过computed计算属性**
+
+父组件
+
+```
+// Users.vue
+<template>
+  <div class="user-wrap">
+  	<!-- 两个方法等价 -->
+    <!-- <Son :modelValue="message" @update:modelValue="message = $event" /> -->
+    <Son v-model="message" />
+    <h1>{{ message }}</h1>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref } from 'vue'
+import Son from './son.vue'
+export default defineComponent({
+  name: 'user',
+  components: {
+    Son
+  },
+  setup() {
+    let message = ref('')
+    return {
+      message,
+    }
+  }
+})
+</script>
+```
+
+子组件
+
+```
+// Son.vue
+<template>
+  <div>
+    <!-- 两个方法等价 -->
+    <!-- <input type="text" :value="newValue" @input="newValue = $event.target.value" /> -->
+    <input type="text" v-model="newValue" />
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, computed } from 'vue'
+export default defineComponent({
+  props: ['modelValue'],
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
+    const newValue = computed({
+      // 子组件v-model绑定 计算属性, 一旦发生变化, 就会给父组件传递值
+      get: () => props.modelValue,
+      set: (nv) => {
+        emit('update:modelValue', nv)
+      }
+    })
+    return {
+      newValue
+    }
+  }
+})
+</script>
+```
+
+**第三种: 组件绑定多个v-model**
+
+父组件
+
+```
+// Users.vue
+<template>
+  <div class="user-wrap">
+    <!-- 这里绑定两个v-model -->
+    <Son v-model="message" v-model:title="title" />
+    <h1>message:{{ message }}</h1>
+    <h1>title:{{ title }}</h1>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref } from 'vue'
+import Son from './son.vue'
+export default defineComponent({
+  name: 'user',
+  components: {
+    Son
+  },
+  setup() {
+    let message = ref('')
+    let title = ref('')
+
+    return {
+      message,
+      title,
+    }
+  }
+})
+</script>
+```
+
+子组件
+
+```
+// Son.vue
+<template>
+  <div>
+    <!-- 两个方法等价 -->
+    <!-- <input type="text" :value="newValue" @input="newValue = $event.target.value" /> -->
+    <input type="text" v-model="newValue" />
+    -
+    <input type="text" v-model="newTitle" />
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, computed } from 'vue'
+export default defineComponent({
+  props: {
+    // v-model默认的名字
+    modelValue: {
+      type: String
+    },
+    title: {
+      //这里可以直接使用 v-model:title ,:号后面的名字
+      type: String
+    }
+  },
+  emits: ['update:modelValue', 'update:title'],
+  setup(props, { emit }) {
+    const newValue = computed({
+      get: () => props.modelValue,
+      set: (nv) => {
+        console.log(nv)
+        emit('update:modelValue', nv)
+      }
+    })
+
+    const newTitle = computed({
+      get: () => props.title,
+      set: (nv) => {
+        emit('update:title', nv)
+      }
+    })
+
+    return {
+      newValue,
+      newTitle
+    }
+  }
+})
+</script>
+```
+
+
+
 # 2020年9月18日**Vue 3.0** 正式发布
 
 [我要成为海贼王的男人](https://github.com/vue3/vue3-News#%E6%88%91%E6%98%AF%E8%A6%81%E6%88%90%E4%B8%BA%E6%B5%B7%E8%B4%BC%E7%8E%8B%E7%9A%84%E7%94%B7%E4%BA%BA)

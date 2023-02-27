@@ -6,13 +6,20 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-## 入门篇
+# 入门
 
 **定义**
 
-vue 是一套构建用户界面的**渐进式框架**，它可以设计为**自底向上**的逐层应用。
+vue 是一套**声明式渲染**的**渐进式框架**，它可以设计为**自底向上**的逐层应用。
 
-**渐进式框架**
+## 声明式渲染
+
+**声明式渲染和命令式渲染比较**
+
+- 命令式渲染 ： 命令我们的程序去做什么，程序就会跟着你的命令去一步一步执行
+- 声明式渲染 ： 我们只需要告诉程序我们想要什么效果，其他的交给程序来做。
+
+## **渐进式框架**
 
 - 声明式渲染：数据到视图
 - 组件系统：UI 结构到组件树
@@ -28,58 +35,250 @@ Vue 核心框架只做了前面 2 层，核心插件是热插拔部分。
 - Large Scale State Management(全局状态管理)
 - Build System(构建系统)
 
-**声明式渲染和命令式渲染**
-
-- 命令式渲染 ： 命令我们的程序去做什么，程序就会跟着你的命令去一步一步执行
-- 声明式渲染 ： 我们只需要告诉程序我们想要什么效果，其他的交给程序来做。
-
-**Vue 框架特点**
+## **Vue 2框架特点**
 
 - 轻量：内置 bunding 和 tree-shaking,打包后体积 30k,而 angular 是 65k
 - 学习成本低：文档组织结构清晰，采用组件化模式，提高代码复用性
 - 性能优化：虚拟dom和优化的diff算法,避免子组件渲染
 - 国内生态良好：众多厂商使用，持续增长
 
-### 从 0 开始构建
+**从 0 开始构建**
 
 基础代码 balabala
 
-### Vue 核心组件
+**三、组件**
 
-客户端路由、状态管理、构建系统 vue-cli
+# 进阶
 
-## 进阶篇
+## **双向绑定**
 
-### Vue 的混入
-
-### Vue 的渲染函数
-
-### Vue 的响应式原理
-
-**双向数据绑定**
+**v-model原理**
 
 ```
-父组件
-<child v-model="msg"></child>
-
-子组件
-<div >{{msg}}</div>
-<button @click="change"></button>
-props:[msf],
-model:{
-prop:'msg',
-event:'msgChange'
-},
-methods:{
-change(){
-this.$emit('msgChange','xxx')
-}
-}
+<input type="text" v-model="age">
+<input type="text" v-bind="age" v-on:input="age = $event.target.value">
 ```
 
-## 实战篇
+v-model的原理就是: v-bind 和 v-on的语法糖
 
-### Vue 的属性与指令
+**第一种: v-bind**
+
+**原理: 子组件通过监听父组件数据，子组件改变数据之后通知给父组件**
+
+错误写法: 不可以直接修改props的值
+
+父组件：
+
+```
+// Users.vue 
+<template>
+  <div>
+    <Son :ageValue="age" @changeInput="changeInput"/>
+    <el-button @click="age = Math.floor(Math.random()*10)">添加</el-button>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      age: ''
+    }
+  },
+  methods: {
+    changeInput(val) {
+      this.age = val
+    }
+  }
+}
+</script>
+```
+
+子组件：
+
+```
+// Son.vue
+<template>
+  <div>
+    <input type="text" v-model="sonAge" @input="changeInput">
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    ageValue: {
+      typeof: String
+    }
+  },
+  data() {
+    return {
+      sonAge: ''
+    }
+  },
+  methods: {
+    changeInput() {
+      this.$emit('changeInput', this.sonAge)
+    }
+  },
+
+  /*
+   为什么要监听:
+   因为父组件传递过来属性, 可能有默认值,
+   子组件的input需要根据默认值回显,或者别的地方需要
+  */
+  watch: {
+    ageValue: {
+      immediate: true, // 立即执行 :当刷新页面时会立即执行一次handler函数
+      handler(val) {
+        this.sonAge = val
+      }
+    }
+  }
+}
+</script>
+```
+
+**第二种.sync修饰符**
+
+原理:.sync:名字 是自己起的, 通过update:名字进行触发对象的事件。update：是vue为我们约定好的名称部分
+
+父组件：
+
+```
+// Users.vue
+<template>
+  <div>
+    <Son :ageValue.sync="age" />
+    <el-button @click="age = Math.floor(Math.random()*10)">添加</el-button>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      age: ''
+    }
+  },
+  methods: {
+  }
+}
+</script>
+```
+
+子组件：
+
+```
+// Son.vue
+<template>
+  <div>
+    <input type="text" v-model="sonAge" @input="changeInput">
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    ageValue: {
+      typeof: String
+    }
+  },
+  data() {
+    return {
+      sonAge: ''
+    }
+  },
+  methods: {
+    changeInput() {
+      // this.$emit('changeInput', this.sonAge)
+      // 这样父组件内的值也同时被更改,省略了监听事件这一步
+      this.$emit('update:ageValue', this.sonAge)
+    }
+  },
+  watch: {
+    ageValue: {
+      immediate: true, // 立即执行 :当刷新页面时会立即执行一次handler函数
+      handler(val) {
+        this.sonAge = val
+      }
+    }
+  }
+}
+</script>
+```
+
+**第三种 v-model**
+
+原理: 通过 model新属性: 配置一个 props:接受的属性, 和一个事件名。
+
+父组件：
+
+```
+// Users.vue
+<template>
+  <div>
+    <Son v-model="age" />
+    <el-button @click="age = Math.floor(Math.random()*10)">添加</el-button>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      age: ''
+    }
+  }
+}
+</script>
+```
+
+子组件：
+
+```
+// Son.vue
+<template>
+  <div>
+    <input type="text" v-model="sonAge" @input="changeInput">
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    value: {
+      typeof: String
+    }
+  },
+  data() {
+    return {
+      sonAge: ''
+    }
+  },
+  // 超级牛
+  model: {
+    prop: 'value',
+    event: 'change'
+  },
+  methods: {
+    changeInput() {
+      this.$emit('change', this.sonAge)
+    }
+  },
+  watch: {
+    value: {
+      immediate: true, // 立即执行 :当刷新页面时会立即执行一次handler函数
+      handler(val) {
+        this.sonAge = val
+      }
+    }
+  }
+}
+</script>
+```
+
+## 属性与指令
 
 **指令修饰符**
 
@@ -275,7 +474,7 @@ Vue.directive('focusGlobal', {
 - 实现页面水印 `v-waterMarker`
 - 拖拽指令 `v-draggable`
 
-### Vue 的组件
+## 全局组件
 
 创建全局组件的两种方式 component 和 use
 
@@ -297,7 +496,7 @@ export default initComponent;
 Vue.use(initComponent)
 ```
 
-#### 动态组件 & 异步组件
+## 动态组件和异步组件
 
 **动态组件**
 
@@ -316,15 +515,7 @@ new Vue({
 })
 ```
 
-#### Vue 父子组件生命周期执行顺序
-
-父组件先创建，然后子组件创建；子组件先挂载，然后父组件挂载。
-
-```text
-父beforeCreate-> 父create -> 子beforeCreate-> 子created -> 子mounted -> 父mounted
-```
-
-#### Vue 的异步组件放在哪个生命周期
+**Vue 的异步组件放在哪个生命周期**
 
 结论：created 和 mounted 都可以。
 
@@ -332,68 +523,6 @@ new Vue({
 - 对于页面级组件，当我们需要使用`ssr`（服务端渲染）的时候，只有`created`是可用的，所以这个时候请求数据只能用它；
 - 对于页面级组件， 当我们做异步操作时，涉及到要访问 dom 的操作，我们仍旧只能使用`mounted`;
 - 对于一般情况，`created`和`mounted`都是可以的；
-
-### Vue 的生命周期
-
-[vue生命周期详细全过程](https://blog.csdn.net/m0_70477767/article/details/124684195)
-
-![](\img\vue生命周期.png)
-
-1.**beforeCreate**钩子函数
-
-a.用户使用 new Vue()新建 Vue 实例
-
-b.父实例实例化子实例，确认组件间的父子关系，将父组件的自定义事件传递给子组件
-
-c.初始化将 render 函数转为虚拟 dom 的方法
-
-**2. created**钩子函数:
-
-a.初始化事件，进行数据的观测
-
-b.数据已经和**data\*\***属性进行绑定\*\*（放在 data 中的属性当值发生改变的同时，视图也会改变）
-
-c.此时还是没有 el 选项
-
-**3.** **beforeMount**钩子函数：
-
-a.**el\*\***选项**。**如果有的话就继续向下编译，如果没有**el 选项**，则停止编译，也就意味着停止了\***\*生命周期。**
-
-b.如删掉 el: ‘#app’
-
-c.template 参数
-
-（1）如果 vue 实例对象中有 template 参数选项，则将其作为模板编译成 render 函数。
-（2）如果没有 template 选项，则将外部 HTML 作为模板编译。
-（3）可以看到 template 中的模板优先级要高于 outer HTML 的优先级。
-
-**4. mounted**
-
-a.给 vue 实例对象添加$el 成员，beforeMount 之前 el 上还是 undefined
-
-b.mounted 之前 h1 中还是通过**{{message}}**进行占位的，因为此时还有挂载到页面上，还是 JavaScript 中的虚拟 DOM 形式存在的。在 mounted 之后可以看到 h1 中的内容发生了变化。
-
-**5.** **beforeUpdate**
-
-a.vue 发现 data 中的数据发生了改变，则在下一次时间循环开始重新渲染组件
-
-**6. updated**
-
-a.重新执行 render 函数生成 vnode。
-
-b.将 vnode 转化为真实 Dom
-
-c.重新挂载到 HTML 中，并且覆盖掉上一次渲染的$el
-
-**7.** **beforeDestroy**:
-
-a.调用 vm.$destroy()准备销毁 vue 实例
-
-b.beforeDestroy 钩子函数在实例销毁之前调用。在这一步，实例仍然完全可用。
-
-**8. destroyed**:
-
-a.在 Vue 实例销毁后调用，调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。
 
 ## 高级篇
 
