@@ -42,13 +42,90 @@ Vue 核心框架只做了前面 2 层，核心插件是热插拔部分。
 - 性能优化：虚拟dom和优化的diff算法,避免子组件渲染
 - 国内生态良好：众多厂商使用，持续增长
 
-**从 0 开始构建**
+## 从 0 开始构建
 
-基础代码 balabala
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #app {
+        background-color: pink;
+      }
+      .app-msg {
+        color: yellow;
+      }
+    </style>
+    <script src="./vue.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <h1 class="app-msg">{{msg}}</h1>
+      <div v-cloak>{{noData}}</div>
+      <div v-text="textData"></div>
+      <div v-html="textData"></div>
+      <input />
+    </div>
+    <script>
+      Vue.config.productionTiop = false; //阻止Vue在生产环境下产生提示
+      var vm = new Vue({
+        el: "#app",
+        data() {
+          return {
+            msg: "基本代码",
+            noData: "无数据",
+            textData: '<span style="color:red">阳光</span>',
+          };
+        },
+        mounted() {
+          const that = this;
+          setTimeout(() => {
+            that.noData = "";
+          }, 1000);
+        },
+      });
+      console.log("vm", vm);
+    </script>
+  </body>
+</html>
+```
 
-**三、组件**
+vm 实例如下：
+
+<img src="/img/image-20220608072943567.png" alt="image-20220608072943567" style="zoom:67%;" />
 
 # 进阶
+
+## 插件
+
+main.js
+
+```
+import plugins from './plugins'
+Vue.use(plugins)
+```
+
+plugins.js
+
+本质是包含install方法的对象，第一个参数是Vue
+
+```
+export default{
+	install(Vue){
+		//全局过滤器
+		Vue.filter('mySlice',()=>{})
+		//全局指令
+		Vue.directive('mySlice',()=>{})
+		// 全局混入
+		Vue.mixin('mySlice',()=>{})
+		Vue.prototype.$hello ='xx'
+	}
+}
+```
 
 ## 修饰符
 
@@ -539,6 +616,184 @@ new Vue({
 - 对于页面级组件，当我们需要使用`ssr`（服务端渲染）的时候，只有`created`是可用的，所以这个时候请求数据只能用它；
 - 对于页面级组件， 当我们做异步操作时，涉及到要访问 dom 的操作，我们仍旧只能使用`mounted`;
 - 对于一般情况，`created`和`mounted`都是可以的；
+
+## Socpe样式
+
+```
+<style lang='less'></style>
+不指定lang，则默认按照css处理。否则按照less,sass等处理器处理
+```
+
+## 自定义事件
+
+props属性值也可以传递函数
+
+child.vue
+
+```
+...
+<button @click="getVal"></button>
+props:['getFatherVal'],
+method:{
+	getVal(){
+		this.getFatherVal()
+	}
+}
+```
+
+**销毁事件**
+
+```
+this.$off('clickMe')//销毁一个事件
+this.$off(['clickMe]')//销毁多个事件
+this.$off()//解绑所有自定义事件
+this.$destory()//销毁实例并解绑所有自定义事件
+```
+
+## 动画
+
+**原生CSS**
+
+```
+.come{
+	animation:aiMe 1s;
+}
+@keyframes aiMe{
+	from{
+		transform:translateX(-100px)
+	}
+	to{
+		transform:translateX(0px)
+	}
+}
+```
+
+**Vue2的transition标签**
+
+```
+<transition name="hello" appear>//使用name标记动画，appear初次加载产生动画
+	<div v-show="isShow"></div>
+</transition>
+
+.hello-enter-active{
+	animation:aiMe 1s linear;
+}
+.hello-leave-active{
+	animation:aiMe 1s linear reverse;
+}
+```
+
+*还有另外的2个指令hello-enter，hello-enter-to，可能比较繁琐*
+
+```
+<transition name="hello" appear>//使用name标记动画，appear初次加载产生动画
+	<div v-show="isShow"></div>
+</transition>
+// 进入的起点，离开的终点
+.hello-enter,.hello-leave-to{
+	transform：translateX(-100px)
+}
+.hello-enter-active,hello-leave-active{
+	transform: 1s linear;
+}
+// 进入的终点，离开的起点
+.hello-enter-to,.hello-leave{
+	transform：translateX(-100px)
+}
+```
+
+*transition-group多个元素过度*
+
+```
+<transition-group name="hello" appear>//必须保证key唯一
+	<div v-show="isShow" key="0"></div>
+	<div v-show="isShow" key="0"></div>
+</transition>
+```
+
+*使用第三方动画animate.css*
+
+```
+<transition-group name="animate_animated animate_bounce"
+	enter-active-class="animate_swing"
+	leave-active-calss="animate-backOutUp"
+>
+	<div v-show="isShow"></div>
+</transition>
+```
+
+## 路由
+
+**query参数**
+
+```
+<!--1.完整路径-->
+<router-link :to="/home?id=11"></router-link>
+<!--2.通过名字跳转-->
+<router-link :to="{name:'home'}"></router-link>
+<!--3.配合参数->
+<router-link :to="{
+path:'/home',
+query:{
+id:11
+}
+}"></router-link>
+```
+
+**param参数**
+
+```
+路由配置
+{
+	name:home,
+	path:'/home/:id',// id占位符
+	conponent:Home
+}
+<!--1.完整路径-->
+<router-link :to="/home/11"></router-link>
+<!--2.配合参数->
+<router-link :to="{
+name:'home',
+param:{
+id:11
+}
+}"></router-link>
+```
+
+**Props配置项**
+
+```
+路由配置
+{
+	name:home,
+	path:'/home/:id',// id占位符
+	conponent:Home，
+	props:{id:99},//用法1，固定值
+	props:true//用法2，只能接受所有的params参数
+	props:(route){//用法3，返回一组数据,路由组件可以接收到
+		return{
+			id：route.param.id
+		}
+	}
+}
+
+组件
+props:[id]
+```
+
+**push和replace**
+
+push是追加历史记录，replace是替换当前最新记录
+
+```
+开启replace模式
+<router-link replace :to="/home/11"></router-link>
+```
+
+## v-if 与 v-for 比较
+
+- 2.x 版本中在一个元素上同时使用 `v-if` 和 `v-for` 时，`v-for` 会优先作用
+- 3.x 版本中 `v-if` 总是优先于 `v-for` 生效。
 
 
 
@@ -1695,407 +1950,9 @@ var eventEmitter = (function () {
 </script>
 ```
 
-# 10.Vue2.0 实战-尚硅谷
+## nodeJS 手写 mock 数据服务器
 
-## 1.基础代码
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      #app {
-        background-color: pink;
-      }
-      .app-msg {
-        color: yellow;
-      }
-    </style>
-    <script src="./vue.min.js"></script>
-  </head>
-  <body>
-    <div id="app">
-      <h1 class="app-msg">{{msg}}</h1>
-      <div v-cloak>{{noData}}</div>
-      <div v-text="textData"></div>
-      <div v-html="textData"></div>
-      <input />
-    </div>
-    <script>
-      Vue.config.productionTiop = false; //阻止Vue在生产环境下产生提示
-      var vm = new Vue({
-        el: "#app",
-        data() {
-          return {
-            msg: "基本代码",
-            noData: "无数据",
-            textData: '<span style="color:red">阳光</span>',
-          };
-        },
-        mounted() {
-          const that = this;
-          setTimeout(() => {
-            that.noData = "";
-          }, 1000);
-        },
-      });
-      console.log("vm", vm);
-    </script>
-  </body>
-</html>
-```
-
-vm 实例如下：
-
-<img src="/img/image-20220608072943567.png" alt="image-20220608072943567" style="zoom:67%;" />
-
-## 2.关于数据代理
-
-通过一个对象代理另一个对象中属性的读写操作，如 vue 将\_data 数据代理到 VM 实例上，为每个属性都添加 getter 和 setter 操作，更加方便操作 data 中数据。
-
-```js
-<script>
-        let number = 20
-        let person = {
-            age:18,
-            name:'luwen'
-        }
-        Object.defineProperty(person,'age',{
-            // value:10, //初值
-            // enumerable:true,//属性是否支持枚举,默认false
-            // writable:true,//属性是否支持修改,默认false
-            // configurable:true,//属性是否支持删除,默认false
-            get(){
-                console.log('读取age属性');
-                return number
-            },
-            set(value){
-                console.log('修改了age值',value);
-                number = value
-            }
-        })
-        person.age = '6'
-        console.log('person',person);
-        console.log('number',number);
-    </script>
-```
-
-源码本质
-
-```js
-let data = {
-  name: "cc",
-};
-//创建一个监视实例对象
-const obs = new Oberver(data);
-//准备一个vm实例
-let vm = {};
-vm._data = data = obs;
-function Observer(obj) {
-  //遍历所有属性形成一个数组
-  const keys = Object.keys(obj);
-  keys.forEach((k) => {
-    Object.defineProperty(this, k, {
-      get() {
-        return obj[k];
-      },
-      set(val) {
-        obj[k] = val;
-      },
-    });
-  });
-}
-```
-
-## 3.深度监听
-
-Vue 默认不监听对象内部值变化，需要监听的话，设置 deep:true
-
-## 4.Vue与VueComponent的关系
-
-```
-<body>
-    <div id="root">
-         <school></school>
-    </div>
-    <script>
-        Vue.config.productionTip = false
-        //定义school组件
-        const school = Vue.extend({
-            name: 'school',
-            template: `
-              <div>
-                <h2>学校名称：{{name}}</h2>
-                <h2>学校地址：{{address}}</h2>
-              </div>
-            `,
-            data() {
-                return {
-                    name: '尚硅谷',
-                    address: '北京'
-                }
-            }   
-        })
-        //创建Vue
-        new Vue({
-            el:'#root',
-            components:{
-                school,
-            }
-        })
-    </script>
-</body>
-```
-
-<img src="/img/image-20220706071836848.png" alt="image-20220706071836848" style="zoom:80%;" />
-
-每个函数function都有一个prototype属性，即显式原型（属性）。它默认指向Object空对象，
-
-每个实例对象都有一个__proto__属性，即称隐式原型（属性）。
-
-**一个重要的内置关系**：`VueComponent.prototype._proto_===Vue.prototype`.VueComponent把原本指向Object的原型对象改到指向Vue原型对象（黄线）.
-
-**为什么要有这个关系**：让组件实例对象vc可以访问到Vue原型上的属性、方法。
-
-Vue和是VueComponent就像一对孪生双胞胎，他们绝大多数的属性和方法都很像，但不同的是定义组件时不能挂载el，且data要写成函数形式，而Vue可以写成对象形式。
-
-## 5.不同版本的vue
-
-关于不同版本的vue:
-
-1. vue.js与vue.runtime.xxx.js区别：
-
-   1. vue.js是完整版vue,包含核心模块+模板解析器
-   2. vue.runtime.xxx.js是运行版vue，只包含核心功能，没有模板解析器
-
-2. 因为vue.runtime.xxx.js没有模板解析器，所以不能使用template配置项，需要使用render函数接收的createElement函数去制定具体内容。
-
-   ```
-   new Vue({
-   	el:'#app',
-   	render:h=>h(APP)
-   	// render:q=>q('h1','你好啊')
-   	// render(createElemet){
-   	// return createElemet('h1','你好啊')
-   	//}
-   })
-   ```
-
-
-## 6.插件技术
-
-main.js
-
-```
-import plugins from './plugins'
-Vue.use(plugins)
-```
-
-plugins.js
-
-本质是包含install方法的对象，第一个参数是Vue
-
-```
-export default{
-	install(Vue){
-		//全局过滤器
-		Vue.filter('mySlice',()=>{})
-		//全局指令
-		Vue.directive('mySlice',()=>{})
-		// 全局混入
-		Vue.mixin('mySlice',()=>{})
-		Vue.prototype.$hello ='xx'
-	}
-}
-```
-
-## 7.Socpe样式
-
-```
-<style lang='less'></style>
-不指定lang，则默认按照css处理。否则按照less,sass等处理器处理
-```
-
-## 8.自定义事件
-
-props属性值也可以传递函数
-
-child.vue
-
-```
-...
-<button @click="getVal"></button>
-props:['getFatherVal'],
-method:{
-	getVal(){
-		this.getFatherVal()
-	}
-}
-```
-
-**销毁事件**
-
-```
-this.$off('clickMe')//销毁一个事件
-this.$off(['clickMe]')//销毁多个事件
-this.$off()//解绑所有自定义事件
-this.$destory()//销毁实例并解绑所有自定义事件
-```
-
-## 9.过渡效果
-
-**原生CSS**
-
-```
-.come{
-	animation:aiMe 1s;
-}
-@keyframes aiMe{
-	from{
-		transform:translateX(-100px)
-	}
-	to{
-		transform:translateX(0px)
-	}
-}
-```
-
-**Vue2的transition标签**
-
-```
-<transition name="hello" appear>//使用name标记动画，appear初次加载产生动画
-	<div v-show="isShow"></div>
-</transition>
-
-.hello-enter-active{
-	animation:aiMe 1s linear;
-}
-.hello-leave-active{
-	animation:aiMe 1s linear reverse;
-}
-```
-
-*还有另外的2个指令hello-enter，hello-enter-to，可能比较繁琐*
-
-```
-<transition name="hello" appear>//使用name标记动画，appear初次加载产生动画
-	<div v-show="isShow"></div>
-</transition>
-// 进入的起点，离开的终点
-.hello-enter,.hello-leave-to{
-	transform：translateX(-100px)
-}
-.hello-enter-active,hello-leave-active{
-	transform: 1s linear;
-}
-// 进入的终点，离开的起点
-.hello-enter-to,.hello-leave{
-	transform：translateX(-100px)
-}
-```
-
-*transition-group多个元素过度*
-
-```
-<transition-group name="hello" appear>//必须保证key唯一
-	<div v-show="isShow" key="0"></div>
-	<div v-show="isShow" key="0"></div>
-</transition>
-```
-
-*使用第三方动画animate.css*
-
-```
-<transition-group name="animate_animated animate_bounce"
-	enter-active-class="animate_swing"
-	leave-active-calss="animate-backOutUp"
->
-	<div v-show="isShow"></div>
-</transition>
-```
-
-## 10.路由
-
-**query参数**
-
-```
-<!--1.完整路径-->
-<router-link :to="/home?id=11"></router-link>
-<!--2.通过名字跳转-->
-<router-link :to="{name:'home'}"></router-link>
-<!--3.配合参数->
-<router-link :to="{
-path:'/home',
-query:{
-id:11
-}
-}"></router-link>
-```
-
-**param参数**
-
-```
-路由配置
-{
-	name:home,
-	path:'/home/:id',// id占位符
-	conponent:Home
-}
-<!--1.完整路径-->
-<router-link :to="/home/11"></router-link>
-<!--2.配合参数->
-<router-link :to="{
-name:'home',
-param:{
-id:11
-}
-}"></router-link>
-```
-
-**Props配置项**
-
-```
-路由配置
-{
-	name:home,
-	path:'/home/:id',// id占位符
-	conponent:Home，
-	props:{id:99},//用法1，固定值
-	props:true//用法2，只能接受所有的params参数
-	props:(route){//用法3，返回一组数据,路由组件可以接收到
-		return{
-			id：route.param.id
-		}
-	}
-}
-
-组件
-props:[id]
-```
-
-**push和replace**
-
-push是追加历史记录，replace是替换当前最新记录
-
-```
-开启replace模式
-<router-link replace :to="/home/11"></router-link>
-```
-
-
-
-# 11.v-if 与 v-for 比较
-
-- 2.x 版本中在一个元素上同时使用 `v-if` 和 `v-for` 时，`v-for` 会优先作用
-- 3.x 版本中 `v-if` 总是优先于 `v-for` 生效。
-
-# 12.nodeJS 手写 mock 数据服务器
-
-## 前言
+**前言**
 
 - koa 基本使用
 - koa-router 的基本用法
@@ -2104,7 +1961,7 @@ push是追加历史记录，replace是替换当前最新记录
 - node 几个核心 api 的使用
 - 使用 nodemon 做自动重启
 
-## 核心代码
+**核心代码**
 
 [github 源码](https://github.com/MrXujiang/openCoder/tree/master/mockServer)
 
