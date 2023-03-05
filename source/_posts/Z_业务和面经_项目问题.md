@@ -174,8 +174,8 @@ chrome的memory内存快照工具
 
 ## 2018年网易代码优化
 
-<img src="C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20221024070150874.png" alt="image-20221024070150874" style="zoom:80%;" />
+<img src="/img/image-20221024070150874.png" alt="image-20221024070150874" style="zoom:80%;" />
 
 优化后：
 
-<img src="C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20221024070234683.png" alt="image-20221024070234683" style="zoom:80%;" />
+<img src="/img/image-20221024070234683.png" alt="image-20221024070234683" style="zoom:80%;" />

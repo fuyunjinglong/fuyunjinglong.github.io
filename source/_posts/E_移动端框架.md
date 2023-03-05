@@ -8,7 +8,7 @@ toc: true # 是否启用内容索引
 
 **一个完整 HTML5 页面的展示要经历浏览器控件的加载、解析和渲染三大过程，性能消耗要比原生开发增加 N 个数量级**。
 
-# **1.发展史**
+# **发展史**
 
 - WebApp:PWA
 - Hybrid APP:Cordova，Ionic,VasSonic
@@ -126,7 +126,7 @@ Flutter 是 Google 开源的 UI 工具包，帮助开发者通过一套代码库
 - 在 Android 上，小程序的 JavaScript 代码是通过 `X5 JSCore` 来解析，是由 X5 基于 `Mobile Chrome 53/57` 内核来渲染的；
 - 在 开发工具上， 小程序的 JavaScript 代码是运行在 `nwjs` 中，是由 `Chrome Webview` 来渲染的。
 
-# **2.编程语言**
+# **编程语言**
 
 编程语言分为两大阵营:
 

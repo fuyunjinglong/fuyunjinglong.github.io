@@ -6,7 +6,13 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# package.json中库的版本号详解(^和~区别)
+# 初始化项目
+
+```
+npm init -y
+```
+
+# package.json版本号详解(^和~)
 
 ```
 ~1.15.2 :=  >=1.15.2 <1.16.0     

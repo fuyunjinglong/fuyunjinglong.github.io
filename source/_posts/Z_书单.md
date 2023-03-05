@@ -16,10 +16,26 @@ toc: true # 是否启用内容索引
 **javascript三剑客**
 
 - JavaScript数据结构与算法 第3版 9787115510174
-
 - JavaScript DOM编程艺术 第2版     9787115249999
-
 - JavaScript高级程序设计 第4版       9787115545381
+
+javascript dom编程艺术
+
+javascript高级程序设计（红宝书） 和javascript权威指南（犀牛书）
+
+Vuejs设计与实现
+
+javascript忍者秘籍
+
+前端开发核心知识进阶
+
+javascript迷你正则书
+
+你不知道的javascript （小黄书）
+
+Javascript20周年（历史书）
+
+javascript语言精粹与编程实践
 
 《前端技术架构与工程》
 
@@ -185,11 +201,15 @@ toc: true # 是否启用内容索引
 - 《深入理解Spark 核心思想与源码分析 耿嘉安著》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1tBXiDkowwU5ep4R-wjrP4A)提取码：z2eu
 - 《相关性搜索：利用Solr与Elasticsearch创建智能应用》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1HnLiTnH0yJAgfpMpKsNddA)提取码：its4
 
-## 算法
+## 数据结构与算法
 
 《程序员代码面试指南》《算法数据结构体系学习班》《算法与数据结构基础班》
 
 《漫画算法-小灰的算法之旅》
+
+学习javascript数据结构和算法
+
+啊哈算法，小灰说算法
 
 - 《谷歌大佬总结的三本LeetCode刷题笔记，支持Java、C++、Go三种语言》 [百度云链接 (opens new window)](https://pan.baidu.com/s/14_G6dHVpi7KFJ2NH3SC7IQ)提取码：ujuc
 - 《啊哈！算法 哈磊》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1ShKCKjoTIeThwQf0oHc_8w)提取码：5fop
@@ -353,6 +373,8 @@ toc: true # 是否启用内容索引
 - 《UNIX编程艺术-中文版【The+Art+of+UNIX+Programming】》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1bjgIO8_lPMgv_4V8H6tAOw)提取码：8hhc
 
 ## 设计模式
+
+javascript设计模式与开发实践
 
 - 《大话设计模式》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1iJSWVgqspqviEgHUUqhqDw)提取码：4o24
 - 《HeadFirst设计模式（中文版）》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1lEz-hfm64QNJrrkx_skyrw)提取码：5c3f

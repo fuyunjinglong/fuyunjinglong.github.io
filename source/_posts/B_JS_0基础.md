@@ -16,70 +16,117 @@ toc: true # 是否启用内容索引
 **Undefined、Null的区别**
 
 - Undefined 类型表示未定义，它的类型只有一个值，就是 undefined，判空：if(a===undefined)
-
 - Null表示的是：“定义了但是为空”,判空：if(a)
+
+**从内存来看 null 和 undefined 本质的区别是什么？**
+
+> 给一个全局变量赋值为null，相当于将这个变量的指针对象以及值清空，如果是给对象的属性 赋值为null，或者局部变量赋值为null,相当于给这个属性分配了一块空的内存，然后值为null， JS会回收全局变量为null的对象。
+>
+> 给一个全局变量赋值为undefined，相当于将这个对象的值清空，但是这个对象依旧存在,如果是给对象的属性赋值 为undefined，说明这个值为空值
 
 ## 模块化思想
 
-> **(1)CommonJS规范---cjs**
+- 由于 `ESM` 具有简单的语法，异步特性和可摇树性，因此它是最好的模块化方案
+- `UMD` 随处可见，通常在 `ESM` 不起作用的情况下用作备用
+- `CJS` 是同步的，适合后端
+- `AMD` 是异步的，适合前端
 
-CJS是**同步**的，适用于**后端**环境，Nodejs中使用的是这个规范。
+**1.CJS**
 
-CommonJS的核心是通过 module.exports 暴露模块接口，通过 require 引入模块。
+`CJS` 是 `CommonJS` 的缩写。经常我们这么使用：
 
-模块可以多次加载，但是只会在第一次加载时运行一次，然后运行结果就被缓存了，以后再加载，就直接读取缓存结果。要想让模块再次运行，必须清除缓存。
+```javascript
+// importing 
+const doSomething = require('./doSomething.js'); 
 
-> **(2)AMD(Asynchronous Module Definition ，异步模块定义)/CMD**(Common Module Definition，通用模块定义)
-
-AMD是**异步**的，适用于**前端**环境。AMD推崇的是**依赖前置**.
-
-CMD是**同步**的，适用于**前端**环境**。**CMD推崇**就近依赖**。
-
-AMD是RequireJS在推广过程中对模块定义的规范化产出。CMD是SeaJS在推广过程中对模块定义的规范化产出。
-
-有的人说AMD用户体验好，因为没有延迟，依赖模块提前执行了，CMD性能好，因为只有用户需要的时候才执行
-
-requireJS主要解决两个问题：
-
-- 1 多个js文件可能有依赖关系，被依赖的文件需要早于依赖它的文件加载到浏览器。
-- 2 js加载的时候浏览器会停止页面渲染，加载文件愈多，页面失去响应的时间愈长。
-
-```
-AMD与CMD区别
-模块定义时对依赖的处理不同：
-1.AMD推崇依赖前置，在定义模块的时候就要声明其依赖的模块
-2.CMD推崇就近依赖，只有在用到某个模块的时候再去require
-同为异步加载模块的区别：
-1.AMD在加载模块完成后就会执行该模块
-2.CMD加载完某个依赖模块后并不执行，只是下载而已,这样模块的执行顺序和书写顺序是完全一致的。性能较好，只有用户需要时才执行
+// exporting
+module.exports = function doSomething(n) {
+  // do something
+}
+复制代码
 ```
 
-> (3)ES6---ESM
+- 很多人可以从 `Node` 中立刻认出 `CJS` 的语法。这是因为 `Node` 就是使用 [`CJS` 模块](https://link.juejin.cn?target=https%3A%2F%2Fblog.risingstack.com%2Fnode-js-at-scale-module-system-commonjs-require%2F)的
+- `CJS` 是同步导入模块
+- 你可以从 `node_modules` 中引入一个库或者从本地目录引入一个文件 。如 `const myLocalModule = require('./some/local/file.js')` 或者 `var React = require('react');` ，都可以起作用
+- 当 `CJS` 导入时，它会给你一个导入对象的副本
+- `CJS` 不能在浏览器中工作。它必须经过转换和打包
+
+**2.AMD**
+
+`AMD` 代表异步模块定义。
+
+```js
+define(['dep1', 'dep2'], function (dep1, dep2) {
+    //Define the module value by returning a value.
+    return function () {};
+});
+或者
+define(function (require) {
+    var dep1 = require('dep1'),
+        dep2 = require('dep2');
+    return function () {};
+});
+```
+
+- `AMD` 是异步(`asynchronously`)导入模块的(因此得名)
+- 一开始被提议的时候，`AMD` 是为前端而做的(而 `CJS` 是后端)
+- `AMD` 的语法不如 `CJS` 直观。我认为 `AMD` 和 `CJS` 完全相反
+
+**3.UMD**
+
+`UMD` 代表通用模块定义（`Universal Module Definition`）
+
+- 在前端和后端都适用（“通用”因此得名）
+- 兼容 CommonJS 和 AMD 规范
+- 当使用 `Rollup/Webpack` 之类的打包器时，`UMD` 通常用作备用模块
+
+UMD 实现原理：
+
+> 先判断是否支持 AMD（define 是否存在），存在则使用 AMD 方式加载模块；
+> 再判断是否支持 Node.js 模块格式（exports 是否存在），存在则使用 Node.js 模块格式；
+> 前两个都不存在，则将模块公开到全局（window 或 global）
+> UMD 使得你可以直接使用`<script>`标签引用
+
+**4.ESM**
+
+`ESM` 代表 `ES` 模块。这是 `Javascript` 提出的实现一个标准模块系统的方案。
 
 ECMAScript 6 的一个目标是解决作用域的问题，也为了使 JS 应用程序显得有序，于是引进了模块。目前部分主流浏览器已原生支持 ES Module，使用 type = module 指定为模块引入即可
 注意：使用该方式执行 JS 时自动应用 defer 属性。
 
 ESM由于具有简单的语法，**同步异步**加载的特性，适用于前后端，以及**Tree-shakeable**的特性.具有Tree-shakeable的特性，这是由于**ES6的静态模块**结构。
 
-> (4)UMD(Universal Module Definition，万能模块定义)
-
-UMD可以在任何环境下使用，并且在ESM不能使用的情况下回选择UMD。兼容 CommonJS 和 AMD 规范，兼容ESM。
-
-> UMD 实现原理：
->
-> 先判断是否支持 AMD（define 是否存在），存在则使用 AMD 方式加载模块；
-> 再判断是否支持 Node.js 模块格式（exports 是否存在），存在则使用 Node.js 模块格式；
-> 前两个都不存在，则将模块公开到全局（window 或 global）
-> UMD 使得你可以直接使用`<script>`标签引用
-
+```js
+import {foo, bar} from './myLib';
+...
+export default function() {
+  // your Function
+};
+export const function1() {...};
+export const function2() {...};
 ```
+
+- 在很多[现代浏览器](https://link.juejin.cn?target=https%3A%2F%2Fcaniuse.com%2Fes6-module)可以使用
+- 它兼具两方面的优点：具有 `CJS` 的简单语法和 `AMD` 的异步
+- 得益于 `ES6` 的[静态模块结构](https://link.juejin.cn?target=https%3A%2F%2Fexploringjs.com%2Fes6%2Fch_modules.html%23sec_design-goals-es6-modules)，可以进行 [ Tree Shaking](https://link.juejin.cn?target=https%3A%2F%2Fdevelopers.google.com%2Fweb%2Ffundamentals%2Fperformance%2Foptimizing-javascript%2Ftree-shaking%2F)
+- `ESM` 允许像 `Rollup` 这样的打包器，[删除不必要的代码](https://link.juejin.cn?target=https%3A%2F%2Fdev.to%2Fbennypowers%2Fyou-should-be-using-esm-kn3)，减少代码包可以获得更快的加载
+- 可以在 `HTML` 中调用，只要如下
+
+```javascript
+<script type="module">
+  import {func1} from 'my-lib';
+
+  func1();
+</script>
+```
+
 CommonJS和es6区别
-- 因为CommonJS的`require`语法是同步的，所以就导致了CommonJS模块规范只适合用在服务端，而ES6模块无论是在浏览器端还是服务端都是可以使用的，但是在服务端中，还需要遵循一些特殊的规则才能使用 ；
-- CommonJS 模块输出的是一个值的拷贝，而ES6 模块输出的是值的引用；
-- CommonJS 模块是动态引入，执行时引入，而ES6 模块是静态引入，编译时引入；
-- 因为两个模块加载机制的不同，所以在对待循环加载的时候，它们会有不同的表现。CommonJS遇到循环依赖的时候，只会输出已经执行的部分，后续的输出或者变化，是不会影响已经输出的变量。而ES6模块相反，使用`import`加载一个变量，变量不会被缓存，真正取值的时候就能取到最终的值；
-- 关于模块顶层的`this`指向问题，在CommonJS顶层，`this`指向当前模块；而在ES6模块中，`this`指向`undefined`；
-```
+> - 因为CommonJS的`require`语法是同步的，所以就导致了CommonJS模块规范只适合用在服务端，而ES6模块无论是在浏览器端还是服务端都是可以使用的，但是在服务端中，还需要遵循一些特殊的规则才能使用 ；
+> - CommonJS 模块输出的是一个值的拷贝，而ES6 模块输出的是值的引用；
+> - CommonJS 模块是动态引入，执行时引入，而ES6 模块是静态引入，编译时引入；
+> - 因为两个模块加载机制的不同，所以在对待循环加载的时候，它们会有不同的表现。CommonJS遇到循环依赖的时候，只会输出已经执行的部分，后续的输出或者变化，是不会影响已经输出的变量。而ES6模块相反，使用`import`加载一个变量，变量不会被缓存，真正取值的时候就能取到最终的值；
+> - 关于模块顶层的`this`指向问题，在CommonJS顶层，`this`指向当前模块；而在ES6模块中，`this`指向`undefined`；
 
 ## slice(),splice()两种方法
 
@@ -373,7 +420,7 @@ function Test2(){
 
 test.constructor = Test2
 
-## New运算符的实现机制
+## New运算符-实现机制
 
 - 1：检查类是否已经被加载，运行时常量池中查找该引用所指向的类有没有被加载；
 - 2：为对象分配内存空间，通过类元信息来确定类型和后面需要申请的内存大小；
@@ -429,6 +476,144 @@ function myNew(Con, ...args) {
   // 对构造函数返回值做判断，然后返回对应的值
   return res instanceof Object ? res : obj;
 }
+```
+
+## New运算符-一个对象发生了什么
+
+**模拟实现**
+
+当代码 `new Foo(...)` 执行时，会发生以下事情：
+
+1. 一个继承自 `Foo.prototype` 的新对象被创建。
+2. 使用指定的参数调用构造函数 `Foo` ，并将 `this` 绑定到新创建的对象。`new Foo` 等同于 `new Foo()`，也就是没有指定参数列表，`Foo` 不带任何参数调用的情况。
+3. 由构造函数返回的对象就是 `new` 表达式的结果。如果构造函数没有显式返回一个对象，则使用步骤1创建的对象。
+
+**模拟实现第一步**
+
+`new` 是关键词，不可以直接覆盖。这里使用 `create` 来模拟实现 `new` 的效果。
+
+`new` 返回一个新对象，通过 `obj.__proto__ = Con.prototype` 继承构造函数的原型，同时通过 `Con.apply(obj, arguments)`调用父构造函数实现继承，获取构造函数上的属性（【进阶3-3期】）。
+
+实现代码如下
+
+```js
+// 第一版
+function create() {
+ // 创建一个空的对象
+    var obj = new Object(),
+ // 获得构造函数，arguments中去除第一个参数
+    Con = [].shift.call(arguments);
+ // 链接到原型，obj 可以访问到构造函数原型中的属性
+    obj.__proto__ = Con.prototype;
+ // 绑定 this 实现继承，obj 可以访问到构造函数中的属性
+    Con.apply(obj, arguments);
+ // 返回对象
+    return obj;
+};
+```
+
+测试一下
+
+```js
+// 测试用例
+function Car(color) {
+    this.color = color;
+}
+Car.prototype.start = function() {
+    console.log(this.color + " car start");
+}
+
+var car = create(Car, "black");
+car.color;
+// black
+
+car.start();
+// black car start
+```
+
+完美！
+
+**模拟实现第二步**
+
+上面的代码已经实现了 80%，现在继续优化。
+
+构造函数返回值有如下三种情况：
+
+- 1、返回一个对象
+- 2、没有 `return`，即返回 `undefined`
+- 3、返回`undefined` 以外的基本类型
+
+**情况1**：返回一个对象
+
+```js
+function Car(color, name) {
+    this.color = color;
+    return {
+        name: name
+    }
+}
+
+var car = new Car("black", "BMW");
+car.color;
+// undefined
+
+car.name;
+// "BMW"
+```
+
+实例 `car` 中只能访问到**返回对象中的属性**。
+
+**情况2**：没有 `return`，即返回 `undefined`
+
+```js
+function Car(color, name) {
+    this.color = color;
+}
+
+var car = new Car("black", "BMW");
+car.color;
+// black
+
+car.name;
+// undefined
+```
+
+实例 `car` 中只能访问到**构造函数中的属性**，和情况1完全相反。
+
+**情况3**：返回`undefined` 以外的基本类型
+
+```js
+function Car(color, name) {
+    this.color = color;
+    return "new car";
+}
+
+var car = new Car("black", "BMW");
+car.color;
+// black
+
+car.name;
+// undefined
+```
+
+实例 `car` 中只能访问到**构造函数中的属性**，和情况1完全相反，结果相当于没有返回值。
+
+**所以**需要判断下返回的值是不是一个对象，如果是对象则返回这个对象，不然返回新创建的 `obj`对象。
+
+所以实现代码如下：
+
+```js
+// 第二版
+function create() {
+ // 1、获得构造函数，同时删除 arguments 中第一个参数
+    Con = [].shift.call(arguments);
+ // 2、创建一个空的对象并链接到原型，obj 可以访问构造函数原型中的属性
+    var obj = Object.create(Con.prototype);
+ // 3、绑定 this 实现继承，obj 可以访问到构造函数中的属性
+    var ret = Con.apply(obj, arguments);
+ // 4、优先返回构造函数返回的对象
+ return ret instanceof Object ? ret : obj;
+};
 ```
 
 ## this五种情况的梳理
@@ -514,6 +699,7 @@ b.say();//b 333
 
 函数中的this是当前类的实列。
 
+```js
 <script>
     function Fn(){
         console.log(this);
@@ -521,8 +707,7 @@ b.say();//b 333
       }
       let f= new Fn;
 </script>
-
-
+```
 
 **情况四：箭头函数**
 
@@ -767,6 +952,122 @@ var上升为全局，let是块级作用域，作用于当前。
     }
 ```
 
+例子一：**变量提升**
+
+```js
+foo;  // undefined
+var foo = function () {
+    console.log('foo1');
+}
+
+foo();  // foo1，foo赋值
+
+var foo = function () {
+    console.log('foo2');
+}
+
+foo(); // foo2，foo重新赋值
+```
+
+例子二：**函数提升**
+
+```js
+foo();  // foo2
+function foo() {
+    console.log('foo1');
+}
+
+foo();  // foo2
+
+function foo() {
+    console.log('foo2');
+}
+
+foo(); // foo2
+```
+
+例子三：声明优先级，**函数 > 变量**
+
+```js
+foo();  // foo2
+var foo = function() {
+    console.log('foo1');
+}
+
+foo();  // foo1，foo重新赋值
+
+function foo() {
+    console.log('foo2');
+}
+
+foo(); // foo1
+```
+
+上面三个例子中，第一个例子是变量提升，第二个例子是函数提升，第三个例子是函数声明优先级高于变量声明。
+
+有如下两段代码，执行的结果是一样的，但是两段代码究竟有什么不同？
+
+```js
+var scope = "global scope";
+function checkscope(){
+    var scope = "local scope";
+    function f(){
+        return scope;
+    }
+    return f();
+}
+checkscope();
+var scope = "global scope";
+function checkscope(){
+    var scope = "local scope";
+    function f(){
+        return scope;
+    }
+    return f;
+}
+checkscope()();
+```
+
+答案是 执行上下文栈的变化不一样。
+
+第一段代码：
+
+```js
+ECStack.push(<checkscope> functionContext);
+ECStack.push(<f> functionContext);
+ECStack.pop();
+ECStack.pop();
+```
+
+第二段代码：
+
+```js
+ECStack.push(<checkscope> functionContext);
+ECStack.pop();
+ECStack.push(<f> functionContext);
+ECStack.pop();
+```
+
+**讨论题**
+
+```
+var a = {n: 1};
+var b = a;
+a.x = a = {n: 2};
+
+a.x  // --> undefined
+b.x  // --> {n: 2}
+```
+
+答案已经写上面了，这道题的关键在于
+
+- 1、优先级。`.`的优先级高于`=`，所以先执行`a.x`，堆内存中的`{n: 1}`就会变成`{n: 1, x: undefined}`，改变之后相应的`b.x`也变化了，因为指向的是同一个对象。
+- 2、赋值操作是`从右到左`，所以先执行`a = {n: 2}`，`a`的引用就被改变了，然后这个返回值又赋值给了`a.x`，**需要注意**的是这时候`a.x`是第一步中的`{n: 1, x: undefined}`那个对象，其实就是`b.x`，相当于`b.x = {n: 2}`
+
+**参考**
+
+[JavaScript深入之变量对象](https://github.com/mqyqingfeng/Blog/issues/5)
+
 ## 作用域-VO/AO/GO
 
 JS有两个特性，一个是单线程，一个是解释性语言。
@@ -879,6 +1180,68 @@ var c = fun(0).fun(1);  c.fun(2);  c.fun(3);//undefined,?,?,?
 
 > 根据前面两个例子，可以得知： fun(0)为执行第一层fun函数，.fun(1)执行的是fun(0)返回的第二层fun函数，这里语句结束，遂c存放的是fun(1)的返回值，而不是fun(0)的返回值，所以c中闭包的也是fun(1)第二次执行的n的值。c.fun(2)执行的是fun(1)返回的第二层fun函数，c.fun(3)执行的**也**是fun(1)返回的第二层fun函数。 遂： 在第一次调用第一层fun(0)时，o为undefined； 第二次调用 .fun(1)时m为1，此时fun闭包了外层函数的n，也就是第一次调用的n=0，即m=1，n=0，并在内部调用第一层fun函数fun(1,0);所以o为0； 第三次调用 .fun(2)时m为2，此时fun闭包的是第二次调用的n=1，即m=2，n=1，并在内部调用第一层fun函数fun(2,1);所以o为1； 第四次.fun(3)时同理，但依然是调用的第二次的返回值，遂最终调用第一层fun函数fun(3,1)，所以o还为1 即最终答案：undefined,0,1,1  
 
+## 作用域-调用堆栈
+
+执行栈，也叫调用栈，具有 LIFO（后进先出）结构，用于存储在代码执行期间创建的**所有执行上下文**。
+
+因为JS引擎创建了很多的执行上下文，所以JS引擎创建了执行上下文**栈**（Execution context stack，ECS）来**管理**执行上下文。
+
+当 JavaScript 初始化的时候会向执行上下文栈压入一个**全局**执行上下文，我们用 globalContext 表示它，并且只有当整个应用程序结束的时候，执行栈才会被清空，所以程序结束之前， 执行栈最底部永远有个 globalContext。
+
+**一、执行上下文**
+
+执行上下文总共有三种类型
+
+- **全局执行上下文**：只有一个，浏览器中的全局对象就是 window 对象，`this` 指向这个全局对象。
+- **函数执行上下文**：存在无数个，只有在函数被调用的时候才会被创建，每次调用函数都会创建一个新的执行上下文。
+- **Eval 函数执行上下文**： 指的是运行在 `eval` 函数中的代码，很少用而且不建议使用。
+
+**二、执行上下文的创建**
+
+分为2个阶段：
+
+- 创建阶段
+- 执行阶段
+
+**1.创建阶段**
+
+分为3部分：
+
+- 1、确定 **this** 的值，也被称为 **This Binding**。
+- 2、**LexicalEnvironment（词法环境）** 组件被创建。
+- 3、**VariableEnvironment（变量环境）** 组件被创建。
+
+**(1)This Binding**
+
+- **全局**执行上下文中，`this` 的值指向全局对象，在浏览器中`this` 的值指向 `window`对象，而在`nodejs`中指向这个文件的`module`对象。
+- **函数**执行上下文中，`this` 的值取决于函数的调用方式。具体有：默认绑定、隐式绑定、显式绑定（硬绑定）、`new`绑定、箭头函数，具体内容会在【this全面解析】部分详解。
+
+**(2)词法环境**
+
+分为2部分：
+
+- **环境记录**：存储变量和函数声明的实际位置
+- **对外部环境的引用**：可以访问其外部词法环境
+
+词法环境有两种**类型**
+
+- 1、**全局环境**：是一个没有外部环境的词法环境，其外部环境引用为 **null**。拥有一个全局对象（window 对象）及其关联的方法和属性（例如数组方法）以及任何用户自定义的全局变量，`this` 的值指向这个全局对象。
+- 2、**函数环境**：用户在函数中定义的变量被存储在**环境记录**中，包含了`arguments` 对象。对外部环境的引用可以是全局环境，也可以是包含内部函数的外部函数环境。
+
+**(3)变量环境**
+
+变量环境也是一个词法环境，因此它具有上面定义的词法环境的所有属性。
+
+在 ES6 中，**词法** 环境和 **变量** 环境的区别在于前者用于存储**函数声明和变量（ `let` 和 `const` ）**绑定，而后者仅用于存储**变量（ `var` ）**绑定。
+
+**2.执行阶段**
+
+完成对所有变量的分配，执行代码，函数出栈
+
+**参考**
+
+[理解 Javascript 执行上下文和执行栈](https://juejin.im/post/5bdfd3e151882516c6432c32)
+
 ## 闭包-作用:保存和保护
 
 1.先要说到作用域和作用域链，即AO和GO
@@ -921,7 +1284,280 @@ b的作用域scope:scope[0]=AO{bb},scope[1]=AO{aa,function b},scope[2]=GO{functi
 
 场景：setTimeout的函数携带参数；回调；变量封装
 
-## 奇葩的JS闭包面试题
+## 闭包-深入
+
+**定义**
+
+闭包是指有权访问另外一个函数作用域中的变量的函数。
+
+关键在于2点：
+
+- 是函数
+- 能够访问函数作用域外的变量
+
+**三个特性**
+
+- 闭包可以访问当前函数以外的变量
+- 即使外部函数已经返回，闭包仍能访问外部函数定义的变量
+- 闭包可以更新外部变量的值
+
+```
+// 闭包可以访问当前函数以外的变量
+function getOuter(){
+  var date = '815';
+  function getDate(str){
+    console.log(str + date);  //访问外部的date
+  }
+  return getDate('今天是：'); //"今天是：815"
+}
+getOuter();
+// 即使外部函数已经返回，闭包仍能访问外部函数定义的变量
+function getOuter(){
+  var date = '815';
+  function getDate(str){
+    console.log(str + date);  //访问外部的date
+  }
+  return getDate;     //外部函数返回
+}
+var today = getOuter();
+today('今天是：');   //"今天是：815"
+today('明天不是：');   //"明天不是：815"
+// 闭包可以更新外部变量的值
+function updateCount(){
+  var count = 0;
+  function getCount(val){
+    count = val;
+    console.log(count);
+  }
+  return getCount;     //外部函数返回
+}
+var count = updateCount();
+count(815); //815
+count(816); //816
+```
+
+**一个简单例子**
+
+```
+var scope = "global scope";
+function checkscope(){
+    var scope = "local scope";
+    function f(){
+        return scope;
+    }
+    return f;
+}
+
+var foo = checkscope(); // foo指向函数f
+foo();     // 调用函数f()
+```
+
+简要的执行过程如下：
+
+1. 进入全局代码，创建全局执行上下文，全局执行上下文**压入执行上下文栈**
+2. 全局执行**上下文初始化**
+3. 执行 checkscope 函数，创建 checkscope 函数执行上下文，checkscope 执行上下文被压入执行上下文栈
+4. checkscope 执行**上下文初始化**，创建变量对象、作用域链、this等
+5. checkscope 函数执行完毕，checkscope 执行上下文从执行上下文栈中弹出
+6. 执行 f 函数，创建 f 函数执行上下文，f 执行上下文被压入执行上下文栈
+7. f 执行**上下文初始化**，创建变量对象、作用域链、this等
+8. f 函数执行完毕，f 函数上下文从执行上下文栈中弹出
+
+那么**问题**来了， 函数f 执行的时候，checkscope 函数上下文已经被销毁了，那函数f是如何获取到scope变量的呢？
+
+> 函数f 执行上下文维护了一个作用域链，会指向指向`checkscope`作用域。
+>
+> 所以指向关系是当前作用域 --> `checkscope`作用域--> 全局作用域，即使 checkscopeContext 被销毁了，但是 JavaScript 依然会让 checkscopeContext.AO（活动对象） 活在内存中，f 函数依然可以通过 f 函数的作用域链找到它，这就是闭包实现的**关键**。
+
+**一个闭包题**
+
+```
+var data = [];
+
+for (var i = 0; i < 3; i++) {
+  data[i] = function () {
+    console.log(i);
+  };
+}
+
+data[0]();
+data[1]();
+data[2]();
+```
+
+如果知道闭包的，答案就很明显了，都是3
+
+如果要依次输出索引值，解决：改成闭包，方法就是`data[i]`返回一个函数，并访问变量`i`
+
+```
+var data = [];
+
+for (var i = 0; i < 3; i++) {
+  data[i] = (function (i) {
+      return function(){
+          console.log(i);
+      }
+  })(i);
+}
+
+data[0](); // 0
+data[1](); // 1
+data[2](); // 2
+```
+
+循环结束后的全局执行上下文没有变化。
+
+执行 data[0] 函数的时候，data[0] 函数的作用域链发生了改变：因为闭包执行上下文中贮存了变量`i`，所以根据作用域链会在`globalContext.VO`中查找到变量`i`,并输出0。
+
+**一、作用域**
+
+**1.变量提升**
+
+```js
+var scope="global";
+function scopeTest(){
+    console.log(scope);
+    var scope="local"  
+}
+scopeTest(); //undefined
+```
+
+上面的代码输出是`undefined`，这是因为局部变量`scope`变量提升了，等效于下面
+
+```js
+var scope="global";
+function scopeTest(){
+    var scope;
+    console.log(scope);
+    scope="local"  
+}
+scopeTest(); //undefined
+```
+
+**注意**，如果在局部作用域中忘记var，那么变量就被声明为全局变量。
+
+**2.没有块级作用域**
+
+```js
+var data = [];
+
+for (var i = 0; i < 3; i++) {
+  data[i] = function () {
+    console.log(i);
+  };
+}
+
+data[0](); // 3
+data[1](); // 3
+data[2](); // 3
+```
+
+**闭包**
+
+```
+function createClosure(){
+    var name = "jack";
+    return {
+        setStr:function(){
+            name = "rose";
+        },
+        getStr:function(){
+            return name + ":hello";
+        }
+    }
+}
+var builder = new createClosure();
+builder.setStr();
+console.log(builder.getStr()); //rose:hello
+```
+
+**面试题**
+
+由于作用域链机制的影响，闭包只能取得内部函数的最后一个值，这引起的一个副作用就是如果内部函数在一个循环中，那么变量的值始终为最后一个值。
+
+如果想以下代码按照预期输出索引值，怎么办？
+
+```
+var data = [];
+
+for (var i = 0; i < 3; i++) {
+  data[i] = function () {
+    console.log(i);
+  };
+}
+
+data[0](); // 3
+data[1](); // 3
+data[2](); // 3
+```
+
+**方法1：立即执行函数**
+
+```js
+for (var i = 0; i < 3; i++) {
+    (function(num) {
+        setTimeout(function() {
+            console.log(num);
+        }, 1000);
+    })(i);
+}
+// 0
+// 1
+// 2
+```
+
+**方法2：返回一个匿名函数赋值**
+
+```js
+var data = [];
+
+for (var i = 0; i < 3; i++) {
+  data[i] = (function (num) {
+      return function(){
+          console.log(num);
+      }
+  })(i);
+}
+
+data[0](); // 0
+data[1](); // 1
+data[2](); // 2
+```
+
+无论是**立即执行函数**还是**返回一个匿名函数赋值**，原理上都是因为变量的按值传递，所以会将变量`i`的值复制给实参`num`，在匿名函数的内部又创建了一个用于访问`num`的匿名函数，这样每个函数都有了一个`num`的副本，互不影响了。
+
+**方法3：使用ES6中的let**
+
+```js
+var data = [];
+
+for (let i = 0; i < 3; i++) {
+  data[i] = function () {
+    console.log(i);
+  };
+}
+
+data[0]();
+data[1]();
+data[2]();
+```
+
+解释下**原理**：
+
+```js
+var data = [];// 创建一个数组data;
+
+// 进入第一次循环
+{ 
+ let i = 0; // 注意：因为使用let使得for循环为块级作用域
+            // 此次 let i = 0 在这个块级作用域中，而不是在全局环境中
+    data[0] = function() {
+     console.log(i);
+ };
+}
+```
+
+## 闭包-奇葩的闭包面试题
 
 ```
 function fun(n,o) {
@@ -1320,7 +1956,50 @@ element.someObject=myObj;
 当前嵌套调用链上的其他函数的变量和参数
 ```
 
+## 内存空间
 
+JS内存空间分为**栈(stack)**、**堆(heap)**、**池(一般也会归类为栈中)**。 其中**栈**存放基本变量，**堆**存放应用对象(引用地址存放在栈，真实变量在堆)，**池**存放常量，所以也叫常量池。
+
+**几个问题**
+
+问题1：
+
+```js
+var a = 20;
+var b = a;
+b = 30;
+// 这时a的值是多少？
+```
+
+问题2：
+
+```js
+var a = { name: '前端开发' }
+var b = a;
+b.name = '进阶';
+// 这时a.name的值是多少
+```
+
+问题3：
+
+```js
+var a = { name: '前端开发' }
+var b = a;
+a = null;
+// 这时b的值是多少
+```
+
+现在来解答一下，三个问题的答案分别是`20`、`‘进阶’`、`{ name: '前端开发' }`
+
+- 对于问题1，a、b都是基本类型，它们的值是存储在栈中的，a、b分别有各自独立的栈空间，所以修改了b的值以后，a的值并不会发生变化。
+- 对于问题2，a、b都是引用类型，栈内存中存放地址指向堆内存中的对象，引用类型的复制会为新的变量自动分配一个新的值保存在变量对象中，但只是引用类型的一个地址指针而已，实际指向的是同一个对象，所以修改`b.name`的值后，相应的`a.name`也就发生了改变。
+- 对于问题3，首先要说明的是`null`是基本类型，`a = null`之后只是把a存储在栈内存中地址改变成了基本类型null，并不会影响堆内存中的对象，所以b的值不受影响。
+
+**JS的内存生命周期**
+
+- 1、分配你所需要的内存
+- 2、使用分配到的内存（读、写）
+- 3、不需要时将其释放、归还
 
 ## 内存溢出和内存泄漏
 
@@ -2656,13 +3335,267 @@ React官网中给出三点好处：
 
 不可变性最主要的优势在于它可以帮助我们在 React 中创建 pure components。我们可以很轻松的确定不可变数据是否发生了改变，从而确定何时对组件进行重新渲染。
 
+## 自执行函数
 
+**一、函数的声明与执行**
 
-- 纯函数
-- 柯里化
-- 高阶函数
+函数申明方式
 
-**1.尾调用**
+```
+    // 声明函数fun0
+    function fun0(){
+        console.log("fun0");
+    }
+
+    //执行函数fun0
+    fun0(); // fun0
+```
+
+变量赋值方式
+
+```
+    // 声明函数fun1 - 变量方式
+    var fun1 = function(){
+        console.log("fun1");
+    }
+
+    // 执行函数fun1
+    fun1(); // fun1
+```
+
+**二、 函数的一点猜想**
+
+既然函数名加上括号`fun1()`就是执行函数。 **思考：**直接取赋值符号右侧的内容直接加个括号，是否也能执行？ 试验如下，直接加上小括弧：
+
+```javascript
+    function(){
+        console.log("fun");
+    }();
+```
+
+以上会报错 line1：`Uncaught SyntaxError: Unexpected token (`。 **分析：** `function` 是声明函数关键字，若非变量赋值方式声明函数，默认其后面需要跟上函数名的。
+
+加上函数名看看：
+
+```javascript
+    function fun2(){
+        console.log("fun2");
+    }();
+```
+
+以上会报错 line3：`Uncaught SyntaxError: Unexpected token )`。 **分析：** 声明函数的结构花括弧后面不能有其他符号（比如此处的小括弧）。
+
+不死心的再胡乱试一下，给它加个实参（表达式）：
+
+```javascript
+    function fun3(){
+        console.log("fun3");
+    }(1);
+```
+
+不会报错，但不会输出结果`fun3`。 **分析：** 以上代码相当于在声明函数后，又声明了一个毫无关系的表达式。相当于如下代码形式：
+
+```javascript
+    function fun3(){
+        console.log("fun3");
+    }
+
+(1);
+
+// 若此处执行fun3函数，可以输出结果
+fun3(); //"fun3"
+```
+
+**三、自执行函数表达式**
+
+**1. 正儿八经的自执行函数**
+
+想要解决上面问题，可以采用小括弧将要执行的代码包含住（方式一），如下：
+
+```javascript
+// 方式一
+    (function fun4(){
+        console.log("fun4");
+    }()); // "fun4"
+```
+
+**分析：**因为在JavaScript语言中，`()`里面不能包含语句（只能是表达式），所以解析器在解析到`function`关键字的时候，会把它们当作function表达式，而不是正常的函数声明。 
+
+除了上面直接整个包含住，也可以只包含住函数体（方式二），如下：
+
+```javascript
+// 方式二
+    (function fun5(){
+        console.log("fun5");
+    })();// "fun4"
+```
+
+写法上建议采用方式一（这是参考文的建议。但实际上，我个人觉得方式二比较常见）。
+
+**2. “歪瓜裂枣”的自执行函数**
+
+除了上面`()`小括弧可以把`function`关键字作为函数声明的含义转换成函数表达式外，JavaScript的`&&` 与操作、`||`或操作、`,`逗号等操作符也有这个效果。
+
+```javascript
+    true && function () { console.log("true &&") } (); // "true &&"
+    false || function () { console.log("true ||") } (); // "true ||"
+    0, function () { console.log("0,") } (); // "0,"
+
+// 此处要注意： &&, || 的短路效应。即： false && (表达式1)  是不会触发表达式1；
+// 同理，true || (表达式2) 不会触发表达式2
+```
+
+如果不在意返回值，也不在意代码的可读性，我们甚至还可以使用一元操作符（`!` `~` `-` `+` ），函数同样也会立即执行。
+
+```javascript
+    !function () { console.log("!"); } (); //"!"
+    ~function () { console.log("~"); } (); //"~"
+    -function () { console.log("-"); } (); //"-"
+    +function () { console.log("+"); } (); //"+"
+```
+
+甚至还可以使用`new`关键字：
+
+```javascript
+// 注意：采用new方式，可以不要再解释花括弧 `}` 后面加小括弧 `()` 
+new function () { console.log("new"); } //"new"
+
+// 如果需要传递参数
+new function (a) { console.log(a); } ("newwwwwwww"); //"newwwwwwww"
+```
+
+嗯，最好玩的是赋值符号`=`同样也有此效用（例子中的`i`变量方式）：
+
+```javascript
+//此处 要注意区分 i 和 j 不同之处。前者是函数自执行后返回值给 i ；后者是声明一个函数，函数名为 j 。
+    var i = function () { console.log("output i:"); return 10; } (); // "output i:"
+    var j = function () { console.log("output j:"); return 99;}
+    console.log(i); // 10
+    console.log(j); // ƒ () { console.log("output j:"); return 99;}
+```
+
+上面提及到，要注意区分 `var i`和 `var j` 不同之处（前者是函数自执行后返回值给`i` ；后者是声明一个函数，函数名为`j`）。如果是看代码，我们需要查看代码结尾是否有没有`()`才能区分。一般为了方便开发人员阅读，我们会采用下面这种方式：
+
+```javascript
+    var i2 = (function () { console.log("output i2:"); return 10; } ()); // "output i2:"
+    var i3 = (function () { console.log("output i3:"); return 10; }) (); // "output i3:"
+// 以上两种都可以，但依旧建议采用第一种 i2 的方式。（个人依旧喜欢第二种i3方式）
+```
+
+**四、自执行函数的应用**
+
+**1. for循环 + setTimeout 例子**
+
+因为是全局变量，所以输出都是同一个值
+
+```
+for( var i=0;i<3;i++){
+    setTimeout(function(){
+        console.log(i);
+    }
+    ,300);
+}
+// 输出结果 3,3,3
+```
+
+那怎么样才能输出`1,2,3`呢？ 看看下面的方式（写法一）：把`setTimeout`代码包含在匿名自执行函数里面，就可以实现“锁住”索引`i`，正常输出索引值。
+
+```javascript
+for( var i=0;i<3;i++){
+    (function(lockedIndex){
+        setTimeout(function(){
+            console.log(lockedIndex);
+        }
+        ,300);
+    })(i);
+}
+// 输出 "1,2,3"
+```
+
+**分析**：尽管循环执行结束，`i`值已经变成了3。但因遇到了自执行函数，当时的`i`值已经被 `lockedIndex`锁住了。也可以理解为 自执行函数属于for循环一部分，每次遍历`i`，自执行函数也会立即执行。所以尽管有延时器，但依旧会保留住立即执行时的`i`值。 *上面的分析有点模糊和牵强，也可以从* ***闭包\*** *角度出发分析的。*
+
+除了上面的写法，也可以直接在 `setTimeout` 第一个参数做自执行（写法二），如下：
+
+```javascript
+for( var i=0;i<3;i++){
+    setTimeout((function(lockedInIndex){
+        console.log(lockedInIndex);
+    })(i)
+    ,300);
+}
+```
+
+```js
+// 1. lockedInIndex变量，也可以换成i，因为和外面的i不在一个作用域
+for( var i=0;i<3;i++){
+    (function(i){
+        setTimeout(function(){
+            console.log(i); // 1,2,3
+        }
+        ,300);
+    })(i);
+}
+
+for( var i=0;i<3;i++){
+    setTimeout((function(i){
+        console.log(i); // 1,2,3
+    })(i)
+    ,300);
+}
+
+// 2. 自执行函数不带入参数 
+for( var i=0;i<3;i++){
+    (function(){
+        setTimeout(function(){
+            console.log(i); // 3,3,3
+        }
+        ,300);
+    })();
+}
+
+for( var i=0;i<3;i++){
+    setTimeout((function(){
+        console.log(i); // 1,2,3
+    })()
+    ,300);
+}
+
+// 3. 自执行函数只有实参没有写形参
+for( var i=0;i<3;i++){
+    (function(){
+        setTimeout(function(){
+            console.log(i); // 3,3,3
+        }
+        ,300);
+    })(i);
+}
+
+for( var i=0;i<3;i++){
+    setTimeout((function(){
+        console.log(i); // 1,2,3
+    })(i)
+    ,300);
+}
+
+// 4. 自执行函数只有形参没有写实参，这种情况不行。因为会导致输出 undefined。
+for( var i=0;i<3;i++){
+    (function(i){
+        setTimeout(function(){
+            console.log(i); // undefined,undefined,undefined
+        }
+        ,300);
+    })();
+}
+
+for( var i=0;i<3;i++){
+    setTimeout((function(i){
+        console.log(i); // undefined,undefined,undefined
+    })()
+    ,300);
+}
+```
+
+## **尾调用**
 
 **PS:ES6尾调用优化只能在严格模式下使用，详见[尾调用优化 阮一峰](https://link.jianshu.com/?t=http%3A%2F%2Fwww.ruanyifeng.com%2Fblog%2F2015%2F04%2Ftail-call.html)**
 
@@ -2719,61 +3652,197 @@ g(3);
 **定义：**尾调用自身。
  "尾调用优化"对递归操作意义重大。ES6中第一次明确规定，所有 ECMAScript 的实现，都必须部署"尾调用优化"。这就是说，在 ES6 中，只要使用尾递归（在严格模式下），就不会发生栈溢出，相对节省内存
 
-**2.柯里化**
+## **柯里化**
 
 **柯里化是把多参数的函数转换成少参数的函数的过程。**
 
+**一、定义**
+
+函数柯里化又叫部分求值，维基百科中对柯里化 (Currying) 的定义为：
+
+> 在数学和计算机科学中，柯里化是一种将使用多个参数的函数转换成一系列使用一个参数的函数，并且返回接受余下的参数而且返回结果的新函数的技术。
+
+用大白话来说就是只传递给函数一部分参数来调用它，让它返回一个新函数去处理剩下的参数。使用一个简单的例子来介绍下，最常用的就是 add 函数了。
+
+```js
+// 木易杨
+const add = (...args) => args.reduce((a, b) => a + b);
+
+// 传入多个参数，执行 add 函数
+add(1, 2) // 3
+
+// 假设我们实现了一个 currying 函数，支持一次传入一个参数
+let sum = currying(add);
+// 封装第一个参数，方便重用
+let addCurryOne = sum(1);
+addCurryOne(2) // 3
+addCurryOne(3) // 4
 ```
-function sum(a) {
-  return function (b) {
-    return function(c) {
-        return a + b + c;
-        } 
+
+**二、实际应用**
+
+- 1.延迟计算：部分求和，bind函数
+- 2.动态创建函数：添加监听addEvent、惰性函数
+- 3.参数复用：
+
+**1.延迟计算**
+
+```
+const add = (...args) => args.reduce((a, b) => a + b);
+
+// 简化写法
+function currying(func) {
+    const args = [];
+    return function result(...rest) {
+        if (rest.length === 0) {
+          return func(...args);
+        } else {
+          args.push(...rest);
+         return result;
+        }
     }
 }
-// 调用
-let sum1 = sum(1);
-let sum2 = sum1(2);
-sum2(3); // 6
+
+const sum = currying(add);
+sum(1,2)(3); // 未真正求值
+sum(4);    // 未真正求值
+sum();     // 输出 10
 ```
 
-高阶柯里化：
+**bind函数**
 
 ```
-function curry(func) {
-  return function curried(...args) {
-    if (args.length >= func.length) {
-      return func.apply(this, args);
-    } else {
-      return function(...args2) {
-        return curried.apply(this, args.concat(args2));
-      }
+let obj = {
+  name: 'muyiy'
+}
+const fun = function () {
+  console.log(this.name);
+}.bind(obj);
+
+fun(); // muyiy
+
+// bind底层原因也是柯里化的实现
+Function.prototype.bind = function (context) {
+    var self = this;
+    // 第 1 个参数是指定的 this，截取保存第 1 个之后的参数
+  // arr.slice(begin); 即 [begin, end]
+    var args = Array.prototype.slice.call(arguments, 1); 
+
+    return function () {
+        // 此时的 arguments 是指 bind 返回的函数调用时接收的参数
+        // 即 return function 的参数，和上面那个不同
+       // 类数组转成数组
+        var bindArgs = Array.prototype.slice.call(arguments);
+       // 执行函数
+        return self.apply( context, args.concat(bindArgs) );
     }
-  };
 }
-
-function sum(a, b, c) {
-  return a + b + c;
-}
-
-let curriedSum = curry(sum);
-let cu1 = curriedSum(1)
-alert( curriedSum( 1,2, 3) );// 6 任意柯里化
-alert( cu1( 2, 3) );// 6 任意柯里化
 ```
 
-当我们运行它时，这里有两个 `if` 执行分支：
+**2.动态创建函数**
 
-1. 现在调用：如果传入的 `args` 长度与原始函数所定义的（`func.length`）相同或者更长，那么只需要将调用传递给它即可。
-2. 获取一个偏函数：否则，`func` 还没有被调用。取而代之的是，返回另一个包装器 `pass`，它将重新应用 `curried`，将之前传入的参数与新的参数一起传入。然后，在一个新的调用中，再次，我们将获得一个新的偏函数（如果参数不足的话），或者最终的结果。
+每次调用函数都需要进行一次判断，但其实第一次判断计算之后，后续调用并不需要再次判断。这种情况下就非常适合使用柯里化方案来处理
 
-例如，让我们看看 `sum(a, b, c)` 这个例子。它有三个参数，所以 `sum.length = 3`。
+```js
+// 简化写法
+function addEvent (type, el, fn, capture = false) {
+    if (window.addEventListener) {
+        el.addEventListener(type, fn, capture);
+    }
+    else if(window.attachEvent){
+        el.attachEvent('on' + type, fn);
+    }
+}
+```
 
-对于调用 `curried(1)(2)(3)`：
+但是这种写法有一个问题，就是每次添加事件都会调用做一次判断，那么有没有什么办法只判断一次呢，可以利用闭包和立即调用函数表达式（IIFE）来处理。
 
-1. 第一个调用 `curried(1)` 将 `1` 保存在词法环境中，然后返回一个包装器 `pass`。
-2. 包装器 `pass` 被调用，参数为 `(2)`：它会获取之前的参数 `(1)`，将它与得到的 `(2)` 连在一起，并一起调用 `curried(1, 2)`。由于参数数量仍小于 3，`curry` 函数依然会返回 `pass`。
-3. 包装器 `pass` 再次被调用，参数为 `(3)`，在接下来的调用中，`pass(3)` 会获取之前的参数 (`1`, `2`) 并将 `3` 与之合并，执行调用 `curried(1, 2, 3)` — 最终有 `3` 个参数，它们被传入最原始的函数中
+```js
+const addEvent = (function(){
+    if (window.addEventListener) {
+        return function (type, el, fn, capture) {
+            el.addEventListener(type, fn, capture);
+        }
+    }
+    else if(window.attachEvent){
+        return function (type, el, fn) {
+            el.attachEvent('on' + type, fn);
+        }
+    }
+})();
+```
+
+上面这种实现方案就是一种典型的柯里化应用，在第一次的 `if...else if...` 判断之后完成部分计算，动态创建新的函数用于处理后续传入的参数，这样做的好处就是之后调用就不需要再次计算了。
+
+**当然可以使用惰性函数来实现**这一功能，原理很简单，就是重写函数。
+
+```js
+function addEvent (type, el, fn, capture = false) {
+   // 重写函数
+    if (window.addEventListener) {
+        addEvent = function (type, el, fn, capture) {
+            el.addEventListener(type, fn, capture);
+        }
+    }
+    else if(window.attachEvent){
+        addEvent = function (type, el, fn) {
+            el.attachEvent('on' + type, fn);
+        }
+    }
+   // 执行函数，有循环爆栈风险
+   addEvent(type, el, fn, capture); 
+}
+```
+
+第一次调用 `addEvent` 函数后，会进行一次环境判断，在这之后 `addEvent` 函数被重写，所以下次调用时就不会再次判断环境，可以说很完美了。
+
+**3.参数复用**
+
+```
+// 改造前
+function isArray(obj) { 
+    return Object.prototype.toString.call(obj) === '[object Array]';
+}
+function isNumber(obj) {
+    return Object.prototype.toString.call(obj) === '[object Number]';
+}
+[1, 2, 3].toString(); // "1,2,3"
+'123'.toString(); // "123"
+
+// 改造后
+const toStr = Function.prototype.call.bind(Object.prototype.toString);
+toStr([1, 2, 3]);  // "[object Array]"
+toStr('123');   // "[object String]"
+```
+
+**三、实现 currying 函数**
+
+```js
+function currying(fn, length) {
+  length = length || fn.length;  // 注释 1
+  return function (...args) {   // 注释 2
+    return args.length >= length // 注释 3
+     ? fn.apply(this, args)   // 注释 4
+      : currying(fn.bind(this, ...args), length - args.length) // 注释 5
+  }
+}
+
+// Test
+const fn = currying(function(a, b, c) {
+    console.log([a, b, c]);
+});
+
+fn("a", "b", "c") // ["a", "b", "c"]
+fn("a", "b")("c") // ["a", "b", "c"]
+fn("a")("b")("c") // ["a", "b", "c"]
+fn("a")("b", "c") // ["a", "b", "c"]
+```
+
+- 注释 1：第一次调用获取函数 fn 参数的长度，后续调用获取 fn 剩余参数的长度
+- 注释 2：currying 包裹之后返回一个新函数，接收参数为 `...args`
+- 注释 3：新函数接收的参数长度是否大于等于 fn 剩余参数需要接收的长度
+- 注释 4：满足要求，执行 fn 函数，传入新函数的参数
+- 注释 5：不满足要求，递归 currying 函数，新的 fn 为 `bind` 返回的新函数（`bind` 绑定了 `...args` 参数，未执行），新的 length 为 fn 剩余参数的长度
 
 # devDependencies 和 dependencies 的区别
 
@@ -2782,6 +3851,132 @@ alert( cu1( 2, 3) );// 6 任意柯里化
 只要开发的项目是**发npm包**提供给外部、其他业务项目使用的，需要非常注意依赖的安装地方，因为搞不好很容易在业务使用中会出现bug。dependencies的依赖包会被打入到npm包中，慎用。
 
 而如果只是自己项目用，**不需要发npm包**的话，把依赖安装到 `devDependencies` 或者 `dependencies` 中，实质上是没有任何区别的。
+
+# args剩余参数与arguments函数形参类数组
+
+**args**
+
+定义：只包含那些没有对应形参的实参。将所有后面剩余的是实参个数包裹成一个数组。
+
+- 展开运算符
+- 用于解构赋值
+- 类数组对象变成数组
+
+> **var** arr1=['a','b','c']; **var** arr2=['d','e'];arr1.**push**(...arr2)
+>
+> **let** b=[...new Set([1,2])]
+
+**arguments对象**
+
+1.定义：包含了传给函数的所有实参。在函数代码中，使用特殊对象 `arguments`，开发者无需明确指出参数名，就能访问它们。它是一个类数组，不是数组。
+
+```js
+function test(a, b, c) {
+  console.log(arguments) // Arguments(4) [1, 2, 3, 4, callee: ƒ, Symbol(Symbol.iterator): ƒ] 
+  console.log(test.length) // 3
+  console.log(arguments.callee.length) // 3
+  console.log(Array.apply(null, arguments))
+}
+
+test(1,2,3,4)
+其中arguments 代表的是函数实参的个数
+其中fn.length 代表函数形参的个数
+其中arguments.callee 指向函数本身
+```
+
+2.提取参数
+
+```js
+var args = Array.prototype.slice.call(arguments);
+var args = [].slice.call(arguments);
+
+// ES2015
+const args = Array.from(arguments);
+const args = [...arguments];
+```
+
+> **警告：** 对参数使用 slice 会阻止某些 JavaScript 引擎中的优化 (比如 V8 - [更多信息](https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#3-managing-arguments))。如果你关心性能，尝试通过遍历 arguments 对象来构造一个新的数组。另一种方法是使用被忽视的`Array`构造函数作为一个函数：
+>
+> ```
+> var args = (arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments));
+> ```
+
+3.一般模式和严格模式下arguments
+
+- 一般模式：如果缺省参数，arguments和参数是隔离开的；如果传入参数，arguments和参数是双向绑定的
+- 严格模式：arguments和参数是双向绑定的
+
+(1)一般模式
+
+直接上代码，先来看调用时缺省参数的情况
+
+```
+function a1(x) {
+    x = 2;
+    console.log(x, arguments[0]);
+}
+a1(); // 2 undefined
+
+function a2(x) {
+    arguments[0] = 2;
+    console.log(x, arguments[0]);
+}
+a2(); // undefined 2
+```
+
+再来看调用时传入参数的情况
+
+```
+function a3(x) {
+    x = 2;
+    console.log(x, arguments[0]);
+}
+a3(1); // 2 2
+
+function a4(x) {
+    arguments[0] = 2;
+    console.log(x, arguments[0]);
+}
+a4(1); // 2 2
+```
+
+可以看到如果缺省参数，arguments和参数是隔离开的；如果传入参数，arguments和参数是双向绑定的。
+
+(2)严格模式
+
+再来看看严格模式，直接上代码
+
+```
+function b1(x) {
+    'use strict';
+    x = 2;
+    console.log(x, arguments[0]);
+}
+b1(); // 2 undefined
+
+function b2(x) {
+    'use strict';
+    arguments[0] = 2;
+    console.log(x, arguments[0]);
+}
+b2(); // undefined 2
+
+function b3(x) {
+    'use strict';
+    x = 2;
+    console.log(x, arguments[0]);
+}
+b3(1); // 2 1
+
+function b4(x) {
+    'use strict';
+    arguments[0] = 2;
+    console.log(x, arguments[0]);
+}
+b4(1); // 1 2
+```
+
+在严格模式下，无论参数是否缺省，arguments和参数都是隔离开的。
 
 # 常用技巧方法
 

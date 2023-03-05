@@ -6,6 +6,46 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
+# Vue3标准模板
+
+**模板工具：**
+
+- `编程语言`：**TypeScript 4.x 、JavaScript**
+- `前端框架`：**Vue 3.x**
+- `构建工具`：**Vite 2.x**
+- `UI 框架`：**Element Plus**
+- `图标工具`：**icones**
+- `CSS预编译`：**Sass**
+- `CSS框架`：**Windi CSS**
+- `HTTP工具`：**Axios**
+- `路由管理`：**Vue Router 4.x**
+- `状态管理`：**Pinia**
+- `代码规范`：**EditorConifg、Prettier、ESLint、Airbnb JavaScript Style Guide**
+- `提交规范`：**husky、Commitlint 、lint-staged**
+
+- `实现自动按需加载`（**`墙裂推荐`**）：**unplugin-auto-import、unplugin-vue-components、unplugin-icons**
+- `实现 SVG图标 的组件化`：**vite-svg-loader**
+- `让各种 API 支持响应式`：**VueUse**
+- `让加载页面时有所反馈`：**NProgress**
+- `支持 markdown`：**vite-plugin-md**
+- vetur -> volar:对于 vue3 的支持，`vetur` 很明显的不如 `volar`，这边建议小伙伴们禁用vuetur而使用volor
+
+**模板代码目录结构：**
+
+- `.husky`：用来放husky 钩子的配置文件夹
+- `.vscode`：用来放项目中的 vscode 配置
+- `presets`：用来放 vite 插件的 plugin 配置
+- `public`：用来放一些诸如 页头icon 之类的公共文件，会被打包到dist根目录下
+- `src`：用来放项目代码文件
+- `api`：用来放http的一些接口配置
+- `assets`：用来放一些 CSS 之类的静态资源
+- `components`：用来放 Vue 组件
+- `layout`：用来放项目的布局
+- `router`：用来放项目的路由配置
+- `store`：用来放状态管理Pinia的配置
+- `utils`：用来放项目中的工具方法类
+- `views`：用来放项目的.vue视图
+
 # 初始化基础模板
 
 ```

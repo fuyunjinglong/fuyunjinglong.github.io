@@ -6,7 +6,7 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# 1.OSI模型定义
+# OSI模型定义
 
 ![网络拓扑图](D:\elven\002-Typora文件树\120工作技能\前端\img\网络图拓扑.png)
 
@@ -51,7 +51,7 @@ toc: true # 是否启用内容索引
 
   - 物理层（Physical Layer）在局部局域网上传送[数据帧](https://zh.wikipedia.org/wiki/数据帧)（Data Frame），它负责管理电脑通信设备和网络媒体之间的互通。包括了针脚、电压、线缆规范、集线器、中继器、网卡、主机接口卡等。
 
-# 2.OSI七层和TCP/IP四层的关系
+# OSI七层和TCP/IP四层的关系
 
 OSI先有模型，后有协议，先有标准，后进行实践；而TCP/IP则相反，先有协议和应用再提出了模型，且是参照的OSI模型。
 
@@ -74,7 +74,7 @@ OSI先有模型，后有协议，先有标准，后进行实践；而TCP/IP则�
 
 ![image-20220504162525908](/img/image-20220504162525908.png)
 
-# 3.TCP/IP协议族
+# TCP/IP协议族
 
 ## **主机到网络层**
 
@@ -93,7 +93,7 @@ OSI先有模型，后有协议，先有标准，后进行实践；而TCP/IP则�
 TCP/IP模型将OSI参考模型中的会话层和表示层的功能合并到应用层实现。　　
 应用层面向不同的网络应用引入了不同的应用层协议。其中，有基于TCP协议的，如文件传输协议（File Transfer Protocol，FTP）、虚拟终端协议（TELNET）、超文本链接协议（Hyper Text Transfer Protocol，HTTP），也有基于UDP协议的。
 
-# 4.TCP/IP报文格式
+# TCP/IP报文格式
 
 <img src="/img/image-20220504164737232.png" alt="image-20220504164737232" style="zoom:67%;" />
 

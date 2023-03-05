@@ -6,7 +6,7 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# 1.webpack三部曲
+# webpack三部曲
 
 [带你深度解锁Webpack系列(基础篇)](https://segmentfault.com/a/1190000021953371)
 
@@ -14,7 +14,7 @@ toc: true # 是否启用内容索引
 
 [带你深度解锁Webpack系列(优化篇)](https://segmentfault.com/a/1190000022205477)
 
-# 2.webpack分包策略
+# webpack分包策略
 
 - 基础类库 `chunk-libs`
 - UI 组件库 `chunk-elementUI`
@@ -105,7 +105,7 @@ splitChunks: {
 
 > 比如支持`HTTP/2`的情况下，你可以使用 `webpack4.15.0` 新增的 [maxSize](https://webpack.js.org/plugins/split-chunks-plugin/#splitchunks-maxsize)，它能将你的`chunk`在`minSize`的范围内更加合理的拆分，这样可以更好地利用`HTTP/2`来进行长缓存(在`HTTP/2`的情况下，缓存策略就和之前又不太一样了)。
 
-# 3.性能优化-Tree Shaking
+# 性能优化-Tree Shaking
 
 ## 什么是Tree Shaking？
 
@@ -136,7 +136,7 @@ Webpack 中，Tree-shaking 的实现一是先**标记**出模块导出值中哪�
 
 真正执行“**Shaking**”操作的是 Terser 插件。例如在上例中 `foo` 变量经过标记后，已经变成一段 Dead Code —— 不可能被执行到的代码，这个时候只需要用 Terser 提供的 DCE 功能就可以删除这一段定义语句，以此实现完整的 Tree Shaking 效果。
 
-### 1.收集模块导出
+### 收集模块导出
 
 [[万字总结\] 一文吃透 Webpack 核心原理](https://link.juejin.cn/?target=https%3A%2F%2Fmp.weixin.qq.com%2Fs%2FSbJNbSVzSPSKBe2YStn2Zw) 
 
@@ -156,7 +156,7 @@ Webpack 中，Tree-shaking 的实现一是先**标记**出模块导出值中哪�
 
 经过 `FlagDependencyExportsPlugin` 插件处理后，所有 ESM 风格的 export 语句都会记录在 ModuleGraph 体系内，后续操作就可以从 ModuleGraph 中直接读取出模块的导出值。
 
-### 2.标记模块导出
+### 标记模块导出
 
 模块导出信息收集完毕后，Webpack 需要标记出各个模块的导出列表中，哪些导出值有被其它模块用到，哪些没有，这一过程发生在 Seal 阶段，主流程：
 
@@ -170,7 +170,7 @@ Webpack 中，Tree-shaking 的实现一是先**标记**出模块导出值中哪�
 
 上面是极度简化过的版本，中间还存在非常多的分支逻辑与复杂的集合操作，我们抓住重点：标记模块导出这一操作集中在 `FlagDependencyUsagePlugin` 插件中，执行结果最终会记录在模块导出语句对应的 `exportInfo._usedInRuntime` 字典中。
 
-### 3.生成代码
+### 生成代码
 
 经过前面的收集与标记步骤后，Webpack 已经在 ModuleGraph 体系中清楚地记录了每个模块都导出了哪些值，每个导出值又没那块模块所使用。接下来，Webpack 会根据导出值的使用情况生成不同的代码。
 
@@ -183,7 +183,7 @@ Webpack 中，Tree-shaking 的实现一是先**标记**出模块导出值中哪�
 
 基本上，这一步的逻辑就是用前面收集好的 `exportsInfo` 对象未模块的导出值分别生成导出语句。
 
-### 4.删除 Dead Code
+### 删除 Dead Code
 
 经过前面几步操作之后，模块导出列表中未被使用的值都不会定义在 `__webpack_exports__` 对象中，形成一段不可能被执行的 Dead Code 效果，如上例中的 `foo` 变量：
 
@@ -202,7 +202,7 @@ Webpack 中，Tree-shaking 的实现一是先**标记**出模块导出值中哪�
 
 虽然 Webpack 自 2.x 开始就原生支持 Tree Shaking 功能，但受限于 JS 的动态特性与模块的复杂性，直至最新的 5.0 版本依然没有解决许多代码副作用带来的问题，使得优化效果并不如 Tree Shaking 原本设想的那么完美，所以需要使用者有意识地优化代码结构，或使用一些补丁技术帮助 Webpack 更精确地检测无效代码，完成 Tree Shaking 操作。
 
-### 1.避免无意义的赋值
+### 避免无意义的赋值
 
 使用 Webpack 时，需要有意识规避一些不必要的赋值操作
 
@@ -222,11 +222,11 @@ console.log(foo)
 
 更深层次的原因则是 JavaScript 的赋值语句并不**纯**，视具体场景有可能产生意料之外的副作用
 
-### 2.使用 `#pure` 标注纯函数调用
+### 使用 `#pure` 标注纯函数调用
 
 与赋值语句类似，JavaScript 中的函数调用语句也可能产生副作用，因此默认情况下 Webpack 并不会对函数调用做 Tree Shaking 操作。不过，开发者可以在调用语句前添加 `/*#__PURE__*/` 备注，明确告诉 Webpack 该次函数调用并不会对上下文环境产生副作用,带上 Pure 声明后则被 Tree Shaking 删除.
 
-### 3.禁止 Babel 转译模块导入导出语句
+### 禁止 Babel 转译模块导入导出语句
 
 Babel 是一个非常流行的 JavaScript 代码转换器，它能够将高版本的 JS 代码等价转译为兼容性更佳的低版本代码，使得前端开发者能够使用最新的语言特性开发出兼容旧版本浏览器的代码。
 
@@ -234,7 +234,7 @@ Babel 是一个非常流行的 JavaScript 代码转换器，它能够将高版�
 
 所以，在 Webpack 中使用 `babel-loader` 时，建议将 `babel-preset-env` 的 `moduels` 配置项设置为 `false`，关闭模块导入导出语句的转译。
 
-### 4.优化导出值的粒度
+### 优化导出值的粒度
 
 Tree Shaking 逻辑作用在 ESM 的 `export` 语句上，因此对于下面这种导出场景：
 
@@ -258,7 +258,7 @@ export {
 }
 ```
 
-### 5.使用支持 Tree Shaking 的包
+### 使用支持 Tree Shaking 的包
 
 如果可以的话，应尽量使用支持 Tree Shaking 的 npm 包，例如：
 
@@ -266,7 +266,7 @@ export {
 
 不过，并不是所有 npm 包都存在 Tree Shaking 的空间，诸如 React、Vue2 一类的框架原本已经对生产版本做了足够极致的优化，此时业务代码需要整个代码包提供的完整功能，基本上不太需要进行 Tree Shaking。
 
-# 9.其他
+# 其他
 
 [浅谈webpack性能优化](https://segmentfault.com/a/1190000022561279)
 

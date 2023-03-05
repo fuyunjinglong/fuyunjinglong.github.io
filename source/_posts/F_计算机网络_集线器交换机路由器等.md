@@ -6,7 +6,7 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# 1.集线器（HUB）
+# 集线器（HUB）
 
 集线器起到了一个将网线集结起来的作用，实现最初级的网络互通。集线器是通过网线直接传送数据的，我们说他工作在**物理层**。
 
@@ -16,7 +16,7 @@ toc: true # 是否启用内容索引
 
 <img src="/img/image-20220504160952342.png" alt="image-20220504160952342" style="zoom:50%;" />
 
-# 2.交换机
+# 交换机
 
 集线器会广播所有消息，但我只需要告知某人消息，这就需要交换机
 
@@ -26,7 +26,7 @@ toc: true # 是否启用内容索引
 
 <img src="/img/image-20220504161205348.png" alt="image-20220504161205348" style="zoom:50%;" />
 
-# 3.路由器
+# 路由器
 
 其他村也想加入进来，路由器就出现了。路由器上有 WAN 口和 LAN 接口，而交换机没有这些接口。
 
@@ -34,7 +34,7 @@ toc: true # 是否启用内容索引
 
 <img src="/img/image-20220504161317346.png" alt="image-20220504161317346" style="zoom:67%;" />
 
-# 4.猫
+# 猫
 
 猫的学名叫[调制解调器](https://www.zhihu.com/search?q=调制解调器&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A402261894})，它的作用是将数字信号（电脑想要发送的信息）转换成模拟信号（网线中的电流脉冲）从而使信息在网线中传输。
 
