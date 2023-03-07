@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Electron是什么 | Hexo</title>
+  <meta name="description" content="Electron 是什么定义Electron是由Github开发，用HTML，CSS和JavaScript来构建跨平台桌面应用程序的一个开源库。 Electron通过将Chromium和Node.js合并到同一个运行时环境中，并将其打包为Mac，Windows和Linux系统下的应用来实现这一目的。通过Node它提供了通常浏览器所不能提供的能力。 历史2013年的时候，Atom编辑器问世，作为实现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Electron是什么">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2022/05/17/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_Electron%E6%98%AF%E4%BB%80%E4%B9%88/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Electron 是什么定义Electron是由Github开发，用HTML，CSS和JavaScript来构建跨平台桌面应用程序的一个开源库。 Electron通过将Chromium和Node.js合并到同一个运行时环境中，并将其打包为Mac，Windows和Linux系统下的应用来实现这一目的。通过Node它提供了通常浏览器所不能提供的能力。 历史2013年的时候，Atom编辑器问世，作为实现">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-16T23:33:16.000Z">
+<meta property="article:modified_time" content="2023-03-07T12:22:14.107Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2022/05/17/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_Electron%E6%98%AF%E4%BB%80%E4%B9%88/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://fuyunjinglong.github.io/" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Elven</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">10</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">10</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2%E5%92%8CVue3%E6%AF%94%E8%BE%83/" class="title">Vue2和Vue3比较</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0%E5%8E%9F%E7%90%86/" class="title">Vue2.0原理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue3.0%E5%8E%9F%E7%90%86/" class="title">Vue3.0原理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue2.0/" class="title">源码_Vue2.0</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue3.0/" class="title">源码_Vue3.0</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Electron-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-text">Electron 是什么</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%86%E5%8F%B2"><span class="toc-text">历史</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0"><span class="toc-text">底层实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8Electron"><span class="toc-text">为什么要用Electron</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Electron%E9%A1%B9%E7%9B%AE%E5%92%8CWeb%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">Electron项目和Web项目的区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Electron%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-text">Electron的基本使用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-H_工程热点_Electron是什么" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Electron是什么
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/05/17/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_Electron%E6%98%AF%E4%BB%80%E4%B9%88/" class="article-date">
+	  <time datetime="2022-05-16T23:33:16.000Z" itemprop="datePublished">2022-05-17</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/05/17/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_Electron%E6%98%AF%E4%BB%80%E4%B9%88/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="Electron-是什么"><a href="#Electron-是什么" class="headerlink" title="Electron 是什么"></a>Electron 是什么</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p><a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://electronjs.org/">Electron</a>是由Github开发，用HTML，CSS和JavaScript来构建跨平台桌面应用程序的一个开源库。 Electron通过将<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://www.chromium.org/Home">Chromium</a>和<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://nodejs.org/">Node.js</a>合并到同一个运行时环境中，并将其打包为Mac，Windows和Linux系统下的应用来实现这一目的。通过Node它提供了通常浏览器所不能提供的能力。</p>
+<h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><p>2013年的时候，Atom编辑器问世，作为实现它的底层框架Electron也逐渐被熟知，到2014年时被开源，那时它还是叫<code>Atom Shell</code>。</p>
+<p>接下来的几年，Electron在不断的更新迭代，几乎每年都有一个重大的里程碑</p>
+<ul>
+<li>2013年4月11日，Electron以Atom Shell为名起步。</li>
+<li>2014年5月6日，Atom以及Atom Shell以MIT许可证开源。</li>
+<li>2015年4月17日，Atom Shell改名为Electron。</li>
+<li>2016年5月11日，1.0版本发布。</li>
+<li>2016年5月20日，允许向Mac应用商店提交软件包。</li>
+<li>2016年8月2日，支持Windows商店。</li>
+</ul>
+<p>在最新的稳定版本V3.x中，Electorn集成了Nodejs v10.2.0和内核为v66.0.3359.181的Chromium</p>
+<h2 id="底层实现"><a href="#底层实现" class="headerlink" title="底层实现"></a>底层实现</h2><p>Electron 结合了 Chromium、Node.js 和用于调用操作系统本地功能的API。</p>
+<p>*<strong>1）Chromium：*</strong></p>
+<p><a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://www.chromium.org/Home">Chromium</a> 是 Google 为发展 Chrome 浏览器而启动的开源项目，Chromium 相当于 Chrome 的工程版或称实验版，新功能会率先在 Chromium 上实现，待验证后才会应用在Chrome 上，故 Chrome 的功能会相对落后但较稳定。</p>
+<p>Chromium为Electron提供强大的UI能力，可以在不考虑兼容性的情况下开发界面。</p>
+<p>*<strong>2）Node.js：*</strong></p>
+<p><a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://nodejs.org/en/">Node.js</a>是一个让 JavaScript 运行在服务端的开发平台，Node 使用事件驱动，非阻塞I/O 模型而得以轻量和高效。</p>
+<p>单单靠Chromium是不能具备直接操作原生GUI能力的，Electron内集成了Nodejs，这让其在开发界面的同时也有了操作系统底层 API 的能力，Nodejs 中常用的 Path、fs、Crypto 等模块在 Electron 可以直接使用。</p>
+<p><em><strong>3）系统API：</strong></em></p>
+<p>为了提供原生系统的GUI支持，Electron内置了原生应用程序接口，对调用一些系统功能，如调用系统通知、打开系统文件夹提供支持。</p>
+<p>在开发模式上，Electron在调用系统API和绘制界面上是分离开发的，下面我们来看看Electron关于进程如何划分。</p>
+<h2 id="为什么要用Electron"><a href="#为什么要用Electron" class="headerlink" title="为什么要用Electron"></a>为什么要用Electron</h2><p>以Windows平台为例，大部分人会首先想到使用QT(C++)，WPF(C#) 等语言去开发应用。不可否认的是，这些已经是非常成熟的开发方案了。但是，我们来看下如下两种场景：</p>
+<ul>
+<li>公司要做个全新的APP，但是技术人员构成大部分都是前端开发</li>
+<li>公司原本就有在线的web应用，但是想包个壳能在桌面直接打开，同时增加一些与系统交互的功能</li>
+</ul>
+<p>对于第一种场景，团队中开发人员对于C++和C#并不熟悉，虽然可以现学，但是整个项目的技术管理和项目管理就会变得不可控。</p>
+<p>对于第二种场景，对于应用的业务逻辑要求并不多，只是套一个具有浏览器的运行环境，单独为此配置一个C++、C#开发人员划不来。</p>
+<p>对于这两种情况，如果现有的前端开发人员能直接搞定，那就非常完美了。</p>
+<p>Electron的诞生提供了这种可能性。它可以帮助前端开发者在不需要学习其他语言和技能的前提下，快速开发跨平台的桌面应用。</p>
+<p>传统的桌面应用开发方式，一般是下面两种：</p>
+<p>*<strong>1）原生开发：*</strong></p>
+<p>直接将语言编译成可执行文件，直接调用系统API，完成UI绘制等。这类开发技术，有着较高的运行效率，但一般来说，开发速度较慢，技术要求较高，例如：</p>
+<blockquote>
+<p>a. 使用C++ / MFC开发Windows应用；<br>b. 使用Objective-C开发MAC应用。</p>
+</blockquote>
+<p>*<strong>2）托管平台：*</strong></p>
+<p>一开始就有本地开发和UI开发。一次编译后，得到中间文件，通过平台或虚机完成二次加载编译或解释运行。运行效率低于原生编译，但平台优化后，其效率也是比较可观的。就开发速度方面，比原生编译技术要快一些。例如：</p>
+<blockquote>
+<p>a. 使用C# / .NET Framework(只能开发Windows应用)；<br>b. Java / Swing。</p>
+</blockquote>
+<p>不过，上面两种对前端开发人员太不友好了，基本是前端人员不会涉及的领域，但是在这个”大前端”的时代，前端开发者正在想方设法涉足各个领域，使用WEB技术开发客户端的方式横空出世。</p>
+<p><strong>为什么还要搬到PC客户端，这里有3个角度的回答：</strong></p>
+<blockquote>
+<p>a. 用户角度： 客户端是一款独立的软件，其综合体验一般都是比网站高的，尤其是涉及到「工具」范畴的应用，此外，特定的用户群体也会有类似的使用习惯；<br>b. 发行方角度： 客户端是另一种产品形式，是一种产品的分发方式和入口，客户端可以实现很多本地应用独有的需求去触达用户，也能提供更加可靠的服务；<br>c. 开发角度： 终于…不用考虑浏览器兼容了，Chromium 也足够开发使用一些先进的 CSS 或 JS 特性，我们现在还没计划引入 webpack 和 babel，因为现在好像够用，克制才是爱，除了写起来爽，对于开发来说，终于跳出了浏览器的沙盒，你可以自己去控制 Electron 中的“浏览器”，莫名的开心。</p>
+</blockquote>
+<p><strong>Electron优势：</strong></p>
+<blockquote>
+<p>a. 使用具有强大生态的Web技术进行开发，开发成本低，可扩展性强，更炫酷的UI；**<br>b. 跨平台，一套代码可打包为Windows、Linux、Mac三套软件，且编译快速；**</p>
+<p>c.可直接在现有Web应用上进行扩展，提供浏览器不具备的能力；</p>
+</blockquote>
+<p><strong>缺点</strong>：性能比原生桌面应用要低，最终打包后的应用比原生应用大很多。</p>
+<p><strong>Electron开发体验：</strong></p>
+<blockquote>
+<p>a. <strong>兼容性：</strong>虽然你还在用WEB技术进行开发，但是你不用再考虑兼容性问题了，你只需要关心你当前使用Electron的版本对应Chrome的版本，一般情况下它已经足够新来让你使用最新的API和语法了，你还可以手动升级Chrome版本。同样的，你也不用考虑不同浏览器带的样式和代码兼容问题。<br>b. <strong>NodeJS环境：</strong>这可能是很多前端开发者曾经梦想过的功能，在WEB界面中使用Node.js提供的强大API，这意味着你在WEB页面直接可以操作文件，调用系统API，甚至操作数据库。当然，除了完整的 Node API，你还可以使用额外的几十万个npm模块。</p>
+<p>c.<strong>跨域：</strong>你可以直接使用Node提供的request模块进行网络请求，这意味着你无需再被跨域所困扰。</p>
+<p>d.<strong>强大的扩展性：</strong>借助node-ffi，为应用程序提供强大的扩展性（更详细的介绍可以自行百度相关资料了解一下）。</p>
+</blockquote>
+<h1 id="Electron项目和Web项目的区别"><a href="#Electron项目和Web项目的区别" class="headerlink" title="Electron项目和Web项目的区别"></a>Electron项目和Web项目的区别</h1><p><strong>Electron核心可以分成2个部分：</strong>主进程和渲染进程。</p>
+<p>主进程连接着操作系统和渲染进程，可以把她看做页面和计算机沟通的桥梁。渲染进程就是我们所熟悉前端环境了，只是载体改变了，从浏览器变成了window。</p>
+<p>传统的Web环境我们是不能对用户的系统就行操作的，而Electron相当于NodeJS环境，我们可以在项目里使用所有的node api（Electron的作者相当机智…）。</p>
+<p><strong>简单理解：</strong>给Web项目套上一个NodeJS环境的壳，就是Electron技术。</p>
+<p><strong>项目结构：</strong>相比web项目，桌面项目多了一个进程</p>
+<p><strong>项目迁移：</strong>如果要迁移项目到Web端，就需要把项目中的Electron提供的API和NodeJS的API完全剥离出来，只能遗留Web的代码，比如 node fs模块，Electron提供ipc 模块，都需要剥离。如果你一开始就打算双端程序，在开始写代码时应该对Web代码和Elecctron的代码进行分离，以便后期的迁移。</p>
+<h1 id="Electron的基本使用"><a href="#Electron的基本使用" class="headerlink" title="Electron的基本使用"></a>Electron的基本使用</h1><p>新建一个目录，初始化npm</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir helloword</span><br><span class="line">npm init</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>修改package.json文件，增加npm run start命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;electron demo&quot;,</span><br><span class="line">  &quot;version&quot;: &quot;1.0.0&quot;,</span><br><span class="line">  &quot;description&quot;: &quot;&quot;,</span><br><span class="line">  &quot;main&quot;: &quot;main.js&quot;,   //修改为main.js</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;start&quot;: &quot;electron .&quot;  //增加start命令</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;author&quot;: &quot;&quot;,</span><br><span class="line">  &quot;license&quot;: &quot;ISC&quot;,</span><br><span class="line">  &quot;dependencies&quot;: &#123;</span><br><span class="line">    &quot;electron&quot;: &quot;^3.0.10&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>通过npm安装Electron</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm i electron --save-dev</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>在根目录创建main.js和index.html</p>
+<p>main.js</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">const &#123; app, BrowserWindow &#125; = require(&#x27;electron&#x27;)</span><br><span class="line"></span><br><span class="line">function createWindow () &#123;   </span><br><span class="line">  // 创建浏览器窗口</span><br><span class="line">  win = new BrowserWindow(&#123; width: 800, height: 600 &#125;)</span><br><span class="line"></span><br><span class="line">  // 然后加载应用的 index.html。</span><br><span class="line">  win.loadFile(&#x27;index.html&#x27;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">app.on(&#x27;ready&#x27;, createWindow)</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>index.html</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">    &lt;title&gt;Hello World!&lt;/title&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;h1&gt;Hello World!&lt;/h1&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>到这里，我们所有的准备工作都完成了，接下来就是运行它！</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm run start</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>看看效果</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>《<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://book.douban.com/subject/30185217/">跨平台桌面应用开发：基于Electron与NW.js</a>》</p>
+<p><strong>Electron资源：</strong></p>
+<p>1）Electron官网：<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://electronjs.org/">https://electronjs.org</a>；</p>
+<p>2）Electron Github：<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://github.com/electron">https://github.com/electron</a>；</p>
+<p>3）Electron开发手册：<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://electronjs.org/docs">https://electronjs.org/docs</a>。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2022/05/17/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_Electron%E6%98%AF%E4%BB%80%E4%B9%88/" title="Electron是什么" target="_blank" rel="external">https://fuyunjinglong.github.io/2022/05/17/H_工程热点_Electron是什么/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://fuyunjinglong.github.io/" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://fuyunjinglong.github.io/" target="_blank"><span class="text-dark">Elven</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/05/17/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_TCP%E7%9A%84%E7%BD%91%E7%BB%9C%E6%8B%86%E5%8C%85%E7%B2%98%E5%8C%85/" title="TCP的网络拆包粘包"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2022/05/17/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_%E4%B8%AD%E5%8F%B0%E6%98%AF%E4%BB%80%E4%B9%88/" title="中台是什么"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

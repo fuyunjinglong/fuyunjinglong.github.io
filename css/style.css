@@ -294,7 +294,12 @@ figure {
 }
 
 img {
-  vertical-align: middle;
+  border: 0;
+  box-sizing: border-box;
+  margin: auto;
+  padding: 3px;
+  text-align: center;
+  display: block;
 }
 
 .img-responsive {
