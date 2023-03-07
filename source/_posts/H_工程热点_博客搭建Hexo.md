@@ -2,7 +2,7 @@
 title: Hexo博客搭建
 date: 2021-11-06 06:33:16
 categories:
-- H_工程和热点
+- H_工程热点
 toc: true # 是否启用内容索引
 ---
 # 认识Hexo

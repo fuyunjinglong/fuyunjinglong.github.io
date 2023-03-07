@@ -2,7 +2,7 @@
 title: Hexo原理
 date: 2022-05-03 06:33:16
 categories:
-- H_工程和热点
+- H_工程热点
 toc: true # 是否启用内容索引
 ---
 
