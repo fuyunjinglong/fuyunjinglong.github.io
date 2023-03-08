@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>NodeJS入门 | Hexo</title>
+  <meta name="description" content="1.NodeJS事件循环机制什么是事件循环事件循环是指Node.js执行非阻塞I&#x2F;O操作，尽管JavaScript是单线程的,但由于大多数内核都是多线程的，Node.js会尽可能将操作装载到系统内核。因此它们可以处理在后台执行的多个操作。当其中一个操作完成时，内核会告诉Node.js，以便Node.js可以将相应的回调添加到轮询队列中以最终执行。 当Node.js启动时会初始化event loop">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NodeJS入门">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2022/05/14/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_NodeJS%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1.NodeJS事件循环机制什么是事件循环事件循环是指Node.js执行非阻塞I&#x2F;O操作，尽管JavaScript是单线程的,但由于大多数内核都是多线程的，Node.js会尽可能将操作装载到系统内核。因此它们可以处理在后台执行的多个操作。当其中一个操作完成时，内核会告诉Node.js，以便Node.js可以将相应的回调添加到轮询队列中以最终执行。 当Node.js启动时会初始化event loop">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220514232847337.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220514232936132.png">
+<meta property="article:published_time" content="2022-05-13T23:33:16.000Z">
+<meta property="article:modified_time" content="2023-03-07T12:22:21.236Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/image-20220514232847337.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2022/05/14/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_NodeJS%E5%85%A5%E9%97%A8/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://fuyunjinglong.github.io/" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Elven</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">10</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">10</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2%E5%92%8CVue3%E6%AF%94%E8%BE%83/" class="title">Vue2和Vue3比较</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0%E5%8E%9F%E7%90%86/" class="title">Vue2.0原理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue3.0%E5%8E%9F%E7%90%86/" class="title">Vue3.0原理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue2.0/" class="title">源码_Vue2.0</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue3.0/" class="title">源码_Vue3.0</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-NodeJS%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E6%9C%BA%E5%88%B6"><span class="toc-text">1.NodeJS事件循环机制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF"><span class="toc-text">什么是事件循环</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E8%AF%A6%E8%A7%A3"><span class="toc-text">事件循环详解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AF%8F%E4%B8%AA%E5%BE%AA%E7%8E%AF%E9%98%B6%E6%AE%B5%E5%86%85%E5%AE%B9%E8%AF%A6%E8%A7%A3"><span class="toc-text">每个循环阶段内容详解</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-H_工程热点_NodeJS入门" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      NodeJS入门
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/05/14/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_NodeJS%E5%85%A5%E9%97%A8/" class="article-date">
+	  <time datetime="2022-05-13T23:33:16.000Z" itemprop="datePublished">2022-05-14</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/05/14/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_NodeJS%E5%85%A5%E9%97%A8/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="1-NodeJS事件循环机制"><a href="#1-NodeJS事件循环机制" class="headerlink" title="1.NodeJS事件循环机制"></a>1.NodeJS事件循环机制</h1><h2 id="什么是事件循环"><a href="#什么是事件循环" class="headerlink" title="什么是事件循环"></a>什么是事件循环</h2><p>事件循环是指Node.js执行非阻塞I/O操作，尽管JavaScript是单线程的,但由于大多数内核都是多线程的，<code>Node.js</code>会尽可能将操作装载到系统内核。因此它们可以处理在后台执行的多个操作。当其中一个操作完成时，内核会告诉<code>Node.js</code>，以便<code>Node.js</code>可以将相应的回调添加到轮询队列中以最终执行。</p>
+<p>当Node.js启动时会初始化<code>event loop</code>, 每一个<code>event loop</code>都会包含按如下顺序六个循环阶段：</p>
+<img src="/img/image-20220514232847337.png" alt="image-20220514232847337" style="zoom:67%;" />
+
+<ol>
+<li><p><strong><code>timers</code> 阶段</strong>: 这个阶段执行 <code>setTimeout(callback)</code> 和 <code>setInterval(callback)</code> 预定的 callback;</p>
+</li>
+<li><p><strong><code>I/O callbacks</code> 阶段</strong>: 此阶段执行某些系统操作的回调，例如TCP错误的类型。 例如，如果TCP套接字在尝试连接时收到 ECONNREFUSED，则某些* nix系统希望等待报告错误。 这将操作将等待在==I/O回调阶段==执行;</p>
+</li>
+<li><p><strong><code>idle, prepare</code> 阶段</strong>: 仅node内部使用;</p>
+</li>
+<li><p><strong><code>poll</code> 阶段</strong>: 获取新的I/O事件, 例如操作读取文件等等，适当的条件下node将阻塞在这里;</p>
+</li>
+<li><p><strong><code>check</code> 阶段</strong>: 执行 <code>setImmediate()</code> 设定的callbacks;</p>
+</li>
+<li><p><strong><code>close callbacks</code> 阶段</strong>: 比如 <code>socket.on(‘close’, callback)</code> 的callback会在这个阶段执行;</p>
+</li>
+</ol>
+<h2 id="事件循环详解"><a href="#事件循环详解" class="headerlink" title="事件循环详解"></a>事件循环详解</h2><img src="/img/image-20220514232936132.png" alt="image-20220514232936132" style="zoom:67%;" />
+
+<p>上图从左到右，从上到下，Node.js 被分为了四层，分别是 <code>应用层</code>、<code>V8引擎层</code>、<code>Node API层</code> 和 <code>LIBUV层</code>。</p>
+<ul>
+<li>应用层：   即 JavaScript 交互层，常见的就是 Node.js 的模块，比如 http，fs</li>
+<li>V8引擎层：  即利用 V8 引擎来解析JavaScript 语法，进而和下层 API 交互</li>
+<li>NodeAPI层：  为上层模块提供系统调用，一般是由 C 语言来实现，和操作系统进行交互 。</li>
+<li>LIBUV层： 是跨平台的底层封装，实现了 事件循环、文件操作等，是 Node.js 实现异步的核心</li>
+</ul>
+<h2 id="每个循环阶段内容详解"><a href="#每个循环阶段内容详解" class="headerlink" title="每个循环阶段内容详解"></a>每个循环阶段内容详解</h2><p><strong><code>timers</code>阶段</strong> </p>
+<p>一个timer指定一个下限时间而不是准确时间，在达到这个下限时间后执行回调。在指定时间过后，timers会尽可能早地执行回调，但系统调度或者其它回调的执行可能会延迟它们。</p>
+<ul>
+<li>注意：技术上来说，poll 阶段控制 timers 什么时候执行。</li>
+<li>注意：这个下限时间有个范围：[1, 2147483647]，如果设定的时间不在这个范围，将被设置为1。</li>
+</ul>
+<p><strong><code>I/O callbacks</code>阶段</strong></p>
+<p>这个阶段执行一些系统操作的回调。比如TCP错误，如一个TCP socket在想要连接时收到ECONNREFUSED, 类unix系统会等待以报告错误，这就会放到 I/O callbacks 阶段的队列执行. 名字会让人误解为执行I/O回调处理程序, 实际上I/O回调会由poll阶段处理.</p>
+<p><strong><code>poll</code>阶段</strong></p>
+<p>有两个主要功能：</p>
+<p>（1）执行下限时间已经达到的timers的回调</p>
+<p>（2）然后处理 poll 队列里的事件。 当event loop进入 poll 阶段，并且 没有设定的 timers（there are no timers scheduled），会发生下面两件事之一：</p>
+<p>如果 poll 队列不空，event loop会遍历队列并同步执行回调，直到队列清空或执行的回调数到达系统上限；</p>
+<p>如果 poll 队列为空，则发生以下两件事之一：</p>
+<ul>
+<li>如果代码已经被setImmediate()设定了回调, event loop将结束 poll 阶段进入 check 阶段来执行 check 队列（里面的回调 callback）。</li>
+<li>如果代码没有被setImmediate()设定回调，event loop将阻塞在该阶段等待回调被加入 poll 队列，并立即执行。</li>
+</ul>
+<p>但是，当event loop进入 poll 阶段，并且 有设定的timers，一旦 poll 队列为空（poll 阶段空闲状态）： event loop将检查timers,如果有1个或多个timers的下限时间已经到达，event loop将绕回 timers 阶段，并执行 timer 队列。</p>
+<p><strong><code>check</code>阶段</strong> </p>
+<p>这个阶段允许在 poll 阶段结束后立即执行回调。如果 poll 阶段空闲，并且有被setImmediate()设定的回调，event loop会转到 check 阶段而不是继续等待。</p>
+<p>setImmediate() 实际上是一个特殊的timer，跑在event loop中一个独立的阶段。它使用<code>libuv</code>的API 来设定在 poll 阶段结束后立即执行回调。</p>
+<p>通常上来讲，随着代码执行，event loop终将进入 poll 阶段，在这个阶段等待 incoming connection, request 等等。但是，只要有被setImmediate()设定了回调，一旦 poll 阶段空闲，那么程序将结束 poll 阶段并进入 check 阶段，而不是继续等待 poll 事件们 （poll events）</p>
+<p><strong><code>close callbacks</code> 阶段</strong></p>
+<p>如果一个 socket 或 handle 被突然关掉（比如 socket.destroy()），close事件将在这个阶段被触发，否则将通过process.nextTick()触发</p>
+<p>伪代码演示流程：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">// 事件循环本身相当于一个死循环，当代码开始执行的时候，事件循环就已经启动了</span><br><span class="line">// 然后顺序调用不同阶段的方法</span><br><span class="line">while(true)&#123;</span><br><span class="line">// timer阶段</span><br><span class="line">	timer()</span><br><span class="line">// I/O callbacks阶段</span><br><span class="line">	IO()</span><br><span class="line">// idle阶段</span><br><span class="line">	IDLE()</span><br><span class="line">// poll阶段</span><br><span class="line">	poll()</span><br><span class="line">// check阶段</span><br><span class="line">	check()</span><br><span class="line">// close阶段</span><br><span class="line">	close()</span><br><span class="line">&#125;</span><br><span class="line">// 在一次循环中，当事件循环进入到某一阶段，加入进入到check阶段，突然timer阶段的事件就绪，也会等到当前这次循环结束，再去执行对应的timer阶段的回调函数 </span><br><span class="line">// 下面看这里例子</span><br><span class="line">const fs = require(&#x27;fs&#x27;)</span><br><span class="line"></span><br><span class="line">// timers阶段</span><br><span class="line">const startTime = Date.now();</span><br><span class="line">setTimeout(() =&gt; &#123;</span><br><span class="line">    const endTime = Date.now()</span><br><span class="line">    console.log(`timers: $&#123;endTime - startTime&#125;`)</span><br><span class="line">&#125;, 1000)</span><br><span class="line"></span><br><span class="line">// poll阶段(等待新的事件出现)</span><br><span class="line">const readFileStart =  Date.now();</span><br><span class="line">fs.readFile(&#x27;./Demo.txt&#x27;, (err, data) =&gt; &#123;</span><br><span class="line">    if (err) throw err</span><br><span class="line">    let endTime = Date.now()</span><br><span class="line">    // 获取文件读取的时间</span><br><span class="line">    console.log(`read time: $&#123;endTime - readFileStart&#125;`)</span><br><span class="line">    // 通过while循环将fs回调强制阻塞5000s</span><br><span class="line">    while(endTime - readFileStart &lt; 5000)&#123;</span><br><span class="line">        endTime = Date.now()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line">// check阶段</span><br><span class="line">setImmediate(() =&gt; &#123;</span><br><span class="line">    console.log(&#x27;check阶段&#x27;)</span><br><span class="line">&#125;)</span><br><span class="line">/*控制台打印</span><br><span class="line">check阶段</span><br><span class="line">read time: 9</span><br><span class="line">timers: 5008</span><br><span class="line">通过上述结果进行分析，</span><br><span class="line">1.代码执行到定时器setTimeOut，目前timers阶段对应的事件列表为空，在1000s后才会放入事件</span><br><span class="line">2.事件循环进入到poll阶段，开始不断的轮询监听事件</span><br><span class="line">3.fs模块异步执行，根据文件大小，可能执行时间长短不同，这里我使用的小文件，事件大概在9s左右</span><br><span class="line">4.setImmediate执行，poll阶段暂时未监测到事件，发现有setImmediate函数，跳转到check阶段执行check阶段事件（打印check阶段），第一次时间循环结束，开始下一轮事件循环</span><br><span class="line">5.因为时间仍未到定时器截止时间，所以事件循环有一次进入到poll阶段，进行轮询</span><br><span class="line">6.读取文件完毕，fs产生了一个事件进入到poll阶段的事件队列，此时事件队列准备执行callback，所以会打印（read time: 9），人工阻塞了5s，虽然此时timer定时器事件已经被添加，但是因为这一阶段的事件循环为完成，所以不会被执行，（如果这里是死循环，那么定时器代码永远无法执行）</span><br><span class="line">7.fs回调阻塞5s后，当前事件循环结束，进入到下一轮事件循环，发现timer事件队列有事件，所以开始执行 打印timers: 5008</span><br><span class="line"></span><br><span class="line">ps：</span><br><span class="line">1.将定时器延迟时间改为5ms的时候，小于文件读取时间，那么就会先监听到timers阶段有事件进入，从而进入到timers阶段执行，执行完毕继续进行事件循环</span><br><span class="line">check阶段</span><br><span class="line">timers: 6</span><br><span class="line">read time: 5008</span><br><span class="line">2.将定时器事件设置为0ms，会在进入到poll阶段的时候发现timers阶段已经有callback，那么会直接执行，然后执行完毕在下一阶段循环，执行check阶段，poll队列的回调函数</span><br><span class="line">timers: 2</span><br><span class="line">check阶段</span><br><span class="line">read time: 7</span><br><span class="line"> */</span><br></pre></td></tr></table></figure>
+
+<p><strong>案例0</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">setImmediate(function()&#123;</span><br><span class="line">  console.log(&quot;setImmediate&quot;);</span><br><span class="line">  setImmediate(function()&#123;</span><br><span class="line">    console.log(&quot;嵌套setImmediate&quot;);</span><br><span class="line">  &#125;);</span><br><span class="line">  process.nextTick(function()&#123;</span><br><span class="line">    console.log(&quot;nextTick&quot;);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">/* </span><br><span class="line">	C:\Users\92809\Desktop\node_test&gt;node test.js</span><br><span class="line">	setImmediate</span><br><span class="line">	nextTick</span><br><span class="line">	嵌套setImmediate</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+
+<p>解析：</p>
+<p>事件循环<code>check</code>阶段执行回调函数输出<code>setImmediate</code>，之后输出<code>nextTick</code>。嵌套的<code>setImmediate</code>在下一个事件循环的<code>check</code>阶段执行回调输出嵌套的<code>setImmediate</code>。</p>
+<p><strong>案例1</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">async function async1()&#123;</span><br><span class="line">    console.log(&#x27;async1 start&#x27;)</span><br><span class="line">    await async2()</span><br><span class="line">    console.log(&#x27;async1 end&#x27;)</span><br><span class="line">  &#125;</span><br><span class="line">async function async2()&#123;</span><br><span class="line">    console.log(&#x27;async2&#x27;)</span><br><span class="line">&#125;</span><br><span class="line">console.log(&#x27;script start&#x27;)</span><br><span class="line">setTimeout(function()&#123;</span><br><span class="line">    console.log(&#x27;setTimeout0&#x27;) </span><br><span class="line">&#125;,0)  </span><br><span class="line">setTimeout(function()&#123;</span><br><span class="line">    console.log(&#x27;setTimeout3&#x27;) </span><br><span class="line">&#125;,3)  </span><br><span class="line">setImmediate(() =&gt; console.log(&#x27;setImmediate&#x27;));</span><br><span class="line">process.nextTick(() =&gt; console.log(&#x27;nextTick&#x27;));</span><br><span class="line">async1();</span><br><span class="line">new Promise(function(resolve)&#123;</span><br><span class="line">    console.log(&#x27;promise1&#x27;)</span><br><span class="line">    resolve();</span><br><span class="line">    console.log(&#x27;promise2&#x27;)</span><br><span class="line">&#125;).then(function()&#123;</span><br><span class="line">    console.log(&#x27;promise3&#x27;)</span><br><span class="line">&#125;)</span><br><span class="line">console.log(&#x27;script end&#x27;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\92809\Desktop\node_test&gt;node test.js</span><br><span class="line">script start</span><br><span class="line">async1 start</span><br><span class="line">async2</span><br><span class="line">promise1</span><br><span class="line">promise2</span><br><span class="line">script end</span><br><span class="line">nextTick</span><br><span class="line">promise3</span><br><span class="line">async1 end</span><br><span class="line">setTimeout0</span><br><span class="line">setTimeout3</span><br><span class="line">setImmediate</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2022/05/14/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_NodeJS%E5%85%A5%E9%97%A8/" title="NodeJS入门" target="_blank" rel="external">https://fuyunjinglong.github.io/2022/05/14/H_工程热点_NodeJS入门/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://fuyunjinglong.github.io/" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://fuyunjinglong.github.io/" target="_blank"><span class="text-dark">Elven</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/05/17/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_%E4%B8%AD%E5%8F%B0%E6%98%AF%E4%BB%80%E4%B9%88/" title="中台是什么"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2022/05/13/Z_%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F_%E5%89%8D%E7%AB%AF%E8%B6%8B%E5%8A%BF%E5%8F%8A%E8%81%8C%E4%B8%9A%E8%A7%84%E5%88%92/" title="前端趋势及职业规划"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

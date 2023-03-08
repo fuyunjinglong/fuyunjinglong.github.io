@@ -261,44 +261,28 @@ hexo s -p 端口号,也可不加端口
 
 这个命令用来部署网站，使用此命令将会把生成好的页面（即 `public` 文件夹里的内容）部署到指定的地方上。
 
-# hexo常用语法
+# hexo常见问题
 
 ```
-1.代码段
-{% codeblock %}
-{% endcodeblock %}
+1.页面内跳转
+i.跳转到任意位置
+[跳转到指定锚点上面](#锚点)
+<a name="锚点"> </a>
 
-2.图片
-{% img /img/20200302_1_9.png  "imgPIC'alt text'" %}
+ii.跳转到标题位置
+[跳转到标题](#任意标题名)
 
-3.加粗
-**加粗**
-
-4.链接
-{% link 深入理解分布式事务 http://wwwe/distributed-transaction.html [external] [title] %}
-
-5.点点
-- 风格1
-- 风格2
-
-6.换行符
-末尾两个空格表示换行
-
-7.本地图片使用服务器绝对路径
-/img/
-/img/
-
-8.竖线段落
-使用>回车即可
-
-9.页面跳转定位
+2.页面外跳转
 内部跳转页面
 {% post_link E_数据结构_0基础 可点击%}
 内部跳转页面锚点
-<a href="{% post_path 'E_数据结构_0基础' %}#LRU-K">LRU-K</a>
+<a target="_blank" href="{% post_path 'E_数据结构_0基础' %}#LRU-K">LRU-K</a>
 
-10.取消文章目录的自动编号
+3.取消文章目录的自动编号
 ./node_modules/hexo/lib/plugins/helper/toc.js
 list_number: false
+
+4.页面外跳转定位锚点过慢
+删除av-min.js无效cdn
 ```
 

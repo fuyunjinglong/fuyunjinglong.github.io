@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Nginx入门 | Hexo</title>
+  <meta name="description" content="简介Nginx是一个高性能静态HTTP服务器、反向代理服务器、虚拟主机(正向代理)，也是一个 IMAP&#x2F;POP3&#x2F;SMTP 代理 服务器 Nginx 专为性能优化而开发，性能是其最重要的考量，实现上非常注重效率，能经受高负载的考验，最大能支持 50000 个并发连接数。 Nginx 还支持热部署，它的使用特别容易，几乎可以做到 7x24 小时不间断运行。 Nginx 的网站用户有：百度、淘宝、京东">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx入门">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2022/05/18/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_Nginx%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="简介Nginx是一个高性能静态HTTP服务器、反向代理服务器、虚拟主机(正向代理)，也是一个 IMAP&#x2F;POP3&#x2F;SMTP 代理 服务器 Nginx 专为性能优化而开发，性能是其最重要的考量，实现上非常注重效率，能经受高负载的考验，最大能支持 50000 个并发连接数。 Nginx 还支持热部署，它的使用特别容易，几乎可以做到 7x24 小时不间断运行。 Nginx 的网站用户有：百度、淘宝、京东">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220518072613911.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220518072515310.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220518072532385.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220518072550109.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220519072131243.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220518072705600.png">
+<meta property="article:published_time" content="2022-05-17T23:33:16.000Z">
+<meta property="article:modified_time" content="2023-03-05T08:34:55.792Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/image-20220518072613911.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2022/05/18/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_Nginx%E5%85%A5%E9%97%A8/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://fuyunjinglong.github.io/" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Elven</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">10</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">10</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2%E5%92%8CVue3%E6%AF%94%E8%BE%83/" class="title">Vue2和Vue3比较</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0%E5%8E%9F%E7%90%86/" class="title">Vue2.0原理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue3.0%E5%8E%9F%E7%90%86/" class="title">Vue3.0原理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue2.0/" class="title">源码_Vue2.0</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue3.0/" class="title">源码_Vue3.0</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%89%B9%E7%82%B9"><span class="toc-text">特点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E5%A4%A7%E4%BD%9C%E7%94%A8"><span class="toc-text">四大作用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81HTTP%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">静态HTTP服务器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA-%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86"><span class="toc-text">虚拟主机(正向代理)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86"><span class="toc-text">反向代理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-text">负载均衡</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%844%E7%A7%8Dnginx%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%97%E6%B3%95"><span class="toc-text">常用的4种nginx负载均衡算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E5%87%A0%E7%A7%8D%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%97%E6%B3%95"><span class="toc-text">常见的几种负载均衡算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E5%B1%82%E5%92%8C%E4%B8%83%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-text">四层和七层负载均衡</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E5%8F%AF%E7%94%A8"><span class="toc-text">高可用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-F_计算机网络_Nginx入门" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Nginx入门
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/05/18/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_Nginx%E5%85%A5%E9%97%A8/" class="article-date">
+	  <time datetime="2022-05-17T23:33:16.000Z" itemprop="datePublished">2022-05-18</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/05/18/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_Nginx%E5%85%A5%E9%97%A8/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Nginx是一个高性能静态HTTP服务器、反向代理服务器、虚拟主机(正向代理)，也是一个 IMAP/POP3/SMTP 代理 <a target="_blank" rel="noopener" href="http://www.itbbu.com/tag/%E6%9C%8D%E5%8A%A1%E5%99%A8">服务器</a></p>
+<p><strong>Nginx</strong> 专为性能优化而开发，性能是其最重要的考量，实现上非常注重效率，能经受高负载的考验，最大能支持 50000 个并发连接数。 Nginx 还支持热部署，它的使用特别容易，几乎可以做到 7x24 小时不间断运行。 Nginx 的网站用户有：百度、淘宝、京东、腾讯、新浪、网易等。</p>
+<h1 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h1><ul>
+<li>第一，它可以支持 5W 高并发连接;</li>
+<li>第二，内存消耗少;</li>
+<li>第三，成本低。</li>
+</ul>
+<p>1、热部署<br>我个人觉得这个很不错。在master管理进程与worker工作进程的分离设计，使的Nginx具有热部署的功能，那么在7×24小时不间断服务的前提下，升级Nginx的可执行文件。也可以在不停止服务的情况下修改配置文件，更换日志文件等功能。</p>
+<p>2、可以高并发连接<br>这是一个很重要的一个特性！在这一个互联网快速发展， 互联网用户数量不断增加， 一些大公司、网站都需要面对高并发请求，如果有一个能够在峰值顶住10万以上并发请求的Server，肯定会得到大家的青睐。理论上，Nginx支持的并发连接上限取决于你的内存，10万远未封顶。</p>
+<p>3、低的内存消耗<br>在一般的情况下，10000个非活跃的HTTP Keep-Alive 连接在Nginx中仅消耗2.5M的内存，这也是Nginx支持高并发连接的基础。</p>
+<p>4、处理响应请求很快<br>在正常的情况下，单次请求会得到更快的响应。在高峰期，Nginx可以比其他的Web服务器更快的响应请求。</p>
+<p>5、具有很高的可靠性<br>Nginx是一个高可靠性的Web服务器，这也是我们为什么选择Nginx的基本条件，现在很多的网站都在使用Nginx，足以说明Nginx的可靠性。高可靠性来自其核心框架代码的优秀设计、模块设计的简单性；并且这些模块都非常的稳定。</p>
+<h1 id="四大作用"><a href="#四大作用" class="headerlink" title="四大作用"></a>四大作用</h1><ul>
+<li>静态HTTP服务器</li>
+<li>虚拟主机(正向代理)</li>
+<li>反向代理</li>
+<li>负债均衡</li>
+</ul>
+<h2 id="静态HTTP服务器"><a href="#静态HTTP服务器" class="headerlink" title="静态HTTP服务器"></a><strong>静态HTTP服务器</strong></h2><img src="/img/image-20220518072613911.png" alt="image-20220518072613911" style="zoom:67%;" />
+
+<p>Nginx是一个HTTP服务器，可以将服务器上的静态文件（如HTML、图片）通过HTTP协议展现给客户端。</p>
+<p>为了加快网站的解析速度，可以把静态页面和动态页面由不同的服务器来解析，加快解析速度，降低原来单个服务器的压力。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">server &#123;  </span><br><span class="line">    listen 80; # 端口号  </span><br><span class="line">    location / &#123;  </span><br><span class="line">        root /usr/share/nginx/html; # 静态文件路径  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<h2 id="虚拟主机-正向代理"><a href="#虚拟主机-正向代理" class="headerlink" title="虚拟主机(正向代理)"></a><strong>虚拟主机(正向代理)</strong></h2><img src="/img/image-20220518072515310.png" alt="image-20220518072515310" style="zoom:67%;" />
+
+<p>有的网站访问量大，需要负载均衡。然而并不是所有网站都如此出色，有的网站，由于访问量太小，需要节省成本，将多个网站部署在同一台服务器上。</p>
+<p>例如将<a target="_blank" rel="noopener" href="http://www.aaa.com和www.bbb.com两个网站部署在同一台服务器上,两个域名解析到同一个ip地址,但是用户通过两个域名却可以打开两个完全不同的网站,互相不影响,就像访问两个服务器一样,所以叫两个虚拟主机./">www.aaa.com和www.bbb.com两个网站部署在同一台服务器上，两个域名解析到同一个IP地址，但是用户通过两个域名却可以打开两个完全不同的网站，互相不影响，就像访问两个服务器一样，所以叫两个虚拟主机。</a></p>
+<p>正向代理来进行上网等功能。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">server &#123;  </span><br><span class="line">    listen 80 default_server;  </span><br><span class="line">    server_name _;  </span><br><span class="line">    return 444; # 过滤其他域名的请求，返回444状态码  </span><br><span class="line">&#125;  </span><br><span class="line"> </span><br><span class="line">server &#123;  </span><br><span class="line">    listen 80;  </span><br><span class="line">    server_name www.aaa.com; # www.aaa.com域名  </span><br><span class="line">    location / &#123;  </span><br><span class="line">        proxy_pass http://localhost:8080; # 对应端口号8080  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line">server &#123;  </span><br><span class="line">    listen80;  </span><br><span class="line">    server_name www.bbb.com; # www.bbb.com域名  </span><br><span class="line">    location / &#123;  </span><br><span class="line">        proxy_pass http://localhost:8081; # 对应端口号8081  </span><br><span class="line">    &#125; </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<p>在服务器8080和8081分别开了一个应用，客户端通过不同的域名访问，根据server_name可以反向代理到对应的应用服务器。</p>
+<p>虚拟主机的原理是通过HTTP请求头中的Host是否匹配server_name来实现的。</p>
+<p>另外，server_name配置还可以过滤有人恶意将某些域名指向你的主机服务器。</p>
+<h2 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a><strong>反向代理</strong></h2><img src="/img/image-20220518072532385.png" alt="image-20220518072532385" style="zoom:67%;" />
+
+<p>客户端本来可以直接通过HTTP协议访问某网站应用服务器，网站管理员可以在中间加上一个Nginx，客户端请求Nginx，Nginx请求应用服务器，然后将结果返回给客户端，此时Nginx就是反向代理服务器。</p>
+<p>客户端对代理服务器是无感知的，客户端不需要做任何配置，用户只请求反向代理服务器，反向代理服务器选择目标服务器，获取数据后再返回给客户端。反向代理服务器和目标服务器对外而言就是一个服务器，只是暴露的是代理服务器地址，而隐藏了真实服务器的IP地址。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">server &#123;  </span><br><span class="line">    listen 80;  </span><br><span class="line">    location / &#123;  </span><br><span class="line">        proxy_pass http://192.168.20.1:8080; # 应用服务器HTTP地址  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<h2 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a><strong>负载均衡</strong></h2><img src="/img/image-20220518072550109.png" alt="image-20220518072550109" style="zoom:67%;" />
+
+<p>当网站访问量非常大，网站站长开心赚钱的同时，也摊上事儿了。因为网站越来越慢，一台服务器已经不够用了。于是将同一个应用部署在多台服务器上，将大量用户的请求分配给多台机器处理。同时带来的好处是，其中一台服务器万一挂了，只要还有其他服务器正常运行，就不会影响用户使用。</p>
+<p>将原先请求集中到单个服务器上的情况改为增加服务器的数量，然后将请求分发到各个服务器上，将负载分发到不同的服务器，即负载均衡。</p>
+<p>Nginx可以通过反向代理来实现负载均衡。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">upstream myserver &#123;   </span><br><span class="line">    server 192.167.4.32:5000;</span><br><span class="line">    server 192.168.4.32:8080;     </span><br><span class="line">&#125;           </span><br><span class="line"></span><br><span class="line">server &#123;     </span><br><span class="line">    listen       80;   #监听端口   </span><br><span class="line">    server_name  192.168.4.32;   #监听地址   </span><br><span class="line"> </span><br><span class="line">    location  / &#123;             </span><br><span class="line">        root html;  #html目录        </span><br><span class="line">        index index.html index.htm;  #设置默认页    </span><br><span class="line">        proxy_pass  http://myserver;  #请求转向 myserver 定义的服务器列表      </span><br><span class="line">    &#125;</span><br><span class="line">&#125; upstream myserver &#123;   </span><br><span class="line">    server 192.167.4.32:5000;</span><br><span class="line">    server 192.168.4.32:8080;     </span><br><span class="line">&#125;           </span><br><span class="line"></span><br><span class="line">server &#123;     </span><br><span class="line">    listen       80;   #监听端口   </span><br><span class="line">    server_name  192.168.4.32;   #监听地址   </span><br><span class="line"> </span><br><span class="line">    location  / &#123;             </span><br><span class="line">        root html;  #html目录        </span><br><span class="line">        index index.html index.htm;  #设置默认页    </span><br><span class="line">        proxy_pass  http://myserver;  #请求转向 myserver 定义的服务器列表      </span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<h3 id="常用的4种nginx负载均衡算法"><a href="#常用的4种nginx负载均衡算法" class="headerlink" title="常用的4种nginx负载均衡算法"></a>常用的4种nginx负载均衡算法</h3><p><strong>1.轮询</strong></p>
+<p>轮询是默认的方式，每个请求按时间顺序逐一分配到不同的后端服务器上。如果后台服务器上某一台宕机了，它可以自动剔除。</p>
+<p>缺点：可靠性低和负载分配不均衡。适用于图片服务器和静态页面服务器集群。</p>
+<p><strong>2. 加权轮询（wight）</strong></p>
+<p>指定轮询的几率，wight和访问比率成正比，用于后台服务器性能不均匀的情况。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">upstream linuxidc&#123;       </span><br><span class="line">   server 10.0.0.77 weight=5;       </span><br><span class="line">   server 10.0.0.88 weight=10; </span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+
+<p><strong>3. ip_hash</strong></p>
+<p>根据每个请求的ip的hash结果分配，因此每个固定ip能访问到同一个后端服务器，可以解决session问题。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">upstream favresin&#123;      </span><br><span class="line">    ip_hash;      </span><br><span class="line">    server 10.0.0.10:8080;       </span><br><span class="line">    server 10.0.0.11:8080; </span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+
+<p><strong>4. fair（第三方）</strong></p>
+<p>按照后端服务器的响应时间来分配请求，响应时间短的优先分配。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> upstream favresin&#123;            </span><br><span class="line">      server 10.0.0.10:8080;       </span><br><span class="line">      server 10.0.0.11:8080;       </span><br><span class="line">      fair; </span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+
+<p><strong>5. url_hash（第三方）</strong></p>
+<p>按照访问url的hash结果来分配请求，每个固定的url访问同一个后端服务器。如果后端服务器是缓存时效率高。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> upstream resinserver&#123;       </span><br><span class="line">      server 10.0.0.10:7777;       </span><br><span class="line">      server 10.0.0.11:8888;       </span><br><span class="line">      hash $request_uri;       </span><br><span class="line">      hash_method crc32; </span><br><span class="line">&#125;</span><br><span class="line">例：在upstream中加入hash语句，hash_method是使用的hash算法。</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>在upstream模块中，可以通过server命令指定后端服务器的IP地址和端口，同时还可以设置每台后端服务器在负载均衡调度中的状态，</p>
+<p><strong>upstream参数解析</strong></p>
+<ul>
+<li>upstream可以为每个设备设置状态值</li>
+<li>down：表示当前的server暂时不参与负载</li>
+<li>weight：默认为1，wight越大，负载的权重越大。</li>
+<li>max_fails：允许请求失败的次数默认为1.当超过最大次数时，返回proxy_next_upstream模块定义的错误。</li>
+<li>fail_timeout：max_fails此失败后，暂停的时间。</li>
+<li>backup：其他所有非backup机器宕或者忙的时候，请求backup的机器。</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">tips:</span><br><span class="line">upstream bakend&#123; #定义负载均衡设备的Ip及设备状态  </span><br><span class="line">  ip_hash;  </span><br><span class="line">  server 192.0.0.1:8090 weight=5 max_fails=3 fail_timeout=20s;</span><br><span class="line">  server 127.0.0.1:9090 down; </span><br><span class="line">  server 127.0.0.1:8080 weight=2;    </span><br><span class="line">  server 127.0.0.1:6060;  </span><br><span class="line">  server 127.0.0.1:7070 backup;  </span><br><span class="line">&#125;复制代码</span><br></pre></td></tr></table></figure>
+
+<h3 id="常见的几种负载均衡算法"><a href="#常见的几种负载均衡算法" class="headerlink" title="常见的几种负载均衡算法"></a>常见的几种负载均衡算法</h3><p><strong>1、轮询法</strong></p>
+<p>将请求按顺序轮流地分配到后端服务器上，它均衡地对待后端的每一台服务器，而不关心服务器实际的连接数和当前的系统负载。</p>
+<p><strong>2、加权轮询法</strong></p>
+<p>不同的后端服务器可能机器的配置和当前系统的负载并不相同，因此它们的抗压能力也不相同。给配置高、负载低的机器配置更高的权重，让其处理更多的请；而配置低、负载高的机器，给其分配较低的权重，降低其系统负载，加权轮询能很好地处理这一问题，并将请求顺序且按照权重分配到后端。</p>
+<p><strong>3、随机法</strong></p>
+<p>通过系统的随机算法，根据后端服务器的列表大小值来随机选取其中的一台服务器进行访问。由概率统计理论可以得知，随着客户端调用服务端的次数增多，</p>
+<p>其实际效果越来越接近于平均分配调用量到后端的每一台服务器，也就是轮询的结果。</p>
+<p><strong>4、加权随机法</strong></p>
+<p>与加权轮询法一样，加权随机法也根据后端机器的配置，系统的负载分配不同的权重。不同的是，它是按照权重随机请求后端服务器，而非顺序。</p>
+<p><strong>5、哈希算法</strong></p>
+<ul>
+<li>普通哈希：源地址哈希的思想是根据获取客户端的IP地址，通过哈希函数计算得到的一个数值，用该数值对服务器列表的大小进行取模运算，得到的结果便是客服端要访问服务器的序号。采用源地址哈希法进行负载均衡，同一IP地址的客户端，当后端服务器列表不变时，它每次都会映射到同一台后端服务器进行访问。</li>
+<li>一致性Hash，相同参数的请求总是发到同一提供者。当某一台提供者挂时，原本发往该提供者的请求，基于虚拟节点，平摊到其它提供者，不会引起剧烈变动。一致性hash算法就是把每台server分成v个虚拟节点，再把所有虚拟节点（n*v）随机分配到一致性哈希的圆环上，这样所有的用户从自己圆环上的位置顺时针往下取到第一个vnode就是自己所属的节点。当此节点存在故障时，再顺时针取下一个作为替代节点</li>
+</ul>
+<p><strong>6、最小连接数法</strong></p>
+<p>最小连接数算法比较灵活和智能，由于后端服务器的配置不尽相同，对于请求的处理有快有慢，它是根据后端服务器当前的连接情况，动态地选取其中当前</p>
+<p>积压连接数最少的一台服务器来处理当前的请求，尽可能地提高后端服务的利用效率，将负责合理地分流到每一台服务器。</p>
+<p><strong>7、IP地址散列</strong></p>
+<p>通过管理发送方IP和目的地IP地址的散列，将来自同一发送方的分组(或发送至同一目的地的分组)统一转发到相同服务器的算法。当客户端有一系列业务需要处理而必须和一个服务器反复通信时，该算法能够以流(会话)为单位，保证来自相同客户端的通信能够一直在同一服务器中进行处理。</p>
+<p><strong>8、URL散列</strong></p>
+<p>通过管理客户端请求URL信息的散列，将发送至相同URL的请求转发至同一服务器的算法。</p>
+<h3 id="四层和七层负载均衡"><a href="#四层和七层负载均衡" class="headerlink" title="四层和七层负载均衡"></a>四层和七层负载均衡</h3><p>四层负载均衡工作在OSI模型的<strong>传输层</strong>，主要工作是转发，它在接收到客户端的流量以后通过修改数据包的地址信息将流量转发到应用服务器。</p>
+<p>七层负载均衡工作在OSI模型的<strong>应用层</strong>，因为它需要解析应用层流量，所以七层负载均衡在接到客户端的流量以后，还需要一个完整的TCP/IP协议栈。七层负载均衡会与客户端建立一条完整的连接并将应用层的请求流量解析出来，再按照调度算法选择一个应用服务器，并与应用服务器建立另外一条连接将请求发送过去，因此七层负载均衡的主要工作就是代理。</p>
+<p><strong>软硬件</strong></p>
+<p>1）四层的负载均衡就是基于IP+端口的负载均衡：</p>
+<blockquote>
+<p>对应的负载均衡器称为四层交换机（L4 switch），主要分析IP层及TCP/UDP层，实现四层负载均衡。此种负载均衡器不理解应用协议（如HTTP/FTP/MySQL等等）。</p>
+</blockquote>
+<p><strong>实现四层负载均衡的软件有：</strong></p>
+<ul>
+<li>F5：硬件负载均衡器，功能很好，但是成本很高。</li>
+<li>lvs：重量级的四层负载软件</li>
+<li>nginx：轻量级的四层负载软件，带缓存功能，正则表达式较灵活</li>
+<li>haproxy：模拟四层转发，较灵活</li>
+</ul>
+<p>2）七层的负载均衡就是基于虚拟的URL或主机IP的负载均衡</p>
+<blockquote>
+<p>对应的负载均衡器称为七层交换机（L7 switch），除了支持四层负载均衡以外，还有分析应用层的信息，如HTTP协议URI或Cookie信息，实现七层负载均衡。此种负载均衡器能理解应用协议。</p>
+</blockquote>
+<p><strong>实现七层负载均衡的软件有：</strong></p>
+<ul>
+<li>haproxy：天生负载均衡技能，全面支持七层代理，会话保持，标记，路径转移；</li>
+<li>nginx：只在http协议和mail协议上功能比较好，性能与haproxy差不多；</li>
+<li>apache：功能较差</li>
+<li>Mysql proxy：功能尚可。</li>
+</ul>
+<p>总的来说，一般是lvs做4层负载；nginx做7层负载；haproxy比较灵活，4层和7层负载均衡都能做。</p>
+<p><strong>技术原理上的区别：</strong></p>
+<p>所谓四层负载均衡，也就是主要通过报文中的目标地址和端口，再加上负载均衡设备设置的服务器选择方式，决定最终选择的内部服务器。</p>
+<blockquote>
+<p>以常见的TCP为例，负载均衡设备在接收到第一个来自客户端的SYN 请求时，即通过上述方式选择一个最佳的服务器，并对报文中目标IP地址进行修改(改为后端服务器IP），直接转发给该服务器。TCP的连接建立，即三次握手是客户端和服务器直接建立的，负载均衡设备只是起到一个类似路由器的转发动作。在某些部署情况下，为保证服务器回包可以正确返回给负载均衡设备，在转发报文的同时可能还会对报文原来的源地址进行修改。</p>
+</blockquote>
+<img src="/img/image-20220519072131243.png" alt="image-20220519072131243" style="zoom:67%;" />
+
+<p>所谓七层负载均衡，也称为“内容交换”，也就是主要通过<strong>报文中的真正有意义的应用层内容</strong>，再加上负载均衡设备设置的服务器选择方式，决定最终选择的内部服务器。</p>
+<blockquote>
+<p>以常见的TCP为例，负载均衡设备如果要根据真正的应用层内容再选择服务器，只能先代理最终的服务器和客户端建立连接(三次握手)后，才可能接受到客户端发送的真正应用层内容的报文，然后再根据该报文中的特定字段，再加上负载均衡设备设置的服务器选择方式，决定最终选择的内部服务器。</p>
+</blockquote>
+<p>负载均衡设备在这种情况下，更类似于一个代理服务器。负载均衡和前端的客户端以及后端的服务器会分别建立TCP连接。所以从这个技术原理上来看，七层负载均衡明显的对负载均衡设备的要求更高，处理七层的能力也必然会低于四层模式的部署方式。</p>
+<p><strong>具体实现：</strong></p>
+<p>（1）目前负载均衡系统有Nginx、LVS、F5，即：</p>
+<ul>
+<li>Nginx是软件的7层负载均衡，</li>
+<li>LVS是内核的4层负载均衡，</li>
+<li>F5是硬件的4层负载均衡。</li>
+</ul>
+<p>（2）软件和硬件的区别在于性能，硬件远远高于软件，即：</p>
+<ul>
+<li>Nginx的性能是万级的，一般的Linux服务器上安装一个Nginx能达到每秒5万并发请求；</li>
+<li>而F5的性能能达到百万级，从200万每秒到800万每秒都有，不过价格很贵。</li>
+</ul>
+<p>（3）4层和7层的区别在于协议和灵活性，即：</p>
+<ul>
+<li>Nginx是7层的，它支持HTTP等协议，</li>
+<li>而LVS和F5是4层协议，它们和协议无关，几乎所有应用都可以做。</li>
+</ul>
+<h2 id="高可用"><a href="#高可用" class="headerlink" title="高可用"></a>高可用</h2><img src="/img/image-20220518072705600.png" alt="image-20220518072705600" style="zoom:67%;" />
+
+<p>为了提高系统的可用性和容错能力，可以增加nginx服务器的数量，当主服务器发生故障或宕机，备份服务器可以立即充当主服务器进行不间断工作。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/101961241">从原理到实战，彻底搞懂 Nginx！入门篇</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/102528726">从原理到实战，彻底搞懂 Nginx！中级篇</a></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2022/05/18/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_Nginx%E5%85%A5%E9%97%A8/" title="Nginx入门" target="_blank" rel="external">https://fuyunjinglong.github.io/2022/05/18/F_计算机网络_Nginx入门/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://fuyunjinglong.github.io/" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://fuyunjinglong.github.io/" target="_blank"><span class="text-dark">Elven</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/05/19/D_%E6%A1%86%E6%9E%B6_SSR%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%B8%B2%E6%9F%93/" title="SSR服务端渲染"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2022/05/17/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_TCP%E7%9A%84%E7%BD%91%E7%BB%9C%E6%8B%86%E5%8C%85%E7%B2%98%E5%8C%85/" title="TCP的网络拆包粘包"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

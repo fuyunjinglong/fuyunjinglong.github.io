@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>VueReactAngular比较 | Hexo</title>
+  <meta name="description" content="三大框架解析11三大框架介绍 1)angular 历史:2012开始1.0版本，16年升级2.0版本。新版本支持es6和ts。 基本特点： 双向绑定； 依赖注入； 基于ts的组件； 良好的应用架构； 工具生态完整，angular-cli用于创建、开发、测试等。有整套的解决方案，适合大型项目。 缺点：中文文档较少，框架较重，学习成本高。 2)react 历史：2013年facebook发布版本。20">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VueReactAngular比较">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2023/03/01/D_%E6%A1%86%E6%9E%B6_VueReactAngular%E6%AF%94%E8%BE%83/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="三大框架解析11三大框架介绍 1)angular 历史:2012开始1.0版本，16年升级2.0版本。新版本支持es6和ts。 基本特点： 双向绑定； 依赖注入； 基于ts的组件； 良好的应用架构； 工具生态完整，angular-cli用于创建、开发、测试等。有整套的解决方案，适合大型项目。 缺点：中文文档较少，框架较重，学习成本高。 2)react 历史：2013年facebook发布版本。20">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-02-28T23:33:16.000Z">
+<meta property="article:modified_time" content="2023-03-07T12:17:33.655Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2023/03/01/D_%E6%A1%86%E6%9E%B6_VueReactAngular%E6%AF%94%E8%BE%83/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://fuyunjinglong.github.io/" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Elven</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">10</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">10</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2%E5%92%8CVue3%E6%AF%94%E8%BE%83/" class="title">Vue2和Vue3比较</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0%E5%8E%9F%E7%90%86/" class="title">Vue2.0原理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue3.0%E5%8E%9F%E7%90%86/" class="title">Vue3.0原理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue2.0/" class="title">源码_Vue2.0</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue3.0/" class="title">源码_Vue3.0</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E5%A4%A7%E6%A1%86%E6%9E%B6%E8%A7%A3%E6%9E%901"><span class="toc-text">三大框架解析1</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E5%A4%A7%E6%A1%86%E6%9E%B6%E8%A7%A3%E6%9E%902"><span class="toc-text">三大框架解析2</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E5%BB%BA%E8%AE%AE"><span class="toc-text">技术选型建议</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-D_框架_VueReactAngular比较" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      VueReactAngular比较
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/03/01/D_%E6%A1%86%E6%9E%B6_VueReactAngular%E6%AF%94%E8%BE%83/" class="article-date">
+	  <time datetime="2023-02-28T23:33:16.000Z" itemprop="datePublished">2023-03-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/03/01/D_%E6%A1%86%E6%9E%B6_VueReactAngular%E6%AF%94%E8%BE%83/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="三大框架解析1"><a href="#三大框架解析1" class="headerlink" title="三大框架解析1"></a>三大框架解析1</h1><p><strong>1三大框架介绍</strong><br> <strong>1)angular</strong><br> <strong>历史</strong>:2012开始1.0版本，16年升级2.0版本。新版本支持es6和ts。<br> <strong>基本特点</strong>：<br> 双向绑定；<br> 依赖注入；<br> 基于ts的组件；<br> 良好的应用架构；<br> 工具生态完整，angular-cli用于创建、开发、测试等。有整套的解决方案，适合大型项目。<br> <strong>缺点</strong>：中文文档较少，框架较重，学习成本高。<br> <strong>2)react</strong><br> <strong>历史</strong>：2013年facebook发布版本。2015年版本稳定，同年发布reacr-native。<br> <strong>基本特点</strong>：<br> 虚拟dom，跨浏览器兼容，性能较好；<br> 组件化，代码复用;<br> JSX,js语法的扩展，模板简单、直接、语义化。<br> 单项数据流：数据流清晰，组件状态更可控。<br> <strong>缺点</strong>：<br> 本身只是view，大型项目需要加上React Router和Redux。<br> <strong>3)VUE</strong><br> <strong>历史</strong>：<br> 2015年1.0版本发布，同年vue-router、vuex、vue-cli出现，标志从一个视图层发展成一个渐进式框架。<br> 2016年vue2.0发布，引入虚拟dom，性能大幅提升。<br> 2019年vue2.0公布源码。<br> <strong>基本特点</strong>：<br> 渐进式、轻量级框架;<br> 简单易用;<br> 双向数据绑定;<br> 组件化;<br> 轻量高效(使用虚拟dom，压缩后只有20kb)<br> <strong>缺点</strong>：<br> vue不支持IE8，生态比较差(语法提示不友好，插件数量比较少)</p>
+<p><strong>2.vue和react比较</strong></p>
+<p>工程实践上，由于耦合性、代码组织灵活性、平滑升级、测试、重构让我们最终放弃了 Vue。在 Vue 中你操作的是定义好的对象，React 中你操作的是一个函数。所谓前端开发，本质就是在编写下面几个函数。显然，React 对此的抽象更为彻底。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">S = async(A1)</span><br><span class="line">S = sync(A2)</span><br><span class="line">UI = f(S)</span><br></pre></td></tr></table></figure>
+
+<p><strong>相同点：</strong></p>
+<p>(1)都使用Virtural DOM</p>
+<p>(2)都使用组件化思想，流程基本一致</p>
+<p>(3)都是响应式，推崇单向数据流</p>
+<p>(4)都有成熟的社区，都支持服务端渲染</p>
+<p>Vue和React实现原理和流程基本一致，都是使用Virtual DOM + Diff算法.不管是Vue的template模板 + options api写法，还是React的Class或者Function（js 的class写法也是function函数的一种）写法，底层最终都是为了生成render函数,</p>
+<p>Vue和React通用流程：vue template/react jsx -&gt; render函数 -&gt; 生成VNode -&gt; 当有变化时，新老VNode diff -&gt; diff算法对比，并真正去更新真实DOM。</p>
+<p><strong>差异点：</strong></p>
+<p><strong>(1)核心思想不同</strong></p>
+<p>Vue早期定位是尽可能的降低前端开发的门槛，Vue推崇灵活易用（渐进式开发体验），数据可变，双向数据绑定（依赖收集和派发更新）。</p>
+<p>React早期口号是Rethinking Best Practices。想要做的是用更好的方式去颠覆前端开发方式，推崇函数式编程（纯组件），数据不可变以及单向数据流。函数式编程最大的好处是其稳定性（无副作用即对主函数（调用者）没有附加影响）和可测试性（输入相同，输出一定相同）。</p>
+<p>(1.1)核心思想不同导致写法差异</p>
+<p>Vue推崇template。React推崇JSX、HOC、all in js</p>
+<p>(1.2)api差异</p>
+<p>Vue定位简单易上手，基于template模板 + options API。比如template模板中需要理解slot、filter、指令等概念和api，options API中需要理解watch、computed（依赖收集）等概念和api。</p>
+<p><code>React本质上核心只有一个Virtual DOM + Diff算法</code>，所以API非常少，知道setState就可以开发。</p>
+<p>(1.3)社区差异</p>
+<p><code>由于Vue定义简单易上手，能快速解决问题，所以很多常见的解决方案，是Vue官方主导开发和维护</code>。比如状态管理库Vuex、路由库Vue-Router、脚手架Vue-CLI、Vutur工具等。属于那种大包大揽，遇到某类通用问题，只需要使用官方给出的解决方案即可。</p>
+<p>React只关注底层，上层应用解决方案基本不插手。连最基础的状态管理早期也只是给出flow单向数据流思想，大部分都丢给社区去解决。比如状态管理库方面，有redux、mobx、redux-sage、dva等一大堆（选择困难症犯了），所以这也造就了React社区非常繁荣。</p>
+<p>(1.4)未来升级方向不同</p>
+<p>Vue依然会定位简单易上手（渐进式开发），依然是考虑通过依赖收集来实现数据可变。Vue3核心更新内容可以看到：template语法基本不变、options api只增加了setup选项（composition api）、基于依赖收集（Proxy）的数据可变。</p>
+<p><code>React的函数式编程这个基本盘不会变</code>。React核心思想，是把UI作为Basic Type，比如String、Array类型，然后经过render处理，转换为另外一个value（纯函数）。从React Hooks可以看出，React团队致力于组件函数式编程，（纯组件，无class组件），尽量减少副作用（减少this，this会引起副作用）。</p>
+<p><strong>(2)组件实现不同</strong></p>
+<p><code>Vue源码实现是把options挂载到Vue核心类上，然后再new Vue(&#123;options&#125;)拿到实例</code>（vue组件的script导出的是一个挂满options的纯对象而已）。所以options api中的this指向内部Vue实例，对用户是不透明的，所以需要文档去说明this.$slot、this.$xxx这些api。</p>
+<p>React内部实现比较简单，直接定义render函数以生成VNode，而<code>React内部使用了四大组件类包装VNode</code>，不同类型的VNode使用相应的组件类处理，职责划分清晰明了,用户透明。</p>
+<p><strong>(3)响应式原理不同</strong></p>
+<p>Vue2和Vue3响应式原理基本一致，都是基于依赖收集，不同的是Vue3使用Proxy.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Vue依赖收集，自动优化，数据可变。</span><br><span class="line">Vue递归监听data的所有属性,直接修改。</span><br><span class="line">当数据改变时，自动找到引用组件重新渲染。</span><br><span class="line"></span><br><span class="line">React基于状态机，手动优化，数据不可变，需要setState驱动新的State替换老的State。</span><br><span class="line">当数据改变时，以组件为根目录，默认全部重新渲染</span><br></pre></td></tr></table></figure>
+
+<p><strong>(4)diff算法不同</strong></p>
+<p>Vue基于snabbdom库，它有较好的速度以及模块机制。<code>Vue Diff使用双向链表，边对比，边更新DOM。</code></p>
+<p><code>React主要使用diff队列保存需要更新哪些DOM，得到patch树，再统一操作批量更新DOM</code>。</p>
+<p><strong>(5)事件机制不同</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Vue原生事件使用标准Web事件</span><br><span class="line">Vue组件自定义事件机制，是父子组件通信基础</span><br><span class="line">Vue合理利用了snabbdom库的模块插件</span><br><span class="line"></span><br><span class="line">React原生事件被包装，所有事件都冒泡到顶层document监听，然后在这里合成事件下发。基于这套，可以跨端使用事件机制，而不是和Web DOM强绑定。</span><br><span class="line">React组件上无事件，父子组件通信使用props</span><br></pre></td></tr></table></figure>
+
+<p><strong>Vue与React的区别小结</strong></p>
+<ul>
+<li>vue组件分为全局注册和局部注册，在react中都是通过import相应组件，然后模版中引用；</li>
+<li><code>props</code>是可以动态变化的，子组件也实时更新，在react中官方建议props要像纯函数那样，输入输出一致对应，而且不太建议通过props来更改视图；</li>
+<li>子组件一般要显示地调用props选项来声明它期待获得的数据。而在react中不必需，另两者都有props校验机制；</li>
+<li>每个Vue实例都实现了事件接口，方便父子组件通信，小型项目中不需要引入状态管理机制，而react必需自己实现；</li>
+<li>vue使用<code>插槽</code>分发内容，使得可以混合父组件的内容与子组件自己的模板；</li>
+<li>vue多了<code>指令系统</code>，让模版可以实现更丰富的功能，而React只能使用JSX语法；</li>
+<li>Vue增加的语法糖<code>computed</code>和<code>watch</code>，而在React中需要自己写一套逻辑来实现；</li>
+<li>react的思路是all in js，通过js来生成html，所以设计了jsx，还有通过js来操作css，社区的styled-component、jss等；而 vue是把html，css，js组合到一起，用各自的处理方式，vue有单文件组件，可以把html、css、js写到一个文件中，html提供了模板引擎来处理。</li>
+<li>react做的事情很少，很多都交给社区去做，vue很多东西都是内置的，写起来确实方便一些，比如 redux的combineReducer就对应vuex的modules， 比如reselect就对应vuex的getter和vue组件的computed， vuex的mutation是直接改变的原始数据，而redux的reducer是返回一个全新的state，所以redux结合immutable来优化性能，vue不需要。</li>
+<li>react是整体的思路的就是函数式，所以推崇纯组件，数据不可变，单向数据流，当然需要双向的地方也可以做到，比如结合redux-form，组件的横向拆分一般是通过高阶组件。而vue是数据可变的，双向绑定，声明式的写法，vue组件的横向拆分很多情况下用mixin</li>
+</ul>
+<h1 id="三大框架解析2"><a href="#三大框架解析2" class="headerlink" title="三大框架解析2"></a>三大框架解析2</h1><p><strong>一、简介</strong></p>
+<p><strong>angular</strong></p>
+<p>诞生于2009年的Angular可以算得上Web前端三大主流框架中最完整的框架，它包含模板、数据双向绑定、路由、模块化、服务、过滤器、依赖注入等所有功能。虽然出现较早，但是因为其强大的功能，至今使用热度不减。对于刚开始前端初学者来讲，AngularJS完全基于HTML和JavaScript，因此无需学习其他语法或语言。使用TypeScript能够提高代码可维护性，有利于后期重构。<br>当然，Angular框架也不是完全没有缺点的。虽然双向数据流很方便，但是等业务复杂之后，你可能就搞不清楚数据流了。还有令人不开心的脏值检查，以及directive的封装并没有解决视图与数据关系完全分离的问题，有时候还要用$digist强制触发检测，当然，因为其由Google主导，小伙伴们还是不要选择了，毕竟Angular能搞定的，Vue也是完全能够胜任的。</p>
+<p><strong>React</strong></p>
+<p>React是一个开源的JavaScript库，由Facebook和一个大型开发者社区共同维护。广泛用于开发web应用程序的用户界面。React框架的主要功能是对DOM操作，声明式设计，更快的开发出Web应用系统。使用React框架，可以非常轻松地创建用户交互界面，为应用的每一个状态设计简洁的视图。甚至在数据改变时，React也可以高效地更新渲染界面。<br>虽然React框架本身比较容易理解，结构很清晰，就是由十几个API组成，然后异步渲染。但是很多人反映上手还是有一定的的难度的。React是单向数据流，代码写起来会较双向数据流的多一些，但是同样的排查问题时思路清晰很多。</p>
+<p><strong>Vue</strong></p>
+<p>Vue框架的最大优势就是简单易上手，同时它也是目前Web前端开发的最常使用的主流框架。Vue.js是用于构建交互式的Web 界面的库。它提供了MVVM数据绑定和一个可组合的组件系统，具有简单、灵活的API。从技术上讲， Vue.js集中在MVVM模式上的视图模型层，并通过双向数据绑定连接视图和模型。实际的DOM操作和输出格式被抽象出来成指令和过滤器。所以相比其它的MVVM框架，Vue.js更容易上手。<br>而且它能够开发单页面应用程序，还可以用作Web应用程序框架。Vue框架最大的优势就是能够在没有任何动作的情况下重新渲染，而且允许我们在需要时随时添加组件。</p>
+<p><strong>二、React详解</strong></p>
+<p><strong>概述</strong></p>
+<p>React（有时叫React.js或ReactJS），是一个为数据提供渲染为HTML视图的开源JavaScript 库。React视图通常采用包含以自定义HTML标记规定的其他组件的组件渲染。React为程序员提供了一种子组件不能直接影响外层组件（”data flows down”）的模型，数据改变时对HTML文档的有效更新，和现代单页应用中组件之间干净的分离。<br>它由Facebook、Instagram和一个由个人开发者和企业组成的社群维护。</p>
+<p><strong>Fiber架构</strong></p>
+<p>Fiber 的中文翻译叫纤程，与进程、线程同为程序执行过程，Fiber 就是比线程还要纤细的一个过程。纤程意在对渲染过程实现进行更加精细的控制。<br>从架构角度来看，Fiber 是对 React 核心算法（即调和过程）的重写。<br>从编码角度来看，Fiber 是 React 内部所定义的一种数据结构，它是 Fiber 树结构的节点单位，也就是 React 16 新架构下的”虚拟 DOM”。<br>一个 fiber 就是一个 JavaScript 对象，Fiber 的数据结构如下：</p>
+<p><strong>Fiber 如何解决问题的</strong></p>
+<p>Fiber 把一个渲染任务分解为多个渲染任务，而不是一次性完成，把每一个分割得很细的任务视作一个”执行单元”，React 就会检查现在还剩多少时间，如果没有时间就将控制权让出去，故任务会被分散到多个帧里面，中间可以返回至主进程控制执行其他任务，最终实现更流畅的用户体验。</p>
+<p><strong>Fiber 实现原理</strong></p>
+<p>实现的方式是requestIdleCallback这一 API，但 React 团队 polyfill 了这个 API，使其对比原生的浏览器兼容性更好且拓展了特性。<br>window.requestIdleCallback()方法将在浏览器的空闲时段内调用的函数排队。这使开发者能够在主事件循环上执行后台和低优先级工作，而不会影响延迟关键事件，如动画和输入响应。函数一般会按先进先调用的顺序执行，然而，如果回调函数指定了执行超时时间 timeout，则有可能为了在超时前执行函数而打乱执行顺序。<br>requestIdleCallback回调的执行的前提条件是当前浏览器处于空闲状态。<br>即requestIdleCallback的作用是在浏览器一帧的剩余空闲时间内执行优先度相对较低的任务。首先 React 中任务切割为多个步骤，分批完成。在完成一部分任务之后，将控制权交回给浏览器，让浏览器有时间再进行页面的渲染。等浏览器忙完之后有剩余时间，再继续之前 React 未完成的任务，是一种合作式调度。<br>简而言之，由浏览器给我们分配执行时间片，我们要按照约定在这个时间内执行完毕，并将控制权还给浏览器。<br>React 16 的Reconciler基于 Fiber 节点实现，被称为 Fiber Reconciler。<br>作为静态的数据结构来说，每个 Fiber 节点对应一个 React element，保存了该组件的类型（函数组件/类组件/原生组件等等）、对应的 DOM 节点等信息。<br>作为动态的工作单元来说，每个 Fiber 节点保存了本次更新中该组件改变的状态、要执行的工作。<br>每个 Fiber 节点有个对应的 React element，多个 Fiber 节点是如何连接形成树呢？靠如下三个属性</p>
+<p><strong>Fiber 架构核心</strong></p>
+<p>Fiber 架构可以分为三层：</p>
+<ul>
+<li>Scheduler 调度器 —— 调度任务的优先级，高优任务优先进入 Reconciler</li>
+<li>Reconciler 协调器 —— 负责找出变化的组件</li>
+<li>Renderer 渲染器 —— 负责将变化的组件渲染到页面上<br>在新的架构模式下，工作流如下：</li>
+<li>每个更新任务都会被赋予一个优先级。</li>
+<li>当更新任务抵达调度器时，高优先级的更新任务（记为 A）会更快地被调度进 Reconciler 层；</li>
+<li>此时若有新的更新任务（记为 B）抵达调度器，调度器会检查它的优先级，若发现 B 的优先级高于当前任务 A，那么当前处于 Reconciler 层的 A 任务就会被中断，调度器会将 B 任务推入 Reconciler 层。</li>
+<li>当 B 任务完成渲染后，新一轮的调度开始，之前被中断的 A 任务将会被重新推入 Reconciler 层，继续它的渲染之旅，即“可恢复”。<br>Fiber 架构的核心即是”可中断”、”可恢复”、”优先级”。</li>
+</ul>
+<p><em>Scheduler 调度器</em><br>这个需要上面提到的requestIdleCallback，React 团队实现了功能更完备的 requestIdleCallback polyfill，这就是 Scheduler。除了在空闲时触发回调的功能外，Scheduler 还提供了多种调度优先级供任务设置。</p>
+<p><em>Reconciler 协调器</em><br>在 React 15 中是递归处理虚拟 DOM 的，React 16 则是变成了可以中断的循环过程，每次循环都会调用shouldYield判断当前是否有剩余时间</p>
+<p><em>React 16 是如何解决中断更新时 DOM 渲染不完全的问题呢？</em><br>在 React 16 中，Reconciler与Renderer不再是交替工作。当Scheduler将任务交给Reconciler后，Reconciler会为变化的虚拟 DOM 打上的标记。</p>
+<p>整个Scheduler与Reconciler的工作都在内存中进行，所以即使反复中断，用户也不会看见更新不完全的 DOM。只有当所有组件都完成Reconciler的工作，才会统一交给Renderer。</p>
+<p><strong>三、Vue详解</strong></p>
+<p><strong>1.Vue生命周期</strong></p>
+<p>Vue 主要实现了以下几个阶段：</p>
+<ol>
+<li><p>组件初始化，包括事件初始化、数据初始化、依赖注入初始化等；</p>
+</li>
+<li><p>模板编译，即把 HTML 模板转化为可以被 Vue 利用的渲染函数，其中包括了虚拟 DOM 的概念；</p>
+</li>
+<li><p>DOM 挂载与更新，即把渲染函数的返回值映射为真实的 DOM ，复用或创建新的 DOM 节点；</p>
+</li>
+<li><p>组件销毁，包括为了实现响应式而挂载的监听器、事件监听器等。</p>
+</li>
+</ol>
+<p><strong>2.响应式原理</strong></p>
+<p>为了实现无侵入的响应式数据，Vue 使用了设计模式中的代理模式，在 2.x 系列借助 ES 5 对象方法 Object.defineProperty 对原始数据进行代理，在 3.x 系列中则使用 ES 6 Proxy 对象进行代理。ES 5 对象方法要求 ES 5 支持，因此 Vue 2.x 不支持 IE 8 以下的版本。ES 6 Proxy 要求 ES 6 支持，因此 Vue 3.x 无法支持 IE 11 。下文我们以目前广泛使用的 Vue 2.x 版本为例讲解数据响应式原理。<br>其中 Object.defineProperty 只能代理属性的 set/get 方法，而 ES 6 Proxy 可以代理 defineProperty/deleteProperty 等方法，能够更全面地代理数据的增删改查，规避了原来使用 Object.defineProperty 无法捕捉的情况。这也是为什么 Vue 3 使用 ES 6 Proxy 的原因。</p>
+<p><strong>对象</strong></p>
+<p>Vue无法检测对象属性的添加或移除。由于 Vue 会在初始化实例时对属性执行 getter/setter 转化，所以属性必须在 data 对象上存在才能让 Vue 将它转换为响应式的。</p>
+<p>对于已经创建的实例，Vue 不允许动态添加根级别的响应式 property。但是，可以使用 Vue.set(object, propertyName, value) 方法向嵌套对象添加响应式 property。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Vue.set(vm.someObject, &#x27;b&#x27;, 2)</span><br></pre></td></tr></table></figure>
+
+<p>这行语句的原理是虽然修改的是 b 属性的值，但是触发 someObject 的更新。在这种情况下，你应该用原对象与要混合进去的对象的属性一起创建一个新的对象。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.someObject = Object.assign(&#123;&#125;, this.someObject, &#123; a: 1, b: 2 &#125;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>数组</strong></p>
+<p>在 JS 中，数组可以看作是一类特殊的对象，因此，对于数组而言 Vue 2.x不能检测以下数组的变动：<br>当你利用索引直接设置一个数组项时，例如：vm.items[indexOfItem] = newValue；<br>当你修改数组的长度时，例如：vm.items.length = newLength；</p>
+<p>但是数组新增元素的情况要比对象新增属性常用得多，因此有必要解决数组无法响应新增属性的问题。为此，Vue 把数组的方法都代理了，调用数组方法相当于 *Vue.set(…)*。因此，用数组的方法也可以使数组保持响应的。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vm.items.splice(newLength)</span><br></pre></td></tr></table></figure>
+
+<p><strong>依赖收集</strong></p>
+<p>依赖收集主要依赖两个数据结构实现，分别是 <code>Dep</code> 和 <code>Watcher</code> ，<code>Watcher</code> 封装观察者的信息，而 <code>Dep</code> 封装了依赖队列。每个响应式属性都有一个 <code>Dep</code> 维护其 <code>Watcher</code> 队列，当数据变化时逐个调用 <code>Dep</code> 队列中封装的 <code>Watcher</code> 实现视图更新。<br>其过程大致是渲染函数初始化 <code>Watcher</code> ，把重新渲染作为 <code>Watcher</code> 的回调，触发具体渲染，如果获取了响应式数据，则在 getter 里把 <code>Watcher</code> 收集到对应的 <code>Dep</code> 中。当事件触发了响应式数据更新，则在其 setter 里通知 <code>Dep</code> 中的 <code>Watcher</code> 触发视图更新。<br>读者在此处可能会对如何收集 <code>Watcher</code> 有疑问，毕竟 <code>Watcher</code> 和 getter 分别在两个过程中定义的，两者如何关联起来？答案是用了全局变量 <code>Dep.target</code> 在模块内形成了一个闭包。因此，如果页面上引用了两个 Vue （最常见的情况是创建库的时候把 Vue 打包进去了），响应式属性是无法在两个 Vue 中共享的，可能会造成难以定位的问题。</p>
+<p><strong>响应时机</strong></p>
+<p>由于 JS 是一个单线程的执行环境，也就是说每次只能执行一件事，意味着执行 JS 和更新 DOM 只能选一样执行。每次响应式属性变更时，如果都直接触发界面更新，那么在一个函数里对响应式数据进行大量更新时，就会出现“DOM 更新 - JS 执行 - DOM 更新…”的循环，如果 JS 执行较慢，就会出现卡顿，这显然不是我们想要的。因此，Vue 在更新 DOM 时是<strong>异步</strong>执行的。<br>只要侦听到数据变化，Vue  将开启一个队列，并缓冲在同一事件循环中发生的所有数据变更。如果同一个 watcher  被多次触发，只会被推入到队列中一次。这种在缓冲时去除重复数据对于避免不必要的计算和 DOM  操作是非常重要的，在下一章虚拟 DOM 的时候会详细讲述。然后，在下一个的事件循环（在 JS 的术语里称为“tick”）中，Vue 刷新队列并执行实际（已去重的）工作。<br>值得注意的是，Vue 在内部对异步队列尝试使用原生的 <code>Promise.then</code>、<code>MutationObserver</code> 和 <code>setImmediate</code>，如果执行环境不支持，则会采用 <code>setTimeout(fn, 0)</code> 代替，本质上是希望利用事件队列中的微任务在逻辑后进行视图更新。</p>
+<p><strong>3.模板编译</strong></p>
+<p><strong>渲染函数</strong></p>
+<p>一般在使用 Vue 的时候都会使用 Vue 单文件组件里的 HTML 模板或者直接使用挂载元素的 HTML 模板，HTML 模板为视图提供了一种比 JS 代码更友好的表达形式。但是 Vue 的模板并不是完全是 HTML ，因为 HTML 本身不支持定义自定义组件，缺少这种扩展的机制，Vue 设计了一个编译器，输入通过类似的 HTML 的语法，输出为一个输出到虚拟 DOM 的函数，这个过程称为渲染，这个函数就是渲染函数。</p>
+<p>渲染函数采用了构造器的设计模式，通过传入一个构建 VNode 的构造函数，开发者可以层次化地构建出虚拟 DOM 树。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    render: function (createElement) &#123;</span><br><span class="line">      return createElement(&#x27;div&#x27;, [</span><br><span class="line">        createElement(&#x27;child&#x27;, &#123;</span><br><span class="line">          // 在数据对象中传递 `scopedSlots`</span><br><span class="line">          // 格式为 &#123; name: props =&gt; VNode | Array&lt;VNode&gt; &#125;</span><br><span class="line">          scopedSlots: &#123;</span><br><span class="line">            default: function (props) &#123;</span><br><span class="line">              return createElement(&#x27;span&#x27;, props.text)</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">      ])</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上函数对应为 HTML 模板：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;</span><br><span class="line">    &lt;child v-slot=&quot;props&quot;&gt;</span><br><span class="line">        &lt;span&gt;&#123;&#123; props.text &#125;&#125;&lt;/span&gt;</span><br><span class="line">    &lt;/child&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到渲染函数实际上比 HTML 模板复杂而且不直观，但是它是驱动 Vue 模板优化的基本原理。</p>
+<p><strong>虚拟DOM</strong></p>
+<p>实际上，虚拟 DOM 是 React 社区提出来的一个概念。在 Vue 早期（大约 2.0 以前），Vue 也是没有使用虚拟 DOM 的。使用虚拟 DOM 的原因主要是直接操作 DOM 会带来重大的性能影响。<br>主要体现在两方面：</p>
+<ul>
+<li>DOM 节点的属性多，空间开销较大，频繁操作必定会带来性能问题：</li>
+<li>JS 是单线程语言，每次操作 DOM 都是阻塞操作，将会阻塞 JS 的执行，操作 DOM 的时候无法同时执行 JS ，执行 JS 的时候无法更新 DOM ，频繁地切换将会导致动画不能及时响应。更为重要的是，即使 DOM 没有属性值没有更新，但是设置 DOM 的属性值也将阻塞 JS 的执行。</li>
+</ul>
+<p><strong>Diff 算法</strong></p>
+<p>在介绍 Diff 算法前，需要了解一个关于浏览器渲染的概念：</p>
+<ul>
+<li><p>回流（reflow）：当 DOM 的布局变化时，例如改变元素大小、位置或者增减元素，浏览器需要清楚当前 DOM 子树并应用重新计算的结果。</p>
+</li>
+<li><p>重绘（redraw）：当 DOM 的属性修改时，例如改变字体颜色，浏览器并不需要重新计算元素的布局，而只要重新绘制新样式。</p>
+<p>很显然回流比重绘更加耗费性能，因此我们在设计 Diff 算法时必须尽可能复用已有元素，避免频繁增减元素造成布局回流。</p>
+</li>
+</ul>
+<p><em>算法实现</em></p>
+<p>虚拟 DOM 应用的核心算法就是 Diff 算法，其目标就是找出两个虚拟 DOM 树之间的最小化差异，好确定要更新的元素。Vue 2.x 的虚拟 DOM 实现主要参考 SnabbDOM ，其 Diff 算法主要有两个特点：</p>
+<ul>
+<li>同级比较：对于给定两棵树，只比较同一级节点，如果节点类型不同则直接抛弃，重新构建。</li>
+<li>就近复用：当两个节点类型相同，则复用节点，只修改节点的实例属性。</li>
+</ul>
+<p>可以看到该算法主要是在实现简单的基础上尽可能复用节点，避免布局回流。</p>
+<p>对于子节点集的比较则是希望找到没有同类型的最小集，为此，Diff 算法用了两个优化策略：</p>
+<ul>
+<li>双指针比较：对列表的两端分别进行寻找，当两端的值不一致后，按新的前后两端和旧的前后两端比较（尽可能复用已知的索引）</li>
+<li>按组件 key 寻找：当所有已知索引都无法匹配时，按 key 的散列表寻找，如果还找不到，只能遍历了。<br>在实际应用中，新旧 DOM 树往往是比较接近的，因此双指针比较就可以很快地找出差异，剩下的部分再根据 key 或遍历寻找即可。</li>
+</ul>
+<p><strong>4.插件原理</strong></p>
+<p>Vue提供了几种扩展的方式，即：</p>
+<ul>
+<li>添加全局方法或者property。如vue-custom-element；</li>
+<li>添加全局资源：指令/过滤器/过渡等。如vue-touch；</li>
+<li>通过全局混入来添加一些组件选项。如vue-router；</li>
+<li>添加Vue实例方法，通过把它们添加到Vue.prototype上实现；</li>
+</ul>
+<p><strong>开发插件</strong></p>
+<p>Vue.js 的插件应该暴露一个 <code>install</code> 方法。这个方法的第一个参数是 <code>Vue</code> 构造器，第二个参数是一个可选的选项对象：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MyPlugin.install = function (Vue, options) &#123;</span><br><span class="line">    // 插件逻辑</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当 Vue 使用时，将会被回调：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Vue.use(MyPlugin, options);</span><br></pre></td></tr></table></figure>
+
+<p> 这个策略也可以认为是一种<strong>依赖反转</strong>，也就是被调用方不需要知道调用方以何种方式引入。因为 Vue 出现的年代里，Webpack 方兴未艾，全局变量引入模块的方式还大行其道，而全局变量名往往会因为冲突而改变，因此使用这种依赖注入的方式能够很好地规避此类情况。</p>
+<p>但在现今倡导 ES 模块和 tree-shaking 优化的视角下，实际上 Vue 这么设计是不够优雅的，因为插件将会被全局共享，难以去掉不必要的依赖。在 Vue 3.x 对此已经进行了整改。</p>
+<h1 id="技术选型建议"><a href="#技术选型建议" class="headerlink" title="技术选型建议"></a>技术选型建议</h1><p><strong>大小</strong><br>开发框架的大小对未来应用的性能至关重要。框架和应用程序必须在应用程序开始正常工作之前加载。<br>在这方面，Angular 最复杂，有143KB。React 次之，有43KB，而 Vue.js只有23KB。除非你的应用特别大，并且包含了大量的组件，否则最好使用更小的结构。</p>
+<p><strong>性能</strong><br>在 Web 项目中，性能与 DOM 密切相关：DOM 在浏览器/代码中表示 Web 页面。在发生更新时，你可以通过 DOM 控制 Web页面。<br>Vue、React和Angular的性能会因为任务的不同而有所差异，但在大多数情况下，它们都非常高效和快速。React和Vue都实现了 DOM。得益于其精心设计的结构，Vue提供了出色的性能和内存分配。这就是 React 和 Vue.js 优于Angular的地方：它们利用了虚拟 DOM。</p>
+<p><strong>社区</strong><br>React 是世界上最流行的框架，这已不是什么秘密。它越来越受欢迎，因为它提供了真正的 Promise。React 的 Mental Model 看起来很可靠，其组件让创建用户界面变得更容易，API 灵活且富有表现力，整个项目给人的感觉是就应该那样。对 API 库的描述也友好，更容易给人留下良好的印象。<br>从那时起，React 库在基本概念和 API 方面就基本保持不变，但已经形成并发展出了一整套的知识和最佳实践，越来越多的人在使用它。Angular 因其优点而备受赞誉，并拥有大量的社区支持。遗憾的是，尽管 Vue.js 有很多好处，但它并没有像它的竞争对手那样被开发者所接受。<br>下面让我们从流行度和相关性两个方面比较下这三个框架：</p>
+<ul>
+<li>GitHub：目前，Vue.js 是最流行的框架，尽管它是最年轻的，这意味着越来越多的项目将使用它。</li>
+<li>谷歌搜索：在谷歌搜索中，React 查询请求最多，紧随其后的是 Vue.js。目前最不受欢迎的是 Angular.js。Angular.js 的人气在下降，而 Vue.js 的人气却在上升。</li>
+</ul>
+<p><strong>Vue、React 和 Angular：该选哪个？</strong></p>
+<p> 为了选出最合适的库，你应该首先仔细分析这些框架并理解自己的需求。无论是有许多依赖项的现有项目，还是你想使用熟悉的库进行开发的新应用程序，Vue 都不会给你带来任何麻烦。你可以继续使用 Bootstrap 或 Bulma 这样的 CSS 框架，保留为јQuery 或 Backbone 编写的组件，集成你最喜欢的库执行 HTTP 请求，或使用 Promise 对象。</p>
+<p> 要开始使用 Vue 进行编程，你所要做的就是将 Vue.js 库连接到 Web 页面。不需要复杂的组装工具！从头到尾开发一个原型只需要 1 到 2 周的时间，这让你能够尽早并经常地收集用户反馈。Vue 2 引入了服务器端渲染（SSR）支持。这让你可以最小化初期的数据加载，并根据需要请求新的视图和资源。与高效的组件缓存相结合，可以进一步减少流量消耗。<br> React 库能够做一些令人惊叹的事情。因为整个用户界面都是用 JavaScript 定义的，所以你可以使用 JavaScript 的丰富功能在模板中执行各种操作。你只会受到 JavaScript 特性的限制，而不会受到模板框架特性的限制。当你想到完全用 JavaScript 定义的视觉效果时，你可能会想到很多引号、转义字符和 createElement 调用。别担心，React 库允许你（选择性地）使用可以与 JavaScript 代码共存的 HTML-like JSX 语法定义可视元素。<br> React 与其他两个框架在以下理念上有所不同：<br> 与其说它是一个框架，不如说它是一个库（最初是为了处理 UI 而创建的），因为它不受框架的限制，所以它的功能更多——更适合专业人士，而不是初学者；在 Angular 中许多可以“开箱即用”的主要特性，在这里必须单独连接（这种方法有优点，也有缺点，对于初学者来说是缺点，因为需要做不必要的动作）；更多地面向 JavaScript 而不是 TypeScript（尽管每个版本对 TS 的支持都在增加）；更便于创建原生 Android 和 iOS 移动应用程序，拥有大量适用于各种场合的第三方库（多于 Angular）。<br> Angular 已经被用在了许多规模最大、最复杂的 Web 应用程序中。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2023/03/01/D_%E6%A1%86%E6%9E%B6_VueReactAngular%E6%AF%94%E8%BE%83/" title="VueReactAngular比较" target="_blank" rel="external">https://fuyunjinglong.github.io/2023/03/01/D_框架_VueReactAngular比较/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://fuyunjinglong.github.io/" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://fuyunjinglong.github.io/" target="_blank"><span class="text-dark">Elven</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2023/03/02/D_%E6%A1%86%E6%9E%B6_TypeScript%E5%85%A5%E9%97%A8/" title="TypeScript入门"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2023/03/01/D_%E6%A1%86%E6%9E%B6_0%E5%9F%BA%E7%A1%80/" title="0基础"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

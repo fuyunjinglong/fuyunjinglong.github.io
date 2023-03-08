@@ -376,6 +376,25 @@ Vue都是采用数据劫持代理+发布订阅模式方式实现，vue2到vue3�
     </script>
 ```
 
+vue2中数组方法的实现原理:
+
+```
+   const arrayProto = Array.prototype;
+   const subArrProto = Object.create(arrayProto);
+   const methods = ['pop', 'shift', 'unshift', 'sort', 'reverse', 'splice', 'push'];
+   methods.forEach(method => {
+     /* 重写原型方法 */
+     subArrProto[method] = function() {
+       arrayProto[method].call(this, ...arguments); 
+     };
+     /* 监听这些方法 */
+     Object.defineProperty(subArrProto, method, {
+       set() {},
+       get() {}
+     })
+   })
+```
+
 **二、Proxy** 
 
 **Proxy** 也就是代理，可以帮助我们完成很多事情，例如对数据的处理，对构造函数的处理，对数据的验证，说白了，就是在我们访问对象前添加了一层拦截，可以过滤很多操作，而这些过滤，由你来定义，因此提供了一种机制，可以对外界的访问进行过滤和改写。
@@ -419,6 +438,53 @@ let p = new Proxy(target, handler);
 ```
 
 上方案例中定义了 **w3cjs**对象，其中有 **age** 和 **name** 两个字段,我们在`Proxy`中的 **get** 拦截函数中添加了一个判断，如果是取 **age** 属性的值，则在后面添加 **岁**。在 **set** 拦截函数中判断了如果是更改 **age** 属性时，类型不是 `Number`则抛出错误。最后输出正确结果：我叫w3cjs 我今年99岁了。
+
+Proxy的表单验证：
+
+```
+  // 验证规则
+    const validators = {
+      name: {
+        validate(value) {
+          return value.length > 6;
+        },
+        message: '用户名长度不能小于六'
+      },
+      password: {
+        validate(value) {
+          return value.length > 10;
+        },
+        message: '密码长度不能小于十'
+      },
+      moblie: {
+        validate(value) {
+          return /^1(3|5|7|8|9)[0-9]{9}$/.test(value);
+        },
+        message: '手机号格式错误'
+      }
+    }
+
+
+    // 验证方法
+    function validator(obj, validators) {
+      return new Proxy(obj, {
+        set(target, key, value) {
+          const validator = validators[key]
+          if (!validator) {
+            target[key] = value;
+          } else if (validator.validate(value)) {
+            target[key] = value;
+          } else {
+            alert(validator.message || "");
+          }
+        }
+      })
+    }
+    let form = {};
+    form = validator(form, validators);
+    form.name = '666'; // 用户名长度不能小于六
+    form.password = '113123123123123';
+```
 
 **Proxy支持拦截的操作，一共有13种：**
 
