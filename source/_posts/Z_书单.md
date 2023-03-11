@@ -13,7 +13,15 @@ toc: true # 是否启用内容索引
 
 ## 前端
 
-**javascript三剑客**
+[黑马程序员pink](https://www.bilibili.com/video/BV14J4114768)
+
+[黑马程序员JavaScript核心教程](https://www.bilibili.com/video/BV1k4411w7sV)
+
+[Vue-**电商平台数据可视化实时监控系统-Echarts-vue**](https://www.bilibili.com/video/BV1bh41197p8)
+
+[**Vue源码解析**](https://www.bilibili.com/video/BV1op4y1h7Fv)
+
+javascript三剑客
 
 - JavaScript数据结构与算法 第3版 9787115510174
 - JavaScript DOM编程艺术 第2版     9787115249999
@@ -83,7 +91,17 @@ javascript语言精粹与编程实践
 
 ## 后端
 
-### java
+### Java
+
+[**尚硅谷宋红康老师的 Java 零基础视频**](https://www.bilibili.com/video/BV1Qb411g7cz)
+
+[**尚学堂高琪老师的Java视频**](https://www.bilibili.com/video/BV1ct411n7oG)
+
+[**求知课堂2019Java入门视频**](https://www.bilibili.com/video/BV1CJ411m7gg)
+
+[**尚硅谷Java8新特性**](https://www.bilibili.com/video/BV1ME411y7Ce)
+
+[**B站最强的Java项目-谷粒商城**](https://www.bilibili.com/video/BV1np4y1C7Yf)
 
 - 《深入分析JavaWeb技术内幕》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1ALUZ-U0oqxxq-_5uGRZZhQ)提取码：g1qz
 - 《深入剖析Tomcat》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1l4amHIQzRdppXLr08BX9Zg)提取码：o06x
@@ -203,13 +221,21 @@ javascript语言精粹与编程实践
 
 ## 数据结构与算法
 
+[**青岛大学王卓老师**](https://www.bilibili.com/video/BV1nJ411V7bd)
+
+[**清华邓俊辉老师**](https://www.bilibili.com/video/BV1jt4y117KR)
+
+[Y神的背包九讲](https://www.bilibili.com/video/BV1qt411Z7nE)
+
 《程序员代码面试指南》《算法数据结构体系学习班》《算法与数据结构基础班》
 
 《漫画算法-小灰的算法之旅》
 
 学习javascript数据结构和算法
 
-啊哈算法，小灰说算法
+啊哈算法
+
+小灰说算法
 
 - 《谷歌大佬总结的三本LeetCode刷题笔记，支持Java、C++、Go三种语言》 [百度云链接 (opens new window)](https://pan.baidu.com/s/14_G6dHVpi7KFJ2NH3SC7IQ)提取码：ujuc
 - 《啊哈！算法 哈磊》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1ShKCKjoTIeThwQf0oHc_8w)提取码：5fop
@@ -271,7 +297,13 @@ javascript语言精粹与编程实践
 
 ## 计算机网络
 
-《图解 http》、《深入浅出 https》
+[**韩立刚老师**](https://www.bilibili.com/video/BV1Qr4y1N7cH)
+
+[**计算机网络微课堂**](https://www.bilibili.com/video/BV1c4411d7jb)
+
+《图解 http》
+
+《深入浅出 https》
 
 - 《计算机网络-自顶向下方法-第6版》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1iLzPlkAylfyKGso1rtwWzQ)提取码：oj35
 - 《计算机网络：自顶向下方法课后习题参考答案》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1nsl7kc7bx4faRcwKXmYCvQ)提取码：d25h
@@ -293,6 +325,12 @@ javascript语言精粹与编程实践
 - 《Computer Networks, A Systems Approach》 [百度云链接 (opens new window)](https://pan.baidu.com/s/13f2pu5TKfYBK8oXEmvDPtg)提取码：o98i
 
 ## 数据库
+
+[**尚硅谷的MySQ入门视频 + 高级篇**](https://www.bilibili.com/video/BV12b411K7Zu)
+
+[**黑马的MySQL实战教程**](https://www.bilibili.com/video/BV1vi4y137PN)
+
+[**尚硅谷MySQL数据库高级教程**](https://www.bilibili.com/video/BV1KW411u7vy)
 
 - 《MySQL必知必会 PDF + 源码》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1zVp5YyqO1PrU_-kdm_CZog)提取码：45id
 - 《数据库系统实现（第二版）》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1QaYz2VnJVrAMW1V9qQM2ng)提取码：hjds
@@ -318,6 +356,10 @@ javascript语言精粹与编程实践
 
 ## 操作系统
 
+[清华大学陈老师](https://www.bilibili.com/video/BV1uW411f72n)
+
+[**哈工大李治军**](https://www.bilibili.com/video/BV1d4411v7u7)
+
 - 《深入理解计算机系统 第3版》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1_J-lMdgmx_Pjw0B-mB3cOA)提取码：rqey
 - 《现代操作系统 - 英文版》 [百度云链接 (opens new window)](https://pan.baidu.com/s/11uvYULUEOm-Wu827PX1i-g)提取码：9kvb
 - 《现代操作系统（第三版）中文版》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1Wfzq1gWF9dEaXVgSXoLKgQ)提取码：qmfc
@@ -340,6 +382,10 @@ javascript语言精粹与编程实践
 - 《计算机系统要素 - 从零开始构建现代计算机》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1FsEHp6bPkdZVaFEiK3pCIA)提取码：hylp
 
 ## linux
+
+[**韩顺平 一周学会Linux**](https://www.bilibili.com/video/BV1Sv411r7vd)
+
+[**尚硅谷Linux教程**](https://www.bilibili.com/video/BV1dW411M7xL)
 
 - 《Linux 内核设计与实现》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1TyDQo4sQNw4y-jf_2cvYsQ)提取码：1f28
 - 《Linux UNIX系统编程手册 - 上》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1uj9cpVgr2gGAgYl-OKLdgg)提取码：htnh
@@ -391,6 +437,10 @@ javascript设计模式与开发实践
 - 《从0开始学习GitHub系列》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1bnOGOjwum0P32zijD-3NBA)提取码：uhcw
 - 《专业git中文》 [百度云链接 (opens new window)](https://pan.baidu.com/s/11K3Csq9O3LH-d7xzRiHHsw)提取码：4q2z
 - 《Git权威指南》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1TZGXb6j2lXOMNcR31FnWAg)提取码：yj4c
+
+## 爬虫
+
+[**崔庆才老师**](https://www.bilibili.com/video/BV1a7411f76Z)
 
 ## 数学相关
 
@@ -447,7 +497,7 @@ javascript设计模式与开发实践
 
 《心计》
 
-天道、青瓷、浮沉、生存法则、黑冰
+天道、青瓷、浮沉、生存法则、黑冰、黑洞、征服、破冰行动
 
 天道原著为《遥远的救世主》
 

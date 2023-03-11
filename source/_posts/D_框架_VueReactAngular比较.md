@@ -403,3 +403,142 @@ React 是世界上最流行的框架，这已不是什么秘密。它越来越�
  与其说它是一个框架，不如说它是一个库（最初是为了处理 UI 而创建的），因为它不受框架的限制，所以它的功能更多——更适合专业人士，而不是初学者；在 Angular 中许多可以“开箱即用”的主要特性，在这里必须单独连接（这种方法有优点，也有缺点，对于初学者来说是缺点，因为需要做不必要的动作）；更多地面向 JavaScript 而不是 TypeScript（尽管每个版本对 TS 的支持都在增加）；更便于创建原生 Android 和 iOS 移动应用程序，拥有大量适用于各种场合的第三方库（多于 Angular）。
  Angular 已经被用在了许多规模最大、最复杂的 Web 应用程序中。
 
+# Mixin-HOC-Hook
+
+## **Hook**
+
+```
+<template>
+  <p>{{ person.name }}</p>
+  <p>{{ car.name }}</p>
+  <p>{{ animal.name }}</p>
+</template>
+
+<script lang="ts" setup>
+import { usePerson, useCar, useAnimal } from "./hooks";
+
+const { person, changePersonName } = usePerson();
+
+const { car } = useCar();
+</script>
+```
+
+```
+// usePerson.ts
+import { reactive, watch } from "vue";
+
+export default function usePerson() {
+  const person = reactive<{ name: string; sex: string }>({
+    name: "小明",
+    sex: "male",
+  });
+  watch(
+    () => [person.name, person.sex],
+    ([nameVal, sexVal]) => {
+      console.log(`名字被修改了, 修改为 ${nameVal}`);
+      console.log(`名字被修改了, 修改为 ${sexVal}`);
+    }
+  );
+  function changePersonName() {
+    person.name = "小浪";
+  }
+  return {
+    person,
+    changePersonName,
+  };
+}
+```
+
+## **Mixin-HOC-Hook**
+
+Mixin-HOC的缺点：
+
+- 渲染上下文中公开的属性的来源不清楚。 例如，当使用多个 mixin 读取组件的模板时，可能很难确定从哪个 mixin 注入了特定的属性。
+
+- 命名空间冲突。 Mixins 可能会在属性和方法名称上发生冲突，而 HOC 可能会在预期的 prop 名称上发生冲突。
+
+- 性能问题，HOC 和无渲染组件需要额外的有状态组件实例，这会降低性能。
+
+Hook的优点：
+
+- 暴露给模板的属性具有明确的来源，因为它们是从 Hook 函数返回的值。
+
+- Hook 函数返回的值可以任意命名，因此不会发生名称空间冲突。
+
+- 没有创建仅用于逻辑重用的不必要的组件实例。
+
+Hook的缺点：比如 `ref` 带来的心智负担
+
+## React Hook 和 Vue Hook 对比
+
+ React Hook 的缺点(限制非常多)：
+
+- 不要在循环，条件或嵌套函数中调用 Hook
+
+- 确保总是在你的 React 函数的最顶层调用他们。
+
+- 遵守这条规则，你就能确保 Hook 在每一次渲染中都按照同样的顺序被调用。这让 React 能够在多次的 useState 和 useEffect 调用之间保持 hook 状态的正确。
+
+Vue Hook的优点：
+
+- 与 React Hooks 相同级别的逻辑组合功能，但有一些重要的区别。 与 React Hook 不同，`setup` 函数仅被调用一次，这在性能上比较占优。
+
+- 对调用顺序没什么要求，每次渲染中不会反复调用 Hook 函数，产生的的 GC 压力较小。
+
+- 不必考虑几乎总是需要 useCallback 的问题，以防止传递`函数prop`给子组件的引用变化，导致无必要的重新渲染。
+
+- React Hook 有臭名昭著的闭包陷阱问题（甚至成了一道热门面试题，omg），如果用户忘记传递正确的依赖项数组，useEffect 和 useMemo 可能会捕获过时的变量，这不受此问题的影响。 Vue 的自动依赖关系跟踪确保观察者和计算值始终正确无误。
+
+- 不得不提一句，React Hook 里的「依赖」是需要你去手动声明的，而且官方提供了一个 eslint 插件，这个插件虽然大部分时候挺有用的，但是有时候也特别烦人，需要你手动加一行丑陋的注释去关闭它。
+
+黄子毅大大眼中的Vue Hook的优点：
+
+- `setup` 仅执行一遍，而 React Function Component 每次渲染都会执行
+
+- Vue 的代码使用更符合 JS 直觉。JS 并非是针对 Immutable 设计的语言，所以 Mutable 写法非常自然，而 Immutable 的写法就比较别扭。
+
+- 当 Hooks 要更新值时，Vue 只要用等于号赋值即可，而 React Hooks 需要调用赋值函数，当对象类型复杂时，还需借助第三方库才能保证进行了正确的 Immutable 更新。
+
+- 对 Hooks 使用顺序无要求，而且可以放在条件语句里。
+
+  > 对 React Hooks 而言，调用必须放在最前面，而且不能被包含在条件语句里，这是因为 React Hooks 采用下标方式寻找状态，一旦位置不对或者 Hooks 放在了条件中，就无法正确找到对应位置的值。
+  >
+  > 而 Vue Function API 中的 Hooks 可以放在任意位置、任意命名、被条件语句任意包裹的，因为其并不会触发 `setup` 的更新，只在需要的时候更新自己的引用值即可，而 Template 的重渲染则完全继承 Vue 2.0 的依赖收集机制，它不管值来自哪里，只要用到的值变了，就可以重新渲染了。
+
+- 不会再每次渲染重复调用，减少 GC 压力
+
+  > React的Hooks 都在渲染闭包中执行，每次重渲染都有一定性能压力，而且频繁的渲染会带来许多闭包，虽然可以依赖 GC 机制回收，但会给 GC 带来不小的压力。
+  >
+  > Vue Hooks 只有一个引用，所以存储的内容就非常精简，也就是占用内存小，而且当值变化时，也不会重新触发 `setup` 的执行，所以确实不会造成 GC 压力。
+
+- React 必须要总包裹 `useCallback` 函数确保不让子元素频繁重渲染
+
+  >  Vue 3.0，由于 `setup` 仅执行一次，因此函数本身只会创建一次，不存在多实例问题，不需要 `useCallback` 的概念，更不需要使用 [lint 插件](https://link.juejin.cn/?target=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Feslint-plugin-react-hooks) 保证依赖书写正确.
+
+- Vue不需要使用 `useEffect` `useMemo` 等进行性能优化，所有性能优化都是自动的。
+
+[React Hook + TS 购物车实战（性能优化、闭包陷阱、自定义 hook）](https://juejin.cn/post/6844904079181905927)
+
+**参考**
+
+[Vue3 究竟好在哪里？（和 React Hook 的详细对比）](https://juejin.cn/post/6844904132109664264#heading-9)
+
+[精读《Vue3.0 Function API》](https://juejin.cn/post/6844903877574295560#heading-4)
+
+## React 和 Vue逻辑结构对比
+
+- Vue：Mutable + Template
+- React：Immutable + JSX
+
+JSX 与 Template 的根本区别：
+
+- jsx:JSX 使模版与 JS 可以写在一起，因此数据层与渲染层可以耦合在一起写（也可以拆分）
+- template:Vue 采取的 Template 思路使数据层强制分离了，这也使代码分层更清晰
+
+**不建议在 JSX 中再实现类似 Mutable + JSX** 
+
+
+
+
+
+# 

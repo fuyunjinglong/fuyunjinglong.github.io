@@ -18,6 +18,16 @@ toc: true # 是否启用内容索引
 - 暂存区：保存了下次将提交的文件列表信息，一般在 Git 仓库目录中，是一个叫index的文件，通常多数说法还是叫暂存区域；
 - 版本库：也叫本地版本库，之所以说git 快，是因为它是分布式版本控制系统，大部分提交都是对本地仓库而言的，不依赖网络，最后一次会推送的到远程仓库。
 
+# 给开源项目贡献代码
+
+**pr问题**
+
+> 对有些项目是可以的，但是对有些项目不行，因为你如果merge了已经fork的仓库，会产生merge commit，你再pull request的时候，源仓库的管理人员会退回你的request，因为他们想要保持git history干净整洁，你应该用git rebase自己的分支，这样你提交上去后人家才愿意合并（前提是你的改动是已经被接纳）。可以看看github的help页面有详细解释。
+
+**参考**
+
+[开源指北-科普](https://oschina.gitee.io/opensource-guide/guide/%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%EF%BC%9A%E5%88%9D%E8%AF%86%E5%BC%80%E6%BA%90/%E7%AC%AC%201%20%E5%B0%8F%E8%8A%82%EF%BC%9A%E4%BB%80%E4%B9%88%E6%98%AF%E5%BC%80%E6%BA%90/#%E5%BC%80%E6%BA%90%E7%9A%84%E6%A6%82%E5%BF%B5)
+
 # 常用命令
 
 [git命令详解](https://www.itqaq.com/index/cate/37.html)

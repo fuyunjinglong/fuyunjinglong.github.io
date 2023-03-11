@@ -24,6 +24,119 @@ toc: true # 是否启用内容索引
 >
 > 给一个全局变量赋值为undefined，相当于将这个对象的值清空，但是这个对象依旧存在,如果是给对象的属性赋值 为undefined，说明这个值为空值
 
+## JS类型判断---typeof,  instanceof, constructor,toString
+
+**typeof**
+
+缺点：无法区分null，数组，对象
+
+```
+typeof null            ------------------>"object"
+typeof [1,2,3]         ------------------>"object"
+typeof ibj          ------------------>"object"
+typeof new Date()      ------------------>"object"
+typeof new RegExp()    ------------------>"object"
+typeof "helloworld"    ------------------>"string"     
+typeof 123             ------------------>"number"
+typeof new Function()  ------------------>"function"
+typeof Symbol()        ------------------>"symbol"
+typeof true            ------------------>"true"
+typeof undefined       ------------------>"undefined"
+typeof 'undefined'     ------------------>"string"
+```
+
+**instanceof**
+
+缺点：不能区分undefined和null，不能区分Object和Function。对于基本类型如果不是用new声明的则也测试不出来，对于是使用new声明的类型，它还可以检测出多层继承关系。
+
+```
+console.log(bool instanceof Boolean);// false
+console.log(num instanceof Number);// false
+console.log(str instanceof String);// false
+console.log(und instanceof Object);// false
+console.log(arr instanceof Array);// true
+console.log(nul instanceof Object);// false
+console.log(obj instanceof Object);// true
+console.log(fun instanceof Function);// true
+
+var bool2 = new Boolean()
+console.log(bool2 instanceof Boolean);// true
+
+var num2 = new Number()
+console.log(num2 instanceof Number);// true
+
+var str2 = new String()
+console.log(str2 instanceof String);//  true
+
+function Person(){}
+var per = new Person()
+console.log(per instanceof Person);// true
+
+function Student(){}
+Student.prototype = new Person()
+var haoxl = new Student()
+console.log(haoxl instanceof Student);// true
+console.log(haoxl instanceof Person);// true
+```
+
+手写instanceof
+
+```
+const self_instanceof = function (instance, constructor) {
+    let instance_proto = instance.__proto__;
+    let constructor_proto = constructor.prototype;
+
+    while(true) {
+        // 找到终点返回false
+       if (instance_proto === null) {return false};
+       // 找到返回true
+       if (instance_proto === constructor_proto) {return true};
+        // 当实例与构造函数原型不相同, 沿着原型链继续向上查找
+        instance_proto = instance_proto.__proto__;
+    }
+}
+console.log([] instanceof Array)   // true
+console.log(self_instanceof([], Array))  // true
+```
+
+**constructor**
+
+`constructor`主要是利用原型上的`prototype.constructor`指向实例的构造函数来进行判断的。
+
+缺点：不能判断undefined和null，并且使用它是不安全的，因为contructor的指向是可以改变的
+
+```
+console.log('1'.constructor === String);  // true
+console.log(new Number(1).constructor === Number); // true
+console.log(true.constructor === Boolean); // true
+console.log(alert.constructor === Function); // true
+console.log([].constructor === Array); // true
+console.log(new Date().constructor === Date); // true
+```
+
+**toString**
+
+`toString`是`Object.prototype`上的一个方法, 常用方式为 `Object.prototype.toString.call(target)`返回值是 `[object 类型]`字符串,该方法基本上能判断所有的数据类型(自定义数据类型除外)
+
+```
+// 定义判断类型函数
+let getType = target => Object.prototype.toString.call(target)
+
+console.log(getType('')); // [object String]
+console.log(getType(2)); // [object Number]
+console.log(getType(true)); // [object Boolean]
+console.log(getType(undefined)); // [object Undefined]
+console.log(getType(null)); // [object Null]
+console.log(getType(Symbol())); // [object Symbol]
+console.log(getType({})); // [object Object]
+console.log(getType([])); // [object Array]
+console.log(getType(alert)); // [object Function]
+console.log(getType(new RegExp())); // [object RegExp]
+console.log(getType(new Date())); // [object Date]
+```
+
+
+
 ## 模块化思想
 
 - 由于 `ESM` 具有简单的语法，异步特性和可摇树性，因此它是最好的模块化方案
@@ -2654,66 +2767,37 @@ document.addEventListener("click", function (event) {
 
 使用“事件委托”时，并不是说把事件委托给的元素越靠近顶层就越好。事件冒泡的过程也需要耗时，越靠近顶层，事件的”事件传播链”越长，也就越耗时。
 
-## 事件循环
+## 消息队列和事件循环
 
-**1.JavaScript是单线程，非阻塞的**
+js是单线程阻塞执行的，js 引擎执行异步代码和支持多线程，主要依靠消息队列和事件循环机制。
 
-单线程：JavaScript的主要用途是与用户互动，以及操作DOM。如果它是多线程的会有很多复杂的问题要处理.
+**基本概念**
 
-非租塞：多线程和异步是通过通过 event loop 实现。
+- 消息队列：消息队列是一个先进先出的队列，它里面存放着各种消息。
+- 事件循环：事件循环是指主线程重复异步任务压入消息队列，从消息队列中取消息、执行回调函数的过程。
 
-**2.任务类型**
+**核心流程**
 
-**同步任务**指的是，在主线程上排队执行的任务，只有前一个任务执行完毕，才能执行后一个任务；
-
-**异步任务**指的是，不进入主线程、而进入"任务队列"（task queue）的任务，只有"任务队列"通知主线程，某个异步任务可以执行了，该任务才会进入主线程执行。
-
-异步任务**按照优先级**，又分为微任务和宏任务。
-
-**宏任务**:每次执行栈执行的代码就是一个宏任务（包括每次从事件队列中获取一个事件回调并放到执行栈中执行）
-
-```js
-主代码块
-setTimeout
-setInterval
-postMessage
-MessageChannel
-setImmediate(Node.js 环境)
-script(可以理解为外层同步代码)
-I/O（Node.js）
-UI交互事件
-```
-
-**微任务**：当前宏任务执行结束后立即执行的任务
-
-```js
-Promise.then
-MutationObserver
-Object.observe（已废弃；Proxy 对象替代）
-process.nextTick(Node.js 环境)
-```
-
-**3.Event Loop执行流程**
-
-定义："**Event Loop是一个程序结构，用于等待和发送消息和事件。**
-
-主要涉及**调用栈**(call stack是一个存储函数调用的**栈结构**，遵循**先进后出**的原则)、**宏任务队列**(macrotaskqueue)、**微任务队列**(microtask quene).
-
-**特别强调**：根据规范，**宏任务**的队列可以有多个，而**微任务**队列只能有一个。这个过程中，如果产生新的微任务，是可以加入到微任务队列，但如果产生宏任务，则需要添加到下一个宏任务队列。**与先微任务后宏任务流程一致**
-
-
-
-在一次Tick循环中，执行流程：**当前执行栈即也属于宏任务-当前微任务**-声明的(下一个)宏任务-声明的(下一个)宏任务。。。无限循环
-
-- 执行**一个宏任务**（栈中没有就从事件队列中获取）
-- 执行过程中如果遇到微任务，就将它添加到**微任务的任务队列**中
-- 宏任务执行完毕后，立即执行当前微任务队列中的所有微任务（依次执行）
-- 当前宏任务执行完毕，开始检查渲染，然后GUI线程接管渲染
-- 渲染完毕后，JS线程继续接管，开始**下一个宏任务(主线程中当前执行栈的宏任务就是下一个宏任务，所以当前执行栈总是先执行执行栈，然后微任务，再(下一个)宏任务)**（从事件队列中获取，也就是 callbacke queue）**与先微任务后宏任务流程一致**
-
-![image-20211024222114449](/img/image-20211024222114449.png)
+- 主线程(调用栈)执行同步代码，异步任务就放入到消息队列中
+- 消息队列按照先进先出原则，异步处理不阻塞主线程
+- 当主线程的同步任务执行完后，开始执行回调函数，处理从消息队列的出来的返回值
 
 ![image-20220123200002149](/img/image-20220123200002149.png)
+
+主线程执行的回调函数，一定是在下一轮事件循环中的开始，属于下一轮。
+
+**消息队列**
+
+按照异步任务优先级，分为微任务(microtask队列)和宏任务(macrotask队列)。
+
+- 微任务包括 `process.nextTick` ，`promise` ，`MutationObserver`。
+- 宏任务包括 `script` ， `setTimeout` ，`setInterval` ，`setImmediate` ，`I/O` ，`UI rendering`。
+
+**经典题**
+
+[js异步任务](https://www.cnblogs.com/xiaozhumaopao/p/11066005.html)
+
+[js 异步执行顺序](https://www.cnblogs.com/xiaozhumaopao/p/11066005.html)
 
 ```
 加强版练习
@@ -2740,6 +2824,16 @@ new Promise(resolve => {
     console.log('promise2')
   })
 console.log('script end')
+1. 定义函数`async1`、`async2`，**打印`script start`**；
+2. 执行`setTimeout`，回调交由`Web API`处理，`Web API`将其加入宏任务队列；
+3. 执行`async1`，**打印`async1 start`**；
+4. 执行`async2`，**打印`async2`**，由于左边有`await`，将`console.log('async1 end')`放入微任务队列；
+5. 执行`new Promise`，同步执行传入构造函数的函数，**打印`promise1`**；
+6. promise完成，将`console.log('promise2')`所在函数放入微任务队列；
+7. **打印`script end`**，当前任务执行完毕；
+8. 检查微任务队列并依次取出执行，**打印`async1 end`**、**打印`promise2`**；
+9. 微任务队列为空，执行栈为空，检查宏任务队列，取出任务执行，**打印`setTimeout`**；
+10. 执行完毕。
 ```
 
 async await 本身就是 promise+generator 的语法糖。所以 await 后面的代码是 microtask。所以对于上面代码中的
@@ -2758,14 +2852,6 @@ async function async1() {
         })
 }
 ```
-
-总结：
-
-- 微任务队列优先于宏任务队列执行；
-- 微任务队列上创建的宏任务会被后添加到当前宏任务队列的尾端；
-- 微任务队列中创建的微任务会被添加到微任务队列的尾端；
-- 只要微任务队列中还有任务，宏任务队列就只会等待微任务队列执行完毕后再执行；
-- 只有运行完 `await` 语句，才把 `await` 语句后面的全部代码加入到微任务行列；
 
 ## 节流和防抖
 
@@ -3113,7 +3199,7 @@ readyState是XMLHttpRequest对象的一个属性，用来标识当前XMLHttpRequ
 
 5：服务端错误
 
-# 手写发布订阅
+# 手写-发布订阅
 
 ```js
 <script>
@@ -3150,6 +3236,74 @@ shoeObj.listen('blue',function(size){
 shoeObj.trigger('red',12)
 shoeObj.trigger('blue',18)
 </script>
+```
+
+# 手写-JSON.stringfy()和JSON.parse()
+
+```
+if (!window.JSON) {
+    window.JSON = {
+        parse: function(jsonStr) {
+            return eval('(' + jsonStr + ')');
+        },
+        stringify: function(jsonObj) {
+            var result = '',
+                curVal;
+            if (jsonObj === null) {
+                return String(jsonObj);
+            }
+            switch (typeof jsonObj) {
+                case 'number':
+                case 'boolean':
+                    return String(jsonObj);
+                case 'string':
+                    return '"' + jsonObj + '"';
+                case 'undefined':
+                case 'function':
+                    return undefined;
+            }
+
+            switch (Object.prototype.toString.call(jsonObj)) {
+                case '[object Array]':
+                    result += '[';
+                    for (var i = 0, len = jsonObj.length; i < len; i++) {
+                        curVal = JSON.stringify(jsonObj[i]);
+                        result += (curVal === undefined ? null : curVal) + ",";
+                    }
+                    if (result !== '[') {
+                        result = result.slice(0, -1);
+                    }
+                    result += ']';
+                    return result;
+                case '[object Date]':
+                    return '"' + (jsonObj.toJSON ? jsonObj.toJSON() : jsonObj.toString()) + '"';
+                case '[object RegExp]':
+                    return "{}";
+                case '[object Object]':
+                    result += '{';
+                    for (i in jsonObj) {
+                        if (jsonObj.hasOwnProperty(i)) {
+                            curVal = JSON.stringify(jsonObj[i]);
+                            if (curVal !== undefined) {
+                                result += '"' + i + '":' + curVal + ',';
+                            }
+                        }
+                    }
+                    if (result !== '{') {
+                        result = result.slice(0, -1);
+                    }
+                    result += '}';
+                    return result;
+
+                case '[object String]':
+                    return '"' + jsonObj.toString() + '"';
+                case '[object Number]':
+                case '[object Boolean]':
+                    return jsonObj.toString();
+            }
+        }
+    };
+}
 ```
 
 # 创建函数的几种方式
@@ -3232,6 +3386,94 @@ function fun(n,o) {
 > 注意：所有**声明的匿名函数都是一个新函数。**
 
 所以第一个fun函数与第二个fun函数不相同，均为新创建的函数。  
+
+# try...catch...finally
+
+总原则：顺序执行(如遇异常或throw,则进入catch),最后进入finally，最后再执行return语句(如果有return语句的话)。
+
+**catch**
+
+一旦出现异常或throw抛出异常，就进入catch
+
+```
+try{
+    console.log('begin throw error')
+    throw new Error('this is a error')
+    console.log('Will it work here ? ')
+} catch(e){
+    console.log('e:',e)
+}
+
+//打印结果
+begin throw error
+e: this is a error
+```
+
+**finally**
+
+```
+function test() {
+        try {
+          console.log(1);
+          throw new Error("throw");
+        } catch (e) {
+          console.log(e.message);
+          return "from_catch";
+        } finally {
+          console.log(2);
+        }
+      }
+      console.log(test());
+      /*打印
+        1
+        throw
+        2
+        from_catch
+      */
+```
+
+# 实现setTimeout和实现setInterval
+
+**使用setTimeout实现setInterval**
+
+> setInterval 的作用是每隔一段指定时间执行一个函数，但是这个执行不是真的到了时间立即执行，它真正的作用是每隔一段时间将事件加入事件队列中去，只有当当前的执行栈为空的时候，才能去从事件队列中取出事件执行。所以可能会出现这样的情况，就是当前执行栈执行的时间很长，导致事件队列里边积累多个定时器加入的事件，当执行栈结束的时候，这些事件会依次执行，因此就不能到间隔一段时间执行的效果。
+
+ 针对 setInterval 的这个缺点，我们可以使用 setTimeout 递归调用来模拟 setInterval，这样我们就确保了只有一个事件结束了，我们才会触发下一个定时器事件，这样解决了 setInterval 的问题。
+
+ 实现思路是使用递归函数，不断地去执行 setTimeout 从而达到 setInterval 的效果
+
+```js
+      function mySetInterval(fn, timeout) {
+        // 控制器，控制定时器是否继续执行
+        let timer = { flag: true };
+        // 设置递归函数，模拟定时器执行
+        function interval() {
+          if (timer.flag) {
+            fn();
+            setTimeout(interval, timeout);
+          }
+        }
+        // 启动定时器
+        setTimeout(interval, timeout);
+        // 返回控制器
+        return timer;
+      }
+```
+
+**使用setInterval实现setTimeout**
+
+```js
+function mySetInterval(fn, timeout) {
+        //timer用来接收setInterval返回的编号，用于后面清除setInterval
+        //setInterval会一直执行，但是在setInterval里面执行clearInterval()将会被清除
+        const timer = setInterval(() => {
+          //执行传入函数
+          fn();
+          //清除该次setInterval
+          clearInterval(timer);
+        }, timeout);
+      }
+```
 
 # 高阶函数
 
@@ -3651,6 +3893,55 @@ g(3);
 
 **定义：**尾调用自身。
  "尾调用优化"对递归操作意义重大。ES6中第一次明确规定，所有 ECMAScript 的实现，都必须部署"尾调用优化"。这就是说，在 ES6 中，只要使用尾递归（在严格模式下），就不会发生栈溢出，相对节省内存
+
+## 尾递归(tail recursion)
+
+**非尾递归**
+
+因为最后一个操作并不是调用自己, 而是 乘法
+
+```
+function fact(n){
+    if(n==0)return 1;
+    return n*fact(n-1);
+}
+```
+
+**尾递归**
+
+当然是最后一个操作一定是调用自己.
+
+```
+function fact(n, acc){
+    if(n==0)return acc;
+    return fact(n-1, acc*n)
+}
+```
+
+两个地方值得注意
+
+- 看到 `acc` 了没有, 这就是典型的尾递归最常见的东西, 用来累计每次递归运算结果
+- fact函数的最后一个操作是fact本身
+
+由于tail recur非常容易改写成循环, 编译器容易对其进行优化
+
+```
+function fact(n){
+    var acc=1,i=n
+    while(i!=0){
+        acc=acc*i;
+        i-=1;
+    }
+    return acc
+}
+```
+
+有没有觉得尾递归和循环非常像, 唯一的区别是
+
+- 尾递归用参数重新绑定递减的n
+- 尾递归用参数重新绑定叠加值acc
+- 循环直接改变变量i来进行递减
+- 循环叠加变量acc
 
 ## **柯里化**
 

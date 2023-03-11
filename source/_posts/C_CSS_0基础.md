@@ -6,82 +6,455 @@ categories:
 toc: true # 是否启用内容索引常
 ---
 
-# CSS
+# 入门
 
-## 盒子的水平居中方案
+## CSS模块化
 
-**五种方案**
+模块化进程:BEM、OOCSS、SMACSS、ITCSS，以及 CSS Modules 和 CSS-in-JS 等,目前主流的是CSS Modules 和 CSS-in-JS
 
-- 定位的三种
-- display:flex
-- javascript
-- display:table-cell
+**一、CSS 命名方法论**
+
+通过人工的方式来约定命名规则.
+
+> 社区在早期诞生了一些 CSS 命名方法论，如 BEM、OOCSS、SMACSS、ITCSS、SUITCSS、Atomic CSS 等
+
+**1.BEM**
+
+[BEM](https://link.segmentfault.com/?enc=yvW7zwnlxk23Je688mavOg%3D%3D.slTmHPfpl7kIEsnMLdKdGAX34lkMbtmb9JbNK731ieY%3D)（Block Element Modifier）是一种典型的 CSS 命名方法论，在 2009 年前提出，它的核心思想是 **通过组件名的唯一性来保证选择器的唯一性，从而保证样式不会污染到组件外**。
+
+BEM 命名规约是 `.block-name__element-name--modifier-name`，即 `.模块名__元素名--修饰器名` 三个部分。也可以自定义
 
 ```
-<body>
-	<div class="box" id="box"></div>
-</body>
+<!-- 示例模块 -->
+<div class="card">
+  <div class="card__head">
+    <ul class="card__menu">
+      <li class="card__menu-item">menu item 1</li>
+      <li class="card__menu-item">menu item 2</li>
+      <li class="card__menu-item card__menu-item--active">menu item 3</li>
+      <li class="card__menu-item card__menu-item--disable">menu item 4</li>
+    </ul>
+  </div>
+  <div class="card__body"></div>
+  <div class="card__foot"></div>
+</div>
 
-body{
-	position:relative;
-}
-// 定位方案1必须要有宽高
-.box{
-	position:absolute;
-	top:50%;
-	left:50%;
-	margin-top:-25px;
-	margin-left:-25px;
-}
-// 定位方案2必须要有宽高
-.box{
-	position:absolute;
-	top:0;
-	left:0;
-	right:0;
-	bottom:0;
-	margin:auto;
-}
-// 定位方案3，不兼容IE
-.box{
-	position:absolute;
-	top:50%;
-	left:50%;
-	transform:translate(-50%,-50%);
-}
+.card {}
+.card__head {}
+.card__menu {}
+.card__menu-item {}
+.card__menu-item--active {}
+.card__menu-item--disable {}
+.card__body {}
+.card__foot {}
 
-// flex水平垂直居中
-.box{
-	display:flex;
-.con{
-	margin:auto;
-}
-}
-
-JS方案
-let html = document.documentElement,
-	winW = html.clientWidth,
-	winH = html.clientHeight,
-	boxW = box.offsetWidth,.// box为id,可以直接用，不需要声明
-	boxH = box.offsetHeight
-box.style.position = 'absolute';
-box.style.left = (winW - boxW)/2 + 'px';
-box.style.top = (winH - boxH)/2 + 'px';
-
-table-cell方案，比较少用,要求父元素必须有宽高
-body{
-	display:table-cell;
-	vertical-align:middle;
-	tex-align:center;
-	width:500px;
-	height:300px;
-}
-.box{
-	display:inline-block;
+使用sass更简单
+.card {
+  &__head {}
+  &__menu {
+    &-item {
+      &--active {}
+      &--disable {}
+    }
+  }
+  &__body {}
+  &__foot {}
 }
 ```
 
-## 盒模型
+**2.OOCSS**
+
+[OOCSS](https://link.segmentfault.com/?enc=xQLxwsdZQTlZ9EndBOEWoA%3D%3D.TTDNApcr2Fzcm68Lm17UVrYSn8HEGzQf%2FoNpnsV7rzI%3D)（Object-Oriented CSS）即面向对象的 CSS，它借鉴了 OOP（面向对象编程）的抽象思维，主张将元素的样式抽象成多个独立的小型样式类，来提高样式的灵活性和可重用性。
+
+OOCSS 有两个基本原则：
+
+1. **独立的结构和样式**。即不要将定位、尺寸等布局样式与字体、颜色等表现样式写在一个选择器中。
+2. **独立的容器和内容**。即让对象的行为可预测，避免对位置的依赖，子元素即使离开了容器也应该能正确显示。
+
+```
+<div class="size1of4 bgBlue solidGray mt-5 ml-10 mr-10 mb-10"></div>
+
+<style>
+  .size1of4 { width: 25%; }
+  .bgBlue { background: blue; }
+  .solidGray { border: 1px solid #ccc; }
+  .mt-5 { margin-top: 5px; }
+  .mr-10 { margin-right: 10px }
+  .mb-10 { margin-bottom: 10px; }
+  .ml-10 { margin-left: 10px; }
+</style>
+```
+
+**3.SMACSS**
+
+[SMACSS](https://link.segmentfault.com/?enc=EPc3pUkONY6IB98KLpzuqA%3D%3D.lzbwbQHlVHy4FEbypLaauwhxlu9zjTEjZwvnMALKmrM%3D)（Scalable and Modular Architecture for CSS）即可伸缩及模块化的 CSS 结构，由 Jonathan Snook 在 2011 年雅虎时提出。
+
+SAMCSS 按照部件的功能特性，将其划分为五大类：
+
+1. 基础（Base）是为HTML元素定义默认样式，可以包含属性、伪类等选择器。
+2. 布局（Layout）会将页面分为几部分，可作为高级容器包含一个或多个模块，例如左右分栏、栅格系统等。
+3. 模块（Module）又名对象或块，是可重用的模块化部分，例如导航栏、产品列表等。
+4. 状态（State）描述的是任一模块或布局在特定状态下的外观，例如隐藏、激活等。
+5. 主题（Theme）也就是换肤，描述了页面的外观，它可修改前面四个类别的样式，例如链接颜色、布局方式等。
+
+SMACSS 推荐使用前缀来区分不同部件：
+
+1. 基础规则是直接作用于元素的，因此不需要前缀。
+2. 布局的前缀是 `l-` 或 `layout-`，例如 `.l-table`、`.layout-grid` 等。
+3. 模块的前缀是 `m-` 或模块自身的命名，例如 `.m-nav`、`.card`、`.field` 等。
+4. 状态的前缀是 `is-`，例如 `.is-active`、`.is-current` 等。
+5. 主题的前缀是 `theme-`，例如 `.theme-light`、`.theme-dark` 等。
+
+**4.ITCSS**
+
+[ITCSS](https://link.segmentfault.com/?enc=7puURltb2DMR9OvLY0hagA%3D%3D.GwUjYal62vVu4Sr6ZC8rwf%2BOw1p35zkM4pnVHzNsoJs%3D)（Inverted Triangle CSS，倒三角 CSS）是一套方便扩展和管理的 CSS 体系架构，它兼容 BEM、OOCSS、SMACSS 等 CSS 命名方法论。ITCSS 使用 **分层** 的思想来管理你的样式文件，类似服务端开发中的 MVC 分层设计。
+
+ITCSS 将 CSS 的样式规则划分成以下的几个层次：
+
+1. Settings：项目使用的全局变量，比如颜色，字体大小等等。
+2. Tools：项目使用的 mixins 和 functions。到 Tools 为止，不会生成具体的 CSS 代码。
+3. Generic：最基本的设定，比如 reset.css、normalize.css 等。
+4. Base：最基础的元素（elements），比如 img、p、link、list 等。
+5. Objects：某种设计模式，比如水平居中，
+6. Components：UI 组件，比如 button、switch、slider 等。
+7. Trumps：用于辅助和微调的样式，只有这一层才可以使用 `!important`。
+
+ITCSS 的分层逻辑越往下就越具体。
+
+**二、CSS Modules**
+
+一个 CSS 文件就是一个独立的模块，参考 [官网](https://link.segmentfault.com/?enc=BJsoEYOSyS57lkiwMJLYnw%3D%3D.vh2xxHkCWj%2BQKZpJsHXPIUajJVVSZjVjfBsemBR5r%2BVf%2BMc%2FDKvK9%2F0DpFE%2Bvo48) 或 [阮老师的《CSS Modules 用法教程》](https://link.segmentfault.com/?enc=eAUflHKK1qn8%2FThzUP%2FR4A%3D%3D.houo%2FuVymgDZkoWrMpZteijNiFDjiyLdtnAu6BLApoDkRFGoQNaOBxdP%2BWbZhEQW2K6zSg2WtRewaQE2ZAvtFQ%3D%3D)
+
+CSS Modules 特性：
+
+- **作用域**：模块中的名称默认都属于本地作用域，定义在 `:local` 中的名称也属于本地作用域，定义在 `:global` 中的名称属于全局作用域，全局名称不会被编译成哈希字符串。
+- **命名**：对于本地类名称，CSS Modules 建议使用 camelCase 方式来命名，这样会使 JS 文件更干净，即 `styles.className`。
+  但是你仍然可以固执己见地使用 `styles['class-name']`，允许但不提倡。🤪
+- **组合**：使用 `composes` 属性来继承另一个选择器的样式，这与 Sass 的 `@extend` 规则类似。
+- **变量**：使用 `@value` 来定义变量，不过需要安装 PostCSS 和 [postcss-modules-values](https://link.segmentfault.com/?enc=6qRrTvtCeBEVMSaZinCvdg%3D%3D.BsxZmhP%2B%2FpbLWFfYbVDqPIZBmsJe5BRIoBln8De8oK2zWQeSHOvH9swE3OwSdkhyqCwuM3aMzTXOJ6RfU48csw%3D%3D) 插件。
+
+使用 CSS Modules 时，推荐配合 CSS 预处理器（Sass/Less/Stylus）一起使用。
+
+**三、CSS-in-JS**
+
+在 JS 中写 CSS
+
+一些流行的 CSS-in-JS 库：
+
+- styled-components：[https://github.com/styled-com...](https://link.segmentfault.com/?enc=a6xFyjud2eLVlZQ5W2dCTg%3D%3D.O8yGJpTGR78T%2BKlvrGFRBPIl4j%2FiRGbhKVzgBCPGSSJ64j1gwCSrPUB6llUvUK3Kpr8Cg54GUvbw%2FWGpy109zQ%3D%3D) 33k（**推荐**）
+- emotion：[https://github.com/emotion-js...](https://link.segmentfault.com/?enc=jphqNJAWNp2wv3ZHyS7EJw%3D%3D.fClomBedJyIu9HKokNoSCK9GLiXBBXv4fTKTlOU%2FAG7xqOJgchIEiJBmrcV0GHf0) 13k
+- Radium：[https://github.com/Formidable...](https://link.segmentfault.com/?enc=LLhYeIIgaa2Y8%2FuEt%2FLclQ%3D%3D.guROpM%2F6%2Fkr%2BVF3x6BM8ImnwLK8obWjQln7RtS5pfVtTiFbbf56YFAnt6Z0sJhPj) 7k（已不再维护）
+- Styled System：[https://github.com/styled-sys...](https://link.segmentfault.com/?enc=zMezLar1YHL%2FZ6dm9trvQA%3D%3D.BGxU7DGdgNRUEXGxmjOFj9TyUSA9KoR9bkTn3r4OB5x0CJl62JwuBrj5E7VQBH5P) 7k
+- styled-jsx：[https://github.com/vercel/sty...](https://link.segmentfault.com/?enc=AwZY8bwO%2BaDAicthXeRp3Q%3D%3D.egjjKkwkd7TwqJPL9flUk32UBBQfdSbsJo3cpC%2FrIz0dD%2Fhs97MBmYy%2BBxjDSayU) 6k
+- JSS：[https://github.com/cssinjs/jss](https://link.segmentfault.com/?enc=3N%2F6ppz5NgJENbDap%2BSOvQ%3D%3D.aUwJeWyfzuONqE%2BD%2FeEbu%2Fsw1yB5qPNwV%2FxUkMAs3Bc%3D) 6k
+
+**参考**
+
+[[CSS 模块化方案探讨（BEM、OOCSS、CSS Modules、CSS-in-JS ...）](https://segmentfault.com/a/1190000039772466)](https://segmentfault.com/a/1190000039772466)
+
+[CSS模块化演进](https://codechina.gitcode.host/programmer/fe/20-CSS-modularization.html#css-%E6%A8%A1%E5%9D%97%E5%8C%96%E6%BC%94%E8%BF%9B)
+
+## BFC
+
+**定义**
+
+`BFC` 全称：`Block Formatting Context`， 名为 "块级格式化上下文"。
+
+`W3C`官方解释为：`BFC`它决定了元素如何对其内容进行定位，以及与其它元素的关系和相互作用，当涉及到可视化布局时，`Block Formatting Context`提供了一个环境，`HTML`在这个环境中按照一定的规则进行布局。
+
+一句话：`BFC`是一个完全独立的空间（布局环境），让空间里的子元素不会影响到外面的布局。
+
+**触发BFC的css属性**
+
+- overflow: hidden
+- display: inline-block
+- position: absolute
+- position: fixed
+- display: table-cell
+- display: flex
+
+**BFC规则**
+
+- BFC是块级元素，会按照瀑布流的方式从上到下排列
+- BFC是隔离容器，容器里的标签不受外部影响
+- 同一个`BFC`下的两个相邻的标签外边距会发生重叠
+- 计算`BFC`的高度时，浮动元素也参与计算
+
+**BFC应用**
+
+- 使用Float脱离文档流，高度塌陷，如清除浮动
+- Margin边距重叠
+- 两栏布局
+
+## Float浮动
+
+**定义**
+
+一句话：让block元素无视float元素，让inline元素像流水一样围绕着float元素实现浮动布局
+
+**float特性**
+
+- 包裹性
+- 高度塌陷
+- 块状化
+- 没有任何margin合并
+
+> 1.包裹性,是指包裹和自适应。
+>
+> 包裹：将浮动元素父元素宽度设置为200px，浮动元素的子元素是一个128px宽度的图片，则此时浮动元素宽度表现为”包裹”，即包裹了子元素，宽度也是128px.一句话：对内，浮动元素被内部撑起最小值
+>
+> 自适应：浮动元素自适应父元素的200px，一句话：对外，浮动元素被内部撑起最大值是父元素容器
+
+```
+/* CSS代码 */
+.father{
+    border: 1px solid deeppink;
+    width: 200px;
+}
+.son {
+    float: left;
+    font-size: 0;
+    border: 1px solid blue;
+    padding: 5px;
+}
+.father img {
+    width: 128px;
+}
+
+/* HTML代码 */
+<div class="father">
+    <div class="son">
+     <!--包裹-->
+        <img src="../../lib/img/mm1.png">
+        <!--自适应-->
+        <span style="font-size: 12px">美女1，美女2，美女3，美女4，美女5，美女6，后宫1，后宫2，后宫3，后宫</span>
+    </div>
+</div>
+```
+
+> 2.高度塌陷
+>
+> 会让父元素的高度塌陷，即无法撑开父元素高度
+
+> 3.块状化
+>
+> 浮动元素的display值就是block或者table。注意它不是真正的块状元素，只是有块状的属性，如可以设置宽高。
+>
+> 以下是冗余写法，浮动元素加display: block;
+
+> 4.没有任何margin合并
+>
+> 设置了float属性的元素没有任何的margin重叠
+
+**清除浮动**
+
+注意浮动一直还在，并没有清除！只能清除浮动带来的影响。
+
+- 父级盒子元素触发BFC，overflow:hidden,auto（完美方法）
+- 浮动元素设置clear:both。本质是让自己不和float元素在一行显示，并不是真正意义上的清除浮动
+  - 如果`clear:both`元素前面的元素就是float元素，则设置margin-top无效
+  - `clear:both`后面的元素依旧可能会发生文字环绕现象
+
+**参考**
+
+[CSS 深入理解之 float 浮动](https://juejin.cn/post/6844903616155746312#heading-1)
+
+## 三栏布局（圣杯、双飞翼等6种）
+
+**float浮动**
+
+```
+<div id="left">left</div>
+<div id="right">right</div>
+<div id="middle">middle</div>
+
+      #left,
+      #right {
+        width: 200px;
+        height: 200px;
+        background: red;
+      }
+      #middle {
+        height: 200px;
+        background: green;
+      }
+      #left {
+        float: left;
+      }
+      #right {
+        float: right;
+      }
+```
+
+**position定位**
+
+```
+<div id="left">left</div>
+<div id="right">right</div>
+<div id="middle">middle</div>     
+     
+     #left,
+      #right {
+        width: 200px;
+        height: 100%;
+        background: red;
+      }
+      #left {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      #right {
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+      #middle {
+        margin: 0 200px;
+      }
+```
+
+**圣杯布局**
+
+> 原理：将基本布局之后使用向左浮动，middle栏用padding留出两边位置，然后使用相对定位将左右两栏通过margin-left,margin-right到相应位置。
+
+```
+    <div class="wrapper">
+      <div class="middle">middle</div>
+      <div class="left">left</div>
+      <div class="right">right</div>
+    </div>
+    
+          .wrapper {
+        /* 触发BFC,撑起mid，left,right高度*/
+        overflow: hidden;
+        /* 预留左右空间，等待left，right插入*/
+        padding-left: 100px;
+        padding-right: 100px;
+      }
+      .middle {
+        float: left;
+        width: 100%;
+        background: #d9d9d9;
+      }
+      .left {
+        float: left;
+        width: 100px;
+        background: #d5d60f;
+        /*向左偏移100%，并且再偏移一个100px*/
+        position: relative;
+        margin-left: -100%;
+        right: 100px;
+      }
+      .right {
+        float: left;
+        width: 100px;
+        background: #8cc94c;
+        /*右移100px*/
+        margin-right: -100px;
+      }
+```
+
+**双飞翼布局**
+
+> 原理：将基本布局之后使用向左浮动，middle栏用margin留出两边位置，然后不使用相对定位，将左右两栏通过margin-left到相应位置。
+
+```
+    <div class="middle">
+      <div id="middle-wrapper">middle</div>
+    </div>
+    <div class="left">left</div>
+    <div class="right">right</div>
+    
+          .middle {
+        float: left;
+        width: 100%;
+        background: #d9d9d9;
+      }
+      #middle-wrapper {
+        margin-left: 100px;
+        margin-right: 100px;
+      }
+      .left {
+        float: left;
+        width: 100px;
+        background: #d5d60f;
+        margin-left: -100%;
+      }
+      .right {
+        float: left;
+        width: 100px;
+        background: #8cc94c;
+        margin-left: -100px;
+      }
+```
+
+|        | 优点                               | 缺点                     |
+| ------ | ---------------------------------- | ------------------------ |
+| 圣杯   | 使用padding，dom简单               | 中间宽度过小，会布局混乱 |
+| 双飞翼 | 使用margin，支持各种宽高，通用型强 | dom复杂                  |
+
+**Flex布局**
+
+```
+    <div class="main">
+      <div class="left">left</div>
+      <div class="middle">middle</div>
+      <div class="right">right</div>
+  </div>
+  
+    .main{
+        display: flex;
+        align-items: center;
+    }
+    .left{
+        background: red;
+        width: 200px;
+        height: 300px;
+    }    
+    .right{
+        background: blue;
+        width: 200px;
+        height: 300px;
+    }
+    .middle{
+        background: green;
+        height: 300px;
+        width: 100%;
+    }
+```
+
+**Grid布局**
+
+```
+    <div class="main">
+      <div class="left">left</div>
+      <div class="middle">middle</div>
+      <div class="right">right</div>
+  </div>
+  
+    .main{
+        display: grid;
+        height: 300px;
+    }
+    .left{
+        background: red;
+        grid-row:1;
+        grid-column:1/2;
+    }    
+    .right{
+        background: blue;
+        grid-row:1;
+        grid-column:4/5;
+    }
+    .middle{
+        background: green;
+        grid-row:1;
+        grid-column:2/4;
+    }
+```
+
+## CSS盒子模型
 
 盒子由四个属性组成，从内到外分别是：**content 内容**、**padding 内填充**、**border 边框**、**外边距 margin**
 
@@ -119,31 +492,6 @@ body{
  1.less基于js,可直接引入less.js；sass引入需要安装ruby
  2.less使用简单，没有裁剪css原特性；
  3.sass功能更强大，有配套的二次开发库Compass。
-
-## BFC和外边距重叠
-
-三种常见方案：
-普通流 (normal flow)
-浮动 (float)
-绝对定位
-
-BFC 即 Block Formatting Contexts (块级格式化上下文)，它属于上述定位方案的普通流。
-具有 BFC 特性的元素可以看作是隔离了的独立容器，容器里面的元素不会在布局上影响到外面的元素，并且 BFC 具有普通容器所没有的一些特性。
-
-**触发 BFC**
-
-- body 根元素
-- 浮动元素：float 除 none 以外的值
-- 绝对定位元素：position (absolute、fixed)
-- display 为 inline-block、table-cells、flex
-- overflow 除了 visible 以外的值 (hidden、auto、scroll)
-
-**BFC特性应用**
-
-1.同一个 BFC 下外边距会发生折叠,如果想要避免外边距的重叠，可以将其放在不同的 BFC 容器中。
-2.BFC 可以包含浮动的元素（清除浮动）
-
-3.BFC 可以阻止元素被浮动元素覆盖
 
 ## 清除浮动
 
@@ -666,7 +1014,7 @@ ID > 类 > 标签 > 相邻 > 子选择器 > 后代选择器 > * > 属性 > 伪�
 
 ## 作用在grid容器上的CSS属性
 
-### grid-template-columns
+**grid-template-columns**
 
 纵向分块，分多少个块，每块多少单位
 
@@ -677,7 +1025,7 @@ ID > 类 > 标签 > 相邻 > 子选择器 > 后代选择器 > * > 属性 > 伪�
 }
 ```
 
-### grid-template-rows
+**grid-template-rows**
 
 横向分块，分多少个块，每块多少单位
 
@@ -688,7 +1036,7 @@ ID > 类 > 标签 > 相邻 > 子选择器 > 后代选择器 > * > 属性 > 伪�
 }
 ```
 
-### grid-template-areas
+**grid-template-areas**
 
 定制区域结构。
 
@@ -722,7 +1070,7 @@ ID > 类 > 标签 > 相邻 > 子选择器 > 后代选择器 > * > 属性 > 伪�
 .xigua { grid-area: 西瓜; }
 ```
 
-### grid-template
+**grid-template**
 
 行列分块的缩写
 
@@ -734,15 +1082,15 @@ ID > 类 > 标签 > 相邻 > 子选择器 > 后代选择器 > * > 属性 > 伪�
 }
 ```
 
-### grid-column-gap
+**grid-column-gap**
 
 列块间距
 
-### grid-row-gap
+**grid-row-gap**
 
 行块间距
 
-### grid-gap
+**grid-gap**
 
 行列块间距的缩写
 
@@ -761,15 +1109,15 @@ ID > 类 > 标签 > 相邻 > 子选择器 > 后代选择器 > * > 属性 > 伪�
 >1. **`align-items`属性是针对单独的每一个flex子项起作用，它的基本单位是每一个子项，在所有情况下都有效果（当然要看具体的属性值）。**
 >2. **`align-content`属性是将flex子项作为一个整体起作用，它的基本单位是子项构成的行，只在两种情况下有效果：①子项多行且flex容器高度固定 ②子项单行，flex容器高度固定且设置了`flex-wrap:wrap;`**
 
-### justify-items
+**justify-items**
 
 每个子项的水平的左中右对齐
 
-### align-items
+**align-items**
 
 每个子项的垂直的上中下对齐
 
-### place-items
+**place-items**
 
 每个子项的水平垂直的缩写
 
@@ -781,15 +1129,15 @@ place-items是align-items`和`justify-items的缩写
 }
 ```
 
-### justify-content
+**justify-content**
 
 子项整体的水平的左中右对齐
 
-### align-content
+**align-content**
 
 子项整体的垂直的上中下对齐
 
-### place-content
+**place-content**
 
 子项整体的水平垂直的缩写
 
@@ -801,19 +1149,19 @@ place-content是align-content`和`justify-content的缩写
 }
 ```
 
-### grid-auto-columns
+**grid-auto-columns**
 
 对超出容器后的部分，纵向分块
 
-### grid-auto-rows
+**grid-auto-rows**
 
 对超出容器后的部分，横向分块
 
-### grid-auto-flow
+**grid-auto-flow**
 
 指定排列方式：默认row,横向排列。也可以column纵向排列
 
-### grid
+**grid**
 
 大集合，[`grid-template-rows`](https://www.zhangxinxu.com/wordpress/2018/11/display-grid-css-css3/#grid-template-columns-rows)，[`grid-template-columns`](https://www.zhangxinxu.com/wordpress/2018/11/display-grid-css-css3/#grid-template-columns-rows)，[`grid-template-areas`](https://www.zhangxinxu.com/wordpress/2018/11/display-grid-css-css3/#grid-template-areas)，[`grid-auto-rows`](https://www.zhangxinxu.com/wordpress/2018/11/display-grid-css-css3/#grid-auto-columns-rows)，[`grid-auto-columns`](https://www.zhangxinxu.com/wordpress/2018/11/display-grid-css-css3/#grid-auto-columns-rows)和[`grid-auto-flow`](https://www.zhangxinxu.com/wordpress/2018/11/display-grid-css-css3/#grid-auto-flow)。
 
@@ -833,7 +1181,7 @@ grid: <grid-template-rows> / [ auto-flow && dense? ] <grid-auto-columns>?
 
 ## 作用在grid子项上的CSS属性
 
-### grid-column-start
+**grid-column-start**
 
 设置元素网格线的列起点。索引从1开始。
 
@@ -858,19 +1206,19 @@ grid: <grid-template-rows> / [ auto-flow && dense? ] <grid-auto-columns>?
 }
 ```
 
-### grid-column-end
+**grid-column-end**
 
 设置元素网格线的列终点
 
-### grid-row-start
+**grid-row-start**
 
 设置元素网格线的行起点
 
-### grid-row-end
+**grid-row-end**
 
 设置元素网格线的行终点
 
-### grid-column
+**grid-column**
 
 子项的列起始点的缩写。
 
@@ -883,13 +1231,13 @@ grid-column是`grid-column-start`+ `grid-column-end`的缩写
 }
 ```
 
-### grid-row
+**grid-row**
 
 子项的行起始点的缩写。
 
 grid-row是grid-row-start + grid-row-end的缩写
 
-### grid-area
+**grid-area**
 
 子项的行列起始点的缩写。
 
@@ -908,15 +1256,15 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 }
 ```
 
-### justify-self
+**justify-self**
 
 子项内部的水平对齐方式
 
-### align-self
+**align-self**
 
 子项内部的垂直对齐方式
 
-### place-self
+**place-self**
 
 子项内部的水平垂直的缩写
 
@@ -928,7 +1276,7 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 }
 ```
 
-## 注意
+**注意**
 
 - 在Grid布局中，`float`，`display:inline-block`，`display:table-cell`，`vertical-align`以及`column-*`这些属性和声明对grid子项是没有任何作用的。这个可以说是Grid布局中的常识，面试经常会问的，一定要记得。
 - Grid布局则适用于更大规模的布局（二维布局），而Flexbox布局最适合应用程序的组件和小规模布局（一维布局），关Flex布局请参见“[写给自己看的display: flex布局教程”一文](https://www.zhangxinxu.com/wordpress/?p=8063)。
@@ -941,7 +1289,7 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 
 ## 容器属性
 
-### flex-direction
+**flex-direction**
 
 `flex-direction` 属性决定主轴的方向，继而决定子项在容器中的位置。
 
@@ -956,7 +1304,7 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 - `column`：表示子项从上向下排列。此时**垂直方向轴**为主轴。
 - `column-reverse`：表示子项从下向上排列。
 
-### flex-wrap
+**flex-wrap**
 
 `flex-wrap` 属性用于指定弹性布局中子项是否换行。
 
@@ -970,7 +1318,7 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 - `wrap`：表示换行，所有子项目多行排列，溢出的子项会被放到下一行，按从上向下顺序排列。
 - `wrap-reverse`：所有子项目多行排列，按从下向上顺序排列。
 
-### flex-flow
+**flex-flow**
 
 `flex-flow` 属性是 `flex-direction` 属性和 `flex-wrap` 属性的简写形式，默认值为 `row nowrap`。
 
@@ -980,7 +1328,7 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 }
 ```
 
-### justify-content
+**justify-content**
 
 `justify-content` 属性定义了子项在 **主轴**（水平方向）上的对齐方式。
 
@@ -999,7 +1347,7 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 
 仅当 `flex-direction` 为 `row` 时生效，因为 `justify-content` 仅定义子项在水平方向上的对齐方式
 
-### align-items
+**align-items**
 
 `align-items` 属性定义弹性容器子项在交叉轴（垂直方向）上的对齐方式。
 
@@ -1015,7 +1363,7 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 - `center`：表示与交叉轴的中线对齐。
 - `baseline`：表示基线对齐，当行内轴与侧轴在同一线上，即所有子项的基线在同一线上时，效果等同于`flex-start`。
 
-### align-content
+**align-content**
 
 `align-content` 属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。
 
@@ -1038,7 +1386,7 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 
 ## 子项属性
 
-### order
+**order**
 
 缺省情况下，Flex 子项是按照在代码中出现的先后顺序排列的。CSS3 新增加 `order` 属性定义项目的排列顺序，是数值类型。数值越小，排列越靠前，默认为 0。
 
@@ -1050,7 +1398,7 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 }
 ```
 
-### flex-grow
+**flex-grow**
 
 `flex-grow` 属性定义子项的**扩展比例**，取值必须是一个单位的正整数，表示放大的比例。默认为 0，即如果存在额外空间，也不放大，负值无效。Flex 容器会根据子项设置的扩展比例作为比率来分配剩余空间
 
@@ -1068,7 +1416,7 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 
 假设剩余空间为 `150px`，`a`、`b` 和 `c` 的 `flex-grow` 分别为 1、2 和 3，那么 `a` 占比剩余空间：`1/(1+2+3) = 1/6`，那么 `a` 瓜分到的剩余空间宽度是 `150*(1/6)=25`，加上 `a` 原本的宽度，实际的宽度为 `<origin-width> + 25`。
 
-### flex-shrink
+**flex-shrink**
 
 如果子容器宽度超过父容器宽度，即使是设置了 `flex-grow`，但是由于没有剩余空间，就分配不到剩余空间了。这时候有两个办法：换行和压缩。由于 `flex` 默认不换行，那么压缩的话，怎么压缩呢，压缩多少？此时就需要用到 `flex-shrink` 属性了。
 
@@ -1094,7 +1442,7 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 - 计算每个元素压缩率：`s1 = a * w1 / sum`、`s2 = b * w2 / sum`、`s3 = c * w3 / sum`
 - 计算每个元素宽度：`width - 压缩率 * 溢出空间`
 
-### flex-basis
+**flex-basis**
 
 `flex-basis` 属性定义了在分配多余空间之前，项目占据的主轴空间（main size）。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为 `auto`，即项目的本来大小。
 
@@ -1117,7 +1465,7 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 
 > 属性优先级：`max-width / min-width -> flex-basis -> width -> box`
 
-### flex
+**flex**
 
 `flex` 属性是 `flex-grow`、`flex-shrink` 和 `flex-basis` 的简写，默认值为 `0 1 auto`。后两个属性可选。
 
@@ -1131,7 +1479,7 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 
 建议优先使用这个属性，而不是单独写三个分离的属性，因为浏览器会推算相关值。
 
-### align-self
+**align-self**
 
 `align-self` 属性用于指定子项的对齐方式，可覆盖 `align-items` 属性。
 
@@ -1286,3 +1634,96 @@ export default {
 ## 使用第三方库裁剪
 
 Cropper.js
+
+
+
+# 进阶
+
+## 伪类和伪元素
+
+**伪类**
+
+伪类即假的类，通常可以添加类来达到效果。伪类是选择器的一种，它用于选择处于特定状态的元素。它们表现得会像是你向你的文档的某个部分应用了一个类一样，帮你在你的标记文本中减少多余的类，让你的代码更灵活、更易于维护。伪类开头为冒号`:`
+
+用户行为伪类，一些伪类只会在用户以某种方式和文档交互的时候应用。这些用户行为伪类，有时叫做动态伪类，如:hover，:focus。
+
+> 常见伪类
+>
+> :active 在用户激活（例如点击）元素的时候匹配。
+>
+> :checked 匹配处于选中状态的单选或者复选框。
+>
+> :disabled 匹配处于关闭状态的用户界面元素
+>
+> :first-child 匹配兄弟元素中的第一个元素。
+>
+> :first-of-type 匹配兄弟元素中第一个某种类型的元素。
+>
+> :focus 当一个元素有焦点的时候匹配。
+>
+> :hover 当用户悬浮到一个元素之上的时候匹配。
+>
+> :last-child 匹配兄弟元素中最末的那个元素。
+>
+> :last-of-type 匹配兄弟元素中最后一个某种类型的元素。
+>
+> :is() 匹配传入的选择器列表中的任何选择器。
+>
+> :not 匹配作为值传入自身的选择器未匹配的物件。
+>
+> :nth-child 匹配一列兄弟元素中的元素——兄弟元素按照an+b形式的式子进行匹配（比如2n+1匹配元素1、3、5、7等。即所有的奇数个）。
+>
+> :nth-of-type 匹配某种类型的一列兄弟元素（比如，`<p>`元素）——兄弟元素按照an+b形式的式子进行匹配（比如2n+1匹配元素1、3、5、7等。即所有的奇数个）。
+>
+> :nth-last-child 匹配一列兄弟元素，从后往前倒数。兄弟元素按照an+b形式的式子进行匹配（比如2n+1匹配按照顺序来的最后一个元素，然后往前两个，再往前两个，诸如此类。从后往前数的所有奇数个）。
+>
+> :nth-last-of-type 匹配某种类型的一列兄弟元素（比如，`<p>`元素），从后往前倒数。兄弟元素按照an+b形式的式子进行匹配（比如2n+1匹配按照顺序来的最后一个元素，然后往前两个，再往前两个，诸如此类。从后往前数的所有奇数个）。
+>
+> :only-child 匹配没有兄弟元素的元素。
+>
+> :only-of-type 匹配兄弟元素中某类型仅有的元素。
+
+**伪元素**
+
+伪元素即假元素，需要通过添加元素才能达到效果。伪元素以类似方式表现，不过表现得是像你往文档中加入全新的HTML元素一样，而不是向现有的元素上应用类。伪元素开头为双冒号`::`
+
+> 常见伪元素
+>
+> ::before在被选元素前插入内容,属性 `content` 是必须设置的，它的值可以为字符串，也可以有其它形式
+>
+> ::after在被元素后插入内容，属性 `content` 是必须设置的，它的值可以为字符串，也可以有其它形式
+>
+> ::first-line作用于第一行的所有字符
+>
+> ::first-letter作用于第一行的首字符
+
+**伪类和伪元素的区别**
+
+> - 伪类和伪元素都是用来表示文档树以外的"元素"。
+> - 伪类和伪元素分别用单冒号`:`和双冒号`::`来表示。
+> - 伪类和伪元素的区别，最关键的点在于如果没有伪元素(或伪类)，是否需要添加元素才能达到目的，如果是则是伪元素，反之则是伪类。
+
+## sass（scss）、less、stylus、postcss
+
+它们都是css预处理器。css预处理器的概念：CSS预处理器用一种专门的编程语言，进行Web页面样式设计，然后再编译成正常的CSS文件。
+
+- sass:Sass是一种动态样式语言，Sass语法属于缩排语法，比css比多出好些功能(如变量、嵌套、运算,混入(Mixin)、继承、颜色处理，函数等)，更容易阅读。
+
+  对Sass的缩排语法优化，用{}取代了原来的缩进，变成了Scss(sassy css)，与原来的语法兼容。变量符是$。
+
+- less:也是一种动态样式语言. 受Sass影响较大,对CSS赋予了动态语言的特性，如变量，继承，运算， 函数。在客户端上和服务端都可以运行。变量符是@。
+
+- Stylus：主要用来给Node项目进行CSS预处理支持。提供一个高效、动态、和使用表达方式来生成CSS，以供浏览器使用。支持缩进和CSS常规样式书写规则。写法更接近js,学习曲线陡峭。变量符是随意。
+
+- PostCSS：它是一个对 CSS 进行处理的工具（平台），不能简单的把 PostCSS 归类成 CSS 预处理或后处理工具。PostCSS 一般不单独使用，而是与已有的构建工具进行集成。PostCSS 与主流的构建工具，如 Webpack、Grunt 和 Gulp 都可以进行集成。
+
+## 过度、变形、移动、动画
+
+| 属性               | 含义                                                         |
+| ------------------ | ------------------------------------------------------------ |
+| transition（过度） | 用于设置元素的样式过度，和animation有着类似的效果，但细节上有很大的不同 |
+| transform（变形）  | 用于元素进行旋转、缩放、移动或倾斜，和设置样式的动画并没有什么关系，就相当于color一样用来设置元素的“外表” |
+| translate（移动）  | 只是transform的一个属性值，即移动                            |
+| animation（动画）  | 用于设置动画属性，他是一个简写的属性，包含6个属性            |
+
+# 高级

@@ -202,6 +202,8 @@ Composition API 属于 API 的增强，它并不是 Vue.js 3.0组件开发的范
 
 ## 双向绑定
 
+所谓的双向绑定，其实就是将Model和View绑定在一起，任何一方改变的同时，改变另外一方。
+
 **vue2在组件中这样设置:**
 
 父组件
@@ -324,7 +326,7 @@ vue2.x 中的虚拟 dom 是进行**「全量的对比」**，在运行时会对�
 
 **前言**
 
-Vue都是采用数据劫持代理+发布订阅模式方式实现，vue2到vue3的差别是数据劫持的方式由Object.defineProperty更改为Proxy代理，其他代码不变。
+Vue都是采用数据劫持代理+发布订阅模式方式实现，vue2到vue3的差别是数据劫持的方式由Object.defineProperty更改为Proxy代理，其他代码不变。Proxy/Reflect是在ES2015规范中加入的，Proxy可以更好的拦截对象行为，Reflect可以更优雅的操纵对象。
 
 **Proxy 的优势**如下:
 
