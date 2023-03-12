@@ -990,6 +990,58 @@ B 在旧的节点中的 index=1，它的 lastIndex=0，不满足 index < lastInd
 看图的 D，此时 D 不移动，但它的 index 是最大的，导致更新 lastIndex=3，从而使得其他元素 A,B,C 的 index<lastIndex，导致 A,B,C 都要去移动。
 理想情况是只移动 D，不移动 A,B,C。因此，在开发过程中，尽量减少类似将最后一个节点移动到列表首部的操作，当节点数量过大或更新操作过于频繁时，会影响 React 的渲染性能。
 
+## inject/provide的响应式问题
+
+官方说法： **provide/inject** 的 **直接绑定数据** 才不支持响应式，但又因为 **没有对数据的进行深层次处理**，所以原有的响应式数据才会继续触发整个响应式系统的改变。
+
+说人话：直接修改对象，inject监听不到改动；修改对象的某个属性，就能监听到改动。加一句，即使修改属性，computed也监听不到变化。
+
+看源码:关闭了依赖数据的 响应式依赖收集;但对inject注入对象的深层处理，没有屏蔽响应式
+
+```
+export function initInjections(vm: Component) {
+  // 对inject注入对象深层处理，没有屏蔽响应式
+  const result = resolveInject(vm.$options.inject, vm)
+  if (result) {
+  // 关闭了依赖数据的 响应式依赖收集
+    toggleObserving(false)
+    Object.keys(result).forEach(key => {
+      if (__DEV__) {
+        defineReactive(vm, key, result[key], () => warn(''))
+      } else {
+        defineReactive(vm, key, result[key])
+      }
+    })
+    toggleObserving(true)
+  }
+}
+export function resolveInject(inject: any, vm: Component): Record<string, any> | undefined | null {
+  if (inject) {
+    const result = Object.create(null)
+    const keys = hasSymbol ? Reflect.ownKeys(inject) : Object.keys(inject)
+
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i]
+      if (key === '__ob__') continue
+      const provideKey = inject[key].from
+      if (provideKey in vm._provided) {
+        result[key] = vm._provided[provideKey]
+      } else if ('default' in inject[key]) {
+        const provideDefault = inject[key].default
+        result[key] = isFunction(provideDefault) ? provideDefault.call(vm) : provideDefault
+      } else if (__DEV__) {
+        warn('')
+      }
+    }
+    return result
+  }
+}
+```
+
+**参考**
+
+[Vue 2 阅读理解（十四）之 Provide/Inject 依赖注入](https://juejin.cn/post/7135761522759827493)
+
 ## runtime-compiler和runtime-only
 
 **1.Vue的编译渲染过程**

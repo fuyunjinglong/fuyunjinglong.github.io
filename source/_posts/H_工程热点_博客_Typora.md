@@ -6,6 +6,37 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
+# 常用用法
+
+```
+1.代码段
+{% codeblock %}
+{% endcodeblock %}
+
+2.图片
+{% img /img/20200302_1_9.png  "imgPIC'alt text'" %}
+
+3.加粗
+**加粗**
+
+4.链接
+{% link 深入理解分布式事务 http://wwwe/distributed-transaction.html [external] [title] %}
+
+5.点点
+- 风格1
+- 风格2
+
+6.换行符
+末尾两个空格表示换行
+
+7.本地图片使用服务器绝对路径
+C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\
+/img/
+
+8.竖线段落
+使用>回车即可
+```
+
 # 页面内跳转到指定位置
 
 注意：点击跳转必须是ctry+鼠标点击，才能跳转

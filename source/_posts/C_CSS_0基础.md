@@ -479,40 +479,252 @@ CSS Modules 特性：
 
 [CSS 的两种盒模型](https://zhuanlan.zhihu.com/p/110617108)
 
-## Less/Sass等css预处理器
+## 如何保持水平垂直居中 ？
 
- 1)历史
- Sass:2007年诞生，对css层叠式样式的扩展。Scss是Sass3.0引入的新语法，是Sass CSS的简写。
- Less:2009年的开源项目。
- 2)背景
- 因为css是单纯的属性描述，不具变量和条件语句。没有变量和合理的样式复用机制。
- 3)共同特征
- 1.混入Mixins;2.参数混入；3.嵌套规则，class嵌套class.4.颜色功能，能编辑颜色。5.作用域，局部修改。6.js赋值，css中使用js表达式
- 4)不同之处
- 1.less基于js,可直接引入less.js；sass引入需要安装ruby
- 2.less使用简单，没有裁剪css原特性；
- 3.sass功能更强大，有配套的二次开发库Compass。
+一、水平居中 
+
+（1）行内元素解决方案
+
+只需要把行内元素包裹在一个属性 display 为 block 的父层元素中，并且把父层元素添加如下属性即可。
+
+```
+.parent {
+    text-align: center;
+}
+```
+
+（2）块状元素解决方案  
+
+```
+.item {
+    /* 这里可以设置顶端外边距 */
+    margin: 10px auto;
+}
+```
+
+（3）多个块状元素解决方案将元素的 display 属性设置为 inline-block，并且把父元素的 text-align 属性设置为 center 即可:
+
+```
+.parent {
+    text-align:center;
+}
+```
+
+（4）多个块状元素解决方案
+
+使用 flexbox 布局，只需要把待处理的块状元素的父元素添加属性 display: flex 及 justify-content: center 即可。
+
+```
+.parent {
+    display: flex;
+    justify-content: center;
+}
+```
+
+二、垂直居中
+
+（1）单行的行内元素解决方案
+
+```
+.parent {
+    background: #222;
+    height: 200px;
+}
+
+/* 以下代码中，将 a 元素的 height 和 line-height 设置的和父元素一样高度即可实现垂直居中 */
+a {
+    height: 200px;
+    line-height:200px; 
+    color: #FFF;
+}
+```
+
+（2）多行的行内元素解决方案组合
+
+使用 display: table-cell 和 vertical-align: middle 属性来定义需要居中的元素的父容器元素生成效果，如下：
+
+```
+.parent {
+    background: #222;
+    width: 300px;
+    height: 300px;
+    /* 以下属性垂直居中 */
+    display: table-cell;
+    vertical-align: middle;
+}
+```
+
+（3）已知高度的块状元素解决方案
+
+```
+.item{
+    position: absolute;
+    top: 50%;
+    margin-top: -50px;  /* margin-top值为自身高度的一半 */
+    padding:0;
+}
+```
+
+三、水平垂直居中
+
+（1）已知高度和宽度的元素解决方案 1
+
+这是一种不常见的居中方法，可自适应，比方案 2 更智能，如下：
+
+```
+.item{
+    position: absolute;
+    margin:auto;
+    left:0;
+    top:0;
+    right:0;
+    bottom:0;
+}
+```
+
+（2）已知高度和宽度的元素解决方案 2
+
+```
+.item{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -75px;  /* 设置margin-left / margin-top 为自身高度的一半 */
+    margin-left: -75px;
+}
+```
+
+（3）未知高度和宽度元素解决方案
+
+```
+.item{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);  /* 使用 css3 的 transform 来实现 */
+}
+```
+
+（4）使用 flex 布局实现
+
+```
+.parent{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* 注意这里需要设置高度来查看垂直居中效果 */
+    background: #AAA;
+    height: 300px;
+}
+```
+
+------
+
+## position、float和display的取值意思
+
+position
+
+- position 属性取值：static(默认)、relative、absolute、fixed、inherit、sticky。
+- postision：static；始终处于文档流给予的位置。看起来好像没有用，但它可以快速取消定位，让 top，right，bottom，left 的值失效。在切换的时候可以尝试这个方法。
+- 除了 static 值，在其他三个值的设置下，z-index 才会起作用。确切地说 z-index 只在定位元素上有效。
+- position：relative 和 absolute 都可以用于定位，区别在于前者的 div 还属于正常的文档流，后者已经是脱离了正常文档流，不占据空间位置，不会将父类撑开。 定位原点 relative 是相对于它在正常流中的默认位置偏移，它原本占据的空间任然保留；absolute 相对于第一个 position 属性值不为 static 的父类。所以设置了 position：absolute，其父类的该属性值要注意，而且 overflow：hidden 也不能乱设置，因为不属于正常文档流，不会占据父类的高度，也就不会有滚动条。
+- fixed 旧版本 IE 不支持，却是很有用，定位原点相对于浏览器窗口，而且不能变。 常用于 header，footer 或者一些固定的悬浮 div，随滚动条滚动又稳定又流畅，比 JS 好多了。fixed 可以有很多创造性的布局和作用，兼容性是问题。
+- position：inherit。 规定从父类继承 position 属性的值，所以这个属性也是有继承性的，但需要注意的是 IE8 以及往前的版本都不支持 inherit 属性。
+- sticky ：设置了sticky 的元素，在屏幕范围（viewport）时该元素的位置并不受到定位影响（设置是 top、left 等属性无效），当该元素的位置将要移出偏移范围时，定位又会变成 fixed，根据设置的 left、top 等属性成固定位置的效果。
+
+float
+
+- float：left (或 right)，向左（或右）浮动，直到它的边缘碰到包含框或另一个浮动框为止。 且脱离普通的文档流，会被正常文档流内的块框忽略。不占据空间，无法将父类元素撑开。
+- 任何元素都可以浮动，浮动元素会生成一个块级框，不论它本身是何种元素。因此，没有必要为浮动元素设置 display：block。
+- 如果浮动非替换元素，则要指定一个明确的 width，否则它们会尽可能的窄。 什么叫替换元素 ？根据元素本身的特点定义的， (X)HTML中的 img、input、textarea、select、object 都是替换元素，这些元素都没有实际的内容。 (X)HTML 的大多数元素是不可替换元素，他们将内容直接告诉浏览器，将其显示出来。
+
+display
+
+- display 属性取值：none、inline、inline-block、block、table 相关属性值、inherit。
+- display 属性规定元素应该生成的框的类型。文档内任何元素都是框，块框或行内框。
+- display：none 和 visiability：hidden 都可以隐藏 div，区别有点像 absolute 和 relative，前者不占据文档的空间，后者还是占据文档的位置。
+- display：inline 和 block，又叫行内元素和块级元素。 表现出来的区别就是 block 独占一行，在浏览器中通常垂直布局，可以用 margin 来控制块级元素之间的间距（存在 margin 合并的问题，只有普通文档流中块框的垂直外边距才会发生外边距合并。行内框、浮动框或绝对定位之间的外边距不会合并。）； 而 inline 以水平方式布局，垂直方向的 margin 和 padding 都是无效的，大小跟内容一样，且无法设置宽高。 inline 就像塑料袋，内容怎么样，就长得怎么样；block 就像盒子，有固定的宽和高。
+- inline-block 就介于两者之间。
+- table 相关的属性值可以用来垂直居中，效果一般。
+- flex
+
+## CSS常用3种引入方式
+
+第一：外链式
+
+这种方法可以说是现在占统治地位的引入方法。
+
+如同 IE 与浏览器。这也是最能体现 CSS 特点的方法；
+
+最能体现 DIV+CSS 中的内容离的思想，也最易改版维护，代码看起来也是最美观的一种。
+
+第二：内部样式表
+
+这种方法的使用情况要少的多，最长见得就是访问量大的门户网站。或者访问量较大的企业网站的首页。
+
+与第一种方法比起来，优弊端也明显。
+
+优点：速度快，所有的 CSS 控制都是针对本页面标签的，没有多余的 CSS 命令；再者不用外链 CSS 文件。直接在文档中读取样式。
+
+缺点：就是改版麻烦些，单个页面显得臃肿，CSS 不能被其他 HTML 引用造成代码量相对较多，维护也麻烦些采用这种方法的公司大多有钱，对他们来说用户量是关键，他们不缺人进行复杂的维护工作。
+
+第三：行内样式
+
+认为 HTML 里不能出现 CSS 命令。其实有时候没有什么大不了。比如通用性差，效果特殊，使用 CSS 命令较少，并且不常改动的地方，使用这种方法反而是很好的选择。
+
+第四、@import 引入方式
+
+```
+<style type="text/css">
+@import url(my.css);
+</style>
+```
+
+## **CSS Sprite雪碧图精灵图** 
+
+将一个页面涉及到的所有图片都包含到一张大图中去，然后利用 CSS 的 background-image，background-repeat，background-position 的组合进行背景定位。
+
+- 能很好地减少了网页的 http 请求，从而大大的提高了页面的性能，
+- CSS Sprites 能减少图片的字节，曾经比较过多次 3 张图片合并成 1 张图片的字节总是小于这 3 张图片的和。
+- 解决了网页设计师在图片命名上的困扰
+- 更换风格方便，只需要在一张图片上修改样式，整个网页的风格就可以改变。维护起方便。
+
+也存在一些不可忽视的缺点，如下：
+
+- 在图片合并的时候，你要把多张图片有序的合理的合并成一张图片，还要留好足够的空间，防止板块内不不必要的背景；这些还好，最痛苦的是在宽屏，高分辨率的屏幕下的自适应页面，你的图片如果不够宽，很容背景断裂；
+- CSS Sprites 在开发的时候比较麻烦，你要通过 photoshop 或其他工具测量计算每一个背景单元的精确位是针线活，没什么难度，但是很繁琐；
+- CSS Sprites 在维护的时候比较麻烦，如果页面背景有少许改动，一般就要改这张合并的图片，无需改的好不要动，这样避免改动更多的 css，如果在原来的地方放不下，又只能（最好）往下加图片，这样图片的字加了，还要改动 css。
+
+## CSS选择符有哪些？哪些属性可以继承？优先级？
+
+CSS 选择符
+
+1. id选择器（ # myid）
+2. 类选择器（.myclassname）
+3. 标签选择器（div, h1, p）
+4. 相邻选择器（h1 + p）
+5. 子选择器（ul > li）
+6. 后代选择器（li a）
+7. 通配符选择器（ * ）
+8. 属性选择器（a[rel = "external"]）
+9. 伪类选择器（a: hover, li: nth - child）
+
+可继承的样式
+
+font-size，font-family，color，ul，li，dl，dd，dt；
+
+不可继承的样式
+
+border padding margin width height 事实上，宽度也不是继承的，而是如果你不指定宽度，那么它就是 100%。由于你子 DIV 并没有指定宽度，那它就是 100%，也就是与父 DIV 同宽，但这与继承无关，高度自然也没有继承一说。
+
+优先级算法
+
+ 优先级为: !important > id > class > tag , important 比 内联优先级高
 
 ## 清除浮动
 
 1.父级div定义 overflow: auto（注意：是父级div也就是这里的 div.outer），最常用。
 2.添加新的子元素 、应用 clear：both；
-
-## css2.0与css3.0
-
-css3加强了css2的功能，增加了新的属性和新的标签，并且删除了一些冗余的标签，在布局方面减少了代码量。
-
-例如圆角、阴影、:last-child与:nth-last-child()伪类选择器等。
-
-- css3代码更简洁、结构更合理、性能和效果得到兼顾；
-
-- css3兼容性没有css2兼容性好，很多新属性需要加上浏览器兼容前缀；
-- css3能仅使用代码就实现的效果，css2需要使用图片来实现；
-- css2请求服务器次数高于css3；
-
-## css样式各种浏览器适配问题
-
-待续
 
 ## [css modules和scoped区别](https://segmentfault.com/a/1190000021670036)
 
@@ -606,7 +818,7 @@ flex: 1等价于`flex: 1 1 0`，也就是
 
 `flex-basis`指定项目占据主轴的空间，如果不设置，则等于内容本身的空间
 
-## 回流和重绘
+## 对reflow和repaint的理解
 
 **回流比重绘的代价要更高。**
 
@@ -689,234 +901,15 @@ CSS3 硬件加速（GPU加速），使用css3硬件加速，可以让transform�
 
 同样类型的选择器 :last-child 和 :last-of-type、:nth-child(n) 和 :nth-of-type(n) 也可以这样去理解。
 
-# 
+## 页面样式导入link和@import区别
 
-# CSS常见布局
+- link 属于 XHTML 标签，除了加载 CSS 外，还能用于定义 RSS(是一种描述和同步网站内容的格式，是使用最广泛的 XML 应用), 定义 rel 连接属性等作用；
+- 而 @import 是 CSS 提供的，只能用于加载 CSS;
+- 页面被加载的时，link 会同时被加载，而 @import 引用的 CSS 会等到页面被加载完再加载;
+- import 是 CSS2.1 提出的，只在 IE5 以上才能被识别，而 link 是 XHTML 标签，无兼容问题。
+- 总之，link 要优于 @import。
 
-- 圣杯布局-左右固定，中间自适应
-- 双飞翼布局-左右固定，中间自适应
-- 使用flex布局
-
-圣杯式布局代码：
-
-```
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>圣杯式布局</title>
-    <style>
-        * {
-            padding: 0;
-            margin: 0;
-        }
-
-       
-        .con{
-            padding-left:150px ;
-            padding-right: 190px;
-        }
-        .left {
-            width: 150px;
-            background: red;
-            float: left;
-            position: relative;
-            margin-left: -100%;
-            left: -150px;
-        }
-
-        .main {
-            width: 100%;
-            background: yellow;
-            float: left;
-        }
-
-        .right {
-            width: 190px;
-            background: tomato;
-            float: left;
-            position: relative;
-            margin-right: -190px;
-            left: -190px;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="con"> 
-        <div class="main">main</div>
-        <div class="left">Left</div>
-       <div class="right">right</div>
-    </div>
-
-</body>
-</html>
-```
-
-双飞翼布局代码：
-
-```
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>双飞翼布局</title>
-    <style>
-        * {
-            padding: 0;
-            margin: 0;
-        }
-
-        .left {
-            background: #E79F6D;
-            width: 150px;
-            float: left;
-            margin-left: -100%;
-        }
-
-        .main {
-            background: #D6D6D6;
-            width: 100%;
-            float: left;
-        }
-
-        .mc {
-            margin-left: 150px;
-            margin-right:190px;
-        }
-
-        .right {
-            background: #77BBDD;
-            width: 190px;
-            float: left;
-            margin-left: -190px;
-          
-        }
-    </style>
-</head>
-
-<body>
-    <div class="con">
-        <div class="main">
-            <div class="mc">Main</div>
-        </div>
-        <div class="left">Left</div>
-        <div class="right">Right</div>
-    </div>
-
-</body>
-</html>
-```
-
-flex布局代码：
-
-```
-.main{
-	display:flex;
-	justify-content:space-between;
-	height:100%;
-}
-.left,.right{
-	flex:0 0 200px;
-	height:200px;
-	background:lightblue;
-}
-.mc{
-	flex:1;
-	min-height:400px;
-	background:red;
-}
-```
-
-# 行内元素和块级元素
-
-- 块级元素：单独占一行，默认继承父元素的宽高
-- 行级元素：宽高由内容撑开。
-
-# Tailwind CSS
-
-[[一次就能看懂的Tailwind CSS介绍]](https://segmentfault.com/a/1190000041152680)
-
-## CSS 发展阶段
-
-基本经历了三个阶段。
-
-**第一个阶段**，原生写法
-是类似于编程中面向过程的写法，需要什么样式，自己在 css 中写什么样式。对代码有洁癖的程序员会进行简单的 css 复用。但是也只是简单的复用，大多数时候还是需要什么写什么，想怎么写怎么写。
-
-**第二个阶段**，CSS 组件化。
-类似于编程中面向对象的写法，将相同视觉的 UI 封装成一个组件。比如一个按钮，整个项目中，这个按钮被多次使用，并且样式一致。那么就可以封装成一个按钮类。使用的时候直接使用这个类名称就 OK。
-
-这也是 bootstrap，element ui，Antd，bulma 的做法。
-
-这种框架的优势在于，封装了大量常见的 UI。比如你需要一个表单，，需要一个导航，需要一个弹窗，Card 卡片。有现成的 class。直接拿过来用，就可以快速的完成效果。完全不需要动手写 css。
-
-这也是目前比较流行的方法。这几年几乎很少有项目是自己一点一点手写样式的了，多多少少都会使用到一些 css 框架。
-
-对于一些需要快速交付的项目，非常适合使用这种组件化 css 框架。
-
-**第三个阶段**，CSS 零件化。
-也叫做 CSS 原子化。和上面第一个阶段第二个阶段都有类似的地方。依旧是组件，只是每个组件都是一个单一功能的 css 属性。
-
-上面第一个阶段的时候，我们讲了有些有对代码有追求的人，会开始复用 css。
-比如页面中大量的用到 float:left。那么就可以封装一个类，比如是这样
-
-.left {float:left}
-然后需要使用 float:left 的时候，直接使用.left 就可以。
-
-## 什么是Tailwind CSS 
-
-Tailwind CSS 是一个利用公用程序类（`Utilize Class`，下文皆称Utilize Class）的 CSS 框架。许多人会想到 CSS 框架，有很多，例如 `Bootstrap、Bulma 和 Material UI`。Bootstrap 和 Bulma 等框架利用预先准备好的组件（例如按钮、菜单和面包屑）进行设计。在 Tailwind CSS 中，没有准备任何组件，而是使用`Utilize Class`来创建和设计自己的组件。
-
-> Tailwind CSS 还提供了一个Headless UI ([https://headlessui.dev](https://link.segmentfault.com/?enc=SVI0nzk7qsZYqdPG%2FpzBEg%3D%3D.5QrLqST7P6RWcCnbCD7z%2FJq9MherxCBMIsMCAX5fpK0%3D))，如果你想创建复杂的组件（例如下拉菜单和对话框），你可以使用它。
-
-原来Bootstrap等框架可以通过提前准备组件集合来高效地设计网站，但是有一个缺点，就是因为使用了相同的设计，所以没有原创性。相比之下，Tailwind CSS 没有组件集合，所以即使你创建一个名为相同按钮的组件，每个人都会应用不同的`Utilize Class`创建它，可以创建出一个高度原创的网站。
-
-## Tailwind CSS优缺点
-
-**优点：**
-
-1.可定制化程度极高。
-你可以随心所欲写出自己的样式。想怎么折腾怎么折腾。
-如果使用 bootstrap，你如果想改变一个按钮的样式，就会比较困难。你得用覆盖式的写法，通过自己的样式覆盖掉 bootstrap 自带的样式。如果框架本身不支持修改，你通过自己的写法去修改框架本身的特性，这是一种很脏的写法。非常别扭。
-但是这个问题在 Tailwind CSS 完全不存在。Tailwind CSS 没有自以为是的封装任何样式给你。
-
-2.不需要在写 css。
-使用 Tailwind CSS，基本可以不用再写 css。所有的效果都可以通过 class 名来完成。我用 Tailwind CSS 写了几个页面，到目前为止，还没有写过一行 css。
-
-3.不需要再为 class 取个什么名字而苦恼。
-对于经常手写 css 的程序员来说，最大的噩梦可能就是怎么给 class 取名了。尤其是在同一个区块里面，区块名称，子元素名称，等等，一个页面动辄几十个几百个类名。非常痛苦。而这其中，真正能复用的 class 可能就个别几个。
-
-使用 Tailwind CSS 完全不用为取名字烦恼，因为所有的 css 属性都被框架语义化封装好了。只需要在 class 里面引用就好。
-
-4.响应式设计
-Tailwind CSS 遵循移动优先的设计模式。断点系统很灵活。也是目前所有 css 框架里做的最好的。比如你要实现一个媒体查询，根据不同的屏幕宽度实现不同的图片宽度。
-
-**缺点：**
-
-1.类名很长
-正如 Tailwind CSS 官网首页的口号一样，从此让你写样式不再离开 html 页面。Tailwind CSS 将 HTML 与 CSS 高度解耦，把本来 CSS 的一些工作转嫁给了 HTML。好处是使用 Tailwind CSS 你可以从此不再写 css。但坏处是你的 html 标签的类名会很长很长。比如
-
-```
-<a href="#" class="text-sm font-medium bg-purple-600 rounded-full py-4 px-11 text-white inline-block border border-solid shadow hover:text-purple-600 hover:bg-white hover:border-purple-600 transition duration-300" role="button">Start Ticketing</a>
-```
-
-2.熟悉使用有成本
-这一点逃避不了，所有的新技术，所有的 css 框架都有熟悉成本。Tailwind CSS 也一样。比如你想做一个圆角，那你得知道 Tailwind CSS 里面的圆角属性怎么写，边框怎么写，边框样式怎么写等等。你需要不断的去看文档。
-
-# CSS选择器优先级
-
-ID > 类 > 标签 > 相邻 > 子选择器 > 后代选择器 > * > 属性 > 伪类
-
-# Grid布局
+## Grid布局
 
 [张鑫旭的grid](https://www.zhangxinxu.com/wordpress/2018/11/display-grid-css-css3/#grid-template-columns-rows)
 
@@ -1012,7 +1005,7 @@ ID > 类 > 标签 > 相邻 > 子选择器 > 后代选择器 > * > 属性 > 伪�
 
 
 
-## 作用在grid容器上的CSS属性
+### 作用在grid容器上的CSS属性
 
 **grid-template-columns**
 
@@ -1179,7 +1172,7 @@ grid: <grid-template-rows> / [ auto-flow && dense? ] <grid-auto-columns>?
 
 - `<grid-auto-columns>`后面有个问号`?`，因此是可以省略的，如果省略，则将`grid-auto-columns`解析为`auto`。
 
-## 作用在grid子项上的CSS属性
+### 作用在grid子项上的CSS属性
 
 **grid-column-start**
 
@@ -1283,11 +1276,11 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 - 命名虽然支持中文，但由于CSS文件中文存在乱码的风险，所以……创新还是保守就看大家自己的抉择了。
 - IE10-IE15虽然名义上支持Grid布局，但支持的是老版本语法（本文是介绍的全是2.0全新语法），还需要加`-ms-`私有前缀，精力原因，IE下的使用并未深究，以后有机会再补充。
 
-# Flex弹性布局
+## Flex弹性布局
 
 [flex实战原文](https://tsejx.github.io/css-guidebook/layout/basic/flexible-box-layout#flex-order)
 
-## 容器属性
+### 容器属性
 
 **flex-direction**
 
@@ -1384,7 +1377,7 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 
 ⚠️ **注意**：该属性只作用于多行的情况（`flex-warp: wrap / warp-reverse`），在只有一行的弹性容器上无效，另外该属性可以很好的处理，换行以后相邻行之间产生的间距。
 
-## 子项属性
+### 子项属性
 
 **order**
 
@@ -1493,11 +1486,280 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 
 
 
-# 图片裁剪压缩技术
+# 进阶
+
+## 伪类和伪元素
+
+**伪类**
+
+伪类即假的类，通常可以添加类来达到效果。伪类是选择器的一种，它用于选择处于特定状态的元素。它们表现得会像是你向你的文档的某个部分应用了一个类一样，帮你在你的标记文本中减少多余的类，让你的代码更灵活、更易于维护。伪类开头为冒号`:`
+
+用户行为伪类，一些伪类只会在用户以某种方式和文档交互的时候应用。这些用户行为伪类，有时叫做动态伪类，如:hover，:focus。
+
+> 常见伪类
+>
+> :active 在用户激活（例如点击）元素的时候匹配。
+>
+> :checked 匹配处于选中状态的单选或者复选框。
+>
+> :disabled 匹配处于关闭状态的用户界面元素
+>
+> :first-child 匹配兄弟元素中的第一个元素。
+>
+> :first-of-type 匹配兄弟元素中第一个某种类型的元素。
+>
+> :focus 当一个元素有焦点的时候匹配。
+>
+> :hover 当用户悬浮到一个元素之上的时候匹配。
+>
+> :last-child 匹配兄弟元素中最末的那个元素。
+>
+> :last-of-type 匹配兄弟元素中最后一个某种类型的元素。
+>
+> :is() 匹配传入的选择器列表中的任何选择器。
+>
+> :not 匹配作为值传入自身的选择器未匹配的物件。
+>
+> :nth-child 匹配一列兄弟元素中的元素——兄弟元素按照an+b形式的式子进行匹配（比如2n+1匹配元素1、3、5、7等。即所有的奇数个）。
+>
+> :nth-of-type 匹配某种类型的一列兄弟元素（比如，`<p>`元素）——兄弟元素按照an+b形式的式子进行匹配（比如2n+1匹配元素1、3、5、7等。即所有的奇数个）。
+>
+> :nth-last-child 匹配一列兄弟元素，从后往前倒数。兄弟元素按照an+b形式的式子进行匹配（比如2n+1匹配按照顺序来的最后一个元素，然后往前两个，再往前两个，诸如此类。从后往前数的所有奇数个）。
+>
+> :nth-last-of-type 匹配某种类型的一列兄弟元素（比如，`<p>`元素），从后往前倒数。兄弟元素按照an+b形式的式子进行匹配（比如2n+1匹配按照顺序来的最后一个元素，然后往前两个，再往前两个，诸如此类。从后往前数的所有奇数个）。
+>
+> :only-child 匹配没有兄弟元素的元素。
+>
+> :only-of-type 匹配兄弟元素中某类型仅有的元素。
+
+**伪元素**
+
+伪元素即假元素，需要通过添加元素才能达到效果。伪元素以类似方式表现，不过表现得是像你往文档中加入全新的HTML元素一样，而不是向现有的元素上应用类。伪元素开头为双冒号`::`
+
+> 常见伪元素
+>
+> ::before在被选元素前插入内容,属性 `content` 是必须设置的，它的值可以为字符串，也可以有其它形式
+>
+> ::after在被元素后插入内容，属性 `content` 是必须设置的，它的值可以为字符串，也可以有其它形式
+>
+> ::first-line作用于第一行的所有字符
+>
+> ::first-letter作用于第一行的首字符
+
+**伪类和伪元素的区别**
+
+> - 伪类和伪元素都是用来表示文档树以外的"元素"。
+> - 伪类和伪元素分别用单冒号`:`和双冒号`::`来表示。
+> - 伪类和伪元素的区别，最关键的点在于如果没有伪元素(或伪类)，是否需要添加元素才能达到目的，如果是则是伪元素，反之则是伪类。
+
+## sass（scss）、less、stylus、postcss
+
+它们都是css预处理器。css预处理器的概念：CSS预处理器用一种专门的编程语言，进行Web页面样式设计，然后再编译成正常的CSS文件。
+
+- sass:Sass是一种动态样式语言，Sass语法属于缩排语法，比css比多出好些功能(如变量、嵌套、运算,混入(Mixin)、继承、颜色处理，函数等)，更容易阅读。
+
+  对Sass的缩排语法优化，用{}取代了原来的缩进，变成了Scss(sassy css)，与原来的语法兼容。变量符是$。
+
+- less:也是一种动态样式语言. 受Sass影响较大,对CSS赋予了动态语言的特性，如变量，继承，运算， 函数。在客户端上和服务端都可以运行。变量符是@。
+
+- Stylus：主要用来给Node项目进行CSS预处理支持。提供一个高效、动态、和使用表达方式来生成CSS，以供浏览器使用。支持缩进和CSS常规样式书写规则。写法更接近js,学习曲线陡峭。变量符是随意。
+
+- PostCSS：它是一个对 CSS 进行处理的工具（平台），不能简单的把 PostCSS 归类成 CSS 预处理或后处理工具。PostCSS 一般不单独使用，而是与已有的构建工具进行集成。PostCSS 与主流的构建工具，如 Webpack、Grunt 和 Gulp 都可以进行集成。
+
+## 过度、变形、移动、动画
+
+| 属性               | 含义                                                         |
+| ------------------ | ------------------------------------------------------------ |
+| transition（过度） | 用于设置元素的样式过度，和animation有着类似的效果，但细节上有很大的不同 |
+| transform（变形）  | 用于元素进行旋转、缩放、移动或倾斜，和设置样式的动画并没有什么关系，就相当于color一样用来设置元素的“外表” |
+| translate（移动）  | 只是transform的一个属性值，即移动                            |
+| animation（动画）  | 用于设置动画属性，他是一个简写的属性，包含6个属性            |
+
+## **css3 动画效果属性有哪些 ?**
+
+- animation-name：规定需要绑定到选择器的 keyframe 名称。。
+- animation-duration：规定完成动画所花费的时间，以秒或毫秒计。
+- animation-timing-function：规定动画的速度曲线。
+- animation-delay：规定在动画开始之前的延迟。
+- animation-iteration-count：规定动画应该播放的次数。
+- animation-direction：规定是否应该轮流反向播放动画。
+
+## ::before 和 :after 双冒号和单冒号的区别
+
+- 单冒号 (:) 用于 CSS3 伪类，双冒号 (::) 用于 CSS3 伪元素。
+- ::before 就是以一个子元素的存在，定义在元素主体内容之前的一个伪元素。并不存在于 dom 之中，只存在在页面之中。
+
+:before 和 :after 这两个伪元素，是在 CSS2.1 里新出现的。 起初，伪元素的前缀使用的是单冒号语法，但随着 Web 的进化，在 CSS3 的规范里，伪元素的语法被修改成使用双冒号，成为 ::before、 ::after 。
+
+## **CSS3 新增伪类举例**
+
+- :root 选择文档的根元素，等同于 html 元素
+- :empty 选择没有子元素的元素
+- :target 选取当前活动的目标元素
+- :not(selector) 选择除 selector 元素以外的元素
+- :enabled 选择可用的表单元素
+- :disabled 选择禁用的表单元素
+- :checked 选择被选中的表单元素
+- :after 选择器在被选元素的内容后面插入内容
+- :before 选择器在被选元素的内容前面插入内容
+- :nth-child(n) 匹配父元素下指定子元素，在所有子元素中排序第 n
+- :nth-last-child(n) 匹配父元素下指定子元素，在所有子元素中排序第 n，从后向前数
+- :nth-child(odd) 奇数
+- :nth-child(even) 偶数
+- :nth-child(3n+1)
+- :first-child
+- :last-child
+- :only-child
+- :nth-of-type(n) 匹配父元素下指定子元素，在同类子元素中排序第 n
+- :nth-last-of-type(n) 匹配父元素下指定子元素，在同类子元素中排序第 n，从后向前数
+- :nth-of-type(odd)
+- :nth-of-type(even)
+- :nth-of-type(3n+1)
+- :first-of-type
+- :last-of-type
+- :only-of-type
+- ::selection 选择被用户选取的元素部分
+- :first-line 选择元素中的第一行
+- :first-letter 选择元素中的第一个字符
+
+## CSS3有哪些新特性？
+
+- CSS3 实现圆角（border-radius:8px）
+- 阴影（box-shadow:10px）
+- 对文字加特效（text-shadow）
+- 线性渐变（gradient）
+- 旋转、缩放、定位、倾斜
+
+```
+ transform: rotate(9deg) scale(0.85,0.90) translate(0px,-30px) skew(-9deg,0deg); 
+```
+
+- 增加了更多的 CSS 选择器
+- 多背景 rgba
+
+## canvas与svg的区别？
+
+- Canvas 是基于像素的即时模式图形系统，最适合较小的表面或较大数量的对象，Canvas 不支持鼠标键盘等事件。
+- SVG 是基于形状的保留模式图形系统，更加适合较大的表面或较小数量的对象。
+- Canvas 和 SVG 在修改方式上还存在着不同。 Canvas 输出的是一整幅画布，不能使用脚本和 CSS 对它进行修改。因为 SVG 绘制出来的每一个图形的元素都是独立的 DOM 节点，能够方便的绑定事件或用来修改
+
+现在对两种技术做对比归纳如下：
+
+Canvas
+
+1. 依赖分辨率
+2. 不支持事件处理器
+3. 弱的文本渲染能力
+4. 能够以 .png 或 .jpg 格式保存结果图像
+5. 最适合图像密集型的游戏，其中的许多对象会被频繁重绘
+
+SVG
+
+1. 不依赖分辨率
+2. 支持事件处理器
+3. 最适合带有大型渲染区域的应用程序（比如谷歌地图）
+4. 复杂度高会减慢渲染速度（任何过度使用 DOM 的应用都不快）
+5. 不适合游戏应用
+
+## css2.0与css3.0
+
+css3加强了css2的功能，增加了新的属性和新的标签，并且删除了一些冗余的标签，在布局方面减少了代码量。
+
+例如圆角、阴影、:last-child与:nth-last-child()伪类选择器等。
+
+- css3代码更简洁、结构更合理、性能和效果得到兼顾；
+
+- css3兼容性没有css2兼容性好，很多新属性需要加上浏览器兼容前缀；
+- css3能仅使用代码就实现的效果，css2需要使用图片来实现；
+- css2请求服务器次数高于css3；
+
+
+
+# 高级
+
+## Tailwind CSS
+
+[[一次就能看懂的Tailwind CSS介绍]](https://segmentfault.com/a/1190000041152680)
+
+### CSS 发展阶段
+
+基本经历了三个阶段。
+
+**第一个阶段**，原生写法
+是类似于编程中面向过程的写法，需要什么样式，自己在 css 中写什么样式。对代码有洁癖的程序员会进行简单的 css 复用。但是也只是简单的复用，大多数时候还是需要什么写什么，想怎么写怎么写。
+
+**第二个阶段**，CSS 组件化。
+类似于编程中面向对象的写法，将相同视觉的 UI 封装成一个组件。比如一个按钮，整个项目中，这个按钮被多次使用，并且样式一致。那么就可以封装成一个按钮类。使用的时候直接使用这个类名称就 OK。
+
+这也是 bootstrap，element ui，Antd，bulma 的做法。
+
+这种框架的优势在于，封装了大量常见的 UI。比如你需要一个表单，，需要一个导航，需要一个弹窗，Card 卡片。有现成的 class。直接拿过来用，就可以快速的完成效果。完全不需要动手写 css。
+
+这也是目前比较流行的方法。这几年几乎很少有项目是自己一点一点手写样式的了，多多少少都会使用到一些 css 框架。
+
+对于一些需要快速交付的项目，非常适合使用这种组件化 css 框架。
+
+**第三个阶段**，CSS 零件化。
+也叫做 CSS 原子化。和上面第一个阶段第二个阶段都有类似的地方。依旧是组件，只是每个组件都是一个单一功能的 css 属性。
+
+上面第一个阶段的时候，我们讲了有些有对代码有追求的人，会开始复用 css。
+比如页面中大量的用到 float:left。那么就可以封装一个类，比如是这样
+
+.left {float:left}
+然后需要使用 float:left 的时候，直接使用.left 就可以。
+
+### 什么是Tailwind CSS 
+
+Tailwind CSS 是一个利用公用程序类（`Utilize Class`，下文皆称Utilize Class）的 CSS 框架。许多人会想到 CSS 框架，有很多，例如 `Bootstrap、Bulma 和 Material UI`。Bootstrap 和 Bulma 等框架利用预先准备好的组件（例如按钮、菜单和面包屑）进行设计。在 Tailwind CSS 中，没有准备任何组件，而是使用`Utilize Class`来创建和设计自己的组件。
+
+> Tailwind CSS 还提供了一个Headless UI ([https://headlessui.dev](https://link.segmentfault.com/?enc=SVI0nzk7qsZYqdPG%2FpzBEg%3D%3D.5QrLqST7P6RWcCnbCD7z%2FJq9MherxCBMIsMCAX5fpK0%3D))，如果你想创建复杂的组件（例如下拉菜单和对话框），你可以使用它。
+
+原来Bootstrap等框架可以通过提前准备组件集合来高效地设计网站，但是有一个缺点，就是因为使用了相同的设计，所以没有原创性。相比之下，Tailwind CSS 没有组件集合，所以即使你创建一个名为相同按钮的组件，每个人都会应用不同的`Utilize Class`创建它，可以创建出一个高度原创的网站。
+
+### Tailwind CSS优缺点
+
+**优点：**
+
+1.可定制化程度极高。
+你可以随心所欲写出自己的样式。想怎么折腾怎么折腾。
+如果使用 bootstrap，你如果想改变一个按钮的样式，就会比较困难。你得用覆盖式的写法，通过自己的样式覆盖掉 bootstrap 自带的样式。如果框架本身不支持修改，你通过自己的写法去修改框架本身的特性，这是一种很脏的写法。非常别扭。
+但是这个问题在 Tailwind CSS 完全不存在。Tailwind CSS 没有自以为是的封装任何样式给你。
+
+2.不需要在写 css。
+使用 Tailwind CSS，基本可以不用再写 css。所有的效果都可以通过 class 名来完成。我用 Tailwind CSS 写了几个页面，到目前为止，还没有写过一行 css。
+
+3.不需要再为 class 取个什么名字而苦恼。
+对于经常手写 css 的程序员来说，最大的噩梦可能就是怎么给 class 取名了。尤其是在同一个区块里面，区块名称，子元素名称，等等，一个页面动辄几十个几百个类名。非常痛苦。而这其中，真正能复用的 class 可能就个别几个。
+
+使用 Tailwind CSS 完全不用为取名字烦恼，因为所有的 css 属性都被框架语义化封装好了。只需要在 class 里面引用就好。
+
+4.响应式设计
+Tailwind CSS 遵循移动优先的设计模式。断点系统很灵活。也是目前所有 css 框架里做的最好的。比如你要实现一个媒体查询，根据不同的屏幕宽度实现不同的图片宽度。
+
+**缺点：**
+
+1.类名很长
+正如 Tailwind CSS 官网首页的口号一样，从此让你写样式不再离开 html 页面。Tailwind CSS 将 HTML 与 CSS 高度解耦，把本来 CSS 的一些工作转嫁给了 HTML。好处是使用 Tailwind CSS 你可以从此不再写 css。但坏处是你的 html 标签的类名会很长很长。比如
+
+```
+<a href="#" class="text-sm font-medium bg-purple-600 rounded-full py-4 px-11 text-white inline-block border border-solid shadow hover:text-purple-600 hover:bg-white hover:border-purple-600 transition duration-300" role="button">Start Ticketing</a>
+```
+
+2.熟悉使用有成本
+这一点逃避不了，所有的新技术，所有的 css 框架都有熟悉成本。Tailwind CSS 也一样。比如你想做一个圆角，那你得知道 Tailwind CSS 里面的圆角属性怎么写，边框怎么写，边框样式怎么写等等。你需要不断的去看文档。
+
+## 常见兼容性问题？
+
+- 浏览器默认的 margin 和 padding 不同。解决方案是加一个全局的 *{margin: 0; padding: 0;} 来统一。
+- IE下 event 对象有 event.x，event.y 属性，而 Firefox 下没有。Firefox 下有 event.pageX，event.PageY 属性，而 IE 下没有。 解决办法：var mx = event.x?event.x:event.pageX;
+- Chrome 中文界面下默认会将小于 12px 的文本强制按照 12px 显示, 可通过加入 CSS 属性 -webkit-text-size-adjust: none; 解决.
+- 超链接访问过后 hover 样式就不出现了，被点击访问过的超链接样式不在具有 hover 和 active 了，解决方法是改变 CSS 属性的排列顺序: L-V-H-A : a:link {} a:visited {} a:hover {} a:active {}
+
+## 图片裁剪压缩技术
 
 一张 4px × 4px 的彩色图片，未压缩的的原始图像数据，就是一个 4 × 4 矩形网格，每一个网格代表一个像素。每一个像素，又是由 红，绿，蓝 三基色构成，**1 个像素点需要 3 个字节**。
 
-## 图片压缩的原理
+**一、图片压缩的原理**
 
 **1.有损压缩**
 
@@ -1519,7 +1781,7 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 
 例如：499 500 500 500 501 → -1 0 500 0 1
 
-## 使用 Canvas 压缩图片
+**二、使用 Canvas 压缩图片**
 
 [图片的本质和图片压缩原理及实现](https://juejin.cn/post/7005931841672708109#heading-1)
 
@@ -1631,99 +1893,6 @@ export default {
 
 ```
 
-## 使用第三方库裁剪
+**三、使用第三方库裁剪**
 
 Cropper.js
-
-
-
-# 进阶
-
-## 伪类和伪元素
-
-**伪类**
-
-伪类即假的类，通常可以添加类来达到效果。伪类是选择器的一种，它用于选择处于特定状态的元素。它们表现得会像是你向你的文档的某个部分应用了一个类一样，帮你在你的标记文本中减少多余的类，让你的代码更灵活、更易于维护。伪类开头为冒号`:`
-
-用户行为伪类，一些伪类只会在用户以某种方式和文档交互的时候应用。这些用户行为伪类，有时叫做动态伪类，如:hover，:focus。
-
-> 常见伪类
->
-> :active 在用户激活（例如点击）元素的时候匹配。
->
-> :checked 匹配处于选中状态的单选或者复选框。
->
-> :disabled 匹配处于关闭状态的用户界面元素
->
-> :first-child 匹配兄弟元素中的第一个元素。
->
-> :first-of-type 匹配兄弟元素中第一个某种类型的元素。
->
-> :focus 当一个元素有焦点的时候匹配。
->
-> :hover 当用户悬浮到一个元素之上的时候匹配。
->
-> :last-child 匹配兄弟元素中最末的那个元素。
->
-> :last-of-type 匹配兄弟元素中最后一个某种类型的元素。
->
-> :is() 匹配传入的选择器列表中的任何选择器。
->
-> :not 匹配作为值传入自身的选择器未匹配的物件。
->
-> :nth-child 匹配一列兄弟元素中的元素——兄弟元素按照an+b形式的式子进行匹配（比如2n+1匹配元素1、3、5、7等。即所有的奇数个）。
->
-> :nth-of-type 匹配某种类型的一列兄弟元素（比如，`<p>`元素）——兄弟元素按照an+b形式的式子进行匹配（比如2n+1匹配元素1、3、5、7等。即所有的奇数个）。
->
-> :nth-last-child 匹配一列兄弟元素，从后往前倒数。兄弟元素按照an+b形式的式子进行匹配（比如2n+1匹配按照顺序来的最后一个元素，然后往前两个，再往前两个，诸如此类。从后往前数的所有奇数个）。
->
-> :nth-last-of-type 匹配某种类型的一列兄弟元素（比如，`<p>`元素），从后往前倒数。兄弟元素按照an+b形式的式子进行匹配（比如2n+1匹配按照顺序来的最后一个元素，然后往前两个，再往前两个，诸如此类。从后往前数的所有奇数个）。
->
-> :only-child 匹配没有兄弟元素的元素。
->
-> :only-of-type 匹配兄弟元素中某类型仅有的元素。
-
-**伪元素**
-
-伪元素即假元素，需要通过添加元素才能达到效果。伪元素以类似方式表现，不过表现得是像你往文档中加入全新的HTML元素一样，而不是向现有的元素上应用类。伪元素开头为双冒号`::`
-
-> 常见伪元素
->
-> ::before在被选元素前插入内容,属性 `content` 是必须设置的，它的值可以为字符串，也可以有其它形式
->
-> ::after在被元素后插入内容，属性 `content` 是必须设置的，它的值可以为字符串，也可以有其它形式
->
-> ::first-line作用于第一行的所有字符
->
-> ::first-letter作用于第一行的首字符
-
-**伪类和伪元素的区别**
-
-> - 伪类和伪元素都是用来表示文档树以外的"元素"。
-> - 伪类和伪元素分别用单冒号`:`和双冒号`::`来表示。
-> - 伪类和伪元素的区别，最关键的点在于如果没有伪元素(或伪类)，是否需要添加元素才能达到目的，如果是则是伪元素，反之则是伪类。
-
-## sass（scss）、less、stylus、postcss
-
-它们都是css预处理器。css预处理器的概念：CSS预处理器用一种专门的编程语言，进行Web页面样式设计，然后再编译成正常的CSS文件。
-
-- sass:Sass是一种动态样式语言，Sass语法属于缩排语法，比css比多出好些功能(如变量、嵌套、运算,混入(Mixin)、继承、颜色处理，函数等)，更容易阅读。
-
-  对Sass的缩排语法优化，用{}取代了原来的缩进，变成了Scss(sassy css)，与原来的语法兼容。变量符是$。
-
-- less:也是一种动态样式语言. 受Sass影响较大,对CSS赋予了动态语言的特性，如变量，继承，运算， 函数。在客户端上和服务端都可以运行。变量符是@。
-
-- Stylus：主要用来给Node项目进行CSS预处理支持。提供一个高效、动态、和使用表达方式来生成CSS，以供浏览器使用。支持缩进和CSS常规样式书写规则。写法更接近js,学习曲线陡峭。变量符是随意。
-
-- PostCSS：它是一个对 CSS 进行处理的工具（平台），不能简单的把 PostCSS 归类成 CSS 预处理或后处理工具。PostCSS 一般不单独使用，而是与已有的构建工具进行集成。PostCSS 与主流的构建工具，如 Webpack、Grunt 和 Gulp 都可以进行集成。
-
-## 过度、变形、移动、动画
-
-| 属性               | 含义                                                         |
-| ------------------ | ------------------------------------------------------------ |
-| transition（过度） | 用于设置元素的样式过度，和animation有着类似的效果，但细节上有很大的不同 |
-| transform（变形）  | 用于元素进行旋转、缩放、移动或倾斜，和设置样式的动画并没有什么关系，就相当于color一样用来设置元素的“外表” |
-| translate（移动）  | 只是transform的一个属性值，即移动                            |
-| animation（动画）  | 用于设置动画属性，他是一个简写的属性，包含6个属性            |
-
-# 高级

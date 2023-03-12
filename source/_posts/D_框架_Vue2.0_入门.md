@@ -795,9 +795,23 @@ push是追加历史记录，replace是替换当前最新记录
 - 2.x 版本中在一个元素上同时使用 `v-if` 和 `v-for` 时，`v-for` 会优先作用
 - 3.x 版本中 `v-if` 总是优先于 `v-for` 生效。
 
-
-
 # 高级
+
+## 高级技巧
+
+- 多用Array.includes()
+- 提前退出/提前返回。如果不使用，可能有多层if
+- 用字面量替代switch,如用obj的属性取值替代switch
+
+**提前退出/提前返回**
+
+```
+a({type}={})=>{
+ if(!type) return 'no type';
+ if(type==='dog') return 'is dog';
+ return type
+}
+```
 
 ## 接口权限-路由权限-菜单权限-按钮权限
 

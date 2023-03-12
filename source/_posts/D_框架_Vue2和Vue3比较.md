@@ -555,6 +555,95 @@ export const enum PatchFlags {
 }
 ```
 
+## Option API和Composition API
+
+**vue2 Option API**
+
+```vue
+<template>
+  <div>
+    <p>{{ person.name }}</p>
+    <p>{{ car.name }}</p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Person",
+
+  data() {
+    return {
+      person: {
+        name: "小明",
+        sex: "male",
+      },
+      car: {
+        name: "宝马",
+        price: "40w",
+      }
+    };
+  },
+
+  watch:{
+      'person.name': (value) => {
+          console.log(`名字被修改了, 修改为 ${value}`)
+      },
+      'person.sex': (value) => {
+          console.log(`性别被修改了, 修改为 ${value}`)
+      }
+  },
+
+  methods: {
+    changePersonName() {
+      this.person.name = "小浪";
+    },
+
+    changeCarPrice() {
+      this.car.price = "80w";
+    }
+  },
+};
+</script>
+```
+
+**vue3 Composition API**
+
+```vue
+<template>
+  <p>{{ person.name }}</p>
+  <p>{{ car.name }}</p>
+</template>
+
+<script lang="ts" setup>
+import { reactive, watch } from "vue";
+
+// person的逻辑
+const person = reactive<{ name: string; sex: string }>({
+  name: "小明",
+  sex: "male",
+});
+watch(
+  () => [person.name, person.sex],
+  ([nameVal, sexVal]) => {
+    console.log(`名字被修改了, 修改为 ${nameVal}`);
+    console.log(`名字被修改了, 修改为 ${sexVal}`);
+  }
+);
+function changePersonName() {
+  person.name = "小浪";
+}
+
+// car的逻辑
+const car = reactive<{ name: string; price: string }>({
+  name: "宝马",
+  price: "40w",
+});
+function changeCarPrice() {
+  car.price = "80w";
+}
+</script>
+```
+
 # 从Vue2.0升级到3.0
 
 [迁移指南](https://v3.cn.vuejs.org/guide/migration/introduction.html)
@@ -839,3 +928,59 @@ export default {
    由于JavaScript是TypeScript的子集，因此您可以在TypeScript代码中使用您想要的所有JavaScript库和代码。
 
 [github上pull request排名](https://madnight.github.io/githut/#/pull_requests/2020/1)
+
+# 反对Vue2升级到Vue3
+
+最近一篇反对**Vue2**升级到**Vue3**的文章在vue官方社区引起了热议。（原文链接：[Vue 3 was a mistake that we should not repeat](https://link.juejin.cn/?target=https%3A%2F%2Fmedium.com%2Fjs-dojo%2Fvue-3-was-a-mistake-that-we-should-not-repeat-81cc65484954)）
+
+原作者主要的问题，是从Vue3**突破性**的改变以及**周边生态圈**未能及时跟上的角度，重点强调了迁移升级**成本**+**风险**较大。
+
+关于升级成本问题：尤大也承认了**Vue3**升级体验并没有想象中的那么流畅，**Vue4**会吸取经验，做好平稳迭代。
+
+**一、破坏性的api变更（Breaking changes）**
+
+**[Events API](https://link.juejin.cn?target=https%3A%2F%2Fv3-migration.vuejs.org%2Fbreaking-changes%2Fevents-api.html)的弃用让这个问题首当其冲**。Vue实例再也不能作为**事件总线**做事件通信，`$`on，`$`off，`$`once的彻底**移除**意味着之前所有有关代码都必须重新推翻重写，虽然有很好的插件工具让这件事变得没那么复杂，但是仍然会带来不小的迁移成本。
+
+**代码构建问题。** 你会经常遇到用Vue2写法写出来的代码在**构建(build)** 失败或抛出**警告**。因为这些api写法在Vue3中已经被废弃。这问题在已存在的大型项目中的尤为突出下图展示了一部分**Breaking changes**，可以看到破坏性的api变更数确实很多：
+
+**二、颠覆式的设计模式（composition-api）**
+
+颠覆式的**composition-api**慢慢向**面向函数**思想转变，导致很多原有习惯于**options-api**的开发者反感Vue正在像react靠拢，没有坚持住Vue特色。它提出了一种新的基于函数的 Vue 组件编写方式，引起了Vue社区大量的争议和分裂，甚至将社区分隔为两种观点阵营针锋相对，最终导致了[Vue 最黑暗的一天事件](https://link.juejin.cn?target=https%3A%2F%2Fdev.to%2Fdanielelkington%2Fvue-s-darkest-day-3fgh)。这很令人沮丧。
+
+**三、生态系统（The ecosystem）**
+
+生态系统和框架本身一样重要。因为没有**责任机制**，在有争议的决定和在弃用功能的时候，很多框架周边的生态系统的许多贡献者会被迫**离开**，并导致许多库被**放弃**或者**延迟更新**。很多时候，我们没有办法做版本兼容时，我们往往只能把责任归咎于，开源库缺乏**同理心**和对大局的理解。
+
+**四、文档系统（Documentation）**
+
+在我们的日常开发中，尤其是在使用框架时，我们会遇到各种各样的问题，这时我们时常需要**google**或者**问答社区**作为帮手，但是目前关于**Vue**搜索出来的结果几乎全是Vue2的结果
+
+**五、过往案例（The past）**
+
+过渡到 Vue 3 看起来很像从*AngularJS*过渡到*Angular*（*版本 1⇒ 2*）。大量的延迟和重大更改导致了挫败感，最终 Angular 失去了对 React 和 Vue 的吸引力。
+
+**尤大的回复：**
+
+> 1.当我们进行版本切换时，所有核心库和工具都与这两个版本兼容（或为 Vue 2/3 支持提供单独的版本）。
+>
+> 实际上阻碍升级的依赖都是第三方，主要是 **Nuxt** 和 **Vuetify**。
+>
+> 2.实际使用过 Composition API + < script setup> 的用户在真是开发中的反馈非常积极，证明这是一个有价值的补充，现在他们中的许多人更喜欢它而不是 Options API。
+>
+> 我们当然可以更好地处理新 API 的引入，但仅仅因为存在争议，并不意味着它是错误的或者不必要的。实际上，引入大的、新的想法的行为，势必会让那些喜欢呆在舒适区的人感到不安，但如果我们迎合这种心态，就永远不会取得真正的进展。
+>
+> 3、4.虽然我们确实创造了 Vue CLI、Vuex、Vetur 和 VuePress 的新替代品，但它们本身都有适用于 Vue 3 的版本。
+>
+> 5.关于和angular的过往对比：
+>
+> - 没有可比性，不能拿Vue升级和angularjs -> angular做对比。
+>
+> - Angular 和 AngularJS 是根本不同的框架。几乎没有共享交集，除了完全重写之外没有实际的迁移路径。
+>
+> - 有许多生产 Vue 2 应用程序成功迁移到 Vue 3 的案例。很容易吗，确实不是，但是他们都迁移成功了。
+>
+> 6.我们同意，Vue3升级体验并没有想象中的那么流畅。Vue 将随着吸取的经验不断发展，我们绝对不打算在未来的Vue4中，进行这样的破坏性重大升级。
+
+**参考**
+
+[Vue2升级到Vue3到底是不是一个正确的选择？(尤雨溪亲自回复解读)](https://juejin.cn/post/7117525259212816414#heading-1)

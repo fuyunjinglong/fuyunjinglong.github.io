@@ -5,9 +5,87 @@ categories:
 - A_编码规范
 toc: true # 是否启用内容索引
 ---
-常规命名，命名全小写，多个单词用中划线-间隔，用于：class,id，属性，组件名，文件名
-camelCase小驼峰，首字母小写，其他大写，用于：函数
-PascalCase 帕斯卡，首字母全大写，用于：常量
+# 通用命名规范
+
+## 命名规则
+
+默认规则是camelCase(小驼峰)
+
+PascalCase(大驼峰): 各个单次首字母大写
+
+camelCase(小驼峰)：首个单词首字母小写，其余单词首字母大写
+
+**命名实践如下：**
+
+- **目录或项目命名**：全小写，连接符(-, _)，如/project-athena
+- **组件名**：大驼峰，如KeepLive.vue
+- **js,ts文件名**：小驼峰
+- **class命名**
+  - 基于姓氏命名法（继承 + 外来），modulename，modulename_info，modulename_info_user
+  - 嵌套层次最多3层，超过3层或名字过长，新开作用区间，取缩写miu_tit，miu_tit_co
+- **变量**：小驼峰
+  - 布尔类型：需要有含义的前缀，比如`has, is, wether, can, should`等，如isVisited
+  - 数组复数：需要标识复数的结尾，比如s或list
+- **函数**：小驼峰
+- **常量**：全大写，连接符(_)，如MAX_IMAGE_SIZE 
+- 注释：单行用//,多行用/**/
+
+**前缀含义如下：**
+
+| 动词 | 含义                            | 返回值                                                |
+| ---- | ------------------------------- | ----------------------------------------------------- |
+| can  | 判断是否可执行某个动作 ( 权限 ) | 函数返回一个布尔值。true：可执行；false：不可执行     |
+| has  | 判断是否含有某个值              | 函数返回一个布尔值。true：含有此值；false：不含有此值 |
+| is   | 判断是否为某个值                | 函数返回一个布尔值。true：为某个值；false：不为某个值 |
+| get  | 获取某个值                      | 函数返回一个非布尔值                                  |
+| set  | 设置某个值                      | 无返回值、返回是否设置成功或者返回链式对象            |
+
+**参考**
+
+[阿里前端命名规范](https://developer.aliyun.com/article/850913#slide-1)
+
+[不要在sass嵌套过深](http://mydearxym.github.io/2016/09/22/not-nest-in-sass/)
+
+[sass的ClassName命名](https://guide.aotu.io/docs/name/classname.html)
+
+## 拒绝屎山代码
+
+- TypeScript不要用成AnyScript
+- 代码不要太长
+- 组件和方法解耦
+- 使用 `Mutable Data`响应式数据
+- 多用魔术字符串即枚举
+- 多尝试不同的方式来解决相同的问题
+
+**TypeScript不要用成AnyScript**
+
+> 如果充分发挥 `AnyScript` 的宗旨，意味着你很轻松地就让代码增加了 `30%` 毫无用处但也挑不出啥毛病的代码，这些代码甚至还会增加项目的编译时间（毕竟增加了`ts`校验和移除的成本嘛）
+
+**代码不要太长**
+
+> 单文件不超过400行，函数不超过100行
+
+**组件和方法解耦**
+
+> 组件优先使用pros和emit,回避vuex
+
+**使用 `Mutable Data`响应式数据**
+
+> 只需要三个单词：`Watch`、`Watch`、`Watch`
+
+**多用魔术字符串即枚举**
+
+```
+enum EventType {
+  Move,
+  Skip,
+  Batch
+}
+```
+
+**多尝试不同的方式来解决相同的问题**
+
+比如vue不只有template，还有render
 
 # 1.通用编码规范规则
 
