@@ -1,5 +1,5 @@
 ---
-title: 自动化测试
+title: 测试
 date: 2022-05-04 06:33:16
 categories:
 - H_工程热点
@@ -163,6 +163,12 @@ TDD （Test Driven Development）**TDD 专指 UTDD（Unit Test Driven Developmen
 - [推行TDD的思考——张逸](https://link.juejin.cn/?target=http%3A%2F%2Fagiledon.github.io%2Fblog%2F2013%2F12%2F25%2Fthought-about-applying-tdd%2F)
 - [TDD(测试驱动开发)培训录-破狼](https://link.juejin.cn/?target=https%3A%2F%2Fwww.cnblogs.com%2Fwhitewolf%2Fp%2F4205761.html)
 
+# TDD-JEST
+
+[官网](https://jestjs.io/zh-Hans/docs/getting-started)
+
+
+
 # TDD-Vue
 
 ## Vue测试策略
@@ -183,7 +189,11 @@ Component 层，遵循以上的两测两不测原则
 - 通用 UI 组件
 - 功能型组件
 
+## Vue Test Utils
 
+[Vue测试实战](https://lmiller1990.github.io/vue-testing-handbook/zh-CN/#%E8%BF%99%E6%9C%AC%E6%8C%87%E5%8D%97%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F)
+
+[Vue Test Utils实战](https://v1.test-utils.vuejs.org/zh/)
 
 # 测试解决方案落地
 

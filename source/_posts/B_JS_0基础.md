@@ -511,7 +511,122 @@ console.log(array1.concat(array2)); // [1,2,3,4,5,6];
 console.log(array1.push.apply(array1, array2)); // [1, 2, 3, 4, 5, 6]
 ```
 
+## script 标签的 defer 和 async
+
+defer
+
+> 解析完js脚本后不会立刻执行，而是在DOMContentLoaded 事件触发之前开始执行。defer 是顺序执行
+>
+> 使用场景(依赖dom)：
+>
+> - 评论框
+> - 代码语法高亮
+> - polyfill.js
+
+async
+
+> 解析完js脚本后会立即执行，与html解析过程异步同时执行。async是乱序执行
+>
+> 使用场景：
+>
+> - 百度统计
+
+![image-20211201070616431](C:/img/image-20211201070616431.png)
+
+尽量减少DOM访问；
+
+把脚本放在底部；
+
+把JavaScript和CSS放到外面，如果JavaScript和CSS在外部文件中，并且已经被浏览器缓存起来了，那么我们就成功地把HTML文档变小了，而且还没有增加HTTP请求数；
+
+压缩JavaScript和CSS，如启用了gzip模块；
+
 # 三大山-原型和原型链
+
+## 彻底搞懂this
+
+**为什么要有 this？**
+
+官方解释：
+
+> `this` 被自动定义在所有函数的作用域中，它提供了一种更好的方式来“隐式”的传递对象引用，这样使得我们的 `API` 设计或者函数变得更加简洁，而且还更容易复用。
+
+看一段代码：
+
+```
+function say() {
+  console.log("你好！", this.name);
+}
+let person1 = {
+  name: '小猪课堂'
+}
+let person2 = {
+  name: '张三'
+}
+say.call(person1); // 你好！ 小猪课堂
+say.call(person2); // 你好！ 张三
+```
+
+如果我们没有 `this`，那么我们就需要显式的将上下文对象传入函数，即显式传入 `person1` 和 `person2` 对象。
+
+**this的定义**
+
+`this` 就是一个对象，`this` 是在函数被调用时发生的绑定，它指向什么完全取决于函数在哪里被调用。
+
+> - this 是在运行时绑定的，不是在编写时绑定
+> - this 的绑定与函数的声明和位置没有任何关系
+> - 函数在调用时，会创建一个执行上下文，this 就是这个执行上下文中的一个属性，在函数执行的时候可以用到 this。所以 this 是在函数调用的时候确定绑定关系的，也就是运行时。
+
+**this的绑定规则**
+
+> - 默认绑定
+> - 隐式绑定
+> - 显式绑定
+> - new绑定
+
+1.默认绑定
+
+> 当函数不带用任何修饰进行调用时，此时 `this` 的绑定就是默认绑定规则，`this` 指向全局对象。
+>
+> let变量声明不会绑定在window上面，只有var声明的才会，这是需要注意的。除此之外，严格模式下上段代码的 `this` 是 `undefined`，
+
+```
+var name = '小猪课堂';
+function foo(){
+  console.log(this) // Window{}
+  console.log(this.name) // 小猪课堂
+}
+foo(); // 小猪课堂
+```
+
+在全局作用域中定义了一个变量`name`，然后我们在函数 `foo` 中使用`this.name`，输出的结果就是全局变量`name`，这说明我们 `this` 指向了全局作用域，也就是说 `this` 绑定到了 `window` 对象上。
+
+函数的这种调用方式就被称为默认绑定，默认绑定规则下的 `this` 指向全局对象。
+
+2.隐式绑定
+
+```
+function foo() {
+  console.log(this.name) // 小猪课堂
+}
+let obj = {
+  name: '小猪课堂',
+  foo: foo
+}
+obj.foo();
+```
+
+在 `obj` 对象中引用了函数 `foo`，然后我们使用 `obj.foo`（函数别名）的方式调用了该函数，此时不是独立函数调用，我们不能使用默认绑定规则。
+
+此时 `this` 的绑定规则称为隐式绑定规则，因为我们不能直接看出函数的调用位置，它的实际调用位置在 `obj` 对象里面，调用 `foo` 时，它的执行上下文对象为 `obj` 对象，所以 `this` 将会被绑定到 `obj` 对象上，所以我们函数中的 `this.name` 其实就是`obj.name`。这就是我们的隐式绑定规则。
+
+i.
+
+
+
+3.显式绑定
+
+4.new绑定
 
 ## this五种情况的梳理
 
@@ -634,7 +749,7 @@ var obj={
 console.log(obj.getAge());//指向obj，但遇到箭头函数this指向父级obj
 ```
 
-**情况五：call、apply、bind**
+## call、apply、bind
 
 `call` `apply` `bind`都可以改变函数调用的`this`指向
 
