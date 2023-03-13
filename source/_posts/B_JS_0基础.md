@@ -579,12 +579,25 @@ say.call(person2); // 你好！ 张三
 
 **this的绑定规则**
 
-> - 默认绑定
-> - 隐式绑定
-> - 显式绑定
-> - new绑定
+> 绑定流程：先确定函数调用位置，然后确定使用哪条规则，然后根据规则确定 `this` 绑定。
+>
+> 绑定优先级：默认绑定 < 隐式绑定 < 显式绑定 < new 绑定
 
-1.默认绑定
+4条核心绑定规则
+
+> - 默认绑定：`this` 绑定到全局对象
+> - 隐式绑定：一般绑定到调用对象，如 `obj.foo` 绑定到 `obj`
+> - 显式绑定：通过 `call`、`apply` 指定 `this` 绑定到哪里。使用 `bind` 函数硬绑定
+> - new绑定：使用 `new` 关键词，绑定到当前函数对象
+
+判断 this 最终指向，总体流程：
+
+> 1. 判断函数调用时是否使用了 `new`，即 `new` 绑定，如果使用了，则 `this` 绑定的是新创建的对象。
+> 2. 函数调用是否使用了 `call`、`apply` 等显式绑定，或者硬绑定（bind），如果是的话，`this` 指向指定的对象。
+> 3. 函数是否在某个上下文对象中调用，即隐式绑定，如 `obj1.foo`，如果是的话，`this` 指向绑定的那个上下文对象。
+> 4. 以上 3 点都不涉及的话，则采用默认绑定，但是需要注意的是，在严格模式下，默认绑定的 `this` 是 `undefined`，非严格模式下绑定到全局对象。
+
+**1.默认绑定**
 
 > 当函数不带用任何修饰进行调用时，此时 `this` 的绑定就是默认绑定规则，`this` 指向全局对象。
 >
@@ -603,7 +616,7 @@ foo(); // 小猪课堂
 
 函数的这种调用方式就被称为默认绑定，默认绑定规则下的 `this` 指向全局对象。
 
-2.隐式绑定
+**2.隐式绑定**
 
 ```
 function foo() {
@@ -620,136 +633,105 @@ obj.foo();
 
 此时 `this` 的绑定规则称为隐式绑定规则，因为我们不能直接看出函数的调用位置，它的实际调用位置在 `obj` 对象里面，调用 `foo` 时，它的执行上下文对象为 `obj` 对象，所以 `this` 将会被绑定到 `obj` 对象上，所以我们函数中的 `this.name` 其实就是`obj.name`。这就是我们的隐式绑定规则。
 
-i.
+i.多个引用调用
 
+如果我们调用函数时有多个引用调用，比如`obj1.obj2.foo()`。这个时候函数 `foo` 中的 `this` 指向哪儿呢？其实不管引用链多长，`this` 的绑定都由最顶层调用位置确定，即`obj1.obj2.foo()`的 `this` 还是绑定带 `obj2`。
 
+ii隐式绑定中 this 丢失
 
-3.显式绑定
-
-4.new绑定
-
-## this五种情况的梳理
-
-- 事件绑定
-- 普通函数执行
-- 构造函数执行
-- 箭头函数
-- `call、apply、bind`
-
-**情况一：事件绑定**
-
-`this`：给元素的某个事件行为绑定方法，事件触发，方法执行，此时方法中的 *`this`一般都是当前元素本身*
+在隐式绑定规则中，我们认为谁调用了函数，`this` 就绑定谁，比如 `obj.foo` 中 `this` 就绑定到 `obj`，但是有一些情况比较特殊，即使采用的隐式绑定规则，但是 `this` 并没有按照我们的想法去绑定，这就是所谓的隐式绑定 `this` 丢失，常见于回调函数中。
 
 ```
-    <button id="btn">点我</button>
-    <script>  
-    // 方法一
-     btn.onclick=function anonymous(){
-  		console.log(this);   
-     }
-     // 方法二
-      btn.addEventListener('click',function anonymous(){
-   		console.log(this); 
-     },false)
-     // 方法三，兼容iE 6/7/8 DOM2事件绑定
-     btn.attachEvent('onclick',function anonymous(){
-      console.log(this);//this指向window
-     })
-     // 方法四
-     function fn(){
-         console.log(this);
-     }
-     btn.onclick=fn.bind(window)
-    </script>
+function foo() {
+  console.log(this.name) // 小猪课堂
+}
+function doFoo(fn) {
+  fn(); // 函数调用位置
+}
+
+let obj = {
+  name: '张三',
+  foo: foo
+}
+let name = '小猪课堂';
+doFoo(obj.foo); // 小猪课堂
 ```
 
-**情况二：普通函数执行**
+上段代码中我们很容易会以为 `foo` 绑定的 `this` 是 `obj` 对象，因为我们使用了 `obj.foo` 的方式，这种方式就是遵循隐式绑定规则。但是事实上 `this` 却绑定到了全局对象上去，这是因为我们在 `doFoo` 函数中调用 `fn` 时，这里才是函数的实际调用位置，此时是独立函数调用，所以 `this` 指向了全局对象。
 
-**'点'前面是谁this就是谁** 普通函数执行，它里面的`this`是谁，取决于方法执行前面是否有`"点"` 有的话，`“点”前面`是谁`this`就是谁，没有`this`指向`window`（严格模式下是`undefined`）。
+实际项目中我们容易遇到这种问题的场景可能就是定时器了，比如下面的代码：
 
-默认情况下，指向window对象，只有当有对象时，才指向对象。关键看调用的时候是fn()还是obj.fn()
-
-```js
-function get (p){
-console.log(p);
-}
-get('黄山');
-等效于get.call(window,'大理')---this指向window
-var person={
-    name:'凤凰',
-    fn:function(a){
-        console.log(`我在${this.name}${a}`);
-    }
-}
-person.fn('划水');
-person.fn.call(person,'划水');---this指向person
+```scss
+setTimeout(obj.foo, 100)
 ```
 
-```js
-var name =222;
-var a={
-    name:111,
-    say:function(){
-        console.log(this.name);
-    }
+这种写法就很容易造成 `this` 丢失。
+
+**3.显式绑定**
+
+明确的将函数的 `this` 绑定在某个对象上。使用call、apply、bind。其中bind就是硬绑定。
+
+虽然显式绑定本身不能解决 `this` 绑定丢失的问题，但是我们可以通过变通的方式来解决这个问题，也被称作**硬绑定**。
+
+硬绑定：
+
+```
+function foo() {
+  console.log(this.name) // 小猪课堂
 }
-var fun=a.say;
-fun(); //window 222
-a.say();// a 111
-var b={
-    name:333,
-    say:function(fn){
-        fn();
-    }
+function doFoo(fn) {
+  fn(); // 函数调用位置
 }
-b.say(a.say);//window 222
-b.say=a.say;
-b.say();//b 333
+let obj = {
+  name: '张三',
+}
+let bar = function () {
+  foo.call(obj)
+}
+let name = '小猪课堂';
+doFoo(bar); // 张三
+setTimeout(bar, 100); // 张三
 ```
 
-**情况三：构造函数执行(new xxx)**
+其实思路也比较简单，出现 `this` 绑定丢失原因无非就是我们传入的回调函数在被执行时，`this` 绑定规则变为了默认绑定，那么为了解决这个问题，我们不妨在封装一个函数，将 `foo` 函数的 `this` 显式绑定到 `obj` 对象上去即可。
 
-函数中的this是当前类的实列。
+这里提一点，下面写法是错误的：
 
-```js
-<script>
-    function Fn(){
-        console.log(this);
-          //this.xxx=xxx是给当前实列设置私有属性
-      }
-      let f= new Fn;
-</script>
+```scss
+doFoo(foo.call(obj));
 ```
 
-**情况四：箭头函数**
+因为回调函数是在 `doFoo` 里面执行的，上面的写法相当于 `foo` 函数立即执行了。
 
-箭头函数中this在定义函数的时候就绑定了，而不是在执行函数时候绑定。
+**4.new绑定**
 
-箭头函数中，this指向的固定化，并不是因为箭头函数有绑定this机制。是因为箭头函数中根本没有自己的this.它所用的this，是共用父继承下来的this。所以也不能作构造函数
+使用 new 来调用函数时，会执行下面操作：
 
-```js
-var x=11;
-var obj={
-    x:22,
-    say:()=>{
-        console.log(this.x); // 同级是obj内部
-    }
+- 创建一个全新的对象
+- 这个新对象会被执行原型连接
+- 这个新对象会绑定到函数调用的 `this`
+- 如果函数没有返回其它对象，那么 `new` 表达式种的函数调用会自动返回这个新对象
+
+我们可以看到 `new` 的操作中就有 `this` 的绑定，我们在来看看代码。
+
+代码如下：
+
+```ini
+function foo(name) {
+  this.name = name;
 }
-obj.say();//指向obj，但this指向父级，同级是obj，父级是window,11
-
-var obj={
-    birth:1990,
-    getAge:function(){
-        var birth=0;
-        var b = this.birth;
-        var fn = ()=>new Date().getFullYear()-b//同级是getAge内部
-        return fn()
-    }
-}
-console.log(obj.getAge());//指向obj，但遇到箭头函数this指向父级obj
+let bar = new foo('小猪课堂');
+console.log(bar.name); // 小猪课堂
+复制代码
 ```
 
-## call、apply、bind
+上段代码我们使用 `new` 关键词调用了 `foo` 函数，大家注意这不是默认调用规则，这是 `new` 绑定规则。
+
+**参考**
+
+[面试官：JS中this指向哪儿？你是如何确定this的？](https:/面试官：JS中this指向哪儿？你是如何确定this的？/juejin.cn/post/7115390077353590792#heading-13)
+
+## call/apply/bind
 
 `call` `apply` `bind`都可以改变函数调用的`this`指向
 
@@ -791,23 +773,19 @@ test1()
 test2()
 ```
 
-**`call`语法**
+**call/apply**
 
-- `fun.call(thisArg, arg1, arg2, ...)`
-- `thisArg`: 在fun函数运行时指定的this值。需要注意的是，指定的this值并不一定是该函数执行时真正的this值，如果这个函数处于非严格模式下，则指定为null和undefined的this值会自动指向全局对象(浏览器中就是window对象)，同时值为原始值(数字，字符串，布尔值)的this会指向该原始值的自动包装对象。
-- `arg1, arg2, ...` 指定的参数列表
+```
+- 第一个参数就是改变 this 的指向，写谁就是谁，在非严格模式下，null/undefined 指向的是 window。
+- call/apply 的唯一区别就是，传递参数不一样，apply 第二个参数是数组，call的参数是一个一个传递。
+- call 的性能要比 apply 好一些（尤其是传递给函数的参数超过三个的时候）
+```
 
-**`apply`语法**
+**bind**
 
-- `fun.apply(thisArg, [argsArray])`
-- `thisArg` 在 fun 函数运行时指定的 this 值。需要注意的是，指定的 this 值并不一定是该函数执行时真正的 this 值，如果这个函数处于非严格模式下，则指定为 null 或 undefined 时会自动指向全局对象（浏览器中就是window对象），同时值为原始值（数字，字符串，布尔值）的 this 会指向该原始值的自动包装对象。
-- `argsArray` 一个数组或者类数组对象，其中的数组元素将作为单独的参数传给 fun 函数。如果该参数的值为null 或 undefined，则表示不需要传入任何参数。从ECMAScript 5 开始可以使用类数组对象。
-
-**`bind`语法**
-
-- `fun.bind(thisArg[, arg1[, arg2[, ...]]])`
-- `thisArg` 当绑定函数被调用时，该参数会作为原函数运行时的 this 指向。当使用new 操作符调用绑定函数时，该参数无效。
-- `arg1, arg2, ...` 当绑定函数被调用时，这些参数将置于实参之前传递给被绑定的方法。
+```
+-  call/apply都是改变this的同时就把函数执行了，但是bind不是立即执行函数，属于预先改变this和传递一些内容，利用的是柯理化的思想。
+```
 
 **小结：**
 

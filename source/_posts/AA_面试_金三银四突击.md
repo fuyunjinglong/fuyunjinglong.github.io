@@ -45,7 +45,7 @@ toc: true # 是否启用内容索引
 
 # JS
 
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#this五种情况的梳理">call、apply、bind用法</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#call/apply/bind">call/apply/bind</a>
 - <a target="_blank" href="{% post_path 'C_H5_0基础' %}#浏览器内核的理解">浏览器内核的理解</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#null和undefined">null 和 undefined</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#原型、原型链、继承">原型、原型链、继承</a>
