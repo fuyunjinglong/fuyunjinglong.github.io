@@ -511,9 +511,9 @@ console.log(array1.concat(array2)); // [1,2,3,4,5,6];
 console.log(array1.push.apply(array1, array2)); // [1, 2, 3, 4, 5, 6]
 ```
 
-## script 标签的 defer 和 async
+## async和defer的作用是什么？有什么区别?
 
-defer
+defer延迟执行
 
 > 解析完js脚本后不会立刻执行，而是在DOMContentLoaded 事件触发之前开始执行。defer 是顺序执行
 >
@@ -522,14 +522,18 @@ defer
 > - 评论框
 > - 代码语法高亮
 > - polyfill.js
+>
+> defer 属性表示延迟执行引入的 JavaScript，即这段 JavaScript 加载时 HTML 并未停止解析，这两个过程是并行的。整个 document 解析完毕且 defer-script 也加载完成之后（这两件事情的顺序无关），会执行所有由 defer-script 加载的 JavaScript 代码，然后触发 DOMContentLoaded 事件。
 
-async
+async异步下载
 
 > 解析完js脚本后会立即执行，与html解析过程异步同时执行。async是乱序执行
 >
 > 使用场景：
 >
 > - 百度统计
+>
+> async 属性表示异步执行引入的 JavaScript，与 defer 的区别在于，如果已经加载好，就会开始执行——无论此刻是 HTML 解析阶段还是 DOMContentLoaded 触发之后。需要注意的是，这种方式加载的 JavaScript 依然会阻塞 load 事件。换句话说，async-script 可能在 DOMContentLoaded 触发之前或之后执行，但一定在 load 触发之前执行。
 
 ![image-20211201070616431](C:/img/image-20211201070616431.png)
 
@@ -733,44 +737,30 @@ console.log(bar.name); // 小猪课堂
 
 ## call/apply/bind
 
-`call` `apply` `bind`都可以改变函数调用的`this`指向
+回顾call/apply/bind用法
 
-```js
-// 有只猫叫小黑，小黑会吃鱼
-const cat = {
-    name: '小黑',
-    eatFish(...args) {
-        console.log('this指向=>', this);
-        console.log('...args', args);
-        console.log(this.name + '吃鱼');
-    },
+```
+function sayHelloTo (to) {
+    console.log(`${this.name} say hello to ${to}`)
 }
-// 有只狗叫大毛，大毛会吃骨头
-const dog = {
-    name: '大毛',
-    eatBone(...args) {
-        console.log('this指向=>', this);
-        console.log('...args', args);
-        console.log(this.name + '吃骨头');
-    },
+var Jerry = {
+  name: 'Jerry'
 }
+sayHelloTo.call(Jerry, 'Tom')
+//Jerry say hello to Tom.
 
-console.log('=================== call =========================');
-// 有一天大毛想吃鱼了，可是它不知道怎么吃。怎么办？小黑说我吃的时候喂你吃
-cat.eatFish.call(dog, '汪汪汪', 'call')
-// 大毛为了表示感谢，决定下次吃骨头的时候也喂小黑吃
-dog.eatBone.call(cat, '喵喵喵', 'call')
+var Foo = {
+  name: 'Foo'
+}
+sayHelloTo.apply(Foo, ['Bar'])
+//Foo say hello to Bar.
 
-console.log('=================== apply =========================');
-cat.eatFish.apply(dog, ['汪汪汪', 'apply'])
-dog.eatBone.apply(cat, ['喵喵喵', 'apply'])
-
-console.log('=================== bind =========================');
-// 有一天他们觉得每次吃的时候再喂太麻烦了。干脆直接教对方怎么吃
-const test1 = cat.eatFish.bind(dog, '汪汪汪', 'bind')
-const test2 = dog.eatBone.bind(cat, '喵喵喵', 'bind')
-test1()
-test2()
+var XYZ = {
+  name: 'XYZ'
+}
+var say = sayHelloTo.bind(XYZ)
+say('ABC')
+//XYZ say hello to ABC.
 ```
 
 **call/apply**
@@ -836,81 +826,73 @@ Math.max.call(Math或null, 1,8,6); //8
 Math.max(...arr); //8 es6扩展运算符法
 ```
 
-手写 bind
+**手写call**
+
+核心思路是：
+
+1. 为传入的`context`扩展一个属性，将原函数指向这个属性
+2. 将`context`之外的所有参数全部传递给这个新属性，并将运行结果返回。
+
+一些细节：
+
+1. 利用**rest 参数**(`…args`)可以存储函数多余的参数
+2. 为传入的`context`扩展参数扩展新属性使用了**`Symbol()`数据类型**，这样确保不会影响到传入的`context`，因为Symbol值一定是独一无二的。
+3. 用**扩展运算符**(`…`)将原来是数组的`args`转发为逗号分隔一个个参数传入到函数中
+
+为什么能找到`this.name`呢？因为`context[fnSymbol]`中的`this`指向的是`context`。
 
 ```
-Function.prototype.myBind = function(context, ...args) {
-  // 设置 fn 为调用 myCall 的方法
-  const fn = this
-  args = args ? args : []
-
-  // 设置返回的一个新方法
-  const result = function(...newFnArgs) {
-
-    // 如果是通过 new 调用的，绑定 this 为实例对象
-    if (this instanceof result) {
-      fn.apply(this, [...args, ...newFnArgs]);
-    } else { // 否则普通函数形式绑定 context
-      fn.apply(context, [...args, ...newFnArgs]);
-    }
+Function.prototype.myCall = function(context, ...args) {
+  // 判断是否是undefined和null
+  if (typeof context === 'undefined' || context === null) {
+    context = window
   }
-
-  // 绑定原型链
-  result.prototype = Object.create(fn.prototype);
-
-  // 返回结果
-  return result;
-};
-
-this.a = 1;
-
-const fn = function() {
-  this.a = 2;
-  console.log(this.a);
-}
-
-fn.myBind(fn);
-fn();
-```
-
-手写apply
-
-```
-Function.prototype.myApply = function (context, args) {
-    //这里默认不传就是给window,也可以用es6给参数设置默认参数
-    context = context || window
-    args = args ? args : []
-    //给context新增一个独一无二的属性以免覆盖原有属性
-    const key = Symbol()
-    context[key] = this
-    //通过隐式绑定的方式调用函数
-    const result = context[key](...args)
-    //删除添加的属性
-    delete context[key]
-    //返回函数调用的返回值
-    return result
+  // 思路和call是一样的只是传参不同方式
+  let fnSymbol = Symbol()
+  context[fnSymbol] = this
+  //通过隐式绑定的方式调用函数
+  let fn = context[fnSymbol] (...args)
+  //删除添加的属性
+  delete context[fnSymbol] 
+  return fn
 }
 ```
 
-手写call
+**手写apply**
+
+思路和`call`是一样的只是传参不同方式
 
 ```
-//传递参数从一个数组变成逐个传参了,不用...扩展运算符的也可以用arguments代替
-Function.prototype.myCall = function (context, ...args) {
-    //这里默认不传就是给window,也可以用es6给参数设置默认参数
-    context = context || window
-    args = args ? args : []
-    //给context新增一个独一无二的属性以免覆盖原有属性
-    const key = Symbol()
-    context[key] = this
-    //通过隐式绑定的方式调用函数
-    const result = context[key](...args)
-    //删除添加的属性
-    delete context[key]
-    //返回函数调用的返回值
-    return result
+Function.prototype.myApply = function(context, args) {
+  // 判断是否是undefined和null
+  if (typeof context === 'undefined' || context === null) {
+    context = window
+  }
+  let fnSymbol = Symbol()
+  context[fnSymbol] = this
+  let fn = context[fnSymbol] (...args)
+  return fn
 }
 ```
+
+**手写bind**
+
+```
+Function.prototype.myBind = function(context) {
+// 判断是否是undefined和null
+    if (typeof context === "undefined" || context === null) {
+     context = window;
+    }
+    self = this;
+    return function() {
+     return self.apply(context);
+    }
+}
+```
+
+**参考**
+
+[手写源码系列（一）——call、apply、bin](https://zhuanlan.zhihu.com/p/69070129)
 
 # 三大山-作用域和闭包
 
@@ -1788,7 +1770,52 @@ V8团队这样评价新架构：**它代表了V8团队通过实际测量Javascri
 3.4并行 - Parallel
 ```
 
-## **垃圾回收算法**
+## 内存空间
+
+JS内存空间分为**栈(stack)**、**堆(heap)**、**池(一般也会归类为栈中)**。 其中**栈**存放基本变量，**堆**存放应用对象(引用地址存放在栈，真实变量在堆)，**池**存放常量，所以也叫常量池。
+
+**几个问题**
+
+问题1：
+
+```js
+var a = 20;
+var b = a;
+b = 30;
+// 这时a的值是多少？
+```
+
+问题2：
+
+```js
+var a = { name: '前端开发' }
+var b = a;
+b.name = '进阶';
+// 这时a.name的值是多少
+```
+
+问题3：
+
+```js
+var a = { name: '前端开发' }
+var b = a;
+a = null;
+// 这时b的值是多少
+```
+
+现在来解答一下，三个问题的答案分别是`20`、`‘进阶’`、`{ name: '前端开发' }`
+
+- 对于问题1，a、b都是基本类型，它们的值是存储在栈中的，a、b分别有各自独立的栈空间，所以修改了b的值以后，a的值并不会发生变化。
+- 对于问题2，a、b都是引用类型，栈内存中存放地址指向堆内存中的对象，引用类型的复制会为新的变量自动分配一个新的值保存在变量对象中，但只是引用类型的一个地址指针而已，实际指向的是同一个对象，所以修改`b.name`的值后，相应的`a.name`也就发生了改变。
+- 对于问题3，首先要说明的是`null`是基本类型，`a = null`之后只是把a存储在栈内存中地址改变成了基本类型null，并不会影响堆内存中的对象，所以b的值不受影响。
+
+**JS的内存生命周期**
+
+- 1、分配你所需要的内存
+- 2、使用分配到的内存（读、写）
+- 3、不需要时将其释放、归还
+
+## **垃圾回收**
 
 **(1)定义**
 
@@ -1938,251 +1965,20 @@ element.someObject=myObj;
 当前嵌套调用链上的其他函数的变量和参数
 ```
 
-## 内存空间
-
-JS内存空间分为**栈(stack)**、**堆(heap)**、**池(一般也会归类为栈中)**。 其中**栈**存放基本变量，**堆**存放应用对象(引用地址存放在栈，真实变量在堆)，**池**存放常量，所以也叫常量池。
-
-**几个问题**
-
-问题1：
-
-```js
-var a = 20;
-var b = a;
-b = 30;
-// 这时a的值是多少？
-```
-
-问题2：
-
-```js
-var a = { name: '前端开发' }
-var b = a;
-b.name = '进阶';
-// 这时a.name的值是多少
-```
-
-问题3：
-
-```js
-var a = { name: '前端开发' }
-var b = a;
-a = null;
-// 这时b的值是多少
-```
-
-现在来解答一下，三个问题的答案分别是`20`、`‘进阶’`、`{ name: '前端开发' }`
-
-- 对于问题1，a、b都是基本类型，它们的值是存储在栈中的，a、b分别有各自独立的栈空间，所以修改了b的值以后，a的值并不会发生变化。
-- 对于问题2，a、b都是引用类型，栈内存中存放地址指向堆内存中的对象，引用类型的复制会为新的变量自动分配一个新的值保存在变量对象中，但只是引用类型的一个地址指针而已，实际指向的是同一个对象，所以修改`b.name`的值后，相应的`a.name`也就发生了改变。
-- 对于问题3，首先要说明的是`null`是基本类型，`a = null`之后只是把a存储在栈内存中地址改变成了基本类型null，并不会影响堆内存中的对象，所以b的值不受影响。
-
-**JS的内存生命周期**
-
-- 1、分配你所需要的内存
-- 2、使用分配到的内存（读、写）
-- 3、不需要时将其释放、归还
-
 ## 内存溢出和内存泄漏
 
-**1.概念**
+**概念**
 
 内存溢出：当程序需要的内存超过了剩余内存，就会抛出内存溢出错误。
 
 内存泄漏：**不再用到的内存，没有及时释放，就叫做内存泄漏。**应用程序不再需要占用内存的时候，由于某些原因，内存没有被操作系统或可用内存池回收。
 
-**2.内存溢出的几种场景**
+**内存泄漏的几种原因**
 
-**1.1前端溢出**
-
-**(1)溢出原因**
-
-由于过多的函数调用，导致调用堆栈无法容纳这些调用的[返回地址](https://link.jianshu.com/?t=https%3A%2F%2Fbaike.baidu.com%2Fitem%2F%E8%BF%94%E5%9B%9E%E5%9C%B0%E5%9D%80)，一般在[递归](https://link.jianshu.com/?t=https%3A%2F%2Fbaike.baidu.com%2Fitem%2F%E9%80%92%E5%BD%92)中产生。堆栈溢出很可能由[无限](https://link.jianshu.com/?t=https%3A%2F%2Fbaike.baidu.com%2Fitem%2F%E6%97%A0%E9%99%90)[递归](https://link.jianshu.com/?t=https%3A%2F%2Fbaike.baidu.com%2Fitem%2F%E9%80%92%E5%BD%92)（Infinite recursion）产生，但也可能仅仅是过多的堆栈层级
-
-**(2)如何解决堆栈溢出**
-
-解决方案：1，引入闭包； 2，引入计时器； 3，尾调优化
-
-(2.1)引入闭包
-
-错误代码
-
-```
-  function isEven(num){
-     if(num == 0){return true;}
-     if(num == 1){return false;}
-     return isEven(Math.abs(num)-2);
- }
- console.log(isEven(100000))//堆栈溢出
-```
-
-引入闭包代码
-
-```
-function isEven(num){
-    function isEvenInner(num){
-        if(num === 0){return true;}
-        if(num === 1){return false;}
-        return function(){
-        return isEvenInner(Math.abs(num)-2);
-        }
-    }
-    function simplify(func,num){
-        var value=func(num);
-        while(typeof value == 'function'){
-            value=value();
-        }
-        return value;
-    }
-    return simplify.bind(null,isEvenInner)(num)
-}
-console.log(isEven(100000));//这种方法num太大也不可以
-```
-
-(2.3)使用尾递归(尾调用)
-
-错误代码
-
-```
-  function tailFactorial(n, total) {
-    if (n === 1) return total;
-    return tailFactorial(n - 1, n * total);
-  }
-  console.log(tailFactorial(5,1))
-```
-
-尾调优化（新增简化函数）
-
-```
-function tailFactorial(n, total) {
-  if (n === 1) return total;
-  return tailFactorial(n - 1, n * total);
-}
-console.log(tailFactorial(5,1))
-function factorial(n) {
-  return tailFactorial(n, 1);
-}
-console.log(factorial(10000))
-```
-
-尾调优化（柯里化）
-
-```
-function currying(fn,n){//柯里化要绑定的参数
-    return function(m){//柯里化的函数，m对应输入的唯一一个参数
-        return fn.call(this,m,n)  
-}//柯里化
-}
-var factorial_1=currying(tailFactorial,1);
-console.log(factorial_1(5));
-```
-
-尾调优化（ES6）
-
-```
-function factorial(n, total = 1) {
-  if (n === 1) return total;
-  return factorial(n - 1, n * total);
-}
-factorial(5) // 120
-```
-
-**1.2后端溢出**
-
-1. 堆溢出(OutOfMemoryError:Java heap space)
-2. 栈溢出(StackOverflowError)
-3. 永久代溢出(OutOfMemoryError: PermGen space)
-4. 直接内存溢出
-
-
-
-**(1)堆溢出OOM**
-
-```
-public static void main(String[] args) {
-    List<byte[]> list = new ArrayList<>();
-    int i=0;
-    while(true){
-        list.add(new byte[5*1024*1024]);
-        System.out.println("分配次数："+(++i));
-    }
-}
-```
-
-**(2)栈溢出**
-
-栈空间不足时，需要分下面两种情况处理：
-
-- 线程请求的栈深度大于虚拟机所允许的最大深度，将抛出StackOverflowError
-- 虚拟机在扩展栈深度时无法申请到足够的内存空间，将抛出OutOfMemberError
-
-```
-public class StackSOFTest {
-
-    int depth = 0;
-
-    public void sofMethod(){
-        depth ++ ;
-        sofMethod();
-    }
-
-    public static void main(String[] args) {
-        StackSOFTest test = null;
-        try {
-            test = new StackSOFTest();
-            test.sofMethod();
-        } finally {
-            System.out.println("递归次数："+test.depth);
-        }
-    }
-}
-
-执行结果:
-递归次数：982
-Exception in thread "main" java.lang.StackOverflowError
-    at com.ghs.test.StackSOFTest.sofMethod(StackSOFTest.java:8)
-```
-
-**(3)永久代溢出**
-
-永久代溢出可以分为两种情况，第一种是常量池溢出，第二种是方法区溢出。
-
-**(4)直接内存溢出**
-
-```
-public class DirectMemoryOOMTest {
-    /**
-     * VM Args:-Xms20m -Xmx20m -XX：MaxDirectMemorySize=10m
-     * @param args
-     */
-    public static void main(String[] args) {
-        int i=0;
-        try {
-            Field field = Unsafe.class.getDeclaredFields()[0];
-            field.setAccessible(true);
-            Unsafe unsafe = (Unsafe) field.get(null);
-            while(true){
-                unsafe.allocateMemory(1024*1024);
-                i++;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally {
-            System.out.println("分配次数："+i);
-        }
-    }
-}
-运行结果：
-Exception in thread "main" java.lang.OutOfMemoryError
-    at sun.misc.Unsafe.allocateMemory(Native Method)
-```
-
-- 栈内存溢出：程序所要求的栈深度过大。
-- 堆内存溢出： 分清内存泄露还是 内存容量不足。泄露则看对象如何被 GC Root 引用，不足则通过调大-Xms，-Xmx参数。
-- 永久代溢出：Class对象未被释放，Class对象占用信息过多，有过多的Class对象。
-- 直接内存溢出：系统哪些地方会使用直接内存。
-
-**3.内存泄漏的几种原因**
+> - 意外的全局变量
+> - 被遗忘的定时器或回调函数
+> - 被遗忘的dom引用
+> - 闭包
 
 (1)意外的全局变量
 
@@ -2287,7 +2083,7 @@ function clearGrow3(){
 - 避免创建全局变量
 - 在 JavaScript 文件头部加上 `'use strict'`，可以避免此类错误发生。启用严格模式解析 JavaScript ，避免意外的全局变量
 
-(2)被遗忘的定时器和回调函数
+(2)被遗忘的定时器或回调函数
 
 ```
 var timer
@@ -2315,7 +2111,7 @@ window.clearInterval(timer)
 
 ![image-20220313120537563](/img/image-20220313120537563.png)
 
-(3)分离的dom引用
+(3)被遗忘的dom引用
 
 ```
 function grow2(){
@@ -2389,7 +2185,17 @@ GCHandler -> replaceThing -> theThing -> someMethod -> originalThing -> someMeth
 
 **4.内存泄漏排查手段**
 
-垃圾回收会导致主线程停下，产生交互的卡顿。
+> - 打开ChromeDevTools-Performance
+> - 勾选 Screenshots 和 memory
+> - 左上角小圆点开始录制(record)
+> - 停止录制
+> - 查看heap对内存是否周期性变化
+
+内存泄漏优化
+
+> - 数组优化，用完arr=[]
+> - 对象复用，t=null
+> - 在循环中的表达式，最好放在循环外面
 
 (1)chrome devtools-memory工具
 
@@ -2466,6 +2272,100 @@ largeObj的第0个元素，被window全局变量x引用着。
 ![image-20211208001049548](/img/image-20211208001049548.png)
 
 (2)在控制台使用ctrl+shift+p打开command menu，输入performance monitor来监听
+
+**内存溢出的几种场景**
+
+**i.溢出原因**
+
+由于过多的函数调用，导致调用堆栈无法容纳这些调用的返回地址，一般在递归中产生。堆栈溢出很可能由无限递归（Infinite recursion）产生，但也可能仅仅是过多的堆栈层级
+
+**ii.如何解决堆栈溢出**
+
+解决方案：1，引入闭包； 2，引入计时器； 3，尾调优化
+
+(2.1)引入闭包
+
+错误代码
+
+```
+  function isEven(num){
+     if(num == 0){return true;}
+     if(num == 1){return false;}
+     return isEven(Math.abs(num)-2);
+ }
+ console.log(isEven(100000))//堆栈溢出
+```
+
+引入闭包代码
+
+```
+function isEven(num){
+    function isEvenInner(num){
+        if(num === 0){return true;}
+        if(num === 1){return false;}
+        return function(){
+        return isEvenInner(Math.abs(num)-2);
+        }
+    }
+    function simplify(func,num){
+        var value=func(num);
+        while(typeof value == 'function'){
+            value=value();
+        }
+        return value;
+    }
+    return simplify.bind(null,isEvenInner)(num)
+}
+console.log(isEven(100000));//这种方法num太大也不可以
+```
+
+(2.3)使用尾递归(尾调用)
+
+错误代码
+
+```
+  function tailFactorial(n, total) {
+    if (n === 1) return total;
+    return tailFactorial(n - 1, n * total);
+  }
+  console.log(tailFactorial(5,1))
+```
+
+尾调优化（新增简化函数）
+
+```
+function tailFactorial(n, total) {
+  if (n === 1) return total;
+  return tailFactorial(n - 1, n * total);
+}
+console.log(tailFactorial(5,1))
+function factorial(n) {
+  return tailFactorial(n, 1);
+}
+console.log(factorial(10000))
+```
+
+尾调优化（柯里化）
+
+```
+function currying(fn,n){//柯里化要绑定的参数
+    return function(m){//柯里化的函数，m对应输入的唯一一个参数
+        return fn.call(this,m,n)  
+}//柯里化
+}
+var factorial_1=currying(tailFactorial,1);
+console.log(factorial_1(5));
+```
+
+尾调优化（ES6）
+
+```
+function factorial(n, total = 1) {
+  if (n === 1) return total;
+  return factorial(n - 1, n * total);
+}
+factorial(5) // 120
+```
 
 ## 如何创建私有变量
 
@@ -2607,34 +2507,6 @@ console.log(button.getWidth()); // 600
 可以将 `TypeScript` 用作 JavaScript 的一种风格，可以使用 `private` 关键字从面向对象的语言中真正重新创建功能。
 
 # 三大山-异步和单线程
-
-## 事件委托
-
-定义：当事件触发时，把要做的事委托给父元素来处理。
-
-事件传播分成三个阶段：
-
-- 捕获阶段：从window对象传导到目标节点（上层传到底层）称为“捕获阶段”（capture phase），捕获阶段不会响应任何事件；
-- 目标阶段：在目标节点上触发，称为“目标阶段”
-- 冒泡阶段：从目标节点传导回window对象（从底层传回上层），称为“冒泡阶段”（bubbling phase）。事件代理即是利用事件冒泡的机制把里层所需要响应的事件绑定到外层；
-
-```js
-document.addEventListener("click", function (event) {
-      var target = event.target;
-      switch (target.id) {
-        case "doSomething":
-          document.title = "事件委托";
-          break;
-        case "goSomewhere":
-          location.href = "http://www.baidu.com";
-          break;
-        case "sayHi": alert("hi");
-          break;
-      }
-    })
-```
-
-使用“事件委托”时，并不是说把事件委托给的元素越靠近顶层就越好。事件冒泡的过程也需要耗时，越靠近顶层，事件的”事件传播链”越长，也就越耗时。
 
 ## 消息队列和事件循环
 
@@ -2908,7 +2780,7 @@ document.getElementById("div").style.width = "120px";//可行
 document.getElementById("div").style.offsetWidth = "120px";//不可行
 ```
 
-## 绑定解除事件
+## JS绑定解除事件
 
 事件有三要素 : `事件源`、`事件`、`监听器` 。
 
@@ -2920,26 +2792,26 @@ document.getElementById("div").style.offsetWidth = "120px";//不可行
 
 常见有3种绑定方式：
 
-- 1、直接在html元素上进行绑定事件。
+1、直接在html元素上进行绑定事件。
 
-  ```
-  <input id="btn" type="button" onclick="test();" /> <!--点击按钮 触发事件-->
-  缺点：HTML与js代码紧密耦合。如果要更换 事件，就要改动两个地方:HTML代码和JS代码，这就不利于后期代码的维护。
-  ```
+```
+<input id="btn" type="button" onclick="test();" /> <!--点击按钮 触发事件-->
+缺点：HTML与js代码紧密耦合。如果要更换 事件，就要改动两个地方:HTML代码和JS代码，这就不利于后期代码的维护。
+```
 
-- 2、用 on 绑定事件。
+2、用 on 绑定事件。
 
-  ```
-   var div=document.getElementById('id');
-      div.onclick=function(){
-          console.log('甲需要红背景');
-          div.setAttribute('style', 'background: #ff0000');
-      };
-  优点：它最大的优点是就是兼容性很好，所有浏览器都支持
-  缺点：同一个 dom 元素上，on 只能绑定一个同类型事件，后者会覆盖前者，不同类型的事件可以绑定多个。有一个问题，无法允许团队不同人员对同一元素监听同一事件但做出不用的响应
-  ```
+```
+ var div=document.getElementById('id');
+    div.onclick=function(){
+        console.log('甲需要红背景');
+        div.setAttribute('style', 'background: #ff0000');
+    };
+优点：它最大的优点是就是兼容性很好，所有浏览器都支持
+缺点：同一个 dom 元素上，on 只能绑定一个同类型事件，后者会覆盖前者，不同类型的事件可以绑定多个。有一个问题，无法允许团队不同人员对同一元素监听同一事件但做出不用的响应
+```
 
-- 3、用 addEventListener、attachEvent 绑定事件。
+3、用 addEventListener、attachEvent 绑定事件。
 
 ```
 var oBox = document.getElementById("container");
@@ -2955,6 +2827,20 @@ oBox.attach("click",fn());
 oBox.detach("click",fn());
 优点：它们可以支持绑定多个同类型事件
 缺点：兼容性并不好,它们只兼容相对应的浏览器才有用。
+```
+
+## JS事件冒泡和事件捕获
+
+```
+userCapture 为false
+事件冒泡执行顺序：从内部到外部Document。
+
+userCapture 为true
+事件捕获执行顺序：从Document向内部执行
+
+Dom事件流：包含userCapture ture 和 false
+捕获阶段的处理函数最先执行，其次是目标阶段的处理函数，最后是冒泡阶段的处理函数。
+目标阶段的处理函数，先注册的先执行，后注册的后执行。
 ```
 
 ## 监听串口变化
@@ -3359,7 +3245,7 @@ function myBrowser() {
 } 
 ```
 
-# 高阶函数
+# 高级函数
 
 **JS函数式编程思想**
 
@@ -3829,183 +3715,49 @@ function fact(n){
 
 ## 柯里化-实现add(1)(2)(3)=6
 
-**柯里化是把多参数的函数转换成少参数的函数的过程。**
+**定义**
+
+柯里化是一种将使用多个参数的一个函数转换成一系列使用一个参数的函数的技术。
+
+举个例子
 
 ```
+function add(a, b) {
+    return a + b;
+}
+
+// 执行 add 函数，一次传入两个参数即可
+add(1, 2) // 3
+
+// 假设有一个 curry 函数可以做到柯里化
+var addCurry = curry(add);
+addCurry(1)(2) // 3
+```
+
+**柯里化写法**
+
+```
+高颜值写法：
+const curry = fn =>
+    judge = (...args) =>
+        args.length === fn.length
+            ? fn(...args)
+            : (arg) => judge(...args, arg)
+高颜值的等效写法：
+const curry = (fn) =>
+  (judge = (...args) =>
+    args.length >= fn.length ? fn(...args) : (...arg) => judge(...args, ...arg));
+            
+简单写法：
 const curry = (fn, ...args) => 
             args.length < fn.length 
             // 参数长度不足时,重新柯里化函数,等待接受新参数
             ? (...arguments) => curry(fn, ...args, ...arguments)
             // 函数长度满足时,执行函数
              : fn(...args);
-
-function sumFn(a, b, c){
-    return a + b + c;
-}
-var sum = curry(sumFn);
-console.log(sum(1)(2)(3)); //6
 ```
 
-**一、定义**
-
-函数柯里化又叫部分求值，维基百科中对柯里化 (Currying) 的定义为：
-
-> 在数学和计算机科学中，柯里化是一种将使用多个参数的函数转换成一系列使用一个参数的函数，并且返回接受余下的参数而且返回结果的新函数的技术。
-
-用大白话来说就是只传递给函数一部分参数来调用它，让它返回一个新函数去处理剩下的参数。使用一个简单的例子来介绍下，最常用的就是 add 函数了。
-
-```js
-// 木易杨
-const add = (...args) => args.reduce((a, b) => a + b);
-
-// 传入多个参数，执行 add 函数
-add(1, 2) // 3
-
-// 假设我们实现了一个 currying 函数，支持一次传入一个参数
-let sum = currying(add);
-// 封装第一个参数，方便重用
-let addCurryOne = sum(1);
-addCurryOne(2) // 3
-addCurryOne(3) // 4
-```
-
-**二、实际应用**
-
-- 1.延迟计算：部分求和，bind函数
-- 2.动态创建函数：添加监听addEvent、惰性函数
-- 3.参数复用：
-
-**1.延迟计算**
-
-```
-const add = (...args) => args.reduce((a, b) => a + b);
-
-// 简化写法
-function currying(func) {
-    const args = [];
-    return function result(...rest) {
-        if (rest.length === 0) {
-          return func(...args);
-        } else {
-          args.push(...rest);
-         return result;
-        }
-    }
-}
-
-const sum = currying(add);
-sum(1,2)(3); // 未真正求值
-sum(4);    // 未真正求值
-sum();     // 输出 10
-```
-
-**bind函数**
-
-```
-let obj = {
-  name: 'muyiy'
-}
-const fun = function () {
-  console.log(this.name);
-}.bind(obj);
-
-fun(); // muyiy
-
-// bind底层原因也是柯里化的实现
-Function.prototype.bind = function (context) {
-    var self = this;
-    // 第 1 个参数是指定的 this，截取保存第 1 个之后的参数
-  // arr.slice(begin); 即 [begin, end]
-    var args = Array.prototype.slice.call(arguments, 1); 
-
-    return function () {
-        // 此时的 arguments 是指 bind 返回的函数调用时接收的参数
-        // 即 return function 的参数，和上面那个不同
-       // 类数组转成数组
-        var bindArgs = Array.prototype.slice.call(arguments);
-       // 执行函数
-        return self.apply( context, args.concat(bindArgs) );
-    }
-}
-```
-
-**2.动态创建函数**
-
-每次调用函数都需要进行一次判断，但其实第一次判断计算之后，后续调用并不需要再次判断。这种情况下就非常适合使用柯里化方案来处理
-
-```js
-// 简化写法
-function addEvent (type, el, fn, capture = false) {
-    if (window.addEventListener) {
-        el.addEventListener(type, fn, capture);
-    }
-    else if(window.attachEvent){
-        el.attachEvent('on' + type, fn);
-    }
-}
-```
-
-但是这种写法有一个问题，就是每次添加事件都会调用做一次判断，那么有没有什么办法只判断一次呢，可以利用闭包和立即调用函数表达式（IIFE）来处理。
-
-```js
-const addEvent = (function(){
-    if (window.addEventListener) {
-        return function (type, el, fn, capture) {
-            el.addEventListener(type, fn, capture);
-        }
-    }
-    else if(window.attachEvent){
-        return function (type, el, fn) {
-            el.attachEvent('on' + type, fn);
-        }
-    }
-})();
-```
-
-上面这种实现方案就是一种典型的柯里化应用，在第一次的 `if...else if...` 判断之后完成部分计算，动态创建新的函数用于处理后续传入的参数，这样做的好处就是之后调用就不需要再次计算了。
-
-**当然可以使用惰性函数来实现**这一功能，原理很简单，就是重写函数。
-
-```js
-function addEvent (type, el, fn, capture = false) {
-   // 重写函数
-    if (window.addEventListener) {
-        addEvent = function (type, el, fn, capture) {
-            el.addEventListener(type, fn, capture);
-        }
-    }
-    else if(window.attachEvent){
-        addEvent = function (type, el, fn) {
-            el.attachEvent('on' + type, fn);
-        }
-    }
-   // 执行函数，有循环爆栈风险
-   addEvent(type, el, fn, capture); 
-}
-```
-
-第一次调用 `addEvent` 函数后，会进行一次环境判断，在这之后 `addEvent` 函数被重写，所以下次调用时就不会再次判断环境，可以说很完美了。
-
-**3.参数复用**
-
-```
-// 改造前
-function isArray(obj) { 
-    return Object.prototype.toString.call(obj) === '[object Array]';
-}
-function isNumber(obj) {
-    return Object.prototype.toString.call(obj) === '[object Number]';
-}
-[1, 2, 3].toString(); // "1,2,3"
-'123'.toString(); // "123"
-
-// 改造后
-const toStr = Function.prototype.call.bind(Object.prototype.toString);
-toStr([1, 2, 3]);  // "[object Array]"
-toStr('123');   // "[object String]"
-```
-
-**三、实现 currying 函数**
+currying 函数详解：
 
 ```js
 function currying(fn, length) {
@@ -4033,6 +3785,24 @@ fn("a")("b", "c") // ["a", "b", "c"]
 - 注释 3：新函数接收的参数长度是否大于等于 fn 剩余参数需要接收的长度
 - 注释 4：满足要求，执行 fn 函数，传入新函数的参数
 - 注释 5：不满足要求，递归 currying 函数，新的 fn 为 `bind` 返回的新函数（`bind` 绑定了 `...args` 参数，未执行），新的 length 为 fn 剩余参数的长度
+
+**柯里化应用场景**
+
+> - 参数复用，如var curriedAdd = curry(add, 5)
+> - 延迟执行，sum(1)(2)(3)，传入参数个数没有满足原函数入参个数，都不会立即返回结果。
+> - 函数式编程中，作为compose, functor, monad 等实现的基础
+
+**注意事项**
+
+使用柯里化函数，离不开闭包， arguments， 递归。
+
+> 闭包，函数中的变量都保存在内存中，内存消耗大，有可能导致内存泄漏。
+> 递归，效率非常差，
+> arguments, 变量存取慢，访问性很差,
+
+**参考**
+
+[JavaScript专题之函数柯里化](https://github.com/mqyqingfeng/Blog/issues/42)
 
 # devDependencies 和 dependencies 的区别
 

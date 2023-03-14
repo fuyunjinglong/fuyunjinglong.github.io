@@ -40,12 +40,12 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS选择符有哪些？哪些属性可以继承？优先级？">CSS 选择符有哪些 ？哪些属性可以继承 ？优先级？</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS3有哪些新特性？">CSS3 有哪些新特性 ?</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#BFC">对BFC规范的理解</a>
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#canvas-与-svg-的区别？">canvas 与 svg 的区别 ？</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#canvas与svg的区别？">canvas 与 svg 的区别 ？</a>
 - <a target="_blank" href="{% post_path 'I_移动端_0基础' %}#rem、em、px、vh与vw的区别？">rem、em、px、vh 与 vw 的区别 ？</a>
 
 # JS
 
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#call/apply/bind">call/apply/bind</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#call-apply-bind">call/apply/bind</a>
 - <a target="_blank" href="{% post_path 'C_H5_0基础' %}#浏览器内核的理解">浏览器内核的理解</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#null和undefined">null 和 undefined</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#原型、原型链、继承">原型、原型链、继承</a>
@@ -53,13 +53,15 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#JS的8种继承方案">JS的8种继承方案</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#柯里化-实现add-1-2-3-6">实现 add(1)(2)(3) = 6</a>
 - <a target="_blank" href="{% post_path 'H_工程热点_性能优化_0基础' %}#从输入url到渲染完成整个过程">从输入url到渲染完成整个过程</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#垃圾回收算法">垃圾回收机制</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#垃圾回收">垃圾回收</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#内存溢出和内存泄漏">内存泄露</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS-类型判断-对象-数组">JS 判断变量是对象还是数组</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#继承在ES5和-ES6-的区别-？">继承在ES5和 ES6 的区别 ？</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS类型判断-typeof-instanceof-constructor-toString">JS类型判断---typeof, constructor, instanceof, toString</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#消息队列和事件循环">消息队列和事件循环</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#防抖和节流">防抖和节流</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#常见六大Web安全攻防解析">常见六大Web安全攻防解析</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#async和defer的作用是什么？有什么区别">async和defer的作用是什么？有什么区别</a>
 
 # ES6
 
@@ -72,6 +74,8 @@ toc: true # 是否启用内容索引
 # 计算机网络
 
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#一文读懂-HTTP-1、HTTP-2、HTTP-3">一文读懂 HTTP/1、HTTP/2、HTTP/3</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#彻底搞懂Https">彻底搞懂Https</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Http-Cookie机制及Cookie的实现原理">Http Cookie机制及Cookie的实现原理</a>
 
 # 性能优化
 
