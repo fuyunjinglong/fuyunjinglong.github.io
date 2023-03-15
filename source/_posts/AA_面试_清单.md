@@ -66,11 +66,21 @@ toc: true # 是否启用内容索引
 
 **其他更精彩**
 
+[前端负责人资源教程](https://cnodejs.org/topic/56ef3edd532839c33a99d00e)
+
+[JavaScript 资源大全中文版](https://github.com/jobbole/awesome-javascript-cn)
+
+[免费的工具书](https://ebookfoundation.github.io/free-programming-books/books/free-programming-books-zh.html#javascript)
+
 [2020 - 2021 年 Web 前端最新导航](https://segmentfault.com/a/1190000033134496)
 
 [GitHub 上能挖矿的神仙技巧 - 如何发现优秀开源项目](https://github.com/biaochenxuying/blog/issues/45)
 
 [恕我直言，你可能连 GitHub 搜索都不会用 - 如何精准搜索的神仙技巧](https://github.com/FrontEndGitHub/FrontEndGitHub/issues/4)
+
+[TypeScript 入门教程](https://github.com/xcatliu/typescript-tutorial)
+
+[深入理解 TypeScript](https://github.com/jkchao/typescript-book-chinese)
 
 # github优秀仓库
 

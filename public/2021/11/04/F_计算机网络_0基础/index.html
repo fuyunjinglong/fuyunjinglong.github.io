@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>0基础 | Hexo</title>
+  <meta name="description" content="OSI7层网络模型0.1也称为4层协议  会话层、表示层、应用层：http 传输层：tcp(面向连接，安全可靠有序，重试机制，慢，分段传输),udp(无连接，传输快，丢包，一次传输) 网络层：ip路由寻址，排队等待。ip + mac + 广播的方式 就能让你找到全世界所有的计算机的位置 物理层、数据链路层：物理层是物理连接介质，如光纤、双绞线。数据链路层是二进制数据也就是比特流进行分组。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0基础">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2021/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="OSI7层网络模型0.1也称为4层协议  会话层、表示层、应用层：http 传输层：tcp(面向连接，安全可靠有序，重试机制，慢，分段传输),udp(无连接，传输快，丢包，一次传输) 网络层：ip路由寻址，排队等待。ip + mac + 广播的方式 就能让你找到全世界所有的计算机的位置 物理层、数据链路层：物理层是物理连接介质，如光纤、双绞线。数据链路层是二进制数据也就是比特流进行分组。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211213065416549.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220503165944764.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220530071156663.png">
+<meta property="og:image" content="c:/Program%20Files/Typora">
+<meta property="og:image" content="c:/Program%20Files/Typora">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220525071935357.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220525071136513.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220525071155966.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220525071649743.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220525071734195.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20221022172938348.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211111182141513.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20221023110951987.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20221023111935322.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211024185626382.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220527070123156.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220527070714271.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211225204424939.png">
+<meta property="article:published_time" content="2021-11-03T22:33:16.000Z">
+<meta property="article:modified_time" content="2023-03-14T13:11:15.587Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/image-20211213065416549.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2021/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://fuyunjinglong.github.io/" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Elven</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">29</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2%E5%92%8CVue3%E6%AF%94%E8%BE%83/" class="title">Vue2和Vue3比较</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/" class="title">Vue2.0_原理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue3.0_%E5%8E%9F%E7%90%86/" class="title">Vue3.0_原理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue2.0/" class="title">源码_Vue2.0</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue3.0/" class="title">源码_Vue3.0</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#OSI7%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B"><span class="toc-text">OSI7层网络模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E7%A0%81"><span class="toc-text">状态码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%B5%E8%84%91%E6%98%AF%E6%80%8E%E4%B9%88%E6%8A%8A%E4%BB%A3%E7%A0%81%E8%BD%AC%E6%8D%A2%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F%E7%9A%84"><span class="toc-text">电脑是怎么把代码转换成可执行程序的</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E6%96%87%E8%AF%BB%E6%87%82-HTTP-1%E3%80%81HTTP-2%E3%80%81HTTP-3"><span class="toc-text">一文读懂 HTTP&#x2F;1、HTTP&#x2F;2、HTTP&#x2F;3</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BD%BB%E5%BA%95%E6%90%9E%E6%87%82Https"><span class="toc-text">彻底搞懂Https</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Http-Cookie%E6%9C%BA%E5%88%B6%E5%8F%8ACookie%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">Http Cookie机制及Cookie的实现原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#TCP%E5%92%8CUDP"><span class="toc-text">TCP和UDP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B7%A8%E5%9F%9F%E8%B7%A8%E7%AB%AF"><span class="toc-text">跨域跨端</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#cookie-session-token"><span class="toc-text">cookie,session,token</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%93%E5%AD%98"><span class="toc-text">缓存</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98"><span class="toc-text">浏览器缓存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Http%E7%BC%93%E5%AD%98"><span class="toc-text">Http缓存</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%85%AD%E5%A4%A7Web%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E8%A7%A3%E6%9E%90"><span class="toc-text">常见六大Web安全攻防解析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#XSS"><span class="toc-text">XSS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSRF"><span class="toc-text">CSRF</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%82%B9%E5%87%BB%E5%8A%AB%E6%8C%81"><span class="toc-text">点击劫持</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E6%B3%A8%E5%85%A5"><span class="toc-text">SQL注入</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CSR%E5%92%8CSSR%E6%B8%B2%E6%9F%93%E6%96%B9%E6%A1%88"><span class="toc-text">CSR和SSR渲染方案</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#WebSocket%E5%92%8CSocket%E5%8E%9F%E7%90%86"><span class="toc-text">WebSocket和Socket原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%87%8D%E5%AE%9A%E5%90%91%E4%B8%8E%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">重定向与请求转发的区别</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-F_计算机网络_0基础" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      0基础
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/" class="article-date">
+	  <time datetime="2021-11-03T22:33:16.000Z" itemprop="datePublished">2021-11-04</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="OSI7层网络模型"><a href="#OSI7层网络模型" class="headerlink" title="OSI7层网络模型"></a>OSI7层网络模型</h1><p>0.1也称为4层协议</p>
+<ul>
+<li>会话层、表示层、应用层：http</li>
+<li>传输层：tcp(面向连接，安全可靠有序，重试机制，慢，分段传输),udp(无连接，传输快，丢包，一次传输)</li>
+<li>网络层：ip路由寻址，排队等待。ip + mac + 广播的方式 就能让你找到全世界所有的计算机的位置</li>
+<li>物理层、数据链路层：物理层是物理连接介质，如光纤、双绞线。数据链路层是二进制数据也就是比特流进行分组。</li>
+</ul>
+<p><img src="/img/image-20211213065416549.png" alt="image-20211213065416549"></p>
+<img src="/img/image-20220503165944764.png" alt="image-20220503165944764" style="zoom:67%;" />
+
+<h1 id="状态码"><a href="#状态码" class="headerlink" title="状态码"></a>状态码</h1><table>
+<thead>
+<tr>
+<th>分类</th>
+<th>状态码描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1**</td>
+<td>信息，服务器收到，需要请求者继续执行操作</td>
+</tr>
+<tr>
+<td>2**</td>
+<td>成功返回</td>
+</tr>
+<tr>
+<td>3**</td>
+<td>重定向，需要进一步操作</td>
+</tr>
+<tr>
+<td>4**</td>
+<td>客户端错误，包括语法路径错误</td>
+</tr>
+<tr>
+<td>5**</td>
+<td>服务端错误</td>
+</tr>
+</tbody></table>
+<ul>
+<li>204 表示请求处理成功，但没有资源返回。</li>
+<li>206 一般用来做断点续传，或者是视频文件等大文件的加载</li>
+<li>301 永久重定向会缓存。该状态码表示请求的资源已被分配了新的URI，以后应使用资源现在所指的URI。</li>
+<li>302 临时重定向不会缓存，常用 于未登陆的用户访问用户中心重定向到登录页面。</li>
+<li>304 协商缓存，告诉客户端有缓存，直接使用缓存中的数据</li>
+<li>400 参数有误，请求无法被服务器识别。</li>
+<li>401 表示未授权（Unauthorized)，当前请求需要用户验证</li>
+<li>403 表示对请求资源的访问被服务器拒绝了</li>
+<li>404 表示服务器上无法找到请求的资源。除此之外，也可以在服务器端拒绝请求且不想说明理由时使用。</li>
+<li>500 表示服务器端在执行请求时发生了错误。也有可能是Web应用存在的bug或某些临时的故障。</li>
+<li>503 服务器停机维护时，主动用503响应请求或 nginx 设置限速。</li>
+<li>504：网关超时</li>
+</ul>
+<p><strong>1xx</strong></p>
+<p>代表请求已被接受，需要继续处理。这类响应是临时响应，只包含状态行和某些可选的响应头信息，并以空行结束</p>
+<p>常见的有：</p>
+<ul>
+<li>100（客户端继续发送请求，这是临时响应）：这个临时响应是用来通知客户端它的部分请求已经被服务器接收，且仍未被拒绝。客户端应当继续发送请求的剩余部分，或者如果请求已经完成，忽略这个响应。服务器必须在请求完成后向客户端发送一个最终响应</li>
+<li>101：服务器根据客户端的请求切换协议，主要用于websocket或http2升级</li>
+</ul>
+<p><strong>2xx</strong></p>
+<p>代表请求已成功被服务器接收、理解、并接受</p>
+<p>常见的有：</p>
+<ul>
+<li>200（成功）：请求已成功，请求所希望的响应头或数据体将随此响应返回</li>
+<li>201（已创建）：请求成功并且服务器创建了新的资源</li>
+<li>202（已创建）：服务器已经接收请求，但尚未处理</li>
+<li>203（非授权信息）：服务器已成功处理请求，但返回的信息可能来自另一来源</li>
+<li>204（无内容）：服务器成功处理请求，但没有返回任何内容</li>
+<li>205（重置内容）：服务器成功处理请求，但没有返回任何内容</li>
+<li>206（部分内容）：服务器成功处理了部分请求</li>
+</ul>
+<p><strong>3xx</strong></p>
+<p>表示要完成请求，需要进一步操作。 通常，这些状态代码用来重定向</p>
+<p>常见的有：</p>
+<ul>
+<li>300（多种选择）：针对请求，服务器可执行多种操作。 服务器可根据请求者 (user agent) 选择一项操作，或提供操作列表供请求者选择</li>
+<li>301（永久移动）：请求的网页已永久移动到新位置。 服务器返回此响应（对 GET 或 HEAD 请求的响应）时，会自动将请求者转到新位置</li>
+<li>302（临时移动）： 服务器目前从不同位置的网页响应请求，但请求者应继续使用原有位置来进行以后的请求</li>
+<li>303（查看其他位置）：请求者应当对不同的位置使用单独的 GET 请求来检索响应时，服务器返回此代码</li>
+<li>305 （使用代理）： 请求者只能使用代理访问请求的网页。 如果服务器返回此响应，还表示请求者应使用代理</li>
+<li>307 （临时重定向）： 服务器目前从不同位置的网页响应请求，但请求者应继续使用原有位置来进行以后的请求</li>
+</ul>
+<p><strong>4xx</strong></p>
+<p>代表了客户端看起来可能发生了错误，妨碍了服务器的处理</p>
+<p>常见的有：</p>
+<ul>
+<li>400（错误请求）： 服务器不理解请求的语法</li>
+<li>401（未授权）： 请求要求身份验证。 对于需要登录的网页，服务器可能返回此响应。</li>
+<li>403（禁止）： 服务器拒绝请求</li>
+<li>404（未找到）： 服务器找不到请求的网页</li>
+<li>405（方法禁用）： 禁用请求中指定的方法</li>
+<li>406（不接受）： 无法使用请求的内容特性响应请求的网页</li>
+<li>407（需要代理授权）： 此状态代码与 401（未授权）类似，但指定请求者应当授权使用代理</li>
+<li>408（请求超时）： 服务器等候请求时发生超时</li>
+</ul>
+<p><strong>5xx</strong></p>
+<p>表示服务器无法完成明显有效的请求。这类状态码代表了服务器在处理请求的过程中有错误或者异常状态发生</p>
+<p>常见的有：</p>
+<ul>
+<li>500（服务器内部错误）：服务器遇到错误，无法完成请求</li>
+<li>501（尚未实施）：服务器不具备完成请求的功能。 例如，服务器无法识别请求方法时可能会返回此代码</li>
+<li>502（错误网关）： 服务器作为网关或代理，从上游服务器收到无效响应</li>
+<li>503（服务不可用）： 服务器目前无法使用（由于超载或停机维护）</li>
+<li>504（网关超时）： 服务器作为网关或代理，但是没有及时从上游服务器收到请求</li>
+<li>505（HTTP 版本不受支持）： 服务器不支持请求中所用的 HTTP 协议版本</li>
+</ul>
+<h1 id="电脑是怎么把代码转换成可执行程序的"><a href="#电脑是怎么把代码转换成可执行程序的" class="headerlink" title="电脑是怎么把代码转换成可执行程序的"></a>电脑是怎么把代码转换成可执行程序的</h1><p>编译过程的5个阶段：词法分析；语法分析；语义分析与中间代码产生；优化；目标代码生成</p>
+<p>编译器是一种翻译程序，它用于将源语言（程序设计语言写成）翻译为用二进制表示的伪机器代码程序，通常有两种方式进行翻译，一种是编译，另一种是解释。</p>
+<blockquote>
+<p>想象你要制作一个鹰嘴豆泥食谱，但是它是用古希腊语写的。你不会讲古希腊语言，你可以通过两种方式遵循其指示。</p>
+<p>首先是有人已经为你翻译成英文，你可以阅读食谱的英语版本，做鹰嘴豆泥。那么翻译的配方就是 <em>编译版本</em>。</p>
+<p>第二种方法是，如果你有一位了解古希腊语的朋友，当你准备制作鹰嘴豆泥时，你的朋友会坐在你的旁边，将菜谱逐行翻译成英语。在这种情况下，你的朋友是食谱 <em>解释版本</em> 的解释者。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">编译型</th>
+<th align="center">解释型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">特点</td>
+<td align="center">可直接执行，每次需要进行更改时，你都需要“重建”程序</td>
+<td align="center">一边编译一边执行，逐行解释，逐行执行程序的每个命令</td>
+</tr>
+<tr>
+<td align="center">优点</td>
+<td align="center">快</td>
+<td align="center">语言更加灵活，并且通常具有诸如动态键入和程序较小。解释器自己执行源程序代码，因此代码本身相对于平台是独立的</td>
+</tr>
+<tr>
+<td align="center">缺点</td>
+<td align="center">编译步骤需要额外的时间，生成的二进制代码对平台的依赖性</td>
+<td align="center">慢，因为在运行时翻译代码的过程增加了开销，并可能导致程序整体变慢。</td>
+</tr>
+<tr>
+<td align="center">举例</td>
+<td align="center">java,C，C ++，Erlang，Rust 和 Go</td>
+<td align="center">PHP，Ruby，Python 和 JavaScript</td>
+</tr>
+</tbody></table>
+<h1 id="一文读懂-HTTP-1、HTTP-2、HTTP-3"><a href="#一文读懂-HTTP-1、HTTP-2、HTTP-3" class="headerlink" title="一文读懂 HTTP/1、HTTP/2、HTTP/3"></a>一文读懂 HTTP/1、HTTP/2、HTTP/3</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/happylittlefish/p/10470048.html">《现代前端技术解析》笔记</a></p>
+<p>HTTP 超文本传输协议是位于 TCP/IP 体系结构中的应用层协议。</p>
+<img src="/img/image-20220530071156663.png" alt="image-20220530071156663" style="zoom:80%;" />
+
+<p><strong>一、HTTP/1</strong></p>
+<p>缺陷：</p>
+<blockquote>
+<ol>
+<li>高延迟 — 队头阻塞(Head-Of-Line Blocking)</li>
+<li>无状态特性 — 阻碍交互</li>
+<li>明文传输 — 不安全性</li>
+<li>不支持服务端推送</li>
+</ol>
+</blockquote>
+<p><strong>队头阻塞</strong></p>
+<p>队头阻塞是指当顺序发送的请求序列中的一个请求因为某种原因被阻塞时，在后面排队的所有请求也一并被阻塞，会导致客户端迟迟收不到数据。</p>
+<p>针对队头阻塞：</p>
+<p>1.将同一页面的资源分散到不同域名下，提升连接上限。虽然能公用一个 TCP 管道，但是在一个管道中同一时刻只能处理一个请求，在当前的请求没有结束之前，其他的请求只能处于阻塞状态。</p>
+<p>2.减少请求数量</p>
+<p>3.内联一些资源：css、base64 图片等</p>
+<p>4.合并小文件减少资源数</p>
+<p><strong>无状态特性</strong></p>
+<p>无状态是指协议对于连接状态没有<strong>记忆能力</strong>。纯净的 HTTP 是没有 cookie 等机制的，每一个连接都是一个新的连接。上一次请求验证了用户名密码，而下一次请求服务器并不知道它与上一条请求有何关联，换句话说就是<strong>掉登录态</strong>。</p>
+<p><strong>不安全性</strong></p>
+<p>传输内容没有加密，中途可能被篡改和劫持。</p>
+<p><strong>二、SPDY 协议</strong></p>
+<p>SPDY 是由 google 推行的改进版本的 HTTP1.1 （那时候还没有 HTTP2）</p>
+<p>特点：</p>
+<blockquote>
+<ol>
+<li>多路复用 — 解决队头阻塞</li>
+<li>头部压缩 — 解决巨大的 HTTP 头部</li>
+<li>请求优先级 — 先获取重要数据</li>
+<li>服务端推送 — 填补空缺</li>
+<li>提高安全性</li>
+</ol>
+</blockquote>
+<p><strong>多路复用</strong></p>
+<p>SPDY 允许在一个连接上无限制并发流。因为请求在一个通道上，TCP 效率更高（参考 <a href="https://link.juejin.cn/?target=https://zhuanlan.zhihu.com/p/37379780">TCP 拥塞控制</a> 中的<strong>慢启动</strong>）。更少的网络连接，发出更密集的包。</p>
+<p><strong>头部压缩</strong></p>
+<p>使用专门的 HPACK 算法，每次请求和响应只发送差异头部，一般可以达到 50% ~90% 的高压缩率。</p>
+<p><strong>请求优先级</strong></p>
+<p>虽然无限的并发流解决了队头阻塞的问题，但如果带宽受限，客户端可能会因防止堵塞通道而阻止请求。在网络通道被非关键资源堵塞时，高优先级的请求会被优先处理。</p>
+<p><strong>服务端推送</strong></p>
+<p><a href="https://link.juejin.cn/?target=http://www.ruanyifeng.com/blog/2018/03/http2_server_push.html">服务端推送（ServerPush）</a>，可以让服务端主动把资源文件推送给客户端。当然客户端也有权利选择是否接收。</p>
+<p><strong>提高安全性</strong></p>
+<p>支持使用 HTTPS 进行加密传输。</p>
+<p><strong>三、HTTP/2</strong></p>
+<p>HTTP2 基于 SPDY，专注于性能，最大的一个目标是在用户和网站间只用一个连接。</p>
+<p>特点：</p>
+<blockquote>
+<ol>
+<li>二进制分帧 - HTTP2 性能增强的核心</li>
+<li>多路复用 - 解决串行的文件传输和连接数过多</li>
+</ol>
+</blockquote>
+<p><strong>二进制分帧</strong></p>
+<p>首先，HTTP2 没有改变 HTTP1 的语义，只是在应用层使用二进制分帧方式传输。因此，也引入了新的通信单位：<strong>帧、消息、流</strong>。</p>
+<p>分帧有什么好处？服务器单位时间接收到的请求数变多，可以提高并发数。最重要的是，为多路复用提供了底层支持。</p>
+<p><strong>多路复用</strong></p>
+<p>一个域名对应一个连接，一个流代表了一个完整的<strong>请求-响应</strong>过程。<strong>帧</strong>是最小的数据单位，每个<strong>帧</strong>会标识出该帧属于哪个<strong>流</strong>，<strong>流</strong>也就是多个帧组成的数据流。多路复用，就是在一个 TCP 连接中可以存在多个流。</p>
+<p>缺点：</p>
+<blockquote>
+<ol>
+<li>TCP 以及 TCP+TLS 建立连接的延时</li>
+<li>TCP 的队头阻塞并没有彻底解决</li>
+<li>多路复用导致服务器压力上升</li>
+<li>多路复用容易 Timeout</li>
+</ol>
+</blockquote>
+<p><strong>建连延时</strong></p>
+<p>TCP 连接需要和服务器进行<strong>三次握手</strong>，即消耗完 1.5 个 RTT 之后才能进行数据传输。</p>
+<p>TLS 连接有两个版本—— TLS1.2 和 TLS1.3，每个版本建立连接所花的时间不同，大致需要 1~2 个 RTT。</p>
+<p>RTT（Round-Trip Time）:往返时延。表示从发送端发送数据开始，到发送端收到来自接收端的确认（接收端收到数据后便立即发送确认），总共经历的时延。</p>
+<p><strong>队头阻塞没有彻底解决</strong></p>
+<p>TCP 为了保证可靠传输，有一个“超时重传”机制，丢失的包必须等待重传确认。HTTP2 出现丢包时，整个 TCP 都要等待重传，那么就会阻塞该 TCP 连接中的所有请求。</p>
+<p><img src="C:/Program%20Files/Typora" alt="img"></p>
+<p>RTO：英文全称是 Retransmission TimeOut，即重传超时时间；RTO 是一个动态值，会根据网络的改变而改变。RTO 是根据给定连接的往返时间 RTT 计算出来的。接收方返回的 ack 是希望收到的下一组包的序列号。</p>
+<p><strong>多路复用导致服务器压力上升</strong></p>
+<p>多路复用没有限制同时请求数。请求的平均数量与往常相同，但实际会有许多请求的短暂爆发，导致瞬时 QPS 暴增。</p>
+<p><strong>多路复用容易 Timeout</strong></p>
+<p>大批量的请求同时发送，由于 HTTP2 连接内存在多个并行的流，而网络带宽和服务器资源有限，每个流的资源会被稀释，虽然它们开始时间相差更短，但却都可能超时。</p>
+<p>即使是使用 Nginx 这样的负载均衡器，想正确进行节流也可能很棘手。其次，就算你向应用程序引入或调整排队机制，但一次能处理的连接也是有限的。如果对请求进行排队，还要注意在响应超时后丢弃请求，以避免浪费不必要的资源。</p>
+<p><strong>四、HTTP/3</strong></p>
+<p>Google在推 SPDY 的时候就已经意识到了这些问题，于是就另起炉灶搞了一个基于 UDP 协议的 QUIC 协议。而这个就是 HTTP3。它真正“完美”地解决了“队头阻塞”问题。</p>
+<p>特点：</p>
+<blockquote>
+<ol>
+<li>改进的拥塞控制、可靠传输</li>
+<li>快速握手</li>
+<li>集成了 TLS 1.3 加密</li>
+<li>多路复用</li>
+<li>连接迁移</li>
+</ol>
+</blockquote>
+<p><strong>改进的拥塞控制、可靠传输</strong></p>
+<p>从拥塞算法和可靠传输本身来看，QUIC 只是按照 TCP 协议重新实现了一遍，那么 QUIC 协议到底改进在哪些方面呢？主要有如下几点：</p>
+<ol>
+<li>可插拔 — 应用程序层面就能实现不同的拥塞控制算法。</li>
+</ol>
+<p>一个应用程序的不同连接也能支持配置不同的拥塞控制。应用程序不需要停机和升级就能实现拥塞控制的变更，可以针对不同业务，不同网络制式，甚至不同的 RTT，使用不同的拥塞控制算法。</p>
+<p>关于应用层的可插拔拥塞控制模拟，可以对 socket 上的流为对象进行实验。</p>
+<ol start="2">
+<li>单调递增的 Packet Number — 使用 Packet Number 代替了 TCP 的 seq。</li>
+</ol>
+<p>每个 Packet Number 都严格递增，也就是说就算 Packet N 丢失了，重传的 Packet N 的 Packet Number 已经不是 N，而是一个比 N 大的值。而 TCP 重传策略存在二义性，比如客户端发送了一个请求，一个 RTO 后发起重传，而实际上服务器收到了第一次请求，并且响应已经在路上了，当客户端收到响应后，得出的 RTT 将会比真实 RTT 要小。当 Packet N 唯一之后，就可以计算出正确的 RTT。</p>
+<ol start="3">
+<li>不允许 Reneging — 一个 Packet 只要被 Ack，就认为它一定被正确接收。</li>
+</ol>
+<p>Reneging 的意思是，接收方有权把已经报给发送端 <a href="https://link.juejin.cn/?target=https://allen-kevin.github.io/2017/03/01/TCP%E9%87%8D%E7%82%B9%E7%B3%BB%E5%88%97%E4%B9%8Bsack%E4%BB%8B%E7%BB%8D/">SACK（Selective Acknowledgment）</a> 里的数据给丢了（如接收窗口不够而丢弃乱序的包）。</p>
+<p>QUIC 中的 ACK 包含了与 TCP 中 SACK 等价的信息，但 QUIC 不允许任何（包括被确认接受的）数据包被丢弃。这样不仅可以简化发送端与接收端的实现难度，还可以减少发送端的内存压力。</p>
+<ol start="4">
+<li>前向纠错（FEC）</li>
+</ol>
+<p>早期的 QUIC 版本存在一个丢包恢复机制，但后来由于增加带宽消耗和效果一般而<strong>废弃</strong>。FEC 中，QUIC 数据帧的数据混合原始数据和冗余数据，来确保无论到达接收端的 n 次传输内容是什么，接收端都能够恢复所有 n 个原始数据包。FEC 的实质就是异或。示意图：</p>
+<p><img src="C:/Program%20Files/Typora" alt="img"></p>
+<ol start="5">
+<li>更多的 Ack 块和增加 Ack Delay 时间。</li>
+</ol>
+<p>QUIC 可以同时提供 256 个 Ack Block，因此在重排序时，QUIC 相对于 TCP（使用 SACK）更有弹性，这也使得在<strong>重排序</strong>或<strong>丢失</strong>出现时，QUIC 可以在网络上保留更多的<a href="https://link.juejin.cn/?target=https://blog.csdn.net/u014023993/article/details/85299434">在途字节</a>。在丢包率比较高的网络下，可以提升网络的恢复速度，减少重传量。</p>
+<p>TCP 的 Timestamp 选项存在一个问题：发送方在发送报文时设置发送时间戳，接收方在确认该报文段时把时间戳字段值复制到确认报文时间戳，但是没有计算接收端接收到包到发送 Ack 的时间。这个时间可以简称为 Ack Delay，会导致 RTT 计算误差。现在就是把这个东西加进去计算 RTT 了。</p>
+<ol start="6">
+<li>基于 stream 和 connection 级别的流量控制。</li>
+</ol>
+<p>为什么需要两类流量控制呢？主要是因为 QUIC 支持多路复用。Stream 可以认为就是一条 HTTP 请求。Connection 可以类比一条 TCP 连接。多路复用意味着在一条 Connetion 上会同时存在多条 Stream。</p>
+<p>QUIC 接收者会通告每个流中最多想要接收到的数据的绝对字节偏移。随着数据在特定流中的发送，接收和传送，接收者发送 WINDOW_UPDATE 帧，该帧增加该流的通告偏移量限制，允许对端在该流上发送更多的数据。</p>
+<p>除了每个流的流控制外，QUIC 还实现连接级的流控制，以限制 QUIC 接收者愿意为连接分配的总缓冲区。连接的流控制工作方式与流的流控制一样，但传送的字节和最大的接收偏移是所有流的总和。</p>
+<p>最重要的是，我们可以在内存不足或者上游处理性能出现问题时，通过流量控制来限制传输速率，保障服务可用性。</p>
+<p><strong>快速握手</strong></p>
+<p>由于 QUIC 是基于 UDP 的，所以 QUIC 可以实现 0-RTT 或者 1-RTT 来建立连接，可以大大提升首次打开页面的速度。</p>
+<p><strong>集成了 TLS 1.3 加密</strong></p>
+<p>TLS 1.3 支持 3 种基本密钥交换模式：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(EC)DHE (基于有限域或椭圆曲线的 Diffie-Hellman)</span><br><span class="line">PSK - only</span><br><span class="line">PSK with (EC)DHE</span><br></pre></td></tr></table></figure>
+
+<p>在完全握手情况下，需要 1-RTT 建立连接。TLS1.3 恢复会话可以直接发送加密后的应用数据，不需要额外的 TLS 握手，也就是 0-RTT。</p>
+<p>但是 TLS1.3 也并不完美。TLS 1.3 的 0-RTT 无法保证前向安全性(Forward secrecy)。简单讲就是，如果当攻击者通过某种手段获取到了 Session Ticket Key，那么该攻击者可以解密以前的加密数据。</p>
+<p>要缓解该问题可以通过设置使得与 Session Ticket Key 相关的 DH 静态参数在短时间内过期（一般几个小时）。</p>
+<p><strong>多路复用</strong></p>
+<p>QUIC 是为多路复用从头设计的，携带个别流的的数据的包丢失时，通常只影响该流。QUIC 连接上的多个 stream 之间并没有依赖，也不会有底层协议限制。假如 stream2 丢了一个包，也只会影响 stream2 的处理。</p>
+<p><strong>连接迁移</strong></p>
+<p>TCP 是按照 4 要素（客户端 IP、端口, 服务器 IP、端口）确定一个连接的。而 QUIC 则是让客户端生成一个 Connection ID （64 位）来区别不同连接。只要 Connection ID 不变，连接就不需要重新建立，即便是客户端的网络发生变化。由于迁移客户端继续使用相同的会话密钥来加密和解密数据包，QUIC 还提供了迁移客户端的自动加密验证。</p>
+<p><strong>参考</strong></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7175344580638801975#heading-29">一文读懂 HTTP/1、HTTP/2、HTTP/3</a></p>
+<h1 id="彻底搞懂Https"><a href="#彻底搞懂Https" class="headerlink" title="彻底搞懂Https"></a>彻底搞懂Https</h1><p><strong>HTTPS本质</strong></p>
+<img src="/img/image-20220525071935357.png" alt="image-20220525071935357" style="zoom: 80%;" />
+
+<p><strong>HTTPS，其实就是身披SSL协议这层外壳的HTTP</strong></p>
+<img src="/img/image-20220525071136513.png" alt="image-20220525071136513" style="zoom:50%;" />
+
+<img src="/img/image-20220525071155966.png" alt="image-20220525071155966" style="zoom: 50%;" />
+
+<p>HTTPS 协议的主要功能基本都依赖于 TLS/SSL 协议，TLS/SSL 的功能实现主要依赖于三类基本算法：</p>
+<blockquote>
+<ol>
+<li>非对称加密：<strong>实现身份认证和密钥协商</strong></li>
+<li>对称加密：<strong>采用协商的密钥对数据加密</strong></li>
+<li>散列函数 ：<strong>基于散列函数验证信息的完整性</strong></li>
+</ol>
+</blockquote>
+<p><strong>对称加密</strong></p>
+<p>一句话：有一把秘钥，可以加密信息，也可以解密信息。</p>
+<img src="/img/image-20220525071649743.png" alt="image-20220525071649743" style="zoom:67%;" />
+
+<p>用对称加密可行？</p>
+<blockquote>
+<ul>
+<li><p>秘钥传输过程中，被人劫持了，就能用秘钥解开双方加密的内容</p>
+</li>
+<li><p>秘钥不传输，事先浏览器保存所有网站的秘钥，就不存在秘钥劫持问题，但成本太高</p>
+</li>
+</ul>
+</blockquote>
+<p><strong>非对称加密</strong></p>
+<p>一句话：有两把密钥，一把叫做公钥、一把叫私钥，公钥加密，私钥解密。</p>
+<img src="/img/image-20220525071734195.png" alt="image-20220525071734195" style="zoom:67%;" />
+
+<p>用非对称加密可行？</p>
+<blockquote>
+<ul>
+<li>服务器将公钥明文传输给客户端，如果公钥被劫持了，虽然保证客户端到服务端安全，但服务端到客户端不安全，服务端私钥加密的会被黑客劫持的公钥解密</li>
+</ul>
+</blockquote>
+<p><strong>改良的非对称加密</strong></p>
+<p>一句话：非对称加密只能保证单一方向的安全，那么我们用两对公钥秘钥。如服务器有公钥A私钥A,客户端有公钥B私钥B.</p>
+<p>用改良的非对称加密可行？</p>
+<blockquote>
+<ul>
+<li>服务端将公钥A发给客户端，客户端将公钥B发给服务端，这样秘钥始终不被泄密，安全了，但非对称加密算法非常耗时，开销成本太大</li>
+</ul>
+</blockquote>
+<p><strong>非对称+对称加密</strong></p>
+<p>一句话：服务端有公钥A私钥A,服务端将公钥A明文发送给客户端，客户端用公钥A将随机生成的秘钥X加密传输给服务端，随后两端用对称秘钥X通信</p>
+<p>Https采用的就是这种，但完美？</p>
+<blockquote>
+<ul>
+<li>仍有漏洞，在服务端发送公钥A时，黑客劫持并用冒充的公钥B替换了A,客户端用冒充的公钥B传输秘钥X,黑客又劫持并拿私钥B解密得到秘钥X。<strong>根本原因是浏览器无法确认收到的公钥是不是网站自己的</strong></li>
+</ul>
+</blockquote>
+<p><strong>数字证书</strong></p>
+<p>网站在使用HTTPS前，需要向<strong>CA机构</strong>申领一份<strong>数字证书</strong>，数字证书里含有证书持有者信息、公钥信息等。证书相当于是一个网站的身份证。</p>
+<p>数字证书安全？</p>
+<blockquote>
+<ul>
+<li>黑客容易伪造证书，也不安全</li>
+</ul>
+</blockquote>
+<p><strong>数字签名</strong></p>
+<p>一句话：用数字签名保证数字证书也是安全的</p>
+<p>流程包括：服务端的数字签名+客户端的数字验证</p>
+<p>数字签名</p>
+<blockquote>
+<ol>
+<li>CA机构拥有非对称加密的私钥和公钥。</li>
+<li>CA机构对证书明文数据T进行hash。</li>
+<li>对hash后的值用私钥加密，得到数字签名S。</li>
+</ol>
+</blockquote>
+<p>数字验证</p>
+<blockquote>
+<ol>
+<li>拿到证书，得到明文T，签名S。</li>
+<li>用CA机构的公钥对S解密（由于是浏览器信任的机构，所以浏览器保有它的公钥。详情见下文），得到S’。</li>
+<li>用证书里指明的hash算法对明文T进行hash得到T’。</li>
+<li>显然通过以上步骤，T’应当等于S‘，除非明文或签名被篡改。所以此时比较S’是否等于T’，等于则表明证书可信。</li>
+</ol>
+</blockquote>
+<p>其他问题</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">中间人有可能篡改该证书吗？</span><br><span class="line">假设中间人篡改了证书的原文，由于他没有CA机构的私钥，所以无法得到此时加密后签名，无法相应地篡改签名。浏览器收到该证书后会发现原文和签名解密后的值不一致，则说明证书已被篡改，证书不可信，从而终止向服务器传输信息，防止信息泄露给中间人。</span><br><span class="line">既然不可能篡改，那整个证书被掉包呢？</span><br><span class="line"></span><br><span class="line">中间人有可能把证书掉包吗？</span><br><span class="line">假设有另一个网站B也拿到了CA机构认证的证书，它想劫持网站A的信息。于是它成为中间人拦截到了A传给浏览器的证书，然后替换成自己的证书，传给浏览器，之后浏览器就会错误地拿到B的证书里的公钥了，这确实会导致上文“中间人攻击”那里提到的漏洞？</span><br><span class="line">其实这并不会发生，因为证书里包含了网站A的信息，包括域名，浏览器把证书里的域名与自己请求的域名比对一下就知道有没有被掉包了。</span><br><span class="line"></span><br><span class="line">为什么制作数字签名时需要hash一次？</span><br><span class="line">我初识HTTPS的时候就有这个疑问，因为似乎那里的hash有点多余，把hash过程去掉也能保证证书没有被篡改。</span><br><span class="line">最显然的是性能问题，前面我们已经说了非对称加密效率较差，证书信息一般较长，比较耗时。而hash后得到的是固定长度的信息（比如用md5算法hash后可以得到固定的128位的值），这样加解密就快很多。</span><br></pre></td></tr></table></figure>
+
+<h1 id="Http-Cookie机制及Cookie的实现原理"><a href="#Http-Cookie机制及Cookie的实现原理" class="headerlink" title="Http Cookie机制及Cookie的实现原理"></a>Http Cookie机制及Cookie的实现原理</h1><p><strong>Cookie机制</strong></p>
+<blockquote>
+<p><code>Cookie</code>是解决HTTP无状态性的有效手段，服务器可以设置或读取<code>Cookie</code>中所包含的信息。当用户登录后，服务器会发送包含登录凭据的<code>Cookie</code>到用户浏览器客户端，而浏览器对该<code>Cookie</code>进行某种形式的存储（内存或硬盘）。用户再次访问该网站时，浏览器会发送该<code>Cookie</code>（Cookie未到期时）到服务器，服务器对该凭据进行验证，合法时使用户不必输入用户名和密码就可以直接登录。</p>
+<p>本质上讲，<code>Cookie</code>是一段文本信息。客户端请求服务器时，如果服务器需要记录用户状态，就在响应用户请求时发送一段<code>Cookie</code>信息。客户端浏览器保存该<code>Cookie</code>信息，当用户再次访问该网站时，浏览器会把<code>Cookie</code>做为请求信息的一部分提交给服务器。服务器检查<code>Cookie</code>内容，以此来判断用户状态，服务器还会对<code>Cookie</code>信息进行维护，必要时会对<code>Cookie</code>内容进行修改。</p>
+</blockquote>
+<p><strong>Cookie原理</strong></p>
+<p>客户端请求服务器</p>
+<blockquote>
+<p>客户端请求<code>IT笔录</code>网站首页，请求头如下：</p>
+<p>GET / HTTP/1.0<br>HOST: itbilu.com</p>
+</blockquote>
+<p>服务器响应请求</p>
+<blockquote>
+<p><code>Cookie</code>是一种<code>key=value</code>形式的字符串，服务器需要记录这个客户端请求的状态，因此在响应头中包一个<code>Set-Cookie</code>字段。响应头如下：</p>
+<p>HTTP/1.0 200 OK<br>Set-Cookie: UserID=itbilu; Max-Age=3600; Version=1<br>Content-type: text/html<br>……</p>
+</blockquote>
+<p>再次请求时，客户端请求中会包含一个<code>Cookie</code>请求头</p>
+<blockquote>
+<p>客户端会对服务器响应的<code>Set-Cookie</code>头信息进行存储。再次请求时，将会在请求头中包含服务器响应的<code>Cookie</code>信息。请求头如下</p>
+<p>GET / HTTP/1.0<br>HOST: itbilu.com<br>Cookie: UserID=itbilu</p>
+</blockquote>
+<h1 id="TCP和UDP"><a href="#TCP和UDP" class="headerlink" title="TCP和UDP"></a>TCP和UDP</h1><p>TCP特点：</p>
+<ul>
+<li>是面向连接的通信协议，通过三次握手建立连接，通讯完成时要拆除连接。</li>
+<li>只能用于端到端的通讯，是一种可靠的数据流服务</li>
+<li>采用“带重传”技术来实现传输的可靠性。</li>
+<li>采用“滑动窗口”的方式进行流量控制，所谓窗口实际表示接收能力，用以限制发送方的发送速度。</li>
+</ul>
+<p><strong>使用TCP的协议：FTP（文件传输协议）、Telnet（远程登录协议）、SMTP（简单邮件传输协议）、POP3（和SMTP相对，用于接收邮件）、HTTP协议等。</strong></p>
+<p>UDP特点：</p>
+<ul>
+<li>面向无连接的通讯协议，可以实现广播发送</li>
+<li>不需要接收方确认，属于不可靠的传输，可能会出现丢包现象</li>
+<li>服务需要交换的信息量较小，速度快</li>
+</ul>
+<p><strong>使用UDP协议包括：TFTP（简单文件传输协议）、SNMP（简单网络管理协议）、DNS（域名解析协议）、NFS、BOOTP。</strong></p>
+<p><strong>TCP 与 UDP 的区别：TCP是面向连接的，可靠的字节流服务；UDP是面向无连接的，不可靠的数据报服务。</strong></p>
+<h1 id="跨域跨端"><a href="#跨域跨端" class="headerlink" title="跨域跨端"></a>跨域跨端</h1><p>基于浏览器存在的同源策略，协议、域名、端口不一样。</p>
+<p>目前主要使用JSONP和跨域资源共享CROS.</p>
+<p>JSON本质就是一段script脚本，脚本是可以不受跨域限制的。只支持get请求，不符合正常业务流程</p>
+<p>CROS是服务端设置Access-controll-Allow-Origin:*</p>
+<h1 id="cookie-session-token"><a href="#cookie-session-token" class="headerlink" title="cookie,session,token"></a>cookie,session,token</h1><p>1.cookie和session</p>
+<ul>
+<li>作用范围不同，Cookie 保存在客户端（浏览器），Session 保存在服务器端。</li>
+<li>有效期不同，Cookie 可设置为长时间保持，比如我们经常使用的默认登录功能，Session 一般失效时间较短，客户端关闭或者 Session 超时都会失效</li>
+<li>隐私策略不同，Cookie 存储在客户端，比较容易遭到不法获取，早期有人将用户的登录名和密码存储在 Cookie 中导致信息被窃取；Session 存储在服务端，安全性相对 Cookie 要好一些。</li>
+<li>存储大小不同， 单个 Cookie 保存的数据不能超过 4K，Session 可存储数据远高于 Cookie。</li>
+<li>session不能区分路径，同一个用户在访问一个网站期间，所有的session在任何一个地方都可以访问到。Cookie有个setPath的方法，可以设置可访问的路径，那么同一个网站中不同路径下的cookie互相是访问不到的</li>
+</ul>
+<p>cookie只是实现session的其中一种方案.现在大多都是Session + Cookie.<strong>简而言之, session 有如用户信息档案表, 里面包含了用户的认证信息和登录状态等信息. 而 cookie 就是用户通行证</strong>。</p>
+<p><strong>cookie机制原理</strong>：比如服务端要想记录用户的状态，就使用response向浏览器发送一个Cookie。客户端浏览器会将这个cookie保存起来。浏览器再次请求服务端时，浏览器会把这个cookie带上。服务端检查这个cookie来获取用户状态。</p>
+<p><strong>Session机制原理</strong>：当客户端请求创建一个session时，服务端会先检查客户端的请求里面有没有带着session标识-sessionId。如果有，则说明服务器以前已为此客户端创建过session，于是就根据这个sessionId把session检索出来。如果客户端请求中不包含sessionId，则为客户端创建一个session并且生成一个与这个session相关联的sessionId。 这个sessionId将被在本次响应中返回给客户端保存。保存sessionId的方式大多情况下用的是cookie。</p>
+<p>2.token</p>
+<p>token 也称作令牌，由uid+time+sign[+固定参数]<br>token 的认证方式类似于<strong>临时的证书签名</strong>, 并且是一种服务端无状态的认证方式, 非常适合于 REST API 的场景. 所谓无状态就是服务端并不会保存身份认证相关的数据。</p>
+<p>组成：</p>
+<ul>
+<li>uid: 用户唯一身份标识</li>
+<li>time: 当前时间的时间戳</li>
+<li>sign: 签名, 使用 hash/encrypt 压缩成定长的十六进制字符串，以防止第三方恶意拼接</li>
+<li>固定参数(可选): 将一些常用的固定参数加入到 token 中是为了避免重复查库</li>
+</ul>
+<p><strong>token可以抵抗csrf，cookie+session不行</strong></p>
+<p>倘若是session+cookie，用户打开网页的时候就已经转给Tom1000元了.因为form 发起的 POST 请求并不受到浏览器同源策略的限制，因此可以任意地使用其他域的 Cookie 向其他域发送 POST 请求，形成 CSRF 攻击。在post请求的瞬间，cookie会被浏览器自动添加到请求头中。但token不同，token是开发者为了防范csrf而特别设计的令牌，浏览器不会自动添加到headers里，攻击者也无法访问用户的token</p>
+<p><strong>总结</strong></p>
+<ul>
+<li>session存储于服务器，可以理解为一个状态列表，拥有一个唯一识别符号sessionId，通常存放于cookie中。服务器收到cookie后解析出sessionId，再去session列表中查找，才能找到相应session。依赖cookie</li>
+<li>cookie类似一个令牌，装有sessionId，存储在客户端，浏览器通常会自动添加。</li>
+<li>token也类似一个令牌，无状态，用户信息都被加密到token中，服务器收到token后解密就可知道是哪个用户。需要开发者手动添加。</li>
+<li>jwt只是一个跨域认证的方案</li>
+</ul>
+<h1 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h1><img src="/img/image-20221022172938348.png" alt="image-20221022172938348" style="zoom: 67%;" />
+
+<p>术语：</p>
+<ul>
+<li>缓存命中率：从缓存中得到数据的请求数与所有请求数的比率</li>
+<li>过期内容：超过设置的有效时间。过期内容不能用于回复客户端的请求，必须重新向源服务器请求新内容</li>
+<li>验证：验证缓存中的过期内容是否仍然有效，验证通过的话刷新过期时间</li>
+<li>失效：失效就是把内容从缓存中移除。当内容发生改变时，必须移除失效的内容</li>
+</ul>
+<h2 id="浏览器缓存"><a href="#浏览器缓存" class="headerlink" title="浏览器缓存"></a>浏览器缓存</h2><ul>
+<li>本地存储</li>
+<li>默认缓存</li>
+</ul>
+<p>Cookie、Storage、indexDB、ServiceWork</p>
+<p><strong>1.Cookie</strong></p>
+<p>cookie是客户端的解决方案，最早是网景公司的前雇员1993年发明的。它可以弥补HTTP协议无状态的部分不足,帮助记录用户信息。</p>
+<p>接口返回的cookie格式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set-cookie: name=value [; expires=date] [; path=path] [; domain=domain] [;secure=secure]</span><br></pre></td></tr></table></figure>
+
+<p>客户端请求的cookie格式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: name1=value1 [; name2=value2]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>name:一个唯一确定的cookie名称。通常来讲cookie的名称是不区分大小写的。 </li>
+<li>value:存储在cookie中的字符串值。最好为cookie的name和value进行url编码 </li>
+<li>domain:cookie对于哪个域名下是有效的。所有向该域发送的请求中都会包含这个cookie信息。这个值可以包含子域(如：m.baidu.com)，也可以不包含它(如：.baidu.com，则对于baidu.com的所有子域都有效). </li>
+<li>path: 表示这个cookie影响到的路径，浏览器跟会根据这项配置，向指定域中匹配的路径发送cookie。</li>
+<li>expires:过期时间，表示cookie自删除的时间戳。如果不设置这个时间戳，cookie就会变成会话Session类型的cookie，浏览器会在页面关闭时即将删除所有cookie,这个值是GMT时间格式，如果客户端和服务器端时间不一致，使用expires就会存在偏差。 </li>
+<li>max-age: 与expires作用相同，用来告诉浏览器此cookie多久过期（单位是秒），而不是一个固定的时间点。正常情况下，max-age的优先级高于expires。 </li>
+<li>HttpOnly: 告知浏览器不允许通过脚本document.cookie去更改这个值，同样这个值在document.cookie中也不可见。但在http请求仍然会携带这个cookie。注意这个值虽然在脚本中不可获取，但仍然在浏览器安装目录中以文件形式存在。这项设置通常在服务器端设置。 </li>
+<li>secure: 安全标志，指定后只有在使用SSL(https)链接时候才会发送到服务器，如果是http链接则不会传递该值。但是也有其他方法能在本地查看到cookie</li>
+</ul>
+<p><strong>Cookie的优点</strong></p>
+<ul>
+<li>cookie键值对形式，结构简单</li>
+<li>可以配置过期时间，不需要任何服务器资源存在于客户端上，</li>
+<li>可以弥补HTTP协议无状态的部分不足</li>
+<li>无兼容性问题。</li>
+</ul>
+<p><strong>Cookie的缺点</strong></p>
+<ul>
+<li>大小数量受到限制，每个domain最多只能有20条cookie，每个cookie长度不能超过4096 字节，否则会被截掉。尽管在当今新的浏览器和客户端设备开始支持8192字节。</li>
+<li>用户配置可能为禁用 有些用户禁用了浏览器或客户端设备接收 Cookie 的能力，因此限制了这一功能。</li>
+<li>增加流量消耗，每次请求都需要带上cookie信息。</li>
+<li>安全风险，黑客可以进行Cookie拦截、XSS跨站脚本攻击和Cookie欺骗，历史上因为Cookie被攻击的网站用户不在少数，虽然可以对Cookie进行加密解密，但会影响到性能。</li>
+</ul>
+<p><strong>Cookie总结</strong></p>
+<p>在业务开发场景中，Cookie更多的是作为一种标识，用来记录用户的行为，而并非用户的身份信息，根据用户登录后生成特定Cookie，再次发起其他请求的时候，服务器能够识别用户是否能够继续此次操作，不能则相应操作。如果将用户的身份信息及其他重要信息放在cookie中是十分危险的，而且对于大型流量网站来说，每一个字节的消耗一年下来都是按几十TB算的,</p>
+<p><strong>2.Session/Local</strong></p>
+<p>SessionStorage简称会话存储，和LocalStorage本地储存，都遵循同源策略(域名、协议、端口），存放空间很大，一般是5M。解决了容量小、存取不便、容易被清除的问题。</p>
+<p>Session只作用于当前窗口，Local作用于当前浏览器，关键信息放在Session里，关闭后进行清除，否则攻击者可以通过XSS攻击进行信息窃取。</p>
+<p><strong>Session/Local优点</strong></p>
+<ul>
+<li>存储数据量大，5MB。</li>
+<li>不会随http请求一起发送，有效的减少了请求大小</li>
+<li>local跨窗口处理数据，能够减少相当一部分本地处理与维护状态。</li>
+</ul>
+<p><strong>Session/Local缺点</strong></p>
+<ul>
+<li>本质是在读写文件，写入数据量大的话会影响性能（firefox是将localstorage写入内存中的）</li>
+<li>XSS攻击窃取信息（为了安全性还是放session吧）</li>
+<li>兼容性，虽然说IE6已经死了，但是我就看过好多掘金段友还在写兼容IE6的文章….真是sun了dog，如果你们项目还在写IE6兼容，我敬你是条汉子！</li>
+<li>不能被爬虫读取</li>
+</ul>
+<p><strong>3.IndexedDB</strong></p>
+<p>IndexedDB是HTML5规范里新出现的浏览器里内置的数据库。跟NoSQL很像。IndexedDB里的数据是永久保存，适合于储存大量结构化数据，以对象的形式存储，每个对象都有一个key值索引。</p>
+<p>IndexedDB里的操作都是事务性的。一种对象存储在一个object store里，object store就相当于关系数据库里的表。IndexedDB可以有很多object store，object store里可以有很多对象。</p>
+<p><strong>indexedDB优点</strong></p>
+<ul>
+<li>替代web SQL，与service work搭配简直无敌，实现离线访问不在话下，</li>
+<li>数据储存量无限大（只要你硬盘够），Chrome规定了最多只占硬盘可用空间的1/3，可以储存结构化数据带来的好处是可以节省服务器的开支。</li>
+</ul>
+<p><strong>indexedDB缺点</strong></p>
+<ul>
+<li>兼容性问题，只有ie11以上，根据业务场景慎重考虑需求。</li>
+<li>同源策略，部分浏览器如Safari手机版隐私模式在访问<code>IndexedDB</code>时，可能会出现由于没有权限而导致的异常（LocalStorage也会），需要进行异常处理。</li>
+<li>API类似SQL比较复杂，操作大量数据的时候，可能存在性能上的消耗。</li>
+<li>用户在清除浏览器缓存时，可能会清除<code>IndexedDB</code>中相关的数据。</li>
+</ul>
+<p><strong>4.ServiceWork</strong></p>
+<p>serviceWork是W3C 2014年提出的草案，是一种独立于当前页面在后台运行的脚本。这里的后台指的是浏览器后台，能够让web app拥有和native app一样的离线程序访问能力，让用户能够进行离线体验，消息推送体验。native app可以做到离线使用、消息推送、后台自动更新，service worker的出现是正是为了使得web app也可以具有类似的能力。</p>
+<p>JavaScript是单线程执行的，如果涉及到大量运算的话，很有可能阻碍css tree的渲染，从而阻塞后续代码的执行运算速度，ServiceWork的出现正好解决了这个问题，将一些需要大规模数据运算和获取 资源文件在后台进行处理，然后将结果返回到主线程，由主线程来执行渲染，这样可以避免主线程被巨量的逻辑和运算所阻塞。这样的大大的提升了JavaScript线程在处理大规模运算时候的一个能力， 这也是ServiceWork本身的巨大优势，比如我们要进行WebGBL场景下3D模型和数据的运算，一个普通的数据可能高达几MB，如果放在主线程进行运算的话，会严重阻碍页面的渲染，这个时候就非常适合ServiceWork进行后台计算，再将结果返回到主线程进行渲染。</p>
+<p>service worker可以：</p>
+<ol>
+<li>消息推送、传递</li>
+<li>在不影响页面通信以及阻塞线程的情况下，后台同步运算。</li>
+<li>网络拦截、代理，转发请求，伪造响应</li>
+<li>离线缓存</li>
+<li>地理围栏定位</li>
+</ol>
+<p>google 的PWD（Progressive Web Apps)，它是一种Web App新模型，渐进式的web App，它依赖于Service Work，是现在没有网络的环境中也能够提供基本的页面访问，不会出现‘未连接到互联网’，可以优化网页渲染及网络数据访问，并且可以添加到手机桌面，和普通应用一样有全屏状态和消息推送的功能。</p>
+<p><strong>service work（PWA）缺点：</strong></p>
+<ul>
+<li>  缓存的问题，要定期清理。超出的时候会出现 <code>Uncaught (in promise) DOMException: Quota exceeded.</code> 异常。清理后必须要重启浏览器才生效。</li>
+<li>  浏览器兼容，头疼的问题。IE和safari不兼容</li>
+</ul>
+<p><strong>service work（PWA）优点：</strong></p>
+<p>  如上文所述，有着消息推送、网络拦截代理、后台运算、离线缓存、地理围栏等很实用的一些技术。</p>
+<p><strong>用户动作</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">用户打开页面，不会强制干涉内存策略，执行强缓存。流程：命中则返回200取缓存，否则执行协商缓存。</span><br><span class="line">F5刷新，跳过强缓存，执行协商缓存，原理：cache-control:max-age=0,且设置If-Modified-Since给服务端比对。流程：命中则返回304取缓存，否则返回200取服务端数据。</span><br><span class="line">ctrl+F5，跳过强缓存和协商缓存，原理：cache-control:no-cache,且不设置If-Modified-Since。</span><br></pre></td></tr></table></figure>
+
+<p><em>max-age=0和no-cache区别</em></p>
+<p>如果用户代理使用 Cache-Control: max-age=0（又名“端到端重新验证”）发送请求，那么沿途的每个缓存都将重新验证其缓存条目.</p>
+<p>如果使用 Cache-Control: no-cache（又名“端到端重新加载”）发送请求不会重新验证，并且服务器在响应时不得使用缓存副本。</p>
+<p><strong>本地存储小容量</strong></p>
+<p>Cookie主要用于用户信息的存储，Cookie的内容可以自动在请求的时候被传递给服务器。</p>
+<p>LocalStorage的数据将一直保存在浏览器内，直到用户清除浏览器缓存数据为止。</p>
+<p>SessionStorage的其他属性同LocalStorage，只不过它的生命周期同标签页的生命周期，当标签页被关闭时，SessionStorage也会被清除。</p>
+<p><strong>本地存储大容量</strong></p>
+<p>WebSql和IndexDB主要用在前端有大容量存储需求的页面上，例如，在线编辑浏览器或者网页邮箱。websql是关系型数据库，被w3c废弃。IndexDB是菲关系型数据库。</p>
+<p><strong>应用缓存与PWA</strong></p>
+<p>PWA即Progressive Web Apps<br> 谷歌给以Service Worker API为核心的实现web应用取名PWA即渐进式增强WEB应用。有点类似移动端小程序一样，在web上运行，不需要独立安装的web微应用。</p>
+<p>应用缓存全称为Offline Web Application，它的缓存内容被存在浏览器的ApplicaTIon Cache。主要是通过manifest文件来标注要被缓存的静态文件清单。应用缓存只适合那种常年不变化的静态网站。如此的不方便，也是被废弃的重要原因。<br>PWA全称是渐进式网络应用，主要目标是实现web网站的APP式功能和展示。PWA用manifest构建了自己的APP骨架。另外，PWA用Service Worker来控制缓存的使用。</p>
+<p><strong>往返缓存</strong></p>
+<p>往返缓存又称为BFCache，是浏览器在前进后退按钮上为了提升历史页面的渲染速度的一种策略。BFCache会缓存所有的DOM结构，但是问题在于，一些页面开始时进行的上报或者请求可能会被影响。这个问题现在主要会出现在微信h5的开发中。</p>
+<h2 id="Http缓存"><a href="#Http缓存" class="headerlink" title="Http缓存"></a>Http缓存</h2><p>分为强缓存和协商缓存，浏览器加载一个页面的简单流程如下：</p>
+<ol>
+<li>浏览器先根据这个资源的http头信息来判断是否命中强缓存，如果命中则直接加在缓存中的资源，并不会将请求发送到服务器</li>
+<li>如果未命中强缓存，则浏览器会将资源加载请求发送到服务器。服务器来判断浏览器本地缓存是否失效。若可以使用，则服务器并不会返回资源信息，浏览器继续从缓存加载资源</li>
+<li>如果未命中协商缓存，则服务器会将完整的资源返回给浏览器，浏览器加载新资源，并更新缓存</li>
+</ol>
+<p><strong>缓存策略：</strong></p>
+<ul>
+<li>不常变化的资源，Cache-Control: max-age=31536000；</li>
+<li>经常变化的资源，Cache-Control: no-cache</li>
+<li>比较敏感的资源，Cache-Control: max-age=600</li>
+</ul>
+<p><img src="/img/image-20211111182141513.png" alt="image-20211111182141513"></p>
+<p>强缓存</p>
+<ul>
+<li>不存在该缓存结果和标识，强制缓存失效，则直接向服务器发起请求（跟第一次发起请求一致）</li>
+<li>存在缓存结果和标识，但结果已失效，强制缓存失效，则使用协商缓存</li>
+<li>存在缓存结果和标识，并且结果未失效，强制缓存生效，直接返回该结果</li>
+</ul>
+<p>协商缓存</p>
+<ul>
+<li>协商缓存生效，返回304，服务器告诉浏览器资源未更新，则再去浏览器缓存中访问资 源</li>
+<li>协商缓存失效，返回200和请求结果</li>
+</ul>
+<p><strong>强制缓存：不需要发送请求到服务器</strong></p>
+<p>若命中强缓存，浏览器并不会将请求发送给服务器。http返回码是200，后缀为(from cache或from memory cache)。强缓存是利用http的返回头中的Expires或Cache-Control两个字段来控制的，用来表示资源的缓存时间。</p>
+<ul>
+<li>Expires：Thu ,25,Apr 2019 12:25:36 GTM，是绝对时间</li>
+</ul>
+<ul>
+<li>Cache-Control:max-age=0, private, must-revalidate，是相对时间段,优先级更高</li>
+</ul>
+<p>Expires是HTTP1.0的产物了，现在默认浏览器均默认使用HTTP 1.1，所以它的作用基本忽略。但是很多网站还是对它做了兼容。它的值为服务端返回的到期时间，即下一次请求时，请求时间小于服务端返回的到期时间，直接使用缓存数据。<br>在HTTP 1.1 的版本，使用Cache-Control取值有private、public、no-cache、max-age，no-store，默认为private。</p>
+<blockquote>
+<ul>
+<li>max-age：用来设置资源（representations）可以被缓存多长时间，单位为秒；</li>
+<li>s-maxage：和max-age是一样的，不过它只针对代理服务器缓存而言；<br>public：指示响应可被任何缓存区缓存；</li>
+<li>private：只能针对个人用户，而不能被代理服务器缓存；</li>
+<li>no-cache：强制客户端直接向服务器发送请求,也就是说每次请求都必须向服务器发送。服务器接收到请求，然后判断资源是否变更，是则返回新内容，否则返回304，未变更。这个很容易让人产生误解，使人误 以为是响应不被缓存。实际上Cache-Control: no-cache是会被缓存的，只不过每次在向客户端（浏览器）提供响应数据时，缓存都要向服务器评估缓存响应的有效性。</li>
+<li>no-store：禁止一切缓存（这个才是响应不被缓存的意思）。</li>
+</ul>
+</blockquote>
+<p><strong>协商缓存：需要发送请求到服务器</strong></p>
+<p>若未命中强缓存，则浏览器会将请求发送到服务器。服务器根据http请求头信息中Last-modify/If-modify-Since或Etag/If-None-Match来判断是否命中协商缓存。如果命中，则http返回码为304，浏览器从缓存加载资源。协商主要是问服务器，我访问的文件有没有更新。</p>
+<ul>
+<li>Last-modify/If-modify-Since: “2022-02-25 15:30.3”，表示文件修改的时间</li>
+<li>Etag/If-None-Match: W/“e39f603a5ebcff23859d200f9c9dc20f”，表示每个资源的是否修改的文件校验码。</li>
+</ul>
+<p>Last-Modified/If-Modified-Since，第一次请求，服务端返回Last-modify。第二次请求，请求头携带If-modify-Since，如果服务器判断Last-modify和If-modify-Since时间相同，则命中协商缓存。</p>
+<p>Etag/If-None-Match，第一次请求，服务端返回Etag。第二次请求，请求头携带If-None-Match，如果服务器判断Etag和If-None-Match相同，则命中协商缓存。</p>
+<p>Etag 等字段是指文件是否发生变化。Last-Modified 表示最近1s时间，文件的请求时间。后者对于1s内变化的数据，无法感知，会误以为没变化，取缓存数据。</p>
+<p><strong>nginx配置缓存策略</strong></p>
+<blockquote>
+<p>nginx配置Cache-Control: no-cache。不使用强缓存。</p>
+<p><strong>304 Not modified表示协商缓存</strong>，</p>
+</blockquote>
+<img src="/img/image-20221023110951987.png" alt="image-20221023110951987" style="zoom:80%;" />
+
+<blockquote>
+<p>nginx配置Cache-Control: max-age=60。60S内命中强缓存，60s后使用协商缓存。</p>
+<p><strong>200ok(from memory cache)表示强缓存</strong></p>
+<p>强缓存好处：不用请求到服务器，缓解高并发访问压力。</p>
+</blockquote>
+<img src="/img/image-20221023111935322.png" alt="image-20221023111935322" style="zoom:80%;" />
+
+<h1 id="常见六大Web安全攻防解析"><a href="#常见六大Web安全攻防解析" class="headerlink" title="常见六大Web安全攻防解析"></a>常见六大Web安全攻防解析</h1><h2 id="XSS"><a href="#XSS" class="headerlink" title="XSS"></a>XSS</h2><p>XSS (Cross-Site Scripting)，跨站脚本攻击，因为缩写和 CSS重叠，所以只能叫 XSS。</p>
+<p>跨站脚本攻击是指通过存在安全漏洞的Web网站注册用户的浏览器内运行非法的HTML标签或JavaScript进行的一种攻击。</p>
+<p>按照攻击方式分：</p>
+<ul>
+<li>非持久型跨站（也叫反射型）</li>
+<li>持久型跨站（也叫存储型）</li>
+<li>DOM跨站</li>
+</ul>
+<p><strong>一、反射型</strong></p>
+<p>一般是通过给别人发送<strong>带有恶意脚本代码参数的 URL</strong>，当 URL 地址被打开时，特有的恶意代码参数被 HTML 解析、执行。</p>
+<p>特点：</p>
+<blockquote>
+<ul>
+<li>即时性，不经过服务器存储，直接通过 HTTP 的 GET 和 POST 请求就能完成一次攻击，拿到用户隐私数据。</li>
+<li>攻击者需要诱骗点击,必须要通过用户点击链接才能发起</li>
+<li>反馈率低，所以较难发现和响应修复</li>
+<li>盗取用户敏感保密信息</li>
+</ul>
+</blockquote>
+<p>反制：</p>
+<blockquote>
+<ul>
+<li><p>Web 页面渲染的所有内容或者渲染的数据都必须来自于服务端。</p>
+</li>
+<li><p>尽量不要从 <code>URL</code>，<code>document.referrer</code>，<code>document.forms</code> 等这种 DOM API 中获取数据直接渲染。</p>
+</li>
+<li><p>尽量不要使用 <code>eval</code>, <code>new Function()</code>，<code>document.write()</code>，<code>document.writeln()</code>，<code>window.setInterval()</code>，<code>window.setTimeout()</code>，<code>innerHTML</code>，<code>document.createElement()</code> 等可执行字符串的方法。</p>
+</li>
+<li><p>如果做不到以上几点，也必须对涉及 DOM 渲染的方法传入的字符串参数做 escape 转义。</p>
+</li>
+<li><p>前端渲染的时候对任何的字段都需要做 escape 转义编码。</p>
+</li>
+</ul>
+</blockquote>
+<p><strong>二、存储型</strong></p>
+<p>黑客利用的 XSS 漏洞，将内容经正常功能提交进入数据库持久保存，当前端页面获得后端从数据库中读出的注入代码时，恰好将其渲染执行。</p>
+<p>特点：</p>
+<blockquote>
+<ul>
+<li>持久性，植入在数据库中</li>
+<li>盗取用户敏感私密信息</li>
+<li>危害面广</li>
+</ul>
+</blockquote>
+<p>反制：</p>
+<blockquote>
+<ul>
+<li>CSP即白名单</li>
+<li>转义字符</li>
+<li>HttpOnly Cookie</li>
+</ul>
+</blockquote>
+<p> <strong>CSP</strong></p>
+<p>CSP 本质上就是建立白名单，开发者明确告诉浏览器哪些外部资源可以加载和执行。我们只需要配置规则，如何拦截是由浏览器自己实现的。我们可以通过这种方式来尽量减少 XSS 攻击。</p>
+<p>通常可以通过两种方式来开启 CSP：</p>
+<ul>
+<li>设置 HTTP Header 中的 Content-Security-Policy</li>
+<li>设置 meta 标签的方式 </li>
+</ul>
+<p>这里以设置 HTTP Header 来举例：</p>
+<ul>
+<li>只允许加载本站资源</li>
+</ul>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Content-Security-Policy: <span class="keyword">default</span>-src <span class="string">&#x27;self&#x27;</span></span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>只允许加载 HTTPS 协议图片</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Content-Security-Policy</span>: img-src <span class="attribute">https</span>:<span class="comment">//*</span></span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>允许加载任何来源框架</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Content</span>-Security-Policy: child-src <span class="string">&#x27;none&#x27;</span></span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>如需了解更多属性，请查看<a href="https://link.juejin.cn/?target=https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy">Content-Security-Policy文档</a></p>
+<p><strong>HttpOnly Cookie。</strong></p>
+<p>这是预防XSS攻击窃取用户cookie最有效的防御手段。Web应用程序在设置cookie时，将其属性设为HttpOnly，就可以避免该网页的cookie被客户端恶意JavaScript窃取，保护用户cookie信息。</p>
+<p><strong>三、DOM跨站</strong></p>
+<ul>
+<li>攻击者构造出特殊的 <code>URL</code> ，其中包含恶意代码。</li>
+<li>用户打开带有恶意代码的 <code>URL</code> 。</li>
+<li>用户浏览器接收到响应后解析执行，前端 <code>JavaScript</code> 取出 <code>URL</code> 中的恶意代码并执行。</li>
+<li>恶意代码窃取用户数据并发送到攻击者的网站，或者冒充用户的行为，调用目标网站接口执行攻击者指定的操作。</li>
+</ul>
+<p>DOM 型跟前两种区别是：</p>
+<p>DOM 型 XSS 攻击中，取出和执行恶意代码由<strong>浏览器端</strong>完成，属于前端 JavaScript 自身的安全漏洞，而其他两种 XSS 都属于<strong>服务端</strong>的安全漏洞。</p>
+<h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2><p>CSRF(Cross Site Request Forgery)，即跨站请求伪造，是一种常见的Web攻击，它利用用户已登录的身份，在用户毫不知情的情况下，以用户的名义完成非法操作。</p>
+<p><strong>攻击流程</strong>：</p>
+<blockquote>
+<ol>
+<li>受害者登录 <code>a.com</code>，并保留了登录凭证（<code>Cookie</code>）。</li>
+<li>攻击者引诱受害者访问了 <code>b.com</code>。</li>
+<li><code>b.com</code> 向 <code>a.com</code> 发送了一个请求：<code>a.com/act=xx</code>。浏览器会<strong>默认携带</strong> <code>a.com</code> 的 <code>Cookie</code>。</li>
+<li><code>a.com</code> 接收到请求后，对请求进行验证，并确认是受害者的凭证，误以为是受害者自己发送的请求。</li>
+<li><code>a.com</code> 以受害者的名义执行了 <code>act=xx</code>。</li>
+<li>攻击完成，攻击者在受害者不知情的情况下，冒充受害者，让 <code>a.com</code> 执行了自己定义的操作。</li>
+</ol>
+</blockquote>
+<p>反制：</p>
+<blockquote>
+<ul>
+<li>Get 请求不对数据进行修改</li>
+<li>不让第三方网站访问到用户 Cookie</li>
+<li>阻止第三方网站请求接口</li>
+<li>请求时附带验证信息，比如验证码或者 Token</li>
+</ul>
+</blockquote>
+<p>具体反制：</p>
+<blockquote>
+<ol>
+<li>SameSite</li>
+</ol>
+<p>可以对 Cookie 设置 SameSite 属性。该属性表示 Cookie 不随着跨域请求发送，可以很大程度减少 CSRF 的攻击，但是该属性目前并不是所有浏览器都兼容。</p>
+<ol start="2">
+<li>Referer Check同源检测</li>
+</ol>
+<p>referer 和 origin 的区别，只有 post 请求会携带 origin 请求头，而 referer不论何种情况下都带。</p>
+<p>HTTP Referer是header的一部分，当浏览器向web服务器发送请求时，一般会带上Referer信息告诉服务器是从哪个页面链接过来的，服务器籍此可以获得一些信息用于处理。可以通过检查请求的来源来防御CSRF攻击。正常请求的referer具有一定规律，如在提交表单的referer必定是在该页面发起的请求。所以<strong>通过检查http包头referer的值是不是这个页面，来判断是不是CSRF攻击</strong>。</p>
+<p>但在某些情况下如从https跳转到http，浏览器处于安全考虑，不会发送referer，服务器就无法进行check了。若与该网站同域的其他网站有XSS漏洞，那么攻击者可以在其他网站注入恶意脚本，受害者进入了此类同域的网址，也会遭受攻击。出于以上原因，无法完全依赖Referer Check作为防御CSRF的主要手段。但是可以通过Referer Check来监控CSRF攻击的发生。</p>
+<ol start="3">
+<li> Anti CSRF Token</li>
+</ol>
+<p>目前比较完善的解决方案是加入Anti-CSRF-Token。即发送请求时在HTTP 请求中以参数的形式加入一个随机产生的token，并在服务器建立一个拦截器来验证这个token。服务器读取浏览器当前域cookie中这个token值，会进行校验该请求当中的token和cookie当中的token值是否都存在且相等，才认为这是合法的请求。否则认为这次请求是违法的，拒绝该次服务。</p>
+<p><strong>这种方法相比Referer检查要安全很多</strong>，token可以在用户登陆后产生并放于session或cookie中，然后在每次请求时服务器把token从session或cookie中拿出，与本次请求中的token 进行比对。由于token的存在，攻击者无法再构造出一个完整的URL实施CSRF攻击。但在处理多个页面共存问题时，当某个页面消耗掉token后，其他页面的表单保存的还是被消耗掉的那个token，其他页面的表单提交时会出现token错误。</p>
+<ol start="4">
+<li>验证码</li>
+</ol>
+<p>应用程序和用户进行交互过程中，特别是账户交易这种核心步骤，强制用户输入验证码，才能完成最终请求。在通常情况下，验证码够很好地遏制CSRF攻击。<strong>但增加验证码降低了用户的体验，网站不能给所有的操作都加上验证码</strong>。所以只能将验证码作为一种辅助手段，在关键业务点设置验证码。</p>
+</blockquote>
+<p><strong>cookie和token</strong></p>
+<blockquote>
+<p><strong>cookie 是不能跨域访问的，为什么还会有 csrf？</strong></p>
+<p>浏览器会依据加载的域名附带上对应域名 cookie。如用户在 a 网站登录且生成了授权的 cookies，然后访问 b 网站，b 站故意构造请求 a 站的请求，如删除操作之类的，用不受同源影响的 script，img 或者 iframe 之类的标签加载 a 地址，浏览器会附带上 a 站此登录用户的授权 cookie 信息，这样就构成 crsf，会删除掉当前用户的数据。cookie和session都会有csrf问题，localstorge没有这个问题，因为它有同源策略。</p>
+<p>Token</p>
+<p><strong>示例：</strong> 用户登录输入账号密码，请求登录接口，后端在用户登录信息正确的情况下将 <code>token</code> 放到<strong>数据库</strong>中，并返回 <code>token</code> 给前端，前端把 <code>token</code> 存放在 <code>localstorage</code> 中，之后再发送请求都会将 <code>token</code> 放到 <code>header</code> 中。 后端写一个过滤器，拦截 <code>POST</code> 请求，注意忽略掉不需要 <code>token</code> 的请求，比如登录接口，获取 <code>token</code> 的接口，以免还没有获取 <code>token</code> 就开始检验 <code>token</code> 。 校验原则：<strong>数据库</strong>中的 <code>token</code> 和前端 <code>header</code> 中的 <code>token</code> 一致的 <code>post</code> 请求，则说明校验成功，给客户端放行。</p>
+</blockquote>
+<h2 id="点击劫持"><a href="#点击劫持" class="headerlink" title="点击劫持"></a>点击劫持</h2><p>点击劫持是一种视觉欺骗的攻击手段。攻击者将需要攻击的网站通过 iframe 嵌套的方式嵌入自己的网页中，并将 iframe 设置为透明，在页面中透出一个按钮诱导用户点击。</p>
+<p>特点：</p>
+<blockquote>
+<ul>
+<li>隐蔽性较高，骗取用户操作</li>
+<li>“UI-覆盖攻击”</li>
+<li>利用iframe或者其它标签的属性</li>
+</ul>
+</blockquote>
+<p>具体反制：</p>
+<blockquote>
+<p>1）X-FRAME-OPTIONS</p>
+<p><code>X-FRAME-OPTIONS</code>是一个 HTTP 响应头，在现代浏览器有一个很好的支持。这个 HTTP 响应头 就是为了防御用 iframe 嵌套的点击劫持攻击。</p>
+<p>该响应头有三个值可选，分别是</p>
+<ul>
+<li>DENY，表示页面不允许通过 iframe 的方式展示</li>
+<li>SAMEORIGIN，表示页面可以在相同域名下通过 iframe 的方式展示</li>
+<li>ALLOW-FROM，表示页面可以在指定来源的 iframe 中展示</li>
+</ul>
+<p>2）JavaScript 防御</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (self == top) &#123;...&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h2><p><strong>SQL注入的本质:数据和代码未分离，即数据当做了代码来执行。</strong></p>
+<p>反制：</p>
+<blockquote>
+<ul>
+<li><p><strong>严格限制Web应用的数据库的操作权限</strong>，给此用户提供仅仅能够满足其工作的最低权限，从而最大限度的减少注入攻击对数据库的危害</p>
+</li>
+<li><p><strong>后端代码检查输入的数据是否符合预期</strong>，严格限制变量的类型，例如使用正则表达式进行一些匹配处理。</p>
+</li>
+<li><p><strong>对进入数据库的特殊字符（’，”，\，&lt;，&gt;，&amp;，*，; 等）进行转义处理，或编码转换</strong>。基本上所有的后端语言都有对字符串进行转义处理的方法，比如 lodash 的 lodash._escapehtmlchar 库。</p>
+</li>
+<li><p><strong>所有的查询语句建议使用数据库提供的参数化查询接口</strong>，参数化的语句使用参数而不是将用户输入变量嵌入到 SQL 语句中，即不要直接拼接 SQL 语句。例如 Node.js 中的 mysqljs 库的 query 方法中的 ? 占位参数</p>
+</li>
+</ul>
+</blockquote>
+<p><strong>参考</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5c446eb1e51d45517624f7db">常见六大Web安全攻防解析</a></li>
+</ul>
+<h1 id="CSR和SSR渲染方案"><a href="#CSR和SSR渲染方案" class="headerlink" title="CSR和SSR渲染方案"></a>CSR和SSR渲染方案</h1><p>SEO（英文 Search Engine Optimization）字面理解很简单的，就是“搜索引擎优化”，最简单的理解就是“搜索自然排名”。seo实际上是做关键词排名优化，即对某个产品的某个关键词进行优化。 </p>
+<p>SSR(Server Side Rendering) ：传统的渲染方式，由服务端把渲染的完整的页面吐给客户端。这样减少了一次客户端到服务端的一次http请求，加快相应速度，一般用于首屏的性能优化。</p>
+<p>CSR(Client Side Rendering)：是一种目前流行的渲染方式，它依赖的是运行在客户端的JS，用户首次发送请求只能得到小部分的指引性HTML代码。第二次请求将会请求更多包含HTML字符串的JS文件。</p>
+<p><strong>简而言之，SSR强在首屏渲染。而CSR强在用户和页面多交互的场景。</strong></p>
+<p><img src="/img/image-20211024185626382.png" alt="image-20211024185626382"></p>
+<h1 id="WebSocket和Socket原理"><a href="#WebSocket和Socket原理" class="headerlink" title="WebSocket和Socket原理"></a>WebSocket和Socket原理</h1><p><strong>一、概述</strong></p>
+<p>websocket是HTML5的一种新协议，允许服务器向客户端传递信息，实现浏览器和客户端双工通信。用来弥补http协议在持久通信能力上的不足。</p>
+<p>http请求完传输数据后就结束了（虽然http1.1增加了keep-alive请求头可以通过一条通道请求多次，但本质上还是一样的），并且服务器是不能主动给客户端发送数据。</p>
+<p>于2011年，WebSocket协议由此而生，webSocket 是基于HTTP协议的，或者说 <em>借用</em> HTTP的协议来完成一部分握手。</p>
+<p>协议标识符是<code>ws</code>（如果加密，则为<code>wss</code>），服务器网址就是 URL</p>
+<p><strong>可以把WebSocket想象成HTTP(应用层)，HTTP和Socket什么关系，WebSocket和Socket就是什么关系。</strong></p>
+<img src="/img/image-20220527070123156.png" alt="image-20220527070123156" style="zoom: 67%;" />
+
+<p><strong>二、原理</strong></p>
+<p>websocket的连接建立过程:<br>1、客户端发送GET 请求， Connection: Upgrade和Upgrade: websocket。<br>2、服务器给客户端 switching protocol<br>3、就进行了webSocket的通信了</p>
+<blockquote>
+<ol>
+<li>如何建立连接</li>
+<li>如何交换数据</li>
+<li>数据帧格式</li>
+<li>如何维持连接</li>
+</ol>
+</blockquote>
+<p><strong>1.如何建立连接</strong></p>
+<p><strong>客户端：申请协议升级</strong></p>
+<p>首先，客户端发起协议升级请求。可以看到，采用的是标准的HTTP报文格式，且只支持<code>GET</code>方法。</p>
+<p>重点请求首部意义如下：</p>
+<ul>
+<li><code>Connection: Upgrade</code>：表示要升级协议</li>
+<li><code>Upgrade: websocket</code>：表示要升级到websocket协议。</li>
+<li><code>Sec-WebSocket-Version: 13</code>：表示websocket的版本。如果服务端不支持该版本，需要返回一个<code>Sec-WebSocket-Version</code>header，里面包含服务端支持的版本号。</li>
+<li><code>Sec-WebSocket-Key</code>：与后面服务端响应首部的<code>Sec-WebSocket-Accept</code>是配套的，提供基本的防护，比如恶意的连接，或者无意的连接。</li>
+</ul>
+<p><strong>服务端：响应协议升级</strong></p>
+<p>服务端返回内容如下，状态代码<code>101</code>表示协议切换。到此完成协议升级，后续的数据交互都按照新的协议来。</p>
+<p><strong>Sec-WebSocket-Accept的计算</strong></p>
+<p><code>Sec-WebSocket-Accept</code>根据客户端请求首部的<code>Sec-WebSocket-Key</code>计算出来。</p>
+<p>计算公式为：</p>
+<ol>
+<li>将<code>Sec-WebSocket-Key</code>跟<code>258EAFA5-E914-47DA-95CA-C5AB0DC85B11</code>拼接。</li>
+<li>通过SHA1计算出摘要，并转成base64字符串。</li>
+</ol>
+<p><strong>2.数据帧格式</strong></p>
+<p>WebSocket客户端、服务端通信的最小单位是帧（frame），由1个或多个帧组成一条完整的消息（message）。</p>
+<ol>
+<li>发送端：将消息切割成多个帧，并发送给服务端；</li>
+<li>接收端：接收消息帧，并将关联的帧重新组装成完整的消息；</li>
+</ol>
+<p>WebSocket数据帧的统一格式。熟悉TCP/IP协议的同学对这样的图应该不陌生:</p>
+<ol>
+<li>从左到右，单位是比特。比如<code>FIN</code>、<code>RSV1</code>各占据1比特，<code>opcode</code>占据4比特。</li>
+<li>内容包括了标识、操作代码、掩码、数据、数据长度等。（下一小节会展开）</li>
+</ol>
+<img src="/img/image-20220527070714271.png" alt="image-20220527070714271" style="zoom: 80%;" />
+
+<p><strong>3.数据传递</strong></p>
+<p>一旦WebSocket客户端、服务端建立连接后，后续的操作都是基于数据帧的传递。</p>
+<p>WebSocket根据<code>opcode</code>来区分操作的类型。比如<code>0x8</code>表示断开连接，<code>0x0</code>-<code>0x2</code>表示数据交互。</p>
+<p><strong>数据分片</strong></p>
+<p>WebSocket的每条消息可能被切分成多个数据帧。当WebSocket的接收方收到一个数据帧时，会根据<code>FIN</code>的值来判断，是否已经收到消息的最后一个数据帧。</p>
+<p>FIN=1表示当前数据帧为消息的最后一个数据帧，此时接收方已经收到完整的消息，可以对消息进行处理。FIN=0，则接收方还需要继续监听接收其余的数据帧。</p>
+<p>此外，<code>opcode</code>在数据交换的场景下，表示的是数据的类型。<code>0x01</code>表示文本，<code>0x02</code>表示二进制。而<code>0x00</code>比较特殊，表示延续帧（continuation frame），顾名思义，就是完整消息对应的数据帧还没接收完。</p>
+<p><strong>数据分片例子</strong></p>
+<p>直接看例子更形象些。下面例子来自<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers">MDN</a>，可以很好地演示数据的分片。客户端向服务端两次发送消息，服务端收到消息后回应客户端，这里主要看客户端往服务端发送的消息。</p>
+<p><strong>4.连接保持+心跳</strong></p>
+<p>WebSocket为了保持客户端、服务端的实时双向通信，需要确保客户端、服务端之间的TCP通道保持连接没有断开。然而，对于长时间没有数据往来的连接，如果依旧长时间保持着，可能会浪费包括的连接资源。</p>
+<p>但不排除有些场景，客户端、服务端虽然长时间没有数据往来，但仍需要保持连接。这个时候，可以采用心跳来实现。</p>
+<ul>
+<li>发送方-&gt;接收方：ping</li>
+<li>接收方-&gt;发送方：pong</li>
+</ul>
+<p>ping、pong的操作，对应的是WebSocket的两个控制帧，<code>opcode</code>分别是<code>0x9</code>、<code>0xA</code>。</p>
+<p>举例，WebSocket服务端向客户端发送ping，只需要如下代码（采用<code>ws</code>模块）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ws.<span class="title function_">ping</span>(<span class="string">&#x27;&#x27;</span>, <span class="literal">false</span>, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>三、优缺点</strong></p>
+<p>简单说：<strong>在浏览器里使用；支持双向通信；使用简单</strong></p>
+<p>优点：</p>
+<ul>
+<li>支持双向通信，实时性更强。</li>
+<li>更好的二进制支持。</li>
+<li>较少的控制开销。连接创建后，ws客户端、服务端进行数据交换时，协议控制的数据包头部较小。在不包含头部的情况下，服务端到客户端的包头只有2~10字节（取决于数据包长度），客户端到服务端的的话，需要加上额外的4字节的掩码。而HTTP协议每次通信都需要携带完整的头部。</li>
+<li>支持扩展。ws协议定义了扩展，用户可以扩展协议，或者实现自定义的子协议。（比如支持自定义压缩算法等）</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>少部分浏览器不支持，浏览器支持的程度与方式有区别</li>
+</ul>
+<p><strong>常用注解</strong></p>
+<p>onConnection服务端监听连接</p>
+<ul>
+<li>onMessage服务端监听消息</li>
+<li>send服务端发送消息</li>
+</ul>
+<p>onopen客户端打开连接</p>
+<ul>
+<li>send客户端发送消息</li>
+</ul>
+<p>onMessage客户端监听消息</p>
+<p><strong>四.基于NodeJs的实现websocket通信</strong></p>
+<p>服务端</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// 安装ws模块// npm install ws// 新建index.js文件// -----</span><br><span class="line">// 导入ws模块const WebSocket = require(&#x27;ws&#x27;)</span><br><span class="line">// 新建一个WebSocketServerconst wss = new WebSocket.Server(&#123; port: 3000 &#125;)</span><br><span class="line">// 服务器监听连接事件</span><br><span class="line">wss.on(&#x27;connection&#x27;, ws =&gt; &#123;</span><br><span class="line"></span><br><span class="line">// 服务器监听消息事件 </span><br><span class="line"> ws.on(&#x27;message&#x27;, msg =&gt; &#123;</span><br><span class="line">console.log(&#x27;服务器收到：&#x27;, msg)</span><br><span class="line"> &#125;)</span><br><span class="line"></span><br><span class="line">// 服务器向客户端发送消息</span><br><span class="line"> ws.send(&#x27;这是服务器发送的信息&#x27;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>客户端</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;</span><br><span class="line">&lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</span><br><span class="line">&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;ie=edge&quot;&gt;</span><br><span class="line">&lt;title&gt;Document&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;script&gt;</span><br><span class="line">// 这是浏览器原生支持的WebSocket API，在支持HTML5标准的浏览器上可以直接使用</span><br><span class="line">var ws = new WebSocket(&#x27;ws://localhost:3000&#x27;)</span><br><span class="line"></span><br><span class="line">// 当连接成功后就可以发送消息了</span><br><span class="line"> ws.onopen = function() &#123;</span><br><span class="line">console.log(&#x27;连接已建立&#x27;)</span><br><span class="line">   ws.send(&#x27;这是客户端发出的信息&#x27;)</span><br><span class="line"> &#125;</span><br><span class="line">// 收到消息后做对应的处理</span><br><span class="line"> ws.onmessage = function(e) &#123;</span><br><span class="line">console.log(e.data)</span><br><span class="line"> &#125;&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>五、.socket、http和websocket的区别</strong></p>
+<p><strong>http和websocket的区别:</strong></p>
+<p>http协议是短链接，因为请求之后，都会关闭连接，下次请求需要重新打开链接。<br>websocket协议是一种长连接，只需要通过一次请求来初始化连接，然后所有请求和响应都是通过TCP链接进行通信。</p>
+<p><strong>websocket和socket的区别:</strong></p>
+<p>socket是应用层与TCP/IP协议通信的中间软件抽象层，它是一组接口api。而websocket协议是一个完整的应用层协议，拥有一套完整的API。</p>
+<p><strong>socket的工作流程</strong></p>
+<p><img src="/img/image-20211225204424939.png" alt="image-20211225204424939"></p>
+<ol>
+<li>服务端初始化socket;</li>
+<li>服务端绑定端口bind;</li>
+<li>服务端监听端口listen,这是一个死循环;</li>
+<li>服务端阻塞，等待客户端来连接，accept;</li>
+<li>客户端初始化socket;</li>
+<li>客户端连接服务端，connect;</li>
+<li>客户端进行正常的read、write读写；</li>
+<li>最后双方关闭连接close；</li>
+</ol>
+<p><strong>服务端实时通信的方案</strong></p>
+<p>1、AJAX轮询<br>2、Long Polling长轮询<br>3、WebSocket</p>
+<p><strong>Sec-WebSocket-Key/Accept的作用</strong></p>
+<p><code>Sec-WebSocket-Key/Sec-WebSocket-Accept</code>在主要作用在于提供基础的防护，减少恶意连接、意外连接。</p>
+<p>作用大致归纳如下：</p>
+<ol>
+<li>避免服务端收到非法的websocket连接（比如http客户端不小心请求连接websocket服务，此时服务端可以直接拒绝连接）</li>
+<li>确保服务端理解websocket连接。因为ws握手阶段采用的是http协议，因此可能ws连接是被一个http服务器处理并返回的，此时客户端可以通过Sec-WebSocket-Key来确保服务端认识ws协议。（并非百分百保险，比如总是存在那么些无聊的http服务器，光处理Sec-WebSocket-Key，但并没有实现ws协议。。。）</li>
+<li>用浏览器里发起ajax请求，设置header时，Sec-WebSocket-Key以及其他相关的header是被禁止的。这样可以避免客户端发送ajax请求时，意外请求协议升级（websocket upgrade）</li>
+<li>可以防止反向代理（不理解ws协议）返回错误的数据。比如反向代理前后收到两次ws连接的升级请求，反向代理把第一次请求的返回给cache住，然后第二次请求到来时直接把cache住的请求给返回（无意义的返回）。</li>
+<li>Sec-WebSocket-Key主要目的并不是确保数据的安全性，因为Sec-WebSocket-Key、Sec-WebSocket-Accept的转换计算公式是公开的，而且非常简单，最主要的作用是预防一些常见的意外情况（非故意的）。</li>
+</ol>
+<blockquote>
+<p>强调：Sec-WebSocket-Key/Sec-WebSocket-Accept 的换算，只能带来基本的保障，但连接是否安全、数据是否安全、客户端/服务端是否合法的 ws客户端、ws服务端，其实并没有实际性的保证。</p>
+</blockquote>
+<p><strong>数据掩码的作用</strong></p>
+<p>WebSocket协议中，数据掩码的作用是增强协议的安全性。但数据掩码并不是为了保护数据本身，因为算法本身是公开的，运算也不复杂。除了加密通道本身，似乎没有太多有效的保护通信安全的办法。</p>
+<p>那么为什么还要引入掩码计算呢，除了增加计算机器的运算量外似乎并没有太多的收益（这也是不少同学疑惑的点）。</p>
+<p>答案还是两个字：<strong>安全</strong>。但并不是为了防止数据泄密，而是为了防止早期版本的协议中存在的代理缓存污染攻击（proxy cache poisoning attacks）等问题。</p>
+<h1 id="重定向与请求转发的区别"><a href="#重定向与请求转发的区别" class="headerlink" title="重定向与请求转发的区别"></a>重定向与请求转发的区别</h1><p>一句话:重定向时浏览器上的网址改变;转发是浏览器上的网址不变</p>
+<ul>
+<li>重定向是客户端行为,转发是服务器行为</li>
+<li>重定向是两次request,请求转发是一次request</li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2021/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/" title="0基础" target="_blank" rel="external">https://fuyunjinglong.github.io/2021/11/04/F_计算机网络_0基础/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://fuyunjinglong.github.io/" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://fuyunjinglong.github.io/" target="_blank"><span class="text-dark">Elven</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/11/05/I_%E7%A7%BB%E5%8A%A8%E7%AB%AF_0%E5%9F%BA%E7%A1%80/" title="0基础"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/11/01/AA_%E9%9D%A2%E8%AF%95_%E6%B8%85%E5%8D%95/" title="清单"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>前端趋势及职业规划 | Hexo</title>
+  <meta name="description" content="大前端趋势1.2021年前端趋势开源站点 bestofjs.org   TypeScript 持续升温，依旧保持着高速成长的状态，未来的潜力不可限量； 通过项目分布的情况，明显能看到 React 生态圈&gt;&gt; Vue 生态圈&gt;&gt; Angular 生态圈； 伴随着 WebAssembly 核心规范成为浏览器的标准，继 HTML、CSS 和 JS 之后，像 C&#x2F;C++、Rust、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端趋势及职业规划">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2022/05/13/Z_%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F_%E5%89%8D%E7%AB%AF%E8%B6%8B%E5%8A%BF%E5%8F%8A%E8%81%8C%E4%B8%9A%E8%A7%84%E5%88%92/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="大前端趋势1.2021年前端趋势开源站点 bestofjs.org   TypeScript 持续升温，依旧保持着高速成长的状态，未来的潜力不可限量； 通过项目分布的情况，明显能看到 React 生态圈&gt;&gt; Vue 生态圈&gt;&gt; Angular 生态圈； 伴随着 WebAssembly 核心规范成为浏览器的标准，继 HTML、CSS 和 JS 之后，像 C&#x2F;C++、Rust、">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-12T23:33:16.000Z">
+<meta property="article:modified_time" content="2022-12-11T09:48:06.156Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2022/05/13/Z_%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F_%E5%89%8D%E7%AB%AF%E8%B6%8B%E5%8A%BF%E5%8F%8A%E8%81%8C%E4%B8%9A%E8%A7%84%E5%88%92/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://fuyunjinglong.github.io/" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Elven</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">29</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2%E5%92%8CVue3%E6%AF%94%E8%BE%83/" class="title">Vue2和Vue3比较</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/" class="title">Vue2.0_原理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue3.0_%E5%8E%9F%E7%90%86/" class="title">Vue3.0_原理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue2.0/" class="title">源码_Vue2.0</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue3.0/" class="title">源码_Vue3.0</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%A7%E5%89%8D%E7%AB%AF%E8%B6%8B%E5%8A%BF"><span class="toc-text">大前端趋势</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2021%E5%B9%B4%E5%89%8D%E7%AB%AF%E8%B6%8B%E5%8A%BF"><span class="toc-text">1.2021年前端趋势</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2022%E5%B9%B4%E5%89%8D%E7%AB%AF%E8%B6%8B%E5%8A%BF"><span class="toc-text">2.2022年前端趋势</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BD%8E%E4%BB%A3%E7%A0%81"><span class="toc-text">3.低代码</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Z_业务和面经_前端趋势及职业规划" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      前端趋势及职业规划
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/05/13/Z_%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F_%E5%89%8D%E7%AB%AF%E8%B6%8B%E5%8A%BF%E5%8F%8A%E8%81%8C%E4%B8%9A%E8%A7%84%E5%88%92/" class="article-date">
+	  <time datetime="2022-05-12T23:33:16.000Z" itemprop="datePublished">2022-05-13</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/05/13/Z_%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F_%E5%89%8D%E7%AB%AF%E8%B6%8B%E5%8A%BF%E5%8F%8A%E8%81%8C%E4%B8%9A%E8%A7%84%E5%88%92/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="大前端趋势"><a href="#大前端趋势" class="headerlink" title="大前端趋势"></a>大前端趋势</h1><h2 id="1-2021年前端趋势"><a href="#1-2021年前端趋势" class="headerlink" title="1.2021年前端趋势"></a>1.2021年前端趋势</h2><p>开源站点 bestofjs.org </p>
+<ul>
+<li><strong>TypeScript</strong> 持续升温，依旧保持着高速成长的状态，未来的潜力不可限量；</li>
+<li>通过项目分布的情况，<strong>明显能看到 React 生态圈&gt;&gt; Vue 生态圈&gt;&gt; Angular 生态圈；</strong></li>
+<li>伴随着 WebAssembly 核心规范成为浏览器的标准，<strong>继 HTML、CSS 和 JS 之后，像 C/C++、Rust、Go 等语言编写的高性能模块也在浏览器上运行。</strong>相信在不久的将来，Web 应用的桌面客户端化，也将成为一种趋势；</li>
+<li><strong>Strapi 位列 Nodejs 相关领域的第三名侧面反应了低代码的趋势还在持续升温，</strong>各家都在研制自己的低代码平台来提升开发效率；</li>
+<li><strong>JS Framework 相关的领域，Next.js 超越 Nest 成为了今年的冠军。</strong>在强大的 React 体系的影响下，业务越来越多的人选择使用同构和直出的方案来构建 Web 应用；</li>
+<li><strong>Serverless Framework 也进入了前 Top100，</strong>虽然排名不高，但是已经开始慢慢展示出了可持续发展的势头。对于一个被厂商裹挟的技术而言，这一切来之不易；</li>
+<li>大前端生态系统已经逐步完善，前端工程化逐步完善，<strong>DevOps 已经走向了系统化的发展方向，前端技术已经进入深水区；</strong></li>
+<li>由于直播行业的火热，以及疫情的影响，<strong>音视频领域在过去的一年也有着蓬勃的发展</strong>。在前端领域 WebRTC 的技术在持续升温</li>
+</ul>
+<ol>
+<li> <strong>TypeScript 爆发增长</strong></li>
+<li> <strong>三大框架 React 当先</strong></li>
+<li> <strong>WASM即WebAssembly展露头角</strong></li>
+<li> <strong>Low-Code</strong></li>
+<li> <strong>全栈开发持续深耕，从 DevOps 到 NoOps，再到serverless</strong></li>
+<li> <strong>WebRTC 持续升温</strong>。音视频两大领域：一类是 RTC，它主要用于满足多人会议中的低延时互动；另一类是流媒体直播/点播，主要满足于对延时要求不大的高并发低成本场景</li>
+</ol>
+<p>参考：</p>
+<p><a target="_blank" rel="noopener" href="https://www.infoq.cn/article/dt002ez7bixgtmeu49qo">2021 年大前端技术趋势解读</a></p>
+<h2 id="2-2022年前端趋势"><a href="#2-2022年前端趋势" class="headerlink" title="2.2022年前端趋势"></a>2.2022年前端趋势</h2><ol>
+<li><strong>移动端能力放大</strong></li>
+<li><strong>小程序生态的崛起</strong></li>
+<li><strong>跨端能力的增强，比较知名的就是Taro</strong></li>
+<li><strong>PC桌面端入侵，以NW.js和Electron为代表的前端技术</strong></li>
+</ol>
+<p><strong>工程师的五个等级</strong></p>
+<ul>
+<li>开创一个产业</li>
+<li>能设计和实现别人不能做出的产品</li>
+<li>能独立设计和实现产品，并且市场上获得成功</li>
+<li>能指导和带领其他人一同完成更有影响力的工作</li>
+<li>能独立解决问题，完成工程工作</li>
+</ul>
+<p>参考：</p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000041041684">2022前端未来发展趋势</a></p>
+<h2 id="3-低代码"><a href="#3-低代码" class="headerlink" title="3.低代码"></a>3.低代码</h2><p><strong>先来区分一下 no-code、low-code、pro-code：</strong></p>
+<p><strong>no-code</strong>：自己编程给自己用，给用户的感觉就是一个软件。因此，平台不会给自己定位成一个“编程工具”。主要是通过图形化的操作来降低学习曲线，类似 PPT、Excel 等。在垂直领域的特定场景中，才能做到好用。</p>
+<p><strong>low-code</strong>：编程给其他人用，通过降低专业难度，让运营人员（CitizenDeveloper）也参与进来。平台评估好预制的场景和需求，减少从头写代码的成本，一定程度上可以通过图形化的方式满足业务诉求。</p>
+<p><strong>pro-code</strong>：日常软件开发过程中的手写代码，可以通过逻辑和模块复用来进行提效。</p>
+<p>区分了概念之后，还需要考虑面向的用户。不同的用户对应着不同的解决方案。<strong>用户大致分为三类：</strong>前端开发人员、后台开发人员、产品运营人员。</p>
+<p><strong>（1）为什么要做低代码？</strong></p>
+<p>基于目前可视化和模型驱动理念，结合当下大前端跨端体验的融合技术以及云原生的支持，通过低代码的方案可以大幅度降低业务交付的成本，为业务提供一种全新的开发范式。而且，可视化搭建去完成业务可以让产品和运营人员（CitizenDeveloper）参与进来，可以极大得释放软件开发者的人力瓶颈，也进一步促进了技术和业务的深度合作。</p>
+<p><strong>（2）低代码应该具备哪些核心能力？</strong></p>
+<p>基础物料的搭建和接入是保证业务可视化的基础。无论是行业的开源组件，还是团队自定义的基础组件，搭建平台都应该无缝地进行预期内的接入和控制。这是因为，从业务长期迭代的角度来看，最耗费人力的一定是最频繁的业务组件。解决定制化的组件和接入组件由此成为低代码平台长期需要解决的最核心问题。</p>
+<p>编排能力就是页面排版和对逻辑编排。无论是特定场景的页面的组件逻辑，还是用户自定义的交互（包括用户行为的服务端能力支持）都应该通过逻辑编排能力进行支持。大部分的页面搭建工作都是在桌面端完成的，但是页面渲染的产物可能是多种形式的，比如：PCWeb、H5Web、小程序，那么在搭建运行时的实时可视化和搭建完成的多端适配和多场景适配，这样就解决了跨技术栈和跨端问题。</p>
+<p>虽然是 low-code 的设计方案，但还是希望输出的代码是可以进行二次开发的，因此最好能 pro-code 与 low-code 互相转换。编程产物分为初级产物、中间产物和最终产物。产物的丰富程度，直接决定了平台的可复用性和灵活性。无论是基于低代码开发和源码的混合开发，还是基于低代码平台的二次开发，都是 low-code 平台需要考虑的事情。</p>
+<p>运行时能力也非常重要，对开发者来说是一个强大的编辑器引擎，可以方便快速接入各类组件和中间件。而对于运营人员（CitizenDeveloper）来说同样也很重要，针对不同的产品和业务场景，需要定制基础业务模版和和业务配置，方便他们快速地进行差异化的功能设计。</p>
+<p>协作能力和数据分析能力就不言自明了。低代码平台的核心就是降低对专业性的要求。因此，使用者无论是谁，都应该有更高的效率提升。而数据统计和分析是所有平台都应该具备的基础能力，这里就不详细描述了。</p>
+<p>那么，<strong>整理了核心能力</strong>如下：<strong>基础资料的搭建、基础资料的接入、业务编排能力、界面渲染能力、代码转换能力以及运行时能力、协作能力和数据分析能力</strong>。</p>
+<p>为什么说 low-code 是恰逢其时呢？因为无论是跨端和跨平台领域的强大适配能力，还是大前端工程体系的有力支撑，都已经将低代码领域的价值逐步推到人们面前，低代码是业务发展和技术探索的必然选择。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2022/05/13/Z_%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F_%E5%89%8D%E7%AB%AF%E8%B6%8B%E5%8A%BF%E5%8F%8A%E8%81%8C%E4%B8%9A%E8%A7%84%E5%88%92/" title="前端趋势及职业规划" target="_blank" rel="external">https://fuyunjinglong.github.io/2022/05/13/Z_业务和面经_前端趋势及职业规划/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://fuyunjinglong.github.io/" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://fuyunjinglong.github.io/" target="_blank"><span class="text-dark">Elven</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/05/14/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_NodeJS%E5%85%A5%E9%97%A8/" title="NodeJS入门"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2022/05/13/D_%E6%A1%86%E6%9E%B6_%E7%99%BB%E5%BD%95%E9%89%B4%E6%9D%83/" title="登录鉴权"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

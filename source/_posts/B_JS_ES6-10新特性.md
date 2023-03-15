@@ -88,6 +88,12 @@ var foo2 = function () {
 - const 不能在 for 循环中定义，对于`for...in`和`for...of`循环是没问题的
 - var声明的变量会挂载到 window 全局对象上，let 和 const 不会
 
+# ES6 声明变量的六种方法
+
+- ES5 只有两种声明变量的方法：var 和 function 。
+- ES6 除了添加 let 和 const 命令。
+- 还有两种声明变量的方法：import 命令和 class 命令。
+
 # 数组的扩展
 
 **reduce累加器**
@@ -623,18 +629,19 @@ for (let [key, value] of entries(obj)) {
 
 [弄懂!!ES6中的Iterator迭代器](https://segmentfault.com/a/1190000022894514)
 
-# Promise、Generator、Async比较
+# Generator函数是什么
 
-**Promise**
+Generator函数是将函数分步骤阻塞 ，只有主动调用next() 才能进行下一步 。
 
-Promise有三种状态：pending(进行中)、resolved(成功)、rejected(失败)。
+# async函数是什么
 
-缺点：
+asyns函数是Generator函数的语法糖。
 
-- 无法取消Promise，一旦新建它就会立即执行，无法中途取消。
-- 如果不设置回调函数，Promise内部抛出的错误，不会反应到外部。
-- 当处于Pending状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。
-- Promise 真正执行回调的时候，定义 Promise 那部分实际上已经走完了，所以 Promise 的报错堆栈上下文不太友好。
+相当于自执行的Generator函数，相当于自带一个状态机，在await的部分等待返回， 返回后自动执行下一步。而且相较于Promise,async的优越性就是把每次异步返回的结果从then中拿到最外层的方法中，不需要链式调用，只要用同步的写法就可以了。
+
+但是async必须以一个Promise对象开始 ，所以async通常是和Promise结合使用的。
+
+# Generator、Async详解
 
 **Generator**
 
@@ -777,6 +784,46 @@ a:1,
 }
 Reflect.ownKeys(obj) // 遍历所有属性，包括Symbol
 ```
+
+# ES5和ES6之默认值的区别 ？
+
+**ES5**
+
+- 使用三目运算符判断
+
+```
+function doSomething (name) {
+  name = name === undefined ? 'default name' : name
+}
+```
+
+**ES6**
+
+- 普通值入参，直接赋值默认值
+
+- 对象入参，fun({a}={}),使用空对象
+
+- 针对必填参数，可添加函数
+
+  ```
+  function requireParams () {
+    throw new Error('required params')
+  }
+  function doSomething (name = requireParams(), age = 18) {
+    // do something
+  }
+  ```
+
+# ES5和ES6之继承的区别 ？
+
+ES5 的继承时通过 prototype 或构造函数机制来实现。
+
+- `ES5 的继承实质上是先创建子类的实例对象，然后再将父类的方法添加到 this 上（Parent.apply(this)）`。
+- `ES6 的继承机制完全不同，实质上是先创建父类的实例对象 this（所以必须先调用父类的 super()方法），然后再用子类的构造函数修改 this`。
+
+具体的：ES6 通过 class 关键字定义类，里面有构造方法，类之间通过 extends 关键字实现继承。子类必须在 constructor 方法中调用 super 方法，否则新建实例报错。因为子类没有自己的 this 对象，而是继承了父类的 this 对象，然后对其进行加工。如果不调用 super 方法，子类得不到 this 对象。
+
+ps：super 关键字指代父类的实例，即父类的 this 对象。在子类构造函数中，调用 super 后，才可使用 this 关键字，否则报错。
 
 # Module模块化语法
 

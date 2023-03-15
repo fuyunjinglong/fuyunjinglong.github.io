@@ -45,6 +45,7 @@ toc: true # 是否启用内容索引
 
 # JS
 
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#彻底搞懂this">彻底搞懂this</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#call-apply-bind">call/apply/bind</a>
 - <a target="_blank" href="{% post_path 'C_H5_0基础' %}#浏览器内核的理解">浏览器内核的理解</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#null和undefined">null 和 undefined</a>
@@ -56,7 +57,6 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#垃圾回收">垃圾回收</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#内存溢出和内存泄漏">内存泄露</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS-类型判断-对象-数组">JS 判断变量是对象还是数组</a>
-- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#继承在ES5和-ES6-的区别-？">继承在ES5和 ES6 的区别 ？</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS类型判断-typeof-instanceof-constructor-toString">JS类型判断---typeof, constructor, instanceof, toString</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#消息队列和事件循环">消息队列和事件循环</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#防抖和节流">防抖和节流</a>
@@ -64,6 +64,12 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#async和defer的作用是什么？有什么区别">async和defer的作用是什么？有什么区别</a>
 
 # ES6
+
+- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#ES5和ES6之默认值的区别-？">ES5和ES6之默认值的区别？</a>
+- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#ES5和ES6之继承的区别-？">ES5和ES6之继承的区别？</a>
+- <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#Promise是什么">Promise是什么</a>
+- <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#Generator函数是什么">Generator函数是什么</a>
+- <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#async函数是什么">async函数是什么</a>
 
 # 框架
 

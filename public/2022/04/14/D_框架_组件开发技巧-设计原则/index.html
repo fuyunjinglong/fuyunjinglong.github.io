@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>组件开发技巧 | Hexo</title>
+  <meta name="description" content="[译]前端组件设计原则  原文地址：Front end component design principles 原文作者：Andrew Dinihan 文中示例代码：传送门   限于个人能力，如有错漏指出，烦请不吝赐教 前言我在最近的工作中开始使用 Vue 进行开发，但是我在上一家公司积累了三年以上 React 开发经验。虽然在两种不同的前端框架之间进行切换确实需要学习很多，但是二者之间在很多基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="组件开发技巧">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2022/04/14/D_%E6%A1%86%E6%9E%B6_%E7%BB%84%E4%BB%B6%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7-%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="[译]前端组件设计原则  原文地址：Front end component design principles 原文作者：Andrew Dinihan 文中示例代码：传送门   限于个人能力，如有错漏指出，烦请不吝赐教 前言我在最近的工作中开始使用 Vue 进行开发，但是我在上一家公司积累了三年以上 React 开发经验。虽然在两种不同的前端框架之间进行切换确实需要学习很多，但是二者之间在很多基础">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qiniu-image.qtshe.com/201901241_1aVlbiTIijIsTOGGjkpc0Q%281%29.jpeg">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1600/0*BpUkUiLupqoBO3ux">
+<meta property="og:image" content="https://qiniu-image.qtshe.com/20190124carbon.png">
+<meta property="og:image" content="https://qiniu-image.qtshe.com/20190124carbon-1.png">
+<meta property="og:image" content="https://qiniu-image.qtshe.com/20190124carbon-2.png">
+<meta property="og:image" content="https://qiniu-image.qtshe.com/20190124carbon-3.png">
+<meta property="og:image" content="https://qiniu-image.qtshe.com/20190124carbon-4.png">
+<meta property="og:image" content="https://qiniu-image.qtshe.com/20190124carbon-5.png">
+<meta property="og:image" content="https://qiniu-image.qtshe.com/20190124carbon-6.png">
+<meta property="og:image" content="https://qiniu-image.qtshe.com/20190124carbon-7.png">
+<meta property="og:image" content="https://qiniu-image.qtshe.com/20190124carbon-8.png">
+<meta property="og:image" content="https://qiniu-image.qtshe.com/20190124carbon-9.png">
+<meta property="og:image" content="https://qiniu-image.qtshe.com/20190124carbon-10.png">
+<meta property="article:published_time" content="2022-04-13T22:33:16.000Z">
+<meta property="article:modified_time" content="2023-02-28T23:03:20.052Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qiniu-image.qtshe.com/201901241_1aVlbiTIijIsTOGGjkpc0Q%281%29.jpeg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2022/04/14/D_%E6%A1%86%E6%9E%B6_%E7%BB%84%E4%BB%B6%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7-%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://fuyunjinglong.github.io/" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Elven</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">29</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2%E5%92%8CVue3%E6%AF%94%E8%BE%83/" class="title">Vue2和Vue3比较</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/" class="title">Vue2.0_原理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue3.0_%E5%8E%9F%E7%90%86/" class="title">Vue3.0_原理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue2.0/" class="title">源码_Vue2.0</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue3.0/" class="title">源码_Vue3.0</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%B9%E6%B3%95"><span class="toc-text">方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84%E5%92%8C%E7%B1%BB%E5%9B%BE"><span class="toc-text">层次结构和类图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%89%81%E5%B9%B3%E7%9A%84%EF%BC%8C%E9%9D%A2%E5%90%91%E6%95%B0%E6%8D%AE%E7%9A%84-state-props"><span class="toc-text">扁平的，面向数据的 state&#x2F;props</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9B%B4%E5%8A%A0%E7%BA%AF%E7%B2%B9%E7%9A%84-State-%E5%8F%98%E5%8C%96"><span class="toc-text">更加纯粹的 State 变化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9D%BE%E8%80%A6%E5%90%88"><span class="toc-text">松耦合</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BE%85%E5%8A%A9%E4%BB%A3%E7%A0%81%E5%88%86%E7%A6%BB"><span class="toc-text">辅助代码分离</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8F%90%E7%82%BC%E7%B2%BE%E5%8D%8E"><span class="toc-text">提炼精华</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%8A%E6%97%B6%E6%A8%A1%E5%9D%97%E5%8C%96"><span class="toc-text">及时模块化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9B%86%E4%B8%AD-%E7%BB%9F%E4%B8%80%E7%9A%84%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86"><span class="toc-text">集中&#x2F;统一的状态管理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E7%9A%84%E6%83%B3%E6%B3%95"><span class="toc-text">最后的想法</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-D_框架_组件开发技巧-设计原则" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      组件开发技巧
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/04/14/D_%E6%A1%86%E6%9E%B6_%E7%BB%84%E4%BB%B6%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7-%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" class="article-date">
+	  <time datetime="2022-04-13T22:33:16.000Z" itemprop="datePublished">2022-04-14</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/04/14/D_%E6%A1%86%E6%9E%B6_%E7%BB%84%E4%BB%B6%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7-%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p><strong>[译]前端组件设计原则</strong></p>
+<blockquote>
+<p>原文地址：<a target="_blank" rel="noopener" href="https://engineering.carsguide.com.au/front-end-component-design-principles-55c5963998c9">Front end component design principles</a></p>
+<p>原文作者：<a target="_blank" rel="noopener" href="https://engineering.carsguide.com.au/@andrew.dinihan">Andrew Dinihan</a></p>
+<p>文中示例代码：<a target="_blank" rel="noopener" href="https://github.com/sichenguo/blog/tree/master/src/translation/Front%20end%20component%20design%20principles">传送门</a></p>
+</blockquote>
+<p><img src="https://qiniu-image.qtshe.com/201901241_1aVlbiTIijIsTOGGjkpc0Q%281%29.jpeg" alt="img"></p>
+<p><strong>限于个人能力，如有错漏指出，烦请不吝赐教</strong></p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>我在最近的工作中开始使用 Vue 进行开发，但是我在上一家公司积累了三年以上 React 开发经验。虽然在两种不同的前端框架之间进行切换确实需要学习很多，但是二者之间在很多基础概念、设计思路上是相通的。其中之一就是组件设计，包括组件层次结构设计以及组件各自的职责划分。</p>
+<p>组件是大多数现代前端框架的基本概念之一，在 React 和 Vue 以及 Ember 和 Mithril 等框架中均有所体现。组件通常是由一串标记语言组成的集合，通常还包含一些逻辑和样式。它们被创建的目的就是作为可复用的模块去构建我们的应用程序。</p>
+<p>类似于传统 OOP 语言中 class 的设计，在设计组件的时候需要考虑到很多方面，以便它们可以很好的复用，组合，分离和低耦合，但是功能可以比较稳定的实现，即使是在超出实际测试用例范围的情况下。这样的设计说起来容易做起来却很难，因为现实中我们往往没有足够的时间按照最优的方式去做。</p>
+<h1 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h1><p>在本文中，我想介绍一些组件相关的设计概念，在进行前端开发时应该考虑这些概念。我认为最好的方法是给每个概念一个简洁精炼的名字，然后逐一解释每个概念是什么以及为什么重要，对于比较抽象概念的会举一些例子来帮助理解。</p>
+<p>以下这个列表并不是不全面也不完整，但我注意到的只有 8 件事情值得一提，对于那些已经可以编写基本组件但想要提高他们的技术设计技能的人来说。所以这是列表：<br>以下列举的这个列表仅仅是是我注意到的 8 个方面，当然组件设计还有其他一些方面。在此我只是列举出来我认为值得一提的。</p>
+<p>对于已经掌握基本的组件设计并且想要提高自身的组件设计能力的开发者，我认为以下 8  项是我认为值得去注意的，当然这并不是组件设计的全部。</p>
+<ol>
+<li>层次结构和 UML 类图</li>
+<li>扁平化、面向数据的 state/props</li>
+<li>更加纯粹的 State 变化</li>
+<li>低耦合</li>
+<li>辅助代码分离</li>
+<li>提炼精华</li>
+<li>及时模块化</li>
+<li>集中/统一的状态管理</li>
+</ol>
+<p>请注意，代码示例可能有一些小问题或有点人为设计。但是它们并不复杂，只是想通过这些例子来帮助更好的理解概念。</p>
+<h1 id="层次结构和类图"><a href="#层次结构和类图" class="headerlink" title="层次结构和类图"></a>层次结构和类图</h1><p>应用内的组件共同形成树结构， 而在设计过程中将组件树可视化展示可以帮助你全面了解应用程序的布局。一个比较好的展示这些的办法就是组件图。</p>
+<p>UML 中有一个在 OOP 类设计中经常使用的类型，称为 UML 类图。类图中显示了类属性、方法、访问修饰符、类与其他类的关系等。虽然 OOP 类设计和前端组件设计差异很大，但是通过图解辅助设计的方法值得参考。对于前端组件，该图表可以显示：</p>
+<ul>
+<li>State</li>
+<li>Props</li>
+<li>Methods</li>
+<li>与其他组件的关系（ Relationship to other components ）</li>
+</ul>
+<p>因此，让我们看一下下面这个基础表组件的组件层次图，该组件的渲染对象是一个数组。该组件的功能包括显示总行数、标题行和一些数据行，以及在单击其单元格标题格时对该列进行排序。在它的 props 中，它将传递列列表（具有属性名称和该属性的人类可读版本），然后传递数据数组。我们可以添加一个可选的’on row click’功能来进行测试。</p>
+<p><img src="https://cdn-images-1.medium.com/max/1600/0*BpUkUiLupqoBO3ux" alt="img"></p>
+<p>虽然这样的事情可能看起来有点多，但是它具有许多优点，并且在大型应用程序开发设计中所需要的。这样会带来的一个比较重要的问题是它会需要你在开始 codeing 之前就需要考虑到具体细节的实现，例如每个组件需要什么类型的数据，需要实现哪些方法，所需的状态属性等等。</p>
+<p>一旦你对如何构建一个组件（或一组组件）的整体有大概的思路，就会很容易认为当自己真正开始编码实现时，它会如自己所期望的按部就班的完成，但事实上往往会出现一些预料之外的事情， 当然你肯定不希望会因此去重构之前的某些部分，或者忍受初始设想中的缺点并因此扰乱你的代码思路。而这些类图的以下优点可以帮助你有效的规避以上问题，优点如下：</p>
+<ol>
+<li>一个易于理解的组件组成和关联视图</li>
+<li>一个易于理解的应用程序 UI 层次结构的概述</li>
+<li>一个结构数据层次及其流动方式的视图</li>
+<li>一个组件功能职责的快照</li>
+<li>便于使用图表软件创建</li>
+</ol>
+<p>顺带一提，上图并不是基于某些官方标准，比如 UML 类图，它是我基本上创建的一套表达规则。例如，在 props 、方法的参数和返回值的数据类型定义声明都是基于 Typescript 语法。我还没有找到书写前端组件类图的官方标准，可能是由于前端 Javascript 开发的相对较新且生态系统不够完善所致，但如果有人知道主流标准，请在回复中告诉我！</p>
+<h1 id="扁平的，面向数据的-state-props"><a href="#扁平的，面向数据的-state-props" class="headerlink" title="扁平的，面向数据的 state/props"></a>扁平的，面向数据的 state/props</h1><p>在 state 和 props 频繁被 watch 和 update 的情况下，如果你有使用嵌套数据，那么你的性能可能会受到影响，尤其是在以下场景中，例如一些因为浅对于而触发的重新渲染；在涉及 immutability 的库中，比如 React，你必须创建状态的副本而不是像在 Vue 中那样直接更改它们，并且使用嵌套数据这样做可能会创建笨拙，丑陋的代码。</p>
+<p><img src="https://qiniu-image.qtshe.com/20190124carbon.png" alt="img"></p>
+<p>即使使用展开运算符，这种写法也并不够优雅。扁平 props 也可以很好地清除组件正在使用的数据值。如果你传给组件一个对象但是你并不能清楚的知道对象内部的属性值，所以找出<strong>实际需要</strong>的数据值是来自组件具体的属性值则是额外的工作。但如果 props 足够扁平化，那么起码会方便使用和维护。</p>
+<p><img src="https://qiniu-image.qtshe.com/20190124carbon-1.png" alt="img"></p>
+<p>state / props 还应该只包含组件渲染所需的数据。You shouldn’t store entire components in the state/props and render straight from there.</p>
+<p>（此外，对于数据繁重的应用程序，数据规范化可以带来巨大的好处，除了扁平化之外，你可能还需要考虑一些别的优化方法）。</p>
+<h1 id="更加纯粹的-State-变化"><a href="#更加纯粹的-State-变化" class="headerlink" title="更加纯粹的 State 变化"></a>更加纯粹的 State 变化</h1><p>对 state 的更改通常应该响应某种事件，例如用户单击按钮或 API 的响应。此外它们不应该因为别的 state 的变化而做出响应，因为 state 之间这种关联可能会导致难以理解和维护的组件行为。state 变化应该没有副作用。</p>
+<p>如果你滥用<code>watch</code>而不是有限考虑以上原则，那么在 Vue 的使用中就可能由此引发的问题。我们来看一个基本的 Vue 示例。我正在研究一个从 API 获取一些数据并将其呈现给表的组件，其中排序，过滤等功能都是后端完成的，因此前端需要做的就是 watch 所有搜索参数，并在其变化时触发 API 调用。其中一个需要 watch 的值是“zone”，这是一个过滤器。当更改时，我们想要使用过滤后的值重新获取服务端数据。watcher 如下：</p>
+<p><img src="https://qiniu-image.qtshe.com/20190124carbon-2.png" alt="img"></p>
+<p>你会发现一些奇怪的东西。如果他们超出了结果的第一页，我们重置页码然后结束？这似乎不对,如果它们不在第一页上，我们应该重置分页并触发 API 调用，对吧？为什么我们只在第 1 页上重新获取数据？实际上原因是这样养，让我们来看下完整的 watch：</p>
+<p><img src="https://qiniu-image.qtshe.com/20190124carbon-3.png" alt="img"></p>
+<p>当分页改变时，应用首先会通过 pagination 的处理函数重新获取数据。因此，如果我们改变了分页，我们并不需要去关注数据更新这段逻辑。</p>
+<p>让我们一下来考虑以下流程：如果当前页面超出了第 1 页并且更改了 zone，而这个变化会触发另一个状态（pagination）发生变化，进而触发 pagination 的观察者重新请求数据。这样并不是预料之中的行为，而且产生的代码也不够直观。</p>
+<p>解决方案是改变页码这个行为的事件处理函数（不是观察者，用户更改页面的实际处理函数）应该更改页面值<strong>并</strong>触发 API 调用请求数据。这也将消除对观察者的需求。通过这样的设置，直接从其他地方改变分页状态也不会导致重新获取数据的副作用。</p>
+<p>虽然这个例子<strong>非常</strong>简单，但不难看出将更复杂的状态更改关联在一起会产生令人难以理解的代码，这些代码不仅不可扩展并且是调试的噩梦。</p>
+<h1 id="松耦合"><a href="#松耦合" class="headerlink" title="松耦合"></a>松耦合</h1><p>组件的核心思想是它们是可复用的,为此要求它们必须具有功能性和完整性。“耦合”是指实体彼此依赖的术语。松散耦合的实体应该能够独立运行，而不依赖于其他模块。就前端组件而言，耦合的主要部分是组件的功能依赖于其父级及其传递的 props 的多少，以及内部使用的子组件（当然还有引用的部分，如第三方模块或用户脚本）。</p>
+<p>紧密耦合的组件往往更不容易被复用，当它们作为特定父组件的子项时，就很难正常工作，当父组件的一个子组件或一系列子组件只能在该父组件才能够正常发挥作用时，就会使得代码写的很冗余。因为父子组件别过度的关联在一起了。</p>
+<p>在设计组件时，你应该考虑到更加通用的使用场景，而不仅仅只是为了满足最开始某个特定场景的需求。虽然一般来说组件最初都是出于特定目的进行设计，但没关系，如果在设计它们站在更高的角度去看待，那么很多组件将具有更好的适用性。</p>
+<p>让我们看一个简单的 React 示例，你想在写出一个带有一个 logo 的链接列表，通过连接可以访问特定的网站。最开始的设计可能是并没有跟内容合理的进行解耦。下面是最初的版本：</p>
+<p><img src="https://qiniu-image.qtshe.com/20190124carbon-4.png" alt="img"></p>
+<p>虽然这这样会满足预期的使用场景，但却很难被复用。如果你想要更改链接地址该怎么办？你必须重新复制一份相同代码，并且手动去替换链接地址。而且， 如果你要去实现一个用户可以更改连接的功能，那么意味着不可能将代码写“死”，也不能期望用户去手动修改代码，那么让我们来看一下复用性更高的组件应该如何设计：</p>
+<p><img src="https://qiniu-image.qtshe.com/20190124carbon-5.png" alt="img"></p>
+<p>在这里我们可以看到，虽然它的原始链接和 logo 具有默认值，但我们可以通过 props 传入的值去覆盖掉默认值。让我们来看一下它在实际中的使用：</p>
+<p><img src="https://qiniu-image.qtshe.com/20190124carbon-6.png" alt="img"></p>
+<p>并不需要重新编写新的组件！如果我们解决上文中用户可以自定义链接的使用场景，可以考虑动态构建链接数组。此外，虽然在这个具体的例子中没有解决，但我们仍然可以注意到这个组件没有与任何特定的父/子组件建立密切关联。它可以在任何需要的地方呈现。改进后的组件明显比最初版本具有更好的复用性。</p>
+<p>如果不是要设计需要服务于特定的一次性场景的组件，那么设计组件的最终目标是让它与父组件松散耦合，呈现更好的复用性，而不是受限于特定的上下文环境。</p>
+<h1 id="辅助代码分离"><a href="#辅助代码分离" class="headerlink" title="辅助代码分离"></a>辅助代码分离</h1><p>这个可能不那么的偏理论，但我仍然认为这很重要。与你的代码库打交道是软件工程的一部分，有时一些基本的组织原则可以使事情变得更加顺畅。在长时间与代码相处的过程中，即使改变一个很小的习惯也可以产生很大的不同。其中一个有效的原则就是将辅助代码分离出来放在特定的地方，这样你在处理组件时就不必考虑这些。以下列举一些方面：</p>
+<ul>
+<li>配置代码</li>
+<li>假数据</li>
+<li>大量非技术说明文档</li>
+</ul>
+<p>因为在尝试处理组件的核心代码时，你不希望看到与技术无关的一些说明（因为会多滚动几下鼠标滚轮甚至打断思路）。在处理组件时，你希望它们尽可能通用且可重用。查看与组件当前上下文相关的特定信息可能会使得设计出来的组件不易与具体业务解耦。</p>
+<h1 id="提炼精华"><a href="#提炼精华" class="headerlink" title="提炼精华"></a>提炼精华</h1><p>虽然这样做起来可能具有挑战性，但开发组件的一个好方法是使它们包含渲染它们所需的最小 Javascript。一些无关紧要的东西，比如数据获取，数据整理或事件处理逻辑，理想情况下应该将通用的部分移入外部 js 或或者放在共同的祖先中。</p>
+<p>单独从组件分的“视图”部分来看，即你看到的内容（html 和 样式）。其中的 Javascript 仅用于帮助渲染视图，<em>可能</em>还有一些针对特定组件的逻辑（例如在其他地方使用时）。除此之外的任何事情，例如 API 调用，数值的格式化（例如货币或时间）或跨组件复用的数据，都可以移动外部的 js 文件中。让我们看一下 Vue 中的一个简单示例，使用嵌套列表组件。我们可以先看下下面这个有问题的版本。</p>
+<p>这是第一个层级：</p>
+<p><img src="https://qiniu-image.qtshe.com/20190124carbon-7.png" alt="img"></p>
+<p>这是嵌套列表组件：</p>
+<p><img src="https://qiniu-image.qtshe.com/20190124carbon-8.png" alt="img"></p>
+<p>在这里我们可以看到此列表的两个层级都具有外部依赖关系，最上层导引入外部 js 文件中的函数和 JSON 文件的数据，嵌套组件连接到 Vuex 存储并使用 axios 发送请求。它们还具有仅适用于当前场景的嵌入功能（最上层中源数据处理和嵌套列表的中度 click 时间的特定响应功能）。</p>
+<p>虽然这里采用了一些很好的通用设计技术，例如将通用的 数据处理方法移动到外部脚本而不是直接将函数写死，但这样仍然不具备很高的复用性。如果我们是从 API 的响应中获取数据，但是这个数据跟我们期望的数据结构或者类型不同的时候要怎么办？或者我们期望单击嵌套项时有不同的行为？在遇到这些需求的场景下，这个组件无法被别的组件直接引用并根据实际需求改变自身的特性。</p>
+<p>让我们看看我们是否可以通过提升数据并将事件处理作为 props 传递来解决这个问题，这样组件就可以简单地呈现数据而不会封装任何其他逻辑。</p>
+<p>这是列表的新顶级：</p>
+<p><img src="https://qiniu-image.qtshe.com/20190124carbon-9.png" alt="img"></p>
+<p>而新的第二级：</p>
+<p><img src="https://qiniu-image.qtshe.com/20190124carbon-10.png" alt="img"></p>
+<p>使用这个新列表，我们可以获得想要的数据，并定义了嵌套列表的 onClick 处理函数，以便在父级中传入任何我们想要的操作，然后将它们作为 props 传递给顶级组件。这样，我们可以将导入和逻辑留给单个根组件，所以不需要为了能够在新的场景下使用去重新再实现一个类似组件。</p>
+<p>有关此主题的简短文章可以在<a target="_blank" rel="noopener" href="https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0">这里</a>找到。它由 Redux 的作者 Dan Abramov 编写，虽然是用 React 举例说明。但是组件设计的思想是通用的。</p>
+<h1 id="及时模块化"><a href="#及时模块化" class="headerlink" title="及时模块化"></a>及时模块化</h1><p>我们在实际进行组件抽离工作的时候，需要考虑到不要过度的组件化，诚然将大块代码变成松散耦合且可用的部分是很好的实践，但是并不是所有的页面结构（HTML 部分）都需要被抽离成组件，也不是所有的逻辑部分都需要被抽出到组件外部。</p>
+<p>在决定是否将代码分开时，无论是 Javascript 逻辑还是抽离为新的组件，都需要考虑以下几点。同样，这个列表并不完整，只是为了让你了解需要考虑的各种事项。（记住，仅仅因为它不满足一个条件并不意味着它不会满足其他条件，所以在做出决定之前要考虑所有条件）：</p>
+<ol>
+<li><strong>是否有足够的页面结构/逻辑来保证它？</strong><br>如果它只是几行代码，那么最终可能会创建更多的代码来分隔它，而不仅仅是将代码放入其中。</li>
+<li><strong>代码重复（或可能重复）？</strong><br>如果某些东西只使用一次，并且服务于一个不太可能在其他地方使用的特定用例，那么将它嵌入其中可能会更好。如果需要，你可以随时将其分开（但不要在需要做这些工作的时候将此作为偷懒的借口）。</li>
+<li><strong>它会减少需要书写的模板吗？</strong><br>例如，假设你想要一个带有特定样式的 div 属性结构和一些静态内容/功能的组件，其中一些可变内容嵌套在内部。通过创建可重用的包装器（与 React 的 HOC 或 Vue 的 slot 一样），你可以在创建这些组件的多个实例时减少模板代码，因为你不需要重新再写外部的包装代码。</li>
+<li><strong>性能会收到影响吗？</strong><br>更改 state/props 会导致重新渲染，当发生这种情况时，你需要的是 只是重新去渲染经过 diff 之后得到的相关元素节点。在较大的、关联很紧密的组件中，你可能会发现状态更改会导致在不需要它的许多地方重新呈现，这时应用的性能就可能会开始受到影响。</li>
+<li><strong>你是否会在测试代码的所有部分时遇到问题？</strong><br>我们总是希望能够进行充分的测试，比如对于一个组件，我们会期望它的正常工作不依赖特定的用例（上下文），并且所有 Javascript 逻辑都按预期工作。当元素具有某个特定假设的上下文或者分别将一大堆逻辑嵌入到单个函数中时，这样将会很难满足我们的期望。如果测试的组件是具有比较大模板和样式的单个巨型组件，那么组件的渲染测试也会很难进行。</li>
+<li><strong>你是否有一个明确的理由？</strong><br>在分割代码时，你应该考虑它究竟实现了什么。这是否允许更松散的耦合？我是否打破了一个逻辑上有意义的独立实体？这个代码是否真的可能在其他地方被重复使用？如果你不能清楚地回答这个问题，那最好先不要进行组件抽离。因为这样可能导致一些问题（比如拆解掉原本某些潜在的耦合关系）。</li>
+<li><strong>这些好处是否超过了成本？</strong><br>分离代码不可避免地需要时间和精力，其数量根据具体情况而变化，并且在最终做出此决定时会有许多因素（例如此列表中列举出来的一些）。一般来说，进行一些对抽象的成本和收益研究可以帮助更快更准确去做出是否需要组件化的决策。最后，我提到了这一点，因为如果我们过分关注优势，就很容易忘记达成目标所需要做的努力，所以在做出决定以前需要权衡这两个方面。</li>
+</ol>
+<h1 id="集中-统一的状态管理"><a href="#集中-统一的状态管理" class="headerlink" title="集中/统一的状态管理"></a>集中/统一的状态管理</h1><p>许多大型应用程序使用 Redux 或 Vuex 等状态管理工具（或者具有类似 React 中的 Context API 状态共享设置）。这意味着他们从 store 获得 props 而不是通过父级传递。在考虑组件的可重用性时，你不仅要考虑直接的父级中传递而来的 props，还要考虑 从 store 中获取到的 props。如果你在另一个项目中使用该组件，则需要在 store 中使用这些值。或许其他项目根本不使用集中存储工具，你必须将其转换为从父级中进行 props 传递 的形式。</p>
+<p>由于将组件挂接到 store（或上下文）很容易并且无论组件的层次结构位置如何都可以完成，因此很容易在 store 和 web 应用的组件之间快速创建大量紧密耦合（不关心组件所处的层级）。通常将组件与 store 进行关联只需简单几行代码。但是请注意一点，虽然这种连接（耦合）更方便，但它的含义并没有什么不同，你也需要考虑尽量符合如同在使用父级传递方式时的要点。</p>
+<h1 id="最后的想法"><a href="#最后的想法" class="headerlink" title="最后的想法"></a>最后的想法</h1><p>最后，我想简要提醒以上这些组件设计的原则，或者你之前阅读过一些最佳实践在实际中的应用。虽然你应该尽力维护良好的设计，不要为了包装 JIRA ticket 或取消一个上拉请求而有损代码完整性，同时总是把理论置于现实世界结果之上的人也往往会让他们的工作受到影响。大型软件项目有许多活动部分，软件工程的许多方面与编码没有特别的关系，但仍然是不可或缺的，例如遵守最后期限和处理非技术期望。</p>
+<p>虽然充分的准备很重要，应该成为任何专业软件设计的一部分，但在现实世界中，切实的结果才是最为重要的。当你被雇用来实际创造一些东西时，如果在最后期限到来之前，你有的只是一个如何构建完美产品的惊人<strong>计划</strong>，但却没有实际的成果，你的雇主可能不会太高兴吧？此外，软件工程中的东西很少完全按计划进行，因此过度具体的计划往往会在时间使用方面得到适得其反的效果。</p>
+<p>此外，组件规划和设计的概念也适用于组件重构。虽然用了 50 年的时间来计划一切令人难以忍受的细节，然后从一开始就完美地编写它就会很好，回到现实世界，当你的关键时刻到来时你可能会发现自己设计组件并以不太理想的方式编写代码。然而，一旦压力得到缓解并且你有时间，那么返回并重构早期没有理想构建的代码总是一个好主意，这样它就可以作为向前发展的坚实基础。</p>
+<p>在一天结束时，虽然你的直接责任可能是“编写代码”，但你不应忽视你的最终目标，即建立一些东西。创建产品。为了产生一些你可以引以为豪的东西并帮助别人，即使它在技术上并不完美，永远记得找到一个平衡点。不幸的是，在一周内每天 8 小时盯着眼前的代码会使得眼界和角度变得更为“狭窄”，这个时候你需要的你是退后一步，确保你不要为了一颗树而失去整个森林。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2022/04/14/D_%E6%A1%86%E6%9E%B6_%E7%BB%84%E4%BB%B6%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7-%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/" title="组件开发技巧" target="_blank" rel="external">https://fuyunjinglong.github.io/2022/04/14/D_框架_组件开发技巧-设计原则/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://fuyunjinglong.github.io/" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://fuyunjinglong.github.io/" target="_blank"><span class="text-dark">Elven</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/04/14/D_%E6%A1%86%E6%9E%B6_Vue3.0_%E5%85%A5%E9%97%A8%E5%8D%8E%E4%B8%BA/" title="Vue3.0_入门华为"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2022/04/03/D_%E6%A1%86%E6%9E%B6_NodeJS%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/" title="NodeJS安装配置"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
