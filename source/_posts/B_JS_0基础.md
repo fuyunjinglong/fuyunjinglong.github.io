@@ -180,75 +180,19 @@ console.log(getType(new RegExp())); // [object RegExp]
 console.log(getType(new Date())); // [object Date]
 ```
 
+## 模块化规范
 
+- ESModule支持es6语法的浏览器规范
+- CommonJS 是同步支持nodejs的后端规范
+- UMD统一模块规范，支持amd和cmd(amd和cmd一般不单独使用)，支持全局变量Vue
 
-## 模块化思想
+> 常用的是ESM和CJS,其中UMD还可以指定全局变量
+>
+> 浏览器端使用ESM和UMD,nodejs使用CJS
 
-- 由于 `ESM` 具有简单的语法，异步特性和可摇树性，因此它是最好的模块化方案
-- `UMD` 随处可见，通常在 `ESM` 不起作用的情况下用作备用
-- `CJS` 是同步的，适合后端
-- `AMD` 是异步的，适合前端
+**ESModule**
 
-**1.CJS**
-
-`CJS` 是 `CommonJS` 的缩写。经常我们这么使用：
-
-```javascript
-// importing 
-const doSomething = require('./doSomething.js'); 
-
-// exporting
-module.exports = function doSomething(n) {
-  // do something
-}
-复制代码
-```
-
-- 很多人可以从 `Node` 中立刻认出 `CJS` 的语法。这是因为 `Node` 就是使用 [`CJS` 模块](https://link.juejin.cn?target=https%3A%2F%2Fblog.risingstack.com%2Fnode-js-at-scale-module-system-commonjs-require%2F)的
-- `CJS` 是同步导入模块
-- 你可以从 `node_modules` 中引入一个库或者从本地目录引入一个文件 。如 `const myLocalModule = require('./some/local/file.js')` 或者 `var React = require('react');` ，都可以起作用
-- 当 `CJS` 导入时，它会给你一个导入对象的副本
-- `CJS` 不能在浏览器中工作。它必须经过转换和打包
-
-**2.AMD**
-
-`AMD` 代表异步模块定义。
-
-```js
-define(['dep1', 'dep2'], function (dep1, dep2) {
-    //Define the module value by returning a value.
-    return function () {};
-});
-或者
-define(function (require) {
-    var dep1 = require('dep1'),
-        dep2 = require('dep2');
-    return function () {};
-});
-```
-
-- `AMD` 是异步(`asynchronously`)导入模块的(因此得名)
-- 一开始被提议的时候，`AMD` 是为前端而做的(而 `CJS` 是后端)
-- `AMD` 的语法不如 `CJS` 直观。我认为 `AMD` 和 `CJS` 完全相反
-
-**3.UMD**
-
-`UMD` 代表通用模块定义（`Universal Module Definition`）
-
-- 在前端和后端都适用（“通用”因此得名）
-- 兼容 CommonJS 和 AMD 规范
-- 当使用 `Rollup/Webpack` 之类的打包器时，`UMD` 通常用作备用模块
-
-UMD 实现原理：
-
-> 先判断是否支持 AMD（define 是否存在），存在则使用 AMD 方式加载模块；
-> 再判断是否支持 Node.js 模块格式（exports 是否存在），存在则使用 Node.js 模块格式；
-> 前两个都不存在，则将模块公开到全局（window 或 global）
-> UMD 使得你可以直接使用`<script>`标签引用
-
-**4.ESM**
-
-`ESM` 代表 `ES` 模块。这是 `Javascript` 提出的实现一个标准模块系统的方案。
+简称ESM,是一个符合ES6语法的模块化规范，语法为：import export。
 
 ECMAScript 6 的一个目标是解决作用域的问题，也为了使 JS 应用程序显得有序，于是引进了模块。目前部分主流浏览器已原生支持 ES Module，使用 type = module 指定为模块引入即可
 注意：使用该方式执行 JS 时自动应用 defer 属性。
@@ -279,12 +223,59 @@ export const function2() {...};
 </script>
 ```
 
+**CommonJS **
+
+简称CJS,是同步支持nodejs的后端规范。语法为：module.exports，require。
+
+```javascript
+// importing 
+const doSomething = require('./doSomething.js'); 
+
+// exporting
+module.exports = function doSomething(n) {
+  // do something
+}
+复制代码
+```
+
+- 很多人可以从 `Node` 中立刻认出 `CJS` 的语法。这是因为 `Node` 就是使用 [`CJS` 模块](https://link.juejin.cn?target=https%3A%2F%2Fblog.risingstack.com%2Fnode-js-at-scale-module-system-commonjs-require%2F)的
+- `CJS` 是同步导入模块
+- 你可以从 `node_modules` 中引入一个库或者从本地目录引入一个文件 。如 `const myLocalModule = require('./some/local/file.js')` 或者 `var React = require('react');` ，都可以起作用
+- 当 `CJS` 导入时，它会给你一个导入对象的副本
+- `CJS` 不能在浏览器中工作。它必须经过转换和打包
+
 CommonJS和es6区别
+
 > - 因为CommonJS的`require`语法是同步的，所以就导致了CommonJS模块规范只适合用在服务端，而ES6模块无论是在浏览器端还是服务端都是可以使用的，但是在服务端中，还需要遵循一些特殊的规则才能使用 ；
 > - CommonJS 模块输出的是一个值的拷贝，而ES6 模块输出的是值的引用；
 > - CommonJS 模块是动态引入，执行时引入，而ES6 模块是静态引入，编译时引入；
 > - 因为两个模块加载机制的不同，所以在对待循环加载的时候，它们会有不同的表现。CommonJS遇到循环依赖的时候，只会输出已经执行的部分，后续的输出或者变化，是不会影响已经输出的变量。而ES6模块相反，使用`import`加载一个变量，变量不会被缓存，真正取值的时候就能取到最终的值；
 > - 关于模块顶层的`this`指向问题，在CommonJS顶层，`this`指向当前模块；而在ES6模块中，`this`指向`undefined`；
+
+**UMD**
+
+简称统一模块规范，支持amd和cmd(amd和cmd一般不单独使用)，支持全局变量Vue
+
+- 当使用 `Rollup/Webpack` 之类的打包器时，`UMD` 通常用作备用模块
+
+`AMD` 代表异步模块定义。
+
+```js
+define(['dep1', 'dep2'], function (dep1, dep2) {
+    //Define the module value by returning a value.
+    return function () {};
+});
+或者
+define(function (require) {
+    var dep1 = require('dep1'),
+        dep2 = require('dep2');
+    return function () {};
+});
+```
+
+- `AMD` 是异步(`asynchronously`)导入模块的(因此得名)
+- 一开始被提议的时候，`AMD` 是为前端而做的(而 `CJS` 是后端)
+- `AMD` 的语法不如 `CJS` 直观。我认为 `AMD` 和 `CJS` 完全相反
 
 ## slice(),splice()两种方法
 
