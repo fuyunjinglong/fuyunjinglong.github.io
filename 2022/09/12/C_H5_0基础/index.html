@@ -18,16 +18,16 @@
   
   
   <title>H5_0基础 | Hexo</title>
-  <meta name="description" content="web基础及演进史(1)js组成 ECMAScript(js核心)，DOM(文档对象模型),BOM(浏览器对象模型)。 ECMAScript：主要定义JS的语法和数据类型。 DOM：一套操作页面的API. BOM:一套操作浏览器功能的API. (2)web技术演进史 (1.1)历史进程   2005年以前：前后端耦合；  2005年Ajax时代：前后端分离；  2006-2012Jquery时代；">
+  <meta name="description" content="浏览器内核的理解内核分为2部分：渲染引擎(layout engineer 或 Rendering Engine) 和 JS 引擎 渲染引擎 负责取得网页的内容（HTML、XML、图像等等）、整理讯息（例如加入 CSS 等），以及计算网页的显示方式，然后会输出至显示器或打印机。 浏览器的内核的不同对于网页的语法解释会有不同，所以渲染的效果也不相同。 所有网页浏览器、电子邮件客户端以及其它需要编辑、显">
 <meta property="og:type" content="article">
 <meta property="og:title" content="H5_0基础">
 <meta property="og:url" content="https://fuyunjinglong.github.io/2022/09/12/C_H5_0%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="web基础及演进史(1)js组成 ECMAScript(js核心)，DOM(文档对象模型),BOM(浏览器对象模型)。 ECMAScript：主要定义JS的语法和数据类型。 DOM：一套操作页面的API. BOM:一套操作浏览器功能的API. (2)web技术演进史 (1.1)历史进程   2005年以前：前后端耦合；  2005年Ajax时代：前后端分离；  2006-2012Jquery时代；">
+<meta property="og:description" content="浏览器内核的理解内核分为2部分：渲染引擎(layout engineer 或 Rendering Engine) 和 JS 引擎 渲染引擎 负责取得网页的内容（HTML、XML、图像等等）、整理讯息（例如加入 CSS 等），以及计算网页的显示方式，然后会输出至显示器或打印机。 浏览器的内核的不同对于网页的语法解释会有不同，所以渲染的效果也不相同。 所有网页浏览器、电子邮件客户端以及其它需要编辑、显">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211107230640963.png">
 <meta property="article:published_time" content="2022-09-11T23:33:16.000Z">
-<meta property="article:modified_time" content="2023-03-07T14:24:25.510Z">
+<meta property="article:modified_time" content="2023-03-12T09:01:30.163Z">
 <meta property="article:author" content="Elven">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fuyunjinglong.github.io/img/image-20211107230640963.png">
@@ -216,7 +216,7 @@
   <div class="widget">
     <h3 class="widget-title">分类</h3>
     <div class="widget-body">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">10</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">9</span></li></ul>
     </div>
   </div>
 
@@ -231,7 +231,7 @@
   <div class="widget">
     <h3 class="widget-title">归档</h3>
     <div class="widget-body">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">10</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">29</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">9</span></li></ul>
     </div>
   </div>
 
@@ -265,7 +265,7 @@
                 <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
               </p>
               <p class="item-title">
-                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0%E5%8E%9F%E7%90%86/" class="title">Vue2.0原理</a>
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/" class="title">Vue2.0_原理</a>
               </p>
               <p class="item-date">
                 <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
@@ -280,7 +280,7 @@
                 <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
               </p>
               <p class="item-title">
-                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue3.0%E5%8E%9F%E7%90%86/" class="title">Vue3.0原理</a>
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue3.0_%E5%8E%9F%E7%90%86/" class="title">Vue3.0_原理</a>
               </p>
               <p class="item-date">
                 <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
@@ -333,7 +333,7 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#web%E5%9F%BA%E7%A1%80%E5%8F%8A%E6%BC%94%E8%BF%9B%E5%8F%B2"><span class="toc-text">web基础及演进史</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XML%E4%B8%8EJSON"><span class="toc-text">XML与JSON</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#BOM%E5%92%8CDOM%E5%AF%B9%E8%B1%A1"><span class="toc-text">BOM和DOM对象</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web%E8%AF%AD%E4%B9%89%E5%8C%96"><span class="toc-text">Web语义化</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%86%85%E6%A0%B8%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-text">浏览器内核的理解</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web%E5%9F%BA%E7%A1%80%E5%8F%8A%E6%BC%94%E8%BF%9B%E5%8F%B2"><span class="toc-text">web基础及演进史</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HTML-%E8%AF%AD%E4%B9%89%E5%8C%96%E7%9A%84%E7%90%86%E8%A7%A3-%EF%BC%9F"><span class="toc-text">HTML 语义化的理解 ？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#H5%E6%96%B0%E7%89%B9%E6%80%A7"><span class="toc-text">H5新特性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XML%E4%B8%8EJSON"><span class="toc-text">XML与JSON</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#BOM%E5%92%8CDOM%E5%AF%B9%E8%B1%A1"><span class="toc-text">BOM和DOM对象</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%A4%9A%E4%B8%AA%E5%9F%9F%E5%90%8D%E6%9D%A5%E5%AD%98%E5%82%A8%E7%BD%91%E7%AB%99%E8%B5%84%E6%BA%90%E4%BC%9A%E6%9B%B4%E6%9C%89%E6%95%88"><span class="toc-text">为什么多个域名来存储网站资源会更有效</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%8C%E5%86%85%E3%80%81%E5%9D%97%E7%BA%A7%E3%80%81%E7%A9%BA%E5%85%83%E7%B4%A0"><span class="toc-text">行内、块级、空元素</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HTML5%E7%9A%84%E7%A6%BB%E7%BA%BF%E7%BC%93%E5%AD%98%E5%8E%9F%E7%90%86"><span class="toc-text">HTML5的离线缓存原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#cookies%E3%80%81sessionStorage%E5%92%8ClocalStorage%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">cookies、sessionStorage和localStorage的区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#iframe%E5%86%85%E5%B5%8C%E6%A1%86%E6%9E%B6%E7%BC%BA%E7%82%B9"><span class="toc-text">iframe内嵌框架缺点</span></a></li></ol>
     </nav>
   </div>
 </aside>
@@ -375,7 +375,13 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h1 id="web基础及演进史"><a href="#web基础及演进史" class="headerlink" title="web基础及演进史"></a>web基础及演进史</h1><p><strong>(1)js组成</strong><br> ECMAScript(js核心)，DOM(文档对象模型),BOM(浏览器对象模型)。<br> ECMAScript：主要定义JS的语法和数据类型。<br> DOM：一套操作页面的API.<br> BOM:一套操作浏览器功能的API.</p>
+        <h1 id="浏览器内核的理解"><a href="#浏览器内核的理解" class="headerlink" title="浏览器内核的理解"></a>浏览器内核的理解</h1><p>内核分为2部分：渲染引擎(layout engineer 或 Rendering Engine) 和 JS 引擎</p>
+<p>渲染引擎</p>
+<p>负责取得网页的内容（HTML、XML、图像等等）、整理讯息（例如加入 CSS 等），以及计算网页的显示方式，然后会输出至显示器或打印机。 浏览器的内核的不同对于网页的语法解释会有不同，所以渲染的效果也不相同。 所有网页浏览器、电子邮件客户端以及其它需要编辑、显示网络内容的应用程序都需要内核。</p>
+<p>JS 引擎</p>
+<p>解析和执行 javascript 来实现网页的动态效果。</p>
+<p>最开始渲染引擎和 JS 引擎并没有区分的很明确，后来 JS 引擎越来越独立，内核就倾向于只指渲染引擎。</p>
+<h1 id="web基础及演进史"><a href="#web基础及演进史" class="headerlink" title="web基础及演进史"></a>web基础及演进史</h1><p><strong>(1)js组成</strong><br> ECMAScript(js核心)，DOM(文档对象模型),BOM(浏览器对象模型)。<br> ECMAScript：主要定义JS的语法和数据类型。<br> DOM：一套操作页面的API.<br> BOM:一套操作浏览器功能的API.</p>
 <p><strong>(2)web技术演进史</strong><br> (1.1)历史进程</p>
 <ul>
 <li> 2005年以前：前后端耦合；</li>
@@ -386,6 +392,23 @@
 <li> 2016至今三大框架；</li>
 </ul>
 <p> 1)前端耦合<br> 前端代码只是View视图层。<br> 2)Ajax时代，允许客户端向服务器异步发送请求，处理后，异步局部刷新页面。划时代意义：前后端分离，服务端更专注于数据处理，前端更专注于数据展示。<br> 3)Jquery时代，精简dom操作和浏览器兼容性<br> 4)NodeJs时代<br> 开始用js开发服务端程序，同时构建了用NPM包管理工具的NodeJs生态系统。<br> 5)后Jquery时代<br> 前端引入模块化。具体有CMD/AMD/commonJS，后面ES6 Module。<br> <strong>AMD/CMD</strong>：异步的，主要用于浏览器。模块定义和加载机制稍有不同。AMD推崇前置依赖，CMD推崇就近依赖。AMD是定义时声明依赖，CMD是懒加载，仅在require时才会加载。<br> <strong>CommonJS</strong>:是同步的，主要服务端。<br> <strong>ES6 Module</strong>:满足ES6标准的模块化输出，设计思想静态化。编译时就确定了依赖关系，是浏览器和服务端的通用模块解决方案。<br> <strong>MV框架</strong><br> 前端的复杂功能驱动MV*框架引入。<br> <strong>MVC框架</strong><br> View指令传送到Controller;<br> Controller完成业务逻辑后，要求Model改变;<br> Model将新的数据发送到View，用户得到反馈<br> <strong>MVVM框架</strong><br> 双向绑定，view改变自动反馈到viewmodel。view与model不发生联系。<br> <strong>(1.2)三大框架介绍</strong><br> <strong>1)angular</strong><br> <strong>历史</strong>:2012开始1.0版本，16年升级2.0版本。新版本支持es6和ts。<br> <strong>基本特点</strong>：<br> 双向绑定；<br> 依赖注入；<br> 基于ts的组件；<br> 良好的应用架构；<br> 工具生态完整，angular-cli用于创建、开发、测试等。有整套的解决方案，适合大型项目。<br> <strong>缺点</strong>：中文文档较少，框架较重，学习成本高。<br> <strong>2)react</strong><br> <strong>历史</strong>：2013年facebook发布版本。2015年版本稳定，同年发布reacr-native。<br> <strong>基本特点</strong>：<br> 虚拟dom，跨浏览器兼容，性能较好；<br> 组件化，代码复用;<br> JSX,js语法的扩展，模板简单、直接、语义化。<br> 单项数据流：数据流清晰，组件状态更可控。<br> <strong>缺点</strong>：<br> 本身只是view，大型项目需要加上React Router和Redux。<br> <strong>3)VUE</strong><br> <strong>历史</strong>：<br> 2015年1.0版本发布，同年vue-router、vuex、vue-cli出现，标志从一个视图层发展成一个渐进式框架。<br> 2016年vue2.0发布，引入虚拟dom，性能大幅提升。<br> 2019年vue2.0公布源码。<br> <strong>基本特点</strong>：<br> 渐进式、轻量级框架;<br> 简单易用;<br> 双向数据绑定;<br> 组件化;<br> 轻量高效(使用虚拟dom，压缩后只有20kb)<br> <strong>缺点</strong>：<br> vue不支持IE8，生态比较差(语法提示不友好，插件数量比较少)</p>
+<h1 id="HTML-语义化的理解-？"><a href="#HTML-语义化的理解-？" class="headerlink" title="HTML 语义化的理解 ？"></a><strong>HTML 语义化的理解 ？</strong></h1><ul>
+<li>1、用正确的标签做正确的事情。</li>
+<li>2、html 语义化让页面的内容结构化，结构更清晰，</li>
+<li>3、便于对浏览器、搜索引擎解析;</li>
+<li>4、即使在没有样式 CSS 情况下也以一种文档格式显示，并且是容易阅读的;</li>
+<li>5、搜索引擎的爬虫也依赖于 HTML 标记来确定上下文和各个关键字的权重，利于 SEO;</li>
+<li>6、使阅读源代码的人对网站更容易将网站分块，便于阅读维护理解。</li>
+</ul>
+<h1 id="H5新特性"><a href="#H5新特性" class="headerlink" title="H5新特性"></a>H5新特性</h1><ul>
+<li>绘画 canvas;</li>
+<li>用于媒介回放的 video 和 audio 元素;</li>
+<li>本地离线存储 localStorage 长期存储数据，浏览器关闭后数据不丢失;</li>
+<li>sessionStorage 的数据在浏览器关闭后自动删除;</li>
+<li>语意化更好的内容元素，比如 article、footer、header、nav、section;</li>
+<li>表单控件：calendar、date、time、email、url、search;</li>
+<li>新的技术：webworker, websocket, Geolocation;</li>
+</ul>
 <h1 id="XML与JSON"><a href="#XML与JSON" class="headerlink" title="XML与JSON"></a>XML与JSON</h1><p>最根本上来说，XML是一个markup language（标记语言），而JSON是一种用于数据交换（data-interchange）的序列化对象的语言。</p>
 <p>标记语言除了文本信息，还包括了一些元信息，这些元信息用来标注如何处理文本信息，比如：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Document</span>&gt;</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">Paragraph</span> <span class="attr">Align</span>=<span class="string">&quot;Center&quot;</span>&gt;</span>         Align是元信息</span></span><br><span class="line"><span class="language-xml">        Here <span class="tag">&lt;<span class="name">Bold</span>&gt;</span>is<span class="tag">&lt;/<span class="name">Bold</span>&gt;</span> some text.</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">Paragraph</span>&gt;</span></span></span><br><span class="line">&lt;/<span class="title class_">Document</span>&gt;</span><br></pre></td></tr></table></figure>
@@ -483,14 +506,78 @@
 <p>Event对象</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var ele1 = document.getElementsByClassName(&quot;inner&quot;)[0];</span><br><span class="line">   ele1.onclick = function (e) &#123;</span><br><span class="line">       alert(&quot;I am inner!&quot;);</span><br><span class="line">       e.stopPropagation();</span><br><span class="line">   &#125;;</span><br><span class="line">   var ele2 = document.getElementsByClassName(&quot;outer&quot;)[0];</span><br><span class="line">   ele2.onclick = function () &#123;</span><br><span class="line">       alert(&quot;I am outer!&quot;)</span><br><span class="line">   &#125;;</span><br></pre></td></tr></table></figure>
 
-<h1 id="Web语义化"><a href="#Web语义化" class="headerlink" title="Web语义化"></a>Web语义化</h1><p>Web语义化是指使用恰当语义的html标签、class类名等内容，让页面具有良好的结构与含义，从而让人和机器都能快速理解网页内容。语义化的web页面一方面可以让机器在更少的人类干预情况下收集并研究网页的信息，从而可以读懂网页的内容，然后将收集汇总的信息进行分析，结果为人类所用；另一方面它可以让开发人员读懂结构和用户以及屏幕阅读器（如果访客有视障）能够读懂内容。 简单来说就是利于 SEO，便于阅读维护理解。</p>
-<p>总结起来就是：</p>
-<ul>
-<li>正确的标签做正确的事情</li>
-<li>页面内容结构化</li>
-<li>无CSS样子时也容易阅读，便于阅读维护和理解</li>
-<li>便于浏览器、搜索引擎解析。 利于爬虫标记、利于SEO</li>
+<h1 id="为什么多个域名来存储网站资源会更有效"><a href="#为什么多个域名来存储网站资源会更有效" class="headerlink" title="为什么多个域名来存储网站资源会更有效"></a>为什么多个域名来存储网站资源会更有效</h1><ul>
+<li>确保用户在不同地区能用最快的速度打开网站，其中某个域名崩溃用户也能通过其他域名访问网站。</li>
+<li>CDN 缓存更方便。简单来说，CDN 主要用来使用户就近获取资源。</li>
+<li>突破浏览器并发限制。同一时间针对同一域名下的请求有一定数量限制，超过限制数目的请求会被阻塞。大多数浏览器的并发数量都控制在6以内。有些资源的请求时间很长，因而会阻塞其他资源的请求。因此，对于一些静态资源，如果放到不同的域名下面就能实现与其他资源的并发请求</li>
 </ul>
+<h1 id="行内、块级、空元素"><a href="#行内、块级、空元素" class="headerlink" title="行内、块级、空元素"></a>行内、块级、空元素</h1><ul>
+<li>行内元素有：a b span img input select strong（强调的语气）</li>
+<li>块级元素有：div ul ol li dl dt dd h1 h2 h3 h4 p</li>
+<li>常见的空元素： img input link meta br hr ，鲜为人知的是：area base col command embed keygen param source track wbr</li>
+</ul>
+<h1 id="HTML5的离线缓存原理"><a href="#HTML5的离线缓存原理" class="headerlink" title="HTML5的离线缓存原理"></a>HTML5的离线缓存原理</h1><p><strong>定义</strong></p>
+<p>在用户没有与因特网连接时，可以正常访问站点或应用</p>
+<p><strong>原理</strong></p>
+<p>HTML5离线缓存是基于manifest(缓存清单文件，后缀名为.appcache)的缓存机制，通过这个文件上的清单解析存储离线资源，就像cookie一样被存在本地，之后当处于离线状态时，就直接使用离线存储的资源进行页面的展示。</p>
+<p>好处：</p>
+<ul>
+<li>离线浏览，不再需要网络</li>
+<li>速度快，已缓存的资源加载更快</li>
+<li>减轻服务器压力，用户无需网络请求缓存资源</li>
+</ul>
+<p><strong>使用</strong></p>
+<ol>
+<li>h5头部标签引入manifest属性，值为manifest清单文件</li>
+<li>在manifest清单文件中编写离线存储的资源</li>
+<li>操作window.applicationCache进行缓存数据处理</li>
+</ol>
+<p>manifest清单文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">CACHE MANIFEST</span><br><span class="line">#v0.11</span><br><span class="line">CACHE: // 需要缓存的</span><br><span class="line">js/app.js</span><br><span class="line">css/style.css</span><br><span class="line">NETWORK: // 不缓存的</span><br><span class="line">resourse/logo.png</span><br><span class="line">FALLBACK: // 网络失败时的替换页面</span><br><span class="line">//offline.html</span><br></pre></td></tr></table></figure>
+
+<p>window.applicationCache.status的属性值如下：</p>
+<ul>
+<li>0：（UNCACHED）无缓存，代表没有与当前页面相关的缓存资源；</li>
+<li>1：（IDLE）闲置，代表应用缓存未得到更新；</li>
+<li>2：（CHECKING）检查中，正在下载描述文件，并检查有无更新；</li>
+<li>3：（DOWNLOADING）下载中，应用缓存正在下载描述文件中的资源；</li>
+<li>4：（UPDATEREADY）更新完成，所有资源下载完毕；</li>
+<li>5：（）废弃，即应用缓存的描述文件不存在了，因此页面无法在访问应用缓存；</li>
+</ul>
+<p><strong>更新缓存时机</strong></p>
+<ol>
+<li>用户清空浏览器缓存；</li>
+<li>manifest文件被修改；</li>
+<li>由程序来更新应用缓存；</li>
+</ol>
+<p><strong>h5缓存与浏览器缓存区别</strong></p>
+<ul>
+<li>离线缓存是针对整个应用，但是浏览器缓存是针对单个文件；</li>
+<li>离线缓存断网了还可以继续访问，浏览器缓存不行；</li>
+<li>离线缓存可以主动通知浏览器更新；</li>
+</ul>
+<h1 id="cookies、sessionStorage和localStorage的区别"><a href="#cookies、sessionStorage和localStorage的区别" class="headerlink" title="cookies、sessionStorage和localStorage的区别"></a>cookies、sessionStorage和localStorage的区别</h1><ul>
+<li>cookie 是网站为了标示用户身份而储存在用户本地终端（Client Side）上的数据（通常经过加密）。</li>
+<li>cookie 数据始终在同源的 http 请求中携带（即使不需要），也会在浏览器和服务器间来回传递。</li>
+<li>sessionStorage 和 localStorage 不会自动把数据发给服务器，仅在本地保存。</li>
+</ul>
+<p>存储大小</p>
+<ul>
+<li>cookie 数据大小不能超过 4k。</li>
+<li>sessionStorage 和 localStorage 虽然也有存储大小的限制，但比 cookie 大得多，可以达到 5M 或更大。</li>
+</ul>
+<p>有期时间</p>
+<ul>
+<li>localStorage 存储持久数据，浏览器关闭后数据不丢失除非主动删除数据；</li>
+<li>sessionStorage 数据在当前浏览器窗口关闭后自动删除。</li>
+<li>cookie  设置的 cookie 过期时间之前一直有效，即使窗口或浏览器关闭。</li>
+</ul>
+<h1 id="iframe内嵌框架缺点"><a href="#iframe内嵌框架缺点" class="headerlink" title="iframe内嵌框架缺点"></a>iframe内嵌框架缺点</h1><ul>
+<li>iframe 会阻塞主页面的 onload 事件；</li>
+<li>搜索引擎的检索程序无法解读这种页面，不利于 SEO 搜索引擎优化（Search Engine Optimization）</li>
+<li>iframe 和主页面共享连接池，而浏览器对相同域的连接有限制，所以会影响页面的并行加载。</li>
+</ul>
+<p>如果需要使用 iframe，最好是通过 javascript 动态给 iframe 添加 src 属性值，这样可以绕开以上两个问题</p>
 
       
     </div>

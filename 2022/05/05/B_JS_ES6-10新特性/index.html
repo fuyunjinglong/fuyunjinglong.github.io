@@ -26,7 +26,7 @@
 <meta property="og:description" content="链判断运算符ES2020引入了链判断运算符 ?. 来简化这个操作： 1const firstName &#x3D; message?.body?.user?.firstName || &amp;#x27;default&amp;#x27;;  let暂时性死区定义 let 暂时性死区详解 1注意：let和const声明定义的变量作用在当前执行上下文的词法环境中。变量在他们的词法环境被初始化的时候被创建，但是在变量的词法绑定">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-04T22:33:16.000Z">
-<meta property="article:modified_time" content="2023-02-22T22:45:12.370Z">
+<meta property="article:modified_time" content="2023-03-15T14:53:18.035Z">
 <meta property="article:author" content="Elven">
 <meta name="twitter:card" content="summary">
   <!-- Canonical links -->
@@ -214,7 +214,7 @@
   <div class="widget">
     <h3 class="widget-title">分类</h3>
     <div class="widget-body">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">10</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">9</span></li></ul>
     </div>
   </div>
 
@@ -229,7 +229,7 @@
   <div class="widget">
     <h3 class="widget-title">归档</h3>
     <div class="widget-body">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">10</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">29</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">9</span></li></ul>
     </div>
   </div>
 
@@ -263,7 +263,7 @@
                 <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
               </p>
               <p class="item-title">
-                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0%E5%8E%9F%E7%90%86/" class="title">Vue2.0原理</a>
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/" class="title">Vue2.0_原理</a>
               </p>
               <p class="item-date">
                 <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
@@ -278,7 +278,7 @@
                 <a class="category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
               </p>
               <p class="item-title">
-                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue3.0%E5%8E%9F%E7%90%86/" class="title">Vue3.0原理</a>
+                <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue3.0_%E5%8E%9F%E7%90%86/" class="title">Vue3.0_原理</a>
               </p>
               <p class="item-date">
                 <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
@@ -331,7 +331,7 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%93%BE%E5%88%A4%E6%96%AD%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">链判断运算符</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#let"><span class="toc-text">let</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E6%89%A9%E5%B1%95"><span class="toc-text">数组的扩展</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Set"><span class="toc-text">Set</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Map"><span class="toc-text">Map</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Set%E3%80%81WeakSet-%E3%80%81Map%E3%80%81WeakMap-%E6%AF%94%E8%BE%83"><span class="toc-text">Set、WeakSet 、Map、WeakMap 比较</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Symbol"><span class="toc-text">Symbol</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Iterator%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="toc-text">Iterator迭代器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Promise%E3%80%81Generator%E3%80%81Async%E6%AF%94%E8%BE%83"><span class="toc-text">Promise、Generator、Async比较</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Module%E6%A8%A1%E5%9D%97%E5%8C%96%E8%AF%AD%E6%B3%95"><span class="toc-text">Module模块化语法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%93%BE%E5%88%A4%E6%96%AD%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">链判断运算符</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#let"><span class="toc-text">let</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ES6-%E5%A3%B0%E6%98%8E%E5%8F%98%E9%87%8F%E7%9A%84%E5%85%AD%E7%A7%8D%E6%96%B9%E6%B3%95"><span class="toc-text">ES6 声明变量的六种方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E6%89%A9%E5%B1%95"><span class="toc-text">数组的扩展</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Set"><span class="toc-text">Set</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Map"><span class="toc-text">Map</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Set%E3%80%81WeakSet-%E3%80%81Map%E3%80%81WeakMap-%E6%AF%94%E8%BE%83"><span class="toc-text">Set、WeakSet 、Map、WeakMap 比较</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Symbol"><span class="toc-text">Symbol</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Iterator%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="toc-text">Iterator迭代器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Generator%E5%87%BD%E6%95%B0%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-text">Generator函数是什么</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#async%E5%87%BD%E6%95%B0%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-text">async函数是什么</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Generator%E3%80%81Async%E8%AF%A6%E8%A7%A3"><span class="toc-text">Generator、Async详解</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ES5%E5%92%8CES6%E4%B9%8B%E9%BB%98%E8%AE%A4%E5%80%BC%E7%9A%84%E5%8C%BA%E5%88%AB-%EF%BC%9F"><span class="toc-text">ES5和ES6之默认值的区别 ？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ES5%E5%92%8CES6%E4%B9%8B%E7%BB%A7%E6%89%BF%E7%9A%84%E5%8C%BA%E5%88%AB-%EF%BC%9F"><span class="toc-text">ES5和ES6之继承的区别 ？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Module%E6%A8%A1%E5%9D%97%E5%8C%96%E8%AF%AD%E6%B3%95"><span class="toc-text">Module模块化语法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol>
     </nav>
   </div>
 </aside>
@@ -410,6 +410,11 @@
 <li>var 定义的变量在循环过程中无法保存，let 和 const 可以</li>
 <li>const 不能在 for 循环中定义，对于<code>for...in</code>和<code>for...of</code>循环是没问题的</li>
 <li>var声明的变量会挂载到 window 全局对象上，let 和 const 不会</li>
+</ul>
+<h1 id="ES6-声明变量的六种方法"><a href="#ES6-声明变量的六种方法" class="headerlink" title="ES6 声明变量的六种方法"></a>ES6 声明变量的六种方法</h1><ul>
+<li>ES5 只有两种声明变量的方法：var 和 function 。</li>
+<li>ES6 除了添加 let 和 const 命令。</li>
+<li>还有两种声明变量的方法：import 命令和 class 命令。</li>
 </ul>
 <h1 id="数组的扩展"><a href="#数组的扩展" class="headerlink" title="数组的扩展"></a>数组的扩展</h1><p><strong>reduce累加器</strong></p>
 <p>var total = [ 0, 1, 2, 3 ].reduce(( acc, cur ) =&gt; {    return acc + cur }, 0);</p>
@@ -630,16 +635,11 @@
 
 <p><strong>参考</strong></p>
 <p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000022894514">弄懂!!ES6中的Iterator迭代器</a></p>
-<h1 id="Promise、Generator、Async比较"><a href="#Promise、Generator、Async比较" class="headerlink" title="Promise、Generator、Async比较"></a>Promise、Generator、Async比较</h1><p><strong>Promise</strong></p>
-<p>Promise有三种状态：pending(进行中)、resolved(成功)、rejected(失败)。</p>
-<p>缺点：</p>
-<ul>
-<li>无法取消Promise，一旦新建它就会立即执行，无法中途取消。</li>
-<li>如果不设置回调函数，Promise内部抛出的错误，不会反应到外部。</li>
-<li>当处于Pending状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。</li>
-<li>Promise 真正执行回调的时候，定义 Promise 那部分实际上已经走完了，所以 Promise 的报错堆栈上下文不太友好。</li>
-</ul>
-<p><strong>Generator</strong></p>
+<h1 id="Generator函数是什么"><a href="#Generator函数是什么" class="headerlink" title="Generator函数是什么"></a>Generator函数是什么</h1><p>Generator函数是将函数分步骤阻塞 ，只有主动调用next() 才能进行下一步 。</p>
+<h1 id="async函数是什么"><a href="#async函数是什么" class="headerlink" title="async函数是什么"></a>async函数是什么</h1><p>asyns函数是Generator函数的语法糖。</p>
+<p>相当于自执行的Generator函数，相当于自带一个状态机，在await的部分等待返回， 返回后自动执行下一步。而且相较于Promise,async的优越性就是把每次异步返回的结果从then中拿到最外层的方法中，不需要链式调用，只要用同步的写法就可以了。</p>
+<p>但是async必须以一个Promise对象开始 ，所以async通常是和Promise结合使用的。</p>
+<h1 id="Generator、Async详解"><a href="#Generator、Async详解" class="headerlink" title="Generator、Async详解"></a>Generator、Async详解</h1><p><strong>Generator</strong></p>
 <p>Generator 是ES6引入的新语法，Generator是一个可以暂停和继续执行的函数。</p>
 <p>简单的用法，可以当做一个Iterator来用，进行一些遍历操作。复杂一些的用法，他可以在内部保存一些状态，成为一个状态机。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Generator 基本语法包含两部分：函数名前要加一个星号；函数内部用 yield 关键字返回值。</span><br><span class="line">yield，表达式本身没有返回值，或者说总是返回undefined。</span><br><span class="line">next，方法可以带一个参数，该参数就会被当作上一个yield表达式的返回值。</span><br></pre></td></tr></table></figure>
@@ -673,6 +673,28 @@
 <p>for…in 语句以任意顺序遍历<strong>一个对象的可枚举属性的属性名</strong>。所有可枚举属性和从它原型继承而来的可枚举属性，因此如果想要仅迭代对象本身的属性，要结合hasOwnProperty（）来使用</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var obj = &#123;a:1, b:2, c:3&#125;;</span><br><span class="line">for(var prop in obj)&#123;</span><br><span class="line">    console.log(prop);</span><br><span class="line">&#125;</span><br><span class="line">//a</span><br><span class="line">//b</span><br><span class="line">//c</span><br><span class="line"></span><br><span class="line">var obj= &#123;</span><br><span class="line">a:1,</span><br><span class="line">[Symbol(&#x27;level&#x27;)]:2</span><br><span class="line">&#125;</span><br><span class="line">Reflect.ownKeys(obj) // 遍历所有属性，包括Symbol</span><br></pre></td></tr></table></figure>
 
+<h1 id="ES5和ES6之默认值的区别-？"><a href="#ES5和ES6之默认值的区别-？" class="headerlink" title="ES5和ES6之默认值的区别 ？"></a>ES5和ES6之默认值的区别 ？</h1><p><strong>ES5</strong></p>
+<ul>
+<li>使用三目运算符判断</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function doSomething (name) &#123;</span><br><span class="line">  name = name === undefined ? &#x27;default name&#x27; : name</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>ES6</strong></p>
+<ul>
+<li><p>普通值入参，直接赋值默认值</p>
+</li>
+<li><p>对象入参，fun({a}={}),使用空对象</p>
+</li>
+<li><p>针对必填参数，可添加函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function requireParams () &#123;</span><br><span class="line">  throw new Error(&#x27;required params&#x27;)</span><br><span class="line">&#125;</span><br><span class="line">function doSomething (name = requireParams(), age = 18) &#123;</span><br><span class="line">  // do something</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="ES5和ES6之继承的区别-？"><a href="#ES5和ES6之继承的区别-？" class="headerlink" title="ES5和ES6之继承的区别 ？"></a>ES5和ES6之继承的区别 ？</h1><p>ES5 的继承时通过 prototype 或构造函数机制来实现。</p>
+<ul>
+<li><code>ES5 的继承实质上是先创建子类的实例对象，然后再将父类的方法添加到 this 上（Parent.apply(this)）</code>。</li>
+<li><code>ES6 的继承机制完全不同，实质上是先创建父类的实例对象 this（所以必须先调用父类的 super()方法），然后再用子类的构造函数修改 this</code>。</li>
+</ul>
+<p>具体的：ES6 通过 class 关键字定义类，里面有构造方法，类之间通过 extends 关键字实现继承。子类必须在 constructor 方法中调用 super 方法，否则新建实例报错。因为子类没有自己的 this 对象，而是继承了父类的 this 对象，然后对其进行加工。如果不调用 super 方法，子类得不到 this 对象。</p>
+<p>ps：super 关键字指代父类的实例，即父类的 this 对象。在子类构造函数中，调用 super 后，才可使用 this 关键字，否则报错。</p>
 <h1 id="Module模块化语法"><a href="#Module模块化语法" class="headerlink" title="Module模块化语法"></a>Module模块化语法</h1><p>注意：导入导出均可使用as别名</p>
 <p><strong>一、exports</strong></p>
 <p><strong>1.命名导出（Named exports）</strong></p>
