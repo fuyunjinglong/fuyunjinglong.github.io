@@ -47,8 +47,21 @@ toc: true # 是否启用内容索引
 
 # JS
 
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#call-apply-bind">必会20道JS-手写call/apply/bind</a>
+- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#instanceof操作符">必会20道JS-手写instanceof</a>
+- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#Object-create">必会20道JS-手写Object.create</a>
+- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#new操作符">必会20道JS-手写new操作符</a>
+- <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#手写Promise-核心流程">必会20道JS-手写Promise</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#深浅拷贝">必会20道JS-手写深浅拷贝</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#实现setTimeout和实现setInterval">必会20道JS-手写setTimeout模拟setInterval</a>
+- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#原型式继承">必会20道JS-手写一种原型式继承和构造函数继承</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-EventBus">必会20道JS-手写-EventBus</a>
+- <a target="_blank" href="{% post_path 'D_框架_Vue2和Vue3比较' %}#Object-defineProperty与Proxy">必会20道JS-手写数据双向绑定</a>
+- 必会20道JS-手写简单路由
+- 必会20道JS-手写rem实现原理
+- 必会20道JS-手写实现拖拽
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#防抖和节流">必会20道JS-防抖和节流</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#彻底搞懂this">彻底搞懂this</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#call-apply-bind">call/apply/bind</a>
 - <a target="_blank" href="{% post_path 'C_H5_0基础' %}#浏览器内核的理解">浏览器内核的理解</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#null和undefined">null 和 undefined</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#原型、原型链、继承">原型、原型链、继承</a>
@@ -61,9 +74,9 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS-类型判断-对象-数组">JS 判断变量是对象还是数组</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS类型判断-typeof-instanceof-constructor-toString">JS类型判断---typeof, constructor, instanceof, toString</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#消息队列和事件循环">消息队列和事件循环</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#防抖和节流">防抖和节流</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#常见六大Web安全攻防解析">常见六大Web安全攻防解析</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#async和defer的作用是什么？有什么区别">async和defer的作用是什么？有什么区别</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#模块化规范">模块化规范</a>
 
 # ES6
 
@@ -77,7 +90,27 @@ toc: true # 是否启用内容索引
 
 ## vue2
 
+- <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#双向绑定">如何理解双向绑定</a>
+- <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#数据响应式">如何理解数据响应式</a>
+- <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#methods和watch、computed">computed和watch区别</a>
+- <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#父子组件生命周期顺序">父子组件生命周期钩子函数执行顺序</a>
+- 在哪个生命周期内调用异步请求？
+- <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#keep-alive原理">谈谈对keep-alive的理解</a>
+- <a target="_blank" href="{% post_path 'D_框架_Vue2.0_入门' %}#vuex">谈谈对vuex的理解</a>
+- <a target="_blank" href="{% post_path 'D_框架_Vue2.0_入门' %}#router-路由">hash和history路由模式原理</a>
+- vm.$set()如何解决对象属性新增问题
+- <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#数组变异方法">vue2.x中如何监测数组变化</a>
+- <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#nexttick原理">谈谈对nextTick的理解</a>
+- Vue中性能优化
+- Vue2.x组件通信方式有哪些
+- v-for和v-if不能连用
+- 组件中的data为什么是一个函数？
+- 如何理解vue的单向数据流
+- Vue-router导航守卫有哪些
+
 ## vue3
+
+- <a target="_blank" href="{% post_path 'D_框架_Vue2和Vue3比较' %}#diff算法">Vue2和Vue3的diff算法对比</a>
 
 # 计算机网络
 
