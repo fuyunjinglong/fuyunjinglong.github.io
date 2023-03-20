@@ -177,7 +177,7 @@ Function.__proto__ === Function.prototype
 
 `typeof`运算符判断基本类型可以，但对引用类型无法判断(函数对象会返回`function`外，其他都返回`object`)。
 
-**关键一句话**：`instanceof`运算符用于检查右边构造函数的`prototype`属性是否出现在左边对象的原型链中的任何位置。其实它表示的是一种原型链继承的关系
+**关键一句话**：`instanceof`用于检查右边变量的原型存在于左边变量的原型链上。其实它表示的是一种原型链继承的关系
 
 > MDN描述：instanceof运算符用于测试构造函数的prototype属性是否出现在对象的原型链中的任何位置
 
@@ -188,8 +188,8 @@ instanceof`操作符左边是一个对象，右边是一个构造函数，在左
 ```
 // 手写instanceOf
 function instanceOfMe(obj, Constructor) { // obj 表示左边的对象，Constructor表示右边的构造函数
+ let leftP = obj.__proto__ // 取对象隐式原型
     let rightP = Constructor.prototype // 取构造函数显示原型
-    let leftP = obj.__proto__ // 取对象隐式原型
     // 到达原型链顶层还未找到则返回false
     if (leftP === null) {
         return false
@@ -221,7 +221,7 @@ Function instanceof Function // true
 
 ### `Object.create`
 
-其实是创建对象的第三种方法，是ES5提供的，会创建一个新对象。
+其实是创建对象的第三种方法，是ES5提供的，原理：将传入的对象作为原型
 
 ```
 // 手写Object.create
@@ -243,18 +243,24 @@ function createObj(proto) {
 依然来模拟实现一下：
 
 ```javascript
-function newOperator(func, ...args) {
-    if (typeof func !== 'function') {
-        console.error('第一个参数必须为函数，您传入的参数为', func)
-        return
+function myNew (fun) {
+  return function () {
+    // 创建一个新对象且将其隐式原型指向构造函数原型
+    let obj = {
+      __proto__ : fun.prototype
     }
-    // 创建一个全新对象，并将其`__proto__`属性指向构造函数的`prototype`属性
-    let newObj = Object.create(func.prototype)
-    // 将构造函数调用的this指向这个新对象，并执行构造函数
-    let result = func.apply(newObj, args)
-    // 如果构造函数返回对象类型Object，则正常返回，否则返回这个新的对象
-    return (result instanceof Object) ? result : newObj
+    // 执行构造函数
+    fun.call(obj, ...arguments)
+    // 返回该对象
+    return obj
+  }
 }
+
+function person(name, age) {
+  this.name = name
+  this.age = age
+}
+let obj = myNew(person)('chen', 18) // {name: "chen", age: 18}
 ```
 
 ### Function & Object 鸡蛋问题

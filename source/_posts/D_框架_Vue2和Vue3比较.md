@@ -352,30 +352,28 @@ Vue都是采用数据劫持代理+发布订阅模式方式实现，vue2到vue3�
 解决：针对常用数组原型方法`push`、`pop`、`shift`、`unshift`、`splice`、`sort`、`reverse`进行了hack处理；提供`Vue.set`监听对象/数组新增属性。对象的新增/删除响应，还可以`new`个新对象，新增则合并新属性和旧对象；删除则将删除属性后的对象深拷贝给新对象。
 
 ```
-<script>
-        let number = 20
-        let person = {
-            age:18,
-            name:'luwen'
-        }
-        Object.defineProperty(person,'age',{
-            // value:10, //初值
-            // enumerable:true,//属性是否支持枚举,默认false
-            // writable:true,//属性是否支持修改,默认false
-            // configurable:true,//属性是否支持删除,默认false
-            get(){
-                console.log('读取age属性');
-                return number
-            },
-            set(value){
-                console.log('修改了age值',value);
-                number = value
-            }
-        })
-        person.age = '6'
-        console.log('person',person);
-        console.log('number',number);
-    </script>
+let obj = {}
+let input = document.getElementById('input')
+let span = document.getElementById('span')
+// 数据劫持
+Object.defineProperty(obj, 'text', {
+// value:10, //初值
+// enumerable:true,//属性是否支持枚举,默认false
+// writable:true,//属性是否支持修改,默认false
+// configurable:true,//属性是否支持删除,默认false
+  get() {
+    console.log('获取数据了')
+  },
+  set(newVal) {
+    console.log('数据更新了')
+    input.value = newVal
+    span.innerHTML = newVal
+  }
+})
+// 输入监听
+input.addEventListener('keyup', function(e) {
+  obj.text = e.target.value
+})
 ```
 
 vue2中数组方法的实现原理:

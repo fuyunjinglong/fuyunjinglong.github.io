@@ -22,11 +22,21 @@ toc: true # 是否启用内容索引
 
 [Daily-Interview-Question-木易杨前端进阶](https://muyiy.cn/question/)
 
+[alibaba-intervie-阿里巴巴面试资源汇总](https://github.com/stone0090/alibaba-interview)
+
+[haizlin-fe-interview-前端知识每日3+1](https://github.com/haizlin/fe-interview)
+
 [fe-interview-大前端面试宝典](https://lucifer.ren/fe-interview/#/)
 
 [fe-interview-前端硬核面试](https://github.com/biaochenxuying/blog/blob/master/interview/fe-interview.md#js-%E7%BB%8F%E5%85%B8%E9%9D%A2%E8%AF%95%E7%9F%A5%E8%AF%86%E6%96%87%E7%AB%A0)
 
 [fe-interview-前端知识每日3+1](http://www.h-camel.com/index.html)
+
+[fe-interview-最全的前端面试题](https://github.com/HerbertKarajan/Fe-Interview-questions)
+
+[Front-end-Web-Development-Interview-Question-前端面试笔试题](https://github.com/paddingme/Front-end-Web-Development-Interview-Question)
+
+[helloqingfeng-前端资源汇总](https://github.com/helloqingfeng/Awsome-Front-End-learning-resource)
 
 [node-interview-饿了么大前端](https://github.com/ElemeFE/node-interview/tree/master/sections/zh-cn)
 
@@ -66,6 +76,8 @@ toc: true # 是否启用内容索引
 
 **其他更精彩**
 
+[面试中的套路和反套路](https://github.com/airuikun/technology-blog)
+
 [前端负责人资源教程](https://cnodejs.org/topic/56ef3edd532839c33a99d00e)
 
 [JavaScript 资源大全中文版](https://github.com/jobbole/awesome-javascript-cn)
@@ -95,7 +107,6 @@ toc: true # 是否启用内容索引
 - [3y](https://github.com/ZhongFuCheng3y/3y)
 - [java-bible](https://github.com/biezhi/java-bible)
 - [interviews](https://github.com/kdn251/interviews/blob/master/README-zh-cn.md)
-- 
 
 **算法**
 

@@ -88,6 +88,30 @@ var foo2 = function () {
 - const 不能在 for 循环中定义，对于`for...in`和`for...of`循环是没问题的
 - var声明的变量会挂载到 window 全局对象上，let 和 const 不会
 
+# for 循环中的 var 、let 与 const 区别
+
+> - var具有函数作用域，因此在for循环内定义的迭代变量会渗透到for循环外面。根据事件循环机制，先执行同步再异步，当5次循环结束后，i的值为5，i渗透到for循环外部
+>
+> - let声明的迭代变量i不能渗透到for循环外面，因此可以认为是，声明了5个块级作用域。可以认为每个for都是独立的作用域块。
+>
+>   ```
+>   {let i = 0;setTimeout(()=>console.log(i),0);}
+>   ```
+
+```
+//使用var声明for循环中的迭代变量
+for(var i = 0;i < 5;++ i){
+setTimeout(()=>console.log(i),0);
+}
+// 5,5,5,5,5
+
+//使用let声明for循环中的迭代变量
+for(let i = 0;i < 5;++ i){
+setTimeout(()=>console.log(i),0);
+}
+// 0,1,2,3,4
+```
+
 # ES6 声明变量的六种方法
 
 - ES5 只有两种声明变量的方法：var 和 function 。
