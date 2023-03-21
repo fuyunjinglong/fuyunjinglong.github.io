@@ -1,24 +1,12 @@
 ---
-title: 登录鉴权
+title: 登录鉴权和权限认证
 date: 2022-05-13 06:33:16
 categories:
 - D_框架和类库
 toc: true # 是否启用内容索引
 ---
 
-# 0.cookie,sessionStorage,localStorage
-
-| 特性         | cookie                                                       | sessionStorage | localStorage               | session                                           |
-| ------------ | ------------------------------------------------------------ | -------------- | -------------------------- | ------------------------------------------------- |
-| 来源         | 服务端设置到客户端，客户端保存。服务端响应头set-cookie保存sid,请求头携带sid访问服务器 | 会话中存在     | 除非手动删除，否则一直存在 | 服务端                                            |
-| 大小         | 4k                                                           | 5M             | 5M                         |                                                   |
-| 与服务器交互 | 同源的http请求中携带                                         |                |                            |                                                   |
-| 类型         | 会话cookie(随会话产生和丢失)和过期cookie(随过期时间)         |                |                            |                                                   |
-| 场景         | 非重要信息                                                   | 用户登录信息   |                            |                                                   |
-| 安全性       | 容易被窃取，采用session-cookie认证鉴权                       |                |                            |                                                   |
-| 特点         | 存在客户端，不可跨域                                         |                |                            | **SessionID 是连接 Cookie 和 Session 的一道桥梁** |
-
-# 1.**登录鉴权的3种方式**
+# **登录鉴权的3种方式**
 
 [前端鉴权（Cookie/Session、Token和OAuth）原文](https://juejin.cn/post/6844903864458543111#heading-0)
 
@@ -55,9 +43,19 @@ toc: true # 是否启用内容索引
 
 <img src="/img/image-20220602070819745.png" alt="image-20220602070819745" style="zoom:80%;" />
 
+**阮一峰老师的 [JSON Web Token 入门教程](https://link.juejin.cn/?target=http%3A%2F%2Fwww.ruanyifeng.com%2Fblog%2F2018%2F07%2Fjson_web_token-tutorial.html) 讲的非常通俗易懂**
+
  token是一个令牌，浏览器第一次访问服务端时会签发一张令牌，之后浏览器每次携带这张令牌访问服务端就会认证该令牌是否有效，只要服务端可以解密该令牌，就说明请求是合法的，令牌中包含的用户信息还可以区分不同身份的用户。一般token由用户信息、时间戳和由hash算法加密的签名构成。
 
-**阮一峰老师的 [JSON Web Token 入门教程](https://link.juejin.cn/?target=http%3A%2F%2Fwww.ruanyifeng.com%2Fblog%2F2018%2F07%2Fjson_web_token-tutorial.html) 讲的非常通俗易懂**
+token 也称作令牌，由uid+time+sign[+固定参数]
+token 的认证方式类似于**临时的证书签名**, 并且是一种服务端无状态的认证方式, 非常适合于 REST API 的场景. 所谓无状态就是服务端并不会保存身份认证相关的数据。
+
+组成：
+
+- uid: 用户唯一身份标识
+- time: 当前时间的时间戳
+- sign: 签名, 使用 hash/encrypt 压缩成定长的十六进制字符串，以防止第三方恶意拼接
+- 固定参数(可选): 将一些常用的固定参数加入到 token 中是为了避免重复查库
 
 **Token认证流程**
 
@@ -215,7 +213,7 @@ async getUser() {
 - 绝不要使用弱哈希或已被破解的哈希算法，像 MD5 或 SHA1 ，只使用强密码哈希算法。
 - 绝不要以明文形式显示或发送密码，即使是对密码的所有者也应该这样。如果你需要 “忘记密码” 的功能，可以随机生成一个新的 **一次性的**（这点很重要）密码，然后把这个密码发送给用户。
 
-# 2.**单点登录3种方案（SSO）**
+# **单点登录3种方案（SSO）**
 
 单点登录（Single Sign On，简称 SSO），是指在多系统应用群中登录一个系统，便可在其他所有系统中得到授权，无需再次登录。
 
@@ -294,12 +292,12 @@ LDAP（Lightweight Directory Access Protocol），它是基于 X.500 标准的�
 
 LDAP 主要是用来实现统一身份认证的技术，目前市面上大部分的开源系统都支持 LDAP，因此通过 LDAP 能够统一管理和维护公司的账号，极大地提高了运维的工作效率。
 
-# 3.**关于购物车数据**
+# **关于购物车数据**
 
 当用户登录状态时，添加产品到购物时，查看Basket中是否有Status为True的购物车，没有则添加一条新的Basket记录，并将产品信息相关数据添加至BasketDetail表中。
 当用户未登录时，使用cookie记录一个BasketId值，不往Basket表中插入数据，只往BasketDetail插入数据，其中的BasketId值使用cookie中的BasketId值，当用户登录后，查看Basket中是否有Status为True的购物车记录，有则合并（更新cookie和BasketDetail中的BasketId为查询出来的Basket表中的BasketId值），无则添加一条新的Basket记录，并将BasketId值置为Cookie中记录的basketid值。
 
-# 4.cookie、token与csrf、xss关系
+# cookie、token与csrf、xss关系
 
 > cookie：登陆后后端生成一个sessionid放在cookie中返回给客户端，并且服务端一直记录着这个sessionid，客户端以后每次请求都会带上这个sessionid，服务端通过这个sessionid来验证身份之类的操作。所以别人拿到了cookie拿到了sessionid后，就可以完全替代你。
 
@@ -322,3 +320,12 @@ csrf例子：假如一家银行用以运行转账操作的URL地址如下： htt
 
 > - 对于csrf来说，cookie容易被自动携带，token则不容易被自动携带。所以token防止csrf攻击。
 > - 对于xss来说，cookie和token都被获取的话，全都的完蛋。
+
+**token可以抵抗csrf，cookie+session不行**
+
+倘若是session+cookie，用户打开网页的时候就已经转给Tom1000元了.因为form 发起的 POST 请求并不受到浏览器同源策略的限制，因此可以任意地使用其他域的 Cookie 向其他域发送 POST 请求，形成 CSRF 攻击。在post请求的瞬间，cookie会被浏览器自动添加到请求头中。但token不同，token是开发者为了防范csrf而特别设计的令牌，浏览器不会自动添加到headers里，攻击者也无法访问用户的token
+
+- session存储于服务器，可以理解为一个状态列表，拥有一个唯一识别符号sessionId，通常存放于cookie中。服务器收到cookie后解析出sessionId，再去session列表中查找，才能找到相应session。依赖cookie
+- cookie类似一个令牌，装有sessionId，存储在客户端，浏览器通常会自动添加。
+- token也类似一个令牌，无状态，用户信息都被加密到token中，服务器收到token后解密就可知道是哪个用户。需要开发者手动添加。
+- jwt只是一个跨域认证的方案

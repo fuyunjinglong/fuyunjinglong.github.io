@@ -1568,17 +1568,33 @@ Vuex**集中式**存储管理应用的所有组件的状态，规定所有的数
 
 <img src="/img/image-20220529182549936.png" alt="image-20220529182549936" style="zoom:67%;" />
 
-- Vue Components：Vue 组件。HTML 页面上，负责接收用户操作等交互行为，执行 dispatch 方法触发对应 action 进行回应。
-- dispatch：操作行为触发方法，是唯一能执行 action 的方法。
-- actions：操作行为处理模块。负责处理 Vue Components 接收到的所有交互行为。包含同步/异步操作，支持多个同名方法，按照注册的顺序依次触发。向后台 API 请求的操作就在这个模块中进行，包括触发其他 action 以及提交 mutation 的操作。该模块提供了 Promise 的封装，以支持 action 的链式触发。
-- commit：状态改变提交操作方法。对 mutation 进行提交，是唯一能执行 mutation 的方法。
-- mutations：状态改变操作方法。是 Vuex 修改 state 的唯一**推荐**方法，**其他修改方式在严格模式下将会报错**。该方法只能进行同步操作，且方法名只能全局唯一。操作之中会有一些 hook 暴露出来，以进行 state 的监控等。
-- state：页面状态管理容器对象。集中存储 Vue components 中 data 对象的零散数据，全局唯一，以进行统一的状态管理。页面显示所需的数据从该对象中进行读取，利用 Vue 的细粒度数据响应机制来进行高效的状态更新。
-- getters：state 对象读取方法。图中没有单独列出该模块，应该被包含在了 render 中，Vue Components 通过该方法读取全局 state 对象。就像 computed 计算属性一样，getter 返回的值会根据它的依赖被缓存
+## Vuex
+
+**核心模块：**
+
+> State：定义了应用状态的数据结构，可以在这里设置默认的初始状态。
+>
+> Getter：允许组件从 Store 中获取数据，mapGetters 辅助函数仅仅是将 store 中的 getter 映射到局部计算属性。
+>
+> Mutation：是唯一更改 store 中状态的方法，且必须是同步函数。
+>
+> Action：用于提交 mutation，而不是直接变更状态，可以包含任意异步操作。
+>
+> Module：允许将单一的 Store 拆分为多个 store 且同时保存在单一的状态树中。
 
 **vuex 的组成**
 
 <img src="/img/image-20220530070800925.png" alt="image-20220530070800925" style="zoom:50%;" />
+
+**为什么 Vuex 的 mutation 中不能做异步操作？**
+
+- Vuex中所有的状态更新的唯一途径都是mutation，异步操作通过 Action 来提交 mutation实现，这样使得我们可以方便地跟踪每一个状态的变化，从而让我们能够实现一些工具帮助我们更好地了解我们的应用。
+- 每个mutation执行完成后都会对应到一个新的状态变更，这样devtools就可以打个快照存下来，然后就可以实现 time-travel 了。如果mutation支持异步操作，就没有办法知道状态是何时更新的，无法很好的进行状态的追踪，给调试带来困难。
+
+**为什么不直接分发mutation,而要通过分发action之后提交 mutation变更状态**
+
+- mutation 必须同步执行，我们可以在 action 内部执行异步操作
+- 可以进行一系列的异步操作，并且通过提交 mutation 来记录 action 产生的副作用（即状态变更）
 
 **Q1：vuex 的插件加载机制**
 

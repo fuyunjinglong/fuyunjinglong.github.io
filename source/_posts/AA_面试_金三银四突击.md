@@ -25,8 +25,6 @@ toc: true # 是否启用内容索引
 # H5
 
 - <a target="_blank" href="{% post_path 'C_H5_0基础' %}#为什么多个域名来存储网站资源会更有效">为什么利用多个域名来存储网站资源会更有效 ？</a>
-- <a target="_blank" href="{% post_path 'C_H5_0基础' %}#HTML5的离线缓存原理">HTML5 的离线缓存原理</a>
-- <a target="_blank" href="{% post_path 'C_H5_0基础' %}#cookies、sessionStorage和localStorage的区别">cookies，sessionStorage 和 localStorage 的区别</a>
 - <a target="_blank" href="{% post_path 'C_H5_0基础' %}#iframe内嵌框架缺点">iframe 内嵌框架缺点</a>
 
 # CSS
@@ -89,13 +87,18 @@ toc: true # 是否启用内容索引
 
 # 框架
 
+## 基础
+
+- 登录鉴权
+- 权限认证
+
 ## vue2
 
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#双向绑定">如何理解双向绑定</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#数据响应式">如何理解数据响应式</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#methods和watch、computed">computed和watch区别</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#父子组件生命周期顺序">父子组件生命周期钩子函数执行顺序</a>
-- 在哪个生命周期内调用异步请求？
+- <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#在哪个生命周期内调用异步请求？">在哪个生命周期内调用异步请求？</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#keep-alive原理">谈谈对keep-alive的理解</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_入门' %}#vuex">谈谈对vuex的理解</a>
 - router路由hash和history原理
@@ -118,7 +121,9 @@ toc: true # 是否启用内容索引
 
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#一文读懂-HTTP-1、HTTP-2、HTTP-3">一文读懂 HTTP/1、HTTP/2、HTTP/3</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#彻底搞懂Https">彻底搞懂Https</a>
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Http-Cookie机制及Cookie的实现原理">Http Cookie机制及Cookie的实现原理</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Cookies、SessionStorage和LocalStorage">cookies，sessionStorage 和 localStorage 的区别</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Cookie">Cookie的实现原理</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#应用缓存-manifest即HTML5的离线缓存">应用缓存-manifest即HTML5的离线缓存</a>
 
 # 数据结构与算法
 

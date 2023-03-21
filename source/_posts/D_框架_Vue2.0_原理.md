@@ -175,42 +175,118 @@ methodsToPatch.forEach(function (method) {
     ob.dep.notify()
 ```
 
-# 进阶
+## 在哪个生命周期内调用异步请求？
+
+可以在钩子函数 created、beforeMount、mounted 中进行调用。
+
+建议在created中调用：
+
+> - 能更快获取到服务端数据，减少页面 loading 时间；
+> - ssr 不支持 beforeMount 、mounted 钩子函数，所以放在 created 中有助于一致性；
+
+## vm.$set()如何解决对象属性新增问题
+
+原理：
+
+> - 如果目标是数组，使用 vue 实现的变异方法 splice 实现响应式
+> - 如果目标是对象,判断属性存在,同时也为响应式,直接赋值
+> - 如果 target 本身就不是响应式,直接赋值
+> - 如果属性不是响应式,则调用 defineReactive 方法进行响应式处理
+
+# 高阶
 
 ## 数据响应式
 
-首先要了解vue的初始化
+[数据响应式图1](https://blog.csdn.net/forever__fish/article/details/127163227)
 
-```js
-/*初始化生命周期*/
-initLifecycle(vm)
-/*初始化事件*/
-initEvents(vm)Object.defineProperty 
-/*初始化render*/
-initRender(vm)
-/*调用beforeCreate钩子函数并且触发beforeCreate钩子事件*/
-callHook(vm, 'beforeCreate')
-initInjections(vm) // resolve injections before data/props
-/*初始化props、methods、data、computed与watch*/
-initState(vm)
-initProvide(vm) // resolve provide after data/props
-/*调用created钩子函数并且触发created钩子事件*/
-callHook(vm, 'created')
-```
+[数据响应式图2](https://www.jianshu.com/p/b1564296a78b)
 
-**initState(vm)** 是用来初始化props,methods,data,computed和watch;**initState**中的**initData**为关键一步。
+**原理**
 
-**initData**做了两件事：1将_data上面的数据代理到vm；2执行observe()，将所有data变成可观察的。
+通过数据劫持代理+发布订阅模式来实现
 
-关键3步：
+**核心流程**
 
-1）Observer.defineProperty劫持data中的每一个属性添加`getter`和`setter`即数据劫持
-
-2）创建`dep`和`watcher`进行`依赖收集`和`派发更新`，即订阅发布
-
-3）通过`diff`算法对比新旧vnode差异，通过`patch`即时更新DOM
+> 1. 实现一个监听器 Observer：对数据对象进行遍历，包括子属性对象的属性，利用 Object.defineProperty() 对属性都加上 setter 和 getter。劫持data中的每一个属性添加`getter`和`setter`即数据劫持
+> 2. 实现一个解析器 Compile：解析 Vue 模板指令，将模板中的变量都替换成数据，然后初始化渲染页面视图，并将每个指令对应的节点绑定更新函数，添加监听数据的订阅者，一旦数据有变动，收到通知，调用更新函数进行数据更新。
+> 3. 实现一个订阅者 Watcher：派发更新，Watcher 订阅者是 Observer 和 Compile 之间通信的桥梁 ，主要的任务是订阅 Observer 中的属性值变化的消息，当收到属性值变化的消息时，触发解析器 Compile 中对应的更新函数。
+> 4. 实现一个订阅器 Dep：依赖收集，订阅器采用 发布-订阅 设计模式，用来收集订阅者 Watcher，对监听器 Observer 和 订阅者 Watcher 进行统一管理。
 
 简单理解：Dep可以看做是书店，Watcher就是书店订阅者，而Observer就是书店的书，订阅者在书店订阅书籍，就可以添加订阅者信息，一旦有新书就会通过书店给订阅者发送消息。Observer与Dep是1对1，Dep和Watcher是多对多。
+
+## **双向绑定**
+
+- Vue是单向数据流，不是双向绑定
+- Vue的双向绑定不过是语法糖，v-bind数据绑定 与 v-on处理函数绑定
+- Object.definePropert是用来做响应式更新的
+
+父组件
+
+```
+<AnalysisSub v-model="phoneInfo" :zip-code.sync="zipCode" />
+或 <AnalysisSub :phone-info="phoneInfo" @change="val => (phoneInfo = val)"
+    :zip-code="zipCode"  @update:zipCode="val => (zipCode = val)"/>
+```
+
+子组件
+
+```
+<template>
+  <div>
+    <input
+      :value="phoneInfo.phone"
+      type="number"
+      placeholder="手机号"
+      @input="handlePhoneChange"
+    />
+    <input
+      :value="zipCode"
+      type="number"
+      placeholder="邮编"
+      @input="handleZipCodeChange"
+    />
+  </div>
+</template>
+<script>
+export default {
+  name: "PersonalInfo",
+  model: {
+    prop: "phoneInfo", // 默认 value
+    event: "change" // 默认 input
+  },
+  props: {
+    phoneInfo: Object,
+    zipCode: String
+  },
+  methods: {
+    handlePhoneChange(e) {
+      this.$emit("change", {
+        ...this.phoneInfo,
+        phone: e.target.value
+      });
+    },
+    handleZipCodeChange(e) {
+      this.$emit("update:zipCode", e.target.value);
+    }
+  }
+};
+</script>
+```
+
+```
+允许一个自定义组件在使用 v-model 时定制 prop 和 event。默认情况下，一个组件上的 v-model 会把 value 用作 prop 且把 input 用作 event，但是一些输入类型比如单选框和复选框按钮可能想使用 value prop 来达到不同的目的。使用 model 选项可以回避这些情况产生的冲突。
+在有些情况下，我们可能需要对一个 prop 进行“双向绑定”。不幸的是，真正的双向绑定会带来维护上的问题，因为子组件可以修改父组件，且在父组件和子组件都没有明显的改动来源。
+v-model和.sync修饰符分别在组件单个属性、多个属性需要双向绑定下使用，这是二者使用的场景。引入sync标记。这种双向的改变可以灵活控制，但是会带来维护上的复杂性
+```
+
+**Object.defineProperty 与 Proxy**
+
+1.Object.defineProperty：
+只能对属性进行劫持，需要递归遍历对象的每个属性，执行Object.defineProperty把每一层对象数据都变成响应式的（如果定义的响应式数据过于复杂，会有很大的性能负担）
+不能检测对象属性的添加和删除（需要重新遍历）
+2.Proxy
+在getter中去递归响应式，真正访问到的内部对象才会变成响应式，而不是无脑递归，提升了性能
+劫持的是整个对象，能检测到对象属性的添加和删除
 
 ## Observer/Dep/Watcher
 
@@ -749,80 +825,6 @@ export default class Watcher {
 ```
 
 
-
-## **双向绑定**
-
-- Vue是单向数据流，不是双向绑定
-- Vue的双向绑定不过是语法糖，v-bind数据绑定 与 v-on处理函数绑定
-- Object.definePropert是用来做响应式更新的
-
-父组件
-
-```
-<AnalysisSub v-model="phoneInfo" :zip-code.sync="zipCode" />
-或 <AnalysisSub :phone-info="phoneInfo" @change="val => (phoneInfo = val)"
-    :zip-code="zipCode"  @update:zipCode="val => (zipCode = val)"/>
-```
-
-子组件
-
-```
-<template>
-  <div>
-    <input
-      :value="phoneInfo.phone"
-      type="number"
-      placeholder="手机号"
-      @input="handlePhoneChange"
-    />
-    <input
-      :value="zipCode"
-      type="number"
-      placeholder="邮编"
-      @input="handleZipCodeChange"
-    />
-  </div>
-</template>
-<script>
-export default {
-  name: "PersonalInfo",
-  model: {
-    prop: "phoneInfo", // 默认 value
-    event: "change" // 默认 input
-  },
-  props: {
-    phoneInfo: Object,
-    zipCode: String
-  },
-  methods: {
-    handlePhoneChange(e) {
-      this.$emit("change", {
-        ...this.phoneInfo,
-        phone: e.target.value
-      });
-    },
-    handleZipCodeChange(e) {
-      this.$emit("update:zipCode", e.target.value);
-    }
-  }
-};
-</script>
-```
-
-```
-允许一个自定义组件在使用 v-model 时定制 prop 和 event。默认情况下，一个组件上的 v-model 会把 value 用作 prop 且把 input 用作 event，但是一些输入类型比如单选框和复选框按钮可能想使用 value prop 来达到不同的目的。使用 model 选项可以回避这些情况产生的冲突。
-在有些情况下，我们可能需要对一个 prop 进行“双向绑定”。不幸的是，真正的双向绑定会带来维护上的问题，因为子组件可以修改父组件，且在父组件和子组件都没有明显的改动来源。
-v-model和.sync修饰符分别在组件单个属性、多个属性需要双向绑定下使用，这是二者使用的场景。引入sync标记。这种双向的改变可以灵活控制，但是会带来维护上的复杂性
-```
-
-**Object.defineProperty 与 Proxy**
-
-1.Object.defineProperty：
-只能对属性进行劫持，需要递归遍历对象的每个属性，执行Object.defineProperty把每一层对象数据都变成响应式的（如果定义的响应式数据过于复杂，会有很大的性能负担）
-不能检测对象属性的添加和删除（需要重新遍历）
-2.Proxy
-在getter中去递归响应式，真正访问到的内部对象才会变成响应式，而不是无脑递归，提升了性能
-劫持的是整个对象，能检测到对象属性的添加和删除
 
 ## Virtual DOM 
 
