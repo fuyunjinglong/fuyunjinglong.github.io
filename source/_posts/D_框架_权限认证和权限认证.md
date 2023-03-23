@@ -72,7 +72,9 @@ toc: true # 是否启用内容索引
 
 > **uid** (用户唯一的身份标识) + **time** (当前时间的时间戳) + **sign** (签名，Token 的前几位以哈希算法压缩成的一定长度的十六进制字符串)
 
-**Token 的认证流程图**截图https://mybj123.com/17234.html
+**Token 的认证流程图**
+
+<img src="C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20230324072532875.png" alt="image-20230324072532875" style="zoom:65%;" />
 
 **认证流程**
 
@@ -110,7 +112,9 @@ toc: true # 是否启用内容索引
 > - **Access Token：** 用来访问业务接口，由于有效期足够短，盗用风险小，也可以使请求方式更宽松灵活；
 > - **Refresh Token：** 用来获取 Access Token，有效期可以长一些，通过独立服务和严格的请求方式增加安全性；由于不常验证，也可以如前面的 Session 一样处理；
 
-**Refresh Token 的认证流程图**截图https://mybj123.com/17234.html
+**Refresh Token 的认证流程图**
+
+<img src="C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20230324072624985.png" alt="image-20230324072624985" style="zoom:65%;" />
 
 认证流程：
 
@@ -166,7 +170,9 @@ Signature 部分是对前两部分的签名，防止数据篡改。
 
 指定一个密钥（secret）,然后使用 Header 里面指定的签名算法（默认是 HMAC SHA256）产生签名。
 
-**JWT 的认证流程图**截图https://mybj123.com/17234.html
+**JWT 的认证流程图**
+
+<img src="C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20230324073947821.png" alt="image-20230324073947821" style="zoom:67%;" />
 
 **优点**
 
@@ -201,7 +207,9 @@ Signature 部分是对前两部分的签名，防止数据篡改。
 
 比如天猫 和 淘宝的互相登录访问，采用了CAS（Central Authentication Service）中央授权服务。
 
-**单点登录下的 CAS 认证流程图**截图https://mybj123.com/17234.html
+**单点登录下的 CAS 认证流程图**
+
+![image-20230324074042090](C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20230324074042090.png)
 
 认证流程：
 
@@ -275,7 +283,9 @@ OAuth 2.0 颁发令牌一共分成**四种授权**模式 **（Authorization Gran
 
 我想要实现用户只能在一个设备上登录，禁止用户重复登录。
 
-**唯一登录流程图**截图https://mybj123.com/17234.html
+**唯一登录流程图**
+
+![image-20230324074132586](C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20230324074132586.png)
 
 认证流程：
 
@@ -295,7 +305,9 @@ OAuth 2.0 颁发令牌一共分成**四种授权**模式 **（Authorization Gran
 
 二维码为 QR Code，QR 全称 Quick Response。扫码登录需要三端 (`PC端`、`手机端`、`服务端`) 来进行配合才能达到登录。
 
-**扫码登录的认证流程图**截图https://mybj123.com/17234.html
+**扫码登录的认证流程图**
+
+![image-20230324074241004](C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20230324074241004.png)
 
 认证流程：
 
