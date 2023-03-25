@@ -78,22 +78,38 @@ a.在 Vue 实例销毁后调用，调用后，Vue 实例指示的所有东西都
 父beforeCreate-> 父create -> 子beforeCreate-> 子created -> 子mounted -> 父mounted
 ```
 
+## Vue2.x组件通信方式
+
+> 父子组件通信
+>
+> - 事件机制(**父->子props,子->父 `$on、$emit`)
+> - 获取父子组件实例 `$parent、$children`
+> - Ref 获取实例的方式调用组件的属性或者方法
+> - Provide、inject (不推荐使用，组件库时很常用)
+>
+> 兄弟组件通信
+>
+> - eventBus ,也适用任意组件
+>
+> 跨级组件通信
+>
+> - Vuex
+> - `$attrs、$listeners`
+> - Provide、inject
+
 ## methods和watch、computed
 
-watch和computed都是对数据的监听只有数据发生变化时才会触发。
+> - watch和computed都是依赖数据变化触发
+>   - watch:擅长一对多的关系处理，无缓存性，可以执行深监听
+>   - computed:擅长多对一的关系处理，有缓存性
+> - methods通过实践驱动触发
 
-***watch更擅长一对多***：就是主要监听一个可以影响多个数据的数据，watch比computed更强大。因为它能处理异步。
-**computed擅长多对一**：主要监听多个数据影响一个数据的数据，一定要return
+## v-for和v-if不能连用
 
-**methods**是通过事件驱动来执行函数的是被动的，watch、computed是当监听的数据发生变化时主动执行这个函数。
-
-methods的运算是没有缓存的，computed运算是有缓存的。
-
-## v-if产生的内存泄漏问题
-
-v-if 绑定到 false 的值，但是实际上 dom 元素在隐藏的时候没有被真实的释放掉。
-
-比如下面的示例中，我们加载了一个带有非常多选项的选择框，然后我们用到了一个显示/隐藏按钮，通过一个 v-if 指令从虚拟 DOM 中添加或移除它。这个示例的问题在于这个 v-if 指令会从 DOM 中移除父级元素，但是我们并没有清除由 js文件中新添加的 DOM 片段，从而导致了内存泄漏。
+> - 因为v-for的优先级比v-if的优先级高，所以如果嵌套使用的话，每次v-for都会执行一次v-if，造成重复计算的问题，会影响性能，所以vue官方不推荐这样使用
+> - 建议使用 computed，对数据先过滤
+> - 在 vue 2.x 中，在一个元素上同时使用 `v-if` 和 `v-for` 时，`v-for` 会优先作用。
+> - 在 vue 3.x 中，`v-if` 总是优先于 `v-for` 生效。
 
 ## 数组变异方法
 
@@ -193,7 +209,51 @@ methodsToPatch.forEach(function (method) {
 > - 如果 target 本身就不是响应式,直接赋值
 > - 如果属性不是响应式,则调用 defineReactive 方法进行响应式处理
 
+## 组件中的data为什么是一个函数？
+
+> - 一个组件被复用多次的话，也就会创建多个实例。本质上，这些实例用的都是同一个构造函数。
+> - 如果data是对象的话，对象属于引用类型，会影响到所有的实例。而函数就不影响
+> - 如果是root根实例，可以使用对象，因为只有一个实例。
+
+
+
 # 高阶
+
+## MVC、MVP、MVVM与Vue关系
+
+这三个框架模式表示了web领域的发展进程，从最早的前后端.net,jsp到分离的ajax,再到完全的前后端分离，再到响应式。
+
+这三者共同的目标都是为了职责划分，代码分层，解决维护问题，目标是为了解决Mode数据和View视图的耦合问题。
+
+**MVC**
+
+![image-20211225211541701](/img/image-20211225211541701.png)
+
+MVC最早出现在服务端，如springmvc，在前端早期也有应用，如Backbone.js,优点是分层清晰，缺点是数据流混乱，灵活性带来了维护问题。
+
+所有的通信流程都是单向的。
+
+> - 视图（View）：用户界面。
+> - 控制器（Controller）：业务逻辑
+> - 模型（Model）：数据保存
+
+**MVP**
+
+MVP 模式将 Controller 改名为 Presenter，同时改变了通信方向。解决MV的耦合性问题，但P层过于臃肿。
+
+![image-20211225211824003](/img/image-20211225211824003.png)
+
+**MVVM**
+
+MVVM 模式将 Presenter 改名为 ViewModel，基本上与 MVP 模式完全一致。
+
+唯一的区别是，它采用双向绑定（data-binding）：View的变动，自动反映在 ViewModel
+
+MVVM广泛应用于前端领域，不仅解决MV耦合问题，还解决了两者映射关系复杂和DOM操作代码，提高开发效率、代码可读性。
+
+**Vue**
+
+是MVVM框架(基于mvc升级，弱化了controller层。但没有完全遵循mvvm，因为传统mvvm是不能手动操作数据，而vue有ref操作dom数据)
 
 ## 数据响应式
 
@@ -216,7 +276,12 @@ methodsToPatch.forEach(function (method) {
 
 ## **双向绑定**
 
-- Vue是单向数据流，不是双向绑定
+> vue的单向数据流
+>
+> - Vue提倡单向数据流,即父级props的更新会流向子组件,但是反过来则不行。
+> - 如果破坏了单向数据流，当应用复杂时，debug 的成本会非常高。
+
+- Vue是单向数据流，不是双向数据流
 - Vue的双向绑定不过是语法糖，v-bind数据绑定 与 v-on处理函数绑定
 - Object.definePropert是用来做响应式更新的
 
@@ -1062,69 +1127,45 @@ export function resolveInject(inject: any, vm: Component): Record<string, any> |
 
 [Vue 2 阅读理解（十四）之 Provide/Inject 依赖注入](https://juejin.cn/post/7135761522759827493)
 
-## runtime-compiler和runtime-only
+## Vue模板编译流程
 
-**1.Vue的编译渲染过程**
+[Vue | 模板是如何编译的](https://juejin.cn/post/7035832002620162084#heading-0)
 
-template => ast => render函数 => VDOM => 真实DOM
+Vue提供两个不同构建版本：
 
-- 先将template解析成抽象语法树（ast）
-- 将ast编译成（complier）成render函数
-- 将render函数渲染（render）成虚拟DOM
-- 最后将虚拟DOM渲染成真实DOM
+> - `vue.js`： 完整版本，包含了模板编译的能力；对应runtime-compiler
+> - `vue.runtime.js`： 运行时版本，不提供模板编译能力，需要通过 vue-loader 进行提前编译。对应runtime-only
 
-**runtime-with-compiler**
+所以
 
-```
-new Vue({
-  el:'#app',
-  components:{APP},
-  template:'<APP/>'
-})
-```
+> - 如果通过 `script` 标签引入 Vue，需要使用 `vue.min.js`
+> - 如果使用了vue-loader,就可以只用 `vue.runtime.js`
 
-渲染过程：template ==> ast ==> render ==> vdom ==> UI
+编译核心流程：
 
-**runtime-only**
+> - parse解析器：将模板解析成 AST
+> - optimize优化器：标记静态节点
+> - generate代码生成器：将 AST 转换成“代码字符串”
 
-```
-new Vue({
-  el:'#app',
+编译渲染完整流程：
 
-  render: h=>h(APP)
-})
-```
-
-渲染过程：render ==> vdom ==> UI
-
-| runtime-compiler                     | runtime-only           |
-| :----------------------------------- | :--------------------- |
-| 体积更大（有compiler代码）           | 体积更小               |
-| 有Vue.compilerAPI                    | 无Vue.compilerAPI      |
-| 可以使用template模板、render函数渲染 | 只能使用render函数渲染 |
-
-- 若只使用指令、数据绑定等，此时写template比写render函数更容易理解并方便，则需使用Runtime + Compiler构建的Vue库
-- 挂载DOM元素的HTML被提取出来作为模板，则需使用Runtime + Compiler构建的Vue库
-
-**本质**
-
-runtime-with-compiler的打包入口文件是src/platforms/web/entry-runtime-with-compiler.js
-
-runtime-only的打包入口文件是src/platforms/web/entry-runtime.js
-
-runtime-with-compiler调用了runtime-only的$mount,并原形重写其方法。
-
-**打包流程**
-
-![image-20220113072406138](/img/image-20220113072406138.png)
+> template => ast => render函数 => VDOM => 真实DOM
+>
+> - 先将template解析成抽象语法树（ast）
+> - 将ast编译成（complier）成render函数
+> - 将render函数渲染（render）成虚拟DOM
+> - 最后将虚拟DOM渲染成真实DOM
 
 ## keep-alive原理
 
 **1.定义**
 
-keep-alive是一个抽象组件：它是一个vNode虚拟节点，它自身不会渲染一个 DOM 元素，也不会出现在父组件链中。
+keep-alive 是 Vue 内置的一个组件，可以使被包含的组件保留状态，避免重新渲染
 
-keep-alive包裹动态组件时，会缓存不活动的组件实例，而不是销毁它们。
+> - 一般结合路由和动态组件一起使用，用于缓存组件；
+> - 常用的两个属性include/exclude，允许组件有条件的进行缓存。其中 exclude 的优先级比 include 高
+> - 两个生命周期activated/deactivated，用来得知当前组件是否处于活跃状态。
+> - keep-alive的中还运用了LRU(Least Recently Used)算法。
 
 **2.功能**
 
@@ -1310,18 +1351,11 @@ export default {
 
 keep-alive刚好就发生在patch期间。abstract: true也导致了vue渲染时，不会生成真正的实例。
 
-## $nexttick原理
+## nextTick的实现原理
 
-**1.概述**
-
-在下次 `DOM` 更新循环结束之后执行延迟回调。`nextTick`主要使用了宏任务和微任务。根据执行环境分别尝试采用
-
-- Promise
-- MutationObserver
-- setImmediate
-- 如果以上都不行则采用setTimeout
-
-定义了一个异步方法，多次调用nextTick会将方法存入队列中，通过这个异步方法清空当前队列。
+> - 在下次 DOM 更新循环结束之后执行延迟回调，在修改数据之后立即使用 nextTick 来获取更新后的 DOM。
+> - nextTick主要使用了**宏任务**和**微任务**。
+> - 根据执行环境分别尝试采用Promise、MutationObserver、setImmediate，如果以上都不行则采用setTimeout定义了一个异步方法，多次调用nextTick会将方法存入队列中，通过这个异步方法清空当前队列。
 
 **2.源码分析**
 
@@ -1464,6 +1498,170 @@ function flushCallback () {
 }
 
 ```
+
+## Vue-router路由-hash和history
+
+> - hash 模式：
+>   - \#后面 hash 值的变化，不会导致浏览器向服务器发出请求，浏览器不发出请求，就不会刷新页面
+>   - 通过监听 **hashchange** 事件可以知道 hash 发生了哪些变化，然后根据 hash 变化来实现更新页面部分内容的操作。
+> - history 模式：
+>   - history 模式的实现，主要是 HTML5 标准发布的两个 API，**pushState** 和 **replaceState**，这两个 API 可以在改变 url，但是不会发送请求。这样就可以监听 url 变化来实现更新页面部分内容的操作
+> - 区别
+>   - url 展示上，hash 模式有“#”，history 模式没有
+>   - 刷新页面时，hash 模式可以正常加载到 hash 值对应的页面，而 history 没有处理的话，会返回 404，一般需要后端将所有页面都配置重定向到首页路由
+>   - 兼容性，hash 可以支持低版本浏览器和 IE。
+
+## Vue-router路由-懒加载
+
+三种实现方式：
+
+> 1. vue异步组件
+> 2. es提案的import()
+> 3. webpack的require,ensure()
+
+**1.vue异步组件**
+
+```
+{ 
+path: '/home', 
+name: 'home', 
+component: resolve => **require**(['@/components/home'],resolve) 
+},
+```
+
+**2.es提案的import()**
+
+```
+const Home = () => import('@/components/home')
+```
+
+**3.webpack的require,ensure()**
+
+```
+{ 
+path: '/home', 
+name: 'home', 
+component: r => require.ensure([], () => r(require('@/components/home')), 'demo') 
+},
+```
+
+
+
+## Vue-router导航守卫有哪些
+
+- 全局前置/钩子：beforeEach、beforeResolve、afterEach
+- 路由独享的守卫：beforeEnter
+- 组件内的守卫：beforeRouteEnter、beforeRouteUpdate、beforeRouteLeave
+
+**完整的导航解析流程：**
+
+1. 导航被触发。
+2. 在失活的组件里调用 `beforeRouteLeave` 守卫。
+3. 调用全局的 `beforeEach` 守卫。
+4. 在重用的组件里调用 `beforeRouteUpdate` 守卫(2.2+)。
+5. 在路由配置里调用 `beforeEnter`。
+6. 解析异步路由组件。
+7. 在被激活的组件里调用 `beforeRouteEnter`。
+8. 调用全局的 `beforeResolve` 守卫(2.5+)。
+9. 导航被确认。
+10. 调用全局的 `afterEach` 钩子。
+11. 触发 DOM 更新。
+12. 调用 `beforeRouteEnter` 守卫中传给 `next` 的回调函数，创建好的组件实例会作为回调函数的参数传入。
+
+**1.全局守卫**
+
+**具体分为：全局前置守卫、全局解析守卫、全局后置钩子**
+
+**1.1 全局前置守卫-beforeEach**
+
+```
+// GOOD
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'Login' && !isAuthenticated) next({ name: 'Login' })
+  else next()
+})
+```
+
+**1.2 全局解析守卫-beforeResolve**
+
+在 **每次导航**时都会触发，但是确保在导航被确认之前，**同时在所有组件内守卫和异步路由组件被解析之后，解析守卫就被正确调用**
+
+```
+router.beforeResolve(async to => {
+  if (to.meta.requiresCamera) {
+    try {
+      await askForCameraPermission()
+    } catch (error) {
+      if (error instanceof NotAllowedError) {
+        // ... 处理错误，然后取消导航
+        return false
+      } else {
+        // 意料之外的错误，取消导航并把错误传给全局处理器
+        throw error
+      }
+    }
+  }
+})
+```
+
+**1.3 全局后置钩子**
+
+不会接受 `next` 函数也不会改变导航本身，对于分析、更改页面标题、声明页面等辅助功能
+
+```
+router.afterEach((to, from, failure) => {
+  if (!failure) sendToAnalytics(to.fullPath)
+})
+```
+
+**2.路由独享的守卫-beforeEnter**
+
+`beforeEnter` 守卫 **只在进入路由时触发**，不会在 `params`、`query` 或 `hash` 改变时触发
+
+```
+const routes = [
+  {
+    path: '/users/:id',
+    component: UserDetails,
+    beforeEnter: (to, from) => {
+      // reject the navigation
+      return false
+    },
+  },
+]
+```
+
+**3.组件内的守卫**
+
+- `beforeRouteEnter`
+- `beforeRouteUpdate`
+- `beforeRouteLeave`
+
+```
+const UserDetails = {
+  template: `...`,
+  beforeRouteEnter(to, from) {
+    // 在渲染该组件的对应路由被验证前调用
+    // 不能获取组件实例 `this` ！
+    // 因为当守卫执行时，组件实例还没被创建！
+  },
+  beforeRouteUpdate(to, from) {
+    // 在当前路由改变，但是该组件被复用时调用
+    // 举例来说，对于一个带有动态参数的路径 `/users/:id`，在 `/users/1` 和 `/users/2` 之间跳转的时候，
+    // 由于会渲染同样的 `UserDetails` 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
+    // 因为在这种情况发生的时候，组件已经挂载好了，导航守卫可以访问组件实例 `this`
+  },
+  beforeRouteLeave(to, from) {
+    // 在导航离开渲染该组件的对应路由时调用
+    // 与 `beforeRouteUpdate` 一样，它可以访问组件实例 `this`
+  },
+}
+```
+
+**`$route`和`$router`的区别**
+
+- $route 是`路由信息对象`，包括 path，params，hash，query，fullPath，matched，name 等路由信息参数。
+- 而$router 是`路由实例`对象包括了路由的跳转方法，钩子函数等。
 
 ## vue 性能优化
 
