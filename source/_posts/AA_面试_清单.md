@@ -12,6 +12,8 @@ toc: true # 是否启用内容索引
 
 [github更多面试题](https://github.com/search?o=desc&p=1&q=%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95&s=&type=Repositories)
 
+[Vue3+ & Vue-CLI3+开发生态圈资讯-地表最强](https://github.com/vue3/vue3-News)
+
 [FrontEndGitHub-前端尤其Issues](https://github.com/FrontEndGitHub/FrontEndGitHub)
 
 [Front-end-Developer-Questions-前端面试问题](https://h5bp.org/Front-end-Developer-Interview-Questions/translations/chinese/#js-questions)
