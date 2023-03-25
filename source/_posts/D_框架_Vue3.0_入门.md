@@ -1783,3 +1783,51 @@ Vue 3 还是不够激进（真要激进了我感觉 Vue 就成 React With Reacti
 > 6. 我在 vue3 从没使用过 [emits](https://www.zhihu.com/search?q=emits&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A1835420993})，实际上也非常建议不要允许 emits 属性在生产环境的使用，我相信这个选项留着更多的还是为了兼容性的问题。vModel 本身是个语法糖，类型支持如何完全取决于对 props 的类型支持，只能等着插件逐步完善了。至于对 onXxx 的支持，确实比 React 要弱一些，我觉得目前只能说达到基本可用的状态，由于 Vue 采取了原生事件，原生事件的类型没有对于 target 的泛型，对于事件的支持不如 React 一整套重写的事件类型也是情理之中。
 >
 >    总的来说 Vue3 的 typescript 支持在 TSX 的情境下其实是可以有不错的体验的（但是离 React 还有不小的差距）。但是模板之下，就看工具链是否给力了，还是希望 Vue 在 SFC 情况下的类型体验能早日达到 TSX 的程度。
+
+## 案例-实现switch 功能组件
+
+一般比较粗暴简单的办法是if判断，或者component动态组件。
+
+这里我们使用render函数处理slot，动态判断插槽显示。
+
+```
+// App.vue
+<script setup lang="ts">
+import { ref } from "vue";
+import VSwitch from './components/VSwitch.vue'
+
+const name = ref('bar')
+</script>
+<template>
+    <v-switch :case="name">
+        <template #foo>
+            foo
+        </template>
+        <template #bar>
+            bar
+        </template>
+        <template #default>
+            default
+        </template>
+    </v-switch>
+</template>
+
+// VSwitch.vue
+<script lang="ts">
+import { defineComponent}  from 'vue'
+export default defineComponent({
+    props:['case'],
+    setup(props,{slots}){
+        return ()=>{
+            if(slots[props.case]){
+                return slots[props.case]();
+            }
+            if(slots['default']){
+                return slots['default']()
+            }
+        }
+    }
+})
+</script>
+```
+

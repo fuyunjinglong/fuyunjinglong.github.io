@@ -119,12 +119,13 @@ npm config set strict-ssl false
 
 <img src="/img/image-20220904121713944.png" alt="image-20220904121713944" style="zoom:67%;" />
 
-## npm太慢就用yarn
+## yarn安装
 
 ```
 npm install -g yarn --registry=https://registry.npm.taobao.org
 yarn config set registry https://registry.npm.taobao.org -g
 yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g
+yarn -v // 查看
 ```
 
 yarn 常用命令
@@ -146,7 +147,6 @@ npm run === yarn run
 npm cache clean === yarn cache clean
 npm login === yarn login
 npm test === yarn test
-
 ```
 
 ```
@@ -206,6 +206,31 @@ yarn info <packageName> 可以用来查看某个模块的最新版本信息
 - **更简洁的输出**：npm 的输出信息比较冗长。在执行 npm install 的时候，命令行里会不断地打印出所有被安装上的依赖。相比之下，Yarn 简洁太多：默认情况下，结合了 emoji直观且直接地打印出必要的信息，也提供了一些命令供开发者查询额外的安装信息。
 - **多注册来源处理：**所有的依赖包，不管他被不同的库间接关联引用多少次，安装这个包时，只会从一个注册来源去装，要么是 npm 要么是 bower, 防止出现混乱不一致。
 - **更好的语义化**： yarn改变了一些npm命令的名称，比如 yarn add/remove，感觉上比 npm 原本的 install/uninstall 要更清晰。
+
+## pnpm安装
+
+全局安装
+
+```
+npm install pnpm -g
+```
+
+设置淘宝源
+
+```
+//查看源
+pnpm config get registry 
+//切换淘宝源
+pnpm config set registry http://registry.npm.taobao.org 
+```
+
+查看
+
+```
+pnpm -v
+```
+
+
 
 # linux环境
 
