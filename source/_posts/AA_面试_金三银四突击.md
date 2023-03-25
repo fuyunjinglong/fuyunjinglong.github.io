@@ -6,6 +6,17 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
+---
+title: 金三银四突击
+date: 2023-03-07 06:33:16
+categories:
+- AA_面试
+toc: true # 是否启用内容索引
+
+
+
+---
+
 # interview-imporant
 
 **手写vue3源码之pnpm实现monorepo包管理**
@@ -46,10 +57,11 @@ toc: true # 是否启用内容索引
 # JS
 
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#彻底搞懂this">彻底搞懂this(看题给结果)</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#消息队列和事件循环">消息队列和事件循环(看题给结果)</a>
+- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#闭包大合集">闭包(看题给结果)</a>
+- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#原型、原型链、继承">原型、原型链、继承(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'C_H5_0基础' %}#浏览器内核的理解">浏览器内核的理解</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#null和undefined">null 和 undefined</a>
-- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#原型、原型链、继承">原型、原型链、继承</a>
-- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#闭包大合集">闭包(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#JS的8种继承方案">JS的8种继承方案</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#柯里化-实现add-1-2-3-6">实现 add(1)(2)(3) = 6</a>
 - <a target="_blank" href="{% post_path 'H_工程热点_性能优化_0基础' %}#从输入url到渲染完成整个过程">从输入url到渲染完成整个过程</a>
@@ -57,10 +69,10 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#内存溢出和内存泄漏">内存泄露</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS-类型判断-对象-数组">JS 判断变量是对象还是数组</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS类型判断-typeof-instanceof-constructor-toString">JS类型判断---typeof, constructor, instanceof, toString</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#消息队列和事件循环">消息队列和事件循环(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#常见六大Web安全攻防解析">常见六大Web安全攻防解析</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#async和defer的作用是什么？有什么区别">async和defer的作用是什么？有什么区别</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#模块化规范">模块化规范</a>
+- <a target="_blank" href="{% post_path 'D_框架_Vue2和Vue3比较' %}#Object-defineProperty与Proxy">必会20道JS-手写数据双向绑定</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#call-apply-bind">必会20道JS-手写call/apply/bind</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#instanceof操作符">必会20道JS-手写instanceof</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#Object-create">必会20道JS-手写Object.create</a>
@@ -70,7 +82,6 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#实现setTimeout和实现setInterval">必会20道JS-手写setTimeout模拟setInterval</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#原型式继承">必会20道JS-手写一种原型式继承和构造函数继承</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-EventBus">必会20道JS-手写-EventBus</a>
-- <a target="_blank" href="{% post_path 'D_框架_Vue2和Vue3比较' %}#Object-defineProperty与Proxy">必会20道JS-手写数据双向绑定</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-简单路由">必会20道JS-手写简单路由</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-rem实现原理">必会20道JS-手写rem实现原理</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-实现拖拽">必会20道JS-手写实现拖拽</a>
@@ -78,21 +89,19 @@ toc: true # 是否启用内容索引
 
 # ES6
 
+- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#for-循环中的-var-、let-与-const-区别">for 循环中的 var 、let 与 const 区别(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#ES5和ES6之默认值的区别-？">ES5和ES6之默认值的区别？</a>
 - <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#ES5和ES6之继承的区别-？">ES5和ES6之继承的区别？</a>
 - <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#Promise是什么">Promise是什么</a>
 - <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#Generator函数是什么">Generator函数是什么</a>
 - <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#async函数是什么">async函数是什么</a>
-- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#for-循环中的-var-、let-与-const-区别">for 循环中的 var 、let 与 const 区别(看题给结果)</a>
 
-# 框架
+# 框架-基础
 
-## 基础
+- <a target="_blank" href="{% post_path 'D_框架_登录鉴权和权限认证' %}#权限认证">权限认证</a>
+- <a target="_blank" href="{% post_path 'D_框架_登录鉴权和权限认证' %}#权限控制">权限控制</a>
 
-- 登录鉴权
-- 权限认证
-
-## vue2
+# 框架-vue2
 
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#双向绑定">如何理解双向绑定</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#数据响应式">如何理解数据响应式</a>
@@ -113,7 +122,7 @@ toc: true # 是否启用内容索引
 - 如何理解vue的单向数据流
 - Vue-router导航守卫有哪些
 
-## vue3
+# 框架-vue3
 
 - <a target="_blank" href="{% post_path 'D_框架_Vue2和Vue3比较' %}#diff算法">Vue2和Vue3的diff算法对比</a>
 
