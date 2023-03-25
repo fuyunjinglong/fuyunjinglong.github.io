@@ -123,9 +123,20 @@ npm config set strict-ssl false
 
 ```
 npm install -g yarn --registry=https://registry.npm.taobao.org
-yarn config set registry https://registry.npm.taobao.org -g
-yarn config set sass_binary_site http://cdn.npm.taobao.org/dist/node-sass -g
-yarn -v // 查看
+yarn config get registry // 查看淘宝源是否正确
+```
+
+修改 yarn的全局安装位置和缓存位置
+
+```
+yarn config set global-folder "D:\nvm\nvm\yarn\global"
+yarn config set cache-folder "D:\nvm\nvm\yarn\cache"
+```
+
+查看版本
+
+```
+yarn -v
 ```
 
 yarn 常用命令

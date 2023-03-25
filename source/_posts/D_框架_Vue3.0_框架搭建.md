@@ -46,6 +46,46 @@ toc: true # 是否启用内容索引
 - `utils`：用来放项目中的工具方法类
 - `views`：用来放项目的.vue视图
 
+# 环境搭建-vue3+vite+ts(大崔哥)
+
+**初始化模板框架**
+
+```
+yarn create vite vue3-cuixiaorui --template vue-ts
+```
+
+**集成jest&vtu单元测试环境**
+
+安装jest
+
+```
+yarn add jest -D
+```
+
+验证
+
+```
+test/unit/index.spec.js
+test("1+1=2",()=>{
+    expect(1+1).toBe(2);
+})
+
+package.json
+ "scripts": {
+    "test:unit":"jest"
+  },
+  
+npm run test:unit验证
+```
+
+安装vue下jest语法提示
+
+```
+yarn add @types/jest -D
+```
+
+
+
 # 初始化基础模板
 
 ```
