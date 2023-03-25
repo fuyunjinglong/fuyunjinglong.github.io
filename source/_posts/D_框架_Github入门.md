@@ -38,6 +38,10 @@ toc: true # 是否启用内容索引
 
 [git命令详解](https://www.itqaq.com/index/cate/37.html)
 
+[Git 的 4 个阶段的撤销更改](https://segmentfault.com/a/1190000011969554)
+
+[惊艳！小姐姐用动画图解 Git 的 10 大命令，这也太秀了吧！](https://github.com/biaochenxuying/blog/issues/67)
+
 ## git最常用命令
 
 ```

@@ -907,7 +907,7 @@ Virtual DOM做了两件事:
 
 > key的作用是尽可能的复用 DOM 元素
 
-## Virtual DOM算法
+## Virtual DOM-diff算法
 
 算法实现的三个核心函数：element,diff,patch。
 
@@ -965,115 +965,6 @@ oldNode与newNode指针逐个比较，如果判定相同节点，则执行patchV
 否则以newNode的key去oldNode中寻找等key值，如果找到key相等的，再比较sameVnode，如果相同，则patchVnode更新节点，否则插入节点。如果没有找到key相等的，则插入节点。
 
 如果结束后，oldNodeStart>=oldNodeEnd，那么就需要删除旧节点中部分节点。newNodeStart>=newNodeEnd，那么需要新增新节点中的部分节点。
-
-## 虚拟dom和diff算法2
-
-**虚拟 dom**
-
-最少包含标签名( tag)、属性(attrs)和子元素对象( children)三个属性。
-
-- 由于 dom 操作耗时十分长，且 dom 对象的体积很大，单个 div 的 dom 属性就有 294 个之多；
-- Virtual DOM 就是用一个原生的 JS 对象去描述一个 DOM 节点，所以它比创建一个 DOM 的代价要小很多。
-- VNode 是对真实 DOM 的一种抽象描述，它的核心定义无非就几个关键属性，标签名、数据、子节点、键值等，其它属性都是用来扩展 VNode 的灵活性以及实现一些特殊 feature 的。由于 VNode 只是用来映射到真实 DOM 的渲染，不需要包含操作 DOM 的方法，因此它是非常轻量和简单的。
-- Virtual DOM 到真实的 dom 需要经过以下过程：VNode 的 create、diff、patch
-
-其实虚拟 DOM 在 Vue.js 主要做了两件事：
-
-- 提供与真实 DOM 节点所对应的虚拟节点 vnode
-- 将虚拟节点 vnode 和旧虚拟节点 oldVnode 进行对比（diff 算法），然后更新视图
-
-**Diff 算法从 O(n^3) 到 O(n)-vue2/3 都是如此**
-
-**O(n^3)是怎么计算出来的**
-
-传统 Diff 算法需要找到两个树的最小更新方式，所以需要[两两]对比每个叶子节点是否相同，对比就需要 O(n^2)次了，再加上更新（移动、创建、删除）时需要遍历一次，所以是 O(n^3)。
-
-参考：[编程距离](https://leetcode.com/problems/edit-distance/)
-
-我们定义三种操作，用来将一棵树转化为另外一棵树：
-
-- 删除：删除一个节点，将它的 children 交给它的父节点
-- 插入：在 children 中 插入一个节点
-- 修改：修改节点的值
-
-从一棵树转化为另外一棵树,直观的方式是用动态规划，通过这种记忆化搜索减少时间复杂度。由于树是一种递归的数据结构，因此最简单的树的比较算法是递归处理。确切地说，树的最小距离编辑算法的时间复杂度是 O(n^2m(1+logmn)), 我们假设 m 与 n 同阶， 就会变成 O(n^3)。参考：[距离论文](https://github.com/DatabaseGroup/tree-similarity/tree/develop)
-
-**O(n)怎么计算出来的**
-
-通过三大策略将 O(n^3)优化到 O(n)：
-
-- tree diff: Web UI 中 DOM 节点跨层级的移动操作特别少，可以忽略不计。
-- component diff: 拥有相同类的两个组件 生成相似的树形结构;拥有不同类的两个组件 生成不同的树形结构。
-- element diff:对于同一层级的一组子节点，通过唯一 id 区分。
-
-> 1.tree diff
->
-> （1）React 通过 updateDepth 对 Virtual DOM 树进行层级控制。
-> （2）对树分层比较，两棵树 只对同一层次节点 进行比较。如果该节点不存在时，则该节点及其子节点会被完全删除，不会再进一步比较。
-> （3）只需遍历一次，就能完成整棵 DOM 树的比较。
-
-<img src="/img/image-20220522162120177.png" alt="image-20220522162120177" style="zoom:50%;" />
-
-如果 DOM 节点出现了跨层级操作,diff 会咋办呢？
-
-答：diff 只简单考虑同层级的节点位置变换，如果是跨层级的话，只有创建节点和删除节点的操作。
-
-<img src="/img/image-20220522162157245.png" alt="image-20220522162157245" style="zoom:50%;" />
-
-如上图所示，以 A 为根节点的整棵树会被重新创建，而不是移动，因此 官方建议不要进行 DOM 节点跨层级操作，可以通过 CSS 隐藏、显示节点，而不是真正地移除、添加 DOM 节点。
-
-> 2.component diff
-> React 对不同的组件间的比较，有三种策略
-> （1）同一类型的两个组件，按原策略（层级比较）继续比较 Virtual DOM 树即可。
-> （2）同一类型的两个组件，组件 A 变化为组件 B 时（A、B 类型相同、结构相同），可能 Virtual DOM 没有任何变化，如果知道这点（变换的过程中，Virtual DOM 没有改变），可节省大量计算时间，所以 用户 可以通过 shouldComponentUpdate() 来判断是否需要 判断计算。
-> （3）不同类型的组件，将一个（将被改变的）组件判断为 dirty component（脏组件），从而替换 整个组件的所有节点。
-> **注意：如果组件 D 和组件 G 的结构相似，但是 React 判断是 不同类型的组件，则不会比较其结构，而是删除 组件 D 及其子节点，创建组件 G 及其子节点。**
-
-> 3.**element diff**
-> 当节点处于同一层级时，diff 提供三种节点操作：删除、插入、移动。
->
-> 插入：组件 C 不在集合（A,B）中，需要插入
->
-> 删除：
-> （1）组件 D 在集合（A,B,D）中，但 D 的节点已经更改，不能复用和更新，所以需要删除 旧的 D ，再创建新的。
-> （2）组件 D 之前在 集合（A,B,D）中，但集合变成新的集合（A,B）了，D 就需要被删除。
->
-> 移动：组件 D 已经在集合（A,B,C,D）里了，且集合更新时，D 没有发生更新，只是位置改变，如新集合（A,D,B,C），D 在第二个，无须像传统 diff，让旧集合的第二个 B 和新集合的第二个 D 比较，并且删除第二个位置的 B，再在第二个位置插入 D，而是 （对同一层级的同组子节点） 添加唯一 key 进行区分，移动即可。
-
-**重点说下移动的逻辑：**
-情形一：新旧集合中存在相同节点但位置不同时，如何移动节点
-移动 1、
-
-<img src="/img/image-20220522162357535.png" alt="image-20220522162357535" style="zoom:50%;" />
-
-（1）看着上图的 B，React 先从新中取得 B，然后判断旧中是否存在相同节点 B，当发现存在节点 B 后，就去判断是否移动 B。
-B 在旧的节点中的 index=1，它的 lastIndex=0，不满足 index < lastIndex 的条件，因此 B 不做移动操作。此时，一个操作是，lastIndex=(index,lastIndex)中的较大数=1.
-注意：lastIndex 有点像浮标，或者说是一个 map 的索引，一开始默认值是 0，它会与 map 中的元素进行比较，比较完后，会改变自己的值的（取 index 和 lastIndex 的较大数）。
-（2）看着 A，A 在旧的 index=0，此时的 lastIndex=1（因为先前与新的 B 比较过了），满足 index<lastIndex，因此，对 A 进行移动操作，此时 lastIndex=max(index,lastIndex)=1。
-（3）看着 D，同（1），不移动，由于 D 在旧的 index=3，比较时，lastIndex=1，所以改变 lastIndex=max(index,lastIndex)=3
-（4）看着 C，同（2），移动，C 在旧的 index=2，满足 index<lastIndex（lastIndex=3），所以移动。
-由于 C 已经是最后一个节点，所以 diff 操作结束。
-
-情形二：新集合中有新加入的节点，旧集合中有删除的节点
-
-<img src="/img/image-20220522162430005.png" alt="image-20220522162430005" style="zoom:50%;" />
-
-移动 2、
-
-（1）B 不移动，不赘述，更新 l astIndex=1
-（2）新集合取得 E，发现旧不存在，故在 lastIndex=1 的位置 创建 E，更新 lastIndex=1
-（3）新集合取得 C，C 不移动，更新 lastIndex=2
-（4）新集合取得 A，A 移动，同上，更新 lastIndex=2
-（5）新集合对比后，再对旧集合遍历。判断 新集合 没有，但 旧集合 有的元素（如 D，新集合没有，旧集合有），发现 D，删除 D，diff 操作结束。
-
-**diff 的不足与待优化的地方**
-
-<img src="/img/image-20220522162627677.png" alt="image-20220522162627677" style="zoom:50%;" />
-
-移动 3、
-
-看图的 D，此时 D 不移动，但它的 index 是最大的，导致更新 lastIndex=3，从而使得其他元素 A,B,C 的 index<lastIndex，导致 A,B,C 都要去移动。
-理想情况是只移动 D，不移动 A,B,C。因此，在开发过程中，尽量减少类似将最后一个节点移动到列表首部的操作，当节点数量过大或更新操作过于频繁时，会影响 React 的渲染性能。
 
 ## inject/provide的响应式问题
 

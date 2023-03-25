@@ -303,25 +303,6 @@ export default defineComponent({
 <Son :modelValue="formData" @update:modelValue="formData = $event" />
 ```
 
-## diff算法
-
-**Vue2.0diff 痛点**
-
-vue2.x 中的虚拟 dom 是进行**「全量的对比」**，在运行时会对所有节点生成一个虚拟节点树，当页面数据发生变更好，会遍历判断 virtual dom 所有节点（包括一些不会变化的节点）有没有发生变化；虽然说 diff 算法确实减少了多 DOM 节点的直接操作，但是这个**「减少是有成本的」**，如果是复杂的大型项目，必然存在很复杂的父子关系的 VNode,**「而 Vue2.x 的 diff 算法，会不断地递归调用 patchVNode，不断堆叠而成的几毫秒，最终就会造成 VNode 更新缓慢」**。
-
-**Vue3.0 解决方案-动静结合 PatchFlag**
-
-在 Vue3.0 中，在这个模版编译时，编译器会在动态标签末尾加上 /_ Text_/ PatchFlag。**「也就是在生成 VNode 的时候，同时打上标记，在这个基础上再进行核心的 diff 算法」**并且 PatchFlag 会标识动态的属性类型有哪些，比如这里 的 TEXT 表示只有节点中的文字是动态的。而 patchFlag 的类型也很多。
-
-<img src="/img/image-20220605222439383.png" alt="image-20220605222439383" style="zoom:80%;" />
-
-其中大致可以分为两类：
-
-- 当 patchFlag 的值「大于」 0 时，代表所对应的元素在 patchVNode 时或 render 时是可以被优化生成或更新的。
-- 当 patchFlag 的值「小于」 0 时，代表所对应的元素在 patchVNode 时，是需要被 full diff，即进行递归遍历 VNode tree 的比较更新过程。
-
-总结：**「Vue3.0 对于不参与更新的元素，做静态标记并提示，只会被创建一次，在渲染时直接复用。」**
-
 ## Object.defineProperty与Proxy 
 
 **前言**
@@ -502,7 +483,7 @@ Proxy的表单验证：
 - **apply(target, object, args)**：拦截 Proxy 实例作为函数调用的操作，比如`proxy(...args)`、`proxy.call(object, ...args)`、`proxy.apply(...)`。
 - **construct(target, args)**：拦截 Proxy 实例作为构造函数调用的操作，比如`new proxy(...args)`。
 
-## 虚拟DOM
+## Virtual-DOM
 
 Vue3 相比于 Vue2 虚拟DOM 上增加`patchFlag`字段。我们借助`Vue3 Template Explorer`来看。
 
@@ -552,6 +533,31 @@ export const enum PatchFlags {
   BAIL = -2 // 代表 diff 应该结束
 }
 ```
+
+## Virtual-DOM-diff算法
+
+diff算法一般流程：
+
+> - 同级比较，再比较子节点
+> - 先判断一方有子节点一方没有子节点的情况(如果新的children没有子节点，将旧的子节点移除)
+> - 比较都有子节点的情况(核心diff)
+> - 递归比较子节点
+
+正常Diff两个树的时间复杂度是`O(n^3)`，但实际情况下我们很少会进行`跨层级的移动DOM`，所以Vue将Diff进行了优化，从`O(n^3) -> O(n)`，只有当新旧children都为多个子节点时才需要用核心的Diff算法进行同层级比较。
+
+**Vue2中diff**
+
+> 采用了`双端比较`的算法。
+>
+> 从新旧children的两端开始进行比较，借助key值找到可复用的节点，再进行相关操作。相比React的Diff算法，同样情况下可以减少移动节点次数，减少不必要的性能损耗，更加的优雅。
+
+**Vue3中diff**
+
+> 借鉴了 [ivi](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Flocalvoid%2Fivi)算法和 [inferno](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Finfernojs%2Finferno)算法。
+>
+> 在创建VNode时就确定其类型，以及在`mount/patch`的过程中采用`位运算`来判断一个VNode的类型，在这个基础之上再配合核心的Diff算法，使得性能上较Vue2.x有了提升。
+>
+> 还运用了`动态规划`的思想求解最长递归子序列。
 
 ## Option API和Composition API
 

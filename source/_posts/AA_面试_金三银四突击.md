@@ -122,6 +122,9 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#v-for和v-if不能连用">v-for和v-if为什么不能连用</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#组件中的data为什么是一个函数？">组件中的data为什么是一个函数？</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#双向绑定">如何理解vue的单向数据流</a>
+- <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#双向绑定">xx</a>
+- <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#Virtual-DOM">Virtual-DOM虚拟DOM</a>
+- <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#Virtual-DOM-diff算法">Virtual-DOM-diff算法</a>
 
 # 框架-vue3
 
