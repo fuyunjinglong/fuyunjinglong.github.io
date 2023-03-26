@@ -874,6 +874,218 @@ onMounted(()=>{
 })
 ```
 
+## 双向绑定
+
+- prop 名从 `value` 变为 `modelValue`
+- 事件名也从默认的`input` 改为 `update:modelValue`
+
+**第一种**
+
+父组件
+
+```
+// Users.vue
+<template>
+  <div class="user-wrap">
+    <Son v-model="message" />
+    <h1>{{ message }}</h1>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref } from 'vue'
+import Son from './son.vue'
+export default defineComponent({
+  name: 'user',
+  components: {
+    Son
+  },
+  setup() {
+    let message = ref('')
+    return {
+      message,
+    }
+  }
+})
+</script>
+```
+
+子组件
+
+```
+// Son.vue
+<template>
+  <div>
+    <input type="text" :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)"
+    />
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+export default defineComponent({
+  props: ['modelValue'],
+  emits: ['update:modelValue'],
+})
+</script>
+```
+
+**第二种: 通过computed计算属性**
+
+父组件
+
+```
+// Users.vue
+<template>
+  <div class="user-wrap">
+  	<!-- 两个方法等价 -->
+    <!-- <Son :modelValue="message" @update:modelValue="message = $event" /> -->
+    <Son v-model="message" />
+    <h1>{{ message }}</h1>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref } from 'vue'
+import Son from './son.vue'
+export default defineComponent({
+  name: 'user',
+  components: {
+    Son
+  },
+  setup() {
+    let message = ref('')
+    return {
+      message,
+    }
+  }
+})
+</script>
+```
+
+子组件
+
+```
+// Son.vue
+<template>
+  <div>
+    <!-- 两个方法等价 -->
+    <!-- <input type="text" :value="newValue" @input="newValue = $event.target.value" /> -->
+    <input type="text" v-model="newValue" />
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, computed } from 'vue'
+export default defineComponent({
+  props: ['modelValue'],
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
+    const newValue = computed({
+      // 子组件v-model绑定 计算属性, 一旦发生变化, 就会给父组件传递值
+      get: () => props.modelValue,
+      set: (nv) => {
+        emit('update:modelValue', nv)
+      }
+    })
+    return {
+      newValue
+    }
+  }
+})
+</script>
+```
+
+**第三种: 组件绑定多个v-model**
+
+父组件
+
+```
+// Users.vue
+<template>
+  <div class="user-wrap">
+    <!-- 这里绑定两个v-model -->
+    <Son v-model="message" v-model:title="title" />
+    <h1>message:{{ message }}</h1>
+    <h1>title:{{ title }}</h1>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref } from 'vue'
+import Son from './son.vue'
+export default defineComponent({
+  name: 'user',
+  components: {
+    Son
+  },
+  setup() {
+    let message = ref('')
+    let title = ref('')
+
+    return {
+      message,
+      title,
+    }
+  }
+})
+</script>
+```
+
+子组件
+
+```
+// Son.vue
+<template>
+  <div>
+    <!-- 两个方法等价 -->
+    <!-- <input type="text" :value="newValue" @input="newValue = $event.target.value" /> -->
+    <input type="text" v-model="newValue" />
+    -
+    <input type="text" v-model="newTitle" />
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, computed } from 'vue'
+export default defineComponent({
+  props: {
+    // v-model默认的名字
+    modelValue: {
+      type: String
+    },
+    title: {
+      //这里可以直接使用 v-model:title ,:号后面的名字
+      type: String
+    }
+  },
+  emits: ['update:modelValue', 'update:title'],
+  setup(props, { emit }) {
+    const newValue = computed({
+      get: () => props.modelValue,
+      set: (nv) => {
+        console.log(nv)
+        emit('update:modelValue', nv)
+      }
+    })
+
+    const newTitle = computed({
+      get: () => props.title,
+      set: (nv) => {
+        emit('update:title', nv)
+      }
+    })
+
+    return {
+      newValue,
+      newTitle
+    }
+  }
+})
+</script>
+```
+
 ## 自定义 hook 
 
 - 需求 1: 收集用户鼠标点击的页面坐标
@@ -1715,6 +1927,34 @@ export default {
 - .sync 修改符已移除, 由 v-model 代替
   - `<ChildComponent v-model:title="pageTitle" v-model:content="pageContent" />`
 - v-if 优先 v-for 解析
+
+## pinia入门
+
+推荐使用使用composition API模式定义store
+
+```
+import { ref, computed } from 'vue';
+import { defineStore } from 'pinia';
+
+// 使用composition API模式定义store
+export const useCounterStoreForSetup = defineStore('counterForSetup', () => {
+  const count = ref<number>(1);
+  const doubleCount = computed(() => count.value * 2);
+  function increment() {
+    count.value++;
+  }
+
+  return { count, doubleCount, increment };
+});
+
+// composition API模式调用
+const counterStoreForSetup = useCounterStoreForSetup();
+// 确保解构确保后的state具有响应式，要使用storeToRefs方法
+const { count, doubleCount } = storeToRefs(counterStoreForSetup);
+const { increment } = counterStoreForSetup;
+```
+
+
 
 # 高级
 

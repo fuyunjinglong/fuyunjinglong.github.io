@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Vue2.0_原理 | Hexo</title>
+  <meta name="description" content="入门Vue 的生命周期vue生命周期详细全过程  1.beforeCreate钩子函数 a.用户使用 new Vue()新建 Vue 实例 b.父实例实例化子实例，确认组件间的父子关系，将父组件的自定义事件传递给子组件 c.初始化将 render 函数转为虚拟 dom 的方法 2. created钩子函数: a.初始化事件，进行数据的观测 b.数据已经和**data****属性进行绑定**（放在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue2.0_原理">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="入门Vue 的生命周期vue生命周期详细全过程  1.beforeCreate钩子函数 a.用户使用 new Vue()新建 Vue 实例 b.父实例实例化子实例，确认组件间的父子关系，将父组件的自定义事件传递给子组件 c.初始化将 render 函数转为虚拟 dom 的方法 2. created钩子函数: a.初始化事件，进行数据的观测 b.数据已经和**data****属性进行绑定**（放在">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211225211541701.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211225211824003.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211012230610276.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211212174443165.png">
+<meta property="article:published_time" content="2023-09-11T23:33:16.000Z">
+<meta property="article:modified_time" content="2023-03-25T07:01:52.252Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://fuyunjinglong.github.io/" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Elven</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">23</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/09/">九月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/06/">六月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">26</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/06/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_0%E5%9F%BA%E7%A1%80/" class="title">0基础_工程热点</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-05T22:33:16.000Z" itemprop="datePublished">2099-11-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/05/I_%E7%A7%BB%E5%8A%A8%E7%AB%AF_0%E5%9F%BA%E7%A1%80/" class="title">0基础_移动端</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-04T22:33:16.000Z" itemprop="datePublished">2099-11-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/" class="title">0基础_计算机网络</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-03T22:33:16.000Z" itemprop="datePublished">2099-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_0%E5%9F%BA%E7%A1%80/" class="title">0基础_数据结构</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_%E5%9F%BA%E7%A1%80/" class="title">0基础_设计模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%A5%E9%97%A8"><span class="toc-text">入门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue-%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">Vue 的生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%88%B6%E5%AD%90%E7%BB%84%E4%BB%B6%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%A1%BA%E5%BA%8F"><span class="toc-text">父子组件生命周期顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue2-x%E7%BB%84%E4%BB%B6%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="toc-text">Vue2.x组件通信方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#methods%E5%92%8Cwatch%E3%80%81computed"><span class="toc-text">methods和watch、computed</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#v-for%E5%92%8Cv-if%E4%B8%8D%E8%83%BD%E8%BF%9E%E7%94%A8"><span class="toc-text">v-for和v-if不能连用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E5%8F%98%E5%BC%82%E6%96%B9%E6%B3%95"><span class="toc-text">数组变异方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8%E5%93%AA%E4%B8%AA%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%86%85%E8%B0%83%E7%94%A8%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82%EF%BC%9F"><span class="toc-text">在哪个生命周期内调用异步请求？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vm-set-%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7%E6%96%B0%E5%A2%9E%E9%97%AE%E9%A2%98"><span class="toc-text">vm.$set()如何解决对象属性新增问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6%E4%B8%AD%E7%9A%84data%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0%EF%BC%9F"><span class="toc-text">组件中的data为什么是一个函数？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AB%98%E9%98%B6"><span class="toc-text">高阶</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MVC%E3%80%81MVP%E3%80%81MVVM%E4%B8%8EVue%E5%85%B3%E7%B3%BB"><span class="toc-text">MVC、MVP、MVVM与Vue关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%93%8D%E5%BA%94%E5%BC%8F"><span class="toc-text">数据响应式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A"><span class="toc-text">双向绑定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Observer-Dep-Watcher"><span class="toc-text">Observer&#x2F;Dep&#x2F;Watcher</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Virtual-DOM"><span class="toc-text">Virtual DOM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Virtual-DOM-diff%E7%AE%97%E6%B3%95"><span class="toc-text">Virtual DOM-diff算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#inject-provide%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E9%97%AE%E9%A2%98"><span class="toc-text">inject&#x2F;provide的响应式问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B"><span class="toc-text">Vue模板编译流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#keep-alive%E5%8E%9F%E7%90%86"><span class="toc-text">keep-alive原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nextTick%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">nextTick的实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue-router%E8%B7%AF%E7%94%B1-hash%E5%92%8Chistory"><span class="toc-text">Vue-router路由-hash和history</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue-router%E8%B7%AF%E7%94%B1-%E6%87%92%E5%8A%A0%E8%BD%BD"><span class="toc-text">Vue-router路由-懒加载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue-router%E5%AF%BC%E8%88%AA%E5%AE%88%E5%8D%AB%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-text">Vue-router导航守卫有哪些</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vue-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-text">vue 性能优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SFC"><span class="toc-text">SFC</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-D_框架_Vue2.0_原理" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Vue2.0_原理
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/" class="article-date">
+	  <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><h2 id="Vue-的生命周期"><a href="#Vue-的生命周期" class="headerlink" title="Vue 的生命周期"></a>Vue 的生命周期</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_70477767/article/details/124684195">vue生命周期详细全过程</a></p>
+<p><img src="/img/vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png"></p>
+<p>1.<strong>beforeCreate</strong>钩子函数</p>
+<p>a.用户使用 new Vue()新建 Vue 实例</p>
+<p>b.父实例实例化子实例，确认组件间的父子关系，将父组件的自定义事件传递给子组件</p>
+<p>c.初始化将 render 函数转为虚拟 dom 的方法</p>
+<p><strong>2. created</strong>钩子函数:</p>
+<p>a.初始化事件，进行数据的观测</p>
+<p>b.数据已经和**data****属性进行绑定**（放在 data 中的属性当值发生改变的同时，视图也会改变）</p>
+<p>c.此时还是没有 el 选项</p>
+<p><strong>3.</strong> <strong>beforeMount</strong>钩子函数：</p>
+<p>a.<strong>el**<strong>选项</strong>。</strong>如果有的话就继续向下编译，如果没有<strong>el 选项</strong>，则停止编译，也就意味着停止了*<strong>*生命周期。</strong></p>
+<p>b.如删掉 el: ‘#app’</p>
+<p>c.template 参数</p>
+<p>（1）如果 vue 实例对象中有 template 参数选项，则将其作为模板编译成 render 函数。<br>（2）如果没有 template 选项，则将外部 HTML 作为模板编译。<br>（3）可以看到 template 中的模板优先级要高于 outer HTML 的优先级。</p>
+<p><strong>4. mounted</strong></p>
+<p>a.给 vue 实例对象添加$el 成员，beforeMount 之前 el 上还是 undefined</p>
+<p>b.mounted 之前 h1 中还是通过****进行占位的，因为此时还有挂载到页面上，还是 JavaScript 中的虚拟 DOM 形式存在的。在 mounted 之后可以看到 h1 中的内容发生了变化。</p>
+<p><strong>5.</strong> <strong>beforeUpdate</strong></p>
+<p>a.vue 发现 data 中的数据发生了改变，则在下一次时间循环开始重新渲染组件</p>
+<p><strong>6. updated</strong></p>
+<p>a.重新执行 render 函数生成 vnode。</p>
+<p>b.将 vnode 转化为真实 Dom</p>
+<p>c.重新挂载到 HTML 中，并且覆盖掉上一次渲染的$el</p>
+<p><strong>7.</strong> <strong>beforeDestroy</strong>:</p>
+<p>a.调用 vm.$destroy()准备销毁 vue 实例</p>
+<p>b.beforeDestroy 钩子函数在实例销毁之前调用。在这一步，实例仍然完全可用。</p>
+<p><strong>8. destroyed</strong>:</p>
+<p>a.在 Vue 实例销毁后调用，调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。</p>
+<h2 id="父子组件生命周期顺序"><a href="#父子组件生命周期顺序" class="headerlink" title="父子组件生命周期顺序"></a>父子组件生命周期顺序</h2><p>父组件先创建，然后子组件创建；子组件先挂载，然后父组件挂载。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">父beforeCreate-&gt; 父create -&gt; 子beforeCreate-&gt; 子created -&gt; 子mounted -&gt; 父mounted</span><br></pre></td></tr></table></figure>
+
+<h2 id="Vue2-x组件通信方式"><a href="#Vue2-x组件通信方式" class="headerlink" title="Vue2.x组件通信方式"></a>Vue2.x组件通信方式</h2><blockquote>
+<p>父子组件通信</p>
+<ul>
+<li>事件机制(**父-&gt;子props,子-&gt;父 <code>$on、$emit</code>)</li>
+<li>获取父子组件实例 <code>$parent、$children</code></li>
+<li>Ref 获取实例的方式调用组件的属性或者方法</li>
+<li>Provide、inject (不推荐使用，组件库时很常用)</li>
+</ul>
+<p>兄弟组件通信</p>
+<ul>
+<li>eventBus ,也适用任意组件</li>
+</ul>
+<p>跨级组件通信</p>
+<ul>
+<li>Vuex</li>
+<li><code>$attrs、$listeners</code></li>
+<li>Provide、inject</li>
+</ul>
+</blockquote>
+<h2 id="methods和watch、computed"><a href="#methods和watch、computed" class="headerlink" title="methods和watch、computed"></a>methods和watch、computed</h2><blockquote>
+<ul>
+<li>watch和computed都是依赖数据变化触发<ul>
+<li>watch:擅长一对多的关系处理，无缓存性，可以执行深监听</li>
+<li>computed:擅长多对一的关系处理，有缓存性</li>
+</ul>
+</li>
+<li>methods通过实践驱动触发</li>
+</ul>
+</blockquote>
+<h2 id="v-for和v-if不能连用"><a href="#v-for和v-if不能连用" class="headerlink" title="v-for和v-if不能连用"></a>v-for和v-if不能连用</h2><blockquote>
+<ul>
+<li>因为v-for的优先级比v-if的优先级高，所以如果嵌套使用的话，每次v-for都会执行一次v-if，造成重复计算的问题，会影响性能，所以vue官方不推荐这样使用</li>
+<li>建议使用 computed，对数据先过滤</li>
+<li>在 vue 2.x 中，在一个元素上同时使用 <code>v-if</code> 和 <code>v-for</code> 时，<code>v-for</code> 会优先作用。</li>
+<li>在 vue 3.x 中，<code>v-if</code> 总是优先于 <code>v-for</code> 生效。</li>
+</ul>
+</blockquote>
+<h2 id="数组变异方法"><a href="#数组变异方法" class="headerlink" title="数组变异方法"></a>数组变异方法</h2><ul>
+<li>变异方法：改变原数组的方法</li>
+<li>非变异方法：不会改变原数组的方法</li>
+</ul>
+<p><strong>变异方法</strong></p>
+<ul>
+<li>push( )</li>
+<li>pop( )</li>
+<li>shift( )</li>
+<li>unshift( )</li>
+<li>splice( )</li>
+<li>sort( )</li>
+<li>reverse( )</li>
+</ul>
+<p><strong>非变异方法</strong></p>
+<ul>
+<li>filter( )</li>
+<li>concat( )</li>
+<li>slice( )</li>
+</ul>
+<p><strong>Vue 变异方法源码</strong></p>
+<p>变异的本质就是重写原型链,在这些方法内部加上自定义的逻辑，其实就是想监听这些方法的调用。</p>
+<p>Vue 中默认的做法就是在数组实例与它的原型之间，插入了一个新的原型对象，这个原型方法实现了这些变异方法，也就拦截了真正数组原型上的方法（因为原型链的机制，找到了就不会继续往上找了）。 变异方法中增加了自定义逻辑，也调用了真正数组原型上的方法，即实现了目的，也不会对正常使用造成影响。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arrayProto = <span class="title class_">Array</span>.<span class="property"><span class="keyword">prototype</span></span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> arrayMethods = <span class="title class_">Object</span>.<span class="title function_">create</span>(arrayProto)</span><br><span class="line"><span class="keyword">const</span> methodsToPatch = [</span><br><span class="line">  <span class="string">&#x27;push&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;pop&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;shift&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;unshift&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;splice&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;sort&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;reverse&#x27;</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Intercept mutating methods and emit events</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">methodsToPatch.<span class="title function_">forEach</span>(<span class="keyword">function</span> (<span class="params">method</span>) &#123;</span><br><span class="line">  <span class="comment">// cache original method</span></span><br><span class="line">  <span class="keyword">const</span> original = arrayProto[method]</span><br><span class="line">  <span class="title function_">def</span>(arrayMethods, method, <span class="keyword">function</span> <span class="title function_">mutator</span> (...args) &#123;</span><br><span class="line">    <span class="keyword">const</span> result = original.<span class="title function_">apply</span>(<span class="variable language_">this</span>, args)</span><br><span class="line">    <span class="keyword">const</span> ob = <span class="variable language_">this</span>.<span class="property">__ob__</span></span><br><span class="line">    <span class="keyword">let</span> inserted</span><br><span class="line">    <span class="keyword">switch</span> (method) &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&#x27;push&#x27;</span>:</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&#x27;unshift&#x27;</span>:</span><br><span class="line">        inserted = args</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">      <span class="keyword">case</span> <span class="string">&#x27;splice&#x27;</span>:</span><br><span class="line">        inserted = args.<span class="title function_">slice</span>(<span class="number">2</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (inserted) ob.<span class="title function_">observeArray</span>(inserted)</span><br><span class="line">    <span class="comment">// notify change</span></span><br><span class="line">    ob.<span class="property">dep</span>.<span class="title function_">notify</span>()</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)<span class="keyword">const</span> ob = <span class="variable language_">this</span>.<span class="property">__ob__</span></span><br><span class="line">    <span class="keyword">let</span> inserted</span><br><span class="line">    <span class="keyword">switch</span> (method) &#123;</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&#x27;push&#x27;</span>:</span><br><span class="line">      <span class="keyword">case</span> <span class="string">&#x27;unshift&#x27;</span>:</span><br><span class="line">        inserted = args</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">      <span class="keyword">case</span> <span class="string">&#x27;splice&#x27;</span>:</span><br><span class="line">        inserted = args.<span class="title function_">slice</span>(<span class="number">2</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (inserted) ob.<span class="title function_">observeArray</span>(inserted)</span><br><span class="line">    <span class="comment">// notify change，关键关键关键</span></span><br><span class="line">    ob.<span class="property">dep</span>.<span class="title function_">notify</span>()</span><br></pre></td></tr></table></figure>
+
+<h2 id="在哪个生命周期内调用异步请求？"><a href="#在哪个生命周期内调用异步请求？" class="headerlink" title="在哪个生命周期内调用异步请求？"></a>在哪个生命周期内调用异步请求？</h2><p>可以在钩子函数 created、beforeMount、mounted 中进行调用。</p>
+<p>建议在created中调用：</p>
+<blockquote>
+<ul>
+<li>能更快获取到服务端数据，减少页面 loading 时间；</li>
+<li>ssr 不支持 beforeMount 、mounted 钩子函数，所以放在 created 中有助于一致性；</li>
+</ul>
+</blockquote>
+<h2 id="vm-set-如何解决对象属性新增问题"><a href="#vm-set-如何解决对象属性新增问题" class="headerlink" title="vm.$set()如何解决对象属性新增问题"></a>vm.$set()如何解决对象属性新增问题</h2><p>原理：</p>
+<blockquote>
+<ul>
+<li>如果目标是数组，使用 vue 实现的变异方法 splice 实现响应式</li>
+<li>如果目标是对象,判断属性存在,同时也为响应式,直接赋值</li>
+<li>如果 target 本身就不是响应式,直接赋值</li>
+<li>如果属性不是响应式,则调用 defineReactive 方法进行响应式处理</li>
+</ul>
+</blockquote>
+<h2 id="组件中的data为什么是一个函数？"><a href="#组件中的data为什么是一个函数？" class="headerlink" title="组件中的data为什么是一个函数？"></a>组件中的data为什么是一个函数？</h2><blockquote>
+<ul>
+<li>一个组件被复用多次的话，也就会创建多个实例。本质上，这些实例用的都是同一个构造函数。</li>
+<li>如果data是对象的话，对象属于引用类型，会影响到所有的实例。而函数就不影响</li>
+<li>如果是root根实例，可以使用对象，因为只有一个实例。</li>
+</ul>
+</blockquote>
+<h1 id="高阶"><a href="#高阶" class="headerlink" title="高阶"></a>高阶</h1><h2 id="MVC、MVP、MVVM与Vue关系"><a href="#MVC、MVP、MVVM与Vue关系" class="headerlink" title="MVC、MVP、MVVM与Vue关系"></a>MVC、MVP、MVVM与Vue关系</h2><p>这三个框架模式表示了web领域的发展进程，从最早的前后端.net,jsp到分离的ajax,再到完全的前后端分离，再到响应式。</p>
+<p>这三者共同的目标都是为了职责划分，代码分层，解决维护问题，目标是为了解决Mode数据和View视图的耦合问题。</p>
+<p><strong>MVC</strong></p>
+<p><img src="/img/image-20211225211541701.png" alt="image-20211225211541701"></p>
+<p>MVC最早出现在服务端，如springmvc，在前端早期也有应用，如Backbone.js,优点是分层清晰，缺点是数据流混乱，灵活性带来了维护问题。</p>
+<p>所有的通信流程都是单向的。</p>
+<blockquote>
+<ul>
+<li>视图（View）：用户界面。</li>
+<li>控制器（Controller）：业务逻辑</li>
+<li>模型（Model）：数据保存</li>
+</ul>
+</blockquote>
+<p><strong>MVP</strong></p>
+<p>MVP 模式将 Controller 改名为 Presenter，同时改变了通信方向。解决MV的耦合性问题，但P层过于臃肿。</p>
+<p><img src="/img/image-20211225211824003.png" alt="image-20211225211824003"></p>
+<p><strong>MVVM</strong></p>
+<p>MVVM 模式将 Presenter 改名为 ViewModel，基本上与 MVP 模式完全一致。</p>
+<p>唯一的区别是，它采用双向绑定（data-binding）：View的变动，自动反映在 ViewModel</p>
+<p>MVVM广泛应用于前端领域，不仅解决MV耦合问题，还解决了两者映射关系复杂和DOM操作代码，提高开发效率、代码可读性。</p>
+<p><strong>Vue</strong></p>
+<p>是MVVM框架(基于mvc升级，弱化了controller层。但没有完全遵循mvvm，因为传统mvvm是不能手动操作数据，而vue有ref操作dom数据)</p>
+<h2 id="数据响应式"><a href="#数据响应式" class="headerlink" title="数据响应式"></a>数据响应式</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/forever__fish/article/details/127163227">数据响应式图1</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b1564296a78b">数据响应式图2</a></p>
+<p><strong>原理</strong></p>
+<p>通过数据劫持代理+发布订阅模式来实现</p>
+<p><strong>核心流程</strong></p>
+<blockquote>
+<ol>
+<li>实现一个监听器 Observer：对数据对象进行遍历，包括子属性对象的属性，利用 Object.defineProperty() 对属性都加上 setter 和 getter。劫持data中的每一个属性添加<code>getter</code>和<code>setter</code>即数据劫持</li>
+<li>实现一个解析器 Compile：解析 Vue 模板指令，将模板中的变量都替换成数据，然后初始化渲染页面视图，并将每个指令对应的节点绑定更新函数，添加监听数据的订阅者，一旦数据有变动，收到通知，调用更新函数进行数据更新。</li>
+<li>实现一个订阅者 Watcher：派发更新，Watcher 订阅者是 Observer 和 Compile 之间通信的桥梁 ，主要的任务是订阅 Observer 中的属性值变化的消息，当收到属性值变化的消息时，触发解析器 Compile 中对应的更新函数。</li>
+<li>实现一个订阅器 Dep：依赖收集，订阅器采用 发布-订阅 设计模式，用来收集订阅者 Watcher，对监听器 Observer 和 订阅者 Watcher 进行统一管理。</li>
+</ol>
+</blockquote>
+<p>简单理解：Dep可以看做是书店，Watcher就是书店订阅者，而Observer就是书店的书，订阅者在书店订阅书籍，就可以添加订阅者信息，一旦有新书就会通过书店给订阅者发送消息。Observer与Dep是1对1，Dep和Watcher是多对多。</p>
+<h2 id="双向绑定"><a href="#双向绑定" class="headerlink" title="双向绑定"></a><strong>双向绑定</strong></h2><blockquote>
+<p>vue的单向数据流</p>
+<ul>
+<li>Vue提倡单向数据流,即父级props的更新会流向子组件,但是反过来则不行。</li>
+<li>如果破坏了单向数据流，当应用复杂时，debug 的成本会非常高。</li>
+</ul>
+</blockquote>
+<ul>
+<li>Vue是单向数据流，不是双向数据流</li>
+<li>Vue的双向绑定不过是语法糖，v-bind数据绑定 与 v-on处理函数绑定</li>
+<li>Object.definePropert是用来做响应式更新的</li>
+</ul>
+<p>父组件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;AnalysisSub v-model=&quot;phoneInfo&quot; :zip-code.sync=&quot;zipCode&quot; /&gt;</span><br><span class="line">或 &lt;AnalysisSub :phone-info=&quot;phoneInfo&quot; @change=&quot;val =&gt; (phoneInfo = val)&quot;</span><br><span class="line">    :zip-code=&quot;zipCode&quot;  @update:zipCode=&quot;val =&gt; (zipCode = val)&quot;/&gt;</span><br></pre></td></tr></table></figure>
+
+<p>子组件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;input</span><br><span class="line">      :value=&quot;phoneInfo.phone&quot;</span><br><span class="line">      type=&quot;number&quot;</span><br><span class="line">      placeholder=&quot;手机号&quot;</span><br><span class="line">      @input=&quot;handlePhoneChange&quot;</span><br><span class="line">    /&gt;</span><br><span class="line">    &lt;input</span><br><span class="line">      :value=&quot;zipCode&quot;</span><br><span class="line">      type=&quot;number&quot;</span><br><span class="line">      placeholder=&quot;邮编&quot;</span><br><span class="line">      @input=&quot;handleZipCodeChange&quot;</span><br><span class="line">    /&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;PersonalInfo&quot;,</span><br><span class="line">  model: &#123;</span><br><span class="line">    prop: &quot;phoneInfo&quot;, // 默认 value</span><br><span class="line">    event: &quot;change&quot; // 默认 input</span><br><span class="line">  &#125;,</span><br><span class="line">  props: &#123;</span><br><span class="line">    phoneInfo: Object,</span><br><span class="line">    zipCode: String</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    handlePhoneChange(e) &#123;</span><br><span class="line">      this.$emit(&quot;change&quot;, &#123;</span><br><span class="line">        ...this.phoneInfo,</span><br><span class="line">        phone: e.target.value</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">    handleZipCodeChange(e) &#123;</span><br><span class="line">      this.$emit(&quot;update:zipCode&quot;, e.target.value);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">允许一个自定义组件在使用 v-model 时定制 prop 和 event。默认情况下，一个组件上的 v-model 会把 value 用作 prop 且把 input 用作 event，但是一些输入类型比如单选框和复选框按钮可能想使用 value prop 来达到不同的目的。使用 model 选项可以回避这些情况产生的冲突。</span><br><span class="line">在有些情况下，我们可能需要对一个 prop 进行“双向绑定”。不幸的是，真正的双向绑定会带来维护上的问题，因为子组件可以修改父组件，且在父组件和子组件都没有明显的改动来源。</span><br><span class="line">v-model和.sync修饰符分别在组件单个属性、多个属性需要双向绑定下使用，这是二者使用的场景。引入sync标记。这种双向的改变可以灵活控制，但是会带来维护上的复杂性</span><br></pre></td></tr></table></figure>
+
+<p><strong>Object.defineProperty 与 Proxy</strong></p>
+<p>1.Object.defineProperty：<br>只能对属性进行劫持，需要递归遍历对象的每个属性，执行Object.defineProperty把每一层对象数据都变成响应式的（如果定义的响应式数据过于复杂，会有很大的性能负担）<br>不能检测对象属性的添加和删除（需要重新遍历）<br>2.Proxy<br>在getter中去递归响应式，真正访问到的内部对象才会变成响应式，而不是无脑递归，提升了性能<br>劫持的是整个对象，能检测到对象属性的添加和删除</p>
+<h2 id="Observer-Dep-Watcher"><a href="#Observer-Dep-Watcher" class="headerlink" title="Observer/Dep/Watcher"></a>Observer/Dep/Watcher</h2><p><strong>Observer</strong></p>
+<p>Observer 的作用是对整个 Data 进行监听，在 initData 这个初始方法里使用<code>observe(data)</code>,Observer 类内部通过 defineReactive 方法劫持 data 的每一个属性的 getter 和 setter。看一下源码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">observe</span>(<span class="params">value: any, asRootData: ?boolean</span>): <span class="title class_">Observer</span> | <span class="keyword">void</span> &#123;</span><br><span class="line">  <span class="comment">/*判断Data是否是一个对象*/</span></span><br><span class="line">  <span class="keyword">if</span> (!<span class="title function_">isObject</span>(value)) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> <span class="attr">ob</span>: <span class="title class_">Observer</span> | <span class="keyword">void</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*这里用__ob__这个属性来判断是否已经有Observer实例，如果没有Observer实例则会新建一个Observer实例并赋值给__ob__这个属性，如果已有Observer实例则直接返回该Observer实例*/</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="title function_">hasOwn</span>(value, <span class="string">&quot;__ob__&quot;</span>) &amp;&amp; value.<span class="property">__ob__</span> <span class="keyword">instanceof</span> <span class="title class_">Observer</span>) &#123;</span><br><span class="line">    ob = value.<span class="property">__ob__</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (</span><br><span class="line">    <span class="comment">/*这里的判断是为了确保value是单纯的对象，而不是函数或者是Regexp等情况。*/</span></span><br><span class="line">    observerState.<span class="property">shouldConvert</span> &amp;&amp;</span><br><span class="line">    !<span class="title function_">isServerRendering</span>() &amp;&amp;</span><br><span class="line">    (<span class="title class_">Array</span>.<span class="title function_">isArray</span>(value) || <span class="title function_">isPlainObject</span>(value)) &amp;&amp;</span><br><span class="line">    <span class="title class_">Object</span>.<span class="title function_">isExtensible</span>(value) &amp;&amp;</span><br><span class="line">    !value.<span class="property">_isVue</span></span><br><span class="line">  ) &#123;</span><br><span class="line">    <span class="comment">// 创建一个Observer实例，绑定data进行监听</span></span><br><span class="line">    ob = <span class="keyword">new</span> <span class="title class_">Observer</span>(value);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (asRootData &amp;&amp; ob) &#123;</span><br><span class="line">    <span class="comment">/*如果是根数据则计数，后面Observer中的observe的asRootData非true*/</span></span><br><span class="line">    ob.<span class="property">vmCount</span>++;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> ob;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Vue 的响应式数据都会有一个<strong>ob</strong>作为标记，里面存放了 Observer 实例，防止重复绑定。</p>
+<p>再看一下 Observer 类的源码:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Observer class that are attached to each observed</span></span><br><span class="line"><span class="comment"> * object. Once attached, the observer converts target</span></span><br><span class="line"><span class="comment"> * object&#x27;s property keys into getter/setters that</span></span><br><span class="line"><span class="comment"> * collect dependencies and dispatches updates.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span>  &#123;</span><br><span class="line">  <span class="attr">value</span>: any;</span><br><span class="line">  <span class="attr">dep</span>: <span class="title class_">Dep</span>; <span class="comment">// 每一个Data的属性都会绑定一个dep，用于存放watcher arr</span></span><br><span class="line">  <span class="attr">vmCount</span>: number; <span class="comment">// number of vms that has this object as root $data</span></span><br><span class="line"></span><br><span class="line">  <span class="title function_">constructor</span> (<span class="attr">value</span>: any) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">value</span> = value</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">dep</span> = <span class="keyword">new</span> <span class="title class_">Dep</span>()</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">vmCount</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">        /vue-src/core/util/lang.js:</span></span><br><span class="line"><span class="comment">        function def (obj: Object, key: string, val: any, enumerable?: boolean) &#123;</span></span><br><span class="line"><span class="comment">            Object.defineProperty(obj, key, &#123;</span></span><br><span class="line"><span class="comment">                value: val,</span></span><br><span class="line"><span class="comment">                enumerable: !!enumerable,</span></span><br><span class="line"><span class="comment">                writable: true,</span></span><br><span class="line"><span class="comment">                configurable: true</span></span><br><span class="line"><span class="comment">            &#125;)</span></span><br><span class="line"><span class="comment">        &#125;</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="title function_">def</span>(value, <span class="string">&#x27;__ob__&#x27;</span>, <span class="variable language_">this</span>) <span class="comment">// 这个def的意思就是把Observer实例绑定到Data的__ob__属性上去</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="title class_">Array</span>.<span class="title function_">isArray</span>(value)) &#123;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/*</span></span><br><span class="line"><span class="comment">          如果是数组，将修改后可以截获响应的数组方法替换掉该数组的原型中的原生方法，达到监听数组数据变化响应的效果。</span></span><br><span class="line"><span class="comment">      */</span></span><br><span class="line">      <span class="keyword">const</span> augment = hasProto</span><br><span class="line">        ? protoAugment  <span class="comment">/*直接覆盖原型的方法来修改目标对象*/</span></span><br><span class="line">        : copyAugment   <span class="comment">/*定义（覆盖）目标对象或数组的某一个方法*/</span></span><br><span class="line">      <span class="title function_">augment</span>(value, arrayMethods, arrayKeys)</span><br><span class="line">      <span class="comment">/*Github:https://github.com/answershuto*/</span></span><br><span class="line">      <span class="comment">/*如果是数组则需要遍历数组的每一个成员进行observe*/</span></span><br><span class="line">      <span class="variable language_">this</span>.<span class="title function_">observeArray</span>(value)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">/*如果是对象则直接walk进行绑定*/</span></span><br><span class="line">      <span class="variable language_">this</span>.<span class="title function_">walk</span>(value)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Walk through each property and convert them into</span></span><br><span class="line"><span class="comment">   * getter/setters. This method should only be called when</span></span><br><span class="line"><span class="comment">   * value type is Object.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  walk (<span class="attr">obj</span>: <span class="title class_">Object</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> keys = <span class="title class_">Object</span>.<span class="title function_">keys</span>(obj)</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    walk方法会遍历对象的每一个属性进行defineReactive绑定</span></span><br><span class="line"><span class="comment">    defineReactive: 劫持data的getter和setter</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; keys.<span class="property">length</span>; i++) &#123;</span><br><span class="line">      <span class="title function_">defineReactive</span>(obj, keys[i], obj[keys[i]])</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Observe a list of Array items.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  observeArray (<span class="attr">items</span>: <span class="title class_">Array</span>&lt;any&gt;) &#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    数组需要遍历每一个成员进行observe</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, l = items.<span class="property">length</span>; i &lt; l; i++) &#123;</span><br><span class="line">      <span class="title function_">observe</span>(items[i])</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，Observer 类主要干了以下几件事：</p>
+<ul>
+<li>给 data 绑定一个<strong>ob</strong>属性，用来存放 Observer 实例，避免重复绑定</li>
+<li>如果 data 是 Object, 遍历对象的每一个属性进行 defineReactive 绑定</li>
+<li>如果 data 是 Array, 则需要对每一个成员进行 observe。vue.js 会重写 Array 的 push、pop、shift、unshift、splice、sort、reverse 这 7 个方法，保证之后 pop/push 等操作进去的对象也有进行双向绑定. (具体代码参见 observer/array.js)</li>
+</ul>
+<p><strong>defineReactive()</strong></p>
+<p>如上述源码所示，Observer 类主要是靠遍历 data 的每一个属性，使用 defineReactive()方法劫持 getter 和 setter 方法, 下面来具体看一下 defineReactive:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">defineReactive</span>(<span class="params"></span></span><br><span class="line"><span class="params">  obj: <span class="built_in">Object</span>,</span></span><br><span class="line"><span class="params">  key: string,</span></span><br><span class="line"><span class="params">  val: any,</span></span><br><span class="line"><span class="params">  customSetter?: <span class="built_in">Function</span></span></span><br><span class="line"><span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">/*在闭包中定义一个dep对象*/</span></span><br><span class="line">  <span class="keyword">const</span> dep = <span class="keyword">new</span> <span class="title class_">Dep</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> property = <span class="title class_">Object</span>.<span class="title function_">getOwnPropertyDescriptor</span>(obj, key);</span><br><span class="line">  <span class="keyword">if</span> (property &amp;&amp; property.<span class="property">configurable</span> === <span class="literal">false</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*如果之前该对象已经预设了getter以及setter函数则将其取出来，新定义的getter/setter中会将其执行，保证不会覆盖之前已经定义的getter/setter。*/</span></span><br><span class="line">  <span class="comment">// cater for pre-defined getter/setters</span></span><br><span class="line">  <span class="keyword">const</span> getter = property &amp;&amp; property.<span class="property">get</span>;</span><br><span class="line">  <span class="keyword">const</span> setter = property &amp;&amp; property.<span class="property">set</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/*对象的子对象也会进行observe*/</span></span><br><span class="line">  <span class="keyword">let</span> childOb = <span class="title function_">observe</span>(val);</span><br><span class="line">  <span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(obj, key, &#123;</span><br><span class="line">    <span class="attr">enumerable</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">configurable</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">get</span>: <span class="keyword">function</span> <span class="title function_">reactiveGetter</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="comment">/*如果原本对象拥有getter方法则执行*/</span></span><br><span class="line">      <span class="keyword">const</span> value = getter ? getter.<span class="title function_">call</span>(obj) : val;</span><br><span class="line">      <span class="comment">//   Dep.target：全局属性，用于指向某一个watcher，用完即丢</span></span><br><span class="line">      <span class="keyword">if</span> (<span class="title class_">Dep</span>.<span class="property">target</span>) &#123;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        进行依赖收集</span></span><br><span class="line"><span class="comment">        dep.depend()内部实现addDep，往dep中添加watcher实例 (具体参考Dep.prototype.depend的代码)</span></span><br><span class="line"><span class="comment">        depend的时候会根据id判断watcher有没有添加过，避免重复添加依赖</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        dep.<span class="title function_">depend</span>();</span><br><span class="line">        <span class="keyword">if</span> (childOb) &#123;</span><br><span class="line">          <span class="comment">/*子对象进行依赖收集，其实就是将同一个watcher观察者实例放进了两个depend中，一个是正在本身闭包中的depend，另一个是子元素的depend*/</span></span><br><span class="line">          childOb.<span class="property">dep</span>.<span class="title function_">depend</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (<span class="title class_">Array</span>.<span class="title function_">isArray</span>(value)) &#123;</span><br><span class="line">          <span class="comment">/*是数组则需要对每一个成员都进行依赖收集，如果数组的成员还是数组，则递归。*/</span></span><br><span class="line">          <span class="title function_">dependArray</span>(value);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> value;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">set</span>: <span class="keyword">function</span> <span class="title function_">reactiveSetter</span>(<span class="params">newVal</span>) &#123;</span><br><span class="line">      <span class="comment">/*通过getter方法获取当前值，与新值进行比较，一致则不需要执行下面的操作*/</span></span><br><span class="line">      <span class="keyword">const</span> value = getter ? getter.<span class="title function_">call</span>(obj) : val;</span><br><span class="line">      <span class="comment">/* eslint-disable no-self-compare */</span></span><br><span class="line">      <span class="keyword">if</span> (newVal === value || (newVal !== newVal &amp;&amp; value !== value)) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">/* eslint-enable no-self-compare */</span></span><br><span class="line">      <span class="keyword">if</span> (process.<span class="property">env</span>.<span class="property">NODE_ENV</span> !== <span class="string">&quot;production&quot;</span> &amp;&amp; customSetter) &#123;</span><br><span class="line">        <span class="title function_">customSetter</span>();</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (setter) &#123;</span><br><span class="line">        <span class="comment">/*如果原本对象拥有setter方法则执行setter*/</span></span><br><span class="line">        setter.<span class="title function_">call</span>(obj, newVal);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        val = newVal;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">/*新的值需要重新进行observe，保证数据响应式*/</span></span><br><span class="line">      childOb = <span class="title function_">observe</span>(newVal);</span><br><span class="line">      <span class="comment">/*dep对象通知所有的观察者*/</span></span><br><span class="line">      dep.<span class="title function_">notify</span>();</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>defineReactive()方法主要通过 Object.defineProperty()做了以下几件事:</p>
+<ul>
+<li>在闭包里定义一个 Dep 实例；</li>
+<li>getter 用来收集依赖，Dep.target 是一个全局的属性，指向的那个 watcher 收集到 dep 里来（如果之前添加过就不会重复添加）；</li>
+<li>setter 是在更新 value 的时候通知所有 getter 时候通知所有收集的依赖进行更新（dep.notify）。这边会做一个判断，如果 newVal 和 oldVal 一样，就不会有操作。</li>
+</ul>
+<p><strong>Dep</strong></p>
+<p>在上面的 defineReactive 中提到了 Dep，于是接下来看一下 Dep 的源码, dep 主要是用来在数据更新的时候通知 watchers 进行更新：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * A dep is an observable that can have multiple</span><br><span class="line"> * directives subscribing to it.</span><br><span class="line"> */</span><br><span class="line">export default class Dep &#123;</span><br><span class="line">  static target: ?Watcher;</span><br><span class="line">  id: number;</span><br><span class="line">  subs: Array&lt;Watcher&gt;;</span><br><span class="line"></span><br><span class="line">  constructor () &#123;</span><br><span class="line">    this.id = uid++</span><br><span class="line">    // subs: Array&lt;Watcher&gt;</span><br><span class="line">    this.subs = []</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  /*添加一个观察者对象*/</span><br><span class="line">  addSub (sub: Watcher) &#123;</span><br><span class="line">    this.subs.push(sub)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  /*移除一个观察者对象*/</span><br><span class="line">  removeSub (sub: Watcher) &#123;</span><br><span class="line">    remove(this.subs, sub)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  /*依赖收集，当存在Dep.target的时候添加观察者对象*/</span><br><span class="line">//   在defineReactive的getter中会用到dep.depend()</span><br><span class="line">  depend () &#123;</span><br><span class="line">    if (Dep.target) &#123;</span><br><span class="line">        // Dep.target指向的是一个watcher</span><br><span class="line">      Dep.target.addDep(this)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  /*通知所有订阅者*/</span><br><span class="line">  notify () &#123;</span><br><span class="line">    // stabilize the subscriber list first</span><br><span class="line">    const subs = this.subs.slice()</span><br><span class="line">    for (let i = 0, l = subs.length; i &lt; l; i++) &#123;</span><br><span class="line">        // 调用每一个watcher的update</span><br><span class="line">      subs[i].update()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// the current target watcher being evaluated.</span><br><span class="line">// this is globally unique because there could be only one</span><br><span class="line">// watcher being evaluated at any time.</span><br><span class="line">Dep.target = null</span><br><span class="line">/*依赖收集完需要将Dep.target设为null，防止后面重复添加依赖。*/</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Dep 是一个发布者，可以订阅多个观察者，依赖收集之后 Dep 中会有一个 subs 存放一个或多个观察者，在数据变更的时候通知所有的 watcher。</li>
+<li>再复习一下，Dep 和 Observer 的关系就是 Observer 监听整个 data，遍历 data 的每个属性给每个属性绑定 defineReactive 方法劫持 getter 和 setter, 在 getter 的时候往 Dep 类里塞依赖（dep.depend），在 setter 的时候通知所有 watcher 进行 update(dep.notify)</li>
+</ul>
+<p><strong>Watcher</strong></p>
+<p>watcher 接受到通知之后，会通过回调函数进行更新。</p>
+<p>接下来我们要仔细看一下 watcher 的源码。由之前的 Dep 代码可知的是，watcher 需要实现以下两个作用：</p>
+<ul>
+<li>dep.depend()的时候往 dep 里添加自己；</li>
+<li>dep.notify()的时候调用 watcher.update()方法，对视图进行更新；</li>
+</ul>
+<p>同时要注意的是，watcher 有三种：render watcher/ computed watcher/ user watcher(就是 vue 方法中的那个 watch)</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> <span class="title class_">Watcher</span> &#123;</span><br><span class="line">  <span class="attr">vm</span>: <span class="title class_">Component</span>;</span><br><span class="line">  <span class="attr">expression</span>: string; <span class="comment">// 每一个DOM attr对应的string</span></span><br><span class="line">  <span class="attr">cb</span>: <span class="title class_">Function</span>; <span class="comment">// update的时候的回调函数</span></span><br><span class="line">  <span class="attr">id</span>: number;</span><br><span class="line">  <span class="attr">deep</span>: boolean;</span><br><span class="line">  <span class="attr">user</span>: boolean;</span><br><span class="line">  <span class="attr">lazy</span>: boolean;</span><br><span class="line">  <span class="attr">sync</span>: boolean;</span><br><span class="line">  <span class="attr">dirty</span>: boolean;</span><br><span class="line">  <span class="attr">active</span>: boolean;</span><br><span class="line">  <span class="attr">deps</span>: <span class="title class_">Array</span>&lt;<span class="title class_">Dep</span>&gt;;</span><br><span class="line">  <span class="attr">newDeps</span>: <span class="title class_">Array</span>&lt;<span class="title class_">Dep</span>&gt;;</span><br><span class="line">  <span class="attr">depIds</span>: <span class="title class_">ISet</span>;</span><br><span class="line">  <span class="attr">newDepIds</span>: <span class="title class_">ISet</span>;</span><br><span class="line">  <span class="attr">getter</span>: <span class="title class_">Function</span>;</span><br><span class="line">  <span class="attr">value</span>: any;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span></span><br><span class="line"><span class="params">    vm: Component,</span></span><br><span class="line"><span class="params">    expOrFn: string | <span class="built_in">Function</span>,</span></span><br><span class="line"><span class="params">    cb: <span class="built_in">Function</span>,</span></span><br><span class="line"><span class="params">    options?: <span class="built_in">Object</span></span></span><br><span class="line"><span class="params">  </span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">vm</span> = vm;</span><br><span class="line">    <span class="comment">/*_watchers存放订阅者实例*/</span></span><br><span class="line">    vm.<span class="property">_watchers</span>.<span class="title function_">push</span>(<span class="variable language_">this</span>);</span><br><span class="line">    <span class="comment">// options</span></span><br><span class="line">    <span class="keyword">if</span> (options) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">deep</span> = !!options.<span class="property">deep</span>;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">user</span> = !!options.<span class="property">user</span>;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">lazy</span> = !!options.<span class="property">lazy</span>;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">sync</span> = !!options.<span class="property">sync</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">deep</span> = <span class="variable language_">this</span>.<span class="property">user</span> = <span class="variable language_">this</span>.<span class="property">lazy</span> = <span class="variable language_">this</span>.<span class="property">sync</span> = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">cb</span> = cb;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">id</span> = ++uid; <span class="comment">// uid for batching</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">active</span> = <span class="literal">true</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">dirty</span> = <span class="variable language_">this</span>.<span class="property">lazy</span>; <span class="comment">// for lazy watchers</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">deps</span> = [];</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">newDeps</span> = [];</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">depIds</span> = <span class="keyword">new</span> <span class="title class_">Set</span>();</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">newDepIds</span> = <span class="keyword">new</span> <span class="title class_">Set</span>();</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">expression</span> =</span><br><span class="line">      process.<span class="property">env</span>.<span class="property">NODE_ENV</span> !== <span class="string">&quot;production&quot;</span> ? expOrFn.<span class="title function_">toString</span>() : <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="comment">// parse expression for getter</span></span><br><span class="line">    <span class="comment">/*把表达式expOrFn解析成getter*/</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> expOrFn === <span class="string">&quot;function&quot;</span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">getter</span> = expOrFn;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">getter</span> = <span class="title function_">parsePath</span>(expOrFn);</span><br><span class="line">      <span class="keyword">if</span> (!<span class="variable language_">this</span>.<span class="property">getter</span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">getter</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;&#125;;</span><br><span class="line">        process.<span class="property">env</span>.<span class="property">NODE_ENV</span> !== <span class="string">&quot;production&quot;</span> &amp;&amp;</span><br><span class="line">          <span class="title function_">warn</span>(</span><br><span class="line">            <span class="string">`Failed watching path: &quot;<span class="subst">$&#123;expOrFn&#125;</span>&quot; `</span> +</span><br><span class="line">              <span class="string">&quot;Watcher only accepts simple dot-delimited paths. &quot;</span> +</span><br><span class="line">              <span class="string">&quot;For full control, use a function instead.&quot;</span>,</span><br><span class="line">            vm</span><br><span class="line">          );</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">value</span> = <span class="variable language_">this</span>.<span class="property">lazy</span> ? <span class="literal">undefined</span> : <span class="variable language_">this</span>.<span class="title function_">get</span>();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Evaluate the getter, and re-collect dependencies.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="comment">/*获得getter的值并且重新进行依赖收集*/</span></span><br><span class="line">  <span class="title function_">get</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">/*将自身watcher观察者实例设置给Dep.target，用以依赖收集。*/</span></span><br><span class="line">    <span class="title function_">pushTarget</span>(<span class="variable language_">this</span>);</span><br><span class="line">    <span class="keyword">let</span> value;</span><br><span class="line">    <span class="keyword">const</span> vm = <span class="variable language_">this</span>.<span class="property">vm</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">      执行了getter操作，看似执行了渲染操作，其实是执行了依赖收集。</span></span><br><span class="line"><span class="comment">      在将Dep.target设置为自身观察者实例以后，执行getter操作。</span></span><br><span class="line"><span class="comment">      譬如说现在的的data中可能有a、b、c三个数据，getter渲染需要依赖a跟c，</span></span><br><span class="line"><span class="comment">      那么在执行getter的时候就会触发a跟c两个数据的getter函数，</span></span><br><span class="line"><span class="comment">      在getter函数中即可判断Dep.target是否存在然后完成依赖收集，</span></span><br><span class="line"><span class="comment">      将该观察者对象放入闭包中的Dep的subs中去。</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">user</span>) &#123;</span><br><span class="line">      <span class="comment">// this.user: 判断是不是vue中那个watch方法绑定的watcher</span></span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        value = <span class="variable language_">this</span>.<span class="property">getter</span>.<span class="title function_">call</span>(vm, vm);</span><br><span class="line">      &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="title function_">handleError</span>(e, vm, <span class="string">`getter for watcher &quot;<span class="subst">$&#123;<span class="variable language_">this</span>.expression&#125;</span>&quot;`</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      value = <span class="variable language_">this</span>.<span class="property">getter</span>.<span class="title function_">call</span>(vm, vm);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// &quot;touch&quot; every property so they are all tracked as</span></span><br><span class="line">    <span class="comment">// dependencies for deep watching</span></span><br><span class="line">    <span class="comment">/*如果存在deep，则触发每个深层对象的依赖，追踪其变化*/</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">deep</span>) &#123;</span><br><span class="line">      <span class="comment">/*递归每一个对象或者数组，触发它们的getter，使得对象或数组的每一个成员都被依赖收集，形成一个“深（deep）”依赖关系*/</span></span><br><span class="line">      <span class="title function_">traverse</span>(value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*将观察者实例从target栈中取出并设置给Dep.target*/</span></span><br><span class="line">    <span class="title function_">popTarget</span>();</span><br><span class="line">    <span class="variable language_">this</span>.<span class="title function_">cleanupDeps</span>();</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Add a dependency to this directive.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="comment">/*添加一个依赖关系到Deps集合中*/</span></span><br><span class="line">  <span class="comment">//  在dep.depend()中调用的是Dep.target.addDep()</span></span><br><span class="line">  <span class="title function_">addDep</span>(<span class="params">dep: Dep</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> id = dep.<span class="property">id</span>;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="variable language_">this</span>.<span class="property">newDepIds</span>.<span class="title function_">has</span>(id)) &#123;</span><br><span class="line">      <span class="comment">// newDepIds和newDeps记录watcher实例所用到的dep，比如某个computed watcher其实用到了data里的a/b/c三个属性，那就需要记录3个dep</span></span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">newDepIds</span>.<span class="title function_">add</span>(id);</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">newDeps</span>.<span class="title function_">push</span>(dep);</span><br><span class="line">      <span class="keyword">if</span> (!<span class="variable language_">this</span>.<span class="property">depIds</span>.<span class="title function_">has</span>(id)) &#123;</span><br><span class="line">        <span class="comment">//  作用是往dep的subs里添加自己（Watcher实例）</span></span><br><span class="line">        <span class="comment">//  但是会先判断一下id，如果subs里有相同的id就不会重复添加</span></span><br><span class="line">        dep.<span class="title function_">addSub</span>(<span class="variable language_">this</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Clean up for dependency collection.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="comment">/*清理依赖收集*/</span></span><br><span class="line">  <span class="title function_">cleanupDeps</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">/*移除所有观察者对象*/</span></span><br><span class="line">    <span class="keyword">let</span> i = <span class="variable language_">this</span>.<span class="property">deps</span>.<span class="property">length</span>;</span><br><span class="line">    <span class="keyword">while</span> (i--) &#123;</span><br><span class="line">      <span class="keyword">const</span> dep = <span class="variable language_">this</span>.<span class="property">deps</span>[i];</span><br><span class="line">      <span class="keyword">if</span> (!<span class="variable language_">this</span>.<span class="property">newDepIds</span>.<span class="title function_">has</span>(dep.<span class="property">id</span>)) &#123;</span><br><span class="line">        dep.<span class="title function_">removeSub</span>(<span class="variable language_">this</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> tmp = <span class="variable language_">this</span>.<span class="property">depIds</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">depIds</span> = <span class="variable language_">this</span>.<span class="property">newDepIds</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">newDepIds</span> = tmp;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">newDepIds</span>.<span class="title function_">clear</span>();</span><br><span class="line">    tmp = <span class="variable language_">this</span>.<span class="property">deps</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">deps</span> = <span class="variable language_">this</span>.<span class="property">newDeps</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">newDeps</span> = tmp;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">newDeps</span>.<span class="property">length</span> = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Subscriber interface.</span></span><br><span class="line"><span class="comment">   * Will be called when a dependency changes.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="comment">//   dep.notify的时候会逐个调用watcher的update方法</span></span><br><span class="line">  <span class="title function_">update</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">/* istanbul ignore else */</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">lazy</span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">dirty</span> = <span class="literal">true</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">sync</span>) &#123;</span><br><span class="line">      <span class="comment">/*同步则执行run直接渲染视图*/</span></span><br><span class="line">      <span class="comment">// 基本不会用到sync</span></span><br><span class="line">      <span class="variable language_">this</span>.<span class="title function_">run</span>();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">/*异步推送到观察者队列中，由调度者调用。*/</span></span><br><span class="line">      <span class="title function_">queueWatcher</span>(<span class="variable language_">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Scheduler job interface.</span></span><br><span class="line"><span class="comment">   * Will be called by the scheduler.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="comment">/*</span></span><br><span class="line"><span class="comment">      调度者工作接口，将被调度者回调。</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">  <span class="title function_">run</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">active</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> value = <span class="variable language_">this</span>.<span class="title function_">get</span>();</span><br><span class="line">      <span class="keyword">if</span> (</span><br><span class="line">        value !== <span class="variable language_">this</span>.<span class="property">value</span> ||</span><br><span class="line">        <span class="comment">// Deep watchers and watchers on Object/Arrays should fire even</span></span><br><span class="line">        <span class="comment">// when the value is the same, because the value may</span></span><br><span class="line">        <span class="comment">// have mutated.</span></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">            即便值相同，拥有Deep属性的观察者以及在对象／数组上的观察者应该被触发更新，因为它们的值可能发生改变。</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        <span class="title function_">isObject</span>(value) ||</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">deep</span></span><br><span class="line">      ) &#123;</span><br><span class="line">        <span class="comment">// set new value</span></span><br><span class="line">        <span class="keyword">const</span> oldValue = <span class="variable language_">this</span>.<span class="property">value</span>;</span><br><span class="line">        <span class="comment">/*设置新的值*/</span></span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">value</span> = value;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*触发回调渲染视图*/</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">user</span>) &#123;</span><br><span class="line">          <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">cb</span>.<span class="title function_">call</span>(<span class="variable language_">this</span>.<span class="property">vm</span>, value, oldValue);</span><br><span class="line">          &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            <span class="title function_">handleError</span>(</span><br><span class="line">              e,</span><br><span class="line">              <span class="variable language_">this</span>.<span class="property">vm</span>,</span><br><span class="line">              <span class="string">`callback for watcher &quot;<span class="subst">$&#123;<span class="variable language_">this</span>.expression&#125;</span>&quot;`</span></span><br><span class="line">            );</span><br><span class="line">          &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="variable language_">this</span>.<span class="property">cb</span>.<span class="title function_">call</span>(<span class="variable language_">this</span>.<span class="property">vm</span>, value, oldValue);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Evaluate the value of the watcher.</span></span><br><span class="line"><span class="comment">   * This only gets called for lazy watchers.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="comment">/*获取观察者的值*/</span></span><br><span class="line">  <span class="title function_">evaluate</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">value</span> = <span class="variable language_">this</span>.<span class="title function_">get</span>();</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">dirty</span> = <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Depend on all deps collected by this watcher.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="comment">/*收集该watcher的所有deps依赖*/</span></span><br><span class="line">  <span class="title function_">depend</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> i = <span class="variable language_">this</span>.<span class="property">deps</span>.<span class="property">length</span>;</span><br><span class="line">    <span class="keyword">while</span> (i--) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">deps</span>[i].<span class="title function_">depend</span>();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Remove self from all dependencies&#x27; subscriber list.</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="comment">/*将自身从所有依赖收集订阅列表删除*/</span></span><br><span class="line">  <span class="title function_">teardown</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">active</span>) &#123;</span><br><span class="line">      <span class="comment">// remove self from vm&#x27;s watcher list</span></span><br><span class="line">      <span class="comment">// this is a somewhat expensive operation so we skip it</span></span><br><span class="line">      <span class="comment">// if the vm is being destroyed.</span></span><br><span class="line">      <span class="comment">/*从vm实例的观察者列表中将自身移除，由于该操作比较耗费资源，所以如果vm实例正在被销毁则跳过该步骤。*/</span></span><br><span class="line">      <span class="keyword">if</span> (!<span class="variable language_">this</span>.<span class="property">vm</span>.<span class="property">_isBeingDestroyed</span>) &#123;</span><br><span class="line">        <span class="title function_">remove</span>(<span class="variable language_">this</span>.<span class="property">vm</span>.<span class="property">_watchers</span>, <span class="variable language_">this</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">let</span> i = <span class="variable language_">this</span>.<span class="property">deps</span>.<span class="property">length</span>;</span><br><span class="line">      <span class="keyword">while</span> (i--) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">deps</span>[i].<span class="title function_">removeSub</span>(<span class="variable language_">this</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">active</span> = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Virtual-DOM"><a href="#Virtual-DOM" class="headerlink" title="Virtual DOM"></a>Virtual DOM</h2><p>Virtual DOM 本质上就是在 JS 和 DOM 之间做了一个缓存。</p>
+<p>虚拟DOM就是一个普通的JavaScript对象，包含了<code>tag</code>、<code>props</code>、<code>children</code>三个属性。</p>
+<p>Virtual DOM做了两件事:</p>
+<blockquote>
+<ul>
+<li>1、用 JS对象结构表示 DOM 树的结构，然后用这个树构建一个真正的 DOM 树，插到文档当中；</li>
+<li>2、当状态变更的时候，重新构造一棵新的对象树，然后用新的树和旧的树进行比较，记录两棵树差异；</li>
+<li>3、把两棵树差异应用到真实DOM上</li>
+</ul>
+</blockquote>
+<p>属性key的作用：</p>
+<blockquote>
+<p>key的作用是尽可能的复用 DOM 元素</p>
+</blockquote>
+<h2 id="Virtual-DOM-diff算法"><a href="#Virtual-DOM-diff算法" class="headerlink" title="Virtual DOM-diff算法"></a>Virtual DOM-diff算法</h2><p>算法实现的三个核心函数：element,diff,patch。</p>
+<p>算法大致流程:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// 1. 构建虚拟 DOM</span><br><span class="line">var tree = el(&#x27;div&#x27;, &#123;&#x27;id&#x27;: &#x27;container&#x27;&#125;, [</span><br><span class="line">    el(&#x27;h1&#x27;, &#123;style: &#x27;color: blue&#x27;&#125;, [&#x27;simple virtal dom&#x27;]),</span><br><span class="line">    el(&#x27;p&#x27;, [&#x27;Hello, virtual-dom&#x27;]),</span><br><span class="line">    el(&#x27;ul&#x27;, [el(&#x27;li&#x27;)])</span><br><span class="line">])</span><br><span class="line">// 2. 通过虚拟 DOM 构建真正的 DOM</span><br><span class="line">var root = tree.render()</span><br><span class="line">document.body.appendChild(root)</span><br><span class="line">// 3. 生成新的虚拟 DOM</span><br><span class="line">var newTree = el(&#x27;div&#x27;, &#123;&#x27;id&#x27;: &#x27;container&#x27;&#125;, [</span><br><span class="line">    el(&#x27;h1&#x27;, &#123;style: &#x27;color: red&#x27;&#125;, [&#x27;simple virtal dom&#x27;]),</span><br><span class="line">    el(&#x27;p&#x27;, [&#x27;Hello, virtual-dom&#x27;]),</span><br><span class="line">    el(&#x27;ul&#x27;, [el(&#x27;li&#x27;), el(&#x27;li&#x27;)])</span><br><span class="line">])</span><br><span class="line">// 4. 比较两棵虚拟 DOM 树的不同</span><br><span class="line">var patches = diff(tree, newTree)</span><br><span class="line">// 5. 在真正的 DOM 元素上应用变更</span><br><span class="line">patch(root, patches)</span><br></pre></td></tr></table></figure>
+
+<p>diff算法参考了<code>snabbdom</code>(<a target="_blank" rel="noopener" href="https://github.com/snabbdom/snabbdom)%E6%98%AF%E8%91%97%E5%90%8D%E7%9A%84%E8%99%9A%E6%8B%9FDOM%E5%BA%93%EF%BC%8Cdiff%E7%AE%97%E6%B3%95%E7%9A%84%E9%BC%BB%E7%A5%96%E3%80%82">https://github.com/snabbdom/snabbdom)是著名的虚拟DOM库，diff算法的鼻祖。</a></p>
+<p><img src="/img/image-20211012230610276.png" alt="image-20211012230610276"></p>
+<p>1.patch中的sameVnode方法：判断是否为相同节点：依据key和tag标签名</p>
+<ul>
+<li>是：继续执行<code>patchVnode方法</code>进行深层比对</li>
+<li>否：没必要比对了，直接整个节点替换成<code>新虚拟节点</code></li>
+</ul>
+<p><em>key值是否一样</em>；<em>标签名是否一样</em>；<em>否都为注释节点</em>；<em>是否都定义了data</em></p>
+<p>2.patchVnode：更新节点</p>
+<ul>
+<li>判断<code>newVnode</code>和<code>oldVnode</code>是否指向同一个对象，如果是，那么直接<code>return</code></li>
+<li>如果他们都是文本节点并且不相等，那么将<code>el</code>的文本节点设置为<code>newVnode</code>的文本节点。</li>
+<li>如果<code>oldVnode</code>有子节点而<code>newVnode</code>没有，则删除<code>el</code>的子节点</li>
+<li>如果<code>oldVnode</code>没有子节点而<code>newVnode</code>有，则将<code>newVnode</code>的子节点真实化之后添加到<code>el</code></li>
+<li>如果两者都有子节点，则执行<code>updateChildren</code>函数比较子节点，这一步很重要</li>
+</ul>
+<p>3.<code>updateChildren</code>：首尾指针法</p>
+<blockquote>
+<p><strong>「双端比较的算法」</strong>过程可以概括为：oldCh和newCh各有两个头尾的变量StartIdx和EndIdx，它们的2个变量相互比较，一共有4种比较方式。如果4种比较都没匹配，如果设置了key，就会用key进行比较，在比较的过程中，变量会往中间靠，一旦StartIdx&gt;EndIdx表明oldCh和newCh至少有一个已经遍历完了，就会结束比较.</p>
+</blockquote>
+<p>oldNode头尾指针标记，newNode头尾指针标记。</p>
+<p>oldNode与newNode指针逐个比较，如果判定相同节点，则执行patchVnode更新节点。</p>
+<p>否则以newNode的key去oldNode中寻找等key值，如果找到key相等的，再比较sameVnode，如果相同，则patchVnode更新节点，否则插入节点。如果没有找到key相等的，则插入节点。</p>
+<p>如果结束后，oldNodeStart&gt;=oldNodeEnd，那么就需要删除旧节点中部分节点。newNodeStart&gt;=newNodeEnd，那么需要新增新节点中的部分节点。</p>
+<h2 id="inject-provide的响应式问题"><a href="#inject-provide的响应式问题" class="headerlink" title="inject/provide的响应式问题"></a>inject/provide的响应式问题</h2><p>官方说法： <strong>provide/inject</strong> 的 <strong>直接绑定数据</strong> 才不支持响应式，但又因为 <strong>没有对数据的进行深层次处理</strong>，所以原有的响应式数据才会继续触发整个响应式系统的改变。</p>
+<p>说人话：直接修改对象，inject监听不到改动；修改对象的某个属性，就能监听到改动。加一句，即使修改属性，computed也监听不到变化。</p>
+<p>看源码:关闭了依赖数据的 响应式依赖收集;但对inject注入对象的深层处理，没有屏蔽响应式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">export function initInjections(vm: Component) &#123;</span><br><span class="line">  // 对inject注入对象深层处理，没有屏蔽响应式</span><br><span class="line">  const result = resolveInject(vm.$options.inject, vm)</span><br><span class="line">  if (result) &#123;</span><br><span class="line">  // 关闭了依赖数据的 响应式依赖收集</span><br><span class="line">    toggleObserving(false)</span><br><span class="line">    Object.keys(result).forEach(key =&gt; &#123;</span><br><span class="line">      if (__DEV__) &#123;</span><br><span class="line">        defineReactive(vm, key, result[key], () =&gt; warn(&#x27;&#x27;))</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        defineReactive(vm, key, result[key])</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    toggleObserving(true)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">export function resolveInject(inject: any, vm: Component): Record&lt;string, any&gt; | undefined | null &#123;</span><br><span class="line">  if (inject) &#123;</span><br><span class="line">    const result = Object.create(null)</span><br><span class="line">    const keys = hasSymbol ? Reflect.ownKeys(inject) : Object.keys(inject)</span><br><span class="line"></span><br><span class="line">    for (let i = 0; i &lt; keys.length; i++) &#123;</span><br><span class="line">      const key = keys[i]</span><br><span class="line">      if (key === &#x27;__ob__&#x27;) continue</span><br><span class="line">      const provideKey = inject[key].from</span><br><span class="line">      if (provideKey in vm._provided) &#123;</span><br><span class="line">        result[key] = vm._provided[provideKey]</span><br><span class="line">      &#125; else if (&#x27;default&#x27; in inject[key]) &#123;</span><br><span class="line">        const provideDefault = inject[key].default</span><br><span class="line">        result[key] = isFunction(provideDefault) ? provideDefault.call(vm) : provideDefault</span><br><span class="line">      &#125; else if (__DEV__) &#123;</span><br><span class="line">        warn(&#x27;&#x27;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return result</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>参考</strong></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7135761522759827493">Vue 2 阅读理解（十四）之 Provide/Inject 依赖注入</a></p>
+<h2 id="Vue模板编译流程"><a href="#Vue模板编译流程" class="headerlink" title="Vue模板编译流程"></a>Vue模板编译流程</h2><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7035832002620162084#heading-0">Vue | 模板是如何编译的</a></p>
+<p>Vue提供两个不同构建版本：</p>
+<blockquote>
+<ul>
+<li><code>vue.js</code>： 完整版本，包含了模板编译的能力；对应runtime-compiler</li>
+<li><code>vue.runtime.js</code>： 运行时版本，不提供模板编译能力，需要通过 vue-loader 进行提前编译。对应runtime-only</li>
+</ul>
+</blockquote>
+<p>所以</p>
+<blockquote>
+<ul>
+<li>如果通过 <code>script</code> 标签引入 Vue，需要使用 <code>vue.min.js</code></li>
+<li>如果使用了vue-loader,就可以只用 <code>vue.runtime.js</code></li>
+</ul>
+</blockquote>
+<p>编译核心流程：</p>
+<blockquote>
+<ul>
+<li>parse解析器：将模板解析成 AST</li>
+<li>optimize优化器：标记静态节点</li>
+<li>generate代码生成器：将 AST 转换成“代码字符串”</li>
+</ul>
+</blockquote>
+<p>编译渲染完整流程：</p>
+<blockquote>
+<p>template =&gt; ast =&gt; render函数 =&gt; VDOM =&gt; 真实DOM</p>
+<ul>
+<li>先将template解析成抽象语法树（ast）</li>
+<li>将ast编译成（complier）成render函数</li>
+<li>将render函数渲染（render）成虚拟DOM</li>
+<li>最后将虚拟DOM渲染成真实DOM</li>
+</ul>
+</blockquote>
+<h2 id="keep-alive原理"><a href="#keep-alive原理" class="headerlink" title="keep-alive原理"></a>keep-alive原理</h2><p><strong>1.定义</strong></p>
+<p>keep-alive 是 Vue 内置的一个组件，可以使被包含的组件保留状态，避免重新渲染</p>
+<blockquote>
+<ul>
+<li>一般结合路由和动态组件一起使用，用于缓存组件；</li>
+<li>常用的两个属性include/exclude，允许组件有条件的进行缓存。其中 exclude 的优先级比 include 高</li>
+<li>两个生命周期activated/deactivated，用来得知当前组件是否处于活跃状态。</li>
+<li>keep-alive的中还运用了LRU(Least Recently Used)算法。</li>
+</ul>
+</blockquote>
+<p><strong>2.功能</strong></p>
+<p><code>include</code>定义缓存白名单，keep-alive会缓存命中的组件；<code>exclude</code>定义缓存黑名单，被命中的组件将不会被缓存；<code>max</code>定义缓存组件上限，超出上限使用<a href="https://link.juejin.cn/?target=https://baike.baidu.com/item/LRU">LRU的策略</a>置换缓存数据。<code>include</code>优先级比<code>exclude</code>更高。</p>
+<p><strong>3.源码分析</strong></p>
+<p><strong>(1.1)初始化过程：</strong></p>
+<ol>
+<li>获取keep-alive包裹的组件及组件名。</li>
+<li>根据设置的黑白名单，判断缓存是否命中，命中则使用缓存，否则直接创建或销毁组件。核心函数pruneCacheEntry</li>
+<li>根据组件ID和tag生成缓存Key，value为componentInstance组件实例的键值对。</li>
+<li>键值对超过max长度，使用LRU最近最少使用策略删除。</li>
+<li>设置keepAlive为true即标记为激活状态,patch期间渲染组件，mounted等生命周期过滤</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">// src/core/components/keep-alive.js</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &#x27;keep-alive&#x27;,</span><br><span class="line">  abstract: true, // 判断当前组件虚拟dom是否渲染成真实dom的关键</span><br><span class="line"></span><br><span class="line">  props: &#123;</span><br><span class="line">    include: patternTypes, // 缓存白名单</span><br><span class="line">    exclude: patternTypes, // 缓存黑名单</span><br><span class="line">    max: [String, Number] // 缓存的组件实例数量上限，使用LRU最近最少使用的组件删除</span><br><span class="line">  &#125;,</span><br><span class="line">//核心是cache和keys，keys里默认值是tagname。</span><br><span class="line">//这两个属性没有声明到可视化的data中,静态属性声明可以减少数据监听的开销</span><br><span class="line">  created () &#123;</span><br><span class="line">    this.cache = Object.create(null) // 缓存虚拟dom的key和实例的映射</span><br><span class="line">    this.keys = [] // 缓存的虚拟dom的key键集合</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  destroyed () &#123;</span><br><span class="line">  //销毁时，更新cache</span><br><span class="line">    for (const key in this.cache) &#123; // 删除所有的缓存</span><br><span class="line">      pruneCacheEntry(this.cache, key, this.keys)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  mounted () &#123;</span><br><span class="line">    // 实时监听黑白名单的变动</span><br><span class="line">    this.$watch(&#x27;include&#x27;, val =&gt; &#123;</span><br><span class="line">      pruneCache(this, name =&gt; matches(val, name))</span><br><span class="line">    &#125;)</span><br><span class="line">    this.$watch(&#x27;exclude&#x27;, val =&gt; &#123;</span><br><span class="line">      pruneCache(this, name =&gt; !matches(val, name))</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  render () &#123;</span><br><span class="line">    // 先省略...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>核心render函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">// src/core/components/keep-alive.js</span><br><span class="line">render () &#123;</span><br><span class="line">  const slot = this.$slots.default</span><br><span class="line">  const vnode: VNode = getFirstComponentChild(slot) // 找到第一个子组件对象</span><br><span class="line">  const componentOptions: ?VNodeComponentOptions = vnode &amp;&amp; vnode.componentOptions</span><br><span class="line">  if (componentOptions) &#123; // 存在组件参数</span><br><span class="line">    // check pattern</span><br><span class="line">    const name: ?string = getComponentName(componentOptions) // 组件名,name:&#x27;VBase&#x27;</span><br><span class="line">    const &#123; include, exclude &#125; = this</span><br><span class="line">    if ( // 条件匹配</span><br><span class="line">      // not included</span><br><span class="line">      (include &amp;&amp; (!name || !matches(include, name))) ||</span><br><span class="line">      // excluded</span><br><span class="line">      (exclude &amp;&amp; name &amp;&amp; matches(exclude, name))</span><br><span class="line">    ) &#123;</span><br><span class="line">    //没有匹配到，则直接返回节点</span><br><span class="line">      return vnode</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    const &#123; cache, keys &#125; = this</span><br><span class="line">    const key: ?string = vnode.key == null // 定义组件的缓存key</span><br><span class="line">      // same constructor may get registered as different local components</span><br><span class="line">      // so cid alone is not enough (#3269)</span><br><span class="line">      ? componentOptions.Ctor.cid + (componentOptions.tag ? `::$&#123;componentOptions.tag&#125;` : &#x27;&#x27;)</span><br><span class="line">      : vnode.key</span><br><span class="line">    if (cache[key]) &#123; // 已经缓存过该组件</span><br><span class="line">    //将缓存的组件，赋值给你要渲染的新的组件</span><br><span class="line">      vnode.componentInstance = cache[key].componentInstance</span><br><span class="line">      // make current key freshest</span><br><span class="line">      //删除并添加key</span><br><span class="line">      remove(keys, key)</span><br><span class="line">      keys.push(key) // 调整key排序</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      cache[key] = vnode // 缓存组件对象</span><br><span class="line">      keys.push(key)</span><br><span class="line">      // prune oldest entry</span><br><span class="line">      //如果超过max最大缓存组件的长度，使用LRU策略，删除第一个</span><br><span class="line">      if (this.max &amp;&amp; keys.length &gt; parseInt(this.max)) &#123; // 超过缓存数限制，将第一个删除</span><br><span class="line">        pruneCacheEntry(cache, keys[0], keys, this._vnode)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    vnode.data.keepAlive = true // 渲染和执行被包裹组件的钩子函数需要用到</span><br><span class="line">  &#125;</span><br><span class="line">  return vnode || (slot &amp;&amp; slot[0])</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>(1.2)actived生命周期流程：</strong></p>
+<p>patch阶段调用invokeInsertHook，执行activateChildComponent递归调用自组建的active生命周期。所以先执行子组件的active，然后是父组件的active.</p>
+<p>deactivated也是类似。标记为失活状态。</p>
+<p>4.使用场景</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;keep-alive include=&quot;a,b&quot;&gt;</span><br><span class="line">  &lt;!-- 将缓存name为a或者b的组件，结合动态组件使用 --&gt;</span><br><span class="line">  &lt;component :is=&quot;view&quot;&gt;&lt;/component&gt;</span><br><span class="line">&lt;/keep-alive&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 动态判断 --&gt;</span><br><span class="line">&lt;keep-alive :include=&quot;includedComponents&quot;&gt;</span><br><span class="line">  &lt;router-view&gt;&lt;/router-view&gt;</span><br><span class="line">&lt;/keep-alive&gt;</span><br><span class="line"></span><br><span class="line">&lt;keep-alive&gt;</span><br><span class="line">    &lt;router-view v-if=&quot;$route.meta.keepAlive&quot;&gt;&lt;/router-view&gt;</span><br><span class="line">&lt;/keep-alive&gt;</span><br><span class="line">&lt;router-view v-if=&quot;!$route.meta.keepAlive&quot;&gt;&lt;/router-view&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>首页是A页面</li>
+<li>B页面跳转到A，A页面需要缓存</li>
+<li>C页面跳转到A，A页面不需要被缓存</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    path: &#x27;/&#x27;,</span><br><span class="line">    name: &#x27;A&#x27;,</span><br><span class="line">    component: A,</span><br><span class="line">    meta: &#123;</span><br><span class="line">        keepAlive: true // 需要被缓存</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">    data() &#123;</span><br><span class="line">        return &#123;&#125;;</span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;&#125;,</span><br><span class="line">    beforeRouteLeave(to, from, next) &#123;</span><br><span class="line">         // 设置下一个路由的 meta</span><br><span class="line">        to.meta.keepAlive = true;  // B 跳转到 A 时，让 A 缓存，即不刷新</span><br><span class="line">        next();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">    data() &#123;</span><br><span class="line">        return &#123;&#125;;</span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;&#125;,</span><br><span class="line">    beforeRouteLeave(to, from, next) &#123;</span><br><span class="line">        // 设置下一个路由的 meta</span><br><span class="line">        to.meta.keepAlive = false; // C 跳转到 A 时让 A 不缓存，即刷新</span><br><span class="line">        next();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>4.vue的渲染过程</strong></p>
+<p><img src="/img/image-20211212174443165.png" alt="image-20211212174443165"></p>
+<ul>
+<li>Vue在渲染的时候先调用原型上的<code>_render</code>函数将组件对象转化为一个<strong>VNode实例</strong>；而<code>_render</code>是通过调用<code>createElement</code>和<code>createEmptyVNode</code>两个函数进行转化。</li>
+<li>完成VNode实例化后，Vue调用原型上的<code>_update</code>函数把VNode渲染为真实DOM，这个过程又是通过调用<code>__patch__</code>函数完成的。</li>
+</ul>
+<p>keep-alive刚好就发生在patch期间。abstract: true也导致了vue渲染时，不会生成真正的实例。</p>
+<h2 id="nextTick的实现原理"><a href="#nextTick的实现原理" class="headerlink" title="nextTick的实现原理"></a>nextTick的实现原理</h2><blockquote>
+<ul>
+<li>在下次 DOM 更新循环结束之后执行延迟回调，在修改数据之后立即使用 nextTick 来获取更新后的 DOM。</li>
+<li>nextTick主要使用了<strong>宏任务</strong>和<strong>微任务</strong>。</li>
+<li>根据执行环境分别尝试采用Promise、MutationObserver、setImmediate，如果以上都不行则采用setTimeout定义了一个异步方法，多次调用nextTick会将方法存入队列中，通过这个异步方法清空当前队列。</li>
+</ul>
+</blockquote>
+<p><strong>2.源码分析</strong></p>
+<p>nextTick源码主要分为两块：</p>
+<ul>
+<li>1.能力检测</li>
+<li>2.根据能力检测以不同方式执行回调队列</li>
+</ul>
+<p><strong>(2.1)能力检测</strong></p>
+<p>Event Loop分为宏任务（macro task）以及微任务（ micro task），不管执行宏任务还是微任务，完成后都会进入下一个tick，并在两个tick之间执行UI渲染。</p>
+<p>宏任务耗费的时间是大于微任务的，所以在浏览器支持的情况下，优先使用微任务。如果浏览器不支持微任务，使用宏任务；但是，各种宏任务之间也有效率的不同，需要根据浏览器的支持情况，使用不同的宏任务。</p>
+<p>nextTick在能力检测这一块，就是遵循的这种思想。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">//首先，检测浏览器是否支持setImmediate，不支持就使用MessageChannel，再不支持只能使用效率最差但是兼容性最好的setTimeout了。</span><br><span class="line">//之后，检测浏览器是否支持Promise，如果支持，则使用Promise来执行回调函数队列，毕竟微任务速度大于宏任务。如果不支持的话，就只能使用宏任务来执行回调函数队列。</span><br><span class="line">if (typeof setImmediate !== &#x27;undefined&#x27; &amp;&amp; isNative(setImmediate)) &#123;</span><br><span class="line">  // 如果支持，宏任务（ macro task）使用setImmediate</span><br><span class="line">  macroTimerFunc = () =&gt; &#123;</span><br><span class="line">    setImmediate(flushCallbacks)</span><br><span class="line">  &#125;</span><br><span class="line">  // 同上</span><br><span class="line">&#125; else if (typeof MessageChannel !== &#x27;undefined&#x27; &amp;&amp; (</span><br><span class="line">  isNative(MessageChannel) ||</span><br><span class="line">  // PhantomJS</span><br><span class="line">  MessageChannel.toString() === &#x27;[object MessageChannelConstructor]&#x27;</span><br><span class="line">)) &#123;</span><br><span class="line">  const channel = new MessageChannel()</span><br><span class="line">  const port = channel.port2</span><br><span class="line">  channel.port1.onmessage = flushCallbacks</span><br><span class="line">  macroTimerFunc = () =&gt; &#123;</span><br><span class="line">    port.postMessage(1)</span><br><span class="line">  &#125;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">  /* istanbul ignore next */</span><br><span class="line">  // 都不支持的情况下，使用setTimeout</span><br><span class="line">  macroTimerFunc = () =&gt; &#123;</span><br><span class="line">    setTimeout(flushCallbacks, 0)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>(2.2)执行回调函数队列</strong></p>
+<p>总体流程是:接收回调函数，将回调函数推入回调函数队列中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">// 回调函数队列</span><br><span class="line">const callbacks = []</span><br><span class="line">// 异步锁</span><br><span class="line">let pending = false</span><br><span class="line"></span><br><span class="line">// 执行回调函数</span><br><span class="line">function flushCallbacks () &#123;</span><br><span class="line">  // 重置异步锁</span><br><span class="line">  pending = false</span><br><span class="line">  // 防止出现nextTick中包含nextTick时出现问题，在执行回调函数队列前，提前复制备份，清空回调函数队列</span><br><span class="line">  const copies = callbacks.slice(0)</span><br><span class="line">  callbacks.length = 0</span><br><span class="line">  // 执行回调函数队列</span><br><span class="line">  for (let i = 0; i &lt; copies.length; i++) &#123;</span><br><span class="line">    copies[i]()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">// 我们调用的nextTick函数</span><br><span class="line">export function nextTick (cb?: Function, ctx?: Object) &#123;</span><br><span class="line">  let _resolve</span><br><span class="line">  // 将回调函数推入回调队列</span><br><span class="line">  callbacks.push(() =&gt; &#123;</span><br><span class="line">    if (cb) &#123;</span><br><span class="line">      try &#123;</span><br><span class="line">        cb.call(ctx)</span><br><span class="line">      &#125; catch (e) &#123;</span><br><span class="line">        handleError(e, ctx, &#x27;nextTick&#x27;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; else if (_resolve) &#123;</span><br><span class="line">      _resolve(ctx)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  // 如果异步锁未锁上，锁上异步锁，调用异步函数，准备等同步函数执行完后，就开始执行回调函数队列</span><br><span class="line">  if (!pending) &#123;</span><br><span class="line">    pending = true</span><br><span class="line">    if (useMacroTask) &#123;</span><br><span class="line">      macroTimerFunc()</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      microTimerFunc()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  // $flow-disable-line</span><br><span class="line">  // 2.1.0新增，如果没有提供回调，并且支持Promise，返回一个Promise</span><br><span class="line">  if (!cb &amp;&amp; typeof Promise !== &#x27;undefined&#x27;) &#123;</span><br><span class="line">    return new Promise(resolve =&gt; &#123;</span><br><span class="line">      _resolve = resolve</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>有2个关键点：</p>
+<p><em>如何保证只在接收第一个回调函数时执行异步方法？</em></p>
+<p>nextTick源码中使用了一个异步锁的概念，即接收第一个回调函数时，先关上锁，执行异步方法。此时，浏览器处于等待执行完同步代码就执行异步代码的情况。</p>
+<p>当然执行flushCallbacks函数时有个难以理解的点，即：<em>为什么需要备份回调函数队列？执行的也是备份的回调函数队列</em>？</p>
+<p>因为，会出现这么一种情况：nextTick套用nextTick。如果flushCallbacks不做特殊处理，直接循环执行回调函数，会导致里面nextTick中的回调函数会进入回调队列。这就相当于，下一个班车的旅客上了上一个班车。</p>
+<p><strong>3.自己实现简易的nextTick</strong></p>
+<p>在简易版的nextTick中，通过nextTick接收回调函数，通过setTimeout来异步执行回调函数。通过这种方式，可以实现在下一个tick中执行回调函数，即在UI重新渲染后执行回调函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">let callbacks = []</span><br><span class="line">let pending = false</span><br><span class="line"></span><br><span class="line">function nextTick (cb) &#123;</span><br><span class="line">    callbacks.push(cb)</span><br><span class="line"></span><br><span class="line">    if (!pending) &#123;</span><br><span class="line">        pending = true</span><br><span class="line">        setTimeout(flushCallback, 0)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function flushCallback () &#123;</span><br><span class="line">    pending = false</span><br><span class="line">    let copies = callbacks.slice()</span><br><span class="line">    callbacks.length = 0</span><br><span class="line">    copies.forEach(copy =&gt; &#123;</span><br><span class="line">        copy()</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="Vue-router路由-hash和history"><a href="#Vue-router路由-hash和history" class="headerlink" title="Vue-router路由-hash和history"></a>Vue-router路由-hash和history</h2><blockquote>
+<ul>
+<li>hash 模式：<ul>
+<li>#后面 hash 值的变化，不会导致浏览器向服务器发出请求，浏览器不发出请求，就不会刷新页面</li>
+<li>通过监听 <strong>hashchange</strong> 事件可以知道 hash 发生了哪些变化，然后根据 hash 变化来实现更新页面部分内容的操作。</li>
+</ul>
+</li>
+<li>history 模式：<ul>
+<li>history 模式的实现，主要是 HTML5 标准发布的两个 API，<strong>pushState</strong> 和 <strong>replaceState</strong>，这两个 API 可以在改变 url，但是不会发送请求。这样就可以监听 url 变化来实现更新页面部分内容的操作</li>
+</ul>
+</li>
+<li>区别<ul>
+<li>url 展示上，hash 模式有“#”，history 模式没有</li>
+<li>刷新页面时，hash 模式可以正常加载到 hash 值对应的页面，而 history 没有处理的话，会返回 404，一般需要后端将所有页面都配置重定向到首页路由</li>
+<li>兼容性，hash 可以支持低版本浏览器和 IE。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h2 id="Vue-router路由-懒加载"><a href="#Vue-router路由-懒加载" class="headerlink" title="Vue-router路由-懒加载"></a>Vue-router路由-懒加载</h2><p>三种实现方式：</p>
+<blockquote>
+<ol>
+<li>vue异步组件</li>
+<li>es提案的import()</li>
+<li>webpack的require,ensure()</li>
+</ol>
+</blockquote>
+<p><strong>1.vue异步组件</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123; </span><br><span class="line">path: &#x27;/home&#x27;, </span><br><span class="line">name: &#x27;home&#x27;, </span><br><span class="line">component: resolve =&gt; **require**([&#x27;@/components/home&#x27;],resolve) </span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.es提案的import()</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const Home = () =&gt; import(&#x27;@/components/home&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.webpack的require,ensure()</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123; </span><br><span class="line">path: &#x27;/home&#x27;, </span><br><span class="line">name: &#x27;home&#x27;, </span><br><span class="line">component: r =&gt; require.ensure([], () =&gt; r(require(&#x27;@/components/home&#x27;)), &#x27;demo&#x27;) </span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Vue-router导航守卫有哪些"><a href="#Vue-router导航守卫有哪些" class="headerlink" title="Vue-router导航守卫有哪些"></a>Vue-router导航守卫有哪些</h2><ul>
+<li>全局前置/钩子：beforeEach、beforeResolve、afterEach</li>
+<li>路由独享的守卫：beforeEnter</li>
+<li>组件内的守卫：beforeRouteEnter、beforeRouteUpdate、beforeRouteLeave</li>
+</ul>
+<p><strong>完整的导航解析流程：</strong></p>
+<ol>
+<li>导航被触发。</li>
+<li>在失活的组件里调用 <code>beforeRouteLeave</code> 守卫。</li>
+<li>调用全局的 <code>beforeEach</code> 守卫。</li>
+<li>在重用的组件里调用 <code>beforeRouteUpdate</code> 守卫(2.2+)。</li>
+<li>在路由配置里调用 <code>beforeEnter</code>。</li>
+<li>解析异步路由组件。</li>
+<li>在被激活的组件里调用 <code>beforeRouteEnter</code>。</li>
+<li>调用全局的 <code>beforeResolve</code> 守卫(2.5+)。</li>
+<li>导航被确认。</li>
+<li>调用全局的 <code>afterEach</code> 钩子。</li>
+<li>触发 DOM 更新。</li>
+<li>调用 <code>beforeRouteEnter</code> 守卫中传给 <code>next</code> 的回调函数，创建好的组件实例会作为回调函数的参数传入。</li>
+</ol>
+<p><strong>1.全局守卫</strong></p>
+<p><strong>具体分为：全局前置守卫、全局解析守卫、全局后置钩子</strong></p>
+<p><strong>1.1 全局前置守卫-beforeEach</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// GOOD</span><br><span class="line">router.beforeEach((to, from, next) =&gt; &#123;</span><br><span class="line">  if (to.name !== &#x27;Login&#x27; &amp;&amp; !isAuthenticated) next(&#123; name: &#x27;Login&#x27; &#125;)</span><br><span class="line">  else next()</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>1.2 全局解析守卫-beforeResolve</strong></p>
+<p>在 <strong>每次导航</strong>时都会触发，但是确保在导航被确认之前，<strong>同时在所有组件内守卫和异步路由组件被解析之后，解析守卫就被正确调用</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">router.beforeResolve(async to =&gt; &#123;</span><br><span class="line">  if (to.meta.requiresCamera) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">      await askForCameraPermission()</span><br><span class="line">    &#125; catch (error) &#123;</span><br><span class="line">      if (error instanceof NotAllowedError) &#123;</span><br><span class="line">        // ... 处理错误，然后取消导航</span><br><span class="line">        return false</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        // 意料之外的错误，取消导航并把错误传给全局处理器</span><br><span class="line">        throw error</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>1.3 全局后置钩子</strong></p>
+<p>不会接受 <code>next</code> 函数也不会改变导航本身，对于分析、更改页面标题、声明页面等辅助功能</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">router.afterEach((to, from, failure) =&gt; &#123;</span><br><span class="line">  if (!failure) sendToAnalytics(to.fullPath)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.路由独享的守卫-beforeEnter</strong></p>
+<p><code>beforeEnter</code> 守卫 <strong>只在进入路由时触发</strong>，不会在 <code>params</code>、<code>query</code> 或 <code>hash</code> 改变时触发</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">const routes = [</span><br><span class="line">  &#123;</span><br><span class="line">    path: &#x27;/users/:id&#x27;,</span><br><span class="line">    component: UserDetails,</span><br><span class="line">    beforeEnter: (to, from) =&gt; &#123;</span><br><span class="line">      // reject the navigation</span><br><span class="line">      return false</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.组件内的守卫</strong></p>
+<ul>
+<li><code>beforeRouteEnter</code></li>
+<li><code>beforeRouteUpdate</code></li>
+<li><code>beforeRouteLeave</code></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">const UserDetails = &#123;</span><br><span class="line">  template: `...`,</span><br><span class="line">  beforeRouteEnter(to, from) &#123;</span><br><span class="line">    // 在渲染该组件的对应路由被验证前调用</span><br><span class="line">    // 不能获取组件实例 `this` ！</span><br><span class="line">    // 因为当守卫执行时，组件实例还没被创建！</span><br><span class="line">  &#125;,</span><br><span class="line">  beforeRouteUpdate(to, from) &#123;</span><br><span class="line">    // 在当前路由改变，但是该组件被复用时调用</span><br><span class="line">    // 举例来说，对于一个带有动态参数的路径 `/users/:id`，在 `/users/1` 和 `/users/2` 之间跳转的时候，</span><br><span class="line">    // 由于会渲染同样的 `UserDetails` 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。</span><br><span class="line">    // 因为在这种情况发生的时候，组件已经挂载好了，导航守卫可以访问组件实例 `this`</span><br><span class="line">  &#125;,</span><br><span class="line">  beforeRouteLeave(to, from) &#123;</span><br><span class="line">    // 在导航离开渲染该组件的对应路由时调用</span><br><span class="line">    // 与 `beforeRouteUpdate` 一样，它可以访问组件实例 `this`</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>$route</code>和<code>$router</code>的区别</strong></p>
+<ul>
+<li>$route 是<code>路由信息对象</code>，包括 path，params，hash，query，fullPath，matched，name 等路由信息参数。</li>
+<li>而$router 是<code>路由实例</code>对象包括了路由的跳转方法，钩子函数等。</li>
+</ul>
+<h2 id="vue-性能优化"><a href="#vue-性能优化" class="headerlink" title="vue 性能优化"></a>vue 性能优化</h2><p><strong>编码阶段</strong></p>
+<ul>
+<li>不要在模板里面写过多表达式</li>
+<li>尽量减少<code>data</code>中的数据，<code>data</code>中的数据都会增加<code>getter</code>和<code>setter</code>，会收集对应的<code>watcher</code></li>
+<li><code>v-if</code>和<code>v-for</code>不能连用</li>
+<li>如果需要使用<code>v-for</code>给每项元素绑定事件时使用事件代理</li>
+<li><code>SPA</code> 页面采用<code>keep-alive</code>缓存组件</li>
+<li>频繁切换的使用 v-show，不频繁切换的使用 v-if</li>
+<li>循环调用子组件时添加 key，<code>key</code>保证唯一</li>
+<li>使用路由懒加载、异步组件</li>
+<li>防抖、节流</li>
+<li>第三方模块按需导入</li>
+<li>长列表滚动到可视区域动态加载</li>
+<li>图片懒加载</li>
+</ul>
+<p>**<br>**</p>
+<p><strong>SEO 优化</strong></p>
+<ul>
+<li>预渲染</li>
+<li>服务端渲染<code>SSR</code>，<code>nuxt.js</code></li>
+</ul>
+<p><strong>打包优化</strong></p>
+<ul>
+<li>压缩代码</li>
+<li><code>Tree Shaking/Scope Hoisting</code></li>
+<li>使用<code>cdn</code>加载第三方模块</li>
+<li>多线程打包<code>happypack</code></li>
+<li><code>splitChunks</code>抽离公共文件</li>
+<li><code>sourceMap</code>优化</li>
+</ul>
+<p><strong>用户体验</strong></p>
+<ul>
+<li>骨架屏</li>
+<li><code>PWA</code>渐进式 Web 应用，使用多种技术来增强 web app 的功能，让网页应用呈现和原生应用相似的体验。</li>
+</ul>
+<h2 id="SFC"><a href="#SFC" class="headerlink" title="SFC"></a>SFC</h2><p>平时写的 .vue 文件称为 SFC(Single File Components)。vue 会先对 .vue 文件进行解析，分成 template、script、styles、customBlocks 四个部分，称为 descriptor。之后，再对这四个部分分别进行编译最终得到可以在浏览器中执行的 .js 文件.最终编译成.js 文件是交给 vue-loader 等库来做的。</p>
+<p>SFCDescriptor，是表示 .vue 各个代码块的对象，为以下数据格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// an object format describing a single-file component.</span><br><span class="line">declare type SFCDescriptor = &#123;</span><br><span class="line">    template: ?SFCBlock;</span><br><span class="line">    script: ?SFCBlock;</span><br><span class="line">    styles: Array&lt;SFCBlock&gt;;</span><br><span class="line">    customBlocks: Array&lt;SFCBlock&gt;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>vue 提供了一个 [<code>compiler.parseComponent(file, [options\])</code>方法]，来将 .vue 文件解析成一个 SFCDescriptor。</p>
+<p><strong>1.文件入口</strong></p>
+<p>解析 sfc 文件的源码入口在 src/sfc/parser.js 中，编译后的产出在 /packages/vue-template-compiler 和 /packages/vue-server-renderer 下的 build.js 中。</p>
+<p>build.js 文件中直接 export 出了<code>parseComponent</code>方法。</p>
+<p>首先我们来看看<code>parseComponent</code>方法都做了哪些事情。</p>
+<p><strong><code>2.parseComponent</code>方法</strong></p>
+<p><code>parseComponent</code>方法中主要定义了<code>start</code>和<code>end</code>两个函数，之后调用了<code>parseHTML</code>方法来对 .vue 文件内容践行编译。<code>start</code>和<code>end</code>两个函数作为参数传给了<code>parseHTML</code>，我们等下再看。</p>
+<p>先看下这个<code>parseHTML</code>方法是做啥的呢？</p>
+<p><strong><code>3.parseHTML</code>方法</strong></p>
+<p>该方法看名字可以猜到是一个 html-parser。</p>
+<p>parseHTML 的代码细节较多，我们可以简单理解为：遍历解析查找文件中的各个标签，解析到每个起始标签时，调用 option 中的 start 方法进行处理；解析到每个结束标签时，调用 option 中的 end 方法进行处理。</p>
+<p>对应到这里，就是分别调用<code>parseComponent</code>方法中定义的 <code>start</code> 和 <code>end</code> 函数进行处理。</p>
+<p>由于我们这里只是想要找到第一层标签，也就是 template、script 这些。因此可以在<code>parseComponent</code>中维护一个 depth 变量，在<code>start</code>中将<code>depth++</code>，在<code>end</code>中<code>depth--</code>。那么，每个<code>depth === 1</code>的标签就是我们需要获取的信息，包含 template、script、style 以及一些自定义标签。</p>
+<p>接下来我们来看<code>start</code>和<code>end</code>中进行了哪些处理。</p>
+<p><code>4.start</code></p>
+<p>每当遇到一个起始标签时，执行<code>start</code>函数。</p>
+<p>1、记录下 currentBlock。每个 currentBlock 包含以下内容：</p>
+<p>2、根据 tag 名称，将 currentBlock 对象保存在在返回结果对象中。</p>
+<p>返回结果对象定义为 sfc，如果 tag 不是 script,style,template 中的任一个，就放在 sfc.customBlocks 中。如果是 style，就放在 sfc.styles 中。script 和 template 则直接放在 sfc 下。</p>
+<p><code>5.end</code></p>
+<p>每当遇到一个结束标签时，执行<code>end</code>函数。</p>
+<p>如果当前是第一层标签(depth === 1)，并且 currentBlock 变量存在，那么取出这部分 text，放在 currentBlock.content 中。</p>
+<p>在将 .vue 整个遍历一遍后，得到的 sfc 对象即为我们需要的 SFCDescriptor。</p>
+<p><strong>6.生成 .js</strong></p>
+<p><code>compiler.parseComponent(file, [options])</code>得到的只是一个组件的 <code>SFCDescriptor</code>，最终编译成.js 文件是交给 vue-loader 等库来做的。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/" title="Vue2.0_原理" target="_blank" rel="external">https://fuyunjinglong.github.io/2023/09/12/D_框架_Vue2.0_原理/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://fuyunjinglong.github.io/" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://fuyunjinglong.github.io/" target="_blank"><span class="text-dark">Elven</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2%E5%92%8CVue3%E6%AF%94%E8%BE%83/" title="Vue2和Vue3比较"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue3.0/" title="源码_Vue3.0"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

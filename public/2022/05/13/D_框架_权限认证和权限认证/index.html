@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>权限认证和权限认证 | Hexo</title>
+  <meta name="description" content="术语认证  认证(Identification) 是指根据声明者所特有的识别信息，确认声明者的身份。  授权  授权(Authorization)： 在信息安全领域是指资源所有者委派执行者，赋予执行者指定范围的资源操作权限，以便对资源的相关操作。  鉴权  鉴权(Authentication) 在信息安全领域是指对于一个声明者所声明的身份权利，对其所声明的真实性进行鉴别确认的过程。 若从授权出发，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="权限认证和权限认证">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2022/05/13/D_%E6%A1%86%E6%9E%B6_%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81%E5%92%8C%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="术语认证  认证(Identification) 是指根据声明者所特有的识别信息，确认声明者的身份。  授权  授权(Authorization)： 在信息安全领域是指资源所有者委派执行者，赋予执行者指定范围的资源操作权限，以便对资源的相关操作。  鉴权  鉴权(Authentication) 在信息安全领域是指对于一个声明者所声明的身份权利，对其所声明的真实性进行鉴别确认的过程。 若从授权出发，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20230323221549533.png">
+<meta property="og:image" content="c:/Users/fuyunjinglong/AppData/Roaming/Typora/typora-user-images/image-20230324072532875.png">
+<meta property="og:image" content="c:/Users/fuyunjinglong/AppData/Roaming/Typora/typora-user-images/image-20230324072624985.png">
+<meta property="og:image" content="c:/Users/fuyunjinglong/AppData/Roaming/Typora/typora-user-images/image-20230324073947821.png">
+<meta property="og:image" content="c:/Users/fuyunjinglong/AppData/Roaming/Typora/typora-user-images/image-20230324074042090.png">
+<meta property="og:image" content="c:/Users/fuyunjinglong/AppData/Roaming/Typora/typora-user-images/image-20230324074132586.png">
+<meta property="og:image" content="c:/Users/fuyunjinglong/AppData/Roaming/Typora/typora-user-images/image-20230324074241004.png">
+<meta property="article:published_time" content="2022-05-12T22:33:16.000Z">
+<meta property="article:modified_time" content="2023-03-23T23:42:42.862Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/image-20230323221549533.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2022/05/13/D_%E6%A1%86%E6%9E%B6_%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81%E5%92%8C%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://fuyunjinglong.github.io/" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Elven</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">23</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/09/">九月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/06/">六月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">26</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/06/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_0%E5%9F%BA%E7%A1%80/" class="title">0基础_工程热点</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-05T22:33:16.000Z" itemprop="datePublished">2099-11-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/05/I_%E7%A7%BB%E5%8A%A8%E7%AB%AF_0%E5%9F%BA%E7%A1%80/" class="title">0基础_移动端</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-04T22:33:16.000Z" itemprop="datePublished">2099-11-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/" class="title">0基础_计算机网络</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-03T22:33:16.000Z" itemprop="datePublished">2099-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_0%E5%9F%BA%E7%A1%80/" class="title">0基础_数据结构</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_%E5%9F%BA%E7%A1%80/" class="title">0基础_设计模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%AF%E8%AF%AD"><span class="toc-text">术语</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81"><span class="toc-text">权限认证</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%89%B4%E6%9D%83-Session-Cookie"><span class="toc-text">鉴权-Session-Cookie</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%89%B4%E6%9D%83-Token"><span class="toc-text">鉴权-Token</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%89%B4%E6%9D%83-JWT"><span class="toc-text">鉴权-JWT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%89%B4%E6%9D%83-SSO%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95"><span class="toc-text">鉴权-SSO单点登录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E5%9F%9F%E4%B8%8B%E7%9A%84-SSO%EF%BC%88%E4%B8%BB%E5%9F%9F%E5%90%8D%E7%9B%B8%E5%90%8C%EF%BC%89"><span class="toc-text">同域下的 SSO（主域名相同）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%A8%E5%9F%9F%E4%B8%8B%E7%9A%84-SSO%EF%BC%88%E4%B8%BB%E5%9F%9F%E5%90%8D%E4%B8%8D%E5%90%8C%EF%BC%89"><span class="toc-text">跨域下的 SSO（主域名不同）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%89%B4%E6%9D%83-OAuth-2-0"><span class="toc-text">鉴权-OAuth 2.0</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%89%B4%E6%9D%83-%E5%94%AF%E4%B8%80%E7%99%BB%E5%BD%95"><span class="toc-text">鉴权-唯一登录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%89%B4%E6%9D%83-QR-Code%E6%89%AB%E7%A0%81%E7%99%BB%E5%BD%95"><span class="toc-text">鉴权-QR Code扫码登录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-text">小结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6"><span class="toc-text">权限控制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E6%9D%83%E9%99%90"><span class="toc-text">接口权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%89%E9%92%AE%E6%9D%83%E9%99%90"><span class="toc-text">按钮权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B5%E9%9D%A2%E8%8F%9C%E5%8D%95%E6%9D%83%E9%99%90"><span class="toc-text">页面菜单权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E6%9D%83%E9%99%90"><span class="toc-text">路由权限</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-D_框架_权限认证和权限认证" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      权限认证和权限认证
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/05/13/D_%E6%A1%86%E6%9E%B6_%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81%E5%92%8C%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81/" class="article-date">
+	  <time datetime="2022-05-12T22:33:16.000Z" itemprop="datePublished">2022-05-13</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/05/13/D_%E6%A1%86%E6%9E%B6_%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81%E5%92%8C%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h1><p><strong>认证</strong></p>
+<blockquote>
+<p><code>认证(Identification)</code> 是指根据声明者所特有的识别信息，确认声明者的身份。</p>
+</blockquote>
+<p><strong>授权</strong></p>
+<blockquote>
+<p><code>授权(Authorization)</code>： 在信息安全领域是指<code>资源所有者</code>委派<code>执行者</code>，赋予<code>执行者</code>指定范围的资源操作权限，以便对资源的相关操作。</p>
+</blockquote>
+<p><strong>鉴权</strong></p>
+<blockquote>
+<p><code>鉴权(Authentication)</code> 在信息安全领域是指对于一个声明者所声明的身份权利，对其所声明的真实性进行鉴别确认的过程。</p>
+<p>若从授权出发，则会更加容易理解鉴权。授权和鉴权是两个上下游相匹配的关系，先授权，后鉴权。</p>
+</blockquote>
+<p><strong>权限控制</strong></p>
+<blockquote>
+<p><code>权限控制(Access/Permission Control)</code> 将可执行的操作定义为权限列表，然后判断操作是否允许/禁止</p>
+<p>对于权限控制，可以分为两部分进行理解：一个是权限，另一个是控制。权限是抽象的逻辑概念，而控制是具体的实现方式。</p>
+</blockquote>
+<p><strong>认证、授权、鉴权和权限控制的关系？</strong></p>
+<p>它们有先后的依赖关系：认证—&gt;授权—&gt;鉴权—&gt;权限控制</p>
+<h1 id="权限认证"><a href="#权限认证" class="headerlink" title="权限认证"></a>权限认证</h1><h2 id="鉴权-Session-Cookie"><a href="#鉴权-Session-Cookie" class="headerlink" title="鉴权-Session-Cookie"></a>鉴权-Session-Cookie</h2><p><code>Session-Cookie</code> 认证是利用服务端的 <strong>Session（会话</strong>）和 <strong>浏览器（客户端）</strong> 的 Cookie 来实现的前后端通信认证模式。</p>
+<p><strong>Session-Cookie认证流程图</strong></p>
+<img src="/img/image-20230323221549533.png" alt="image-20230323221549533" style="zoom:65%;" />
+
+<p><strong>认证流程</strong></p>
+<blockquote>
+<ol>
+<li>客户端： 向服务器发送登录信息用户名/密码来请求登录校验；</li>
+<li>服务器： 验证登录的信息，验证通过后自动创建 Session（将 Session 保存在内存中，也可以保存在 Redis 中），然后给这个 Session 生成一个唯一的标识字符串会话身份凭证 session_id(通常称为 sid)，并在响应头 Set-Cookie 中设置这个唯一标识符；</li>
+<li>客户端： 收到服务器的响应后会解析响应头，并自动将 sid 保存在本地 Cookie 中，浏览器在下次 HTTP 请求时请求头会自动附带上该域名下的 Cookie 信息；</li>
+<li>服务器： 接收客户端请求时会去解析请求头 Cookie 中的 sid，然后根据这个 sid 去找服务端保存的该客户端的 sid，然后判断该请求是否合法</li>
+</ol>
+</blockquote>
+<p><strong>优点</strong></p>
+<blockquote>
+<ul>
+<li>Cookie 简单易用</li>
+<li>Session 数据存储在服务端，相较于 JWT 方便进行管理，也就是当用户登录和主动注销，只需要添加删除对应的 Session 就可以了，方便管理</li>
+<li>只需要后端操作即可，前端可以无感等进行操作；</li>
+</ul>
+</blockquote>
+<p><strong>缺点</strong></p>
+<blockquote>
+<ul>
+<li>依赖 Cookie，一旦用户在浏览器端禁用 Cookie，那么就 GG 思密达了；</li>
+<li>非常不安全，Cookie 将数据暴露在浏览器中，增加了数据被盗的风险（容易被 CSRF 等攻击）；</li>
+<li>Session 存储在服务端，增大了服务端的开销，用户量大的时候会大大降低服务器性能；</li>
+<li>对移动端的支持性不友好；</li>
+</ul>
+</blockquote>
+<h2 id="鉴权-Token"><a href="#鉴权-Token" class="headerlink" title="鉴权-Token"></a>鉴权-Token</h2><p> 为了解决Session 的维护和存储问题，才有了Token。</p>
+<p><code>Token</code> 是一个令牌，客户端访问服务器时，验证通过后服务端会为其签发一张令牌，之后，客户端就可以携带令牌访问服务器，服务端只需要验证令牌的有效性即可。</p>
+<p><strong>一般 Token 的组成</strong></p>
+<blockquote>
+<p><strong>uid</strong> (用户唯一的身份标识) + <strong>time</strong> (当前时间的时间戳) + <strong>sign</strong> (签名，Token 的前几位以哈希算法压缩成的一定长度的十六进制字符串)</p>
+</blockquote>
+<p><strong>Token 的认证流程图</strong></p>
+<img src="C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20230324072532875.png" alt="image-20230324072532875" style="zoom:65%;" />
+
+<p><strong>认证流程</strong></p>
+<blockquote>
+<ul>
+<li>客户端： 输入用户名和密码请求登录校验；</li>
+<li>服务器： 收到请求，去验证用户名与密码；验证成功后，服务端会签发一个 Token 并把这个 Token 发送给客户端；</li>
+<li>客户端： 收到 Token 以后需要把它存储起来，web 端一般会放在 localStorage 或 Cookie 中，移动端原生 APP 一般存储在本地缓存中；</li>
+<li>客户端发送请求： 向服务端请求 API 资源的时候，将 Token 通过 HTTP 请求头 Authorization 字段或者其它方式发送给服务端；</li>
+<li>服务器： 收到请求，然后从客户端请求取出Token包含的用户信息，查库验证</li>
+</ul>
+</blockquote>
+<p><strong>优点</strong></p>
+<blockquote>
+<ul>
+<li><strong>服务端无状态化、可扩展性好：</strong> Token 机制在服务端不需要存储会话（Session）信息，因为 Token 自身包含了其所标识用户的相关信息，这有利于在多个服务间共享用户状态</li>
+<li><strong>支持 APP 移动端设备；</strong></li>
+<li><strong>安全性好：</strong> 有效避免 CSRF 攻击（因为不需要 Cookie）</li>
+<li><strong>支持跨程序调用：</strong> 因为 Cookie 是不允许跨域访问的，而 Token 则不存在这个问题</li>
+</ul>
+</blockquote>
+<p><strong>缺点</strong></p>
+<blockquote>
+<ul>
+<li><strong>配合：</strong> 需要前后端配合处理；</li>
+<li><strong>占带宽：</strong> 正常情况下比 <code>sid</code> 更大，消耗更多流量，挤占更多宽带</li>
+<li><strong>性能问题：</strong> 需要访问数据库或远程服务进行权限校验，对 Token 加解密等操作，会更耗性能；</li>
+<li><strong>有效期短：</strong> 为了避免 Token 被盗用，一般 Token 的有效期会设置的较短，所以就有了 <code>Refresh Token</code>；</li>
+</ul>
+</blockquote>
+<p><strong>Refresh Token</strong></p>
+<p>业务接口用来鉴权的 Token，我们称之为 <code>Access Token</code>。但过短的有效期会造成 <code>Access Token</code> 经常过期，过期后怎么办呢？</p>
+<p>方案有2种：</p>
+<blockquote>
+<ul>
+<li><code>刷新 Access Token</code>，让用户重新登录获取新 Token</li>
+<li>再来一个 Token，一个专门生成 Access Token 的 Token，我们称为 <code>Refresh Token</code></li>
+</ul>
+</blockquote>
+<p>定义</p>
+<blockquote>
+<ul>
+<li><strong>Access Token：</strong> 用来访问业务接口，由于有效期足够短，盗用风险小，也可以使请求方式更宽松灵活；</li>
+<li><strong>Refresh Token：</strong> 用来获取 Access Token，有效期可以长一些，通过独立服务和严格的请求方式增加安全性；由于不常验证，也可以如前面的 Session 一样处理；</li>
+</ul>
+</blockquote>
+<p><strong>Refresh Token 的认证流程图</strong></p>
+<img src="C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20230324072624985.png" alt="image-20230324072624985" style="zoom:65%;" />
+
+<p>认证流程：</p>
+<blockquote>
+<ol>
+<li><strong>客户端：</strong> 输入用户名和密码请求登录校验；</li>
+<li><strong>服务端：</strong> 收到请求，验证用户名与密码；验证成功后，服务端会签发一个 <code>Access Token</code> 和 <code>Refresh Token</code> 并返回给客户端；</li>
+<li><strong>客户端：</strong> 把 <code>Access Token</code> 和 <code>Refresh Token</code> 存储在本地；</li>
+<li><strong>客户端发送请求：</strong> 请求数据时，携带 <code>Access Token</code> 传输给服务端；</li>
+<li>服务端：<ul>
+<li>验证 Access Token 有效：正常返回数据</li>
+<li>验证 Access Token 过期：拒绝请求</li>
+</ul>
+</li>
+<li><strong>客户端</strong> ( Access Token 已过期) <strong>：</strong> 则重新传输 Refresh Token 给服务端；</li>
+<li><strong>服务端</strong> ( Access Token 已过期) <strong>：</strong> 验证 Refresh Token ，验证成功后返回新的 Access Token 给客户端；</li>
+<li><strong>客户端：</strong> 重新携带新的 Access Token 请求接口；</li>
+</ol>
+</blockquote>
+<p><strong>Token 和 Session-Cookie 的区别</strong></p>
+<p><code>Token</code> 更像是 <code>Session-Cookie</code> 的升级改良版</p>
+<blockquote>
+<ul>
+<li><strong>存储地不同：</strong> Session 一般是存储在服务端；Token 是无状态的，一般由前端存储；</li>
+<li><strong>安全性不同：</strong> Session 和 Token 并不矛盾，作为身份认证 Token 安全性比 Session 好，因为每一个请求都有签名还能防止监听以及重放攻击；</li>
+<li><strong>支持性不同：</strong> Session-Cookie 认证需要靠浏览器的 Cookie 机制实现，如果遇到原生 NativeAPP 时这种机制就不起作用了，或是浏览器的 Cookie 存储功能被禁用，也是无法使用该认证机制实现鉴权的；而 Token 验证机制丰富了客户端类型。</li>
+</ul>
+</blockquote>
+<h2 id="鉴权-JWT"><a href="#鉴权-JWT" class="headerlink" title="鉴权-JWT"></a>鉴权-JWT</h2><p>Token每次请求验证都要查询数据库，增加了查库带来的延迟等性能消耗；所以有了JWT。</p>
+<p><code>JWT</code> 是 <code>Auth0</code> 提出的通过 <code>对 JSON 进行加密签名</code>来实现授权验证的方案；</p>
+<p><strong>JWT 的组成</strong></p>
+<p>三部分组成：Header 头部<code>、 </code>Payload 负载<code>和</code>Signature 签名</p>
+<p>Header 头部</p>
+<blockquote>
+<ul>
+<li>typ：代表 Token 的类型，这里使用的是 JWT 类型；</li>
+<li>alg：使用的 Hash 算法，例如 HMAC SHA256 或 RSA.</li>
+</ul>
+</blockquote>
+<p>Payload 负载</p>
+<p>它包含一些声明 Claim (实体的描述，通常是一个 User 信息，还包括一些其他的元数据) ，用来存放实际需要传递的数据</p>
+<blockquote>
+<ul>
+<li>iss (issuer)：签发人</li>
+<li>exp (expiration time)：过期时间</li>
+<li>sub (subject)：主题</li>
+<li>aud (audience)：受众</li>
+<li>nbf (Not Before)：生效时间</li>
+<li>iat (Issued At)：签发时间</li>
+<li>jti (JWT ID)：编号</li>
+</ul>
+</blockquote>
+<p>Signature 签名</p>
+<p>Signature 部分是对前两部分的签名，防止数据篡改。</p>
+<p>指定一个密钥（secret）,然后使用 Header 里面指定的签名算法（默认是 HMAC SHA256）产生签名。</p>
+<p><strong>JWT 的认证流程图</strong></p>
+<img src="C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20230324073947821.png" alt="image-20230324073947821" style="zoom:67%;" />
+
+<p><strong>优点</strong></p>
+<blockquote>
+<ul>
+<li>不需要在服务端保存会话信息（RESTful API 的原则之一就是无状态），所以易于应用的扩展，即信息不保存在服务端，不会存在 Session 扩展不方便的情况；</li>
+<li>JWT 中的 Payload 负载可以存储常用信息，用于信息交换，有效地使用 JWT，可以降低服务端查询数据库的次数</li>
+</ul>
+</blockquote>
+<p><strong>缺点</strong></p>
+<blockquote>
+<ul>
+<li><strong>加密问题：</strong> JWT 默认是不加密，但也是可以加密的。生成原始 Token 以后，可以用密钥再加密一次。</li>
+<li><strong>到期问题：</strong> 由于服务器不保存 Session 状态，因此无法在使用过程中废止某个 Token，或者更改 Token 的权限。也就是说，一旦 JWT 签发了，在到期之前就会始终有效，除非服务器部署额外的逻辑。</li>
+</ul>
+</blockquote>
+<p><strong>前端常用的JWT库</strong></p>
+<blockquote>
+<ul>
+<li>使用 express：<a target="_blank" rel="noopener" href="https://mybj123.com/gohref.php?url=https://github.com/auth0/express-jwt">express-jwt</a></li>
+<li>使用 koa：<a target="_blank" rel="noopener" href="https://mybj123.com/gohref.php?url=https://github.com/koajs/jwt">koa-jwt</a></li>
+</ul>
+</blockquote>
+<h2 id="鉴权-SSO单点登录"><a href="#鉴权-SSO单点登录" class="headerlink" title="鉴权-SSO单点登录"></a>鉴权-SSO单点登录</h2><p>前面解决了在同域下的客户端/服务端认证系统中，通过客户端携带凭证，可以维持一段时间内的登录状态。但一个大型系统里可能包含 n 多子系统，用户在操作不同的系统时，需要多次登录，很麻烦，单点登录（SSO)解决了这个问题。</p>
+<h3 id="同域下的-SSO（主域名相同）"><a href="#同域下的-SSO（主域名相同）" class="headerlink" title="同域下的 SSO（主域名相同）"></a>同域下的 SSO（主域名相同）</h3><p>当网站存在两个相同主域名下的贴吧子系统 <code>media.mybj123.com</code> 和网盘子系统 <code>pan.mybj123.com</code> 时，以下为他们实现 SSO 的步骤：</p>
+<blockquote>
+<ol>
+<li><strong>客户端：</strong> 用户访问某个子系统时（例如 <code>media.mybj123.com</code>），如果没有登录，则跳转至 SSO 认证中心提供的登录页面进行登录；</li>
+<li><strong>服务端：</strong> 登录认证后，服务端把登录用户的信息存储于 Session 中，并且附加在响应头的 <code>Set-Cookie</code> 字段中，设置 Cookie 的 Domain 为 <code>.baidu.com</code> ；</li>
+<li>客户端：再次发送请求时，携带主域名 Domain 下的 Cookie 给服务器，此时服务端就可以通过该 Cookie 来验证登录状态了；</li>
+</ol>
+</blockquote>
+<p>以上流程本质是鉴权-Session-Cookie</p>
+<h3 id="跨域下的-SSO（主域名不同）"><a href="#跨域下的-SSO（主域名不同）" class="headerlink" title="跨域下的 SSO（主域名不同）"></a>跨域下的 SSO（主域名不同）</h3><p>比如天猫 和 淘宝的互相登录访问，采用了CAS（Central Authentication Service）中央授权服务。</p>
+<p><strong>单点登录下的 CAS 认证流程图</strong></p>
+<p><img src="C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20230324074042090.png" alt="image-20230324074042090"></p>
+<p>认证流程：</p>
+<blockquote>
+<ol>
+<li><strong>客户端：</strong> 开始访问系统 A；</li>
+<li><strong>系统 A：</strong> 发现用户未登录，重定向至 CAS 认证服务（sso.com），同时 URL 地址参数携带登录成功后回跳到系统 A 的页面链接（<a target="_blank" rel="noopener" href="https://mybj123.com/gohref.php?url=https://sso.com/login?redirectURL=https://www.taobao.com%EF%BC%89%EF%BC%9B">sso.com/login?redir…</a></li>
+<li><strong>CAS 认证服务：</strong> 发现请求 Cookie 中没有携带登录的票据凭证（TGC），所以 CAS 认证服务判定用户处于 <code>未登录</code> 状态，重定向用户页面至 CAS 的登录界面，用户在 CAS 的登录页面上进行登录操作。</li>
+<li><strong>客户端：</strong> 输入用户名密码进行 CAS 系统认证；</li>
+<li><strong>CAS 认证服务：</strong> 校验用户信息，并且 <code>生成 TGC</code> 放入自己的 Session 中，同时以 Set-Cookie 形式写入 Domain 为 <code>sso. com</code> 的域下 ；同时生成一个 <code>授权令牌 ST (Service Ticket)</code> ，然后重定向至系统 A 的地址，重定向的地址中包含生成的 ST（重定向地址：<a target="_blank" rel="noopener" href="https://mybj123.com/gohref.php?url=https://www.taobao.com?token=ST-345678">www.taobao.com?token=ST-345678）</a></li>
+<li><strong>系统 A：</strong> 拿着 ST 向 CAS 认证服务发送请求，CAS 认证服务验证票据 (ST) 的有效性。验证成功后，系统 A 知道用户已经在 CAS 登录了（其中的 ST 可以保存到 Cookie 或者本地中），系统 A 服务器使用该票据 (ST) 创建与用户的会话，称为局部会话，返回受保护资源；</li>
+<li><strong>客户端：</strong> 开始访问系统 B；</li>
+<li><strong>系统 B：</strong> 发现用户未登录，重定向至 SSO 认证服务，并将自己的地址作为参数传递，并附上在 sso.com 域下的 cookie 值是第五步生成的 TGC；</li>
+<li><strong>CAS 认证服务：</strong> CAS 认证服务中心发现用户已登录，跳转回系统 B 的地址，并附上票据 (ST) ;</li>
+<li><strong>系统 B：</strong> 拿到票据 (ST)，去 CAS 认证服务验证票据 (ST) 的有效性。验证成功后，客户端也可以跟系统 B 交往了 ~</li>
+</ol>
+</blockquote>
+<p>注意点：</p>
+<blockquote>
+<ul>
+<li>如图中流程所示，我们发现 <code>CAS 认证服务</code> 在签发的 <code>授权令牌 ST</code> 后，直接重定向，这样其实是比较容易容易被窃取，那么我们需要在系统 A 或者系统 B 在向 CAS 验证成功 (如图中的第 14 步和第 11 步) 后，再生成另一个新的验证 Token 返回给客户端保存；</li>
+<li>CAS 一般提供四个接口：<ul>
+<li><code>/login</code>：登录接口，用于登录到中央授权服务</li>
+<li><code>/logout</code>：登出接口，用于从中央授权服务中登出</li>
+<li><code>/validate</code>：用于验证用户是否登录中央授权服务</li>
+<li><code>/serviceValidate</code>：用于让各个 Service 验证用户是否登录中央授权服务</li>
+</ul>
+</li>
+<li>CAS 生成的票据：<ul>
+<li><strong>TGT（Ticket Grangting Ticket）</strong> ：TGT 是 CAS 为用户签发的 <code>登录票据</code>，拥有了 TGT，用户就可以证明自己在 CAS 成功登录过。</li>
+<li><strong>TGC：Ticket Granting Cookie：</strong> CAS Server 生成TGT放入自己的 Session 中，而 TGC 就是这个 Session 的唯一标识（SessionId），以 Cookie 形式放到浏览器端，是 CAS Server 用来明确用户身份的凭证。</li>
+<li><strong>ST（Service Ticket）</strong> ：ST 是 CAS 为用户签发的访问某个 Service 的票据。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h2 id="鉴权-OAuth-2-0"><a href="#鉴权-OAuth-2-0" class="headerlink" title="鉴权-OAuth 2.0"></a>鉴权-OAuth 2.0</h2><p>通过第三方的 QQ 或者 微信登录，这就用到了 <strong>OAuth</strong> 。</p>
+<p><strong>OAuth</strong> 是一个开放标准，允许用户授权第三方网站 (CSDN、思否等) 访问他们存储在另外的服务提供者上的信息，而不需要将用户名和密码提供给第三方网站；</p>
+<p>常见的提供 OAuth 认证服务的厂商： <code>支付宝、QQ、微信、微博</code></p>
+<blockquote>
+<p><strong>简单说，OAuth 就是一种授权机制。数据的所有者告诉系统，同意授权第三方应用进入系统，获取这些数据。系统从而产生一个短期的进入令牌（Token），用来代替密码，供第三方应用使用。</strong></p>
+</blockquote>
+<p>OAuth 2.0 颁发令牌一共分成<strong>四种授权</strong>模式 <strong>（Authorization Grant）</strong></p>
+<p>无论哪个模式都拥有三个必要角色：<code>客户端</code>、<code>授权服务器</code>、<code>资源服务器</code>，有的还有<code>用户（资源拥有者）</code></p>
+<p><strong>1.授权码模式</strong></p>
+<p><code>授权码（Authorization Code Grant)</code> 方式，指的是第三方应用先申请一个授权码，然后再用该码获取令牌。</p>
+<p>这种方式是最常用的流程，安全性也最高，它适用于那些<strong>有后端服务</strong>的 Web 应用。授权码通过前端传送，令牌则是储存在后端，而且所有与资源服务器的通信都在后端完成。这样的前后端分离，可以避免令牌泄漏。</p>
+<p>一句话概括：<code>客户端换取授权码，客户端使用授权码换token，客户端使用token访问资源</code></p>
+<p><strong>2.隐藏式模式（Implicit Grant）</strong></p>
+<p>有些 Web 应用是纯前端应用，没有后端。这时就不能用上面的方式了，必须将令牌储存在前端。<strong>OAuth2.0 就规定了第二种方式，允许直接向前端颁发令牌。这种方式没有授权码这个中间步骤，所以称为（授权码）”隐藏式”（implicit）。</strong></p>
+<p>一句话概括：<code>客户端让用户登录授权服务器换token，客户端使用token访问资源</code>。</p>
+<p><strong>3.用户名密码式模式（Password Credentials Grant）</strong></p>
+<p>如果你高度信任某个应用，OAuth 2.0 也允许用户把用户名和密码，直接告诉该应用。该应用就使用你的密码，申请令牌，这种方式称为”密码式”（password）。</p>
+<p><strong>一句话概括：用户在客户端提交账号密码换token，客户端使用token访问资源。</strong></p>
+<p><strong>4.客户端模式（Client Credentials Grant）</strong></p>
+<p>客户端模式指客户端以自己的名义，而不是以用户的名义，向<code>授权服务器</code> 进行认证。</p>
+<p>主要适用于没有前端的命令行应用。</p>
+<p>一句话概括：<code>客户端使用自己的标识换token，客户端使用token访问资源</code>。</p>
+<h2 id="鉴权-唯一登录"><a href="#鉴权-唯一登录" class="headerlink" title="鉴权-唯一登录"></a>鉴权-唯一登录</h2><p>我想要实现用户只能在一个设备上登录，禁止用户重复登录。</p>
+<p><strong>唯一登录流程图</strong></p>
+<p><img src="C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20230324074132586.png" alt="image-20230324074132586"></p>
+<p>认证流程：</p>
+<blockquote>
+<p><strong>用户在客户端 A 操作：</strong></p>
+<ol>
+<li>输入账号请求登录接口；</li>
+<li>后端生成对应 Token 并且返回给客户端 A，并且在服务端保存一个登录状态；</li>
+<li>客户端A 保存 Token，并且每次请求都在 header 头中携带对应的 Token；</li>
+</ol>
+<p><strong>用户在客户端 B 操作：</strong></p>
+<p>突然用户在客户端 B 上开始登录操作，我们会发现，步骤和在客户端A上面的操作几乎是一致的；</p>
+<p>只是后端在生成新的 Token 时，要先验证登录状态，然后再生成对应新的 Token；</p>
+</blockquote>
+<h2 id="鉴权-QR-Code扫码登录"><a href="#鉴权-QR-Code扫码登录" class="headerlink" title="鉴权-QR Code扫码登录"></a>鉴权-QR Code扫码登录</h2><p>二维码为 QR Code，QR 全称 Quick Response。扫码登录需要三端 (<code>PC端</code>、<code>手机端</code>、<code>服务端</code>) 来进行配合才能达到登录。</p>
+<p><strong>扫码登录的认证流程图</strong></p>
+<p><img src="C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20230324074241004.png" alt="image-20230324074241004"></p>
+<p>认证流程：</p>
+<blockquote>
+<p>待扫码阶段：</p>
+<ol>
+<li><strong>PC端：</strong>打开某个网站 (如taobao.com) 或者某个 APP (如微信) 的扫码登录入口；就会携带 PC 端的设备信息向服务端发送一个获取二维码的请求；</li>
+<li><strong>服务端：</strong>服务器收到请求后，随机生成一个 UUID 作为二维码 ID，并将 UUID 与 <code>PC 端的设备信息</code> 关联起来存储在 Redis 服务器中，然后返回给 PC 端；同时设置一个过期时间，在过期后，用户登录二维码需要进行刷新重新获取。</li>
+<li><strong>PC 端：</strong>收到二维码 ID 之后，将二维码 ID 以 <code>二维码的形式</code> 展示，等待移动端扫码。并且此时的 PC 端开始轮询查询二维码状态，直到登录成功。如果移动端未扫描，那么一段时间后二维码会自动失效。</li>
+</ol>
+<p>已扫码待确认阶段：</p>
+<ol>
+<li><strong>手机端：</strong>打开手机端对应<strong>已登录</strong>的 APP (微信或淘宝等)，开始扫描识别 PC 端展示的二维码；移动端扫描二维码后，会自动获取到二维码 ID，并将移动端登录的信息凭证（Token）和二维码 ID 作为参数发送给服务端，此时手机必须是已登录（使用扫描登录的前提是移动端的应用为已登录状态，这样才可以共享登录态）。</li>
+<li><strong>服务端：</strong>收到手机端发来的请求后，会将 <code>Token 与二维码 ID</code> 关联，为什么需要关联呢？因为，当我们在使用微信时，移动端退出时，PC 端也应该随之退出登录，这个关联就起到这个作用。然后会生成一个临时 Token，这个 Token 会返回给移动端，一次性 Token 用作确认时的凭证。</li>
+</ol>
+<p>已确认阶段：</p>
+<ol>
+<li><strong>手机端：</strong>收到确认信息后，点击确认按钮，移动端携带上一步中获取的 <code>临时 Token</code> 发送给服务端校验；</li>
+<li><strong>服务端：</strong>服务端校验完成后，会更新二维码状态，并且给 PC 端生成一个 <code>正式的 Token</code>，后续 PC 端就是持有这个 Token 访问服务端。</li>
+<li><strong>PC端：</strong>轮询到二维码状态为已登录状态，并且会获取到了生成的 Token，完成登录，后续访问都基于 Token 完成。</li>
+</ol>
+</blockquote>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><blockquote>
+<ul>
+<li><code>Session-Cookie</code> 适用于一般中大型的网站（移动端 APP 除外）；</li>
+<li><code>Token</code> 和 <code>JWT</code> 都适用于市面上大部分的企业型网站，JWT 效能会优于 Token；</li>
+<li><code>单点登录</code> 适用于子系统较多的大型企业网站；</li>
+<li><code>OAuth 2.0</code>适用于需要快速注册用户型的网站；</li>
+<li><code>扫码登录</code> 适用于已完成部署了三端的企业；</li>
+</ul>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://mybj123.com/17234.html">前端与后端鉴权方案有哪些？看这篇就够了</a></p>
+<h1 id="权限控制"><a href="#权限控制" class="headerlink" title="权限控制"></a>权限控制</h1><h2 id="接口权限"><a href="#接口权限" class="headerlink" title="接口权限"></a>接口权限</h2><p>使用axios请求拦截器实现</p>
+<h2 id="按钮权限"><a href="#按钮权限" class="headerlink" title="按钮权限"></a>按钮权限</h2><p>使用自定义指令实现</p>
+<h2 id="页面菜单权限"><a href="#页面菜单权限" class="headerlink" title="页面菜单权限"></a>页面菜单权限</h2><p>我们没有去某个页面的导航菜单，实际上就是没有去那个页面的权限了，所以说页面权限的实际就是菜单权限。</p>
+<p>获取菜单权限列表，动态递归生成菜单</p>
+<h2 id="路由权限"><a href="#路由权限" class="headerlink" title="路由权限"></a>路由权限</h2><ul>
+<li>使用Router.beforeEach来判断</li>
+<li>获取路由权限列表，借助route.add() 动态生成路由表</li>
+</ul>
+<p><strong>参考</strong></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/febobo/web-interview/issues/29">面试官：Vue要做权限管理该怎么做</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/b-D2eH1mLwL_FkaZwjueSw">如何用 Vue实现前端权限控制</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000020887109">前端面试必备——权限控制</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903648057622536#heading-6">vue权限路由实现方式总结</a></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2022/05/13/D_%E6%A1%86%E6%9E%B6_%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81%E5%92%8C%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81/" title="权限认证和权限认证" target="_blank" rel="external">https://fuyunjinglong.github.io/2022/05/13/D_框架_权限认证和权限认证/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://fuyunjinglong.github.io/" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://fuyunjinglong.github.io/" target="_blank"><span class="text-dark">Elven</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/05/13/Z_%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F_%E5%89%8D%E7%AB%AF%E8%B6%8B%E5%8A%BF%E5%8F%8A%E8%81%8C%E4%B8%9A%E8%A7%84%E5%88%92/" title="前端趋势及职业规划"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2022/05/12/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_Vite%E6%9E%84%E5%BB%BA%E5%8F%8A%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="Vite构建及最佳实践"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

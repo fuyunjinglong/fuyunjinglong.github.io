@@ -6,17 +6,6 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
----
-title: 金三银四突击
-date: 2023-03-07 06:33:16
-categories:
-- AA_面试
-toc: true # 是否启用内容索引
-
-
-
----
-
 # interview-imporant
 
 **手写vue3源码之pnpm实现monorepo包管理**
@@ -28,6 +17,14 @@ toc: true # 是否启用内容索引
 00:13
 
 [video](https://www.bilibili.com/video/BV1aq4y1o7Ny/?spm_id_from=333.788.recommend_more_video.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+
+**环境搭建-vue3+vite+ts(大崔哥)**
+
+[video](https://www.bilibili.com/video/BV1xr4y1A7H9/?spm_id_from=333.999.0.0)
+
+**项目亮点：打飞机-UI和业务逻辑分离(大崔哥)**
+
+[video](https://www.bilibili.com/video/BV143411M79D/?spm_id_from=333.999.0.0)
 
 # 前端工程化
 
