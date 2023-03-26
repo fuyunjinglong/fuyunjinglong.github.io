@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>CSS_0基础 | Hexo</title>
+  <meta name="description" content="入门CSS模块化模块化进程:BEM、OOCSS、SMACSS、ITCSS，以及 CSS Modules 和 CSS-in-JS 等,目前主流的是CSS Modules 和 CSS-in-JS 一、CSS 命名方法论 通过人工的方式来约定命名规则.  社区在早期诞生了一些 CSS 命名方法论，如 BEM、OOCSS、SMACSS、ITCSS、SUITCSS、Atomic CSS 等  1.BEM B">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS_0基础">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2099/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="入门CSS模块化模块化进程:BEM、OOCSS、SMACSS、ITCSS，以及 CSS Modules 和 CSS-in-JS 等,目前主流的是CSS Modules 和 CSS-in-JS 一、CSS 命名方法论 通过人工的方式来约定命名规则.  社区在早期诞生了一些 CSS 命名方法论，如 BEM、OOCSS、SMACSS、ITCSS、SUITCSS、Atomic CSS 等  1.BEM B">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220301072618199.png">
+<meta property="article:published_time" content="2099-06-25T23:33:16.000Z">
+<meta property="article:modified_time" content="2023-03-25T03:22:41.590Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/image-20220301072618199.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2099/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://fuyunjinglong.github.io/" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Elven</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">23</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/09/">九月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/06/">六月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">26</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/06/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_0%E5%9F%BA%E7%A1%80/" class="title">0基础_工程热点</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-05T22:33:16.000Z" itemprop="datePublished">2099-11-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/05/I_%E7%A7%BB%E5%8A%A8%E7%AB%AF_0%E5%9F%BA%E7%A1%80/" class="title">0基础_移动端</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-04T22:33:16.000Z" itemprop="datePublished">2099-11-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/" class="title">0基础_计算机网络</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-03T22:33:16.000Z" itemprop="datePublished">2099-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_0%E5%9F%BA%E7%A1%80/" class="title">0基础_数据结构</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_%E5%9F%BA%E7%A1%80/" class="title">0基础_设计模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%A5%E9%97%A8"><span class="toc-text">入门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS%E6%A8%A1%E5%9D%97%E5%8C%96"><span class="toc-text">CSS模块化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BFC"><span class="toc-text">BFC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Float%E6%B5%AE%E5%8A%A8"><span class="toc-text">Float浮动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E6%A0%8F%E5%B8%83%E5%B1%80%EF%BC%88%E5%9C%A3%E6%9D%AF%E3%80%81%E5%8F%8C%E9%A3%9E%E7%BF%BC%E7%AD%896%E7%A7%8D%EF%BC%89"><span class="toc-text">三栏布局（圣杯、双飞翼等6种）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B"><span class="toc-text">CSS盒子模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E6%8C%81%E6%B0%B4%E5%B9%B3%E5%9E%82%E7%9B%B4%E5%B1%85%E4%B8%AD-%EF%BC%9F"><span class="toc-text">如何保持水平垂直居中 ？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#position%E3%80%81float%E5%92%8Cdisplay%E7%9A%84%E5%8F%96%E5%80%BC%E6%84%8F%E6%80%9D"><span class="toc-text">position、float和display的取值意思</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS%E5%B8%B8%E7%94%A83%E7%A7%8D%E5%BC%95%E5%85%A5%E6%96%B9%E5%BC%8F"><span class="toc-text">CSS常用3种引入方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS-Sprite%E9%9B%AA%E7%A2%A7%E5%9B%BE%E7%B2%BE%E7%81%B5%E5%9B%BE"><span class="toc-text">CSS Sprite雪碧图精灵图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS%E9%80%89%E6%8B%A9%E7%AC%A6%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F%E5%93%AA%E4%BA%9B%E5%B1%9E%E6%80%A7%E5%8F%AF%E4%BB%A5%E7%BB%A7%E6%89%BF%EF%BC%9F%E4%BC%98%E5%85%88%E7%BA%A7%EF%BC%9F"><span class="toc-text">CSS选择符有哪些？哪些属性可以继承？优先级？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%85%E9%99%A4%E6%B5%AE%E5%8A%A8"><span class="toc-text">清除浮动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#css-modules%E5%92%8Cscoped%E5%8C%BA%E5%88%AB"><span class="toc-text">css modules和scoped区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flex-1%E9%97%AE%E9%A2%98"><span class="toc-text">flex &#x3D; 1问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9reflow%E5%92%8Crepaint%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-text">对reflow和repaint的理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#first-child%E4%B8%8E-first-of-type%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">first-child与:first-of-type的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B5%E9%9D%A2%E6%A0%B7%E5%BC%8F%E5%AF%BC%E5%85%A5link%E5%92%8C-import%E5%8C%BA%E5%88%AB"><span class="toc-text">页面样式导入link和@import区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Grid%E5%B8%83%E5%B1%80"><span class="toc-text">Grid布局</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8%E5%9C%A8grid%E5%AE%B9%E5%99%A8%E4%B8%8A%E7%9A%84CSS%E5%B1%9E%E6%80%A7"><span class="toc-text">作用在grid容器上的CSS属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8%E5%9C%A8grid%E5%AD%90%E9%A1%B9%E4%B8%8A%E7%9A%84CSS%E5%B1%9E%E6%80%A7"><span class="toc-text">作用在grid子项上的CSS属性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Flex%E5%BC%B9%E6%80%A7%E5%B8%83%E5%B1%80"><span class="toc-text">Flex弹性布局</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E5%B1%9E%E6%80%A7"><span class="toc-text">容器属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E9%A1%B9%E5%B1%9E%E6%80%A7"><span class="toc-text">子项属性</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6"><span class="toc-text">进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%AA%E7%B1%BB%E5%92%8C%E4%BC%AA%E5%85%83%E7%B4%A0"><span class="toc-text">伪类和伪元素</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sass%EF%BC%88scss%EF%BC%89%E3%80%81less%E3%80%81stylus%E3%80%81postcss"><span class="toc-text">sass（scss）、less、stylus、postcss</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E5%BA%A6%E3%80%81%E5%8F%98%E5%BD%A2%E3%80%81%E7%A7%BB%E5%8A%A8%E3%80%81%E5%8A%A8%E7%94%BB"><span class="toc-text">过度、变形、移动、动画</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#css3-%E5%8A%A8%E7%94%BB%E6%95%88%E6%9E%9C%E5%B1%9E%E6%80%A7%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-text">css3 动画效果属性有哪些 ?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#before-%E5%92%8C-after-%E5%8F%8C%E5%86%92%E5%8F%B7%E5%92%8C%E5%8D%95%E5%86%92%E5%8F%B7%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">::before 和 :after 双冒号和单冒号的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS3-%E6%96%B0%E5%A2%9E%E4%BC%AA%E7%B1%BB%E4%B8%BE%E4%BE%8B"><span class="toc-text">CSS3 新增伪类举例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS3%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B0%E7%89%B9%E6%80%A7%EF%BC%9F"><span class="toc-text">CSS3有哪些新特性？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#canvas%E4%B8%8Esvg%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-text">canvas与svg的区别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#css2-0%E4%B8%8Ecss3-0"><span class="toc-text">css2.0与css3.0</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7"><span class="toc-text">高级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Tailwind-CSS"><span class="toc-text">Tailwind CSS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CSS-%E5%8F%91%E5%B1%95%E9%98%B6%E6%AE%B5"><span class="toc-text">CSS 发展阶段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFTailwind-CSS"><span class="toc-text">什么是Tailwind CSS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tailwind-CSS%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-text">Tailwind CSS优缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%85%BC%E5%AE%B9%E6%80%A7%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-text">常见兼容性问题？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E8%A3%81%E5%89%AA%E5%8E%8B%E7%BC%A9%E6%8A%80%E6%9C%AF"><span class="toc-text">图片裁剪压缩技术</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-C_CSS_0基础" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CSS_0基础
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2099/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/" class="article-date">
+	  <time datetime="2099-06-25T23:33:16.000Z" itemprop="datePublished">2099-06-26</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2099/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><h2 id="CSS模块化"><a href="#CSS模块化" class="headerlink" title="CSS模块化"></a>CSS模块化</h2><p>模块化进程:BEM、OOCSS、SMACSS、ITCSS，以及 CSS Modules 和 CSS-in-JS 等,目前主流的是CSS Modules 和 CSS-in-JS</p>
+<p><strong>一、CSS 命名方法论</strong></p>
+<p>通过人工的方式来约定命名规则.</p>
+<blockquote>
+<p>社区在早期诞生了一些 CSS 命名方法论，如 BEM、OOCSS、SMACSS、ITCSS、SUITCSS、Atomic CSS 等</p>
+</blockquote>
+<p><strong>1.BEM</strong></p>
+<p><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=yvW7zwnlxk23Je688mavOg==.slTmHPfpl7kIEsnMLdKdGAX34lkMbtmb9JbNK731ieY=">BEM</a>（Block Element Modifier）是一种典型的 CSS 命名方法论，在 2009 年前提出，它的核心思想是 <strong>通过组件名的唯一性来保证选择器的唯一性，从而保证样式不会污染到组件外</strong>。</p>
+<p>BEM 命名规约是 <code>.block-name__element-name--modifier-name</code>，即 <code>.模块名__元素名--修饰器名</code> 三个部分。也可以自定义</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 示例模块 --&gt;</span><br><span class="line">&lt;div class=&quot;card&quot;&gt;</span><br><span class="line">  &lt;div class=&quot;card__head&quot;&gt;</span><br><span class="line">    &lt;ul class=&quot;card__menu&quot;&gt;</span><br><span class="line">      &lt;li class=&quot;card__menu-item&quot;&gt;menu item 1&lt;/li&gt;</span><br><span class="line">      &lt;li class=&quot;card__menu-item&quot;&gt;menu item 2&lt;/li&gt;</span><br><span class="line">      &lt;li class=&quot;card__menu-item card__menu-item--active&quot;&gt;menu item 3&lt;/li&gt;</span><br><span class="line">      &lt;li class=&quot;card__menu-item card__menu-item--disable&quot;&gt;menu item 4&lt;/li&gt;</span><br><span class="line">    &lt;/ul&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">  &lt;div class=&quot;card__body&quot;&gt;&lt;/div&gt;</span><br><span class="line">  &lt;div class=&quot;card__foot&quot;&gt;&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">.card &#123;&#125;</span><br><span class="line">.card__head &#123;&#125;</span><br><span class="line">.card__menu &#123;&#125;</span><br><span class="line">.card__menu-item &#123;&#125;</span><br><span class="line">.card__menu-item--active &#123;&#125;</span><br><span class="line">.card__menu-item--disable &#123;&#125;</span><br><span class="line">.card__body &#123;&#125;</span><br><span class="line">.card__foot &#123;&#125;</span><br><span class="line"></span><br><span class="line">使用sass更简单</span><br><span class="line">.card &#123;</span><br><span class="line">  &amp;__head &#123;&#125;</span><br><span class="line">  &amp;__menu &#123;</span><br><span class="line">    &amp;-item &#123;</span><br><span class="line">      &amp;--active &#123;&#125;</span><br><span class="line">      &amp;--disable &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  &amp;__body &#123;&#125;</span><br><span class="line">  &amp;__foot &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.OOCSS</strong></p>
+<p><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=xQLxwsdZQTlZ9EndBOEWoA==.TTDNApcr2Fzcm68Lm17UVrYSn8HEGzQf/oNpnsV7rzI=">OOCSS</a>（Object-Oriented CSS）即面向对象的 CSS，它借鉴了 OOP（面向对象编程）的抽象思维，主张将元素的样式抽象成多个独立的小型样式类，来提高样式的灵活性和可重用性。</p>
+<p>OOCSS 有两个基本原则：</p>
+<ol>
+<li><strong>独立的结构和样式</strong>。即不要将定位、尺寸等布局样式与字体、颜色等表现样式写在一个选择器中。</li>
+<li><strong>独立的容器和内容</strong>。即让对象的行为可预测，避免对位置的依赖，子元素即使离开了容器也应该能正确显示。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;size1of4 bgBlue solidGray mt-5 ml-10 mr-10 mb-10&quot;&gt;&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line">  .size1of4 &#123; width: 25%; &#125;</span><br><span class="line">  .bgBlue &#123; background: blue; &#125;</span><br><span class="line">  .solidGray &#123; border: 1px solid #ccc; &#125;</span><br><span class="line">  .mt-5 &#123; margin-top: 5px; &#125;</span><br><span class="line">  .mr-10 &#123; margin-right: 10px &#125;</span><br><span class="line">  .mb-10 &#123; margin-bottom: 10px; &#125;</span><br><span class="line">  .ml-10 &#123; margin-left: 10px; &#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.SMACSS</strong></p>
+<p><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=EPc3pUkONY6IB98KLpzuqA==.lzbwbQHlVHy4FEbypLaauwhxlu9zjTEjZwvnMALKmrM=">SMACSS</a>（Scalable and Modular Architecture for CSS）即可伸缩及模块化的 CSS 结构，由 Jonathan Snook 在 2011 年雅虎时提出。</p>
+<p>SAMCSS 按照部件的功能特性，将其划分为五大类：</p>
+<ol>
+<li>基础（Base）是为HTML元素定义默认样式，可以包含属性、伪类等选择器。</li>
+<li>布局（Layout）会将页面分为几部分，可作为高级容器包含一个或多个模块，例如左右分栏、栅格系统等。</li>
+<li>模块（Module）又名对象或块，是可重用的模块化部分，例如导航栏、产品列表等。</li>
+<li>状态（State）描述的是任一模块或布局在特定状态下的外观，例如隐藏、激活等。</li>
+<li>主题（Theme）也就是换肤，描述了页面的外观，它可修改前面四个类别的样式，例如链接颜色、布局方式等。</li>
+</ol>
+<p>SMACSS 推荐使用前缀来区分不同部件：</p>
+<ol>
+<li>基础规则是直接作用于元素的，因此不需要前缀。</li>
+<li>布局的前缀是 <code>l-</code> 或 <code>layout-</code>，例如 <code>.l-table</code>、<code>.layout-grid</code> 等。</li>
+<li>模块的前缀是 <code>m-</code> 或模块自身的命名，例如 <code>.m-nav</code>、<code>.card</code>、<code>.field</code> 等。</li>
+<li>状态的前缀是 <code>is-</code>，例如 <code>.is-active</code>、<code>.is-current</code> 等。</li>
+<li>主题的前缀是 <code>theme-</code>，例如 <code>.theme-light</code>、<code>.theme-dark</code> 等。</li>
+</ol>
+<p><strong>4.ITCSS</strong></p>
+<p><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=7puURltb2DMR9OvLY0hagA==.GwUjYal62vVu4Sr6ZC8rwf+Ow1p35zkM4pnVHzNsoJs=">ITCSS</a>（Inverted Triangle CSS，倒三角 CSS）是一套方便扩展和管理的 CSS 体系架构，它兼容 BEM、OOCSS、SMACSS 等 CSS 命名方法论。ITCSS 使用 <strong>分层</strong> 的思想来管理你的样式文件，类似服务端开发中的 MVC 分层设计。</p>
+<p>ITCSS 将 CSS 的样式规则划分成以下的几个层次：</p>
+<ol>
+<li>Settings：项目使用的全局变量，比如颜色，字体大小等等。</li>
+<li>Tools：项目使用的 mixins 和 functions。到 Tools 为止，不会生成具体的 CSS 代码。</li>
+<li>Generic：最基本的设定，比如 reset.css、normalize.css 等。</li>
+<li>Base：最基础的元素（elements），比如 img、p、link、list 等。</li>
+<li>Objects：某种设计模式，比如水平居中，</li>
+<li>Components：UI 组件，比如 button、switch、slider 等。</li>
+<li>Trumps：用于辅助和微调的样式，只有这一层才可以使用 <code>!important</code>。</li>
+</ol>
+<p>ITCSS 的分层逻辑越往下就越具体。</p>
+<p><strong>二、CSS Modules</strong></p>
+<p>一个 CSS 文件就是一个独立的模块，参考 <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=BJsoEYOSyS57lkiwMJLYnw==.vh2xxHkCWj+QKZpJsHXPIUajJVVSZjVjfBsemBR5r+Vf+Mc/DKvK9/0DpFE+vo48">官网</a> 或 <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=eAUflHKK1qn8/ThzUP/R4A==.houo/uVymgDZkoWrMpZteijNiFDjiyLdtnAu6BLApoDkRFGoQNaOBxdP+WbZhEQW2K6zSg2WtRewaQE2ZAvtFQ==">阮老师的《CSS Modules 用法教程》</a></p>
+<p>CSS Modules 特性：</p>
+<ul>
+<li><strong>作用域</strong>：模块中的名称默认都属于本地作用域，定义在 <code>:local</code> 中的名称也属于本地作用域，定义在 <code>:global</code> 中的名称属于全局作用域，全局名称不会被编译成哈希字符串。</li>
+<li><strong>命名</strong>：对于本地类名称，CSS Modules 建议使用 camelCase 方式来命名，这样会使 JS 文件更干净，即 <code>styles.className</code>。<br>但是你仍然可以固执己见地使用 <code>styles[&#39;class-name&#39;]</code>，允许但不提倡。🤪</li>
+<li><strong>组合</strong>：使用 <code>composes</code> 属性来继承另一个选择器的样式，这与 Sass 的 <code>@extend</code> 规则类似。</li>
+<li><strong>变量</strong>：使用 <code>@value</code> 来定义变量，不过需要安装 PostCSS 和 <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=6qRrTvtCeBEVMSaZinCvdg==.BsxZmhP+/pbLWFfYbVDqPIZBmsJe5BRIoBln8De8oK2zWQeSHOvH9swE3OwSdkhyqCwuM3aMzTXOJ6RfU48csw==">postcss-modules-values</a> 插件。</li>
+</ul>
+<p>使用 CSS Modules 时，推荐配合 CSS 预处理器（Sass/Less/Stylus）一起使用。</p>
+<p><strong>三、CSS-in-JS</strong></p>
+<p>在 JS 中写 CSS</p>
+<p>一些流行的 CSS-in-JS 库：</p>
+<ul>
+<li>styled-components：<a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=a6xFyjud2eLVlZQ5W2dCTg==.O8yGJpTGR78T+KlvrGFRBPIl4j/iRGbhKVzgBCPGSSJ64j1gwCSrPUB6llUvUK3Kpr8Cg54GUvbw/WGpy109zQ==">https://github.com/styled-com…</a> 33k（<strong>推荐</strong>）</li>
+<li>emotion：<a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=jphqNJAWNp2wv3ZHyS7EJw==.fClomBedJyIu9HKokNoSCK9GLiXBBXv4fTKTlOU/AG7xqOJgchIEiJBmrcV0GHf0">https://github.com/emotion-js…</a> 13k</li>
+<li>Radium：<a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=LLhYeIIgaa2Y8/uEt/LclQ==.guROpM/6/kr+VF3x6BM8ImnwLK8obWjQln7RtS5pfVtTiFbbf56YFAnt6Z0sJhPj">https://github.com/Formidable…</a> 7k（已不再维护）</li>
+<li>Styled System：<a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=zMezLar1YHL/Z6dm9trvQA==.BGxU7DGdgNRUEXGxmjOFj9TyUSA9KoR9bkTn3r4OB5x0CJl62JwuBrj5E7VQBH5P">https://github.com/styled-sys…</a> 7k</li>
+<li>styled-jsx：<a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=AwZY8bwO+aDAicthXeRp3Q==.egjjKkwkd7TwqJPL9flUk32UBBQfdSbsJo3cpC/rIz0dD/hs97MBmYy+BxjDSayU">https://github.com/vercel/sty…</a> 6k</li>
+<li>JSS：<a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=3N/6ppz5NgJENbDap+SOvQ==.aUwJeWyfzuONqE+D/eEbu/sw1yB5qPNwV/xUkMAs3Bc=">https://github.com/cssinjs/jss</a> 6k</li>
+</ul>
+<p><strong>参考</strong></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000039772466"><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000039772466">CSS 模块化方案探讨（BEM、OOCSS、CSS Modules、CSS-in-JS …）</a></a></p>
+<p><a target="_blank" rel="noopener" href="https://codechina.gitcode.host/programmer/fe/20-CSS-modularization.html#css-%E6%A8%A1%E5%9D%97%E5%8C%96%E6%BC%94%E8%BF%9B">CSS模块化演进</a></p>
+<h2 id="BFC"><a href="#BFC" class="headerlink" title="BFC"></a>BFC</h2><p><strong>定义</strong></p>
+<p><code>BFC</code> 全称：<code>Block Formatting Context</code>， 名为 “块级格式化上下文”。</p>
+<p><code>W3C</code>官方解释为：<code>BFC</code>它决定了元素如何对其内容进行定位，以及与其它元素的关系和相互作用，当涉及到可视化布局时，<code>Block Formatting Context</code>提供了一个环境，<code>HTML</code>在这个环境中按照一定的规则进行布局。</p>
+<p>一句话：<code>BFC</code>是一个完全独立的空间（布局环境），让空间里的子元素不会影响到外面的布局。</p>
+<p><strong>触发BFC的css属性</strong></p>
+<ul>
+<li>overflow: hidden</li>
+<li>display: inline-block</li>
+<li>position: absolute</li>
+<li>position: fixed</li>
+<li>display: table-cell</li>
+<li>display: flex</li>
+</ul>
+<p><strong>BFC规则</strong></p>
+<ul>
+<li>BFC是块级元素，会按照瀑布流的方式从上到下排列</li>
+<li>BFC是隔离容器，容器里的标签不受外部影响</li>
+<li>同一个<code>BFC</code>下的两个相邻的标签外边距会发生重叠</li>
+<li>计算<code>BFC</code>的高度时，浮动元素也参与计算</li>
+</ul>
+<p><strong>BFC应用</strong></p>
+<ul>
+<li>使用Float脱离文档流，高度塌陷，如清除浮动</li>
+<li>Margin边距重叠</li>
+<li>两栏布局</li>
+</ul>
+<h2 id="Float浮动"><a href="#Float浮动" class="headerlink" title="Float浮动"></a>Float浮动</h2><p><strong>定义</strong></p>
+<p>一句话：让block元素无视float元素，让inline元素像流水一样围绕着float元素实现浮动布局</p>
+<p><strong>float特性</strong></p>
+<ul>
+<li>包裹性</li>
+<li>高度塌陷</li>
+<li>块状化</li>
+<li>没有任何margin合并</li>
+</ul>
+<blockquote>
+<p>1.包裹性,是指包裹和自适应。</p>
+<p>包裹：将浮动元素父元素宽度设置为200px，浮动元素的子元素是一个128px宽度的图片，则此时浮动元素宽度表现为”包裹”，即包裹了子元素，宽度也是128px.一句话：对内，浮动元素被内部撑起最小值</p>
+<p>自适应：浮动元素自适应父元素的200px，一句话：对外，浮动元素被内部撑起最大值是父元素容器</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">/* CSS代码 */</span><br><span class="line">.father&#123;</span><br><span class="line">    border: 1px solid deeppink;</span><br><span class="line">    width: 200px;</span><br><span class="line">&#125;</span><br><span class="line">.son &#123;</span><br><span class="line">    float: left;</span><br><span class="line">    font-size: 0;</span><br><span class="line">    border: 1px solid blue;</span><br><span class="line">    padding: 5px;</span><br><span class="line">&#125;</span><br><span class="line">.father img &#123;</span><br><span class="line">    width: 128px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/* HTML代码 */</span><br><span class="line">&lt;div class=&quot;father&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;son&quot;&gt;</span><br><span class="line">     &lt;!--包裹--&gt;</span><br><span class="line">        &lt;img src=&quot;../../lib/img/mm1.png&quot;&gt;</span><br><span class="line">        &lt;!--自适应--&gt;</span><br><span class="line">        &lt;span style=&quot;font-size: 12px&quot;&gt;美女1，美女2，美女3，美女4，美女5，美女6，后宫1，后宫2，后宫3，后宫&lt;/span&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>2.高度塌陷</p>
+<p>会让父元素的高度塌陷，即无法撑开父元素高度</p>
+</blockquote>
+<blockquote>
+<p>3.块状化</p>
+<p>浮动元素的display值就是block或者table。注意它不是真正的块状元素，只是有块状的属性，如可以设置宽高。</p>
+<p>以下是冗余写法，浮动元素加display: block;</p>
+</blockquote>
+<blockquote>
+<p>4.没有任何margin合并</p>
+<p>设置了float属性的元素没有任何的margin重叠</p>
+</blockquote>
+<p><strong>清除浮动</strong></p>
+<p>注意浮动一直还在，并没有清除！只能清除浮动带来的影响。</p>
+<ul>
+<li>父级盒子元素触发BFC，overflow:hidden,auto（完美方法）</li>
+<li>浮动元素设置clear:both。本质是让自己不和float元素在一行显示，并不是真正意义上的清除浮动<ul>
+<li>如果<code>clear:both</code>元素前面的元素就是float元素，则设置margin-top无效</li>
+<li><code>clear:both</code>后面的元素依旧可能会发生文字环绕现象</li>
+</ul>
+</li>
+</ul>
+<p><strong>参考</strong></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903616155746312#heading-1">CSS 深入理解之 float 浮动</a></p>
+<h2 id="三栏布局（圣杯、双飞翼等6种）"><a href="#三栏布局（圣杯、双飞翼等6种）" class="headerlink" title="三栏布局（圣杯、双飞翼等6种）"></a>三栏布局（圣杯、双飞翼等6种）</h2><p><strong>float浮动</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;left&quot;&gt;left&lt;/div&gt;</span><br><span class="line">&lt;div id=&quot;right&quot;&gt;right&lt;/div&gt;</span><br><span class="line">&lt;div id=&quot;middle&quot;&gt;middle&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">      #left,</span><br><span class="line">      #right &#123;</span><br><span class="line">        width: 200px;</span><br><span class="line">        height: 200px;</span><br><span class="line">        background: red;</span><br><span class="line">      &#125;</span><br><span class="line">      #middle &#123;</span><br><span class="line">        height: 200px;</span><br><span class="line">        background: green;</span><br><span class="line">      &#125;</span><br><span class="line">      #left &#123;</span><br><span class="line">        float: left;</span><br><span class="line">      &#125;</span><br><span class="line">      #right &#123;</span><br><span class="line">        float: right;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>position定位</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;left&quot;&gt;left&lt;/div&gt;</span><br><span class="line">&lt;div id=&quot;right&quot;&gt;right&lt;/div&gt;</span><br><span class="line">&lt;div id=&quot;middle&quot;&gt;middle&lt;/div&gt;     </span><br><span class="line">     </span><br><span class="line">     #left,</span><br><span class="line">      #right &#123;</span><br><span class="line">        width: 200px;</span><br><span class="line">        height: 100%;</span><br><span class="line">        background: red;</span><br><span class="line">      &#125;</span><br><span class="line">      #left &#123;</span><br><span class="line">        position: absolute;</span><br><span class="line">        left: 0;</span><br><span class="line">        top: 0;</span><br><span class="line">      &#125;</span><br><span class="line">      #right &#123;</span><br><span class="line">        position: absolute;</span><br><span class="line">        right: 0;</span><br><span class="line">        top: 0;</span><br><span class="line">      &#125;</span><br><span class="line">      #middle &#123;</span><br><span class="line">        margin: 0 200px;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>圣杯布局</strong></p>
+<blockquote>
+<p>原理：将基本布局之后使用向左浮动，middle栏用padding留出两边位置，然后使用相对定位将左右两栏通过margin-left,margin-right到相应位置。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;wrapper&quot;&gt;</span><br><span class="line">  &lt;div class=&quot;middle&quot;&gt;middle&lt;/div&gt;</span><br><span class="line">  &lt;div class=&quot;left&quot;&gt;left&lt;/div&gt;</span><br><span class="line">  &lt;div class=&quot;right&quot;&gt;right&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">      .wrapper &#123;</span><br><span class="line">    /* 触发BFC,撑起mid，left,right高度*/</span><br><span class="line">    overflow: hidden;</span><br><span class="line">    /* 预留左右空间，等待left，right插入*/</span><br><span class="line">    padding-left: 100px;</span><br><span class="line">    padding-right: 100px;</span><br><span class="line">  &#125;</span><br><span class="line">  .middle &#123;</span><br><span class="line">    float: left;</span><br><span class="line">    width: 100%;</span><br><span class="line">    background: #d9d9d9;</span><br><span class="line">  &#125;</span><br><span class="line">  .left &#123;</span><br><span class="line">    float: left;</span><br><span class="line">    width: 100px;</span><br><span class="line">    background: #d5d60f;</span><br><span class="line">    /*向左偏移100%，并且再偏移一个100px*/</span><br><span class="line">    position: relative;</span><br><span class="line">    margin-left: -100%;</span><br><span class="line">    right: 100px;</span><br><span class="line">  &#125;</span><br><span class="line">  .right &#123;</span><br><span class="line">    float: left;</span><br><span class="line">    width: 100px;</span><br><span class="line">    background: #8cc94c;</span><br><span class="line">    /*右移100px*/</span><br><span class="line">    margin-right: -100px;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>双飞翼布局</strong></p>
+<blockquote>
+<p>原理：将基本布局之后使用向左浮动，middle栏用margin留出两边位置，然后不使用相对定位，将左右两栏通过margin-left到相应位置。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;middle&quot;&gt;</span><br><span class="line">  &lt;div id=&quot;middle-wrapper&quot;&gt;middle&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div class=&quot;left&quot;&gt;left&lt;/div&gt;</span><br><span class="line">&lt;div class=&quot;right&quot;&gt;right&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">      .middle &#123;</span><br><span class="line">    float: left;</span><br><span class="line">    width: 100%;</span><br><span class="line">    background: #d9d9d9;</span><br><span class="line">  &#125;</span><br><span class="line">  #middle-wrapper &#123;</span><br><span class="line">    margin-left: 100px;</span><br><span class="line">    margin-right: 100px;</span><br><span class="line">  &#125;</span><br><span class="line">  .left &#123;</span><br><span class="line">    float: left;</span><br><span class="line">    width: 100px;</span><br><span class="line">    background: #d5d60f;</span><br><span class="line">    margin-left: -100%;</span><br><span class="line">  &#125;</span><br><span class="line">  .right &#123;</span><br><span class="line">    float: left;</span><br><span class="line">    width: 100px;</span><br><span class="line">    background: #8cc94c;</span><br><span class="line">    margin-left: -100px;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>圣杯</td>
+<td>使用padding，dom简单</td>
+<td>中间宽度过小，会布局混乱</td>
+</tr>
+<tr>
+<td>双飞翼</td>
+<td>使用margin，支持各种宽高，通用型强</td>
+<td>dom复杂</td>
+</tr>
+</tbody></table>
+<p><strong>Flex布局</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">  &lt;div class=&quot;main&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;left&quot;&gt;left&lt;/div&gt;</span><br><span class="line">    &lt;div class=&quot;middle&quot;&gt;middle&lt;/div&gt;</span><br><span class="line">    &lt;div class=&quot;right&quot;&gt;right&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  .main&#123;</span><br><span class="line">      display: flex;</span><br><span class="line">      align-items: center;</span><br><span class="line">  &#125;</span><br><span class="line">  .left&#123;</span><br><span class="line">      background: red;</span><br><span class="line">      width: 200px;</span><br><span class="line">      height: 300px;</span><br><span class="line">  &#125;    </span><br><span class="line">  .right&#123;</span><br><span class="line">      background: blue;</span><br><span class="line">      width: 200px;</span><br><span class="line">      height: 300px;</span><br><span class="line">  &#125;</span><br><span class="line">  .middle&#123;</span><br><span class="line">      background: green;</span><br><span class="line">      height: 300px;</span><br><span class="line">      width: 100%;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Grid布局</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">  &lt;div class=&quot;main&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;left&quot;&gt;left&lt;/div&gt;</span><br><span class="line">    &lt;div class=&quot;middle&quot;&gt;middle&lt;/div&gt;</span><br><span class="line">    &lt;div class=&quot;right&quot;&gt;right&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  .main&#123;</span><br><span class="line">      display: grid;</span><br><span class="line">      height: 300px;</span><br><span class="line">  &#125;</span><br><span class="line">  .left&#123;</span><br><span class="line">      background: red;</span><br><span class="line">      grid-row:1;</span><br><span class="line">      grid-column:1/2;</span><br><span class="line">  &#125;    </span><br><span class="line">  .right&#123;</span><br><span class="line">      background: blue;</span><br><span class="line">      grid-row:1;</span><br><span class="line">      grid-column:4/5;</span><br><span class="line">  &#125;</span><br><span class="line">  .middle&#123;</span><br><span class="line">      background: green;</span><br><span class="line">      grid-row:1;</span><br><span class="line">      grid-column:2/4;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="CSS盒子模型"><a href="#CSS盒子模型" class="headerlink" title="CSS盒子模型"></a>CSS盒子模型</h2><p>盒子由四个属性组成，从内到外分别是：<strong>content 内容</strong>、<strong>padding 内填充</strong>、<strong>border 边框</strong>、<strong>外边距 margin</strong></p>
+<p><strong>盒子分类：</strong></p>
+<ul>
+<li><strong>W3C 盒子模型(标准盒模型)</strong></li>
+<li><strong>IE 盒子模型(怪异盒模型)</strong></li>
+</ul>
+<p><strong>宽度和高度的计算方式:</strong></p>
+<ul>
+<li>标准盒模型：width = content</li>
+<li>怪异盒模型:  width = content+ padding+ border</li>
+</ul>
+<p><strong>CSS 设置这两个模型:</strong></p>
+<ul>
+<li>标准盒模型  box-sizing：content-box,如果加了padding，高度会变化。</li>
+<li>怪异盒模型 box-sizing: border-box,比较方便，常用，大量第三方库默认使用此模型。</li>
+</ul>
+<p><strong>外边距合并</strong></p>
+<p>块的顶部外边距和底部外边距有时被组合(折叠)为单个外边距，其大小是组合到其中的最大外边距，这种行为称为<strong>外边距合并</strong>。</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/110617108">CSS 的两种盒模型</a></p>
+<h2 id="如何保持水平垂直居中-？"><a href="#如何保持水平垂直居中-？" class="headerlink" title="如何保持水平垂直居中 ？"></a>如何保持水平垂直居中 ？</h2><p>一、水平居中 </p>
+<p>（1）行内元素解决方案</p>
+<p>只需要把行内元素包裹在一个属性 display 为 block 的父层元素中，并且把父层元素添加如下属性即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.parent &#123;</span><br><span class="line">    text-align: center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（2）块状元素解决方案  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.item &#123;</span><br><span class="line">    /* 这里可以设置顶端外边距 */</span><br><span class="line">    margin: 10px auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（3）多个块状元素解决方案将元素的 display 属性设置为 inline-block，并且把父元素的 text-align 属性设置为 center 即可:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.parent &#123;</span><br><span class="line">    text-align:center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（4）多个块状元素解决方案</p>
+<p>使用 flexbox 布局，只需要把待处理的块状元素的父元素添加属性 display: flex 及 justify-content: center 即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.parent &#123;</span><br><span class="line">    display: flex;</span><br><span class="line">    justify-content: center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>二、垂直居中</p>
+<p>（1）单行的行内元素解决方案</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">.parent &#123;</span><br><span class="line">    background: #222;</span><br><span class="line">    height: 200px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/* 以下代码中，将 a 元素的 height 和 line-height 设置的和父元素一样高度即可实现垂直居中 */</span><br><span class="line">a &#123;</span><br><span class="line">    height: 200px;</span><br><span class="line">    line-height:200px; </span><br><span class="line">    color: #FFF;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（2）多行的行内元素解决方案组合</p>
+<p>使用 display: table-cell 和 vertical-align: middle 属性来定义需要居中的元素的父容器元素生成效果，如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.parent &#123;</span><br><span class="line">    background: #222;</span><br><span class="line">    width: 300px;</span><br><span class="line">    height: 300px;</span><br><span class="line">    /* 以下属性垂直居中 */</span><br><span class="line">    display: table-cell;</span><br><span class="line">    vertical-align: middle;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（3）已知高度的块状元素解决方案</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">.item&#123;</span><br><span class="line">    position: absolute;</span><br><span class="line">    top: 50%;</span><br><span class="line">    margin-top: -50px;  /* margin-top值为自身高度的一半 */</span><br><span class="line">    padding:0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>三、水平垂直居中</p>
+<p>（1）已知高度和宽度的元素解决方案 1</p>
+<p>这是一种不常见的居中方法，可自适应，比方案 2 更智能，如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.item&#123;</span><br><span class="line">    position: absolute;</span><br><span class="line">    margin:auto;</span><br><span class="line">    left:0;</span><br><span class="line">    top:0;</span><br><span class="line">    right:0;</span><br><span class="line">    bottom:0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（2）已知高度和宽度的元素解决方案 2</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.item&#123;</span><br><span class="line">    position: absolute;</span><br><span class="line">    top: 50%;</span><br><span class="line">    left: 50%;</span><br><span class="line">    margin-top: -75px;  /* 设置margin-left / margin-top 为自身高度的一半 */</span><br><span class="line">    margin-left: -75px;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（3）未知高度和宽度元素解决方案</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">.item&#123;</span><br><span class="line">    position: absolute;</span><br><span class="line">    top: 50%;</span><br><span class="line">    left: 50%;</span><br><span class="line">    transform: translate(-50%, -50%);  /* 使用 css3 的 transform 来实现 */</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（4）使用 flex 布局实现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.parent&#123;</span><br><span class="line">    display: flex;</span><br><span class="line">    justify-content: center;</span><br><span class="line">    align-items: center;</span><br><span class="line">    /* 注意这里需要设置高度来查看垂直居中效果 */</span><br><span class="line">    background: #AAA;</span><br><span class="line">    height: 300px;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="position、float和display的取值意思"><a href="#position、float和display的取值意思" class="headerlink" title="position、float和display的取值意思"></a>position、float和display的取值意思</h2><p>position</p>
+<ul>
+<li>position 属性取值：static(默认)、relative、absolute、fixed、inherit、sticky。</li>
+<li>postision：static；始终处于文档流给予的位置。看起来好像没有用，但它可以快速取消定位，让 top，right，bottom，left 的值失效。在切换的时候可以尝试这个方法。</li>
+<li>除了 static 值，在其他三个值的设置下，z-index 才会起作用。确切地说 z-index 只在定位元素上有效。</li>
+<li>position：relative 和 absolute 都可以用于定位，区别在于前者的 div 还属于正常的文档流，后者已经是脱离了正常文档流，不占据空间位置，不会将父类撑开。 定位原点 relative 是相对于它在正常流中的默认位置偏移，它原本占据的空间任然保留；absolute 相对于第一个 position 属性值不为 static 的父类。所以设置了 position：absolute，其父类的该属性值要注意，而且 overflow：hidden 也不能乱设置，因为不属于正常文档流，不会占据父类的高度，也就不会有滚动条。</li>
+<li>fixed 旧版本 IE 不支持，却是很有用，定位原点相对于浏览器窗口，而且不能变。 常用于 header，footer 或者一些固定的悬浮 div，随滚动条滚动又稳定又流畅，比 JS 好多了。fixed 可以有很多创造性的布局和作用，兼容性是问题。</li>
+<li>position：inherit。 规定从父类继承 position 属性的值，所以这个属性也是有继承性的，但需要注意的是 IE8 以及往前的版本都不支持 inherit 属性。</li>
+<li>sticky ：设置了sticky 的元素，在屏幕范围（viewport）时该元素的位置并不受到定位影响（设置是 top、left 等属性无效），当该元素的位置将要移出偏移范围时，定位又会变成 fixed，根据设置的 left、top 等属性成固定位置的效果。</li>
+</ul>
+<p>float</p>
+<ul>
+<li>float：left (或 right)，向左（或右）浮动，直到它的边缘碰到包含框或另一个浮动框为止。 且脱离普通的文档流，会被正常文档流内的块框忽略。不占据空间，无法将父类元素撑开。</li>
+<li>任何元素都可以浮动，浮动元素会生成一个块级框，不论它本身是何种元素。因此，没有必要为浮动元素设置 display：block。</li>
+<li>如果浮动非替换元素，则要指定一个明确的 width，否则它们会尽可能的窄。 什么叫替换元素 ？根据元素本身的特点定义的， (X)HTML中的 img、input、textarea、select、object 都是替换元素，这些元素都没有实际的内容。 (X)HTML 的大多数元素是不可替换元素，他们将内容直接告诉浏览器，将其显示出来。</li>
+</ul>
+<p>display</p>
+<ul>
+<li>display 属性取值：none、inline、inline-block、block、table 相关属性值、inherit。</li>
+<li>display 属性规定元素应该生成的框的类型。文档内任何元素都是框，块框或行内框。</li>
+<li>display：none 和 visiability：hidden 都可以隐藏 div，区别有点像 absolute 和 relative，前者不占据文档的空间，后者还是占据文档的位置。</li>
+<li>display：inline 和 block，又叫行内元素和块级元素。 表现出来的区别就是 block 独占一行，在浏览器中通常垂直布局，可以用 margin 来控制块级元素之间的间距（存在 margin 合并的问题，只有普通文档流中块框的垂直外边距才会发生外边距合并。行内框、浮动框或绝对定位之间的外边距不会合并。）； 而 inline 以水平方式布局，垂直方向的 margin 和 padding 都是无效的，大小跟内容一样，且无法设置宽高。 inline 就像塑料袋，内容怎么样，就长得怎么样；block 就像盒子，有固定的宽和高。</li>
+<li>inline-block 就介于两者之间。</li>
+<li>table 相关的属性值可以用来垂直居中，效果一般。</li>
+<li>flex</li>
+</ul>
+<h2 id="CSS常用3种引入方式"><a href="#CSS常用3种引入方式" class="headerlink" title="CSS常用3种引入方式"></a>CSS常用3种引入方式</h2><p>第一：外链式</p>
+<p>这种方法可以说是现在占统治地位的引入方法。</p>
+<p>如同 IE 与浏览器。这也是最能体现 CSS 特点的方法；</p>
+<p>最能体现 DIV+CSS 中的内容离的思想，也最易改版维护，代码看起来也是最美观的一种。</p>
+<p>第二：内部样式表</p>
+<p>这种方法的使用情况要少的多，最长见得就是访问量大的门户网站。或者访问量较大的企业网站的首页。</p>
+<p>与第一种方法比起来，优弊端也明显。</p>
+<p>优点：速度快，所有的 CSS 控制都是针对本页面标签的，没有多余的 CSS 命令；再者不用外链 CSS 文件。直接在文档中读取样式。</p>
+<p>缺点：就是改版麻烦些，单个页面显得臃肿，CSS 不能被其他 HTML 引用造成代码量相对较多，维护也麻烦些采用这种方法的公司大多有钱，对他们来说用户量是关键，他们不缺人进行复杂的维护工作。</p>
+<p>第三：行内样式</p>
+<p>认为 HTML 里不能出现 CSS 命令。其实有时候没有什么大不了。比如通用性差，效果特殊，使用 CSS 命令较少，并且不常改动的地方，使用这种方法反而是很好的选择。</p>
+<p>第四、@import 引入方式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;style type=&quot;text/css&quot;&gt;</span><br><span class="line">@import url(my.css);</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="CSS-Sprite雪碧图精灵图"><a href="#CSS-Sprite雪碧图精灵图" class="headerlink" title="CSS Sprite雪碧图精灵图"></a><strong>CSS Sprite雪碧图精灵图</strong></h2><p>将一个页面涉及到的所有图片都包含到一张大图中去，然后利用 CSS 的 background-image，background-repeat，background-position 的组合进行背景定位。</p>
+<ul>
+<li>能很好地减少了网页的 http 请求，从而大大的提高了页面的性能，</li>
+<li>CSS Sprites 能减少图片的字节，曾经比较过多次 3 张图片合并成 1 张图片的字节总是小于这 3 张图片的和。</li>
+<li>解决了网页设计师在图片命名上的困扰</li>
+<li>更换风格方便，只需要在一张图片上修改样式，整个网页的风格就可以改变。维护起方便。</li>
+</ul>
+<p>也存在一些不可忽视的缺点，如下：</p>
+<ul>
+<li>在图片合并的时候，你要把多张图片有序的合理的合并成一张图片，还要留好足够的空间，防止板块内不不必要的背景；这些还好，最痛苦的是在宽屏，高分辨率的屏幕下的自适应页面，你的图片如果不够宽，很容背景断裂；</li>
+<li>CSS Sprites 在开发的时候比较麻烦，你要通过 photoshop 或其他工具测量计算每一个背景单元的精确位是针线活，没什么难度，但是很繁琐；</li>
+<li>CSS Sprites 在维护的时候比较麻烦，如果页面背景有少许改动，一般就要改这张合并的图片，无需改的好不要动，这样避免改动更多的 css，如果在原来的地方放不下，又只能（最好）往下加图片，这样图片的字加了，还要改动 css。</li>
+</ul>
+<h2 id="CSS选择符有哪些？哪些属性可以继承？优先级？"><a href="#CSS选择符有哪些？哪些属性可以继承？优先级？" class="headerlink" title="CSS选择符有哪些？哪些属性可以继承？优先级？"></a>CSS选择符有哪些？哪些属性可以继承？优先级？</h2><p>CSS 选择符</p>
+<ol>
+<li>id选择器（ # myid）</li>
+<li>类选择器（.myclassname）</li>
+<li>标签选择器（div, h1, p）</li>
+<li>相邻选择器（h1 + p）</li>
+<li>子选择器（ul &gt; li）</li>
+<li>后代选择器（li a）</li>
+<li>通配符选择器（ * ）</li>
+<li>属性选择器（a[rel = “external”]）</li>
+<li>伪类选择器（a: hover, li: nth - child）</li>
+</ol>
+<p>可继承的样式</p>
+<p>font-size，font-family，color，ul，li，dl，dd，dt；</p>
+<p>不可继承的样式</p>
+<p>border padding margin width height 事实上，宽度也不是继承的，而是如果你不指定宽度，那么它就是 100%。由于你子 DIV 并没有指定宽度，那它就是 100%，也就是与父 DIV 同宽，但这与继承无关，高度自然也没有继承一说。</p>
+<p>优先级算法</p>
+<p> 优先级为: !important &gt; id &gt; class &gt; tag , important 比 内联优先级高</p>
+<h2 id="清除浮动"><a href="#清除浮动" class="headerlink" title="清除浮动"></a>清除浮动</h2><p>1.父级div定义 overflow: auto（注意：是父级div也就是这里的 div.outer），最常用。<br>2.添加新的子元素 、应用 clear：both；</p>
+<h2 id="css-modules和scoped区别"><a href="#css-modules和scoped区别" class="headerlink" title="css modules和scoped区别"></a><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000021670036">css modules和scoped区别</a></h2><p>vue项目中有两种解决css冲突的方案，一种是比较常见的使用scoped。另一种就是css modules。</p>
+<p>(1)scoped方案</p>
+<p>当在style标签中加上scoped，编译后会在该vue组件元素上加上hash标识属性，在vue组件里的每个元素都有同一个hash标识属性。无法完全避开css权重和类名重复的问题。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;example&quot; data-v-f3f3eg9&gt;hi&lt;/div&gt; </span><br></pre></td></tr></table></figure>
+
+<p>(2)css modules方案</p>
+<p>产生局部作用域的唯一方法，就是使用一个独一无二的<code>class</code>的名字，为所有类名重新生成类名，有效避开了css权重和类名重复的问题，这就是 CSS Modules 的做法。css module直接替换了类名，排除了用户设置类名影响组件样式的可能性。</p>
+<p>区别：</p>
+<ul>
+<li>scoped方案在其他地方使用相同类名可能还是会影响组件样式，如果你子组件的某元素上有一个类已经在这个父组件中定义过了，那么这个父组件的样式就会泄露到子组件中。但是css modules方案通过算法计算出唯一类名替换原始类名避免了这种样式冲突。</li>
+<li>还有一些情况是我们需要对我们的子组件的深层结构设置样式——虽然这种做法并不受推荐且应该避免。为了简便起见，我们假设我们的父组件现在要对子组件设置样式，在 scoped 样式中，这种情况可以使用 <code>&gt;&gt;&gt;</code> 连接符（或者 <code>/deep/</code> ）实现。</li>
+<li>scoped会使<strong>标签选择器</strong>渲染变慢很多倍，而使用class或id则不会。</li>
+<li>模块式 CSS 与 JS 有着很好的互操作性 (interoperability)，这一点不只局限于 CSS 类。</li>
+</ul>
+<h2 id="flex-1问题"><a href="#flex-1问题" class="headerlink" title="flex = 1问题"></a>flex = 1问题</h2><p>flex: 1等价于<code>flex: 1 1 0</code>，也就是</p>
+<blockquote>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">flex-grow</span> : <span class="number">1</span>;</span><br><span class="line"><span class="attribute">flex-shrink</span> : <span class="number">1</span>;</span><br><span class="line"><span class="attribute">flex-basis</span> : <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<ul>
+<li>flex-grow 表示当有剩余空间的时候，分配给项目的比例,应用到内容区域高度不够的时候。</li>
+<li>flex-shrink 表示空间不足的时候，项目缩小的比例</li>
+<li>flex-basis 表示分配空间之前，项目占据主轴的空间</li>
+</ul>
+<p><strong>flex-grow</strong></p>
+<p>假设有一个宽度为 800 的容器，里面有 3 个项目，宽度分别是 100，200，300：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;div <span class="keyword">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;left&quot;</span>&gt;</span>left<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;middle&quot;</span>&gt;</span>middle<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;right&quot;</span>&gt;</span>right<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">.<span class="property">container</span> &#123;</span><br><span class="line">  <span class="attr">display</span>: flex;</span><br><span class="line">  <span class="attr">width</span>: 800px;</span><br><span class="line">  <span class="attr">height</span>: 300px;</span><br><span class="line">  <span class="attr">background</span>: grey;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.<span class="property">left</span> &#123;</span><br><span class="line">  flex-<span class="attr">basis</span>: 100px;</span><br><span class="line">  <span class="attr">background</span>: linear-<span class="title function_">gradient</span>(to bottom right, green, white);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.<span class="property">middle</span> &#123;</span><br><span class="line">  flex-<span class="attr">basis</span>: 200px;</span><br><span class="line">  <span class="attr">background</span>: linear-<span class="title function_">gradient</span>(to bottom right, yellow, white);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.<span class="property">right</span> &#123;</span><br><span class="line">  flex-<span class="attr">basis</span>: 300px;</span><br><span class="line">  <span class="attr">background</span>: linear-<span class="title function_">gradient</span>(to bottom right, purple, white);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这时候就出现了多余的 200 的空间（灰色部分）。这时候如果我们对左中右分别设置<code>flex-grow</code>为 2，1，1，各个项目的计算逻辑如下：</p>
+<ol>
+<li>首先将多余空间 200 除以 4（2 + 1 + 1），等于 50</li>
+<li>left = 100 + 2 x 50 = 200</li>
+<li>middle = 200 + 1 x 50 = 250</li>
+<li>right = 300 + 1 x 50 = 350</li>
+</ol>
+<p><strong>flex-shrink（默认值 1）</strong></p>
+<p>假设父容器宽度调整为 550，里面依然是 3 个项目，宽度分别是 100，200，300，这时候空间就不够用溢出了。首先要理解清楚，当我们定义一个固定宽度容器为<code>flex</code>的时候，<code>flex</code>会尽其所能不去改变容器的宽度，而是压缩项目的宽度。这时我们对左中右分别设置<code>flex-shrink</code>为 1，2，3，计算逻辑如下：</p>
+<ol>
+<li>溢出空间 = 100 + 200 + 300 - 550 = 50</li>
+<li>总权重 = 1 x 100 + 2 x 200 + 3 x 300 = 1400</li>
+<li>left = 100 - (50 x 1 x 100 / 1400) = 96.42</li>
+<li>middle = 200 - (50 x 2 x 200 / 1400) = 185.72</li>
+<li>right = 300 - (50 x 3 x 300 / 1400) = 267.86</li>
+</ol>
+<p><strong>flex-basis（默认值 auto）</strong></p>
+<p><code>flex-basis</code>指定项目占据主轴的空间，如果不设置，则等于内容本身的空间</p>
+<h2 id="对reflow和repaint的理解"><a href="#对reflow和repaint的理解" class="headerlink" title="对reflow和repaint的理解"></a>对reflow和repaint的理解</h2><p><strong>回流比重绘的代价要更高。</strong></p>
+<p><img src="/img/image-20220301072618199.png" alt="image-20220301072618199"></p>
+<p><strong>1.回流</strong>(对应排列)</p>
+<p>当<code>Render Tree</code>中部分或全部元素的尺寸、结构、或某些属性发生改变时，浏览器重新渲染部分或全部文档的过程称为回流。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">会导致回流的操作：</span><br><span class="line">页面首次渲染</span><br><span class="line">浏览器窗口大小发生改变</span><br><span class="line">元素尺寸或位置发生改变</span><br><span class="line">元素内容变化（文字数量或图片大小等等）</span><br><span class="line">元素字体大小变化</span><br><span class="line">添加或者删除可见的DOM元素</span><br><span class="line">激活CSS伪类（例如：:hover）</span><br><span class="line">查询某些属性或调用某些方法</span><br><span class="line"></span><br><span class="line">导致回流的属性和方法：</span><br><span class="line">clientWidth、clientHeight、clientTop、clientLeft</span><br><span class="line">offsetWidth、offsetHeight、offsetTop、offsetLeft</span><br><span class="line">scrollWidth、scrollHeight、scrollTop、scrollLeft</span><br><span class="line">scrollIntoView()、scrollIntoViewIfNeeded()</span><br><span class="line">getComputedStyle()</span><br><span class="line">getBoundingClientRect()</span><br><span class="line">scrollTo()</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.重绘</strong>(对应绘制)</p>
+<p>当页面中元素样式的改变并不影响它在文档流中的位置时（例如：<code>color</code>、<code>background-color</code>、<code>visibility</code>等），浏览器会将新样式赋予给元素并重新绘制它。</p>
+<p><strong>3.为什么要优化？</strong></p>
+<p>浏览器会维护一个队列，把所有引起回流和重绘的操作放入队列中，如果队列中的任务数量或者时间间隔达到一个阈值的，浏览器就会将队列清空，进行一次批处理，这样可以把多次回流和重绘变成一次。</p>
+<p>重排和重绘不只是对单个的dom元素进行操作，而是对整个【图层】进行操作，需要花费时间，如果频率高，非常的影响性能。所以有时候有必要开启另一个图层操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">那么什么情况可以开启图层？</span><br><span class="line">1、css 3D变化的图形 ---- transform: translateX(0)</span><br><span class="line">2、html5中的&lt;video&gt;标签</span><br><span class="line">3、canvas绘图中的节点</span><br><span class="line">4、css 动画的节点 --- keyframes animation</span><br><span class="line">5、拥有css加速属性 --- will-change: transform</span><br></pre></td></tr></table></figure>
+
+<p><strong>优化手段：</strong></p>
+<p>(1)CSS</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">使用 transform 替代 top</span><br><span class="line">使用 visibility 替换 display: none ，因为前者只会引起重绘，后者会引发回流（改变了布局</span><br><span class="line">避免使用table布局，可能很小的一个小改动会造成整个 table 的重新布局。</span><br><span class="line">尽可能在DOM树的最末端改变class，回流是不可避免的，但可以减少其影响。尽可能在DOM树的最末端改变class，可以限制了回流的范围，使其影响尽可能少的节点。</span><br><span class="line">避免设置多层内联样式，CSS 选择符从右往左匹配查找，避免节点层级过多。</span><br><span class="line">将动画效果应用到position属性为absolute或fixed的元素上，避免影响其他元素的布局，这样只是一个重绘，而不是回流，同时，控制动画速度可以选择 requestAnimationFrame，详见探讨 requestAnimationFrame。</span><br><span class="line">避免使用CSS表达式，可能会引发回流。</span><br><span class="line">将频繁重绘或者回流的节点设置为图层，图层能够阻止该节点的渲染行为影响别的节点，例如will-change、video、iframe等标签，浏览器会自动将该节点变为图层。</span><br><span class="line">CSS3 硬件加速（GPU加速），使用css3硬件加速，可以让transform、opacity、filters这些动画不会引起回流重绘 。但是对于动画的其它属性，比如background-color这些，还是会引起回流重绘的，不过它还是可以提升这些动画的性能。</span><br></pre></td></tr></table></figure>
+
+<p>(2)JS</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">避免频繁操作样式，最好一次性重写style属性，或者将样式列表定义为class并一次性更改class属性。</span><br><span class="line">避免频繁操作DOM，创建一个documentFragment，在它上面应用所有DOM操作，最后再把它添加到文档中。</span><br><span class="line">避免频繁读取会引发回流/重绘的属性，如果确实需要多次使用，就用一个变量缓存起来。</span><br><span class="line">对具有复杂动画的元素使用绝对定位，使它脱离文档流，否则会引起父元素及后续元素频繁回流。</span><br></pre></td></tr></table></figure>
+
+<h2 id="first-child与-first-of-type的区别"><a href="#first-child与-first-of-type的区别" class="headerlink" title="first-child与:first-of-type的区别"></a><strong>first-child与:first-of-type的区别</strong></h2><blockquote>
+<p>:first-child 匹配的是某父元素的第一个子元素，可以说是结构上的第一个子元素。</p>
+</blockquote>
+<blockquote>
+<p>:first-of-type 匹配的是某父元素下相同类型子元素中的第一个，比如 p:first-of-type，就是指所有类型为p的子元素中的第一个。这里不再限制是第一个子元素了，只要是该类型元素的第一个就行了。</p>
+</blockquote>
+<p>同样类型的选择器 :last-child 和 :last-of-type、:nth-child(n) 和 :nth-of-type(n) 也可以这样去理解。</p>
+<h2 id="页面样式导入link和-import区别"><a href="#页面样式导入link和-import区别" class="headerlink" title="页面样式导入link和@import区别"></a>页面样式导入link和@import区别</h2><ul>
+<li>link 属于 XHTML 标签，除了加载 CSS 外，还能用于定义 RSS(是一种描述和同步网站内容的格式，是使用最广泛的 XML 应用), 定义 rel 连接属性等作用；</li>
+<li>而 @import 是 CSS 提供的，只能用于加载 CSS;</li>
+<li>页面被加载的时，link 会同时被加载，而 @import 引用的 CSS 会等到页面被加载完再加载;</li>
+<li>import 是 CSS2.1 提出的，只在 IE5 以上才能被识别，而 link 是 XHTML 标签，无兼容问题。</li>
+<li>总之，link 要优于 @import。</li>
+</ul>
+<h2 id="Grid布局"><a href="#Grid布局" class="headerlink" title="Grid布局"></a>Grid布局</h2><p><a target="_blank" rel="noopener" href="https://www.zhangxinxu.com/wordpress/2018/11/display-grid-css-css3/#grid-template-columns-rows">张鑫旭的grid</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6854573220306255880#heading-8">最大强大Grid</a></p>
+<p><a target="_blank" rel="noopener" href="https://yqwoshuai.github.io/note/grid/#%E5%AE%B9%E5%99%A8%E5%B1%9E%E6%80%A7">Grid布局相关属性</a></p>
+<p><strong><code>flex</code> 布局是一维布局，主要用于局部布局，<code>Grid</code> 布局是二维布局，用于大结构布局</strong></p>
+<p>给<code>&lt;div&gt;</code>这类块状元素元素设置<code>display:grid</code>或者给<code>&lt;span&gt;</code>这类内联元素设置<code>display:inline-grid</code>，Grid布局即创建</p>
+<p>基础概念的<a href="https://link.juejin.cn/?target=https://codepen.io/gpingfeng/pen/QWyoexm?editors=1100">演示地址</a></p>
+<table>
+<thead>
+<tr>
+<th><strong>作用在grid容器上</strong></th>
+<th><strong>作用在grid子项上</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="#grid-template-columns">grid-template-columns：纵向分块</a></td>
+<td><a href="#grid-column-start">grid-column-start：设置元素网格线的列起点</a></td>
+</tr>
+<tr>
+<td><a href="#grid-template-rows">grid-template-rows：横向分块</a></td>
+<td><a href="#grid-column-end">grid-column-end：设置元素网格线的列终点</a></td>
+</tr>
+<tr>
+<td><a href="#grid-template-areas">grid-template-areas：定制区域结构</a></td>
+<td><a href="#grid-row-start">grid-row-start：设置元素网格线的行起点</a></td>
+</tr>
+<tr>
+<td><a href="#grid-template">grid-template：行列分块的缩写</a></td>
+<td><a href="#grid-row-end">grid-row-end：设置元素网格线的行终点</a></td>
+</tr>
+<tr>
+<td><a href="#grid-column-gap">grid-column-gap：列块间距</a></td>
+<td><a href="#grid-column">grid-column：子项的列起始点的缩写</a></td>
+</tr>
+<tr>
+<td><a href="#grid-row-gap">grid-row-gap：行块间距</a></td>
+<td><a href="#grid-row">grid-row：子项的行起始点的缩写</a></td>
+</tr>
+<tr>
+<td><a href="#grid-gap">grid-gap：行列块间距的缩写</a></td>
+<td><a href="#grid-area">grid-area：子项的行列起始点的缩写</a></td>
+</tr>
+<tr>
+<td><a href="#justify-items">justify-items：每个子项的水平的左中右对齐</a></td>
+<td><a href="#justify-self">justify-self：子项内部的水平对齐方式</a></td>
+</tr>
+<tr>
+<td><a href="#align-items">align-items：每个子项的垂直的上中下对齐</a></td>
+<td><a href="#align-self">align-self：子项内部的垂直对齐方式</a></td>
+</tr>
+<tr>
+<td><a href="#place-items">place-items：每个子项的水平垂直的缩写</a></td>
+<td><a href="#place-self">place-self：子项内部的水平垂直的缩写</a></td>
+</tr>
+<tr>
+<td><a href="#justify-content">justify-content：子项整体的水平的左中右对齐</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="#align-content">align-content：子项整体的垂直的上中下对齐</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="#place-content">place-content：子项整体的水平垂直的缩写</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="#grid-auto-columns">grid-auto-columns：超出容器的部分，纵向分块</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="#grid-auto-rows">grid-auto-rows：超出容器的部分，横向分块</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="#grid-auto-flow">grid-auto-flow：排列方式为先行或先列</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="#grid">grid：大集合</a></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>双命名</strong></p>
+<p>由于网格中中间区域的网格线是两边格子公用的，就像道路有两边，因此，我们起名字的时候可以起两个名称（使用空格分隔），分别表示两侧。例如：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">grid-template-columns</span>: [第一根纵线] <span class="number">80px</span> [第<span class="number">1</span>根纵线结束 第<span class="number">2</span>根纵线开始] <span class="number">100px</span> [最后的结束线];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>repeat语法</strong></p>
+<p>有时候，我们网格的划分是很规律的，例如，基于<code>40px</code>创建栅格，要是我们布局宽度<code>960px</code>，岂不是要写24次<code>40px</code>，实在套啰嗦了，此时，就可以使用<code>repeat()</code>语法，如下示意：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">grid-template-columns</span>: <span class="built_in">repeat</span>(<span class="number">24</span>, <span class="number">40px</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>等同于：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    grid-<span class="keyword">template</span>-columns: <span class="number">40</span>px, <span class="number">40</span>px, <span class="comment">/* ...省略20个...*/</span>, <span class="number">40</span>px, <span class="number">40</span>px;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>fr单位是什么？</strong></p>
+<p><code>fr</code>是单词fraction的缩写，表示分数。</p>
+<ul>
+<li><p>先从简单例子看起：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">grid-template-columns</span>: <span class="number">1</span>fr <span class="number">1</span>fr <span class="number">1</span>fr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>1:1:1，网格宽度三等分</p>
+</li>
+<li><p>如果有固定尺寸值，则划分剩余空间大小，例如：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">grid-template-columns</span>: <span class="number">200px</span> <span class="number">1</span>fr <span class="number">1</span>fr <span class="number">1</span>fr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4列，后面3列宽度是grid容器宽度减去200像素后的1/3大小</p>
+</li>
+<li><p>如果和auto混用会如何呢？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    grid-<span class="keyword">template</span>-columns: <span class="keyword">auto</span> <span class="number">1f</span>r <span class="number">1f</span>r <span class="number">1f</span>r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>auto</code>的尺寸表现为“包裹”，为内容宽度</p>
+</li>
+</ul>
+<h3 id="作用在grid容器上的CSS属性"><a href="#作用在grid容器上的CSS属性" class="headerlink" title="作用在grid容器上的CSS属性"></a>作用在grid容器上的CSS属性</h3><p><strong>grid-template-columns</strong></p>
+<p>纵向分块，分多少个块，每块多少单位</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    grid-template-columns: 80px auto 100px;</span><br><span class="line">    grid-template-rows: 25% 100px auto 60px;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>grid-template-rows</strong></p>
+<p>横向分块，分多少个块，每块多少单位</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    grid-template-columns: 80px auto 100px;</span><br><span class="line">    grid-template-rows: 25% 100px auto 60px;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>grid-template-areas</strong></p>
+<p>定制区域结构。</p>
+<p>张老板承包了一块地，然后划分成了3*4共12个小格子，然后张老板希望最上面3个格子种葡萄，最下面3个格子种西瓜，中间6个格子，左边2个养龙虾，右边4个养鱼。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    grid-template-columns: 1fr 1fr 1fr;</span><br><span class="line">    grid-template-rows: 1fr 1fr 1fr 1fr;</span><br><span class="line">    grid-template-areas: </span><br><span class="line">        &quot;葡萄 葡萄 葡萄&quot;</span><br><span class="line">        &quot;龙虾 养鱼 养鱼&quot;</span><br><span class="line">        &quot;龙虾 养鱼 养鱼&quot;</span><br><span class="line">        &quot;西瓜 西瓜 西瓜&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;container&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;putao&quot;&gt;&lt;/div&gt;</span><br><span class="line">    &lt;div class=&quot;longxia&quot;&gt;&lt;/div&gt;</span><br><span class="line">    &lt;div class=&quot;yangyu&quot;&gt;&lt;/div&gt;</span><br><span class="line">    &lt;div class=&quot;xigua&quot;&gt;&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.putao &#123; grid-area: 葡萄; &#125;</span><br><span class="line">.longxia &#123; grid-area: 龙虾; &#125;</span><br><span class="line">.yangyu &#123; grid-area: 养鱼; &#125;</span><br><span class="line">.xigua &#123; grid-area: 西瓜; &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>grid-template</strong></p>
+<p>行列分块的缩写</p>
+<p><code>grid-template</code>是<code>grid-template-rows</code>，<code>grid-template-columns</code>和<a target="_blank" rel="noopener" href="https://www.zhangxinxu.com/wordpress/2018/11/display-grid-css-css3/#grid-template-areas"><code>grid-template-areas</code></a>属性的缩写。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    grid-template: &lt;grid-template-rows&gt; / &lt;grid-template-columns&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>grid-column-gap</strong></p>
+<p>列块间距</p>
+<p><strong>grid-row-gap</strong></p>
+<p>行块间距</p>
+<p><strong>grid-gap</strong></p>
+<p>行列块间距的缩写</p>
+<p><code>grid-gap</code>属性是<code>grid-column-gap</code>和<code>grid-row-gap</code>属性的缩写</p>
+<p>推荐使用<code>gap</code>属性作为缩写，<code>grid-gap</code>已经很老了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    grid-gap: &lt;grid-row-gap&gt; &lt;grid-column-gap&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>align-items</code>和<code>align-content</code>的区别</strong></p>
+<blockquote>
+<ol>
+<li><strong><code>align-items</code>属性是针对单独的每一个flex子项起作用，它的基本单位是每一个子项，在所有情况下都有效果（当然要看具体的属性值）。</strong></li>
+<li><strong><code>align-content</code>属性是将flex子项作为一个整体起作用，它的基本单位是子项构成的行，只在两种情况下有效果：①子项多行且flex容器高度固定 ②子项单行，flex容器高度固定且设置了<code>flex-wrap:wrap;</code></strong></li>
+</ol>
+</blockquote>
+<p><strong>justify-items</strong></p>
+<p>每个子项的水平的左中右对齐</p>
+<p><strong>align-items</strong></p>
+<p>每个子项的垂直的上中下对齐</p>
+<p><strong>place-items</strong></p>
+<p>每个子项的水平垂直的缩写</p>
+<p>place-items是align-items<code>和</code>justify-items的缩写</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    place-items: &lt;align-items&gt; &lt;justify-items&gt;?;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>justify-content</strong></p>
+<p>子项整体的水平的左中右对齐</p>
+<p><strong>align-content</strong></p>
+<p>子项整体的垂直的上中下对齐</p>
+<p><strong>place-content</strong></p>
+<p>子项整体的水平垂直的缩写</p>
+<p>place-content是align-content<code>和</code>justify-content的缩写</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    place-content: &lt;align-content&gt; &lt;justify-content&gt;?;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>grid-auto-columns</strong></p>
+<p>对超出容器后的部分，纵向分块</p>
+<p><strong>grid-auto-rows</strong></p>
+<p>对超出容器后的部分，横向分块</p>
+<p><strong>grid-auto-flow</strong></p>
+<p>指定排列方式：默认row,横向排列。也可以column纵向排列</p>
+<p><strong>grid</strong></p>
+<p>大集合，<a target="_blank" rel="noopener" href="https://www.zhangxinxu.com/wordpress/2018/11/display-grid-css-css3/#grid-template-columns-rows"><code>grid-template-rows</code></a>，<a target="_blank" rel="noopener" href="https://www.zhangxinxu.com/wordpress/2018/11/display-grid-css-css3/#grid-template-columns-rows"><code>grid-template-columns</code></a>，<a target="_blank" rel="noopener" href="https://www.zhangxinxu.com/wordpress/2018/11/display-grid-css-css3/#grid-template-areas"><code>grid-template-areas</code></a>，<a target="_blank" rel="noopener" href="https://www.zhangxinxu.com/wordpress/2018/11/display-grid-css-css3/#grid-auto-columns-rows"><code>grid-auto-rows</code></a>，<a target="_blank" rel="noopener" href="https://www.zhangxinxu.com/wordpress/2018/11/display-grid-css-css3/#grid-auto-columns-rows"><code>grid-auto-columns</code></a>和<a target="_blank" rel="noopener" href="https://www.zhangxinxu.com/wordpress/2018/11/display-grid-css-css3/#grid-auto-flow"><code>grid-auto-flow</code></a>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grid: &lt;grid-template-rows&gt; / [ auto-flow &amp;&amp; dense? ] &lt;grid-auto-columns&gt;? </span><br></pre></td></tr></table></figure>
+
+<p><strong>具体说明：</strong></p>
+<ul>
+<li><p><code>auto-flow &amp;&amp; dense?</code>其实就是<code>grid-auto-flow</code>属性的值，等同于<code>row</code>或<code>column</code>或<code>row dense</code>或<code>column dense</code>。</p>
+<p>但这里<code>row</code>和<code>column</code>这两个关键字却使用了<code>auto-flow</code>这一个关键字代替了。那岂不有问题：什么时候解析成<code>row</code>，什么时候解析成<code>column</code>呢？</p>
+<p>原来，是根据<code>auto-flow</code>关键字是在斜杠的左侧还是右侧决定的。如果<code>auto-flow</code>关键字在斜杠左侧，则解析为<code>row</code>，如果是在右侧，则解析为<code>column</code>。这里的语法是在斜杠的右侧，因此，会将<code>grid-auto-flow</code>解析为<code>column</code>。</p>
+</li>
+<li><p><code>&lt;grid-auto-columns&gt;</code>后面有个问号<code>?</code>，因此是可以省略的，如果省略，则将<code>grid-auto-columns</code>解析为<code>auto</code>。</p>
+</li>
+</ul>
+<h3 id="作用在grid子项上的CSS属性"><a href="#作用在grid子项上的CSS属性" class="headerlink" title="作用在grid子项上的CSS属性"></a>作用在grid子项上的CSS属性</h3><p><strong>grid-column-start</strong></p>
+<p>设置元素网格线的列起点。索引从1开始。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class=&quot;container&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;item-a&quot;&gt;&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">.container &#123;</span><br><span class="line">  display:grid;</span><br><span class="line">    grid-template-columns:  80px auto  100px ;</span><br><span class="line">    grid-template-rows:  25% 100px auto ;</span><br><span class="line">    height:300px;</span><br><span class="line">    backGround-color:red;</span><br><span class="line">&#125;</span><br><span class="line">.item-a &#123;</span><br><span class="line">    grid-column-start: 2;</span><br><span class="line">    grid-column-end: 3;</span><br><span class="line">    grid-row-start: 2;</span><br><span class="line">    grid-row-end: 3;</span><br><span class="line">    backGround-color:blue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>grid-column-end</strong></p>
+<p>设置元素网格线的列终点</p>
+<p><strong>grid-row-start</strong></p>
+<p>设置元素网格线的行起点</p>
+<p><strong>grid-row-end</strong></p>
+<p>设置元素网格线的行终点</p>
+<p><strong>grid-column</strong></p>
+<p>子项的列起始点的缩写。</p>
+<p>grid-column是<code>grid-column-start</code>+ <code>grid-column-end</code>的缩写</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.item-b &#123;</span><br><span class="line">    grid-column: 2 / span 纵线3;</span><br><span class="line">    grid-row: 第一行开始 / span 3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>grid-row</strong></p>
+<p>子项的行起始点的缩写。</p>
+<p>grid-row是grid-row-start + grid-row-end的缩写</p>
+<p><strong>grid-area</strong></p>
+<p>子项的行列起始点的缩写。</p>
+<p>grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-column-end属性的缩写。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">.item &#123;</span><br><span class="line">    grid-area: &lt;name&gt; | &lt;row-start&gt; / &lt;column-start&gt; / &lt;row-end&gt; / &lt;column-end&gt;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.container &#123;</span><br><span class="line">    grid-template: 1fr 1fr 1fr/1fr 1fr 1fr 1fr;</span><br><span class="line">&#125;</span><br><span class="line">.item-c &#123; </span><br><span class="line">    grid-area: 1 / 2 / 3 / 4;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>justify-self</strong></p>
+<p>子项内部的水平对齐方式</p>
+<p><strong>align-self</strong></p>
+<p>子项内部的垂直对齐方式</p>
+<p><strong>place-self</strong></p>
+<p>子项内部的水平垂直的缩写</p>
+<p><code>place-self</code> 是设置 <code>align-self</code> 和 <code>justify-self</code> 的缩写。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.item &#123;</span><br><span class="line">    place-self: &lt;align-self&gt; &lt;justify-self&gt;?</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong></p>
+<ul>
+<li>在Grid布局中，<code>float</code>，<code>display:inline-block</code>，<code>display:table-cell</code>，<code>vertical-align</code>以及<code>column-*</code>这些属性和声明对grid子项是没有任何作用的。这个可以说是Grid布局中的常识，面试经常会问的，一定要记得。</li>
+<li>Grid布局则适用于更大规模的布局（二维布局），而Flexbox布局最适合应用程序的组件和小规模布局（一维布局），关Flex布局请参见“<a target="_blank" rel="noopener" href="https://www.zhangxinxu.com/wordpress/?p=8063">写给自己看的display: flex布局教程”一文</a>。</li>
+<li>命名虽然支持中文，但由于CSS文件中文存在乱码的风险，所以……创新还是保守就看大家自己的抉择了。</li>
+<li>IE10-IE15虽然名义上支持Grid布局，但支持的是老版本语法（本文是介绍的全是2.0全新语法），还需要加<code>-ms-</code>私有前缀，精力原因，IE下的使用并未深究，以后有机会再补充。</li>
+</ul>
+<h2 id="Flex弹性布局"><a href="#Flex弹性布局" class="headerlink" title="Flex弹性布局"></a>Flex弹性布局</h2><p><a target="_blank" rel="noopener" href="https://tsejx.github.io/css-guidebook/layout/basic/flexible-box-layout#flex-order">flex实战原文</a></p>
+<h3 id="容器属性"><a href="#容器属性" class="headerlink" title="容器属性"></a>容器属性</h3><p><strong>flex-direction</strong></p>
+<p><code>flex-direction</code> 属性决定主轴的方向，继而决定子项在容器中的位置。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">flex-direction</span>: row | row-reverse | column | column-reverse;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>row</code>（默认值）：表示子项从左向右排列。此时<strong>水平方向轴</strong>为主轴。</li>
+<li><code>row-reverse</code>：表示子项从右向左排列。</li>
+<li><code>column</code>：表示子项从上向下排列。此时<strong>垂直方向轴</strong>为主轴。</li>
+<li><code>column-reverse</code>：表示子项从下向上排列。</li>
+</ul>
+<p><strong>flex-wrap</strong></p>
+<p><code>flex-wrap</code> 属性用于指定弹性布局中子项是否换行。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">flex-wrap</span>: nowrap | wrap | wrap-reverse;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>nowrap</code>（默认值）：表示不换行，所有子项目单行排列，子项可能会溢出。</li>
+<li><code>wrap</code>：表示换行，所有子项目多行排列，溢出的子项会被放到下一行，按从上向下顺序排列。</li>
+<li><code>wrap-reverse</code>：所有子项目多行排列，按从下向上顺序排列。</li>
+</ul>
+<p><strong>flex-flow</strong></p>
+<p><code>flex-flow</code> 属性是 <code>flex-direction</code> 属性和 <code>flex-wrap</code> 属性的简写形式，默认值为 <code>row nowrap</code>。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">flex-flow</span>: &lt; <span class="string">&#x27;flex-direction&#x27;</span> &gt; || &lt; <span class="string">&#x27;flex-wrap&#x27;</span> &gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>justify-content</strong></p>
+<p><code>justify-content</code> 属性定义了子项在 <strong>主轴</strong>（水平方向）上的对齐方式。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">justify-content</span>: flex-start | flex-end | center | space-between | space-around;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>flex-start</code>（默认值）：表示弹性容器子项按主轴起点线对齐</li>
+<li><code>flex-end</code>：表示弹性容器子项按主轴终点线对齐</li>
+<li><code>center</code>： 居中排列</li>
+<li><code>space-between</code>：弹性容器子项均匀分布，第一项紧贴主轴起点线，最后一项紧贴主轴终点线，子项目之间的间隔都相等。要注意特殊情况，当剩余空间为负数或者只有一个项时，效果等同于 <code>flex-start</code>。</li>
+<li><code>space-around</code>：弹性容器子项均匀分布，每个项目两侧的间隔相等，相邻项目之间的距离是两个项目之间留白的和。所以，项目之间的间隔比项目与边框的间隔大一倍。要注意特殊情况，当剩余空间为负数或者只有一个项时，效果等同于<code>center</code>。</li>
+<li><code>space-evenly</code>：弹性容器子项均匀分布，所有项目之间及项目与边框之间的距离相等。</li>
+</ul>
+<p>仅当 <code>flex-direction</code> 为 <code>row</code> 时生效，因为 <code>justify-content</code> 仅定义子项在水平方向上的对齐方式</p>
+<p><strong>align-items</strong></p>
+<p><code>align-items</code> 属性定义弹性容器子项在交叉轴（垂直方向）上的对齐方式。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">align-items</span>: flex-start | flex-end | center | baseline | stretch;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>stretch</code>（默认值）：当子项未设置高度或者高度为 <code>atuo</code> 时，子项的高度设为行高。这里需要注意，在只有一行的情况下，行的高度为容器的高度，即子项高度为容器的高度。（当子项设定了高度时无法展开）</li>
+<li><code>flex-start</code>：表示子项与交叉轴的起点线对齐。</li>
+<li><code>flex-end</code>：表示子项与交叉轴的终点线对齐。</li>
+<li><code>center</code>：表示与交叉轴的中线对齐。</li>
+<li><code>baseline</code>：表示基线对齐，当行内轴与侧轴在同一线上，即所有子项的基线在同一线上时，效果等同于<code>flex-start</code>。</li>
+</ul>
+<p><strong>align-content</strong></p>
+<p><code>align-content</code> 属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。</p>
+<p>核心是一定是盒子内部的元素超过了盒子项的宽度（默认）出现了换行，也就是有多行才可以。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">align-content</span>: flex-start | flex-end | center | space-between | space-around | stretch;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>stretch</code>（默认值）：轴线占满整个交叉轴。（当子项设定了高度时无法展开）</li>
+<li><code>flex-start</code>：表示各行与交叉轴的起点线对齐。</li>
+<li><code>flex-end</code>：表示各行与交叉轴的终点线对齐。</li>
+<li><code>center</code>：表示各行与交叉轴的中线对齐。</li>
+<li><code>space-between</code>：与交叉轴两端对齐，轴线之间的间隔平均分布。要注意特殊情况，当剩余空间为负数时，效果等同于<code>flex-start</code>。</li>
+<li><code>space-around</code>：每根轴线两侧的间隔都相等。所以，轴线之间的间隔比轴线与边框的间隔大一倍。要注意特殊情况，当剩余空间为负数时，效果等同于<code>center</code>。</li>
+</ul>
+<p>⚠️ <strong>注意</strong>：该属性只作用于多行的情况（<code>flex-warp: wrap / warp-reverse</code>），在只有一行的弹性容器上无效，另外该属性可以很好的处理，换行以后相邻行之间产生的间距。</p>
+<h3 id="子项属性"><a href="#子项属性" class="headerlink" title="子项属性"></a>子项属性</h3><p><strong>order</strong></p>
+<p>缺省情况下，Flex 子项是按照在代码中出现的先后顺序排列的。CSS3 新增加 <code>order</code> 属性定义项目的排列顺序，是数值类型。数值越小，排列越靠前，默认为 0。</p>
+<blockquote>
+<p>注意此属性设置在子项上，浏览器自动按照 <code>order</code> 的大小排序盒子，默认都是 0，如果相同的 <code>order</code> 则按照编写标签的顺序排放盒子。</p>
+</blockquote>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">order</span>: <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>flex-grow</strong></p>
+<p><code>flex-grow</code> 属性定义子项的<strong>扩展比例</strong>，取值必须是一个单位的正整数，表示放大的比例。默认为 0，即如果存在额外空间，也不放大，负值无效。Flex 容器会根据子项设置的扩展比例作为比率来分配剩余空间</p>
+<p>如果所有项目的 <code>flex-grow</code> 属性都为 1，则它们将等分剩余空间（如果有的话）。如果一个项目的 <code>flex-grow</code> 属性为 2，其他项目都为 1，则前者占据的剩余空间将比其他项多一倍。</p>
+<p>一行的子盒子同时设置 <code>flex-grow</code> 属性的话，会根据设置的值的大小按比例排放子项。</p>
+<p><em>flex-grow 属性决定了子项要占用父容器多少剩余空间</em></p>
+<p>计算方式：</p>
+<ul>
+<li>假设剩余空间 <code>x</code>（弹性容器宽度与所有弹性子项宽度总和之差）</li>
+<li>假设有三个弹性子项元素，<code>flex-grow</code> 设定值分别为 <code>a</code>、<code>b</code> 和 <code>c</code></li>
+<li>每个元素可以分配的剩余空间为：<code>a/(a+b+c) * x</code>、<code>b/(a+b+c) * x</code> 和 <code>c/(a+b+c) * x</code></li>
+</ul>
+<p>假设剩余空间为 <code>150px</code>，<code>a</code>、<code>b</code> 和 <code>c</code> 的 <code>flex-grow</code> 分别为 1、2 和 3，那么 <code>a</code> 占比剩余空间：<code>1/(1+2+3) = 1/6</code>，那么 <code>a</code> 瓜分到的剩余空间宽度是 <code>150*(1/6)=25</code>，加上 <code>a</code> 原本的宽度，实际的宽度为 <code>&lt;origin-width&gt; + 25</code>。</p>
+<p><strong>flex-shrink</strong></p>
+<p>如果子容器宽度超过父容器宽度，即使是设置了 <code>flex-grow</code>，但是由于没有剩余空间，就分配不到剩余空间了。这时候有两个办法：换行和压缩。由于 <code>flex</code> 默认不换行，那么压缩的话，怎么压缩呢，压缩多少？此时就需要用到 <code>flex-shrink</code> 属性了。</p>
+<p><code>flex-shrink</code> 属性定义了项目的<strong>缩小比例</strong>，默认为 1，即如果空间不足，该项目将缩小。</p>
+<p>此时，剩余空间的概念就转化成了 <strong>溢出空间</strong>。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">flex-shrink</span>: &lt;number&gt;; <span class="comment">/* default 1 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果所有项目的 <code>flex-shrink</code> 属性都为 1，当空间不足时，都将等比例缩小。如果一个项目的 <code>flex-shrink</code> 属性为 0，其他项目都为 1，则空间不足时，前者不缩小。</p>
+<p><em>负值对该属性无效。且如果弹性子项总和没有超出父容器，设置 <code>flex-shrink</code> 将无效。</em></p>
+<p>计算方式：</p>
+<ul>
+<li>假设三个子项的 <code>width</code> 为：<code>w1</code>、<code>w2</code>、<code>w3</code></li>
+<li>假设三个子项的 <code>flex-shrink</code> 为：<code>a</code>、<code>b</code>、<code>c</code></li>
+<li>计算总压缩权重：<code>sum = a * w1 + b * w2 + c * w3</code></li>
+<li>计算每个元素压缩率：<code>s1 = a * w1 / sum</code>、<code>s2 = b * w2 / sum</code>、<code>s3 = c * w3 / sum</code></li>
+<li>计算每个元素宽度：<code>width - 压缩率 * 溢出空间</code></li>
+</ul>
+<p><strong>flex-basis</strong></p>
+<p><code>flex-basis</code> 属性定义了在分配多余空间之前，项目占据的主轴空间（main size）。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为 <code>auto</code>，即项目的本来大小。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">flex-basis</span>: &lt;number&gt; | &lt;percentage&gt; | auto; <span class="comment">/* default auto */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>⚠️ <strong>注意</strong>：</p>
+<ol>
+<li>设置 <code>flex-grow</code> 进行分配剩余空间，或者使用 <code>flex-shrink</code> 进行收缩都是在 <code>flex-basis</code> 的基础上进行的；</li>
+<li>当 <code>flex-basis</code> 的值以及 <code>width</code>（或者 <code>height</code>）的值均为非 <code>auto</code> 时，<ul>
+<li>若 <code>content</code> 长度同时大于 <code>flex-basis</code> 的值以及 <code>width</code>（或者 <code>height</code>）的值，此时以 <code>flex-basis</code> 与 <code>width</code>（或者 <code>height</code>）中值大的为准 ，<strong>但是</strong>，如果子项设置了<code>overflow: hidden</code> 或者 <code>overflow: auto</code>，此时以<code>flex-basis</code>值为准；</li>
+<li>若 <code>content</code> 长度同时小于 <code>flex-basis</code> 的值以及 <code>width</code>（或者 <code>height</code>）的值，此时以 <code>flex-basis</code> 值为准</li>
+<li>若 <code>content</code> 长度小于 <code>flex-basis</code> 的值，大于 <code>width</code>（或者 <code>height</code>）的值，此时以 <code>flex-basis</code> 值为准</li>
+<li>若 <code>content</code> 长度大于 <code>flex-basis</code> 的值，小于 <code>width</code>（或者 <code>height</code>）的值，此时以 <code>content</code> 自身长度值为准；</li>
+</ul>
+</li>
+<li>当 <code>width</code>（或者 <code>height</code>）的值为 <code>auto</code> 时，且内容的长度大于 <code>flex-basis</code>设置的值，此时以 <code>content</code> 自身长度值为准，且<strong>不能进行 <code>flex-shrink</code> 收缩</strong>。相反如果内容的长度小于 <code>flex-basis</code> 设置的值，则会使用 <code>flex-basis</code> 设置的值</li>
+<li>当存在最小值 <code>min-width</code>（<code>min-height</code>）时，且 <code>flex-basis</code> 的值小于最小值时，宽度以最小值为准，当 <code>flex-basis</code> 的值大于最小值时，以 <code>flex-basis</code> 的值为准。</li>
+</ol>
+<blockquote>
+<p>属性优先级：<code>max-width / min-width -&gt; flex-basis -&gt; width -&gt; box</code></p>
+</blockquote>
+<p><strong>flex</strong></p>
+<p><code>flex</code> 属性是 <code>flex-grow</code>、<code>flex-shrink</code> 和 <code>flex-basis</code> 的简写，默认值为 <code>0 1 auto</code>。后两个属性可选。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">flex</span>: none | [ &lt; <span class="string">&#x27;flex-grow&#x27;</span> &gt; &lt; <span class="string">&#x27;flex-shrink&#x27;</span> &gt;? || &lt; <span class="string">&#x27;flex-basis&#x27;</span> &gt; ];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该属性有两个快捷值：<code>auto (1 1 auto)</code> 和 <code>none (0 0 auto)</code>。</p>
+<p>建议优先使用这个属性，而不是单独写三个分离的属性，因为浏览器会推算相关值。</p>
+<p><strong>align-self</strong></p>
+<p><code>align-self</code> 属性用于指定子项的对齐方式，可覆盖 <code>align-items</code> 属性。</p>
+<p>默认值为 <code>auto</code>，表示继承父元素的 <code>align-items</code> 属性，如果没有父元素，则等同于 <code>stretch</code>。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">align-self</span>: auto || flex-start || flex-end || center || baseline || stretch;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h1><h2 id="伪类和伪元素"><a href="#伪类和伪元素" class="headerlink" title="伪类和伪元素"></a>伪类和伪元素</h2><p><strong>伪类</strong></p>
+<p>伪类即假的类，通常可以添加类来达到效果。伪类是选择器的一种，它用于选择处于特定状态的元素。它们表现得会像是你向你的文档的某个部分应用了一个类一样，帮你在你的标记文本中减少多余的类，让你的代码更灵活、更易于维护。伪类开头为冒号<code>:</code></p>
+<p>用户行为伪类，一些伪类只会在用户以某种方式和文档交互的时候应用。这些用户行为伪类，有时叫做动态伪类，如:hover，:focus。</p>
+<blockquote>
+<p>常见伪类</p>
+<p>:active 在用户激活（例如点击）元素的时候匹配。</p>
+<p>:checked 匹配处于选中状态的单选或者复选框。</p>
+<p>:disabled 匹配处于关闭状态的用户界面元素</p>
+<p>:first-child 匹配兄弟元素中的第一个元素。</p>
+<p>:first-of-type 匹配兄弟元素中第一个某种类型的元素。</p>
+<p>:focus 当一个元素有焦点的时候匹配。</p>
+<p>:hover 当用户悬浮到一个元素之上的时候匹配。</p>
+<p>:last-child 匹配兄弟元素中最末的那个元素。</p>
+<p>:last-of-type 匹配兄弟元素中最后一个某种类型的元素。</p>
+<p>:is() 匹配传入的选择器列表中的任何选择器。</p>
+<p>:not 匹配作为值传入自身的选择器未匹配的物件。</p>
+<p>:nth-child 匹配一列兄弟元素中的元素——兄弟元素按照an+b形式的式子进行匹配（比如2n+1匹配元素1、3、5、7等。即所有的奇数个）。</p>
+<p>:nth-of-type 匹配某种类型的一列兄弟元素（比如，<code>&lt;p&gt;</code>元素）——兄弟元素按照an+b形式的式子进行匹配（比如2n+1匹配元素1、3、5、7等。即所有的奇数个）。</p>
+<p>:nth-last-child 匹配一列兄弟元素，从后往前倒数。兄弟元素按照an+b形式的式子进行匹配（比如2n+1匹配按照顺序来的最后一个元素，然后往前两个，再往前两个，诸如此类。从后往前数的所有奇数个）。</p>
+<p>:nth-last-of-type 匹配某种类型的一列兄弟元素（比如，<code>&lt;p&gt;</code>元素），从后往前倒数。兄弟元素按照an+b形式的式子进行匹配（比如2n+1匹配按照顺序来的最后一个元素，然后往前两个，再往前两个，诸如此类。从后往前数的所有奇数个）。</p>
+<p>:only-child 匹配没有兄弟元素的元素。</p>
+<p>:only-of-type 匹配兄弟元素中某类型仅有的元素。</p>
+</blockquote>
+<p><strong>伪元素</strong></p>
+<p>伪元素即假元素，需要通过添加元素才能达到效果。伪元素以类似方式表现，不过表现得是像你往文档中加入全新的HTML元素一样，而不是向现有的元素上应用类。伪元素开头为双冒号<code>::</code></p>
+<blockquote>
+<p>常见伪元素</p>
+<p>::before在被选元素前插入内容,属性 <code>content</code> 是必须设置的，它的值可以为字符串，也可以有其它形式</p>
+<p>::after在被元素后插入内容，属性 <code>content</code> 是必须设置的，它的值可以为字符串，也可以有其它形式</p>
+<p>::first-line作用于第一行的所有字符</p>
+<p>::first-letter作用于第一行的首字符</p>
+</blockquote>
+<p><strong>伪类和伪元素的区别</strong></p>
+<blockquote>
+<ul>
+<li>伪类和伪元素都是用来表示文档树以外的”元素”。</li>
+<li>伪类和伪元素分别用单冒号<code>:</code>和双冒号<code>::</code>来表示。</li>
+<li>伪类和伪元素的区别，最关键的点在于如果没有伪元素(或伪类)，是否需要添加元素才能达到目的，如果是则是伪元素，反之则是伪类。</li>
+</ul>
+</blockquote>
+<h2 id="sass（scss）、less、stylus、postcss"><a href="#sass（scss）、less、stylus、postcss" class="headerlink" title="sass（scss）、less、stylus、postcss"></a>sass（scss）、less、stylus、postcss</h2><p>它们都是css预处理器。css预处理器的概念：CSS预处理器用一种专门的编程语言，进行Web页面样式设计，然后再编译成正常的CSS文件。</p>
+<ul>
+<li><p>sass:Sass是一种动态样式语言，Sass语法属于缩排语法，比css比多出好些功能(如变量、嵌套、运算,混入(Mixin)、继承、颜色处理，函数等)，更容易阅读。</p>
+<p>对Sass的缩排语法优化，用{}取代了原来的缩进，变成了Scss(sassy css)，与原来的语法兼容。变量符是$。</p>
+</li>
+<li><p>less:也是一种动态样式语言. 受Sass影响较大,对CSS赋予了动态语言的特性，如变量，继承，运算， 函数。在客户端上和服务端都可以运行。变量符是@。</p>
+</li>
+<li><p>Stylus：主要用来给Node项目进行CSS预处理支持。提供一个高效、动态、和使用表达方式来生成CSS，以供浏览器使用。支持缩进和CSS常规样式书写规则。写法更接近js,学习曲线陡峭。变量符是随意。</p>
+</li>
+<li><p>PostCSS：它是一个对 CSS 进行处理的工具（平台），不能简单的把 PostCSS 归类成 CSS 预处理或后处理工具。PostCSS 一般不单独使用，而是与已有的构建工具进行集成。PostCSS 与主流的构建工具，如 Webpack、Grunt 和 Gulp 都可以进行集成。</p>
+</li>
+</ul>
+<h2 id="过度、变形、移动、动画"><a href="#过度、变形、移动、动画" class="headerlink" title="过度、变形、移动、动画"></a>过度、变形、移动、动画</h2><table>
+<thead>
+<tr>
+<th>属性</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>transition（过度）</td>
+<td>用于设置元素的样式过度，和animation有着类似的效果，但细节上有很大的不同</td>
+</tr>
+<tr>
+<td>transform（变形）</td>
+<td>用于元素进行旋转、缩放、移动或倾斜，和设置样式的动画并没有什么关系，就相当于color一样用来设置元素的“外表”</td>
+</tr>
+<tr>
+<td>translate（移动）</td>
+<td>只是transform的一个属性值，即移动</td>
+</tr>
+<tr>
+<td>animation（动画）</td>
+<td>用于设置动画属性，他是一个简写的属性，包含6个属性</td>
+</tr>
+</tbody></table>
+<h2 id="css3-动画效果属性有哪些"><a href="#css3-动画效果属性有哪些" class="headerlink" title="css3 动画效果属性有哪些 ?"></a><strong>css3 动画效果属性有哪些 ?</strong></h2><ul>
+<li>animation-name：规定需要绑定到选择器的 keyframe 名称。。</li>
+<li>animation-duration：规定完成动画所花费的时间，以秒或毫秒计。</li>
+<li>animation-timing-function：规定动画的速度曲线。</li>
+<li>animation-delay：规定在动画开始之前的延迟。</li>
+<li>animation-iteration-count：规定动画应该播放的次数。</li>
+<li>animation-direction：规定是否应该轮流反向播放动画。</li>
+</ul>
+<h2 id="before-和-after-双冒号和单冒号的区别"><a href="#before-和-after-双冒号和单冒号的区别" class="headerlink" title="::before 和 :after 双冒号和单冒号的区别"></a>::before 和 :after 双冒号和单冒号的区别</h2><ul>
+<li>单冒号 (:) 用于 CSS3 伪类，双冒号 (::) 用于 CSS3 伪元素。</li>
+<li>::before 就是以一个子元素的存在，定义在元素主体内容之前的一个伪元素。并不存在于 dom 之中，只存在在页面之中。</li>
+</ul>
+<p>:before 和 :after 这两个伪元素，是在 CSS2.1 里新出现的。 起初，伪元素的前缀使用的是单冒号语法，但随着 Web 的进化，在 CSS3 的规范里，伪元素的语法被修改成使用双冒号，成为 ::before、 ::after 。</p>
+<h2 id="CSS3-新增伪类举例"><a href="#CSS3-新增伪类举例" class="headerlink" title="CSS3 新增伪类举例"></a><strong>CSS3 新增伪类举例</strong></h2><ul>
+<li>:root 选择文档的根元素，等同于 html 元素</li>
+<li>:empty 选择没有子元素的元素</li>
+<li>:target 选取当前活动的目标元素</li>
+<li>:not(selector) 选择除 selector 元素以外的元素</li>
+<li>:enabled 选择可用的表单元素</li>
+<li>:disabled 选择禁用的表单元素</li>
+<li>:checked 选择被选中的表单元素</li>
+<li>:after 选择器在被选元素的内容后面插入内容</li>
+<li>:before 选择器在被选元素的内容前面插入内容</li>
+<li>:nth-child(n) 匹配父元素下指定子元素，在所有子元素中排序第 n</li>
+<li>:nth-last-child(n) 匹配父元素下指定子元素，在所有子元素中排序第 n，从后向前数</li>
+<li>:nth-child(odd) 奇数</li>
+<li>:nth-child(even) 偶数</li>
+<li>:nth-child(3n+1)</li>
+<li>:first-child</li>
+<li>:last-child</li>
+<li>:only-child</li>
+<li>:nth-of-type(n) 匹配父元素下指定子元素，在同类子元素中排序第 n</li>
+<li>:nth-last-of-type(n) 匹配父元素下指定子元素，在同类子元素中排序第 n，从后向前数</li>
+<li>:nth-of-type(odd)</li>
+<li>:nth-of-type(even)</li>
+<li>:nth-of-type(3n+1)</li>
+<li>:first-of-type</li>
+<li>:last-of-type</li>
+<li>:only-of-type</li>
+<li>::selection 选择被用户选取的元素部分</li>
+<li>:first-line 选择元素中的第一行</li>
+<li>:first-letter 选择元素中的第一个字符</li>
+</ul>
+<h2 id="CSS3有哪些新特性？"><a href="#CSS3有哪些新特性？" class="headerlink" title="CSS3有哪些新特性？"></a>CSS3有哪些新特性？</h2><ul>
+<li>CSS3 实现圆角（border-radius:8px）</li>
+<li>阴影（box-shadow:10px）</li>
+<li>对文字加特效（text-shadow）</li>
+<li>线性渐变（gradient）</li>
+<li>旋转、缩放、定位、倾斜</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">transform: rotate(9deg) scale(0.85,0.90) translate(0px,-30px) skew(-9deg,0deg); </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>增加了更多的 CSS 选择器</li>
+<li>多背景 rgba</li>
+</ul>
+<h2 id="canvas与svg的区别？"><a href="#canvas与svg的区别？" class="headerlink" title="canvas与svg的区别？"></a>canvas与svg的区别？</h2><ul>
+<li>Canvas 是基于像素的即时模式图形系统，最适合较小的表面或较大数量的对象，Canvas 不支持鼠标键盘等事件。</li>
+<li>SVG 是基于形状的保留模式图形系统，更加适合较大的表面或较小数量的对象。</li>
+<li>Canvas 和 SVG 在修改方式上还存在着不同。 Canvas 输出的是一整幅画布，不能使用脚本和 CSS 对它进行修改。因为 SVG 绘制出来的每一个图形的元素都是独立的 DOM 节点，能够方便的绑定事件或用来修改</li>
+</ul>
+<p>现在对两种技术做对比归纳如下：</p>
+<p>Canvas</p>
+<ol>
+<li>依赖分辨率</li>
+<li>不支持事件处理器</li>
+<li>弱的文本渲染能力</li>
+<li>能够以 .png 或 .jpg 格式保存结果图像</li>
+<li>最适合图像密集型的游戏，其中的许多对象会被频繁重绘</li>
+</ol>
+<p>SVG</p>
+<ol>
+<li>不依赖分辨率</li>
+<li>支持事件处理器</li>
+<li>最适合带有大型渲染区域的应用程序（比如谷歌地图）</li>
+<li>复杂度高会减慢渲染速度（任何过度使用 DOM 的应用都不快）</li>
+<li>不适合游戏应用</li>
+</ol>
+<h2 id="css2-0与css3-0"><a href="#css2-0与css3-0" class="headerlink" title="css2.0与css3.0"></a>css2.0与css3.0</h2><p>css3加强了css2的功能，增加了新的属性和新的标签，并且删除了一些冗余的标签，在布局方面减少了代码量。</p>
+<p>例如圆角、阴影、:last-child与:nth-last-child()伪类选择器等。</p>
+<ul>
+<li><p>css3代码更简洁、结构更合理、性能和效果得到兼顾；</p>
+</li>
+<li><p>css3兼容性没有css2兼容性好，很多新属性需要加上浏览器兼容前缀；</p>
+</li>
+<li><p>css3能仅使用代码就实现的效果，css2需要使用图片来实现；</p>
+</li>
+<li><p>css2请求服务器次数高于css3；</p>
+</li>
+</ul>
+<h1 id="高级"><a href="#高级" class="headerlink" title="高级"></a>高级</h1><h2 id="Tailwind-CSS"><a href="#Tailwind-CSS" class="headerlink" title="Tailwind CSS"></a>Tailwind CSS</h2><p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000041152680">[一次就能看懂的Tailwind CSS介绍]</a></p>
+<h3 id="CSS-发展阶段"><a href="#CSS-发展阶段" class="headerlink" title="CSS 发展阶段"></a>CSS 发展阶段</h3><p>基本经历了三个阶段。</p>
+<p><strong>第一个阶段</strong>，原生写法<br>是类似于编程中面向过程的写法，需要什么样式，自己在 css 中写什么样式。对代码有洁癖的程序员会进行简单的 css 复用。但是也只是简单的复用，大多数时候还是需要什么写什么，想怎么写怎么写。</p>
+<p><strong>第二个阶段</strong>，CSS 组件化。<br>类似于编程中面向对象的写法，将相同视觉的 UI 封装成一个组件。比如一个按钮，整个项目中，这个按钮被多次使用，并且样式一致。那么就可以封装成一个按钮类。使用的时候直接使用这个类名称就 OK。</p>
+<p>这也是 bootstrap，element ui，Antd，bulma 的做法。</p>
+<p>这种框架的优势在于，封装了大量常见的 UI。比如你需要一个表单，，需要一个导航，需要一个弹窗，Card 卡片。有现成的 class。直接拿过来用，就可以快速的完成效果。完全不需要动手写 css。</p>
+<p>这也是目前比较流行的方法。这几年几乎很少有项目是自己一点一点手写样式的了，多多少少都会使用到一些 css 框架。</p>
+<p>对于一些需要快速交付的项目，非常适合使用这种组件化 css 框架。</p>
+<p><strong>第三个阶段</strong>，CSS 零件化。<br>也叫做 CSS 原子化。和上面第一个阶段第二个阶段都有类似的地方。依旧是组件，只是每个组件都是一个单一功能的 css 属性。</p>
+<p>上面第一个阶段的时候，我们讲了有些有对代码有追求的人，会开始复用 css。<br>比如页面中大量的用到 float:left。那么就可以封装一个类，比如是这样</p>
+<p>.left {float:left}<br>然后需要使用 float:left 的时候，直接使用.left 就可以。</p>
+<h3 id="什么是Tailwind-CSS"><a href="#什么是Tailwind-CSS" class="headerlink" title="什么是Tailwind CSS"></a>什么是Tailwind CSS</h3><p>Tailwind CSS 是一个利用公用程序类（<code>Utilize Class</code>，下文皆称Utilize Class）的 CSS 框架。许多人会想到 CSS 框架，有很多，例如 <code>Bootstrap、Bulma 和 Material UI</code>。Bootstrap 和 Bulma 等框架利用预先准备好的组件（例如按钮、菜单和面包屑）进行设计。在 Tailwind CSS 中，没有准备任何组件，而是使用<code>Utilize Class</code>来创建和设计自己的组件。</p>
+<blockquote>
+<p>Tailwind CSS 还提供了一个Headless UI (<a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=SVI0nzk7qsZYqdPG/pzBEg==.5QrLqST7P6RWcCnbCD7z/Jq9MherxCBMIsMCAX5fpK0=">https://headlessui.dev</a>)，如果你想创建复杂的组件（例如下拉菜单和对话框），你可以使用它。</p>
+</blockquote>
+<p>原来Bootstrap等框架可以通过提前准备组件集合来高效地设计网站，但是有一个缺点，就是因为使用了相同的设计，所以没有原创性。相比之下，Tailwind CSS 没有组件集合，所以即使你创建一个名为相同按钮的组件，每个人都会应用不同的<code>Utilize Class</code>创建它，可以创建出一个高度原创的网站。</p>
+<h3 id="Tailwind-CSS优缺点"><a href="#Tailwind-CSS优缺点" class="headerlink" title="Tailwind CSS优缺点"></a>Tailwind CSS优缺点</h3><p><strong>优点：</strong></p>
+<p>1.可定制化程度极高。<br>你可以随心所欲写出自己的样式。想怎么折腾怎么折腾。<br>如果使用 bootstrap，你如果想改变一个按钮的样式，就会比较困难。你得用覆盖式的写法，通过自己的样式覆盖掉 bootstrap 自带的样式。如果框架本身不支持修改，你通过自己的写法去修改框架本身的特性，这是一种很脏的写法。非常别扭。<br>但是这个问题在 Tailwind CSS 完全不存在。Tailwind CSS 没有自以为是的封装任何样式给你。</p>
+<p>2.不需要在写 css。<br>使用 Tailwind CSS，基本可以不用再写 css。所有的效果都可以通过 class 名来完成。我用 Tailwind CSS 写了几个页面，到目前为止，还没有写过一行 css。</p>
+<p>3.不需要再为 class 取个什么名字而苦恼。<br>对于经常手写 css 的程序员来说，最大的噩梦可能就是怎么给 class 取名了。尤其是在同一个区块里面，区块名称，子元素名称，等等，一个页面动辄几十个几百个类名。非常痛苦。而这其中，真正能复用的 class 可能就个别几个。</p>
+<p>使用 Tailwind CSS 完全不用为取名字烦恼，因为所有的 css 属性都被框架语义化封装好了。只需要在 class 里面引用就好。</p>
+<p>4.响应式设计<br>Tailwind CSS 遵循移动优先的设计模式。断点系统很灵活。也是目前所有 css 框架里做的最好的。比如你要实现一个媒体查询，根据不同的屏幕宽度实现不同的图片宽度。</p>
+<p><strong>缺点：</strong></p>
+<p>1.类名很长<br>正如 Tailwind CSS 官网首页的口号一样，从此让你写样式不再离开 html 页面。Tailwind CSS 将 HTML 与 CSS 高度解耦，把本来 CSS 的一些工作转嫁给了 HTML。好处是使用 Tailwind CSS 你可以从此不再写 css。但坏处是你的 html 标签的类名会很长很长。比如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;#&quot; class=&quot;text-sm font-medium bg-purple-600 rounded-full py-4 px-11 text-white inline-block border border-solid shadow hover:text-purple-600 hover:bg-white hover:border-purple-600 transition duration-300&quot; role=&quot;button&quot;&gt;Start Ticketing&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+
+<p>2.熟悉使用有成本<br>这一点逃避不了，所有的新技术，所有的 css 框架都有熟悉成本。Tailwind CSS 也一样。比如你想做一个圆角，那你得知道 Tailwind CSS 里面的圆角属性怎么写，边框怎么写，边框样式怎么写等等。你需要不断的去看文档。</p>
+<h2 id="常见兼容性问题？"><a href="#常见兼容性问题？" class="headerlink" title="常见兼容性问题？"></a>常见兼容性问题？</h2><ul>
+<li>浏览器默认的 margin 和 padding 不同。解决方案是加一个全局的 *{margin: 0; padding: 0;} 来统一。</li>
+<li>IE下 event 对象有 event.x，event.y 属性，而 Firefox 下没有。Firefox 下有 event.pageX，event.PageY 属性，而 IE 下没有。 解决办法：var mx = event.x?event.x:event.pageX;</li>
+<li>Chrome 中文界面下默认会将小于 12px 的文本强制按照 12px 显示, 可通过加入 CSS 属性 -webkit-text-size-adjust: none; 解决.</li>
+<li>超链接访问过后 hover 样式就不出现了，被点击访问过的超链接样式不在具有 hover 和 active 了，解决方法是改变 CSS 属性的排列顺序: L-V-H-A : a:link {} a:visited {} a:hover {} a:active {}</li>
+</ul>
+<h2 id="图片裁剪压缩技术"><a href="#图片裁剪压缩技术" class="headerlink" title="图片裁剪压缩技术"></a>图片裁剪压缩技术</h2><p>一张 4px × 4px 的彩色图片，未压缩的的原始图像数据，就是一个 4 × 4 矩形网格，每一个网格代表一个像素。每一个像素，又是由 红，绿，蓝 三基色构成，<strong>1 个像素点需要 3 个字节</strong>。</p>
+<p><strong>一、图片压缩的原理</strong></p>
+<p><strong>1.有损压缩</strong></p>
+<p>有损压缩是利用了人类对图像或声波中的某些频率成分<code>不敏感</code>的特性，允许压缩过程中<code>损失一定的信息</code>；虽然不能完全恢复原始数据，但是所损失的部分对理解原始图像的影响缩小，却换来了大得多的压缩比</p>
+<p>本质和尺寸压缩本质上一样，用最中间的一个像素点代替周围的像素点</p>
+<p><strong>2.行程长度编码法（无损压缩）</strong></p>
+<p>常用的无损压缩算法，将一扫描行中<code>颜色值相同</code>的相邻像素用两个字节来表示， 第一个字节是一个<strong>计数值</strong>， 用于指定像素重复的次数； 第二个字节是具体<strong>像素的值</strong>。能够比较好地保存图像的质量，但是相对<code>有损压缩</code>来说这种方法的<code>压缩率比较低</code></p>
+<p>例如：499 500 500 500 501 → 499 500×3 501</p>
+<p><strong>3.熵编码法（无损压缩）</strong></p>
+<p>熵编码法是一种进行无损数据压缩的技术，在这个技术中一段文字中的<strong>每个字母</strong>被一段<strong>不同长度的比特</strong>(Bit)所代替。与此相对的是<code>LZ77</code>或者<code>LZ78</code>等数据压缩方法，在这些方法中原文的一段字母列被其它字母取代。</p>
+<p>本质上看就是利用一个算法，把一段字母用一个或单个字母代替（端到端之间可以存一个压缩字符映射表）</p>
+<p>例如：499 500 500 500 501 → -1 0 500 0 1</p>
+<p><strong>二、使用 Canvas 压缩图片</strong></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7005931841672708109#heading-1">图片的本质和图片压缩原理及实现</a></p>
+<p><strong>压缩思路：</strong></p>
+<ul>
+<li>获取上传 Input 中的图片对象 File</li>
+<li>将图片转换成 base64 格式</li>
+<li>base64 编码的图片通过 Canvas 转换压缩，这里会用到的 Canvas 的 drawImage 以及 toDataURL 这两个 Api，一个调节图片的分辨率的，一个是调节图片压缩质量并且输出的，后续会有详细介绍</li>
+<li>转换后的图片生成对应的新图片，然后输出</li>
+</ul>
+<blockquote>
+<p>base64 编码指的是把二进制变成字符的过程，base64 解码就是把字符变回二进制的过程示例：</p>
+<ul>
+<li>转换前 10101101,10111010,01110110</li>
+<li>按照 <a href="https://link.juejin.cn/?target=https://baike.baidu.com/item/base64/8545775?fr=aladdin">编码规则</a> 转换后 00101011, 00011011 ,00101001 ,00110110</li>
+<li>十进制 43 27 41 54</li>
+<li>对应 <a href="https://link.juejin.cn/?target=https://baike.baidu.com/item/base64/8545775?fr=aladdin">码表</a> 中的值 r b p 2</li>
+<li>所以上面的24位编码，编码后的Base64值为 rbp2</li>
+</ul>
+</blockquote>
+<ul>
+<li>优点：实现简单，参数可以配置化，<code>自定义</code>图片的尺寸，指定区域<code>裁剪</code>等等。</li>
+<li>缺点：只有 jpeg 、webp 支持原图尺寸下图片质量的调整来达到压缩图片的效果，其他图片格式，仅能通过调节尺寸来实现</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;container&quot;&gt;</span><br><span class="line">    &lt;input type=&quot;file&quot; id=&quot;input-img&quot; @change=&quot;compress&quot; /&gt;</span><br><span class="line">    &lt;a :download=&quot;fileName&quot; :href=&quot;compressImg&quot; &gt;普通下载&lt;/a&gt;</span><br><span class="line">    &lt;button @click=&quot;downloadImg&quot;&gt;兼容 IE 下载&lt;/button&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;img :src=&quot;compressImg&quot; /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &#x27;compress&#x27;,</span><br><span class="line">  data: function() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      compressImg: null,</span><br><span class="line">      fileName: null,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  components: &#123;&#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    compress() &#123;</span><br><span class="line">      // 获取文件对象</span><br><span class="line">      const fileObj = document.querySelector(&#x27;#input-img&#x27;).files[0];</span><br><span class="line">      // 获取文件名称，后续下载重命名</span><br><span class="line">      this.fileName = `$&#123;new Date().getTime()&#125;-$&#123;fileObj.name&#125;`;</span><br><span class="line">      // 获取文件后缀名</span><br><span class="line">      const fileNames = fileObj.name.split(&#x27;.&#x27;);</span><br><span class="line">      const type = fileNames[fileNames.length-1];</span><br><span class="line">      // 压缩图片</span><br><span class="line">      this.handleCompressImage(fileObj, type);</span><br><span class="line">    &#125;,</span><br><span class="line">    handleCompressImage(img, type) &#123;</span><br><span class="line">      const vm = this;</span><br><span class="line">      let reader = new FileReader();</span><br><span class="line">      // 读取文件</span><br><span class="line">      reader.readAsDataURL(img);</span><br><span class="line">      reader.onload = function(e) &#123;</span><br><span class="line">        let image = new Image(); //新建一个img标签</span><br><span class="line">        image.src = e.target.result;</span><br><span class="line">        image.onload = function() &#123;</span><br><span class="line">          let canvas = document.createElement(&#x27;canvas&#x27;);</span><br><span class="line">          let context = canvas.getContext(&#x27;2d&#x27;);</span><br><span class="line">          // 定义 canvas 大小，也就是压缩后下载的图片大小</span><br><span class="line">          let imageWidth = image.width; //压缩后图片的大小</span><br><span class="line">          let imageHeight = image.height;</span><br><span class="line">          canvas.width = imageWidth;</span><br><span class="line">          canvas.height = imageHeight;</span><br><span class="line">          </span><br><span class="line">          // 图片不压缩，全部加载展示</span><br><span class="line">          context.drawImage(image, 0, 0);</span><br><span class="line">          // 图片按压缩尺寸载入</span><br><span class="line">          // let imageWidth = 500; //压缩后图片的大小</span><br><span class="line">          // let imageHeight = 200;</span><br><span class="line">          // context.drawImage(image, 0, 0, 500, 200);</span><br><span class="line">          // 图片去截取指定位置载入</span><br><span class="line">          // context.drawImage(image,100, 100, 100, 100, 0, 0, imageWidth, imageHeight);</span><br><span class="line">          vm.compressImg = canvas.toDataURL(`image/$&#123;type&#125;`);</span><br><span class="line">        &#125;;</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;,</span><br><span class="line">    // base64 图片转 blob 后下载</span><br><span class="line">    downloadImg() &#123;</span><br><span class="line">      let parts = this.compressImg.split(&#x27;;base64,&#x27;);</span><br><span class="line">      let contentType = parts[0].split(&#x27;:&#x27;)[1];</span><br><span class="line">      let raw = window.atob(parts[1]);</span><br><span class="line">      let rawLength = raw.length;</span><br><span class="line">      let uInt8Array = new Uint8Array(rawLength);</span><br><span class="line">      for(let i = 0; i &lt; rawLength; ++i) &#123;</span><br><span class="line">        uInt8Array[i] = raw.charCodeAt(i);</span><br><span class="line">      &#125;</span><br><span class="line">      const blob = new Blob([uInt8Array], &#123;type: contentType&#125;);</span><br><span class="line">      this.compressImg = URL.createObjectURL(blob);</span><br><span class="line">      if (window.navigator.msSaveOrOpenBlob) &#123;</span><br><span class="line">        // 兼容 ie 的下载方式</span><br><span class="line">        window.navigator.msSaveOrOpenBlob(blob, this.fileName);</span><br><span class="line">      &#125;else&#123;</span><br><span class="line">        const a = document.createElement(&#x27;a&#x27;);</span><br><span class="line">        a.href = this.compressImg;</span><br><span class="line">        a.setAttribute(&#x27;download&#x27;, this.fileName);</span><br><span class="line">        a.click();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>三、使用第三方库裁剪</strong></p>
+<p>Cropper.js</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2099/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/" title="CSS_0基础" target="_blank" rel="external">https://fuyunjinglong.github.io/2099/06/26/C_CSS_0基础/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://fuyunjinglong.github.io/" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://fuyunjinglong.github.io/" target="_blank"><span class="text-dark">Elven</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2099/09/12/C_H5_0%E5%9F%BA%E7%A1%80/" title="H5_0基础"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/" title="0基础_JS"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
