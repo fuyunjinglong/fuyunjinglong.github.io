@@ -350,6 +350,19 @@ $ git stash pop
 
 # Github仓库使用
 
+## git拉取远程代码
+
+```
+git init
+git add .
+git commit -m 'h'
+git remote add origin git@github.com:fuyunjinglong/fuyunjinglong.github.io.git
+git pull origin main
+git checkout -b vue2-zhufeng
+git checkout  vue2-zhufeng
+git push origin vue2-zhufeng
+```
+
 ## 建立github远程仓库和本地仓库连接
 
 **创建远程仓库及SSH秘钥**
