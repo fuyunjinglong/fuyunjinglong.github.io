@@ -14,9 +14,9 @@ toc: true # 是否启用内容索引
 
 **手写vue2源码之rollup打包**
 
-00:13
+00:00
 
-[video](https://www.bilibili.com/video/BV1aq4y1o7Ny/?spm_id_from=333.788.recommend_more_video.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+[video](https://www.bilibili.com/video/BV1DQ4y1z7TK/?spm_id_from=333.788.recommend_more_video.-1&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 
 **环境搭建-vue3+vite+ts(大崔哥)**
 
