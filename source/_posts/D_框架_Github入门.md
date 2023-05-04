@@ -18,6 +18,37 @@ toc: true # 是否启用内容索引
 - 暂存区：保存了下次将提交的文件列表信息，一般在 Git 仓库目录中，是一个叫index的文件，通常多数说法还是叫暂存区域；
 - 版本库：也叫本地版本库，之所以说git 快，是因为它是分布式版本控制系统，大部分提交都是对本地仓库而言的，不依赖网络，最后一次会推送的到远程仓库。
 
+# 主流开发流程
+
+假设有：
+
+- alias-主分支
+- alias-zhangsan-某个组员分支
+
+**建立新组员分支**
+
+> 建立新分支alias-zhangsan，git checkout -b alias-zhangsan
+
+**分支合并拉取**
+
+> alias-zhangsan先上传代码：
+>
+> git add .
+>
+> git commit -m 'xx'
+>
+> git push
+>
+> git checkout alias
+>
+> alias合并分支:
+>
+> git pull(此处可能有冲突，可以先提交当前，再拉取)
+>
+> git merge alias-zhangsan
+>
+> git push
+
 # 给开源项目贡献代码
 
 **pr问题**

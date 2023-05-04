@@ -6,47 +6,236 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# Vue源码分两步走
+# Vue源码调试
 
-**Vue 的主体内容**
+**1.下载源码**
 
-1、依赖收集 
+[vue-v2.6.14版本](https://github.com/vuejs/vue/tree/v2.6.14)下载
 
-2、依赖更新 
+**2.安装依赖**
 
-3、Virtual DOM ，dom 节点 生成虚拟Vnode 节点 
+```
+npm i
+```
 
-4、Compile，  模板编译 
+安装依赖报错1
 
-5、Diff、Patch， 节点比较更新 
+```
+报错phantomjs-prebuilt@2.1.14 install: `node install.js`
+解决方案：npm install phantomjs-prebuilt@2.1.14 --ignore-scripts
+```
 
-6、NextTick ，延迟执行回调 
+安装依赖报错2
 
-7、Render， 渲染机制 
+```
+报错(plugin Rollup Core) Error: Could not load
+解决方案：
+手动下载依赖包https://github.com/ideayuye/rollup-plugin-alias，并覆盖掉本地文件夹 \node_modules\rollup-plugin-alias。进入rollup-plugin-alias文件夹，依次执行npm i
+```
 
-8、LifeCircle ，生命周期 
+**3.开启打包源文件**
 
-9、Model ，双向绑定 
+```
+// package.json
+"dev": "rollup -w -c scripts/config.js --environment TARGET:web-full-dev --sourcemap",
+```
 
-10、Event ，事件机制
+**4.开始调试源码**
 
-**Vue 组件选项**
+> 在源码目录中添加断点调试即可，比如\vue-2.6.14\src\core\instance\init.js
 
-1、computed 
+```
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      #demo {
+        font-family: "Helvetica", Arial, sans-serif;
+        text-align: center;
+      }
+    </style>
+    <script src="./dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="demo">
+      <button @click="num++">Object类型自增加：{{num}}</button>
+      <button @click="add">Array类型自增加：{{arr}}</button>
+    </div>
+    <script>
+      new Vue({
+        el: "#demo",
+        data: {
+          num: 0,
+          arr: [1, 2, 3],
+        },
+        methods: {
+          add() {
+            this.arr.push(this.arr[this.arr.length - 1] + 1);
+            // this.$set(this.arr, 0, this.arr[0] + 1);
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
+```
 
-2、filter 
+# Vue源码目录
 
-3、mixin 
+```
+├── benchmarks                  性能、基准测试
+├── dist                        构建打包的输出目录
+├── examples                    案例目录
+├── flow                        因为Vue使用了Flow来进行静态类型检查，这里定义了声明了一些静态类型
+├── packages                    一些额外的包，比如：负责服务端渲染的包 vue-server-renderer、配合 vue-loader 使用的的 vue-template-compiler，还有 weex 相关的
+    ├── vue-server-renderer
+    ├── vue-template-compiler
+    ├── weex-template-compiler
+    └── weex-vue-framework
+├── scripts                     所有的配置文件的存放位置，比如 rollup 的配置文件
+├── src                         vue 源码目录
+│   ├── compiler                编译器
+      |—codegen     根据ast生成render函数
+         |—directives    通用生成render函数之前需要处理的指令
+         |—parser     模板解析
+│   ├── core                    运行时的核心包
+│   │   ├── components          全局组件，比如 keep-alive
+│   │   ├── config.js           一些默认配置项
+│   │   ├── global-api          全局方法，也就是添加在Vue对象上的方法，比如Vue.use,Vue.extend,,Vue.mixin等
+│   │   ├── instance            实例相关内容，包括实例方法，生命周期，事件等
+│   │   ├── observer            响应式原理
+│   │   ├── util                工具方法
+│   │   └── vdom                虚拟 DOM 相关，比如熟悉的 patch 算法就在这儿
+│   ├── platforms               平台相关的编译器代码
+│   │   ├── web
+    |— web web端独有文件
+                |— compiler 编译阶段需要处理的指令和模块
+                |— runtime 运行阶段需要处理的组件、指令和模块
+                |— server 服务端渲染相关
+                |— util 工具库
+│   │   └── weex
+│   ├── server                  服务端渲染相关
+├── test                        测试目录
+├── types                       TS 类型声明
+```
 
-4、directive 
+# Vue从实例化到渲染的完整流程
 
-5、slot 
+参考：[vue源码分析](https://segmentfault.com/a/1190000023649060)
 
-6、props 
+> new Vue->init->mount->compile->render->vnode->patch->dom
 
-7、watch
+**1. 定义Vue**构造函数
 
-# 手写Vue2-珠峰
+```
+initMixin(Vue);  // 定义 _init
+stateMixin(Vue);  // 定义 $set $get $delete $watch 等
+eventsMixin(Vue);   // 定义事件  $on  $once $off $emit
+lifecycleMixin(Vue); // 定义 _update  $forceUpdate  $destroy
+renderMixin(Vue); // 定义 _render 返回虚拟dom  
+```
+
+**2. initMixin**
+
+实例化Vue时，执行 _init, _init 定义在 initMixin 中
+
+```
+  Vue.prototype._init = function (options) {
+    // 合并 options
+    if (options && options._isComponent) {
+      initInternalComponent(vm, options); // 组件合并
+    } else {
+      // 非组件合并
+      vm.$options = mergeOptions(
+        resolveConstructorOptions(vm.constructor), 
+        options || {},
+        vm
+      );
+    }
+    initLifecycle(vm); // 定义 vm.$parent vm.$root vm.$children  vm.$refs 等
+    initEvents(vm);   // 定义 vm._events  vm._hasHookEvent 等
+    initRender(vm); // 定义 $createElement $c
+    callHook(vm, 'beforeCreate'); // 挂载 beforeCreate 钩子函数
+    initInjections(vm); // resolve injections before data/props
+    initState(vm);  // 初始化 props methods data computed watch 等方法
+    initProvide(vm); // resolve provide after data/props
+    callHook(vm, 'created'); // 挂载 created 钩子函数
+    if (vm.$options.el) {
+      vm.$mount(vm.$options.el); // 实例挂载渲染dom
+    }
+  };
+```
+
+**3. $mount**
+
+vue最终都是通过render函数将dom编译为虚拟dom
+
+```
+// 构建render函数
+if (!options.render) {
+  // 如果没有render属性，那么将template模版编译转为render
+}
+// 最后调用 mount
+return mount.call(this, el, hydrating)
+// mount 调用 mountComponent
+return mountComponent(this, el, hydrating)
+```
+
+**4. mountComponent**
+
+通过 new Watcher 调用执行 updateComponent, vm._render获取虚拟dom, vm._update将虚拟dom转为真实的dom并挂载到页面。
+
+```
+// hydrating 代表服务端渲染 hydrating => false
+updateComponent = function () {
+  vm._update(vm._render(), hydrating); // 关键点
+};
+```
+
+**5. _render**
+
+_render执行render函数 返回vnode。
+
+```
+Vue.prototype._render = function () {
+    // 此处的 vm._renderProxy 等价于 vm
+    vnode = render.call(vm._renderProxy, vm.$createElement);
+}
+```
+
+$createElement 主要是参数重载，整合为统一格式后调用 _createElement函数。
+
+**6. _update**
+
+_update 主要实现 vnode 转化为实际的dom， 注入到页面的同时并销毁页面模版。
+
+# Vue源码深度解析
+
+**参考**
+
+> - [李永宁Vue源码解读-video](https://www.bilibili.com/video/BV1Jb4y1D7eA/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+> - [vue核心四大模块](https://winteroo.github.io/ylblog/docs/vue/01introduce.html#%E5%89%8D%E8%A8%80)
+> - [Vue源码系列-Vue中文社区](https://vue-js.com/learn-vue/)
+> - [李永宁Vue源码解读](https://juejin.cn/column/6960553066101735461)
+> - [汪道南源码解析](https://wangtunan.github.io/blog/vueAnalysis/introduction/)
+> - [推荐 7 个 Vue2、Vue3 源码解密分析的开源项目](https://github.com/FrontEndGitHub/FrontEndGitHub/issues/35)
+
+**Vue核心四大模块**
+
+- 生命周期过程
+- 变化监测原理
+- 模板编译原理
+- 虚拟DOM原理
+
+## 生命周期过程-待续
+
+## 变化监测原理-待续
+
+## 模板编译原理-待续
+
+## 虚拟DOM原理-待续
+
+# 手写Vue2-珠峰-待续
 
 [video](https://www.bilibili.com/video/BV1aq4y1o7Ny/?spm_id_from=333.999.top_right_bar_window_history.content.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 
@@ -164,7 +353,6 @@ Vue.prototype._init=function(options){
 
 //\src\state.js
 import { observe } from "./observe/index.js";
-
 export  function initState(vm){
     const options =vm.$options
 
@@ -227,4 +415,3 @@ export function observe(data){
     return new Observer(data)
 }
 ```
-
