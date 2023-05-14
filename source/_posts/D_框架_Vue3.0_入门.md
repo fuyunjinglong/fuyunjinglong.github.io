@@ -12,43 +12,71 @@ Vue 是一套用于构建用户界面的渐进式框架。Vue.js 3.0 "One Piece"
 
 ## 认识 Vue3
 
-**1) 了解相关信息**
+**新特性**
 
-- Vue.js 3.0 "One Piece" 正式版在今年 9 月份发布
-- 2 年多开发, 100+位贡献者, 2600+次提交, 600+次 PR
-- <font color='red'>**Vue3 支持 vue2 的大多数特性**</font>
-- <font color='red'>**更好的支持 Typescript**</font>
+- More maintainable **可维护性更佳**
 
-**2) 性能提升**
+  TypeScript + modularized internals 内部代码使用 TS 及模块化结构
 
-- 打包大小减少 41%
-- 初次渲染快 55%, 更新渲染快 133%
-- 内存减少 54%
-- <font color='red'>**使用 Proxy 代替 defineProperty 实现数据响应式**</font>
-- <font color='red'>**重写虚拟 DOM 的实现和 Tree-Shaking**</font>
+- Faster **更快**
 
-**3) 新增特性**
+  Proxy-based Reactivity System 基于 Proxy 的响应式系统
 
-- <font color='red'>**Composition (组合) API**</font>
-- setup
+  Compiler-informed Virtual DOM & SSR 编译时优化的虚拟DOM及服务端渲染
 
-  - ref 和 reactive
-  - computed 和 watch
-  - 新的生命周期函数
-  - provide 与 inject
-  - ...
+- Smaller **更小**
 
-- 新组件
+  Tree-shaking 使用摇树技术减少打包体积
 
-  - Fragment - 文档碎片
-  - Teleport - 瞬移组件的位置
-  - Suspense - 异步加载组件的 loading 界面
+  Compile-time flags 使用编译时标记优化生成代码
 
-- 其它 API 更新
+- Scales better **可伸缩性更强**
 
-  - 全局 API 的修改
-  - 将原来的全局 API 转移到应用对象
-  - 模板语法变化
+  Composition API 兼容原 Option API，使用 Composition API 处理复杂场景
+
+- Better DX **更好的开发时体验**
+
+  New Single-file Component improvements 新的单文件组件开发体验（vite热编译，类型检查等）
+
+**Vue内部热插拔三大模块**
+
+@vue/reactivity响应式
+
+@vue/compiler-sfc：@vue/compiler-dom和@vue/compiler-core
+
+@vue/runtime-dom和@vue/runtime-core
+
+**Vue历代版本代号**
+
+| 版本号                                                       | 发布日期   |
+| ------------------------------------------------------------ | ---------- |
+| [Vue0.9 Animatrix 黑客帝国](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2Fv0.9.0) | 2014-02-25 |
+| [Vue0.10 Blade Runner 银翼杀手](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2Fv0.10.0) | 2014-03-24 |
+| [Vue0.11 Cowboy Bebop 星际牛仔](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2F0.11.0) | 2014-11-07 |
+| [Vue0.12 Dragon Ball 龙珠](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2F0.12.0) | 2015-06-13 |
+| [Vue1.0 Evangelion 新福音战士](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2F1.0.0) | 2015-10-27 |
+| [Vue2.0 Ghost in the Shell 攻壳机动队](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2Fv2.0.0) | 2016-10-01 |
+| [Vue2.1 Hunter X Hunter 全职猎人](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2Fv2.1.0) | 2016-11-23 |
+| [Vue2.2 Initial D 头文字D](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2Fv2.2.0) | 2017-02-26 |
+| [Vue2.3 JoJo's Bizarre Adventure JOJO的奇妙冒险](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2Fv2.3.0) | 2017-04-27 |
+| [Vue2.4 Kill la Kill 斩服少女](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2Fv2.4.0) | 2017-07-13 |
+| [Vue2.5 Level E 灵异E接触](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2Fv2.5.0) | 2017-10-03 |
+| [Vue2.6 Macross 超时空要塞](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2Fv2.6.0) | 2019-02-04 |
+| [Vue2.7 Naruto](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2Fv2.7.0) | 2022-07-01 |
+| [Vue3.0 One Piece 海贼王](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue-next%2Freleases%2Ftag%2Fv3.0.0) | 2020-09-18 |
+| [Vue3.1 Pluto](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue-next%2Freleases%2Ftag%2Fv3.1.0) | 2021-06-08 |
+| [Vue3.2 Quintessential Quintuplets 五等分的花嫁](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue-next%2Freleases%2Ftag%2Fv3.2.0) | 2021-08-10 |
+
+**Composition API 优势**
+
+- 天然完整支持 TypeScript 类型系统
+- 更好的代码组织和逻辑复用
+- 推荐用来代替旧的 mixins 混用语法
+
+```
+mixin有很多问题，例如命名问题、组件改动问题、数据属性组件与mixin定义问题即所谓隐式依赖
+使用mixin最头痛的莫过于命名问题，如果一段逻辑不能在多个组件之中进行复用，那么也就没有提取的必要，但恰恰是多个组件的复用就会有命名问题，我们知道混入规则中，如果值为对象的选项，命名冲突时组件内方法将会覆盖混入方法，这使得我们在多个组件复用时，编写代码更为困难，同时如果一旦改动mixin中的代码，那么引用并混入的所有组件都会受到影响，可谓牵一发而动全身。
+```
 
 ## 创建 vue3 项目
 
@@ -1285,6 +1313,67 @@ Vue3 提供`Teleport`组件可将部分DOM移动到 Vue app之外的位置。比
    </div>
 </teleport>
 ```
+
+## 全局组件和全局指令
+
+全局组件
+
+```
+1.引入封装好的全局组件地址
+import 组件名 from './地址' //一般放置在./src/components下
+
+2.导出
+exports default{
+    install (app) {
+    // 此处形参为main.js文件中use()方法自动传进来的Vue实例
+        app.component('自定义组件名,最好与组件内的name一致', 组件名)
+    }
+}
+
+3.main.js中挂载到Vue实例中
+
+import { createApp } from 'vue'
+import App from './App.vue' //vue3中引入Vue实例方式
+import component from './components'// 引入公共组件
+// 链式添加一项 .use(component) 来引入配置好的公共组件
+createApp(App).use(component).mount('#app')
+4.使用
+<自定义组件名 />
+
+```
+
+全局指令
+
+```
+1.创建文件并导出配置
+export default {
+    install(app){
+        app.directive('自定义指令名',{ //在创建自定义名称时不要带v-,使用时再携带
+            mounted(el,binding,vnode){
+                // el 为携带自定义指令的dom节点
+                // binding 为指令后携带的参数通过.value取出
+                功能
+            }
+        })
+    }
+}
+2.main.js文件中注册
+import direction from './directives'
+createApp(App).use(directive).mount('#app')
+3.全局使用
+<div v-自定义指令名='...'></div> 
+
+```
+
+**注意：自定义指令API和组件保持一致了**
+
+- bind->**beforeMount**
+- insert->**mounted**
+- **beforeUpdate**:新增的，元素更新前
+- update:移除了，与updated功能类似
+- componentUpdated->**updated**
+- **beforeUnmount**:新增的，元素移除之前
+- unbind->**unmounted**
 
 ## Composition API(其它部分)
 

@@ -8,6 +8,13 @@ toc: true # 是否启用内容索引
 
 # 入门
 
+几个方面性能提升：
+
+> 1. 编译阶段。对 diff 算法优化、静态提升等等
+> 2. 响应式系统。`Proxy()`替代`Object.defineProperty()`监听对象。监听一个对象，不需要再深度遍历，`Proxy()`就可以劫持整个对象
+> 3. 体积包减少。Compostion API 的写法，可以更好的进行 tree shaking，减少上下文没有引入的代码，减少打包后的文件体积
+> 4. 新增`片段`特性。Vue 文件的`<template>`标签内，不再需要强制声明一个的`<div>`标签，节省额外的节点开销
+
 ## 体系架构比较
 
 Vue.js 从 1.x 到 2.0 版本，最大的升级就是引入了虚拟 DOM 。它为后续做服务端渲染以及跨端框架 Weex 提供了基础。
@@ -309,18 +316,22 @@ export default defineComponent({
 
 Vue都是采用数据劫持代理+发布订阅模式方式实现，vue2到vue3的差别是数据劫持的方式由Object.defineProperty更改为Proxy代理，其他代码不变。Proxy/Reflect是在ES2015规范中加入的，Proxy可以更好的拦截对象行为，Reflect可以更优雅的操纵对象。
 
-**Proxy 的优势**如下:
+> **并不是说`Proxy`的性能就比`Object.defineProperty`高多少**
+>
+> 在`Proxy`里的处理方式比`Vue2`时期的好很多：`Vue2`的响应式是一上来就一顿`遍历`+`递归`把你定义的所有数据全都变成响应式的，这就会导致如果页面上有很多很复杂的数据结构时，用`Vue2`写的页面就会白屏一小段时间。毕竟`遍历`+`递归`还是相对很慢的一个操作嘛！
+>
+> 对于vue3,当我们获取对象上的某个键对应的值时，会先判断这个值到底有没有对应的发布者对象，没有的话再创建发布者对象。而且当获取到的值是引用类型时再把这个值变成`响应式对象`，等你用到了响应式对象里的值时再去新建发布者对象。
+>
+> 总结成一句话就是：`Vue3`是用到哪部分的数据的时候，再把数据变成响应式的。而`Vue2`则是不管三七二十一，刚开局就全都给你变成响应式数据。
 
-- Proxy 可以直接监听对象而非属性
-- Proxy 可以直接监听数组的变化
+对比：
 
-- Proxy 有多达 13 种拦截方法,不限于 apply、ownKeys、deleteProperty、has 等等是 Object.defineProperty 不具备的
-- Proxy 返回的是一个新对象,我们可以只操作新的对象达到目的,而 Object.defineProperty 只能遍历对象属性直接修改
-- Proxy 作为新标准将受到浏览器厂商重点持续的性能优化，也就是传说中的新标准的性能红利
-
-**Object.defineProperty 的优势**如下:
-
-- 兼容性好,支持 IE9
+> - Object.defineProperty 是 Es5 的方法，Proxy 是 Es6 的方法
+> - defineProperty 不能监听到数组下标变化和对象新增属性，Proxy 可以
+> - defineProperty 是劫持对象属性，Proxy 是代理整个对象
+> - defineProperty 局限性大，只能针对单属性监听，所以在一开始就要全部递归监听。Proxy 对象嵌套属性运行时递归，用到才代理，也不需要维护特别多的依赖关系，性能提升很大，且首次渲染更快
+> - defineProperty 会污染原对象，修改时是修改原对象，Proxy 是对原对象进行代理并会返回一个新的代理对象，修改的是代理对象
+> - defineProperty 不兼容 IE8，Proxy 不兼容 IE11
 
 **一、Object.defineProperty**
 
@@ -329,7 +340,14 @@ Vue都是采用数据劫持代理+发布订阅模式方式实现，vue2到vue3�
 - 对象: 通过 defineProperty 对对象的已有属性值的读取和修改进行劫持(监视/拦截)
 - 数组: 通过重写数组更新数组一系列更新元素的方法来实现元素修改的劫持
 
-缺陷：无法监听对象或数组新增、删除的元素。
+缺陷：
+
+> - 初始化时需要遍历对象所有 key，如果对象层次较深，性能不好
+> - 通知更新过程需要维护大量 dep 实例和 watcher 实例，额外占用内存较多
+> - Object.defineProperty 无法监听到数组元素的变化，只能通过劫持重写数方法
+> - 动态新增，删除对象属性无法拦截，只能用特定 set/delete API 代替
+> - 不支持 Map、Set 等数据结构
+
 解决：针对常用数组原型方法`push`、`pop`、`shift`、`unshift`、`splice`、`sort`、`reverse`进行了hack处理；提供`Vue.set`监听对象/数组新增属性。对象的新增/删除响应，还可以`new`个新对象，新增则合并新属性和旧对象；删除则将删除属性后的对象深拷贝给新对象。
 
 ```
@@ -559,6 +577,25 @@ diff算法一般流程：
 >
 > 还运用了`动态规划`的思想求解最长递归子序列。
 
+小结
+
+> 编译阶段的优化：
+>
+> - 事件缓存：将事件缓存(如: [@click](https://www.vue-js.com/user/click))，可以理解为变成静态的了
+> - 静态提升：第一次创建静态节点时保存，后续直接复用
+> - 添加静态标记：给节点添加静态标记，以优化 Diff 过程
+>
+> 由于编译阶段的优化，除了能更快的生成虚拟 DOM 以外，还使得 Diff 时可以跳过"永远不会变化的节点"，Diff 优化如下
+>
+> - Vue2 是全量 Diff，Vue3 是静态标记 + 非全量 Diff
+> - 使用最长递增子序列优化了对比流程
+>
+> 根据尤大公布的数据就是 Vue3 `update` 性能提升了 `1.3~2 倍`
+
+**参考**
+
+- [深入浅出虚拟 DOM 和 Diff 算法，及 Vue2 与 Vue3 中的区别]()
+
 ## Option API和Composition API
 
 **vue2 Option API**
@@ -646,6 +683,49 @@ function changeCarPrice() {
   car.price = "80w";
 }
 </script>
+```
+
+## 样式改动
+
+**样式穿透**
+
+```
+// vue2
+<style scoped>
+.a /deep/ .b {
+  /* ... */
+}
+</style>
+
+// vue3
+<style scoped>
+.a :deep(.b) {
+  /* ... */
+}
+```
+
+**全局样式和局部样式**
+
+```
+局部样式
+<style scoped>
+/* local styles */
+</style>
+```
+
+```
+全局样式：不带scope
+<style>
+/* global styles */
+</style>
+
+全局样式：使用:global伪类
+// 创建一个.red的全局类样式
+<style scoped>
+:global(.red) {
+  color: red;
+}
+</style>
 ```
 
 # 从Vue2.0升级到3.0
@@ -987,4 +1067,5 @@ export default {
 
 **参考**
 
-[Vue2升级到Vue3到底是不是一个正确的选择？(尤雨溪亲自回复解读)](https://juejin.cn/post/7117525259212816414#heading-1)
+- [Vue2升级到Vue3到底是不是一个正确的选择？(尤雨溪亲自回复解读)](https://juejin.cn/post/7117525259212816414#heading-1)
+- [对比Vue2总结Vue3新特性(2022年最全，2.5w字！)](

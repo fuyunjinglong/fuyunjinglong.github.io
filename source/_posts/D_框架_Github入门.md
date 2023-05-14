@@ -20,6 +20,95 @@ toc: true # 是否启用内容索引
 
 # 主流开发流程
 
+## 代码分支
+
+Gitflow工作流(Gitflow Workflow)是2010年由Vincent Driessen在他的一篇[博客](https://nvie.com/posts/a-successful-git-branching-model)里提出来的。它定义了一整套完善的基于Git分支模型的框架，结合了版本发布的研发流程，适合管理具有固定发布周期的大型项目。
+
+- **master** 生产主分支,发布到生产环境使用这个分支,由hotfix或者release分支合并过来，不直接提交代码。
+- **develop** 主开发分支 , 基于master分支克隆，由feature分支合并过来，一般不直接提交代码。
+- **feature** 功能开发分支 , 基于develop分支克隆 , 主要用于新需求新功能的开发，同时存在多个。
+- **release** 预发布分支 , 基于feature分支合并到develop之后 , 从develop分支克隆，测试完成后合并到master并打上版本号，同时也合并到develop。
+- **hotfix** 补丁分支 , 基于master分支克隆 , 主要用于对线上的版本进行BUG修复,完成后合并到master分支和develop分支。
+
+> --no-ff 在这的作用是**禁止快进式合并**
+
+**develop分支管理**
+
+```
+// 从master分支上创建develop分支，并推送到远端
+git checkout –b develop
+git push -u origin develop
+```
+
+**feaeure分支管理**
+
+```
+# feaeure分支基于develop创建
+git checkout -b some-feature develop
+# 或者, 推送至远程服务器:
+git push -u origin some-feature    
+
+# 一波骚操作   
+git status
+git add .
+git commit  -m 'xx'  
+git push
+
+# 切换develop分支
+git checkout develop 
+git pull origin develop
+
+# 合并到develop分支并push
+git merge --no-ff some-feature
+git push origin develop
+
+# 删除feature分支(也可以不删除)
+git branch -d some-feature
+git push origin --delete some-feature  
+```
+
+**Release分支管理**
+
+```
+# Release分支基于develop创建
+git checkout -b some-release develop
+# ...一波骚操作
+# 代码发布后合并到master分支并提交
+git checkout master
+git merge --no-ff some-release
+git tag -a 0.1
+
+# 合并到develop分支并提交
+git checkout 
+git merge --no-ff some-release
+
+# 删除release分支
+git branch -d some-release
+git push origin --delete some-release  
+```
+
+**Hotfix分支管理**
+
+```
+# Hotfix分支基于master创建
+git checkout -b hotfix-0.1.1 master  
+# ...一波骚操作
+# 合并到master分支并提交
+git checkout master
+git merge --no-ff hotfix-0.1.1
+git tag -a 0.1.1
+
+# 合并到develop分支并提交
+git checkout develop
+git merge --no-ff hotfix-0.1.1
+
+# 删除hotfix分支
+git branch -d hotfix-0.1
+git push origin --delete  hotfix-0.1.1
+```
+
+## 代码合并-基操
+
 假设有：
 
 - alias-主分支
@@ -48,6 +137,108 @@ toc: true # 是否启用内容索引
 > git merge alias-zhangsan
 >
 > git push
+
+## git merge和git rebase
+
+当前分支状态：
+
+> a—>b—>c—>d  master分支
+>
+> |—>e—>f dev分支
+
+**定义**
+
+- git merge：会把当前分支和待合入分支commit合并在一起，形成一个新的commit
+- git rebase：会把待合入分支插入到当前分支的最前面，叫做变基。
+
+1.git merge
+
+```
+$ git merge master  // 合并master分支代码
+$ git log --graph --oneline // 查看log点线图
+  * 表示一个commit， 注意不要管*在哪一条主线上 
+  | 表示分支前进 
+  / 表示分叉 
+  \ 表示合入
+```
+
+执行后变为：
+
+当前分支状态：
+
+> a—>b——————————g  dev分支
+>
+> |—>e—>f—>c—>d—| 
+
+2.git rebase
+
+执行后变为：
+
+当前分支状态：
+
+> a—>b—>c—>d—>e—>f  dev分支
+
+**git merge和git rebase的优缺点**
+
+git merge
+
+- 优点：不会破坏原分支的提交记录。
+- 缺点：会产生额外的提交记录，并进行两条分支线的合并。
+
+git rebase
+
+- 优点：无需新增提交记录到目标分支，reabse后可以直接将对象分支的提交历史加到目标分支上，形成线性提交历史记录，更加直观。
+- 缺点：不能在一个共享分支上进行reabse操作，会带来分支安全问题。
+
+**git merge和git rebase的应用场景**
+
+- 合代码到公共分支的时候使用**git merge**，书写正确规范的**merge commits**留下记录。
+- 合代码到个人分值的时候使用**git rebase**，可以不污染分支的历史提交记录，形成简介的线性记录。开源项目代码合并常使用。
+
+**参考**
+
+- [一文搞懂 git rebase](https://juejin.cn/post/7038093620628422669#heading-5)
+- [【Git】 什么！？都快2023年了还搞不清楚 git rebase 与 git merge](https://juejin.cn/post/7135261815935598600#heading-3)
+
+## Git合并那些事儿
+
+| [认识几种Merge方法](https://morningspace.github.io/tech/git-merge-stories-1) | 介绍什么是快进式合并，三方合并，压缩合并       |
+| ------------------------------------------------------------ | ---------------------------------------------- |
+| [Merge策略（上）](https://morningspace.github.io/tech/git-merge-stories-2) | 认识Criss-Cross现象，以及Recursive，Ours等策略 |
+| [Merge策略（下）](https://morningspace.github.io/tech/git-merge-stories-3) | 认识Octopus和Subtree策略                       |
+| [当冲突发生的时候](https://morningspace.github.io/tech/git-merge-stories-4) | 讲述冲突发生时，那些你也许不曾知道的事儿       |
+| [撤销合并](https://morningspace.github.io/tech/git-merge-stories-5) | 讲述冲各种撤销合并的方法                       |
+| [神奇的Rebase](https://morningspace.github.io/tech/git-merge-stories-6) | 认识Rebase及其用法，以及什么时候用到它         |
+| [交互式Rebase](https://morningspace.github.io/tech/git-merge-stories-7) | 介绍更多有关Rebase的玩法                       |
+| [Rebase的烦恼](https://morningspace.github.io/tech/git-merge-stories-8) | 通过一个例子来演示Rebase使用不当带来的麻烦     |
+
+## Git工作流面面观
+
+| [分支模型](https://morningspace.github.io/tech/git-workflow-1) | Git强大的分支模型，所有Git工作流的基础                  |
+| ------------------------------------------------------------ | ------------------------------------------------------- |
+| [集中式工作流](https://morningspace.github.io/tech/git-workflow-2) | 最为基本的一种Git工作流，适合习惯传统版本控制方式的团队 |
+| [特性分支工作流](https://morningspace.github.io/tech/git-workflow-3) | 非常重要的一种Git工作流，充分发挥分支模型的优势         |
+| [Gitflow工作流](https://morningspace.github.io/tech/git-workflow-4) | 广泛应用的一种Git工作流，适合管理有固定发布周期的大项目 |
+| [Forking工作流](https://morningspace.github.io/tech/git-workflow-5) | 开源项目的标准Git工作流，灵活与约束并存的分布式工作流   |
+
+| 课程                            | 中文资源                                                     | 英文资源                             |
+| :------------------------------ | :----------------------------------------------------------- | :----------------------------------- |
+| 《如何使用Hello Git》           | [视频](http://v.youku.com/v_show/id_XMzk2NjQ5NzcyNA==.html)  | [视频](https://youtu.be/14pBZSXHz-Y) |
+| 《新建本地库》                  | [视频](http://v.youku.com/v_show/id_XMzk3NzM3OTIxMg==.html)  | [视频](https://youtu.be/q2De0LrOZFk) |
+| 《添加新文件》                  | [视频](http://v.youku.com/v_show/id_XMzk3ODM0NjU4MA==.html)  | [视频](https://youtu.be/yP9v4egMQwA) |
+| 《连接远程库》                  | [视频](http://v.youku.com/v_show/id_XMzk3ODQzMTU5Ng==.html)  | [视频](https://youtu.be/KjsexSUOdNA) |
+| 《理解暂存》                    | [视频](http://v.youku.com/v_show/id_XMzk5MTU2NDk3Mg==.html)  | [视频](https://youtu.be/dJSmmtiOoTM) |
+| 《恢复到指定版本》              | [视频](http://v.youku.com/v_show/id_XMzk5OTA3MzE2NA==.html)  | [视频](https://youtu.be/4361HjW1ldA) |
+| 《撤销本地更改》                | [视频](http://v.youku.com/v_show/id_XMzk5OTA4NzY5Mg==.html)  | [视频](https://youtu.be/7SpAQgzp0h8) |
+| 《删除文件》                    | [视频](http://v.youku.com/v_show/id_XMzk5OTA4ODI1Mg==.html)  | [视频](https://youtu.be/MN0FMGIPMVM) |
+| 《理解分支》                    | [视频](http://v.youku.com/v_show/id_XNDAxMTgxMjg4NA==.html)  | [视频](https://youtu.be/1xx7-QDcQsY) |
+| 《解决分支冲突》                | [视频](http://v.youku.com/v_show/id_XNDAyMzk0MTY1Ng==.html)  | [视频](https://youtu.be/wjz9tbGEvRg) |
+| 《利用分支修复bug》             | [视频](http://v.youku.com/v_show/id_XNDA1NTQ0Mzc2OA==.html)  | [视频](https://youtu.be/G4M-ofXOqHg) |
+| 《利用分支开发特性》            | [视频](http://v.youku.com/v_show/id_XNDA2NzQwMzU0MA==.html)  | [视频](https://youtu.be/0W1ylLgdwG4) |
+| 《解决多人开发冲突》            | [视频](http://v.youku.com/v_show/id_XNDA2NzQyNzMyNA==.html)  | [视频](https://youtu.be/mMSTEy5wbK0) |
+| 《理解rebase》                  | [视频](http://v.youku.com/v_show/id_XNDA3NTQ0OTk3Mg==.html)  | [视频](https://youtu.be/XraY8PGivxg) |
+| 《管理标签》                    | [视频](http://v.youku.com/v_show/id_XNDA3NTQ1MzYzNg==.html)  | [视频](https://youtu.be/DI1_FastrNY) |
+| 《Hello Git Cheat Sheet(小抄)》 | [查看](https://morningspace.github.io/tech/lab/hello-git-cheat-sheet/) |                                      |
 
 # 给开源项目贡献代码
 

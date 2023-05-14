@@ -8,93 +8,67 @@ toc: true # 是否启用内容索引
 
 # 面试清单
 
-[一行命令爬取掘金文章榜单](https://github.com/shfshanyue/blog/blob/master/post/juejin-interview.md)
+- [一行命令爬取掘金文章榜单](https://github.com/shfshanyue/blog/blob/master/post/juejin-interview.md)
+- [github更多面试题](https://github.com/search?o=desc&p=1&q=%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95&s=&type=Repositories)
+- [Vue3+ & Vue-CLI3+开发生态圈资讯-地表最强](https://github.com/vue3/vue3-News)
+- [FrontEndGitHub-前端尤其Issues](https://github.com/FrontEndGitHub/FrontEndGitHub)
+- [Front-end-Developer-Questions-前端面试问题](https://h5bp.org/Front-end-Developer-Interview-Questions/translations/chinese/#js-questions)
+- [Daily-Question-大厂每日一题](https://q.shanyue.tech/)
+- [CS-Interview-Knowledge-Map-前端进阶之道](https://github.com/InterviewMap/CS-Interview-Knowledge-Map)
+- [Daily-Interview-Question-木易杨前端进阶](https://muyiy.cn/question/)
+- [alibaba-intervie-阿里巴巴面试资源汇总](https://github.com/stone0090/alibaba-interview)
+- [haizlin-fe-interview-前端知识每日3+1](https://github.com/haizlin/fe-interview)
+- [fe-interview-大前端面试宝典](https://lucifer.ren/fe-interview/#/)
+- [fe-interview-前端硬核面试](https://github.com/biaochenxuying/blog/blob/master/interview/fe-interview.md#js-%E7%BB%8F%E5%85%B8%E9%9D%A2%E8%AF%95%E7%9F%A5%E8%AF%86%E6%96%87%E7%AB%A0)
+- [fe-interview-前端知识每日3+1](http://www.h-camel.com/index.html)
+- [fe-interview-最全的前端面试题](https://github.com/HerbertKarajan/Fe-Interview-questions)
+- [Front-end-Web-Development-Interview-Question-前端面试笔试题](https://github.com/paddingme/Front-end-Web-Development-Interview-Question)
+- [helloqingfeng-前端资源汇总](https://github.com/helloqingfeng/Awsome-Front-End-learning-resource)
+- [node-interview-饿了么大前端](https://github.com/ElemeFE/node-interview/tree/master/sections/zh-cn)
+- [Front-End-Interview-Notebook-前端复习笔记](https://github.com/CavsZhouyou/Front-End-Interview-Notebook)
+- [FE-Interview-前端面试星球](https://github.com/lgwebdream/FE-Interview)
+- [javascript-guidebook-JavaScript知识图谱](https://tsejx.github.io/javascript-guidebook/basic-concept)
+- [前端收集图谱](https://github.com/foru17/front-end-collect)
+- [阿秀的学习笔记](https://github.com/forthespada/InterviewGuide)
+- [前端进阶之旅](https://github.com/poetries)
+- [冰雨博客](https://bingyu123.gitee.io/blog/web/base/html/)
+- [前端那些事](https://jonny-wei.github.io/blog/base/)
+- [进击的大前端](http://www.dennisgo.cn/Articles/Engineering/leader.html)
+- [前端系统进阶](https://interview.poetries.top/fe-blog-docs/blog-docs/javascript/-Ajax%E6%80%BB%E7%BB%93%E7%AF%87.html)
+- [前端九部-入门指南](https://www.yuque.com/fe9/basic/cg6wui)
+- [前端语音社群](https://github.com/febobo/web-interview)
+- [阿离王](https://github.com/347830076/)
+- [前端自我修养](https://fe.mbear.top/)
+- [maqixiang的学习](http://study.maqixiang.com/blog/20201026.html)
+- [TeqNG](https://www.teqng.com/homev1/)
+- [Nealyang-一个优秀的前端都应该阅读这些文章](https://github.com/Nealyang/PersonalBlog/issues/48)
+- [一名【合格】前端工程师的自检清单](http://teefing.top/posts/2019/05/13/%E5%89%8D%E7%AB%AF%E8%87%AA%E6%A3%80%E6%B8%85%E5%8D%95.html#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95)
 
-[github更多面试题](https://github.com/search?o=desc&p=1&q=%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95&s=&type=Repositories)
+# 其他更精彩
 
-[Vue3+ & Vue-CLI3+开发生态圈资讯-地表最强](https://github.com/vue3/vue3-News)
+- [cs自学指南](https://csdiy.wiki/)
+- [面试中的套路和反套路](https://github.com/airuikun/technology-blog)
 
-[FrontEndGitHub-前端尤其Issues](https://github.com/FrontEndGitHub/FrontEndGitHub)
+- [前端负责人资源教程](https://cnodejs.org/topic/56ef3edd532839c33a99d00e)
 
-[Front-end-Developer-Questions-前端面试问题](https://h5bp.org/Front-end-Developer-Interview-Questions/translations/chinese/#js-questions)
+- [JavaScript 资源大全中文版](https://github.com/jobbole/awesome-javascript-cn)
 
-[Daily-Question-大厂每日一题](https://q.shanyue.tech/)
+- [免费的工具书](https://ebookfoundation.github.io/free-programming-books/books/free-programming-books-zh.html#javascript)
 
-[CS-Interview-Knowledge-Map-前端进阶之道](https://github.com/InterviewMap/CS-Interview-Knowledge-Map)
+- [2020 - 2021 年 Web 前端最新导航](https://segmentfault.com/a/1190000033134496)
 
-[Daily-Interview-Question-木易杨前端进阶](https://muyiy.cn/question/)
+- [GitHub 上能挖矿的神仙技巧 - 如何发现优秀开源项目](https://github.com/biaochenxuying/blog/issues/45)
 
-[alibaba-intervie-阿里巴巴面试资源汇总](https://github.com/stone0090/alibaba-interview)
+- [恕我直言，你可能连 GitHub 搜索都不会用 - 如何精准搜索的神仙技巧](https://github.com/FrontEndGitHub/FrontEndGitHub/issues/4)
 
-[haizlin-fe-interview-前端知识每日3+1](https://github.com/haizlin/fe-interview)
+- [TypeScript 入门教程](https://github.com/xcatliu/typescript-tutorial)
 
-[fe-interview-大前端面试宝典](https://lucifer.ren/fe-interview/#/)
+- [深入理解 TypeScript](https://github.com/jkchao/typescript-book-chinese)
 
-[fe-interview-前端硬核面试](https://github.com/biaochenxuying/blog/blob/master/interview/fe-interview.md#js-%E7%BB%8F%E5%85%B8%E9%9D%A2%E8%AF%95%E7%9F%A5%E8%AF%86%E6%96%87%E7%AB%A0)
+# 老司机
 
-[fe-interview-前端知识每日3+1](http://www.h-camel.com/index.html)
-
-[fe-interview-最全的前端面试题](https://github.com/HerbertKarajan/Fe-Interview-questions)
-
-[Front-end-Web-Development-Interview-Question-前端面试笔试题](https://github.com/paddingme/Front-end-Web-Development-Interview-Question)
-
-[helloqingfeng-前端资源汇总](https://github.com/helloqingfeng/Awsome-Front-End-learning-resource)
-
-[node-interview-饿了么大前端](https://github.com/ElemeFE/node-interview/tree/master/sections/zh-cn)
-
-[Front-End-Interview-Notebook-前端复习笔记](https://github.com/CavsZhouyou/Front-End-Interview-Notebook)
-
-[FE-Interview-前端面试星球](https://github.com/lgwebdream/FE-Interview)
-
-[javascript-guidebook-JavaScript知识图谱](https://tsejx.github.io/javascript-guidebook/basic-concept)
-
-[前端收集图谱](https://github.com/foru17/front-end-collect)
-
-[阿秀的学习笔记](https://github.com/forthespada/InterviewGuide)
-
-[前端进阶之旅](https://github.com/poetries)
-
-[冰雨博客](https://bingyu123.gitee.io/blog/web/base/html/)
-
-[前端那些事](https://jonny-wei.github.io/blog/base/)
-
-[进击的大前端](http://www.dennisgo.cn/Articles/Engineering/leader.html)
-
-[前端系统进阶](https://interview.poetries.top/fe-blog-docs/blog-docs/javascript/-Ajax%E6%80%BB%E7%BB%93%E7%AF%87.html)
-
-[前端九部-入门指南](https://www.yuque.com/fe9/basic/cg6wui)
-
-[前端语音社群](https://github.com/febobo/web-interview)
-
-[阿离王](https://github.com/347830076/)
-
-[前端自我修养](https://fe.mbear.top/)
-
-[maqixiang的学习](http://study.maqixiang.com/blog/20201026.html)
-
-[TeqNG](https://www.teqng.com/homev1/)
-
-[Nealyang-一个优秀的前端都应该阅读这些文章](https://github.com/Nealyang/PersonalBlog/issues/48)
-
-**其他更精彩**
-
-[面试中的套路和反套路](https://github.com/airuikun/technology-blog)
-
-[前端负责人资源教程](https://cnodejs.org/topic/56ef3edd532839c33a99d00e)
-
-[JavaScript 资源大全中文版](https://github.com/jobbole/awesome-javascript-cn)
-
-[免费的工具书](https://ebookfoundation.github.io/free-programming-books/books/free-programming-books-zh.html#javascript)
-
-[2020 - 2021 年 Web 前端最新导航](https://segmentfault.com/a/1190000033134496)
-
-[GitHub 上能挖矿的神仙技巧 - 如何发现优秀开源项目](https://github.com/biaochenxuying/blog/issues/45)
-
-[恕我直言，你可能连 GitHub 搜索都不会用 - 如何精准搜索的神仙技巧](https://github.com/FrontEndGitHub/FrontEndGitHub/issues/4)
-
-[TypeScript 入门教程](https://github.com/xcatliu/typescript-tutorial)
-
-[深入理解 TypeScript](https://github.com/jkchao/typescript-book-chinese)
+- [前端老司机 70+ 实用工具网站分享](https://juejin.cn/post/7129412947931037732)
+- [前端仔电脑里的秘密](https://juejin.cn/post/7187272143657730108#heading-15)
 
 # github优秀仓库
 

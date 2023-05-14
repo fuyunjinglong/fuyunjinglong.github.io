@@ -166,9 +166,23 @@ bue.runtime.esm-bundler.js
 
 # Vue源码深度解析
 
+**参考**
+
+> - [Vue.js 3.0 核心源码-黄轶-video](https://www.1024zyz.com/3206.html)
+> - [Vue3源码解析，打造自己的Vue3框架-video](https://www.1024zyz.com/5016.html)
+
+**Vue核心四大模块**
+
+- 生命周期过程
+- 变化监测原理
+- 模板编译原理
+- 虚拟DOM原理
+
 # 尤大手写mini-vue
 
-**一、整体流程**
+[链接](https://www.vue-js.com/topic/611b1ba4120d99003158db6f)
+
+**整体流程**
 
 - 数据响应式模块：初始化为响应式对象
 - 编译模块：编译为渲染函数，编译过程一般在两个时刻执行,即浏览器运行时(runtime)和Vue打包编译时(compile time)
@@ -183,4 +197,488 @@ bue.runtime.esm-bundler.js
 2. Transform转换：譬如 v-bind v-if v-for的转换
 3. Generate生成渲染器： AST -> 渲染函数
 
-#
+## **defineProperty版本**
+
+```
+<div id="app"></div>
+<script>
+// reactivity ---响应式
+let activeEffect
+class Dep {
+  subscribers = new Set()
+  depend() {
+    if (activeEffect) {
+      this.subscribers.add(activeEffect)
+    }
+  }
+  notify() {
+    this.subscribers.forEach(effect => effect())
+  }
+}
+
+function watchEffect(effect) {
+  activeEffect = effect
+  effect()
+  activeEffect = null
+}
+
+function reactive(raw) {
+ // 使用 Object.defineProperty
+  // 1. 遍历对象上存在的 key
+  Object.keys(raw).forEach(key => {
+   // 2. 为每个 key 都创建一个依赖对象
+    const dep = new Dep()
+    // 3. 用 getter 和 setter 重写原对象的属性
+    let realValue = raw[key]
+    Object.defineProperty(raw, key, {
+      get() {
+        // 4. 在 getter 和 setter 里调用依赖对象的对应方法
+        dep.depend()
+        return realValue
+      },
+      set(newValue) {
+        realValue = newValue
+        dep.notify()
+      }
+    })
+  })
+  return raw
+}
+
+// vdom ---虚拟dom
+function h(tag, props, children) {
+    return { tag, props, children };
+  }
+
+function mount(vnode, container, anchor) {
+    const el = document.createElement(vnode.tag);
+    vnode.el = el;
+    // props
+    if (vnode.props) {
+      for (const key in vnode.props) {
+        if (key.startsWith('on')) {
+          el.addEventListener(key.slice(2).toLowerCase(), vnode.props[key])
+        } else {
+          el.setAttribute(key, vnode.props[key]);
+        }
+      }
+    }
+    if (vnode.children) {
+      if (typeof vnode.children === "string") {
+        el.textContent = vnode.children;
+      } else {
+        vnode.children.forEach(child => {
+          mount(child, el);
+        });
+      }
+    }
+    if (anchor) {
+      container.insertBefore(el, anchor)
+    } else {
+      container.appendChild(el);
+    }
+  }
+
+function patch(n1, n2) {
+    // Implement this
+    // 1. check if n1 and n2 are of the same type
+    if (n1.tag !== n2.tag) {
+      // 2. if not, replace
+      const parent = n1.el.parentNode
+      const anchor = n1.el.nextSibling
+      parent.removeChild(n1.el)
+      mount(n2, parent, anchor)
+      return
+    }
+
+    const el = n2.el = n1.el
+
+    // 3. if yes
+    // 3.1 diff props
+    const oldProps = n1.props || {}
+    const newProps = n2.props || {}
+    for (const key in newProps) {
+      const newValue = newProps[key]
+      const oldValue = oldProps[key]
+      if (newValue !== oldValue) {
+        if (newValue != null) {
+          el.setAttribute(key, newValue)
+        } else {
+          el.removeAttribute(key)
+        }
+      }
+    }
+    for (const key in oldProps) {
+      if (!(key in newProps)) {
+        el.removeAttribute(key)
+      }
+    }
+    // 3.2 diff children
+    const oc = n1.children
+    const nc = n2.children
+    if (typeof nc === 'string') {
+      if (nc !== oc) {
+        el.textContent = nc
+      }
+    } else if (Array.isArray(nc)) {
+      if (Array.isArray(oc)) {
+        // array diff
+        const commonLength = Math.min(oc.length, nc.length)
+        for (let i = 0; i < commonLength; i++) {
+          patch(oc[i], nc[i])
+        }
+        if (nc.length > oc.length) {
+          nc.slice(oc.length).forEach(c => mount(c, el))
+        } else if (oc.length > nc.length) {
+          oc.slice(nc.length).forEach(c => {
+            el.removeChild(c.el)
+          })
+        }
+      } else {
+        el.innerHTML = ''
+        nc.forEach(c => mount(c, el))
+      }
+    }
+  }
+
+// paste all previous code from Codepen
+const app = {
+  data: reactive({
+    count: 0
+  }),
+  render() {
+    return h('div', {
+      onClick: () => {
+        app.data.count++
+      }
+    }, String(app.data.count))
+  }
+}
+
+function mountApp(component, selector) {
+  let isMounted = false
+  let oldTree
+  watchEffect(() => {
+    if (!isMounted) {
+      mount(oldTree = component.render(), document.querySelector(selector))
+      isMounted = true
+    } else {
+      const newTree = component.render()
+      patch(oldTree, newTree)
+      oldTree = newTree
+    }
+  })
+}
+mountApp(app, '#app')
+</script>
+```
+
+## **Proxy版本(可断点调试)**
+
+```
+<div id="app"></div>
+<script>
+// 定义一个暂时存放 watchEffect 传进来的参数的变量
+let activeEffect
+// 定义一个 Dep 类，该类将会为每一个响应式对象的每一个键生成一个发布者实例
+class Dep {
+  // 用 Set 做缓存列表以防止列表中添加多个完全相同的函数
+  subscribers = new Set()
+   // 构造函数接受一个初始化的值放在私有变量内
+  constructor(value) {
+    this._value = value
+  }
+  // 当使用 xxx.value 获取对象上的 value 值时
+  get value() {
+  // 代理模式 当获取对象上的value属性的值时将会触发 depend 方法
+    this.depend()
+     // 然后返回私有变量内的值
+    return this._value
+  }
+  // 当使用 xxx.value = xxx 修改对象上的 value 值时
+  set value(value) {
+  // 先改值再触发 这样保证触发的时候用到的都是已经修改后的新值
+    this._value = value
+    // 代理模式 当修改对象上的value属性的值时将会触发 notify 方法
+    this.notify()
+  }
+  // 这就是我们常说的依赖收集方法
+  depend() {
+  // 如果 activeEffect 这个变量为空 就证明不是在 watchEffect 这个函数里面触发的 get 操作
+    if (activeEffect) {
+    // 但如果 activeEffect 不为空就证明是在 watchEffect 里触发的 get 操作
+      // 那就把 activeEffect 这个存着 watchEffect 参数的变量添加进缓存列表中
+      this.subscribers.add(activeEffect)
+    }
+  }
+  // 更新操作 通常会在值被修改后调用
+  notify() {
+  // 遍历缓存列表里存放的函数 并依次触发执行
+    this.subscribers.forEach((effect) => {
+      effect()
+    })
+  }
+}
+// 模仿 Vue3 的 watchEffect 函数
+/**
+这个函数就被赋值给了activeEffect这个变量上面去，然后立刻执行这个函数，一般来说这个函数里面都会有一些响应式对象的对吧？既然有，那就会触发getter去进行依赖收集操作，而依赖收集则是判断了activeEffect这个变量有没有值，如果有，那就把它添加进缓存列表里。等到执行完这个函数后，就立即将activeEffect这个变量置为空值，防止不在watchEffect这个函数中触发getter的时候也执行依赖收集操作。
+**/
+function watchEffect(effect) {
+// 先把传进来的函数放入到 activeEffect 这个变量中
+  activeEffect = effect
+  // 然后执行 watchEffect 里面的函数
+  effect()
+   // 最后把 activeEffect 置为空值
+  activeEffect = null
+}
+
+// proxy version
+const reactiveHandlers = {
+// 当触发 get 操作时
+  get(target, key) {
+    // 先调用 getDep 函数取到里面存放的 value 值
+    const value = getDep(target, key).value
+    // 如果 value 是对象的话
+    if (value && typeof value === 'object') {
+    // 那就把 value 也变成一个响应式对象
+      return reactive(value)
+    } else {
+    // 如果 value 只是基本数据类型的话就直接将值返回
+      return value
+    }
+  },
+  // 当触发 set 操作时
+  set(target, key, value) {
+  // 调用 getDep 函数并将里面存放的 value 值重新赋值成 set 操作的值
+    getDep(target, key).value = value
+  }
+}
+// 定义一个 WeakMap 数据类型 用于存放 reactive 定义的对象以及他们的发布者对象集
+const targetToHashMap = new WeakMap()
+// 定义 getDep 函数 用于获取 reactive 定义的对象所对应的发布者对象集里的某一个键对应的发布者对象
+function getDep(target, key) {
+ // 获取 reactive 定义的对象所对应的发布者对象集
+  let depMap = targetToHashMap.get(target)
+   // 如果没获取到的话
+  if (!depMap) {
+  // 就新建一个空的发布者对象集
+    depMap = new Map()
+    // 然后再把这个发布者对象集存进 WeakMap 里
+    targetToHashMap.set(target, depMap)
+  }
+// 再获取到这个发布者对象集里的某一个键所对应的发布者对象
+  let dep = depMap.get(key)
+  // 如果没获取到的话
+  if (!dep) {
+   // 就新建一个发布者对象并初始化赋值
+    dep = new Dep(target[key])
+    // 然后将这个发布者对象放入到发布者对象集里
+    depMap.set(key, dep)
+  }
+ // 最后返回这个发布者对象
+  return dep
+}
+
+function reactive(obj) {
+  return new Proxy(obj, reactiveHandlers)
+}
+
+function h(tag, props, children) {
+  return { tag, props, children }
+}
+
+// 根组件挂载
+function mount(vnode, container, anchor) {
+  const el = document.createElement(vnode.tag)
+  vnode.el = el
+  // props
+  if (vnode.props) {
+    for (const key in vnode.props) {
+      if (key.startsWith('on')) {
+        el.addEventListener(key.slice(2).toLowerCase(), vnode.props[key])
+      } else {
+        el.setAttribute(key, vnode.props[key])
+      }
+    }
+  }
+  if (vnode.children) {
+    if (typeof vnode.children === 'string') {
+      el.textContent = vnode.children
+    } else {
+      vnode.children.forEach((child) => {
+        mount(child, el)
+      })
+    }
+  }
+  if (anchor) {
+    container.insertBefore(el, anchor)
+  } else {
+    container.appendChild(el)
+  }
+}
+
+// diff算法
+function patch(n1, n2) {
+  // Implement this
+  // 1. check if n1 and n2 are of the same type
+  if (n1.tag !== n2.tag) {
+    // 2. if not, replace
+    const parent = n1.el.parentNode
+    const anchor = n1.el.nextSibling
+    parent.removeChild(n1.el)
+    mount(n2, parent, anchor)
+    return
+  }
+
+  const el = (n2.el = n1.el)
+
+  // 3. if yes
+  // 3.1 diff props
+  const oldProps = n1.props || {}
+  const newProps = n2.props || {}
+  for (const key in newProps) {
+    const newValue = newProps[key]
+    const oldValue = oldProps[key]
+    if (newValue !== oldValue) {
+      if (newValue != null) {
+        el.setAttribute(key, newValue)
+      } else {
+        el.removeAttribute(key)
+      }
+    }
+  }
+  for (const key in oldProps) {
+    if (!(key in newProps)) {
+      el.removeAttribute(key)
+    }
+  }
+  // 3.2 diff children
+  const oc = n1.children
+  const nc = n2.children
+  if (typeof nc === 'string') {
+    if (nc !== oc) {
+      el.textContent = nc
+    }
+  } else if (Array.isArray(nc)) {
+    if (Array.isArray(oc)) {
+      // array diff
+      const commonLength = Math.min(oc.length, nc.length)
+      for (let i = 0; i < commonLength; i++) {
+        patch(oc[i], nc[i])
+      }
+      if (nc.length > oc.length) {
+        nc.slice(oc.length).forEach((c) => mount(c, el))
+      } else if (oc.length > nc.length) {
+        oc.slice(nc.length).forEach((c) => {
+          el.removeChild(c.el)
+        })
+      }
+    } else {
+      el.innerHTML = ''
+      nc.forEach((c) => mount(c, el))
+    }
+  }
+}
+
+function patch(n1, n2) {
+  // Implement this
+  // 1. check if n1 and n2 are of the same type
+  if (n1.tag !== n2.tag) {
+    // 2. if not, replace
+    const parent = n1.el.parentNode
+    const anchor = n1.el.nextSibling
+    parent.removeChild(n1.el)
+    mount(n2, parent, anchor)
+    return
+  }
+
+  const el = (n2.el = n1.el)
+
+  // 3. if yes
+  // 3.1 diff props
+  const oldProps = n1.props || {}
+  const newProps = n2.props || {}
+  for (const key in newProps) {
+    const newValue = newProps[key]
+    const oldValue = oldProps[key]
+    if (newValue !== oldValue) {
+      if (newValue != null) {
+        el.setAttribute(key, newValue)
+      } else {
+        el.removeAttribute(key)
+      }
+    }
+  }
+  for (const key in oldProps) {
+    if (!(key in newProps)) {
+      el.removeAttribute(key)
+    }
+  }
+  // 3.2 diff children
+  const oc = n1.children
+  const nc = n2.children
+  if (typeof nc === 'string') {
+    if (nc !== oc) {
+      el.textContent = nc
+    }
+  } else if (Array.isArray(nc)) {
+    if (Array.isArray(oc)) {
+      // array diff
+      const commonLength = Math.min(oc.length, nc.length)
+      for (let i = 0; i < commonLength; i++) {
+        patch(oc[i], nc[i])
+      }
+      if (nc.length > oc.length) {
+        nc.slice(oc.length).forEach((c) => mount(c, el))
+      } else if (oc.length > nc.length) {
+        oc.slice(nc.length).forEach((c) => {
+          el.removeChild(c.el)
+        })
+      }
+    } else {
+      el.innerHTML = ''
+      nc.forEach((c) => mount(c, el))
+    }
+  }
+}
+
+const Component = {
+  data() {
+    return {
+      count: 0
+    }
+  },
+  render() {
+    return h(
+      'div',
+      {
+        onClick: () => {
+          this.count++
+        }
+      },
+      String(this.count)
+    )
+  }
+}
+
+function createApp(Component, container) {
+  // implement this
+  const state = reactive(Component.data())
+  let isMount = true
+  let prevTree
+  watchEffect(() => {
+    const tree = Component.render.call(state)
+    if (isMount) {
+      mount(tree, container)
+      isMount = false
+    } else {
+      patch(prevTree, tree)
+    }
+    prevTree = tree
+  })
+}
+
+// calling this should actually mount the component.
+createApp(Component, document.getElementById('app'))
+</script>
+```
