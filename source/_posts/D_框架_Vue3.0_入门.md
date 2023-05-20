@@ -4,6 +4,7 @@ date: 2022-06-26 07:33:16
 categories:
 - D_框架和类库
 toc: true # 是否启用内容索引
+
 ---
 
 Vue 是一套用于构建用户界面的渐进式框架。Vue.js 3.0 "One Piece" 正式版在 2020 年 9 月份发布,经过了 2 年多开发, 100+位贡献者, 2600+次提交, 600+次 PR，同时 Vue3 也支持 Vue2 的大多数特性,且,更好的支持了 TypeScript,也增加了很多的新特性,如:Composition API,新组件(Fragment/Teleport/Suspense)等等.
@@ -12,77 +13,49 @@ Vue 是一套用于构建用户界面的渐进式框架。Vue.js 3.0 "One Piece"
 
 ## 认识 Vue3
 
-**新特性**
+**1) 了解相关信息**
 
-- More maintainable **可维护性更佳**
+- Vue.js 3.0 "One Piece" 正式版在今年 9 月份发布
+- 2 年多开发, 100+位贡献者, 2600+次提交, 600+次 PR
+- <font color='red'>**Vue3 支持 vue2 的大多数特性**</font>
+- <font color='red'>**更好的支持 Typescript**</font>
 
-  TypeScript + modularized internals 内部代码使用 TS 及模块化结构
+**2) 性能提升**
 
-- Faster **更快**
+- 打包大小减少 41%
+- 初次渲染快 55%, 更新渲染快 133%
+- 内存减少 54%
+- <font color='red'>**使用 Proxy 代替 defineProperty 实现数据响应式**</font>
+- <font color='red'>**重写虚拟 DOM 的实现和 Tree-Shaking**</font>
 
-  Proxy-based Reactivity System 基于 Proxy 的响应式系统
+**3) 新增特性**
 
-  Compiler-informed Virtual DOM & SSR 编译时优化的虚拟DOM及服务端渲染
+- <font color='red'>**Composition (组合) API**</font>
+- setup
 
-- Smaller **更小**
+  - ref 和 reactive
+  - computed 和 watch
+  - 新的生命周期函数
+  - provide 与 inject
+  - ...
 
-  Tree-shaking 使用摇树技术减少打包体积
+- 新组件
 
-  Compile-time flags 使用编译时标记优化生成代码
+  - Fragment - 文档碎片
+  - Teleport - 瞬移组件的位置
+  - Suspense - 异步加载组件的 loading 界面
 
-- Scales better **可伸缩性更强**
+- 其它 API 更新
 
-  Composition API 兼容原 Option API，使用 Composition API 处理复杂场景
-
-- Better DX **更好的开发时体验**
-
-  New Single-file Component improvements 新的单文件组件开发体验（vite热编译，类型检查等）
-
-**Vue内部热插拔三大模块**
-
-@vue/reactivity响应式
-
-@vue/compiler-sfc：@vue/compiler-dom和@vue/compiler-core
-
-@vue/runtime-dom和@vue/runtime-core
-
-**Vue历代版本代号**
-
-| 版本号                                                       | 发布日期   |
-| ------------------------------------------------------------ | ---------- |
-| [Vue0.9 Animatrix 黑客帝国](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2Fv0.9.0) | 2014-02-25 |
-| [Vue0.10 Blade Runner 银翼杀手](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2Fv0.10.0) | 2014-03-24 |
-| [Vue0.11 Cowboy Bebop 星际牛仔](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2F0.11.0) | 2014-11-07 |
-| [Vue0.12 Dragon Ball 龙珠](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2F0.12.0) | 2015-06-13 |
-| [Vue1.0 Evangelion 新福音战士](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2F1.0.0) | 2015-10-27 |
-| [Vue2.0 Ghost in the Shell 攻壳机动队](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2Fv2.0.0) | 2016-10-01 |
-| [Vue2.1 Hunter X Hunter 全职猎人](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2Fv2.1.0) | 2016-11-23 |
-| [Vue2.2 Initial D 头文字D](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2Fv2.2.0) | 2017-02-26 |
-| [Vue2.3 JoJo's Bizarre Adventure JOJO的奇妙冒险](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2Fv2.3.0) | 2017-04-27 |
-| [Vue2.4 Kill la Kill 斩服少女](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2Fv2.4.0) | 2017-07-13 |
-| [Vue2.5 Level E 灵异E接触](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2Fv2.5.0) | 2017-10-03 |
-| [Vue2.6 Macross 超时空要塞](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2Fv2.6.0) | 2019-02-04 |
-| [Vue2.7 Naruto](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue%2Freleases%2Ftag%2Fv2.7.0) | 2022-07-01 |
-| [Vue3.0 One Piece 海贼王](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue-next%2Freleases%2Ftag%2Fv3.0.0) | 2020-09-18 |
-| [Vue3.1 Pluto](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue-next%2Freleases%2Ftag%2Fv3.1.0) | 2021-06-08 |
-| [Vue3.2 Quintessential Quintuplets 五等分的花嫁](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue-next%2Freleases%2Ftag%2Fv3.2.0) | 2021-08-10 |
-
-**Composition API 优势**
-
-- 天然完整支持 TypeScript 类型系统
-- 更好的代码组织和逻辑复用
-- 推荐用来代替旧的 mixins 混用语法
-
-```
-mixin有很多问题，例如命名问题、组件改动问题、数据属性组件与mixin定义问题即所谓隐式依赖
-使用mixin最头痛的莫过于命名问题，如果一段逻辑不能在多个组件之中进行复用，那么也就没有提取的必要，但恰恰是多个组件的复用就会有命名问题，我们知道混入规则中，如果值为对象的选项，命名冲突时组件内方法将会覆盖混入方法，这使得我们在多个组件复用时，编写代码更为困难，同时如果一旦改动mixin中的代码，那么引用并混入的所有组件都会受到影响，可谓牵一发而动全身。
-```
+  - 全局 API 的修改
+  - 将原来的全局 API 转移到应用对象
+  - 模板语法变化
 
 ## 创建 vue3 项目
 
 **1) 使用 vue-cli 创建**
 
-[文档指南: ](https://cli.vuejs.org/zh/guide/creating-a-project.html#vue-create)
+[文档指南](https://cli.vuejs.org/zh/guide/creating-a-project.html#vue-create)
 
 ```bash
 ## 安装或者升级
@@ -128,6 +101,7 @@ npm run dev
 
 比如发布一些 Vue3 的教程：
 
+- [我要成为海贼王的男人-Vue3最全宇宙入口](https://github.com/vue3/vue3-News#%E6%88%91%E6%98%AF%E8%A6%81%E6%88%90%E4%B8%BA%E6%B5%B7%E8%B4%BC%E7%8E%8B%E7%9A%84%E7%94%B7%E4%BA%BA)
 - [《Vue 3.0 来了，我们该做些什么？》](https://juejin.cn/post/6874604408030789640)
 - [《Vue3实战系列：结合 Ant-Design-of-Vue 实践 Composition API》](https://juejin.cn/post/6882393804310052871)
 - [《Vue3 来了，Vue3 开源商城项目重构计划正式启动！》](https://juejin.cn/post/6884991023811215374)
@@ -139,6 +113,9 @@ npm run dev
 - [《🎉🎉Vue 3 + Element Plus + Vite 2 的后台管理系统开源啦🎉🎉》](https://juejin.cn/post/6945072070132760590)
 - [程序员的副业：写了一个专栏《Vue 3企业级项目实战》](https://juejin.cn/post/6947703226128924702)
 - [心脏跳动团队-商城](https://link.juejin.cn?target=https%3A%2F%2Fgithub.com%2Fnewbee-ltd)
+- [vue3保姆级教程Vue.js前端](https://juejin.cn/post/7030992475271495711)
+- [Vue3.0 新特性以及使用经验总结](https://juejin.cn/post/6940454764421316644#heading-1)
+- [焕然一新的 Vue 3 中文文档要来了](https://juejin.cn/post/7077701166397653028)
 
 **Vue 3.0 生态**
 
@@ -326,6 +303,50 @@ export default {
 }
 </script>
 ```
+
+**单组件**
+
+> 页面首次加载
+>
+> ```
+> setup -> onBeforeMount -> onRenderTracked -> onMounted
+> ```
+>
+> 页面更新
+>
+> ```
+> onRenderTriggered -> onBeforeUpdate -> onUpdated
+> ```
+>
+> 页面卸载
+>
+> ```
+> onBeforeUnmount -> onUnmounted
+> ```
+
+**父子组件**
+
+> **页面首次加载**
+>
+> ```
+> 父组件setup -> 父组件onBeforeMount -> 父组件onRenderTracked -> 子组件setup -> 子组件onBeforeMount -> 子组件onRenderTracked -> 子组件onMounted -> 父组件onMounted
+> ```
+>
+> **页面更新**
+>
+> 纯父组件属性更新 `onRenderTriggered -> onBeforeUpdate -> onUpdated`
+>
+> 纯子组件属性更新 `onRenderTriggered -> onBeforeUpdate -> onUpdated`
+>
+> 父组件属性更新，该属性在子组件中有被使用 `父组件onRenderTriggered -> 父组件onBeforeUpdate -> 子组件onBeforeUpdate -> 子组件onUpdated -> 父组件onUpdated`
+>
+> 子组件属性更新，该属性在父组件中有被使用 `子组件onRenderTriggered -> 父组件onRenderTriggered -> 父组件onBeforeUpdate -> 子组件onBeforeUpdate -> 子组件onUpdated -> 父组件onUpdated`
+>
+> **页面卸载**
+>
+> ```
+> 父组件onBeforeUnmount -> 子组件onBeforeUnmount -> 子组件onUnmounted -> 父组件onUnmounted
+> ```
 
 ##  setup
 
@@ -548,7 +569,7 @@ export default defineComponent({
   - 创建一个包含响应式数据的引用(reference)对象
   - js 中操作数据: xxx.value
   - 模板中操作数据: 不需要.value
-- 一般用来定义一个基本类型的响应式数据
+- 一般用来定义一个基本类型的响应式数据,实际开发中强烈推荐用这个-万物皆可用ref。
 
 ```vue
 <template>
@@ -701,7 +722,32 @@ export default {
 </script>
 ```
 
-## 计算属性与监视
+## img动态图片
+
+解法1:在将asset 前面加上src
+
+```
+<img :src="`/src/assets/blogPhotos/${name}.jpg`" />
+```
+
+解法2：官网说：“实际上，Vite 并不需要在开发阶段处理这些代码！在生产构建时，Vite 才会进行必要的转换保证 URL 在打包和资源哈希后仍指向正确的地址。”
+
+```
+<img :src="" alt="getImageUrl(name)" />
+function getImageUrl(name) {
+    return new URL(`../assets/blogPhotos/${name}.jpg`, import.meta.url).href;
+}
+```
+
+## 响应性语法糖(已废弃)
+
+[废弃原因](https://github.com/vuejs/rfcs/discussions/369#discussioncomment-5059028)：最重要的是，碎片化的潜在风险。
+
+- let count = $ref(0)
+- function myCreateRef() {  *return* ref(0) } let count = $(myCreateRef())
+- const {num} =} = defineProps<>()
+
+## computed与watch 
 
 - computed 函数:
 
@@ -839,6 +885,13 @@ export default {
 - 3、watch只能监听响应式数据：ref定义的属性和reactive定义的对象，如果直接监听reactive定义对象中的属性是不允许的，除非使用函数转换一下
 - 4、watchEffect如果监听reactive定义的对象是不起作用的，只能监听对象中的属性。
 
+> `watch` 和 `watchEffect` 会共享以下四种行为：
+>
+> - `停止监听`：组件卸载时都会自动停止监听
+> - `清除副作用`：onInvalidate 会作为回调的第三个参数传入
+> - `副作用刷新时机`：响应式系统会缓存副作用函数，并异步刷新，避免同一个 tick 中多个状态改变导致的重复调用
+> - `监听器调试`：开发模式下可以用 onTrack 和 onTrigger 进行调试
+
 ```js
   let count = ref(0)
     let countObj = reactive({count: 0})
@@ -902,281 +955,41 @@ onMounted(()=>{
 })
 ```
 
-## 双向绑定
-
-- prop 名从 `value` 变为 `modelValue`
-- 事件名也从默认的`input` 改为 `update:modelValue`
-
-**第一种**
-
-父组件
-
-```
-// Users.vue
-<template>
-  <div class="user-wrap">
-    <Son v-model="message" />
-    <h1>{{ message }}</h1>
-  </div>
-</template>
-
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
-import Son from './son.vue'
-export default defineComponent({
-  name: 'user',
-  components: {
-    Son
-  },
-  setup() {
-    let message = ref('')
-    return {
-      message,
-    }
-  }
-})
-</script>
-```
-
-子组件
-
-```
-// Son.vue
-<template>
-  <div>
-    <input type="text" :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
-    />
-  </div>
-</template>
-
-<script lang="ts">
-import { defineComponent } from 'vue'
-export default defineComponent({
-  props: ['modelValue'],
-  emits: ['update:modelValue'],
-})
-</script>
-```
-
-**第二种: 通过computed计算属性**
-
-父组件
-
-```
-// Users.vue
-<template>
-  <div class="user-wrap">
-  	<!-- 两个方法等价 -->
-    <!-- <Son :modelValue="message" @update:modelValue="message = $event" /> -->
-    <Son v-model="message" />
-    <h1>{{ message }}</h1>
-  </div>
-</template>
-
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
-import Son from './son.vue'
-export default defineComponent({
-  name: 'user',
-  components: {
-    Son
-  },
-  setup() {
-    let message = ref('')
-    return {
-      message,
-    }
-  }
-})
-</script>
-```
-
-子组件
-
-```
-// Son.vue
-<template>
-  <div>
-    <!-- 两个方法等价 -->
-    <!-- <input type="text" :value="newValue" @input="newValue = $event.target.value" /> -->
-    <input type="text" v-model="newValue" />
-  </div>
-</template>
-
-<script lang="ts">
-import { defineComponent, computed } from 'vue'
-export default defineComponent({
-  props: ['modelValue'],
-  emits: ['update:modelValue'],
-  setup(props, { emit }) {
-    const newValue = computed({
-      // 子组件v-model绑定 计算属性, 一旦发生变化, 就会给父组件传递值
-      get: () => props.modelValue,
-      set: (nv) => {
-        emit('update:modelValue', nv)
-      }
-    })
-    return {
-      newValue
-    }
-  }
-})
-</script>
-```
-
-**第三种: 组件绑定多个v-model**
-
-父组件
-
-```
-// Users.vue
-<template>
-  <div class="user-wrap">
-    <!-- 这里绑定两个v-model -->
-    <Son v-model="message" v-model:title="title" />
-    <h1>message:{{ message }}</h1>
-    <h1>title:{{ title }}</h1>
-  </div>
-</template>
-
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
-import Son from './son.vue'
-export default defineComponent({
-  name: 'user',
-  components: {
-    Son
-  },
-  setup() {
-    let message = ref('')
-    let title = ref('')
-
-    return {
-      message,
-      title,
-    }
-  }
-})
-</script>
-```
-
-子组件
-
-```
-// Son.vue
-<template>
-  <div>
-    <!-- 两个方法等价 -->
-    <!-- <input type="text" :value="newValue" @input="newValue = $event.target.value" /> -->
-    <input type="text" v-model="newValue" />
-    -
-    <input type="text" v-model="newTitle" />
-  </div>
-</template>
-
-<script lang="ts">
-import { defineComponent, computed } from 'vue'
-export default defineComponent({
-  props: {
-    // v-model默认的名字
-    modelValue: {
-      type: String
-    },
-    title: {
-      //这里可以直接使用 v-model:title ,:号后面的名字
-      type: String
-    }
-  },
-  emits: ['update:modelValue', 'update:title'],
-  setup(props, { emit }) {
-    const newValue = computed({
-      get: () => props.modelValue,
-      set: (nv) => {
-        console.log(nv)
-        emit('update:modelValue', nv)
-      }
-    })
-
-    const newTitle = computed({
-      get: () => props.title,
-      set: (nv) => {
-        emit('update:title', nv)
-      }
-    })
-
-    return {
-      newValue,
-      newTitle
-    }
-  }
-})
-</script>
-```
-
-## 自定义 hook 
-
-- 需求 1: 收集用户鼠标点击的页面坐标
-
-  hooks/useMousePosition.ts
+## Hooks
 
 ```js
-import { ref, onMounted, onUnmounted } from 'vue'
-/*
-收集用户鼠标点击的页面坐标
-*/
-export default function useMousePosition() {
-  // 初始化坐标数据
-  const x = ref(-1)
-  const y = ref(-1)
-
-  // 用于收集点击事件坐标的函数
-  const updatePosition = (e: MouseEvent) => {
-    x.value = e.pageX
-    y.value = e.pageY
-  }
-
-  // 挂载后绑定点击监听
-  onMounted(() => {
-    document.addEventListener('click', updatePosition)
-  })
-
-  // 卸载前解绑点击监听
-  onUnmounted(() => {
-    document.removeEventListener('click', updatePosition)
-  })
-
-  return { x, y }
-}
+template>
+  <p>{{ person.name }}</p>
+</template>
+<script lang="ts" setup>
+// 方式一：export default整体导出，用于复用变量和函数hook
+import { usePerson } from "./hooks";
+const { person, changePersonName } = usePerson();
+// 方式二(更推荐):export单一导出，用于复用函数hook
+import { changePersonName } from "./hooks/usePerson";
+</script>
 ```
 
 ```vue
-<template>
-  <div>
-    <h2>x: {{ x }}, y: {{ y }}</h2>
-  </div>
-</template>
-
-<script>
-import { ref } from 'vue'
-/*
-在组件中引入并使用自定义hook
-自定义hook的作用类似于vue2中的mixin技术
-自定义Hook的优势: 很清楚复用功能代码的来源, 更清楚易懂
-*/
-import useMousePosition from './hooks/useMousePosition'
-
-export default {
-  setup() {
-    const { x, y } = useMousePosition()
-
-    return {
-      x,
-      y
-    }
+// 方式一：export default整体导出，用于复用变量和函数hook。/hooks/usePerson.ts
+import { reactive, watch } from "vue";
+export default function usePerson() {
+  const person = reactive<{ name: string; sex: string }>({
+    name: "小明"
+  });
+  function changePersonName() {
+    person.name = "小浪";
   }
+  return {
+    person,
+    changePersonName,
+  };
 }
-</script>
+ // 方式二：export单一导出，用于复用函数hook。/hooks/usePerson.ts
+import { reactive, watch } from "vue";
+export changePersonName(person) {
+  person.name = "小浪";
+}
 ```
 
 ## toRefs
@@ -1247,7 +1060,7 @@ function useReatureX() {
 </script>
 ```
 
-## ref 获取Dom
+## ref 获取元素
 
 利用 ref 函数获取组件中的标签元素
 
@@ -1257,10 +1070,8 @@ function useReatureX() {
 <template>
   <h2>App</h2>
   <input type="text" />
-  ---
   <input type="text" ref="inputRef" />
 </template>
-
 <script lang="ts">
 import { onMounted, ref } from 'vue'
 /*
@@ -1270,16 +1081,41 @@ ref获取元素: 利用ref函数获取组件中的标签元素
 export default {
   setup() {
     const inputRef = ref<HTMLElement | null>(null)
-
     onMounted(() => {
       inputRef.value && inputRef.value.focus()
     })
-
     return {
       inputRef
     }
   }
 }
+</script>
+```
+
+多个ref情况：`itemRefs` 不必是数组：它也可以是一个对象，其 ref 可以通过迭代的 key 被设置。如有需要，`itemRefs` 也可以是响应式的，且可以被侦听。
+
+```
+<template>
+  <div v-for="(item, i) in list" :ref="el => { if (el) divs[i] = el }">
+    {{ item }}
+  </div>
+</template>
+<script>
+  import { ref, reactive, onBeforeUpdate } from 'vue'
+  export default {
+    setup() {
+      const list = reactive([1, 2, 3])
+      const divs = ref([])
+      // 确保在每次更新之前重置ref
+      onBeforeUpdate(() => {
+        divs.value = []
+      })
+      return {
+        list,
+        divs
+      }
+    }
+  }
 </script>
 ```
 
@@ -1314,66 +1150,84 @@ Vue3 提供`Teleport`组件可将部分DOM移动到 Vue app之外的位置。比
 </teleport>
 ```
 
-## 全局组件和全局指令
+## 样式改动
 
-全局组件
+**样式穿透**
 
 ```
-1.引入封装好的全局组件地址
-import 组件名 from './地址' //一般放置在./src/components下
-
-2.导出
-exports default{
-    install (app) {
-    // 此处形参为main.js文件中use()方法自动传进来的Vue实例
-        app.component('自定义组件名,最好与组件内的name一致', 组件名)
-    }
+// vue2
+<style scoped>
+.a /deep/ .b {
+  /* ... */
 }
+</style>
 
-3.main.js中挂载到Vue实例中
-
-import { createApp } from 'vue'
-import App from './App.vue' //vue3中引入Vue实例方式
-import component from './components'// 引入公共组件
-// 链式添加一项 .use(component) 来引入配置好的公共组件
-createApp(App).use(component).mount('#app')
-4.使用
-<自定义组件名 />
-
-```
-
-全局指令
-
-```
-1.创建文件并导出配置
-export default {
-    install(app){
-        app.directive('自定义指令名',{ //在创建自定义名称时不要带v-,使用时再携带
-            mounted(el,binding,vnode){
-                // el 为携带自定义指令的dom节点
-                // binding 为指令后携带的参数通过.value取出
-                功能
-            }
-        })
-    }
+// vue3
+<style scoped>
+.a :deep(.b) {
+  /* ... */
 }
-2.main.js文件中注册
-import direction from './directives'
-createApp(App).use(directive).mount('#app')
-3.全局使用
-<div v-自定义指令名='...'></div> 
-
 ```
 
-**注意：自定义指令API和组件保持一致了**
+**全局样式和局部样式**
 
-- bind->**beforeMount**
-- insert->**mounted**
-- **beforeUpdate**:新增的，元素更新前
-- update:移除了，与updated功能类似
-- componentUpdated->**updated**
-- **beforeUnmount**:新增的，元素移除之前
-- unbind->**unmounted**
+```
+局部样式
+<style scoped>
+/* local styles */
+</style>
+```
+
+```
+全局样式：不带scope
+<style>
+/* global styles */
+</style>
+
+全局样式：使用:global伪类
+// 创建一个.red的全局类样式
+<style scoped>
+:global(.red) {
+  color: red;
+}
+</style>
+```
+
+## 状态驱动的动态 CSS
+
+```
+<script setup>
+const size = 10
+</script>
+<style scoped>
+.home {
+  width: v-bind(size + "px");
+}
+</style>
+```
+
+## 插槽选择器
+
+默认情况下，作用域样式不会影响到 `<slot/>` 渲染出来的内容，因为它们被认为是父组件所持有并传递进来的。使用 `:slotted` 伪类以确切地将插槽内容作为选择器的目标。
+
+```
+// 父组件
+<Child3>
+  <div class="slot1">我是slot传递过来的</div>
+</Child3>
+// 子组件里写样式
+<style scoped>
+:slotted(.slot1) {
+  color: red;
+}
+</style>
+// 或者直接在父组件里写样式
+<style scoped>
+.slot1 {
+  color: red;
+}
+</style>
+```
 
 ## Composition API(其它部分)
 
@@ -1390,12 +1244,10 @@ createApp(App).use(directive).mount('#app')
 ```vue
 <template>
   <h2>App</h2>
-
   <h3>m1: {{ m1 }}</h3>
   <h3>m2: {{ m2 }}</h3>
   <h3>m3: {{ m3 }}</h3>
   <h3>m4: {{ m4 }}</h3>
-
   <button @click="update">更新</button>
 </template>
 
@@ -1412,23 +1264,19 @@ shallowReactive与shallowRef
     如果有一个对象数据, 结构比较深, 但变化时只是外层属性变化 ===> shallowReactive
     如果有一个对象数据, 后面会产生新的对象来替换 ===> shallowRef
 */
-
 export default {
   setup() {
     const m1 = reactive({ a: 1, b: { c: 2 } })
     const m2 = shallowReactive({ a: 1, b: { c: 2 } })
-
     const m3 = ref({ a: 1, b: { c: 2 } })
     const m4 = shallowRef({ a: 1, b: { c: 2 } })
 
     const update = () => {
       // m1.b.c += 1
       // m2.b.c += 1
-
       // m3.value.a += 1
       m4.value.a += 1
     }
-
     return {
       m1,
       m2,
@@ -1567,9 +1415,7 @@ export default {
   <p>{{ state }}</p>
   <p>{{ foo }}</p>
   <p>{{ foo2 }}</p>
-
   <button @click="update">更新</button>
-
   <Child :foo="foo" />
 </template>
 
@@ -1593,7 +1439,6 @@ export default {
 
     const foo = toRef(state, 'foo')
     const foo2 = ref(state.foo)
-
     const update = () => {
       state.foo++
       // foo.value++
@@ -1607,7 +1452,6 @@ export default {
       update
     }
   },
-
   components: {
     Child
   }
@@ -1802,7 +1646,7 @@ export default {
 
 ## 其它新组合和API
 
-### 1. 新组件
+### 新组件
 
 **1) Fragment(片断)**
 
@@ -1990,7 +1834,7 @@ export default {
 </script>
 ```
 
-### 2. 其他新的 API
+### 其他新的 API
 
 **全新的全局 API**
 
@@ -2159,4 +2003,3 @@ export default defineComponent({
 })
 </script>
 ```
-
