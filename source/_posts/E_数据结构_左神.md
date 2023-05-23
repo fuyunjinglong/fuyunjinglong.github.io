@@ -8,22 +8,14 @@ toc: true # 是否启用内容索引
 
 # 前言
 
-[基础班视频](https://www.bilibili.com/video/BV1Zr4y1W7ww?p=37&spm_id_from=pageDriver&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [代码仓库](https://github.com/fuyunjinglong/algorith-systematiclearning)
+- [算法与数据结构全阶班-左神video](https://www.1024zyz.com/2975.html)
+- [基础班入门-左神video](https://www.bilibili.com/video/BV1Zr4y1W7ww?p=37&spm_id_from=pageDriver&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 
-[代码仓库](https://github.com/fuyunjinglong/algorith-systematiclearning)
-
-基础班和进阶班：绝对的技术干活。
-
-体系学习班和大厂刷题班：比前者多一些新题型而已。
-
-**书**
-
-大话数据结构，算法图解
-
-**视频**
-
-[数据结构-浙江大学(opens new window)](https://www.bilibili.com/video/av18586085?from=search&seid=15275956372728133584)
-[清华大学-邓俊辉MOOC数据结构与算法全套](https://www.bilibili.com/video/av49361421?from=search&seid=2756779141930403558)
+- [数据结构-浙江大学(opens new window)-video](https://www.bilibili.com/video/av18586085?from=search&seid=15275956372728133584)
+- [清华大学-邓俊辉MOOC数据结构与算法全套-video](https://www.bilibili.com/video/av49361421?from=search&seid=2756779141930403558)
+- 大话数据结构
+- 算法图解
 
 # 数据结构与算法本质
 
@@ -1616,6 +1608,13 @@ class Codechef
 # 字符串
 
 ## KMP算法
+
+**参考**
+
+- [【天勤考研】KMP算法易懂版](https://www.bilibili.com/video/BV1jb411V78H/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [KMP字符串匹配算法1](https://www.bilibili.com/video/BV1Px411z7Yo/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [从头到尾彻底理解KMP](https://blog.csdn.net/v_JULY_v/article/details/7041827)
+- [KMP算法详解](https://www.cnblogs.com/dusf/p/kmp.html)
 
 ### 定义
 

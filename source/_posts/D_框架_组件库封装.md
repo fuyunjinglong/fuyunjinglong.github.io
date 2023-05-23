@@ -6,7 +6,7 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# 前端组件设计原则
+# 1.前端组件设计原则
 
 > 原文地址：[Front end component design principles](https://engineering.carsguide.com.au/front-end-component-design-principles-55c5963998c9)
 >
@@ -537,7 +537,7 @@ React 的宗旨是希望通过修改状态来修改渲染内容，尽量不要�
 
 ## [通用前端组件](https://juejin.cn/post/6844903847874265101#heading-4)
 
-# 1.组件库通用设计方案
+# 2.组件库通用设计方案
 
 ## 分散维护 VS 集中维护
 
@@ -607,7 +607,7 @@ import Button from 'fit-button'
 
 对与B的不兼容升级，对A来说发一个patch就可以，因为A对B兼容了，B不直接暴露给用户，就算用户安装了B模块，不需要升级版本，可以两个版本B模块共存。
 
-# 2.组件库常用方式
+# 3.组件库常用方式
 
 ## 独立化组件+私有 npm 仓库
 
@@ -641,7 +641,7 @@ import Button from 'fit-button'
 
 [组件设计方案]: https://segmentfault.com/a/1190000022000712
 
-# 3.组件库管理方案
+# 4.组件库管理方案
 
 - npm公共管理方式
 - 私有仓库管理：Npm 私库、Git Subtree
@@ -684,7 +684,7 @@ import Button from 'fit-button'
 
 按照这个思路，每一个组件都是一个子包，每个子包有自己的独立版本，然后根据一定的逻辑把部分子包合起来，合并成一个 Bundle（合包），比如说 main，合包也有自己的独立版本。
 
-# 4.组件库维护经验
+# 5.组件库维护经验
 
 最早、最彻底的把后端模块思维引入到前端，所以 React 组件生态迅速壮大。
 
@@ -734,7 +734,7 @@ import Button from 'fit-button'
 
 依赖联动，需要在发布时，扫描所有组件，找出所有有更新的组件，并生成一项依赖配置，最后将所有更新、或者被依赖的组件统一升级版本号加入发布队列。
 
-# 5.组件库开发的三大关键点
+# 6.组件库开发的三大关键点
 
 ## 整体架构设计
 
