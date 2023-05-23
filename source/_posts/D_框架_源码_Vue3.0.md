@@ -168,7 +168,8 @@ bue.runtime.esm-bundler.js
 
 **参考**
 
-> - [Vue.js 3.0 核心源码-黄轶-video](https://www.1024zyz.com/3206.html)
+> - [催学社-Vue3 源码实战课-video](https://www.1024zyz.com/4724.html)
+> - [Vue.js 3.0 核心源码-黄轶-video](https://www.1024zyz.com/3771.html)
 > - [Vue3源码解析，打造自己的Vue3框架-video](https://www.1024zyz.com/5016.html)
 
 **Vue核心四大模块**
