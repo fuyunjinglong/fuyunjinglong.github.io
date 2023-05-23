@@ -11,6 +11,7 @@ toc: true # 是否启用内容索引
 - [代码仓库](https://github.com/fuyunjinglong/algorith-systematiclearning)
 - [算法与数据结构全阶班-左神video](https://www.1024zyz.com/2975.html)
 - [基础班入门-左神video](https://www.bilibili.com/video/BV1Zr4y1W7ww?p=37&spm_id_from=pageDriver&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [左神部分笔记](https://dairongpeng.github.io/algorithm-note/)
 
 - [数据结构-浙江大学(opens new window)-video](https://www.bilibili.com/video/av18586085?from=search&seid=15275956372728133584)
 - [清华大学-邓俊辉MOOC数据结构与算法全套-video](https://www.bilibili.com/video/av49361421?from=search&seid=2756779141930403558)
