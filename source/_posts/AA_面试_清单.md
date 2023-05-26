@@ -43,6 +43,7 @@ toc: true # 是否启用内容索引
 - [TeqNG](https://www.teqng.com/homev1/)
 - [Nealyang-一个优秀的前端都应该阅读这些文章](https://github.com/Nealyang/PersonalBlog/issues/48)
 - [一名【合格】前端工程师的自检清单](http://teefing.top/posts/2019/05/13/%E5%89%8D%E7%AB%AF%E8%87%AA%E6%A3%80%E6%B8%85%E5%8D%95.html#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95)
+- [jamey系列](https://www.aligoogle.net/pages/25e63f/#%E4%BA%94-babel-%E7%BC%96%E8%AF%91)
 
 # 其他更精彩
 

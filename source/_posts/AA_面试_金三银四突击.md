@@ -69,6 +69,7 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#常见六大Web安全攻防解析">常见六大Web安全攻防解析</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#async和defer的作用是什么？有什么区别">async和defer的作用是什么？有什么区别</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#模块化规范">模块化规范</a>
+- 事件冒泡和事件捕获
 - <a target="_blank" href="{% post_path 'D_框架_Vue2和Vue3比较' %}#Object-defineProperty与Proxy">必会20道JS-手写数据双向绑定</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#call-apply-bind">必会20道JS-手写call/apply/bind</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#instanceof操作符">必会20道JS-手写instanceof</a>
@@ -78,7 +79,7 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#深浅拷贝">必会20道JS-手写深浅拷贝</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#实现setTimeout和实现setInterval">必会20道JS-手写setTimeout模拟setInterval</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#原型式继承">必会20道JS-手写一种原型式继承和构造函数继承</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-EventBus">必会20道JS-手写-EventBus</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-EventBus">必会20道JS-手写-EventBus发布订阅</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-简单路由">必会20道JS-手写简单路由</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-rem实现原理">必会20道JS-手写rem实现原理</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-实现拖拽">必会20道JS-手写实现拖拽</a>
@@ -92,6 +93,7 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#Promise是什么">Promise是什么</a>
 - <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#Generator函数是什么">Generator函数是什么</a>
 - <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#async函数是什么">async函数是什么</a>
+- axios取消请求
 
 # 框架-基础
 
@@ -107,7 +109,7 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#在哪个生命周期内调用异步请求？">在哪个生命周期内调用异步请求？</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#keep-alive原理">谈谈对keep-alive的理解</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_入门' %}#vuex">谈谈对vuex的理解</a>
-- <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#Vue模板编译流程">Vue模板编译流程</a>
+- <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#Vue模板编译流程">Vue模板编译流程(编译器原理)</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#router路由-hash和history">router路由hash和history原理</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#Vue-router路由-懒加载">router路由-懒加载</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#Vue-router导航守卫有哪些">Vue-router导航守卫有哪些</a>
@@ -119,7 +121,6 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#v-for和v-if不能连用">v-for和v-if为什么不能连用</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#组件中的data为什么是一个函数？">组件中的data为什么是一个函数？</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#双向绑定">如何理解vue的单向数据流</a>
-- <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#双向绑定">xx</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#Virtual-DOM">Virtual-DOM虚拟DOM</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#Virtual-DOM-diff算法">Virtual-DOM-diff算法</a>
 
@@ -141,6 +142,10 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Cookies、SessionStorage和LocalStorage">cookies，sessionStorage 和 localStorage 的区别</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Cookie">Cookie的实现原理</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#应用缓存-manifest即HTML5的离线缓存">应用缓存-manifest即HTML5的离线缓存</a>
+
+# 工程热点
+
+- 性能优化-webpack的Loader机制
 
 # 数据结构与算法
 

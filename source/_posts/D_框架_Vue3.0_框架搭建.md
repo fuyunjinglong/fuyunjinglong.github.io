@@ -6,7 +6,9 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# Vue3标准模板
+# Vue3模板及目录
+
+- [从 0 开始手把手带你搭建一套规范的 Vue3.x 项目工程环境](https://juejin.cn/post/6951649464637636622#heading-5)
 
 **模板工具：**
 
@@ -22,29 +24,41 @@ toc: true # 是否启用内容索引
 - `状态管理`：**Pinia**
 - `代码规范`：**EditorConifg、Prettier、ESLint、Airbnb JavaScript Style Guide**
 - `提交规范`：**husky、Commitlint 、lint-staged**
-
 - `实现自动按需加载`（**`墙裂推荐`**）：**unplugin-auto-import、unplugin-vue-components、unplugin-icons**
 - `实现 SVG图标 的组件化`：**vite-svg-loader**
 - `让各种 API 支持响应式`：**VueUse**
 - `让加载页面时有所反馈`：**NProgress**
 - `支持 markdown`：**vite-plugin-md**
 - vetur -> volar:对于 vue3 的支持，`vetur` 很明显的不如 `volar`，这边建议小伙伴们禁用vuetur而使用volor
+- 单元测试：[vue-test-utils](https://link.juejin.cn/?target=https%3A%2F%2Fnext.vue-test-utils.vuejs.org%2F) + [jest](https://link.juejin.cn/?target=https%3A%2F%2Fjestjs.io%2F) + [vue-jest](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fvuejs%2Fvue-jest) + [ts-jest](https://link.juejin.cn/?target=https%3A%2F%2Fkulshekhar.github.io%2Fts-jest%2F)
+- 自动部署：[GitHub Actions](https://link.juejin.cn/?target=https%3A%2F%2Fdocs.github.com%2Fcn%2Factions%2Flearn-github-actions)
 
 **模板代码目录结构：**
 
-- `.husky`：用来放husky 钩子的配置文件夹
-- `.vscode`：用来放项目中的 vscode 配置
-- `presets`：用来放 vite 插件的 plugin 配置
-- `public`：用来放一些诸如 页头icon 之类的公共文件，会被打包到dist根目录下
-- `src`：用来放项目代码文件
-- `api`：用来放http的一些接口配置
-- `assets`：用来放一些 CSS 之类的静态资源
-- `components`：用来放 Vue 组件
-- `layout`：用来放项目的布局
-- `router`：用来放项目的路由配置
-- `store`：用来放状态管理Pinia的配置
-- `utils`：用来放项目中的工具方法类
-- `views`：用来放项目的.vue视图
+```
+├── publish/
+└── src/
+    ├── assets/                    // 静态资源目录(js,css,img)
+    ├── common/                    // 通用类库目录
+    ├── components/                // 公共组件目录
+    ├── router/                    // 路由配置目录
+    ├── store/                     // 状态管理目录
+    ├── style/                     // 通用 CSS 目录
+    ├── utils/                     // 工具函数目录
+    ├── api/                       // http接口配置
+    ├── layout/                    // 项目的布局
+    ├── views/                     // 页面组件目录
+    ├── App.vue
+    ├── main.ts
+    ├── shims-vue.d.ts
+├── tests/                         // 单元测试目录
+├── index.html
+├── tsconfig.json                  // TypeScript 配置文件
+├── vite.config.ts                 // Vite 配置文件
+└── package.json
+```
+
+
 
 # 环境搭建-vue3+vite+ts(大崔哥)
 
@@ -84,21 +98,19 @@ npm run test:unit验证
 yarn add @types/jest -D
 ```
 
-
-
-# 初始化基础模板
+# 使用vite初始化
 
 ```
 npm init @vitejs/app
 ```
 
-# 引入依赖包
+**安装常用依赖包(router,element-plus,axios)**
 
 ```
 npm i vue-router@next  element-plus axios -S
 ```
 
-# 引入element-plus-包自动引入
+## 安装自动按需引入包
 
 最佳实践：按需引入
 
@@ -184,7 +196,7 @@ import en from 'element-plus/es/locale/lang/en'
 const locale =en
 ```
 
-# 引入router4
+## 配置router4
 
 创建src/router/index.js
 
@@ -218,7 +230,104 @@ Vue.use(router)
 Vue.mount('#app')
 ```
 
-# 引入pinia
+## 配置axios
+
+```
+// 调用http
+import { httpAxios, Api } from '@/fetch';
+httpAxios('get','http://www.baidu.com')
+```
+
+```
+// /api.axios.js
+import axios, { isCancel } from 'axios';
+import { randomNum } from '@/utils';
+import { useComStore } from '@/store';
+
+const instance = axios.create({
+  timeout: 60000, // 设置超时
+  withCredentials: true, // 跨域携带cookie
+});
+
+instance.interceptors.request.use(
+  (config) => {
+    if (config) {
+      const { lang, userno, uniteCode } = useComStore(); // 获取vuex参数
+    }
+    // url上面加上随机数 防止缓存
+    config.url = config.url.indexOf('?') !== -1 ? `${config.url}&k=${randomNum()}` : `${config.url}?k=${randomNum()}`;
+    return config;
+  },
+  (error) => {
+    // 对请求错误做些什么
+    return Promise.reject(error);
+  }
+);
+
+// 请求拦截器
+instance.interceptors.response.use(
+  (response) => {
+    const { data, config } = response;
+    // 用户登录cookie过期，跳转登录页面
+    if (String(data.code) === '403') {
+      if (typeof window.publicNavBarModelNew.bindEvent.loginPage === 'function') {
+        // 新版本导航头跳转登录
+        window.publicNavBarModelNew.bindEvent.loginPage.call(window.publicNavBarModelNew);
+      } else {
+        // 旧版本导航头跳转登录
+        window.publicNavBarModelNew.bindEvent.logoutDo();
+      }
+      return Promise.reject(new Error(0));
+    }
+    // 导出文件
+    if (config.type === 'file') {
+      return response; // 导出文件需要整个响应data
+    }
+    return data; // 返回响应数据
+  },
+  (error) => {
+    // 对响应错误做点什么
+    if (isCancel(error)) {
+      return new Promise(() => {
+        // 取消请求的时候中断promise
+      });
+    }
+    // 拦截器报错
+    return Promise.reject(error);
+  }
+);
+// 请求方法
+const httpAxios = function (method, url, data = null, config = {}) {
+  method = method.toLowerCase();
+  if (method === 'post') {
+    // post请求
+    return instance.post(url, data, config);
+  }
+  if (method === 'get') {
+    // get请求
+    return instance.get(url, { params: data, ...config });
+  }
+  if (method === 'delete') {
+    // delete请求
+    return instance.delete(url, {
+      params: data,
+      ...config,
+    });
+  }
+  if (method === 'put') {
+    // put请求
+    return instance.put(url, data, config);
+  }
+  return false;
+};
+
+// 导出请求方法
+export default httpAxios;
+```
+
+
+
+## 安装pinia
 
 **pinia没有module概念，全是扁平结构**
 
@@ -301,7 +410,7 @@ export default {
 
 
 
-# 引入Echart
+## 安装Echart
 
 ```
 npm install echarts --save
@@ -356,9 +465,24 @@ onMounted(()=>{
 
 ```
 
-# 引入Eslint和Prettier
+## 安装CSS 预编译器 Stylus/Sass/Less
 
-## **通用引入Eslint**
+```
+npm i sass -D
+# or
+npm i stylus -D
+npm i less -D
+// 使用
+<style lang="scss">
+  ...
+</style>
+```
+
+
+
+## 引入Eslint和Prettier
+
+### **通用引入Eslint**
 
 安装全局eslint
 
@@ -394,7 +518,7 @@ module.exports = {
 };
 ```
 
-## 通用引入Prettier
+### 通用引入Prettier
 
 ```
 npm i prettier -D
@@ -416,7 +540,7 @@ module.exports = {
 };
 ```
 
-## 通用Eslint和Prettier冲突问题
+### 通用Eslint和Prettier冲突问题
 
 安装插件完美解决两者冲突
 
@@ -757,7 +881,7 @@ onMounted(() => {
 <style scoped></style>
 ```
 
-# 最终完整依赖package.json
+## 最终package.json
 
 ```
 {
@@ -801,7 +925,3 @@ onMounted(() => {
   }
 }
 ```
-
-
-
-#
