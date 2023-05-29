@@ -4,6 +4,7 @@ date: 2023-03-07 06:33:16
 categories:
 - AA_面试
 toc: true # 是否启用内容索引
+
 ---
 
 # interview-imporant
@@ -34,6 +35,7 @@ toc: true # 是否启用内容索引
 
 - <a target="_blank" href="{% post_path 'C_H5_0基础' %}#为什么多个域名来存储网站资源会更有效">为什么利用多个域名来存储网站资源会更有效 ？</a>
 - <a target="_blank" href="{% post_path 'C_H5_0基础' %}#iframe内嵌框架缺点">iframe 内嵌框架缺点</a>
+- html语义化是什么
 
 # CSS
 
