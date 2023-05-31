@@ -5,16 +5,10 @@ categories:
 - D_框架和类库
 toc: true # 是否启用内容索引
 
+
 ---
 
 # 入门
-
-几个方面性能提升：
-
-> 1. 编译阶段。对 diff 算法优化、静态提升等等
-> 2. 响应式系统。`Proxy()`替代`Object.defineProperty()`监听对象。监听一个对象，不需要再深度遍历，`Proxy()`就可以劫持整个对象
-> 3. 体积包减少。Compostion API 的写法，可以更好的进行 tree shaking，减少上下文没有引入的代码，减少打包后的文件体积
-> 4. 新增`片段`特性。Vue 文件的`<template>`标签内，不再需要强制声明一个的`<div>`标签，节省额外的节点开销
 
 ## 体系架构比较
 
@@ -24,9 +18,16 @@ Vue2.0很多需要解决的痛点,比如源码自身的维护性，数据量大�
 
 Vue3.0从**源码、性能和语法 API** 三个大的方面优化框架，vue3是一个比较好符合开源标准的工程化解决方案。
 
+> 1. 源码优化，采用monorepo 方式，形成高内聚、低耦合的代码层次结构
+> 2. 性能优化，响应式系统、代码体积、编译阶段做了大幅优化
+> 3. 语法API，采用组合式API,更高效的代码逻辑组织和复用
+
 **1.源码优化**
 
-**(1)代码管理方式**
+(1)代码管理方式
+
+- 语法开销体积e.js 2.x 的源码托管在 src 目录，然后依据功能拆分出了 compiler（模板编译的相关代码）、core（与平台无关的通用运行时代码）、platforms（平台专有代码）、server（服务端渲染的相关代码）、sfc（.vue 单文件解析相关代码）、shared（共享工具代码）等目录。
+- Vue.js 3.0，整个源码是通过 monorepo 的方式维护的，根据功能将不同的模块拆分到不同的目录中，每个模块有各自的API类型定义和测试。这样使得模块拆分更细化，职责划分更明确，模块之间的依赖关系也更加明确，开发人员也更容易阅读、理解和更改所有模块源码，提高代码的可维护性。
 
 Vue.js 2.x
 
@@ -42,7 +43,6 @@ src
 ```
 
 Vue.js 3.0
-monorepo 把这些模块拆分到不同的目录中，每个模块有各自的API类型定义和测试。这样使得模块拆分更细化，职责划分更明确，模块之间的依赖关系也更加明确，开发人员也更容易阅读、理解和更改所有模块源码，提高代码的可维护性。
 
 ```
 @vue
@@ -59,149 +59,70 @@ monorepo 把这些模块拆分到不同的目录中，每个模块有各自的AP
 ├── compiler-dom
 ```
 
-(1)类型检查
-
-Vue.js 2.x
-使用Flow做类型检查，Flow 是 Facebook 出品的 JavaScript 静态类型检查工具，它可以以非常小的成本对已有的 JavaScript 代码迁入，非常灵活。但是Flow 对于一些复杂场景类型的检查，支持得并不好。
-
-Vue.js 3.0
-使用 TypeScript 重构了整个项目。TypeScript提供了更好的类型检查，能支持复杂的类型推导。
-
-**2.性能优化**
-
-(1)源码体积优化
-
-Vue.js 3.0
-移除一些冷门的 feature(比如 filter、inline-template 等)；
-引入 tree-shaking 的技术，减少打包体积；
-
-Vue.js 2.x
-Vue.js 2.x是采用数据劫持结合发布者-订阅者模式的方式来达到数据响应效果的。
-
-```
-Object.defineProperty(data, 'a',{  get(){    // track  },  set(){    // trigger  }})
-```
-
-Vue.js 2.x 内部是通过 Object.defineProperty 这个 API 去劫持数据的 getter 和 setter.但这个 API 有一些缺陷:
-
-- 它必须预先知道要拦截的 key 是什么，所以它并不能检测对象属性的添加和删除。尽管 Vue.js 为了解决这个问题提供了 $set 和 $delete 实例方法；
-- 对于嵌套层级较深的对象，如果要劫持它内部深层次的对象变化，就需要递归遍历这个对象，执行 Object.defineProperty 把每一层对象数据都变成响应式的。如果我们定义的响应式数据过于复杂，这就会有相当大的性能损耗；
-
-为了解决上述 2 个问题，Vue.js 3.0 使用了 Proxy API 做数据劫持，它的内部是这样的：
-
-```
-observed = new Proxy(data, {  get() {    // track  },  set() {    // trigger  }})
-```
-
-使用了 Proxy API 做数据劫持，它劫持的是整个对象，对于对象的属性的增加和删除都能检测到。
-
-Proxy API 并不能监听到内部深层次的对象变化，因此 Vue.js 3.0 的处理方式是在 getter 中去递归响应式，这样的好处是真正访问到的内部对象才会变成响应式，而不是无脑递归，这样无疑也在很大程度上提升了性能，我会在后面分析响应式章节详细介绍它的具体实现原理 。
-
-(2)编译优化
-
-Vue.js 2.x
-通过数据劫持和依赖收集，Vue.js 2.x 的数据更新并触发重新渲染的粒度是组件级的，虽然 Vue 能保证触发更新的组件最小化，但在单个组件内部依然需要遍历该组件的整个 vnode 树。这就会导致 vnode 的性能跟模版大小正相关，跟动态节点的数量无关，当一些组件的整个模版内只有少量动态节点时，这些遍历都是性能的浪费。
-
-Vue.js 3.0
-通过编译阶段对静态模板的分析，编译生成了 Block tree。Block tree 是一个将模版基于动态节点指令切割的嵌套区块，每个区块内部的节点结构是固定的，而且每个区块只需要以一个 Array 来追踪自身包含的动态节点。借助 Block tree，Vue.js 将 vnode 更新性能由与模版整体大小相关提升为与动态内容的数量相关。
-
-**3.语法 API 优化** 
-
-(1)逻辑组织 优化
-
-Vue.js 2.x
-在 Vue.js 2.x版本中，编写组件本质就是在编写一个“包含了描述组件选项的对象”，我们把它称为 Options API。Options API 的设计是按照 methods、computed、data、props 这些不同的选项进行分类。和一个逻辑点相关的代码可能写在多个Option里，非常分散，如果需要修改一个逻辑点，就需要在单个文件中不断切换和寻找。
-
-Vue.js 3.0
-Vue.js 3.0 提供了一种新的 API：Composition API，它有一个很好的机制去解决这样的问题，就是将某个逻辑关注点相关的代码全都放在一个函数里，这样当需要修改一个功能时，就不再需要在文件中跳来跳去。
-
-(2)逻辑复用优化
-
-Vue.js 2.x
-我们通常会用 mixins 去复用逻辑。使用单个 mixin似乎问题不大，但是当我们一个组件混入大量不同的 mixins的时候，会存在两个非常明显的问题：命名冲突和数据来源不清晰。
-每个 mixin 都可以定义自己的props、data，它们之间是无感的，所以很容易定义相同的变量，导致命名冲突；
-对组件而言，如果模板中使用不在当前组件中定义的变量，那么就会不太容易知道这些变量在哪里定义的，这就是数据来源不清晰；
-
-Vue.js 3.0
-使用 hook 函数，整个数据来源清晰了，也不会出现命名冲突的问题。
-
-(3)更好的类型支持
-
-因为它们都是一些函数，在调用函数时，自然所有的类型就被推导出来了。不像 Options API 所有的东西使用 this。
-
-(4)tree-shaking 友好
-
-tree-shaking有一个两个要求,必须是import导入,必须是单个函数或常量导出
-
-Vue.js 2.x
-直接导出的是整个vue实例，如果我们只是简单的用某一些功能的话就有点累赘。
-
-Vue.js 3.0
-用到的函数可以通过import声明，对“按需加载”有更好的支持。
-
-注意
-Composition API 属于 API 的增强，它并不是 Vue.js 3.0组件开发的范式，如果组件足够简单，可以使用 Options API
-
-## 体系架构比较2
-
-**源码优化**
-
-**a.使用monorepo来管理源码**
-
-- Vue.js 2.x 的源码托管在 src 目录，然后依据功能拆分出了 compiler（模板编译的相关代码）、core（与平台无关的通用运行时代码）、platforms（平台专有代码）、server（服务端渲染的相关代码）、sfc（.vue 单文件解析相关代码）、shared（共享工具代码）等目录。
-- Vue.js 3.0，整个源码是通过 monorepo 的方式维护的，根据功能将不同的模块拆分到 packages 目录下面不同的子目录中，每个 package 有各自的 API、类型定义和测试。
-
-**b.使用Typescript来开发源码**
+(2)类型检查
 
 - Vue.js 2.x 选用 Flow 做类型检查，来避免一些因类型问题导致的错误，但是 Flow 对于一些复杂场景类型的检查，支持得并不好。
 - Vue.js 3.0 抛弃了 Flow ，使用 TypeScript 重构了整个项目。 TypeScript 提供了更好的类型检查，能支持复杂的类型推导；由于源码就使用 TypeScript 编写，也省去了单独维护 d.ts 文件的麻烦。
 
-**性能优化**
+**2.性能优化**
 
-**a.引入tree-shaking的技术**
+(1)响应式优化
 
-- tree-shaking 依赖 ES2015 模块语法的静态结构（即 import 和 export），通过编译阶段的静态分析，找到没有引入的模块并打上标记。像我们在项目中没有引入 Transition、KeepAlive 等不常用的组件，那么它们对应的代码就不会打包进去。
+vue2缺陷
 
-**b.移除了一些冷门的feature**
+> - 它必须预先知道要拦截的 key 是什么，所以它并不能检测对象属性的添加和删除。尽管 Vue.js 为了解决这个问题提供了 $set 和 $delete 实例方法；
+> - 对于嵌套层级较深的对象，如果要劫持它内部深层次的对象变化，就需要递归遍历这个对象，执行 Object.defineProperty 把每一层对象数据都变成响应式的。如果我们定义的响应式数据过于复杂，这就会有相当大的性能损耗；
 
-- Vue.js 3.0 兼容了 Vue.js 2.x 绝大部分的api，但还是移除了一些比较冷门的feature：如 keyCode 支持作为 v-on 的修饰符、$on，$off 和 $once 实例方法、filter过滤、内联模板等。
+vue3弥补上述缺陷
 
-**响应式实现优化**
+> 使用了 Proxy API 做数据劫持，它劫持的是整个对象，对于对象的属性的增加和删除都能检测到。
+>
+> Proxy API 并不能监听到内部深层次的对象变化，因此 Vue.js 3.0 的处理方式是在 getter 中去递归响应式，这样的好处是真正访问到的内部对象才会变成响应式，而不是无脑递归，这样无疑也在很大程度上提升了性能，我会在后面分析响应式章节详细介绍它的具体实现原理 。
 
-**a.改用proxy api做数据劫持**
+a.改用proxy api做数据劫持
 
 - Vue.js 2.x 内部是通过 Object.defineProperty 这个 API 去劫持数据的 getter 和 setter 来实现响应式的。这个 API 有一些缺陷，它必须预先知道要拦截的 key 是什么，所以它并不能检测对象属性的添加和删除。
 - Vue.js 3.0 使用了 Proxy API 做数据劫持，它劫持的是整个对象，自然对于对象的属性的增加和删除都能检测到。
 
-**b.响应式是惰性的**
+b.响应式是惰性的
 
 - 在 Vue.js 2.x 中，对于一个深层属性嵌套的对象，要劫持它内部深层次的变化，就需要递归遍历这个对象，执行 Object.defineProperty 把每一层对象数据都变成响应式的，这无疑会有很大的性能消耗。
 - 在 Vue.js 3.0 中，使用 Proxy API 并不能监听到对象内部深层次的属性变化，因此它的处理方式是在 getter 中去递归响应式，这样的好处是真正访问到的内部属性才会变成响应式，简单的可以说是按需实现响应式，就没有那么大的性能消耗。
 
-**编译优化**
+(2)体积优化
 
-**a.生成block tree**
+a.引入tree-shaking的技术
+
+- tree-shaking 依赖 ES2015 模块语法的静态结构（即 import 和 export），通过编译阶段的静态分析，找到没有引入的模块并打上标记。像我们在项目中没有引入 Transition、KeepAlive 等不常用的组件，那么它们对应的代码就不会打包进去。
+
+b.移除了一些冷门的feature
+
+- Vue.js 3.0 兼容了 Vue.js 2.x 绝大部分的api，但还是移除了一些比较冷门的feature：如 keyCode 支持作为 v-on 的修饰符、$on，$off 和 $once 实例方法、filter过滤、内联模板等。
+
+(3)编译优化
+
+a.生成block tree
 
 - Vue.js 2.x 的数据更新并触发重新渲染的粒度是组件级的，单个组件内部需要遍历该组件的整个 vnode 树。
 - Vue.js 3.0 做到了通过编译阶段对静态模板的分析，编译生成了 Block tree。Block tree 是一个将模版基于动态节点指令切割的嵌套区块，每个区块内部的节点结构是固定的。每个区块只需要追踪自身包含的动态节点。
 
-**b.slot编译优化**
+b.slot编译优化
 
 - Vue.js 2.x 中，如果有一个组件传入了slot，那么每次父组件更新的时候，会强制使子组件update，造成性能的浪费。
 - Vue.js 3.0 优化了slot的生成，使得非动态slot中属性的更新只会触发子组件的更新。动态slot指的是在slot上面使用v-if，v-for，动态slot名字等会导致slot产生运行时动态变化但是又无法被子组件track的操作。
 
-**c.diff算法优化**
+c.diff算法优化
 
-- 能力有限，说不清楚，可以看下这篇文章：[https://blog.csdn.net/weixin_48726650/article/details/107019164](https://link.segmentfault.com/?enc=JB6w6BefnVmd%2B0QsX2EQzA%3D%3D.eCcJr9vxZG27O%2FYVW1R%2BoltEGvZMeR4t3f8NVcSPktHkpjIWL8YVqkcr1Mo2kT7MLTmkRCGlt03PhoNoPOMHZQ%3D%3D)
+- 能力有限,可以看下这篇文章：[https://blog.csdn.net/weixin_48726650/article/details/107019164](https://link.segmentfault.com/?enc=JB6w6BefnVmd%2B0QsX2EQzA%3D%3D.eCcJr9vxZG27O%2FYVW1R%2BoltEGvZMeR4t3f8NVcSPktHkpjIWL8YVqkcr1Mo2kT7MLTmkRCGlt03PhoNoPOMHZQ%3D%3D)
 
-**语法api优化**
+**3.语法 API 优化** 
 
-**a.优化逻辑组织**
+a.优化逻辑组织
 
 - 使用 Vue.js 2.x 编写组件本质就是在编写一个“包含了描述组件选项的对象”，可以把它称为 Options API。我们按照 data、props、methods、computed 这些不同的选项来书写对应的代码。这种方式对于小型的组件可能代码还能一目了然，但对于大型组件要修改一个逻辑点，可能就需要在单个文件中不断上下切换和寻找逻辑代码。
 - Vue.js 3.0 提供了一种新的 API：Composition API，它有一个很好的机制去解决这样的问题，就是将某个逻辑关注点相关的代码全都放在一个函数里，这样在修改一个逻辑时，只需要改那一块的代码了。
 
-**b.优化逻辑复用**
+b.优化逻辑复用
 
 - 在 Vue.js 2.x 中，我们一般会用 mixins 去复用逻辑。当抽离并引用了大量的mixins，你就会发现两个不可避免的问题：命名冲突和数据来源不清晰。
 - Vue.js 3.0 设计的 Composition API，在逻辑复用方面就会很有优势了。
@@ -729,9 +650,7 @@ function changeCarPrice() {
 </style>
 ```
 
-
-
-# 从Vue2.0升级到3.0
+# Vue2升级Vue3
 
 [迁移指南](https://v3.cn.vuejs.org/guide/migration/introduction.html)
 
@@ -1016,7 +935,7 @@ export default {
 
 [github上pull request排名](https://madnight.github.io/githut/#/pull_requests/2020/1)
 
-# 反对Vue2升级到Vue3
+# 反对Vue2升级Vue3
 
 最近一篇反对**Vue2**升级到**Vue3**的文章在vue官方社区引起了热议。（原文链接：[Vue 3 was a mistake that we should not repeat](https://link.juejin.cn/?target=https%3A%2F%2Fmedium.com%2Fjs-dojo%2Fvue-3-was-a-mistake-that-we-should-not-repeat-81cc65484954)）
 
@@ -1071,4 +990,25 @@ export default {
 **参考**
 
 - [Vue2升级到Vue3到底是不是一个正确的选择？(尤雨溪亲自回复解读)](https://juejin.cn/post/7117525259212816414#heading-1)
-- [对比Vue2总结Vue3新特性(2022年最全，2.5w字！)](
+- [对比Vue2总结Vue3新特性(2022年最全，2.5w字！)](https://juejin.cn/post/7098575243240800286)
+- [gogocode插件Vue2 到 Vue3 升级指南](https://gogocode.io/zh/docs/vue/vue2-to-vue3)
+
+# Vue2升级3-问题汇总
+
+参考
+
+- [keeko笔记汇总](https://www.yuque.com/dirackeeko/blog/ly79g2)
+- [Vue3 + Vite2 + ElementPlus + TS 项目常见问题](https://bbchin.com/archives/vite2-vue3-ts)
+- [Vue2 + Webpack4 + TS 改造小记](https://bbchin.com/archives/vue2-wp4-ts)
+- [vue-cli3 + vue2 项目转 vite 小记](https://bbchin.com/archives/vue2-to-vite)
+- [vue2 老项目迁移vue3 记录](https://juejin.cn/post/7100903113573269518)
+
+**template v-for告警**
+
+```
+报错：<template v-for> key should be placed on the <template> 告警解决
+原因：vue3要求template循环的key只能在template标签上
+修改：
+ 1.key属性放到template标签上
+ 2..eslintrc.js配置'vue/no-v-for-template-key-on-child': 'off' // vue3
+```
