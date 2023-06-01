@@ -58,7 +58,7 @@ undefined 表示未定义，它的类型只有一个值，就是 undefined，判
 
 数组有 length 属性，object 没有，而 typeof 数组与对象都返回 object，所以我们可以这么判断
 
-```
+```js
 var getDataType = function(o){
     if(typeof o == 'object'){
         if( typeof o.length == 'number' ){
@@ -76,7 +76,7 @@ var getDataType = function(o){
 
 利用 instanceof 判断数据类型是对象还是数组时应该优先判断 array，最后判断 object。
 
-```
+```js
 var getDataType = function(o){
     if(o instanceof Array){
         return 'Array'
