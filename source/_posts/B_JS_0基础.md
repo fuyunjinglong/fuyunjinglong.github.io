@@ -4201,29 +4201,7 @@ b4(1); // 1 2
 
 在严格模式下，无论参数是否缺省，arguments和参数都是隔离开的。
 
-# 常用技巧方法
-
-## 获取地址栏参数
-
-```js
-function getParams(url) {
-  const res = {}
-  if (url.includes('?')) {
-    const str = url.split('?')[1]
-    const arr = str.split('&')
-    arr.forEach(item => {
-      const key = item.split('=')[0]
-      const val = item.split('=')[1]
-      res[key] = decodeURIComponent(val) // 解码
-    })
-  }
-  return res
-}
-
-// 测试
-const user = getParams('http://www.baidu.com?user=%E9%98%BF%E9%A3%9E&age=16')
-console.log(user) // { user: '阿飞', age: '16' }
-```
+# 常用函数
 
 ## 随机生成10以下正数
 
@@ -4257,3 +4235,51 @@ console.log("a与b的差集：", d);
 console.log("a与b的补集：", e);
 console.log("a与b的并集：", f);
 ```
+
+## 数组去重
+
+```
+const uniqueArr = (arr) => [...new Set(arr)];
+```
+
+## 从url获取参数
+
+```
+    const getParameters = () => {
+      const url = window.location.href;
+      return JSON.parse(`{"${decodeURI(url.split('?')[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"')}"}`);
+    };
+```
+
+## 检查对象是否为空
+
+```
+const isEmpty = obj => Reflect.ownKeys(obj).length === 0 && obj.constructor === Object;
+```
+
+## 反转字符串
+
+```
+const reverse = str => str.split('').reverse().join('');
+```
+
+## 生成随机十六进制颜色
+
+```
+const randomHexColor = () => `#${Math.floor(Math.random() * 0xffffff).toString(16).padEnd(6, "0")}`
+```
+
+## 检查设备类型
+
+```
+const judgeDeviceType =
+      () => /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|OperaMini/i.test(navigator.userAgent) ? 'Mobile' : 'PC';
+```
+
+## 文字复制到剪贴板
+
+```
+const copyText = async (text) => await navigator.clipboard.writeText(text)
+```
+
+## 

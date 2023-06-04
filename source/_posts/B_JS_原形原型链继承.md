@@ -234,11 +234,15 @@ function createObj(proto) {
 
 ### `new`操作符
 
-当我们使用`new`时，做了些什么？
+四件事：
 
-1. 创建一个全新对象，并将其`__proto__`属性指向构造函数的`prototype`属性。
-2. 将构造函数调用的this指向这个新对象，并执行构造函数。
-3. 如果构造函数返回对象类型Object(包含Functoin, Array, Date, RegExg, Error等)，则正常返回，否则返回这个新的对象。
+1.创建一个空对象
+
+2.把该对象的`__proto__`属性指向`Sub.prototype`
+
+3.让构造函数里的`this`指向新对象，然后执行构造函数，
+
+4.返回该对象
 
 依然来模拟实现一下：
 
