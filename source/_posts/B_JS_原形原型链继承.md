@@ -185,10 +185,16 @@ Function.__proto__ === Function.prototype
 instanceof`操作符左边是一个对象，右边是一个构造函数，在左边对象的原型链上查找，直到找到右边构造函数的prototype属性就返回`true`，或者查找到顶层`null`（也就是`Object.prototype.__proto__`），就返回`false
 ```
 
+**实现思路：**
+
+> 1. 首先 instanceof 左侧必须是对象, 才能找到它的原型链
+> 2. instanceof 右侧必须是函数, 函数才会prototype属性
+> 3. 迭代 , 左侧对象的原型不等于右侧的 prototype时, 沿着原型链重新赋值左侧
+
 ```
-// 手写instanceOf
+// 手写instanceOf-递归版本
 function instanceOfMe(obj, Constructor) { // obj 表示左边的对象，Constructor表示右边的构造函数
- let leftP = obj.__proto__ // 取对象隐式原型
+  let leftP = obj.__proto__ // 取对象隐式原型
     let rightP = Constructor.prototype // 取构造函数显示原型
     // 到达原型链顶层还未找到则返回false
     if (leftP === null) {
@@ -200,6 +206,24 @@ function instanceOfMe(obj, Constructor) { // obj 表示左边的对象，Constru
     }
     // 查找原型链上一层
     return instanceOfMe(obj.__proto__, Constructor)
+}
+// 手写instanceOf-非递归版本
+function instanceOfMe(L, R) { // L 表示左边的对象，R表示右边的构造函数
+    // 验证如果为基本数据类型，就直接返回false
+    const baseType = ['string', 'number','boolean','undefined','symbol']
+    if(baseType.includes(typeof(L))) { return false }
+    
+    let RP  = R.prototype;  //取 R 的显示原型
+    L = L.__proto__;       //取 L 的隐式原型
+    while(true){           // 无线循环的写法（也可以使 for(;;) ）
+        if(L === null){    //找到最顶层
+            return false;
+        }
+        if(L === RP){       //严格相等
+            return true;
+        }
+        L = L.__proto__;  //没找到继续向上一层原型链查找
+    }
 }
 ```
 

@@ -707,10 +707,10 @@ say.call(person2); // 你好！ 张三
 
 4条核心绑定规则
 
-> - 默认绑定：`this` 绑定到全局对象
-> - 隐式绑定：一般绑定到调用对象，如 `obj.foo` 绑定到 `obj`
-> - 显式绑定：通过 `call`、`apply` 指定 `this` 绑定到哪里。使用 `bind` 函数硬绑定
-> - new绑定：使用 `new` 关键词，绑定到当前函数对象
+> - 默认绑定(函数的普通调用)：`this` 绑定到全局对象
+> - 隐式绑定(函数作为对象方法调用)：一般绑定到调用对象，如 `obj.foo` 绑定到 `obj`
+> - 显示绑定(函数通过`call`、`apply`、`bind`间接调用)：通过 `call`、`apply` 指定 `this` 绑定到哪里。使用 `bind` 函数硬绑定
+> - new绑定(函数作为构造函数调用)：使用 `new` 关键词，绑定到当前函数对象
 
 判断 this 最终指向，总体流程：
 
@@ -719,7 +719,7 @@ say.call(person2); // 你好！ 张三
 > 3. 函数是否在某个上下文对象中调用，即隐式绑定，如 `obj1.foo`，如果是的话，`this` 指向绑定的那个上下文对象。
 > 4. 以上 3 点都不涉及的话，则采用默认绑定，但是需要注意的是，在严格模式下，默认绑定的 `this` 是 `undefined`，非严格模式下绑定到全局对象。
 
-**1.默认绑定**
+**1.默认绑定(函数的普通调用)**
 
 > 当函数不带用任何修饰进行调用时，此时 `this` 的绑定就是默认绑定规则，`this` 指向全局对象。
 >
@@ -738,7 +738,7 @@ foo(); // 小猪课堂
 
 函数的这种调用方式就被称为默认绑定，默认绑定规则下的 `this` 指向全局对象。
 
-**2.隐式绑定**
+**2.隐式绑定(函数作为对象方法调用)**
 
 ```
 function foo() {
@@ -789,7 +789,7 @@ setTimeout(obj.foo, 100)
 
 这种写法就很容易造成 `this` 丢失。
 
-**3.显式绑定**
+**3.显示绑定(函数通过`call`、`apply`、`bind`间接调用)**
 
 明确的将函数的 `this` 绑定在某个对象上。使用call、apply、bind。其中bind就是硬绑定。
 
@@ -825,7 +825,7 @@ doFoo(foo.call(obj));
 
 因为回调函数是在 `doFoo` 里面执行的，上面的写法相当于 `foo` 函数立即执行了。
 
-**4.new绑定**
+**4.new绑定(函数作为构造函数调用)**
 
 使用 new 来调用函数时，会执行下面操作：
 
@@ -848,6 +848,43 @@ console.log(bar.name); // 小猪课堂
 ```
 
 上段代码我们使用 `new` 关键词调用了 `foo` 函数，大家注意这不是默认调用规则，这是 `new` 绑定规则。
+
+练习绑定：
+
+```
+var name = 'window'
+
+const person1 = {
+  name: 'person1',
+  show1: function () {
+    console.log(this.name)
+  },
+  show2: () => console.log(this.name),
+  show3: function () {
+    return function () {
+      console.log(this.name)
+    }
+  },
+  show4: function () {
+    return () => console.log(this.name)
+  }
+}
+const person2 = { name: 'person2' }
+
+person1.show1()                     // person1 函数作为对象方法调用，this指向对象
+person1.show1.call(person2)         // person2 使用call间接调用函数，this指向传入的person2
+
+person1.show2()                     // window  箭头函数无this绑定，在全局环境找到this，指向window
+person1.show2.call(person2)         // window  间接调用改变this指向对箭头函数无效
+
+person1.show3()()                   // window  person1.show3()返回普通函数，相当于普通函数调用，this指向window
+person1.show3().call(person2)       // person2 使用call间接调用函数，this指向传入的person2
+person1.show3.call(person2)()       // window  person1.show3.call(person2)仍然返回普通函数
+
+person1.show4()()                   // person1 person1.show4调用对象方法，this指向person1，返回箭头函数，this在person1.show4调用时的词法环境中找到，指向person1
+person1.show4().call(person2)       // person1  间接调用改变this指向对箭头函数无效
+person1.show4.call(person2)()       // person2  改变了person1.show4调用时this的指向，所以返回的箭头函数的内this解析改变
+```
 
 **参考**
 
@@ -1013,6 +1050,62 @@ Function.prototype.myBind = function(context) {
 [手写源码系列（一）——call、apply、bin](https://zhuanlan.zhihu.com/p/69070129)
 
 # 三大山-作用域和闭包
+
+## 作用域-变量对象
+
+**参考**
+
+- [JavaScript深入之变量对象](https://github.com/mqyqingfeng/Blog/issues/5#top)
+
+对于每个执行上下文，都有三个重要属性：
+
+- 变量对象( variable object ，VO)
+- 作用域链( scope chain)
+- this
+
+**变量对象**
+
+变量对象是与执行上下文相关的数据作用域，存储了在上下文中定义的变量和函数声明。
+
+接下来是：全局上下文下的变量对象和函数上下文下的变量对象。
+
+**全局上下文**
+
+全局对象。在 [W3School](http://www.w3school.com.cn/jsref/jsref_obj_global.asp) 中也有介绍：
+
+> 全局对象是预定义的对象，作为 JavaScript 的全局函数和全局属性的占位符。通过使用全局对象，可以访问所有其他所有预定义的对象、函数和属性。
+
+> 在顶层 JavaScript 代码中，可以用关键字 this 引用全局对象。因为全局对象是作用域链的头，这意味着所有非限定性的变量和函数名都会作为该对象的属性来查询。
+
+> 例如，当JavaScript 代码引用 parseInt() 函数时，它引用的是全局对象的 parseInt 属性。全局对象是作用域链的头，还意味着在顶层 JavaScript 代码中声明的所有变量都将成为全局对象的属性。
+
+```
+// 全局对象就是 Window 对象
+console.log(this);
+console.log(this instanceof Object);
+// 都能生效
+console.log(Math.random());
+console.log(this.Math.random());
+var a = 1;
+// 作为全局变量的宿主
+console.log(this.a);
+// 全局对象有 window 属性指向自身
+console.log(window.a);
+
+this.window.b = 2;
+console.log(this.b);
+```
+
+**函数上下文**
+
+在函数上下文中，我们用活动对象(activation object , AO)来表示变量对象。
+
+**执行过程**
+
+执行上下文的代码会分成两个阶段进行处理：分析和执行，我们也可以叫做：
+
+1. 进入执行上下文
+2. 代码执行
 
 ## 作用域-变量提升
 
@@ -1194,6 +1287,76 @@ d:undefined,
 b:undefined,
 }
 ```
+
+**参考**
+
+- [JavaScript深入之词法作用域和动态作用域](https://github.com/mqyqingfeng/blog/issues/3)
+- [JavaScript深入之执行上下文栈](https://github.com/mqyqingfeng/Blog/issues/4)
+
+作用域是指程序源代码中定义变量的区域。
+
+JavaScript 采用词法作用域(lexical scoping)，也就是静态作用域。
+
+**静态作用域与动态作用域**
+
+因为 JavaScript 采用的是词法作用域，函数的作用域在函数定义的时候就决定了。
+
+而与词法作用域相对的是动态作用域，函数的作用域是在函数调用的时候才决定的。
+
+```
+var value = 1;
+function foo() {
+    console.log(value);
+}
+function bar() {
+    var value = 2;
+    foo();
+}
+bar();
+// 结果是 ???
+```
+
+假设JavaScript采用静态作用域，让我们分析下执行过程：
+
+执行 foo 函数，先从 foo 函数内部查找是否有局部变量 value (价值) ，如果没有，就根据书写的位置，查找上面一层的代码，也就是 value (价值) 等于 1，所以结果会打印 1。
+
+假设JavaScript采用动态作用域，让我们分析下执行过程：
+
+执行 foo 函数，依然是从 foo 函数内部查找是否有局部变量 value (价值) 。如果没有，就从调用函数的作用域，也就是 bar 函数内部查找 value (价值) 变量，所以结果会打印 2。
+
+前面我们已经说了，JavaScript采用的是静态作用域，所以这个例子的结果是 1。
+
+来自《JavaScript权威指南》中的例子：
+
+```
+var scope = "global scope";
+function checkscope(){
+    var scope = "local scope";
+    function f(){
+        return scope;
+    }
+    return f();
+}
+checkscope();
+```
+
+```
+var scope = "global scope";
+function checkscope(){
+    var scope = "local scope";
+    function f(){
+        return scope;
+    }
+    return f;
+}
+checkscope()();
+```
+
+两段代码都会打印：`local scope`。因为JavaScript采用的是词法作用域，函数的作用域基于函数创建的位置。
+
+> 引用《JavaScript权威指南》的回答就是：
+>
+> JavaScript 函数的执行用到了作用域链，这个作用域链是在函数定义的时候创建的。嵌套的函数 f() 定义在这个作用域链里，其中的变量 scope (范围) 一定是局部变量，不管何时何地执行函数 f()，这种绑定在执行 f() 时依然有效。
 
 ## 作用域链
 
