@@ -1486,7 +1486,44 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 }
 ```
 
+## 重设样式
 
+使用的是Yahoo(YUI) 的reset.css
+
+```
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre, 
+form,fieldset,input,textarea,p,blockquote,th,td { 
+    padding: 0; 
+    margin: 0; 
+} 
+table { 
+    border-collapse: collapse; 
+    border-spacing: 0; 
+} 
+fieldset,img { 
+    border: 0; 
+} 
+address,caption,cite,code,dfn,em,strong,th,var { 
+    font-weight: normal; 
+    font-style: normal; 
+} 
+ol,ul { 
+    list-style: none; 
+} 
+caption,th { 
+    text-align: left; 
+} 
+h1,h2,h3,h4,h5,h6 { 
+    font-weight: normal; 
+    font-size: 100%; 
+} 
+q:before,q:after { 
+    content:”; 
+} 
+abbr,acronym { 
+    border: 0; 
+}
+```
 
 # 进阶
 
@@ -1641,11 +1678,28 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 
 ## canvas与svg的区别？
 
-- Canvas 是基于像素的即时模式图形系统，最适合较小的表面或较大数量的对象，Canvas 不支持鼠标键盘等事件。
-- SVG 是基于形状的保留模式图形系统，更加适合较大的表面或较小数量的对象。
-- Canvas 和 SVG 在修改方式上还存在着不同。 Canvas 输出的是一整幅画布，不能使用脚本和 CSS 对它进行修改。因为 SVG 绘制出来的每一个图形的元素都是独立的 DOM 节点，能够方便的绑定事件或用来修改
+Canvas是使用JavaScript程序绘图(动态生成)，SVG是使用XML文档描述来绘图。
 
-现在对两种技术做对比归纳如下：
+SVG是基于矢量的，所有它能够很好的处理图形大小的改变。Canvas是基于位图的图像，它不能够改变大小，只能缩放显示；
+
+历史对比
+
+|      |            canvas             |              svg               |
+| :--: | :---------------------------: | :----------------------------: |
+| 历史 | 较新，由Apple私有技术发展而来 |   历史悠久,2003年成为W3C标准   |
+| 功能 |      功能简单，2D绘图API      | 功能丰富，各种图形、滤镜、动画 |
+| 特点 |       像素,只能脚本驱动       |     矢量，XML,CSS,元素操作     |
+| 支持 |       主流浏览器，IE9+        | 主流浏览器，IE9+,其他svg阅读器 |
+
+性能对比
+
+|          |          canvas          |             svg              |
+| :------: | :----------------------: | :--------------------------: |
+| 操作对象 |   基于像素(动态点阵图)   |         基于图形元素         |
+|   元素   |       单个HTML元素       | 多种图形元素(Rect,Path,Line) |
+|   驱动   |       只能脚本驱动       |        支持脚本和CSS         |
+| 事件交互 |    交互到像素点(x,y)     |  交互到图形元素(rect,path)   |
+|   性能   | 适合小面积，大数量的场景 |   适合大面积，小数量的场景   |
 
 Canvas
 

@@ -201,15 +201,27 @@ console.log(getType(new Date())); // [object Date]
 
 ## 模块化规范
 
+参考
+
+- [前端模块化详解(完整版)](https://juejin.cn/post/6844903744518389768#heading-2)
+
+**模块化是什么？**
+
+- 按照一定的规则(规范)封装成几个块(文件), 并自由组合在一起
+- 对内数据封装，对外暴露接口
+
+**模块化详解**
+
 - ESModule支持es6语法的浏览器规范
 - CommonJS 是同步支持nodejs的后端规范
 - UMD统一模块规范，支持amd和cmd(amd和cmd一般不单独使用)，支持全局变量Vue
 
-> 常用的是ESM和CJS,其中UMD还可以指定全局变量
->
-> 浏览器端使用ESM和UMD,nodejs使用CJS
+```
+常用的是ESM和CJS,其中UMD还可以指定全局变量
+浏览器端使用ESM和UMD,nodejs使用CJS
+```
 
-**ESModule**
+> **ESModule**
 
 简称ESM,是一个符合ES6语法的模块化规范，语法为：import export。
 
@@ -242,7 +254,7 @@ export const function2() {...};
 </script>
 ```
 
-**CommonJS **
+> **CommonJS **
 
 简称CJS,是同步支持nodejs的后端规范。语法为：module.exports，require。
 
@@ -271,7 +283,7 @@ CommonJS和es6区别
 > - 因为两个模块加载机制的不同，所以在对待循环加载的时候，它们会有不同的表现。CommonJS遇到循环依赖的时候，只会输出已经执行的部分，后续的输出或者变化，是不会影响已经输出的变量。而ES6模块相反，使用`import`加载一个变量，变量不会被缓存，真正取值的时候就能取到最终的值；
 > - 关于模块顶层的`this`指向问题，在CommonJS顶层，`this`指向当前模块；而在ES6模块中，`this`指向`undefined`；
 
-**UMD**
+> **UMD**
 
 简称统一模块规范，支持amd和cmd(amd和cmd一般不单独使用)，支持全局变量Vue
 
@@ -295,6 +307,102 @@ define(function (require) {
 - `AMD` 是异步(`asynchronously`)导入模块的(因此得名)
 - 一开始被提议的时候，`AMD` 是为前端而做的(而 `CJS` 是后端)
 - `AMD` 的语法不如 `CJS` 直观。我认为 `AMD` 和 `CJS` 完全相反
+
+**模块化进化过程**
+
+> **全局function模式** 
+
+ 将不同的功能封装成不同的全局函数
+
+- 编码: 将不同的功能封装成不同的全局函数
+- 问题: 污染全局命名空间, 容易引起命名冲突或数据不安全，而且模块成员之间看不出直接关系
+
+> **namespace模式** 
+
+简单对象封装
+
+- 作用: 减少了全局变量，解决命名冲突
+- 问题: 数据不安全(外部可以直接修改模块内部的数据)
+
+```
+let myModule = {
+  data: 'www.baidu.com',
+  foo() {
+    console.log(`foo() ${this.data}`)
+  },
+  bar() {
+    console.log(`bar() ${this.data}`)
+  }
+}
+myModule.data = 'other data' //能直接修改模块内部的数据
+myModule.foo() // foo() other data
+```
+
+> **IIFE模式**
+
+匿名函数自调用(闭包)
+
+- 作用: 数据是私有的, 外部只能通过暴露的方法操作
+- 编码: 将数据和行为封装到一个函数内部, 通过给window添加属性来向外暴露接口
+- 问题: 如果当前这个模块依赖另一个模块怎么办?
+
+```
+// index.html文件
+<script type="text/javascript" src="module.js"></script>
+<script type="text/javascript">
+    myModule.data = 'xxxx' //不是修改的模块内部的data
+    myModule.foo() //没有改变
+</script>
+
+// module.js文件
+(function(window) {
+  let data = 'www.baidu.com'
+  //操作数据的函数
+  function foo() {
+    //用于暴露有函数
+    console.log(`foo() ${data}`)
+  }
+  function bar() {
+    //用于暴露有函数
+    console.log(`bar() ${data}`)
+    otherFun() //内部调用
+  }
+  function otherFun() {
+    //内部私有的函数
+    console.log('otherFun()')
+  }
+  //暴露行为
+  window.myModule = { foo, bar } //ES6写法
+})(window)
+```
+
+> **IIFE模式增强** 
+
+ 引入依赖,这就是现代模块实现的基石。**这样做除了保证模块的独立性，还使得模块之间的依赖关系变得明显**。
+
+```
+// module.js文件
+(function(window, $) {
+  let data = 'www.baidu.com'
+  //操作数据的函数
+  function foo() {
+    //用于暴露有函数
+    console.log(`foo() ${data}`)
+    $('body').css('background', 'red')
+  }
+  function bar() {
+    //用于暴露有函数
+    console.log(`bar() ${data}`)
+    otherFun() //内部调用
+  }
+  function otherFun() {
+    //内部私有的函数
+    console.log('otherFun()')
+  }
+  //暴露行为
+  window.myModule = { foo, bar }
+})(window, jQuery)
+```
 
 ## slice(),splice()两种方法
 
