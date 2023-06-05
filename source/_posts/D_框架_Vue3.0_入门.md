@@ -1876,6 +1876,125 @@ export changePersonName(person) {
 }
 ```
 
+方式三：参考大崔哥的新写法(直接赋值引用)--强烈推荐
+
+```
+// Task.vue
+<script setup lang="ts">
+import { ref,onBeforeMount } from 'vue';
+import { initListTag } from '@/service/task'
+
+let listTags =reactive([])
+onBeforeMount(async () => {
+   initListTag()
+})
+</script>
+<template>
+<div v-for="(listTag,i) in listTags" :key="'listTags'+i">{{ listTag.label }}</div>
+</template>
+
+// @/service/task.ts
+import { ref } from 'vue';
+import * as myapi from '@/service/myapi';
+
+let listTags =[]
+
+ export async function initListTag(
+  listTagsReactive
+) {
+  // 0.初始化
+  declareListTag(listTagsReactive)
+  await loadTags()
+}
+
+ function declareListTag(
+  listTagsReactive
+) {
+  // 1.初始化-变量
+  listTags = listTagsReactive
+}
+
+export async function loadTags() {
+  // 2.初始化-填充tags
+  const tab={}
+  listTags.push(createListTag(tag.name, tag.color, tag.parentTagId || undefined, tag.id))
+}
+
+export function createListTag(name, color?, parentTagId?, id = 0){
+  // 3.初始化-创建tag
+  return {
+    id,
+    name,
+    color: color || '',
+    parentTagId: parentTagId || null,
+    loadTasks: () => {
+      return myapi.getTasksByTagId(id)
+    },
+  }
+}
+
+export async function addListTag(tag) {
+  // 添加tag等其他逻辑处理,此处可以拿到listTags变量
+  const pIndex = await myapi.addTag(tag.name, tag.parentTagId, tag.color)
+  if (pIndex)
+    tag.id = pIndex
+  listTags.push(tag)
+}
+```
+
+方式四：参考大崔哥的新写法(返回值引用)
+
+```
+// User.vue
+<template>
+    <!-- 视图部分省略，在对应btn处引用onChangePassword和onChangeUserInfo即可 -->
+   <div @click="onChangePassword"> {{userInfo}}</div>
+</template>
+<script setup>
+import useUserControl from './useUserControl';
+const { userInfo, onChangeUserInfo,onChangePassword } = useUserControl();
+<script>
+
+// @/service/useUserControl.ts
+import useUser from './useUser';
+const useUserControl = () => {
+    // 组合用户hook
+    const { userInfo, getUserInfo, changeUserInfo } = useUser();
+    // 数据查询loading状态
+    const loading = ref(false);
+    // 初始化数据
+    const initData = () => {
+        getUserInfo();
+    }
+    // 修改密码
+     const onChangePassword = () => {
+    }
+    onMounted(initData);
+    return {
+        // 用户数据
+        userInfo,
+        // 修改用户信息
+        onChangeUserInfo: changeUserInfo,
+        onChangePassword:onChangePassword
+    }
+}
+
+// @/service/useUser.ts
+const useUser = () => {
+    // vue版本的用户状态
+    const userInfo = ref({});
+    // 获取用户状态
+    const getUserInfo = () => {}
+    // 修改用户状态
+    const changeUserInfo = () => {};
+    return {
+        userInfo,
+        getUserInfo,
+        changeUserInfo
+    }
+}
+```
+
 
 
 ## pinia入门
