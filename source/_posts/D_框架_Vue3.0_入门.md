@@ -4,7 +4,6 @@ date: 2022-06-26 07:33:16
 categories:
 - D_框架和类库
 toc: true # 是否启用内容索引
-
 ---
 
 Vue 是一套用于构建用户界面的渐进式框架。Vue.js 3.0 "One Piece" 正式版在 2020 年 9 月份发布,经过了 2 年多开发, 100+位贡献者, 2600+次提交, 600+次 PR，同时 Vue3 也支持 Vue2 的大多数特性,且,更好的支持了 TypeScript,也增加了很多的新特性,如:Composition API,新组件(Fragment/Teleport/Suspense)等等.
@@ -159,24 +158,25 @@ npm run dev
 
 **vue2.x 的生命周期**
 
-![lifecycle_2](https://vuejs.org/images/lifecycle.png)
+截图：https://www.cnblogs.com/L-xmin/p/13031773.html
 
 **vue3 的生命周期**
 
-![lifecycle_3](https://v3.cn.vuejs.org/images/lifecycle.png)
+截图：https://www.jianshu.com/p/3657015c35e9和https://blog.csdn.net/navysir8/article/details/122882918和https://www.cnblogs.com/qingheshiguang/p/14677198.html
 
-> Vue2--------------vue3
-> beforeCreate  -> setup() // 开始创建组件之前，在`beforeCreate`和`created`之前执行。创建的是`data`和`method`
-> created       -> setup()
-> beforeMount   -> onBeforeMount // 组件挂载到节点上之前执行
-> mounted       -> onMounted // 组件挂载完成后执行
-> beforeUpdate  -> onBeforeUpdate //  组件更新之前执行
-> updated       -> onUpdated // 组件更新完成之后执行
-> beforeDestroy -> onBeforeUnmount // 组件卸载之前执行
-> destroyed     -> onUnmounted // 组件卸载完成后执行
-> activated     -> onActivated // 被包含在`<keep-alive>`中的组件，会多出两个生命周期钩子函数。被激活时执行。
-> deactivated   -> onDeactivated // 比如从 A 组件，切换到 B 组件，A 组件消失时执行
-> errorCaptured -> onErrorCaptured // 当捕获一个来自子孙组件的异常时激活钩子函数
+| Vue2          | Vue3               |
+| ------------- | ------------------ |
+| beforeCreate  | ❌setup(替代)       |
+| created       | ❌setup(替代)       |
+| beforeMount   | onBeforeMount      |
+| mounted       | onMounted          |
+| beforeUpdate  | onBeforeUpdate     |
+| updated       | onUpdated          |
+| beforeDestroy | onBeforeUnmount    |
+| destroyed     | onUnmounted        |
+| errorCaptured | onErrorCaptured    |
+|               | 🎉onRenderTracked   |
+|               | 🎉onRenderTriggered |
 
 **新增的钩子函数onRenderTracked()和 onRenderTriggered()**
 
@@ -348,7 +348,28 @@ export default {
 > 父组件onBeforeUnmount -> 子组件onBeforeUnmount -> 子组件onUnmounted -> 父组件onUnmounted
 > ```
 
-##  setup
+## 五大API-全局API
+
+全局API —— 全局会用到的API
+
+- createApp()：创建一个应用实例
+- createSSRApp()：以SSR 激活的模式，来创建一个应用实例
+- app.mount()：将应用实例挂载到一个容器元素中
+- app.unmount()：卸载一个已挂载的应用实例
+- app.component()：如果传递的是一个字符串类型的组件名及其定义，则注册一个全局组件
+- app.directive()：如果同时传递一个名字和一个指令，那么将注册一个全局指令
+- app.use()：安装一个插件
+- app.mixin()：应用一个全局的组件mixin。(如果要进行逻辑复用的话，那么推荐使用组合式函数来替代)
+- app.config.globalProperties：用于注册“能够被应用内所有组件实例所访问到的全局属性”的对象
+- nextTick()：用来等待下一次DOM更新和刷新
+- defineComponent()：在定义vue组件时，提供【类型推导】的辅助函数
+- defineAsyncComponent()：用来定义一个异步组件，当用了这个函数时，组件在运行时是懒加载的
+
+## 五大API-组合式API
+
+组合式API —— vue3所拥有的组合式API
+
+### setup
 
 - 新的 option, 所有的组合 API 函数都在此使用, 只在初始化时执行一次
 - 函数如果返回对象, 对象中的属性或方法, 模板中可以直接使用
@@ -383,22 +404,18 @@ export default {
   <h2>App</h2>
   <p>msg: {{ msg }}</p>
   <button @click="fn('--')">更新</button>
-
   <child :msg="msg" msg2="cba" @fn="fn" />
 </template>
 
 <script lang="ts">
 import { reactive, ref } from 'vue'
 import child from './child.vue'
-
 export default {
   components: {
     child
   },
-
   setup() {
     const msg = ref('abc')
-
     function fn(content: string) {
       msg.value += content
     }
@@ -416,12 +433,9 @@ export default {
   <div>
     <h3>{{ n }}</h3>
     <h3>{{ m }}</h3>
-
     <h3>msg: {{ msg }}</h3>
     <h3>msg2: {{ $attrs.msg2 }}</h3>
-
     <slot name="xxx"></slot>
-
     <button @click="update">更新</button>
   </div>
 </template>
@@ -431,49 +445,38 @@ import { ref, defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'child',
-
   props: ['msg'],
-
   emits: ['fn'], // 可选的, 声明了更利于程序员阅读, 且可以对分发的事件数据进行校验
-
   data() {
     console.log('data', this)
     return {
       // n: 1
     }
   },
-
   beforeCreate() {
     console.log('beforeCreate', this)
   },
-
   methods: {
     // update () {
     //   this.n++
     //   this.m++
     // }
   },
-
   // setup (props, context) {
   setup(props, { attrs, emit, slots }) {
     console.log('setup', this)
     console.log(props.msg, attrs.msg2, slots, emit)
-
     const m = ref(2)
     const n = ref(3)
-
     function update() {
       // console.log('--', this)
       // this.n += 2
       // this.m += 2
-
       m.value += 2
       n.value += 2
-
       // 分发自定义事件
       emit('fn', '++')
     }
-
     return {
       m,
       n,
@@ -484,11 +487,11 @@ export default defineComponent({
 </script>
 ```
 
-## setup语法糖就是香
+### setup语法糖就是香
 
 - 组件自动注册
 - 组件核心 API
-- 属性和方法直接使用
+- 属性和方法直接使用，变量自动拆箱装箱
 
 **组件自动注册**
 
@@ -556,13 +559,7 @@ export default defineComponent({
 </script>
 ```
 
-**属性和方法直接使用**
-
-定义的属性和方法无需返回，可以直接使用
-
-
-
-## ref
+### 响应式核心-ref
 
 - 作用: 定义一个数据的响应式
 - 语法: const xxx = ref(initValue):
@@ -614,7 +611,66 @@ export default {
 </script>
 ```
 
-## reactive
+> **ref 获取元素**
+
+利用 ref 函数获取组件中的标签元素
+
+功能需求: 让输入框自动获取焦点
+
+```vue
+<template>
+  <h2>App</h2>
+  <input type="text" />
+  <input type="text" ref="inputRef" />
+</template>
+<script lang="ts">
+import { onMounted, ref } from 'vue'
+/*
+ref获取元素: 利用ref函数获取组件中的标签元素
+功能需求: 让输入框自动获取焦点
+*/
+export default {
+  setup() {
+    const inputRef = ref<HTMLElement | null>(null)
+    onMounted(() => {
+      inputRef.value && inputRef.value.focus()
+    })
+    return {
+      inputRef
+    }
+  }
+}
+</script>
+```
+
+多个ref情况：`itemRefs` 不必是数组：它也可以是一个对象，其 ref 可以通过迭代的 key 被设置。如有需要，`itemRefs` 也可以是响应式的，且可以被侦听。
+
+```
+<template>
+  <div v-for="(item, i) in list" :ref="el => { if (el) divs[i] = el }">
+    {{ item }}
+  </div>
+</template>
+<script>
+  import { ref, reactive, onBeforeUpdate } from 'vue'
+  export default {
+    setup() {
+      const list = reactive([1, 2, 3])
+      const divs = ref([])
+      // 确保在每次更新之前重置ref
+      onBeforeUpdate(() => {
+        divs.value = []
+      })
+      return {
+        list,
+        divs
+      }
+    }
+  }
+</script>
+```
+
+### 响应式核心-reactive
 
 - 作用: 定义多个数据的响应式
 - const proxy = reactive(obj): 接收一个普通对象然后返回该普通对象的响应式代理器对象
@@ -722,32 +778,7 @@ export default {
 </script>
 ```
 
-## img动态图片
-
-解法1:在将asset 前面加上src
-
-```
-<img :src="`/src/assets/blogPhotos/${name}.jpg`" />
-```
-
-解法2：官网说：“实际上，Vite 并不需要在开发阶段处理这些代码！在生产构建时，Vite 才会进行必要的转换保证 URL 在打包和资源哈希后仍指向正确的地址。”
-
-```
-<img :src="" alt="getImageUrl(name)" />
-function getImageUrl(name) {
-    return new URL(`../assets/blogPhotos/${name}.jpg`, import.meta.url).href;
-}
-```
-
-## 响应性语法糖(已废弃)
-
-[废弃原因](https://github.com/vuejs/rfcs/discussions/369#discussioncomment-5059028)：最重要的是，碎片化的潜在风险。
-
-- let count = $ref(0)
-- function myCreateRef() {  *return* ref(0) } let count = $(myCreateRef())
-- const {num} =} = defineProps<>()
-
-## computed与watch 
+### 响应式核心-computed与watch 
 
 - computed 函数:
 
@@ -955,455 +986,22 @@ onMounted(()=>{
 })
 ```
 
-## Hooks
+### 响应式-工具函数
 
-```js
-template>
-  <p>{{ person.name }}</p>
-</template>
-<script lang="ts" setup>
-// 方式一：export default整体导出，用于复用变量和函数hook
-import { usePerson } from "./hooks";
-const { person, changePersonName } = usePerson();
-// 方式二(更推荐):export单一导出，用于复用函数hook
-import { changePersonName } from "./hooks/usePerson";
-</script>
-```
+**ref相关**
 
-```vue
-// 方式一：export default整体导出，用于复用变量和函数hook。/hooks/usePerson.ts
-import { reactive, watch } from "vue";
-export default function usePerson() {
-  const person = reactive<{ name: string; sex: string }>({
-    name: "小明"
-  });
-  function changePersonName() {
-    person.name = "小浪";
-  }
-  return {
-    person,
-    changePersonName,
-  };
-}
- // 方式二：export单一导出，用于复用函数hook。/hooks/usePerson.ts
-import { reactive, watch } from "vue";
-export changePersonName(person) {
-  person.name = "小浪";
-}
-```
+- isRef()：检查某个值是否为ref
+- unref()：如果参数为ref，则返回其内部的值，否则返回参数本身
+- toRef()：toRef 可以响应对象 Object ，其针对的是某一个响应式对象（ reactive 封装）的属性prop 。与 toRef 不一样的是， toRefs 是针对整个对象的所有属性，目标在于将响应式对象（ reactive 封装）转换为普通对象
+- toRefs()：普通对象里的每一个属性 prop 都对应一个 ref，常用于想要在合成函数中返回响应式对象
 
-## toRefs
+**is相关**
 
-把一个响应式对象转换成普通对象，该普通对象的每个 property 都是一个 ref
+- isProxy()：检查一个对象是否是由 reactive()、readonly()、shallowReactive() 或 shallowReadonly() 创建的代理
+- isReactive()：检查一个对象是否是由 reactive() 或 shallowReactive() 创建的代理
+- isReadonly()：检查一个对象是否是由 readonly() 或 shallowReadonly() 创建的代理
 
-应用: 当从合成函数返回响应式对象时，toRefs 非常有用，这样消费组件就可以在不丢失响应式的情况下对返回的对象进行分解使用
-
-问题: reactive 对象取出的所有属性值都是非响应式的
-
-解决: 利用 toRefs 可以将一个响应式 reactive 对象的所有原始属性转换为响应式的 ref 属性
-
-```vue
-<template>
-  <h2>App</h2>
-  <h3>foo: {{ foo }}</h3>
-  <h3>bar: {{ bar }}</h3>
-  <h3>foo2: {{ foo2 }}</h3>
-  <h3>bar2: {{ bar2 }}</h3>
-</template>
-
-<script lang="ts">
-import { reactive, toRefs } from 'vue'
-/*
-toRefs:
-  将响应式对象中所有属性包装为ref对象, 并返回包含这些ref对象的普通对象
-  应用: 当从合成函数返回响应式对象时，toRefs 非常有用，
-        这样消费组件就可以在不丢失响应式的情况下对返回的对象进行分解使用
-*/
-export default {
-  setup() {
-    const state = reactive({
-      foo: 'a',
-      bar: 'b'
-    })
-
-    const stateAsRefs = toRefs(state)
-
-    setTimeout(() => {
-      state.foo += '++'
-      state.bar += '++'
-    }, 2000)
-
-    const { foo2, bar2 } = useReatureX()
-
-    return {
-      // ...state,
-      ...stateAsRefs,
-      foo2,
-      bar2
-    }
-  }
-}
-
-function useReatureX() {
-  const state = reactive({
-    foo2: 'a',
-    bar2: 'b'
-  })
-
-  setTimeout(() => {
-    state.foo2 += '++'
-    state.bar2 += '++'
-  }, 2000)
-
-  return toRefs(state)
-}
-</script>
-```
-
-## ref 获取元素
-
-利用 ref 函数获取组件中的标签元素
-
-功能需求: 让输入框自动获取焦点
-
-```vue
-<template>
-  <h2>App</h2>
-  <input type="text" />
-  <input type="text" ref="inputRef" />
-</template>
-<script lang="ts">
-import { onMounted, ref } from 'vue'
-/*
-ref获取元素: 利用ref函数获取组件中的标签元素
-功能需求: 让输入框自动获取焦点
-*/
-export default {
-  setup() {
-    const inputRef = ref<HTMLElement | null>(null)
-    onMounted(() => {
-      inputRef.value && inputRef.value.focus()
-    })
-    return {
-      inputRef
-    }
-  }
-}
-</script>
-```
-
-多个ref情况：`itemRefs` 不必是数组：它也可以是一个对象，其 ref 可以通过迭代的 key 被设置。如有需要，`itemRefs` 也可以是响应式的，且可以被侦听。
-
-```
-<template>
-  <div v-for="(item, i) in list" :ref="el => { if (el) divs[i] = el }">
-    {{ item }}
-  </div>
-</template>
-<script>
-  import { ref, reactive, onBeforeUpdate } from 'vue'
-  export default {
-    setup() {
-      const list = reactive([1, 2, 3])
-      const divs = ref([])
-      // 确保在每次更新之前重置ref
-      onBeforeUpdate(() => {
-        divs.value = []
-      })
-      return {
-        list,
-        divs
-      }
-    }
-  }
-</script>
-```
-
-## Suspense异步组件
-
-Vue3 提供 `Suspense`组件，允许程序在等待异步组件时渲染兜底的内容，如 loading ，使用户体验更平滑。使用它，需在模板中声明，并包括两个命名插槽：`default`和`fallback`。`Suspense`确保加载完异步内容时显示默认插槽，并将`fallback`插槽用作加载状态。
-
-```vue
-<tempalte>
-   <suspense>
-     <template #default>
-       <todo-list />
-     </template>
-     <template #fallback>
-       <div>
-         Loading...
-       </div>
-     </template>
-   </suspense>
-</template>
-```
-
-## Teleport
-
-Vue3 提供`Teleport`组件可将部分DOM移动到 Vue app之外的位置。比如项目中常见的`Dialog`组件。
-
-```vue
-<button @click=dialogVisible = true>点击</button>
-<teleport to=body>
-   <div class=dialog v-if=dialogVisible>
-   </div>
-</teleport>
-```
-
-## 样式改动
-
-**样式穿透**
-
-```
-// vue2
-<style scoped>
-.a /deep/ .b {
-  /* ... */
-}
-</style>
-
-// vue3
-<style scoped>
-.a :deep(.b) {
-  /* ... */
-}
-```
-
-**全局样式和局部样式**
-
-```
-局部样式
-<style scoped>
-/* local styles */
-</style>
-```
-
-```
-全局样式：不带scope
-<style>
-/* global styles */
-</style>
-
-全局样式：使用:global伪类
-// 创建一个.red的全局类样式
-<style scoped>
-:global(.red) {
-  color: red;
-}
-</style>
-```
-
-## 状态驱动的动态 CSS
-
-```
-<script setup>
-const size = 10
-</script>
-<style scoped>
-.home {
-  width: v-bind(size + "px");
-}
-</style>
-```
-
-## 插槽选择器
-
-默认情况下，作用域样式不会影响到 `<slot/>` 渲染出来的内容，因为它们被认为是父组件所持有并传递进来的。使用 `:slotted` 伪类以确切地将插槽内容作为选择器的目标。
-
-```
-// 父组件
-<Child3>
-  <div class="slot1">我是slot传递过来的</div>
-</Child3>
-// 子组件里写样式
-<style scoped>
-:slotted(.slot1) {
-  color: red;
-}
-</style>
-// 或者直接在父组件里写样式
-<style scoped>
-.slot1 {
-  color: red;
-}
-</style>
-```
-
-## Composition API(其它部分)
-
-### shallowReactive 与 shallowRef
-
-- shallowReactive : 只处理了对象内最外层属性的响应式(也就是浅响应式)
-- shallowRef: 只处理了 value 的响应式, 不进行对象的 reactive 处理
-
-- 什么时候用浅响应式呢?
-  - 一般情况下使用 ref 和 reactive 即可
-  - 如果有一个对象数据, 结构比较深, 但变化时只是外层属性变化 ===> shallowReactive
-  - 如果有一个对象数据, 后面会产生新的对象来替换 ===> shallowRef
-
-```vue
-<template>
-  <h2>App</h2>
-  <h3>m1: {{ m1 }}</h3>
-  <h3>m2: {{ m2 }}</h3>
-  <h3>m3: {{ m3 }}</h3>
-  <h3>m4: {{ m4 }}</h3>
-  <button @click="update">更新</button>
-</template>
-
-<script lang="ts">
-import { reactive, ref, shallowReactive, shallowRef } from 'vue'
-/*
-shallowReactive与shallowRef
-  shallowReactive: 只处理了对象内最外层属性的响应式(也就是浅响应式)
-  shallowRef: 只处理了value的响应式, 不进行对象的reactive处理
-总结:
-  reactive与ref实现的是深度响应式, 而shallowReactive与shallowRef是浅响应式
-  什么时候用浅响应式呢?
-    一般情况下使用ref和reactive即可,
-    如果有一个对象数据, 结构比较深, 但变化时只是外层属性变化 ===> shallowReactive
-    如果有一个对象数据, 后面会产生新的对象来替换 ===> shallowRef
-*/
-export default {
-  setup() {
-    const m1 = reactive({ a: 1, b: { c: 2 } })
-    const m2 = shallowReactive({ a: 1, b: { c: 2 } })
-    const m3 = ref({ a: 1, b: { c: 2 } })
-    const m4 = shallowRef({ a: 1, b: { c: 2 } })
-
-    const update = () => {
-      // m1.b.c += 1
-      // m2.b.c += 1
-      // m3.value.a += 1
-      m4.value.a += 1
-    }
-    return {
-      m1,
-      m2,
-      m3,
-      m4,
-      update
-    }
-  }
-}
-</script>
-```
-
-### readonly 与 shallowReadonly
-
-- readonly:
-  - 深度只读数据
-  - 获取一个对象 (响应式或纯对象) 或 ref 并返回原始代理的只读代理。
-  - 只读代理是深层的：访问的任何嵌套 property 也是只读的。
-- shallowReadonly
-  - 浅只读数据
-  - 创建一个代理，使其自身的 property 为只读，但不执行嵌套对象的深度只读转换
-- 应用场景:
-  - 在某些特定情况下, 我们可能不希望对数据进行更新的操作, 那就可以包装生成一个只读代理对象来读取数据, 而不能修改或删除
-
-```vue
-<template>
-  <h2>App</h2>
-  <h3>{{ state }}</h3>
-  <button @click="update">更新</button>
-</template>
-
-<script lang="ts">
-import { reactive, readonly, shallowReadonly } from 'vue'
-/*
-readonly: 深度只读数据
-  获取一个对象 (响应式或纯对象) 或 ref 并返回原始代理的只读代理。
-  只读代理是深层的：访问的任何嵌套 property 也是只读的。
-shallowReadonly: 浅只读数据
-  创建一个代理，使其自身的 property 为只读，但不执行嵌套对象的深度只读转换
-应用场景:
-  在某些特定情况下, 我们可能不希望对数据进行更新的操作, 那就可以包装生成一个只读代理对象来读取数据, 而不能修改或删除
-*/
-
-export default {
-  setup() {
-    const state = reactive({
-      a: 1,
-      b: {
-        c: 2
-      }
-    })
-
-    // const rState1 = readonly(state)
-    const rState2 = shallowReadonly(state)
-
-    const update = () => {
-      // rState1.a++ // error
-      // rState1.b.c++ // error
-
-      // rState2.a++ // error
-      rState2.b.c++
-    }
-
-    return {
-      state,
-      update
-    }
-  }
-}
-</script>
-```
-
-### toRaw 与 markRaw
-
-- toRaw
-  - 返回由 `reactive` 或 `readonly` 方法转换成响应式代理的普通对象。
-  - 这是一个还原方法，可用于临时读取，访问不会被代理/跟踪，写入时也不会触发界面更新。
-- markRaw
-  - 标记一个对象，使其永远不会转换为代理。返回对象本身
-  - 应用场景:
-    - 有些值不应被设置为响应式的，例如复杂的第三方类实例或 Vue 组件对象。
-    - 当渲染具有不可变数据源的大列表时，跳过代理转换可以提高性能。
-
-```vue
-<template>
-  <h2>{{ state }}</h2>
-  <button @click="testToRaw">测试toRaw</button>
-  <button @click="testMarkRaw">测试markRaw</button>
-</template>
-
-<script lang="ts">
-/*
-toRaw: 得到reactive代理对象的目标数据对象
-*/
-import { markRaw, reactive, toRaw } from 'vue'
-export default {
-  setup() {
-    const state = reactive<any>({
-      name: 'tom',
-      age: 25
-    })
-
-    const testToRaw = () => {
-      const user = toRaw(state)
-      user.age++ // 界面不会更新
-    }
-
-    const testMarkRaw = () => {
-      const likes = ['a', 'b']
-      // state.likes = likes
-      state.likes = markRaw(likes) // likes数组就不再是响应式的了
-      setTimeout(() => {
-        state.likes[0] += '--'
-      }, 1000)
-    }
-
-    return {
-      state,
-      testToRaw,
-      testMarkRaw
-    }
-  }
-}
-</script>
-```
-
-### toRef
+> **toRef**
 
 - 为源响应式对象上的某个属性创建一个 ref 对象, 二者内部操作的是同一个数据值, 更新时二者是同步的
 - 区别 ref: 拷贝了一份新的数据值单独操作, 更新时相互不影响
@@ -1496,7 +1094,167 @@ export default component
 </script>
 ```
 
-###  customRef
+> **toRefs**
+
+把一个响应式对象转换成普通对象，该普通对象的每个 property 都是一个 ref
+
+应用: 当从合成函数返回响应式对象时，toRefs 非常有用，这样消费组件就可以在不丢失响应式的情况下对返回的对象进行分解使用
+
+问题: reactive 对象取出的所有属性值都是非响应式的
+
+解决: 利用 toRefs 可以将一个响应式 reactive 对象的所有原始属性转换为响应式的 ref 属性
+
+```vue
+<template>
+  <h2>App</h2>
+  <h3>foo: {{ foo }}</h3>
+  <h3>bar: {{ bar }}</h3>
+  <h3>foo2: {{ foo2 }}</h3>
+  <h3>bar2: {{ bar2 }}</h3>
+</template>
+
+<script lang="ts">
+import { reactive, toRefs } from 'vue'
+/*
+toRefs:
+  将响应式对象中所有属性包装为ref对象, 并返回包含这些ref对象的普通对象
+  应用: 当从合成函数返回响应式对象时，toRefs 非常有用，
+        这样消费组件就可以在不丢失响应式的情况下对返回的对象进行分解使用
+*/
+export default {
+  setup() {
+    const state = reactive({
+      foo: 'a',
+      bar: 'b'
+    })
+
+    const stateAsRefs = toRefs(state)
+
+    setTimeout(() => {
+      state.foo += '++'
+      state.bar += '++'
+    }, 2000)
+
+    const { foo2, bar2 } = useReatureX()
+
+    return {
+      // ...state,
+      ...stateAsRefs,
+      foo2,
+      bar2
+    }
+  }
+}
+
+function useReatureX() {
+  const state = reactive({
+    foo2: 'a',
+    bar2: 'b'
+  })
+
+  setTimeout(() => {
+    state.foo2 += '++'
+    state.bar2 += '++'
+  }, 2000)
+
+  return toRefs(state)
+}
+</script>
+```
+
+### 响应式-进阶函数
+
+**响应式**
+
+- shallowRef()：ref的浅层作用形式，和ref()不同的是，浅层ref的内部值将会原样存储和暴露，并且不会被深层递归转为响应式。只有.value的访问是响应式的。常见场景：①对大型数据结构的性能优化；②外部的状态管理系统集成。
+- triggerRef()：强制触发【依赖于浅层ref的副作用】，常用于：对浅引用shallowRef的内部值进行深度变更时。
+- customRef()：创建一个自定义ref，显示地声明将要对其进行【依赖追踪】和【更新触发】的控制方式。一般来说，track()应该在get()方法中调用，而trigger()方法应该在set()中调用。但其实，想要怎么调用，自己来控制就好啦！常用场景：防抖场景
+- shallowReactive()：reactive()的浅层作用形式。和reactive不同的是，这里没有深层级的转换，它只有【根级别】的属性是响应式的。属性的值乎一杯原样存储和暴露，这也就意味着值为ref的属性【不会被自动解包】。
+
+**只读**
+
+- shallowReadonly()：readonly()的浅层作用形式。和readonly()不同的是，这里没有深层级的转换。只有根层级的属性变为了只读，其他层级的都可以正常访问。属性的值都会被原样存储和暴露，这也意味着根部【值为ref的属性】不会被自动解包。
+
+**raw**
+
+- toRaw()：根据一个vue创建的代理，返回其【原始对象】。toRaw可以返回由reactive()、readonly()、shallowReactive()创建的代理所对应的原始对象。常用于：①可以临时读取而不会引起代理访问/跟踪开销的场景；② 可以写入而不触发更改的特殊方法。
+
+  不建议保存对原始对象的持久引用，要注意谨慎使用
+
+- markRaw()：将一个对象标记为【不可被转为代理】，返回该【对象本身】。可以理解为让对象【不能拥有响应式功能】。markRaw()和类似shallowReactive()这样的浅层式API可以使你有选择地避开默认的深度响应/只读转换，并在状态关系中嵌入原始的、非代理的对象。
+
+  谨慎使用的几点原因：
+
+  - 有些值不应该是响应式的，例如复杂的第三方类实例或 Vue 组件对象。
+  - 当呈现带有【不可变数据源】的大型列表时，跳过代理转换可以提高性能。
+  - 这可以说是一种进阶需求，因为只在根层访问能到原始值，所以如果把一个嵌套的、没有标记的原始对象设置成一个响应式对象，然后再次访问它，你获取到的是代理的版本。
+  - 它可能会导致对象身份风险，即执行一个依赖于对象身份的操作，但却同时使用了同一对象的原始版本和代理版本。
+
+**scope**
+
+- effectScope()：可以处理掉所创建的响应式副作用（即计算属性和侦听器watch/watchEffect）。也就是说，如果你创建了【无用的】响应式数据，那么可以通过effectScope()这个API，来处理掉这些无用的副作用
+- getCurrentScope()：如果有的话，返回当前活跃的【effect作用域】，即effectScope()中活跃的作用域
+- onScopeDispose()：在当前活跃的effect作用域上，注册一个处理回调的函数。当相关的effect作用域停止时，将会调用上述这个回调函数。常用场景：这个方法可以作为【可复用的组合式函数】中【onUnmounted】的替代品，且它不会与组件耦合，因为对于每一个vue组件的setup()函数来说，它们也是在一个【effect作用域】中调用的。
+
+> **shallowReactive 与 shallowRef**
+
+- shallowReactive : 只处理了对象内最外层属性的响应式(也就是浅响应式)
+- shallowRef: 只处理了 value 的响应式, 不进行对象的 reactive 处理
+
+- 什么时候用浅响应式呢?
+  - 一般情况下使用 ref 和 reactive 即可
+  - 如果有一个对象数据, 结构比较深, 但变化时只是外层属性变化 ===> shallowReactive
+  - 如果有一个对象数据, 后面会产生新的对象来替换 ===> shallowRef
+
+```vue
+<template>
+  <h2>App</h2>
+  <h3>m1: {{ m1 }}</h3>
+  <h3>m2: {{ m2 }}</h3>
+  <h3>m3: {{ m3 }}</h3>
+  <h3>m4: {{ m4 }}</h3>
+  <button @click="update">更新</button>
+</template>
+
+<script lang="ts">
+import { reactive, ref, shallowReactive, shallowRef } from 'vue'
+/*
+shallowReactive与shallowRef
+  shallowReactive: 只处理了对象内最外层属性的响应式(也就是浅响应式)
+  shallowRef: 只处理了value的响应式, 不进行对象的reactive处理
+总结:
+  reactive与ref实现的是深度响应式, 而shallowReactive与shallowRef是浅响应式
+  什么时候用浅响应式呢?
+    一般情况下使用ref和reactive即可,
+    如果有一个对象数据, 结构比较深, 但变化时只是外层属性变化 ===> shallowReactive
+    如果有一个对象数据, 后面会产生新的对象来替换 ===> shallowRef
+*/
+export default {
+  setup() {
+    const m1 = reactive({ a: 1, b: { c: 2 } })
+    const m2 = shallowReactive({ a: 1, b: { c: 2 } })
+    const m3 = ref({ a: 1, b: { c: 2 } })
+    const m4 = shallowRef({ a: 1, b: { c: 2 } })
+
+    const update = () => {
+      // m1.b.c += 1
+      // m2.b.c += 1
+      // m3.value.a += 1
+      m4.value.a += 1
+    }
+    return {
+      m1,
+      m2,
+      m3,
+      m4,
+      update
+    }
+  }
+}
+</script>
+```
+
+> **customRef**
 
 - 创建一个自定义的 ref，并对其依赖项跟踪和更新触发进行显式控制
 - 需求: 使用 customRef 实现 debounce 的示例
@@ -1555,7 +1313,129 @@ function useDebouncedRef<T>(value: T, delay = 200) {
 </script>
 ```
 
-###  provide 与 inject
+> **readonly 与 shallowReadonly**
+
+- readonly:
+  - 深度只读数据
+  - 获取一个对象 (响应式或纯对象) 或 ref 并返回原始代理的只读代理。
+  - 只读代理是深层的：访问的任何嵌套 property 也是只读的。
+- shallowReadonly
+  - 浅只读数据
+  - 创建一个代理，使其自身的 property 为只读，但不执行嵌套对象的深度只读转换
+- 应用场景:
+  - 在某些特定情况下, 我们可能不希望对数据进行更新的操作, 那就可以包装生成一个只读代理对象来读取数据, 而不能修改或删除
+
+```vue
+<template>
+  <h2>App</h2>
+  <h3>{{ state }}</h3>
+  <button @click="update">更新</button>
+</template>
+
+<script lang="ts">
+import { reactive, readonly, shallowReadonly } from 'vue'
+/*
+readonly: 深度只读数据
+  获取一个对象 (响应式或纯对象) 或 ref 并返回原始代理的只读代理。
+  只读代理是深层的：访问的任何嵌套 property 也是只读的。
+shallowReadonly: 浅只读数据
+  创建一个代理，使其自身的 property 为只读，但不执行嵌套对象的深度只读转换
+应用场景:
+  在某些特定情况下, 我们可能不希望对数据进行更新的操作, 那就可以包装生成一个只读代理对象来读取数据, 而不能修改或删除
+*/
+
+export default {
+  setup() {
+    const state = reactive({
+      a: 1,
+      b: {
+        c: 2
+      }
+    })
+
+    // const rState1 = readonly(state)
+    const rState2 = shallowReadonly(state)
+
+    const update = () => {
+      // rState1.a++ // error
+      // rState1.b.c++ // error
+
+      // rState2.a++ // error
+      rState2.b.c++
+    }
+
+    return {
+      state,
+      update
+    }
+  }
+}
+</script>
+```
+
+> **toRaw 与 markRaw**
+
+- toRaw
+  - 返回由 `reactive` 或 `readonly` 方法转换成响应式代理的普通对象。
+  - 这是一个还原方法，可用于临时读取，访问不会被代理/跟踪，写入时也不会触发界面更新。
+- markRaw
+  - 标记一个对象，使其永远不会转换为代理。返回对象本身
+  - 应用场景:
+    - 有些值不应被设置为响应式的，例如复杂的第三方类实例或 Vue 组件对象。
+    - 当渲染具有不可变数据源的大列表时，跳过代理转换可以提高性能。
+
+```vue
+<template>
+  <h2>{{ state }}</h2>
+  <button @click="testToRaw">测试toRaw</button>
+  <button @click="testMarkRaw">测试markRaw</button>
+</template>
+
+<script lang="ts">
+/*
+toRaw: 得到reactive代理对象的目标数据对象
+*/
+import { markRaw, reactive, toRaw } from 'vue'
+export default {
+  setup() {
+    const state = reactive<any>({
+      name: 'tom',
+      age: 25
+    })
+
+    const testToRaw = () => {
+      const user = toRaw(state)
+      user.age++ // 界面不会更新
+    }
+
+    const testMarkRaw = () => {
+      const likes = ['a', 'b']
+      // state.likes = likes
+      state.likes = markRaw(likes) // likes数组就不再是响应式的了
+      setTimeout(() => {
+        state.likes[0] += '--'
+      }, 1000)
+    }
+
+    return {
+      state,
+      testToRaw,
+      testMarkRaw
+    }
+  }
+}
+</script>
+```
+
+### 响应性语法糖(已废弃)
+
+[废弃原因](https://github.com/vuejs/rfcs/discussions/369#discussioncomment-5059028)：最重要的是，碎片化的潜在风险。
+
+- let count = $ref(0)
+- function myCreateRef() {  *return* ref(0) } let count = $(myCreateRef())
+- const {num} =} = defineProps<>()
+
+### 依赖注入provide 与 inject
 
 - provide`和`inject`提供依赖注入，功能类似 2.x 的`provide/inject
 
@@ -1637,54 +1517,64 @@ export default {
 </script>
 ```
 
-###  响应式数据的判断
+## 五大API-选项式API
 
-- isRef: 检查一个值是否为一个 ref 对象
-- isReactive: 检查一个对象是否是由 `reactive` 创建的响应式代理
-- isReadonly: 检查一个对象是否是由 `readonly` 创建的只读代理
-- isProxy: 检查一个对象是否是由 `reactive` 或者 `readonly` 方法创建的代理
+选项式API —— vue2所拥有的选项式API
 
-## 其它新组合和API
+### 状态选项
 
-### 新组件
+- data
+- props
+- computed
+- methods
+- watch
+- emits：用于声明由组件触发的自定义事件
+- expose：用于声明"当组件实例被父组件通过模板引用访问时"所暴露的公共属性
 
-**1) Fragment(片断)**
+### 渲染选项
 
-- 在 Vue2 中: 组件必须有一个根标签
-- 在 Vue3 中: 组件可以没有根标签, 内部会将多个标签包含在一个 Fragment 虚拟元素中
-- 好处: 减少标签层级, 减小内存占用
+- template：用于声明组件的字符串模板。如果 render 选项也同时存在于该组件中，template 将被忽略。
+- render：用于编程式地创建组件虚拟 DOM 树的函数
+- compilerOptions：用于配置组件模板在运行时的编译器选项。仅在使用完整构建版本时才有效（浏览器运行vue.js文件时才有效，可以理解为html里面引用了vue.js的脚本）
 
-```vue
-<template>
-  <h2>aaaa</h2>
-  <h2>aaaa</h2>
-</template>
-```
+### 组合选项
 
-**2) Teleport(瞬移)**
+- provide：提供可以被后代组件注入的值
+- inject：声明来自于上层想要注入进当前组件的属性
+- mixins：mixins是一个包含”组件选项对象的”数组，这些选项都将被混入到当前组件的实例中
+- extends：将要继承的“基类”组件
 
-- Teleport 提供了一种干净的方法, 让组件的 html 在父组件界面外的特定标签(很可能是 body)下插入显示
+## 五大API-内置内容
+
+内置内容 —— 指令、组件、特殊元素和特殊属性
+
+### **指令**
+
+- v-for：如果跟v-if一起使用时，v-if的优先级更高，但不推荐一起使用，容易造成各种混淆
+- v-slot：主要用途：①声明具名插槽；②期望接收props的作用域插槽。
+
+### **组件**
+
+- TransitionGroup：为列表中多个元素提供过度效果
+- KeepAlive
+- Teleport：将插槽内容渲染到Dom的另外一个位置
+- Suspense：解决异步问题
+
+**Teleport(瞬移)**
+
+- Vue3 提供`Teleport`组件可将部分DOM移动到 Vue app之外的位置。比如项目中常见的`Dialog`组件。
 
 ModalButton.vue
 
 ```vue
 <template>
-  <button @click="modalOpen = true">
-    Open full screen modal! (With teleport!)
-  </button>
-
+  <button @click="modalOpen = true"></button>
   <teleport to="body">
     <div v-if="modalOpen" class="modal">
-      <div>
-        I'm a teleported modal! (My parent is "body")
-        <button @click="modalOpen = false">
-          Close
-        </button>
-      </div>
+      <div><button @click="modalOpen = false">Close</button></div>
     </div>
   </teleport>
 </template>
-
 <script>
 import { ref } from 'vue'
 export default {
@@ -1697,7 +1587,6 @@ export default {
   }
 }
 </script>
-
 <style>
 .modal {
   position: absolute;
@@ -1732,7 +1621,6 @@ App.vue
   <h2>App</h2>
   <modal-button></modal-button>
 </template>
-
 <script lang="ts">
 import ModalButton from './ModalButton.vue'
 
@@ -1740,7 +1628,6 @@ export default {
   setup() {
     return {}
   },
-
   components: {
     ModalButton
   }
@@ -1748,24 +1635,22 @@ export default {
 </script>
 ```
 
-**3) Suspense(不确定的)**
+**Suspense(不确定的)**
 
-- 它们允许我们的应用程序在等待异步组件时渲染一些后备内容，可以让我们创建一个平滑的用户体验
+- Vue3 提供 `Suspense`组件，允许程序在等待异步组件时渲染兜底的内容，如 loading ，使用户体验更平滑。使用它，需在模板中声明，并包括两个命名插槽：`default`和`fallback`。`Suspense`确保加载完异步内容时显示默认插槽，并将`fallback`插槽用作加载状态。
 
 ```vue
 <template>
   <Suspense>
-    <template v-slot:default>
+    <template #default>
       <AsyncComp />
       <!-- <AsyncAddress/> -->
     </template>
-
-    <template v-slot:fallback>
+    <template #fallback>
       <h1>LOADING...</h1>
     </template>
   </Suspense>
 </template>
-
 <script lang="ts">
 /*
 异步组件 + Suspense组件
@@ -1778,7 +1663,6 @@ export default {
   setup() {
     return {}
   },
-
   components: {
     AsyncComp,
     AsyncAddress
@@ -1834,32 +1718,165 @@ export default {
 </script>
 ```
 
-### 其他新的 API
+### img动态图片
 
-**全新的全局 API**
+解法1:在将asset 前面加上src
 
-- createApp()
-- defineProperty()
-- defineAsyncComponent()
-- nextTick()
+```
+<img :src="`/src/assets/blogPhotos/${name}.jpg`" />
+```
 
-**将原来的全局 API 转移到应用对象**
+解法2：官网说：“实际上，Vite 并不需要在开发阶段处理这些代码！在生产构建时，Vite 才会进行必要的转换保证 URL 在打包和资源哈希后仍指向正确的地址。”
 
-- app.component()
-- app.config()
-- app.directive()
-- app.mount()
-- app.unmount()
-- app.use()
+```
+<img :src="" alt="getImageUrl(name)" />
+function getImageUrl(name) {
+    return new URL(`../assets/blogPhotos/${name}.jpg`, import.meta.url).href;
+}
+```
 
-**模板语法变化**
+### 状态驱动的动态 CSS
 
-- v-model 的本质变化
-  - prop：value -> modelValue；
-  - event：input -> update:modelValue；
-- .sync 修改符已移除, 由 v-model 代替
-  - `<ChildComponent v-model:title="pageTitle" v-model:content="pageContent" />`
-- v-if 优先 v-for 解析
+```
+<script setup>
+const size = 10
+</script>
+<style scoped>
+.home {
+  width: v-bind(size + "px");
+}
+</style>
+```
+
+### 插槽选择器
+
+默认情况下，作用域样式不会影响到 `<slot/>` 渲染出来的内容，因为它们被认为是父组件所持有并传递进来的。使用 `:slotted` 伪类以确切地将插槽内容作为选择器的目标。
+
+```
+// 父组件
+<Child3>
+  <div class="slot1">我是slot传递过来的</div>
+</Child3>
+// 子组件里写样式
+<style scoped>
+:slotted(.slot1) {
+  color: red;
+}
+</style>
+// 或者直接在父组件里写样式
+<style scoped>
+.slot1 {
+  color: red;
+}
+</style>
+```
+
+### 样式穿透和全局样式
+
+**样式穿透**
+
+```
+// vue2
+<style scoped>
+.a /deep/ .b {
+  /* ... */
+}
+</style>
+
+// vue3
+<style scoped>
+.a :deep(.b) {
+  /* ... */
+}
+```
+
+**全局样式和局部样式**
+
+```
+局部样式
+<style scoped>
+/* local styles */
+</style>
+```
+
+```
+全局样式：不带scope
+<style>
+/* global styles */
+</style>
+
+全局样式：使用:global伪类
+// 创建一个.red的全局类样式
+<style scoped>
+:global(.red) {
+  color: red;
+}
+</style>
+```
+
+## 五大API-进阶API
+
+进阶API —— 渲染函数、TS工具类型和自定义渲染
+
+**渲染函数**
+
+- h()：创建虚拟DOM节点
+- mergeProps()：合并多个props对象，用于处理【含有特定的props参数】的情况
+
+**服务端渲染**
+
+- renderToString()：从 vue/server-renderer 中导出。传入一个可选的上下文对象，可以用来在渲染过程中记录额外的数据，比如：访问teleprt的内容。该上下文对象可以在组件代码里面，通过 useSSRContext 辅助函数来进行访问
+
+**TS工具类型**
+
+- PropType<T>：用于给prop标注更复杂的类型定义
+- ComponentCustomProperties：用于增强组件实例类型，以用来更好地支持自定义全局属性。
+- ComponentCustomOptions：用于扩展组件选项类型，以更好地支持自定义选项。
+- ComponentCustomProps：用于扩展全局可用的 TSX props，以便在TSX元素上，使用从来没有在【组件选项上】定义过的 props
+- CSSProperties：在样式属性绑定上，允许有更多种【值的类型】。比如：我们平常只能用color: blue，那么我们可以扩展出一个 --bg-color ，最终就可以用 【‘--bg-color’: 'blue'】来表示
+
+**自定义渲染**
+
+- createRenderer()：从 @vue/runtime-core 中导出，创建一个自定渲染器，通过平台所提供的特定节点，来创建以及更改API，可以在非DOM环境中也享受到Vue核心运行时的特性。
+
+## Hooks
+
+```js
+template>
+  <p>{{ person.name }}</p>
+</template>
+<script lang="ts" setup>
+// 方式一：export default整体导出，用于复用变量和函数hook
+import { usePerson } from "./hooks";
+const { person, changePersonName } = usePerson();
+// 方式二(更推荐):export单一导出，用于复用函数hook
+import { changePersonName } from "./hooks/usePerson";
+</script>
+```
+
+```vue
+// 方式一：export default整体导出，用于复用变量和函数hook。/hooks/usePerson.ts
+import { reactive, watch } from "vue";
+export default function usePerson() {
+  const person = reactive<{ name: string; sex: string }>({
+    name: "小明"
+  });
+  function changePersonName() {
+    person.name = "小浪";
+  }
+  return {
+    person,
+    changePersonName,
+  };
+}
+ // 方式二：export单一导出，用于复用函数hook。/hooks/usePerson.ts
+import { reactive, watch } from "vue";
+export changePersonName(person) {
+  person.name = "小浪";
+}
+```
+
+
 
 ## pinia入门
 
@@ -1886,8 +1903,6 @@ const counterStoreForSetup = useCounterStoreForSetup();
 const { count, doubleCount } = storeToRefs(counterStoreForSetup);
 const { increment } = counterStoreForSetup;
 ```
-
-
 
 # 高级
 
@@ -2003,3 +2018,5 @@ export default defineComponent({
 })
 </script>
 ```
+
+11
