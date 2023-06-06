@@ -1,5 +1,5 @@
 ---
-title: 原形原型链继承
+title: 原形原型链继承闭包
 date: 2022-05-29 07:33:16
 categories:
 - B_JS
@@ -301,7 +301,7 @@ let obj = myNew(person)('chen', 18) // {name: "chen", age: 18}
 
 [深入理解javascript原型和闭包（完结）](https://www.cnblogs.com/wangfupeng1988/p/3977924.html)
 
-# 闭包大合集
+# 闭包
 
 ## **定义**
 
