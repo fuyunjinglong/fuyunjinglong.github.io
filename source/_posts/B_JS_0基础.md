@@ -3187,6 +3187,28 @@ readyState是XMLHttpRequest对象的一个属性，用来标识当前XMLHttpRequ
 
 # 手写-EventBus
 
+极简版本
+
+```
+class SyncHook {
+  constructor() {
+    this.taps = [];
+  }
+
+  //注册监听函数，这里的name其实没啥用
+  tap(name, fn) {
+    this.taps.push({ name, fn });
+  }
+
+  //执行函数
+  call(...args) {
+    this.taps.forEach((tap) => tap.fn(...args));
+  }
+}
+```
+
+一般版本
+
 ```js
 // 组件通信，一个触发与监听的过程
 class EventEmitter {

@@ -1,5 +1,5 @@
 ---
-title: 博客_Hexo搭建
+title: 博客_Hexo
 date: 2021-11-06 06:33:16
 categories:
 - H_工程热点

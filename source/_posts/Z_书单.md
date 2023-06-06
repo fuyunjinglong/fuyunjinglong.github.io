@@ -12,6 +12,8 @@ toc: true # 是否启用内容索引
 
 ## 前端
 
+[awesome-book](https://github.com/fuyunjinglong/awesome-books/)
+
 [黑马程序员pink](https://www.bilibili.com/video/BV14J4114768)
 
 [黑马程序员JavaScript核心教程](https://www.bilibili.com/video/BV1k4411w7sV)
@@ -154,7 +156,7 @@ javascript语言精粹与编程实践
 - 《深入分析Java Web技术内幕 旧版》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1SSs5GwTMFX-Oxo3_mijLyg)提取码：8s2v
 - 《SSM企业级框架实战》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1BQNBTyb7xvsp5xDl9X0wbg)提取码：h5p2
 
-### 后端架构
+### 架构
 
 - 《Redis开发与运维(付磊)》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1J3P3XLdvP9gr3umPe2Y3IA)提取码：rtow
 - 《后台开发》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1jfXLNkyByzprEtqiuC9R_A)提取码：7k53
@@ -163,7 +165,7 @@ javascript语言精粹与编程实践
 - 《Kafka权威指南》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1D-oNXE-OiOZ-nTzwOjc92w)提取码：pn4r
 - 《RabbitMQ实战指南》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1riCazeEYSNLJxGaI9QzZzA)提取码：l0xj
 
-### java大数据
+### 大数据
 
 - 《大数据架构师指南》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1NtepEEqg6QlXW0mpgwJY4Q)提取码：vi00
 - 《大数据之路：阿里巴巴大数据实践》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1L8-ytWwG458IQ0pcN89gkg)提取码：xbco

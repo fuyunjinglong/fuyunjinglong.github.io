@@ -160,3 +160,4 @@ toc: true # 是否启用内容索引
 # React
 
 - [必须要会的 50 道 React 面试题](https://segmentfault.com/a/1190000018604138)
+- [当公司要求你必须会 React，Vueer 不得不学](https://juejin.cn/post/7173953093158060039#heading-3)

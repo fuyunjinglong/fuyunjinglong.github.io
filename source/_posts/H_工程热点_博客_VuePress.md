@@ -1,5 +1,5 @@
 ---
-title: 博客_VuePress搭建
+title: 博客_VuePress
 date: 2022-09-12 07:33:16
 categories:
 - H_工程热点

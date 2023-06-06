@@ -1,5 +1,5 @@
 ---
-title: 性能优化_webpack入门到精通
+title: 性能优化_webpack
 date: 2023-03-12 10:33:16
 categories:
 - H_工程热点
@@ -229,11 +229,47 @@ module.exports = {
 
 # 进阶
 
-## webpack-loader文件解析器
+## webpack-loader机制
 
-**原理**
+- [【万字长文｜趣味图解】彻底弄懂Webpack中的Loader机制](https://juejin.cn/post/7157739406835580965#heading-16)
 
 loader是文件加载器，能够加载资源文件，并对这些文件进行一些处理，如编译、压缩等、语法分析及转换，然后交由下一环节进行处理，所有载入的模块最终都会经过moduleFactory处理，转成javascript可以识别和运行的代码，从而完成模块的集成。
+
+**Loader本质**
+
+Loader 本质上是导出为函数的 JavaScript 模块。`它接收资源文件或者上一个 Loader 产生的结果作为入参，也可以用多个 Loader 函数组成 loader chain（链），最终输出转换后的结果`。
+
+**Loader的四种类型**
+
+分为：[前置(pre)](https://link.juejin.cn/?target=https%3A%2F%2Fwebpack.docschina.org%2Fconfiguration%2Fmodule%2F%23ruleenforce)、[普通(normal)](https://link.juejin.cn/?target=https%3A%2F%2Fwebpack.docschina.org%2Fconfiguration%2Fmodule%2F%23ruleenforce)、[行内(inline)](https://link.juejin.cn/?target=https%3A%2F%2Fwebpack.docschina.org%2Fconfiguration%2Fmodule%2F%23ruleenforce)、[后置(post)](https://link.juejin.cn/?target=https%3A%2F%2Fwebpack.docschina.org%2Fconfiguration%2Fmodule%2F%23ruleenforce)。
+
+```
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          "style-loader", //将css内容变成style标签插入到html中去
+          "css-loader", //解析css文件的路径等
+          "less-loader", //将less=>css
+        ],
+        enforce: "pre", //这里也可以是post，默认不写就是normal
+      },
+    ],
+  },
+```
+
+**Loader执行顺序**
+
+简单说：Loader 的执行顺序是由右向左，或者由下到上执行。
+
+官方说法：**Pitching** 阶段和**Normal** 阶段
+
+所有一个接一个地进入的 Loader，都有两个阶段：
+
+1. **Pitching** 阶段: Loader 上的 pitch 方法，按照 `后置(post)、行内(inline)、普通(normal)、前置(pre)` 的顺序调用。
+2. **Normal** 阶段: Loader 上的 常规方法，按照 `前置(pre)、普通(normal)、行内(inline)、后置(post)` 的顺序调用。模块源码的转换， 发生在这个阶段。
+3. 同等类型下的 Loader 执行顺序才是由右向左，或者由下到上执行。
 
 > 以处理SCSS文件为例：
 >
@@ -243,17 +279,6 @@ loader是文件加载器，能够加载资源文件，并对这些文件进行�
 >
 > 先`sass-loader`再`css-loader`再`style-loader`，每个`Loader`会链式的顺序执行， 第一个Loader将会拿到需处理的原内容，上一个`Loader`处理后的结果会传给下一个接着处理。
 
-```
-module：{
-rule:[
- {
-    test:'css,style,babel'// cssstyle快速优化，babel将es6转es5,jsx转js
- loader:‘对应loader’
- }
-]
-}
-```
-
 **babel文件编译器**
 
 > bebel-loader中核心的是，@babel-core核心包、@babel-preset-env预设。
@@ -261,7 +286,7 @@ rule:[
 > 在Babel执行编译的过程中，会从项目的根目录下的 .babelrc文件中读取配置。.babelrc是一个json格式的文件。
 > 在.babelrc配置文件中，主要是对预设(presets) 和 插件(plugins) 进行配置。
 
-## webpack-plugin插件
+## webpack-plugin机制
 
 **原理**
 
@@ -272,7 +297,7 @@ plugin` 是一个扩展器，它丰富了 webpack 本身，针对是 `loader` �
 - 能够 hook 到在每个编译(compilation)中触发的所有关键事件。
 - 在插件实例的 apply 方法中，可以通过 compiler.options 获取 Webpack 配置，并进行修改。
 
-## webpack-vueloader
+## webpack-vueloader机制
 
 **完整流程**
 
