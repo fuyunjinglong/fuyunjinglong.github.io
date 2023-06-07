@@ -93,8 +93,8 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#Promise是什么">Promise是什么</a>
 - Generator函数是什么
 - async函数是什么
-- axios取消请求
-- for in、for of、forEach的比较
+- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#axios取消请求">axios取消请求</a>
+- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#for-in、for-of、forEach的比较">for in、for of、forEach的比较</a>
 
 # 框架-基础
 

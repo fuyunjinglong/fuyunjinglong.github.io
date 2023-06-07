@@ -1034,9 +1034,11 @@ Vue提供两个不同构建版本：
 
 编译核心流程：
 
-> - parse解析器：将模板解析成 AST
+> - parse解析器：将模板解析成 AST抽象语法树
 > - optimize优化器：标记静态节点
 > - generate代码生成器：将 AST 转换成“代码字符串”
+
+截图：https://juejin.cn/post/7155151377013047304#heading-4
 
 编译渲染完整流程：
 

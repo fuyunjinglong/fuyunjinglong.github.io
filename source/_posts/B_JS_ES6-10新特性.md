@@ -711,7 +711,7 @@ async/await 自动进行了 Generator 的流程控制。
 1. 使用async函数可以让代码简洁很多，不需要像Promise一样需要些then，不需要写匿名函数处理Promise的resolve值，也不需要定义多余的data变量，还避免了嵌套代码。
 2. 错误处理：Async/Await 让 try/catch 可以同时处理同步和异步错误。
 
-**for in、for of、forEach的比较**
+# for in、for of、forEach的比较
 
 **1.for…of与for…in的区别**
 
@@ -929,6 +929,36 @@ a.__proto__ = A.prototype
 
 注意：导入导出均可使用as别名
 
+参考
+
+- [「万字进阶」深入浅出 Commonjs 和 Es Module](https://juejin.cn/post/6994224541312483336)
+- [深入 CommonJs 与 ES6 Module](https://link.juejin.cn/?target=https%3A%2F%2Fsegmentfault.com%2Fa%2F1190000017878394)
+- [「Node.js系列」深入浅出Node模块化开发——CommonJS规范](https://juejin.cn/post/6892786383249735687)
+
+```
+/**
+ * 导出
+ */
+export * from 'module'; //重定向导出 不包括 module内的default
+export { name1, name2, ..., nameN } from 'module'; // 重定向命名导出
+export { import1 as name1, import2 as name2, ..., nameN } from 'module'; // 重定向重命名导出
+export { name1, name2, …, nameN }; // 与之前声明的变量名绑定 命名导出
+export { variable1 as name1, variable2 as name2, …, nameN }; // 重命名导出
+export let name1 = 'name1'; // 声明命名导出 或者 var, const，function， function*, class
+export default expression; // 默认导出
+export default function () { ... } // 或者 function*, class
+export default function name1() { ... } // 或者 function*, class
+
+/**
+ * 导入
+ */
+import defaultExport from "module"; // 默认导入
+import { a, b, c } from "module"; //解构导入
+import defaultExport, { a, b, c as newC } from "module"; //混合导入
+import * as name from "module"; //混合导入
+var promise = import("module"); //动态导入(异步导入)
+```
+
 **一、exports**
 
 **1.命名导出（Named exports）**
@@ -1056,6 +1086,44 @@ export { function1, function2 };
 // Empty import (for modules with side effects)
 import './lib0';
 ```
+
+# axios取消请求
+
+**方式1：AbortController**
+
+从 `v0.22.0` 开始，Axios 支持以 fetch API 方式—— [`AbortController`](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) 取消请求：
+
+```js
+const controller = new AbortController();
+// 取消重复请求
+controller.signal && controller.abort();
+axios.get('/foo/bar', {
+   signal: controller.signal
+}).then(function(response) {
+   //...
+});
+```
+
+**方式2：CancelToken** 
+
+通过传递一个 executor 函数到 `CancelToken` 的构造函数来创建一个 cancel token：。
+
+此 API 从 `v0.22.0` 开始已被弃用，不应在新项目中使用。
+
+```js
+const CancelToken = axios.CancelToken;
+let cancel;
+// 取消重复请求
+cancel && cancel();
+axios.get('/user/12345', {
+  cancelToken: new CancelToken(function executor(c) {
+    // executor 函数接收一个 cancel 函数作为参数
+    cancel = c;
+  })
+});
+```
+
+
 
 # 参考
 
