@@ -4,6 +4,7 @@ date: 2022-05-13 07:33:16
 categories:
 - Z_业务和面经
 toc: true # 是否启用内容索引
+
 ---
 
 # 如何成为一个优秀的人
@@ -80,21 +81,21 @@ Some people, when confronted with a problem, think “I know, I’ll use regular
 6. 发展自己的设计能力：在前端开发中，设计能力是非常重要的。您需要了解基本的设计原则和技巧，例如配色、排版和用户体验等。您可以通过学习基本的设计知识和使用设计工具来提高自己的设计能力。
 7. 建立自己的项目：最后，建议您尝试建立自己的项目。这可以帮助您将所学的知识应用到实际项目中，并且可以提高自己的经验和技能。您可以选择一个自己感兴
 
-## 第一阶段-简答书籍入手 
+**简单-快速使用(书籍入手 )**
 
 《JavaScript高级程序设计》《精通CSS》
 
-## 第二阶段-简单视频加深印象
+**中等-提高效率(视频)**
 
-## 第三阶段-实践学习
-
-## 第四阶段-经典书籍
+**困难-回本溯源(源码)**
 
 # 大前端趋势
 
-## 2021年前端趋势
+## 汇总
 
-开源站点 bestofjs.org 
+- [前端趋势热度榜单](https://bestofjs.org/)
+
+## 2021年
 
 - **TypeScript** 持续升温，依旧保持着高速成长的状态，未来的潜力不可限量；
 - 通过项目分布的情况，**明显能看到 React 生态圈>> Vue 生态圈>> Angular 生态圈；**
@@ -112,11 +113,11 @@ Some people, when confronted with a problem, think “I know, I’ll use regular
 5.  **全栈开发持续深耕，从 DevOps 到 NoOps，再到serverless**
 6.  **WebRTC 持续升温**。音视频两大领域：一类是 RTC，它主要用于满足多人会议中的低延时互动；另一类是流媒体直播/点播，主要满足于对延时要求不大的高并发低成本场景
 
-参考：
+参考
 
-[2021 年大前端技术趋势解读](https://www.infoq.cn/article/dt002ez7bixgtmeu49qo)
+- [2021 年大前端技术趋势解读](https://www.infoq.cn/article/dt002ez7bixgtmeu49qo)
 
-## 2022年前端趋势
+## 2022年
 
 1. **移动端能力放大**
 2. **小程序生态的崛起**
@@ -131,13 +132,11 @@ Some people, when confronted with a problem, think “I know, I’ll use regular
 - 能指导和带领其他人一同完成更有影响力的工作
 - 能独立解决问题，完成工程工作
 
-参考：
+**一、低代码**
 
-[2022前端未来发展趋势](https://segmentfault.com/a/1190000041041684)
+在今年的几次技术大会上（阿里云栖大会，前端早早聊，掘金大会，架构师峰会）等很多大会上都聊到了低代码和无代码技术。
 
-## 低代码
-
-**先来区分一下 no-code、low-code、pro-code：**
+先来区分一下 no-code、low-code、pro-code：
 
 **no-code**：自己编程给自己用，给用户的感觉就是一个软件。因此，平台不会给自己定位成一个“编程工具”。主要是通过图形化的操作来降低学习曲线，类似 PPT、Excel 等。在垂直领域的特定场景中，才能做到好用。
 
@@ -166,6 +165,30 @@ Some people, when confronted with a problem, think “I know, I’ll use regular
 那么，**整理了核心能力**如下：**基础资料的搭建、基础资料的接入、业务编排能力、界面渲染能力、代码转换能力以及运行时能力、协作能力和数据分析能力**。
 
 为什么说 low-code 是恰逢其时呢？因为无论是跨端和跨平台领域的强大适配能力，还是大前端工程体系的有力支撑，都已经将低代码领域的价值逐步推到人们面前，低代码是业务发展和技术探索的必然选择。
+
+**二. 工程平台**
+
+> 字节今年开源了modernjs ， 号称现代Web 工程体系，方向是没错，目前开源的只是一套CLI工具。背后的工程平台才是真正的价值和核心。所以做前端工程平台，前后端一体化，治理整个研发链路，避免割裂，整合所有前端资源（配置化，微前端，研发工具，低代码，WebIDE, 工程平台）才是未来大的趋势。
+
+**三. 一体化框架**
+
+早期阶段，前端充斥着大量的工具，打包工具webpack ，gulp ， 框架脚手架， babel ，less ，ts等等。 后来出现nextjs, umi 等这些工具，来将这些零碎的前端工具整合在一起，形成一套构建打包方案。包括后来出现modernjs , BlitzJS等后期之秀，在此之上甚将GraphQL ，Serverless, Prisma(ORM) 都集成进来，形成前后端一体化框架也称为全栈框架，这将会是22年，乃至今后很多年都面临的趋势。
+
+**四. 包管理**
+
+npm的包管理一直让人头痛，持续浪费磁盘空间，扁平化的依赖，复杂的算法逻辑，不够高效也不简洁。所以我们需要一种monorepo管理包的方式。22年我认为pnpm 或 rush 会让一大批仓库从 lerna，npm ，yarn workspace 等其他的方案迁移过来。Monorepo 将成为前端标配。ESM将持续推进，老的标准慢慢废弃。ESM的推进，将对微前端带来一波利好。微前端后面单独再讲。
+
+**五. 构建工具**
+
+随着vite,snowpack持续发力，vite等为代表的bundless工具，有望成为最好和最快的前端构建工具。目前Webpack只能通过增加一些小特性来巩固自己的地位，比如webpack5增加了filesystem cache，但是webpack慢的名声已经在外了，不过本质上这事儿跟慢不慢也没必然关系。大家都在为esm和bundless做准备。所以bundless才是大势所趋。
+
+rust给前端构建又带来一针强心剂。 [SWC](https://swc.rs/)用于替代传统的babel (SWC is **20x faster than Babel** on a single thread and **70x faster** on four cores.)，下半年很多前端构建工具都有人在用 rust 重写，比如parcel 作者发布了用 rust 写的 parcel-css，速度约是 cssnano 的 120 倍。facebook的rome也正在用rust重新，它的野心更大，在甚至想替代[Babel](https://babeljs.io/), [ESLint](https://eslint.org/), [webpack](https://webpack.js.org/), [Prettier](https://prettier.io/), [Jest](https://jestjs.io/) 等工具，并且提供一套完整的 js toolchain，包括 compiler，linter 等 。而且WebAssembly是与rust搭配的最佳组合。而且rust语言极高的性能和安全性，会越来越受青睐。
+
+
+
+参考
+
+- [2022前端未来发展趋势](https://segmentfault.com/a/1190000041041684)
 
 # 程序员副业
 

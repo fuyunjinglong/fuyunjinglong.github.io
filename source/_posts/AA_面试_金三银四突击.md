@@ -4,7 +4,6 @@ date: 2023-03-07 06:33:16
 categories:
 - AA_面试
 toc: true # 是否启用内容索引
-
 ---
 
 # interview-imporant
@@ -35,7 +34,7 @@ toc: true # 是否启用内容索引
 
 - <a target="_blank" href="{% post_path 'C_H5_0基础' %}#为什么多个域名来存储网站资源会更有效">为什么利用多个域名来存储网站资源会更有效 ？</a>
 - <a target="_blank" href="{% post_path 'C_H5_0基础' %}#iframe内嵌框架缺点">iframe 内嵌框架缺点</a>
-- html语义化是什么
+- <a target="_blank" href="{% post_path 'C_H5_0基础' %}#Html语义化">html语义化是什么</a>
 
 # CSS
 
@@ -57,13 +56,12 @@ toc: true # 是否启用内容索引
 
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#彻底搞懂this">彻底搞懂this(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#消息队列和事件循环">消息队列和事件循环(看题给结果)</a>
-- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#闭包大合集">闭包(看题给结果)</a>
+- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包' %}#闭包">闭包(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#原型、原型链、继承">原型、原型链、继承(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'C_H5_0基础' %}#浏览器内核的理解">浏览器内核的理解</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#null和undefined">null 和 undefined</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#8种数据类型">null 和 undefined</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#JS的8种继承方案">JS的8种继承方案</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#柯里化-实现add-1-2-3-6">实现 add(1)(2)(3) = 6</a>
-- <a target="_blank" href="{% post_path 'H_工程热点_性能优化_0基础' %}#从输入url到渲染完成整个过程">从输入url到渲染完成整个过程</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#垃圾回收">垃圾回收</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#内存溢出和内存泄漏">内存泄露</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS-类型判断-对象-数组">JS 判断变量是对象还是数组</a>
@@ -71,7 +69,7 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#常见六大Web安全攻防解析">常见六大Web安全攻防解析</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#async和defer的作用是什么？有什么区别">async和defer的作用是什么？有什么区别</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#模块化规范">模块化规范</a>
-- 事件冒泡和事件捕获
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS事件冒泡和事件捕获">事件冒泡和事件捕获</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2和Vue3比较' %}#Object-defineProperty与Proxy">必会20道JS-手写数据双向绑定</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#call-apply-bind">必会20道JS-手写call/apply/bind</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#instanceof操作符">必会20道JS-手写instanceof</a>
@@ -93,14 +91,15 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#ES5和ES6之默认值的区别-？">ES5和ES6之默认值的区别？</a>
 - <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#ES5和ES6之继承的区别-？">ES5和ES6之继承的区别？</a>
 - <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#Promise是什么">Promise是什么</a>
-- <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#Generator函数是什么">Generator函数是什么</a>
-- <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#async函数是什么">async函数是什么</a>
+- Generator函数是什么
+- async函数是什么
 - axios取消请求
+- for in、for of、forEach的比较
 
 # 框架-基础
 
-- <a target="_blank" href="{% post_path 'D_框架_登录鉴权和权限认证' %}#权限认证">权限认证</a>
-- <a target="_blank" href="{% post_path 'D_框架_登录鉴权和权限认证' %}#权限控制">权限控制</a>
+- <a target="_blank" href="{% post_path 'D_框架_权限认证和权限认证' %}#权限认证">权限认证</a>
+- <a target="_blank" href="{% post_path 'D_框架_权限认证和权限认证' %}#权限控制">权限控制</a>
 
 # 框架-vue2
 
@@ -112,7 +111,7 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#keep-alive原理">谈谈对keep-alive的理解</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_入门' %}#vuex">谈谈对vuex的理解</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#Vue模板编译流程">Vue模板编译流程(编译器原理)</a>
-- <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#router路由-hash和history">router路由hash和history原理</a>
+- <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#Vue-router路由-hash和history">router路由hash和history原理</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#Vue-router路由-懒加载">router路由-懒加载</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#Vue-router导航守卫有哪些">Vue-router导航守卫有哪些</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#vm-set-如何解决对象属性新增问题">vm.$set()如何解决对象属性新增问题</a>
@@ -128,7 +127,7 @@ toc: true # 是否启用内容索引
 
 # 框架-vue3
 
-- <a target="_blank" href="{% post_path 'D_框架_Vue2和Vue3比较' %}#diff算法">Vue2和Vue3的diff算法对比</a>
+- <a target="_blank" href="{% post_path 'D_框架_Vue2和Vue3比较' %}#Virtual-DOM-diff算法">Vue2和Vue3的diff算法对比</a>
 
 # 计算机网络
 
@@ -147,7 +146,7 @@ toc: true # 是否启用内容索引
 
 # 工程热点
 
-- 性能优化-webpack的Loader机制
+- <a target="_blank" href="{% post_path 'H_工程热点_性能优化_webpack' %}#webpack-loader机制">性能优化-webpack-loader机制</a>
 
 # 数据结构与算法
 
@@ -156,8 +155,8 @@ toc: true # 是否启用内容索引
 # 性能优化
 
 - <a target="_blank" href="{% post_path 'H_工程热点_性能优化_0基础' %}#性能优化总策略">性能优化总策略</a>
+- <a target="_blank" href="{% post_path 'H_工程热点_性能优化_0基础' %}#从输入url到渲染完成整个过程">从输入url到渲染完成整个过程</a>
 
 # React
 
 - [必须要会的 50 道 React 面试题](https://segmentfault.com/a/1190000018604138)
-- [当公司要求你必须会 React，Vueer 不得不学](https://juejin.cn/post/7173953093158060039#heading-3)
