@@ -1660,3 +1660,133 @@ parseHTML 的代码细节较多，我们可以简单理解为：遍历解析查�
 **6.生成 .js**
 
 `compiler.parseComponent(file, [options])`得到的只是一个组件的 `SFCDescriptor`，最终编译成.js 文件是交给 vue-loader 等库来做的。
+
+## Flow静态类型检测器
+
+- [Flow官网](https://flow.org/en/docs/install/)
+- [Flow中文网](https://zhenyong.github.io/flowtype/docs/getting-started.html#_)
+- [Flow中文攻略](https://flowjs.judysocute.com/startup/installation)
+
+### 安装编译器
+
+首先，你需要一个编译器来剔除`Flow`的类型注解。你可以选择`Babel`或`flow-remove-types`.
+
+**Babel**
+
+`Babel`是一个支持`Flow`的`Javascript`编译器。`Babel`我们通俗的理解就是把现在浏览器不支持的新特性（比如：ES6）转换为可以支持的ES5语法，从而使我们能在项目中体测新标准带来的福利。`Babel`使用我们`Flow`代码，并剔除所有的类型注解。
+
+首先得安装 `babel-cli` 或 `babel-preset-flow`
+
+npm环境
+
+```undefined
+npm install --save-dev babel-cli babel-preset-flow
+```
+
+新建一个 `.babelrc`文件，并在 `presets`属性里设置 `flow`
+
+```javascript
+{
+  "presets": ["flow"]
+}
+```
+
+如果你的源代码在 `src` 目录里，你可以将这些代码编译到另一个目录中
+
+npm环境
+
+```undefined
+./node_modules/.bin/babel src/ -d lib/
+```
+
+当然，在 `package.json`配置运行
+
+```javascript
+{
+  "name": "my-project",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "babel src/ -d lib/"
+  }
+}
+```
+
+**flow-remove-types**
+
+`flow-remove-types`是一个简单去掉类型注释的命令行工具，他是一个不需要 `Babel` 支持的轻量级代替 `Babel`的工具。
+
+首行安装 `flow-remove-types`
+
+```undefined
+npm install --save-dev flow-remove-types
+```
+
+如果你的源代码在 `src` 目录里，你可以将这些代码编译到另一个目录中
+
+```undefined
+./node_modules/.bin/flow-remove-types src/ -d lib/
+```
+
+在 `package.json`配置运行
+
+```javascript
+{
+  "name": "my-project",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "flow-remove-types src/ -d lib/"
+  }
+}
+```
+
+### 安装 Flow
+
+把`npm`包安装到`devDependency`上
+
+```undefined
+npm install --save-dev flow-bin
+```
+
+在 `package.json` 的 `scripts` 里添加 `"flow"`
+
+```javascript
+{
+  "name": "my-flow-project",
+  "version": "1.0.0",
+  "devDependencies": {
+    "flow-bin": "^0.86.0"
+  },
+  "scripts": {
+    "flow": "flow"
+  }
+}
+```
+
+首先运行
+
+```undefined
+npm run flow init
+```
+
+在第一次运行了 `init` 后，运行
+
+```undefined
+npm run flow
+```
+
+/src/index.js
+
+```
+// @flow
+function square(n: number): number {
+  return n * n;
+}
+
+square(2);
+
+
+```
+
+
+
+# 

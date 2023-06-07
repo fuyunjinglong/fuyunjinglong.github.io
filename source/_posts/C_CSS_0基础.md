@@ -1729,6 +1729,48 @@ css3加强了css2的功能，增加了新的属性和新的标签，并且删除
 - css3能仅使用代码就实现的效果，css2需要使用图片来实现；
 - css2请求服务器次数高于css3；
 
+## CSS实现节流
+
+实现过程：
+
+1. 函数节流是一个非常常见的优化方式，可以有效避免函数过于频繁的执行
+2. CSS 的实现思路和 JS 不同，重点在于在于找到和该场景相关联的属性
+3. CSS 实现“节流”其实就是控制一个动画的精准控制，假设有一个动画控制按钮从**禁用**->**可点击**的变化，每次点击时让这个动画重新执行一遍，在执行的过程中，一直处于**禁用**状态，这样就达到了“节流”的效果
+4. 还可以通过 transition 的回调函数动态设置按钮禁用态
+5. 这种实现的好处在于禁用逻辑和业务逻辑是完全解耦的
+
+```
+<button onclick="console.log('保存1')">我是“普通”保存</button>
+<button class="throttle" onclick="console.log('保存2')">我是“节流”保存</button>
+
+  body{
+    display: grid;
+    place-content: center;
+    height: 100vh;
+    margin: 0;
+    gap: 15px;
+    background: #f1f1f1;
+}
+button{
+  user-select: none;
+}
+.throttle{
+  opacity: .99;
+  transition: opacity 2s;
+}
+.throttle:not(:disabled):active{
+  opacity: 1;
+  transition: 0s;
+}
+
+document.addEventListener('transitionstart', function(ev){
+      ev.target.disabled = true
+    })
+    document.addEventListener('transitionend', function(ev){
+      ev.target.disabled = false
+    })
+```
+
 
 
 # 高级
@@ -1952,3 +1994,189 @@ export default {
 **三、使用第三方库裁剪**
 
 Cropper.js
+
+# 常用CSS
+
+## 巧用not选择器
+
+> 有些情况下`所有`的元素都需要某些样式，唯独`最后一个`不需要，这时候使用not选择器将会特别方便
+
+```
+li:not(:last-child){
+  border-bottom: 1px solid #ebedf0;
+}
+```
+
+## 使用flex布局实现智能固定底部
+
+> 内容不够时，`规则说明`要处于底部，内容足够多时，`规则说明`随着内容往下沉，大家一定也遇到过类似的需求，使用flex巧妙实现布局。
+
+```
+<div class="container">
+  <div class="main">我是内容区域</div>
+  <div class="footer">规则说明</div>
+</div>
+
+ .container{
+  height: 100vh;
+  /* 关键css处 */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.main{
+  /* 关键css处 */
+  flex: 1;
+  background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.footer{
+  padding: 15px 0;
+  text-align: center;
+  color: #ff9a9e;
+  font-size: 14px;
+}
+```
+
+## 文本超出
+
+中英文超过换行
+
+- word-break:break-word
+- word-wrap:break-word
+
+单行文本超过部分显示省略号
+
+```
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+```
+
+多行文本超过部分显示省略号
+
+```
+overflow: hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-box-orient: vertical;
+-webkit-line-clamp: 2;
+word-break: break-all;
+```
+
+若使用vue，则可使用下面这种方式
+
+```
+display: -webkit-box;
+-webkit-box-orient: vertical;
+-webkit-line-clamp: 2;
+overflow: hidden;
+word-break: break-all;
+```
+
+## 禁止选择文本
+
+```
+user-select: none;
+```
+
+## 画三角形
+
+```
+<div class="box">
+  <div class="box-inner">
+    <div class="triangle bottom"></div>
+    <div class="triangle right"></div>
+    <div class="triangle top"></div>
+    <div class="triangle left"></div>
+  </div>
+</div>
+
+.triangle {
+  display: inline-block;
+  margin-right: 10px;
+  /* 基础样式 */
+  border: solid 10px transparent;
+}
+  /*下*/
+.triangle.bottom {
+  border-top-color: #0097a7;
+}
+  /*上*/
+.triangle.top {
+  border-bottom-color: #b2ebf2;
+}
+/*左*/
+.triangle.left {
+  border-right-color: #00bcd4;
+}
+/*右*/
+.triangle.right {
+  border-left-color: #009688;
+}
+```
+
+## 画小箭头
+
+```
+<div class="box">
+  <div class="box-inner">
+    <div class="arrow bottom"></div>
+    <div class="arrow top"></div>
+    <div class="arrow right"></div>
+    <div class="arrow left"></div>
+  </div>
+</div>
+
+.arrow {
+    display: inline-block;
+    margin-right: 10px;
+    /* 基础样式 */
+    width: 0;
+    height: 0;
+    /* 基础样式 */
+    border: 16px solid;
+    border-color: transparent #CDDC39 transparent transparent;
+    position: relative;
+  }
+
+  .arrow::after {
+    content: "";
+    position: absolute;
+    /* 通过位移覆盖背景 */
+    right: -20px;
+    top: -16px;
+    border: 16px solid;
+    border-color: transparent #fff transparent transparent;
+  }
+  /*下*/
+  .arrow.bottom {
+    transform: rotate(270deg);
+  }
+  /*上*/
+  .arrow.top {
+    transform: rotate(90deg);
+  }
+  /*左*/
+  .arrow.left {
+    transform: rotate(180deg);
+  }
+  /*右*/
+  .arrow.right {
+    transform: rotate(0deg);
+  }
+```
+
+## 
+
+## 网页呈现哀悼模式
+
+```
+body{
+  filter: grayscale(1);
+}
+```
+
