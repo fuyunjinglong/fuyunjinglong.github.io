@@ -4,6 +4,7 @@ date: 2022-05-05 06:33:16
 categories:
 - E_数据结构
 toc: true # 是否启用内容索引
+
 ---
 
 # 大牛
@@ -12,50 +13,152 @@ toc: true # 是否启用内容索引
 
 # 常用算法
 
-## 递归遍历树形结构
+## 数组扁平化
 
 ```
-// 用来保存id
-	var idArr = []
-	function getId(treeData, arr) {
-		data.forEach(ele => {
-			idArr.push(ele.id)
-			// 判断有子元素,并且子元素的长度大于0就再次调用自身
-			if (ele.children && ele.children.length > 0) {
-				getId(ele.children, arr)
-			}
-		})
-	}
-getId(data, idArr)
+['a','b','c'] //这是一个拥有3个元素的数组，是一个一维数组（不存在数组嵌套）。`
+ `[['a','b'],['c','d'],['e','f']] 从整体上看是一个数组，但是其中的元素又是数组，即数组中嵌套数组，这就是二维数组
+```
 
+以此类推·····
+ `['a',['b',['c']]]//3维数组`
+ `['a',['b',['c',[.....]]]]//n维数组`
+ 数组扁平化就是把多维数组转化成一维数组
+
+- es6提供的新方法 flat(depth)
+- reduce方法
+- 利用扩展运算符
+- split和toString共同处理
+- 正则和 JSON方法共同处理
+- for循环
+- while循环
+
+**es6提供的新方法 flat(depth)**
+
+无需知道数组的维度，直接将目标数组变成1维数组。 depth的值设置为Infinity。
+
+```
+let a = [1,[2,3,[4,[5]]]];  
+a.flat(Infinity); // [1,2,3,4,5]  a是4维数组
+```
+
+**reduce方法**
+
+第一个参数就是就是处理扁平化的箭头函数
+第二个参数是一个空数组，也是作为遍历的开始
+
+```
+ var arr1 = [1, 2, [3], [1, 2, 3, [4, [2, 3, 4]]]];
+ function flatten(arr) {
+      return arr.reduce((res,next) =>{
+        return res.concat(Array.isArray(next)? flatten(next) : next);
+      },[]);
+    }
+```
+
+**利用扩展运算符**
+
+```
+function flatten(arr) {
+    //  只要arr数组中还存在数组元素，循环就继续进行
+    while (arr.some(item => Array.isArray(item))) {
+        // 展开数组，拼接空数组
+        arr = [].concat(...arr)
+    }
+    return arr
+}
+```
+
+**split和toString共同处理**
+
+```
+function flatten(arr) {
+    // toString()方法把数组转换为1,2,3,4,5
+    return arr.toString().split(",")
+}
+```
+
+**正则和 JSON方法共同处理**
+
+```
+function flatten(arr) {
+  let str = JSON.stringify(arr);
+  // 过滤所有的中中括号
+  str = str.replace(/(\[|\])/g, '');
+  str = '[' + str + ']';
+  return JSON.parse(str); 
+}
+```
+
+**for循环**
+
+```
+var arr1 = [1, 2, 3, [1, 2, 3, 4, [2, 3, 4]]];
+  function flatten(arr) {
+    var res = [];
+    for (let i = 0, length = arr.length; i < length; i++) {
+      if (Array.isArray(arr[i])) {
+        res = res.concat(flatten(arr[i])); //concat 并不会改变原数组
+      //res.push(...flatten(arr[i])); //扩展运算符  
+      } else {
+        res.push(arr[i]);
+      }
+    }
+    return res;
+  }
+  flatten(arr1); //[1, 2, 3, 1, 2, 3, 4, 2, 3, 4]
+```
+
+**while循环**
+
+```
+ var arr1 = [1, 2, [3], [1, 2, 3, [4, [2, 3, 4]]]];
+ function flatten(arr) {
+      while (arr.some(item => Array.isArray(item))) {
+        arr = [].concat(...arr);
+        //arr = Array.prototype.concat.apply([],arr);
+      }
+      return arr;
+    }
+    flatten(arr1); //[1, 2, 3, 1, 2, 3, 4, 2, 3, 4]
+```
+
+
+
+## 树转扁平数组
+
+```
 var data = [{
-		name: 'a',
-		id: 101,
-		children: [{
-				name: 'bb',
-				id: 101101,
-				children: []
-			},
-			{
-				name: 'bb',
-				id: 101102,
-				children: [{
-					name: '101102101',
-					id: 101102101,
-					children: []
-				}]
-			},
-			{
-				name: 'bb',
-				id: 101103,
-				children: []
-			}, {
-				name: '101104',
-				id: 101104,
-				children: []
-			}
-		]
-	}];
+  name: 'a',
+  id: 101,
+  children: [{
+    name: 'bb',
+    id: 101101,
+    children: []
+   },
+   {
+    name: 'bb',
+    id: 101102,
+    children: [{
+     name: '101102101',
+     id: 101102101,
+     children: []
+    }]
+   }
+  ]
+ }];
+// 递归调用
+var idArr = []
+function getId(treeData, arr) {
+  data.forEach(ele => {
+   idArr.push(ele.id)
+   // 判断有子元素,并且子元素的长度大于0就再次调用自身
+   if (ele.children && ele.children.length > 0) {
+    getId(ele.children, arr)
+   }
+  })
+ }
+getId(data, idArr)
 ```
 
 
@@ -160,8 +263,6 @@ const arrayToTree = (data, pid) => {
   return result;
 }
 ```
-
-
 
 ## 两个变量交换
 
