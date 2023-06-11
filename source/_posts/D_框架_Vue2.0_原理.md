@@ -245,6 +245,8 @@ MVP 模式将 Controller 改名为 Presenter，同时改变了通信方向。解
 
 **MVVM**
 
+![image-20230611192344990](C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20230611192344990.png)
+
 MVVM 模式将 Presenter 改名为 ViewModel，基本上与 MVP 模式完全一致。
 
 唯一的区别是，它采用双向绑定（data-binding）：View的变动，自动反映在 ViewModel
@@ -253,7 +255,7 @@ MVVM广泛应用于前端领域，不仅解决MV耦合问题，还解决了两�
 
 **Vue**
 
-是MVVM框架(基于mvc升级，弱化了controller层。但没有完全遵循mvvm，因为传统mvvm是不能手动操作数据，而vue有ref操作dom数据)
+是MVVM框架(基于mvc升级，弱化了controller层。但没有完全遵循mvvm，因为MVVM规定Model和View不能直接通信，传统mvvm是不能手动操作数据，而vue有ref操作dom数据)
 
 ## 数据响应式
 
@@ -972,6 +974,33 @@ oldNode与newNode指针逐个比较，如果判定相同节点，则执行patchV
 
 说人话：直接修改对象，inject监听不到改动；修改对象的某个属性，就能监听到改动。加一句，即使修改属性，computed也监听不到变化。
 
+```
+// 祖先组件
+provide(){
+  return {
+  // keyName: { name: this.name }, // value 是对象才能实现响应式，也就是引用类型
+   keyName: this.changeValue // 通过函数的方式也可以[注意，这里是把函数作为value，而不是this.changeValue()]
+  // keyName: 'test' value 如果是基本类型，就无法实现响应式
+  }
+ },
+data(){
+ return {
+ name:'张三'
+}
+ },
+ methods: {
+  changeValue(){
+  this.name = '改变后的名字-李四'
+  }
+ } 
+
+ // 后代组件
+ inject:['keyName']
+ create(){
+ console.log(this.keyName) // 改变后的名字-李四
+}
+```
+
 看源码:关闭了依赖数据的 响应式依赖收集;但对inject注入对象的深层处理，没有屏蔽响应式
 
 ```
@@ -1394,11 +1423,9 @@ function flushCallback () {
 
 ## Vue-router路由-hash和history
 
-> - hash 模式：
->   - \#后面 hash 值的变化，不会导致浏览器向服务器发出请求，浏览器不发出请求，就不会刷新页面
->   - 通过监听 **hashchange** 事件可以知道 hash 发生了哪些变化，然后根据 hash 变化来实现更新页面部分内容的操作。
-> - history 模式：
->   - history 模式的实现，主要是 HTML5 标准发布的两个 API，**pushState** 和 **replaceState**，这两个 API 可以在改变 url，但是不会发送请求。这样就可以监听 url 变化来实现更新页面部分内容的操作
+> - hash模式：通过`#号`后面的内容的更改，触发`hashchange`事件，实现路由切换
+> - history模式：通过`pushState`和`replaceState`切换url，触发`popstate`事件，实现路由切换，需要后端配合
+>
 > - 区别
 >   - url 展示上，hash 模式有“#”，history 模式没有
 >   - 刷新页面时，hash 模式可以正常加载到 hash 值对应的页面，而 history 没有处理的话，会返回 404，一般需要后端将所有页面都配置重定向到首页路由

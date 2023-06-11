@@ -10,7 +10,9 @@ toc: true # 是否启用内容索引
 
 **定义**
 
-vue2 是一套基于**声明式渲染**和**渐进式**的响应式框架，它可以设计为自底向上的逐层应用。
+vue2 是一套基于**声明式渲染**和**渐进式**的轻量级响应式框架，它可以设计为自底向上的逐层应用。
+
+缺点：单页面不利于seo，不支持IE8以下，首屏加载时间长
 
 ## 声明式渲染
 
@@ -126,22 +128,6 @@ export default{
 	}
 }
 ```
-
-## 修饰符
-
-表单修饰符：lazy；trim；number
-
-事件修饰符
-
-- .stop：阻止事件冒泡
-- .native：绑定原生事件，使触发组件和触发标签一样
-- .once：事件只执行一次
-- .self ：将事件绑定在自身身上，相当于阻止事件冒泡
-- .prevent：阻止默认事件
-- .caption：用于事件捕获
-- .once：只触发一次
-- .keyCode：监听特定键盘按下
-- .right：右键
 
 ## **双向绑定**
 
@@ -371,131 +357,28 @@ export default {
 </script>
 ```
 
-## 属性与指令
+## 修饰符与指令
 
-**指令修饰符**
+**修饰符**
 
-指令是带有 v-前缀的特殊属性，本质是 js 表达式，作用域 dom,常用的指令 v-cloak,v-text，v-html,v-bind,v-on,v-for,v-if,v-show,v-model
+- lazy：改变输入框的值时value不会改变，当光标离开输入框时，v-model绑定的value才会改变
+- trim：给v-model绑定值的首尾空格过滤掉
+- number：将值转成数字。对于先输入数字，只取前面数字部分。对于先输入字母，则无效
+- stop：阻止冒泡
+- capture：事件默认是往外冒泡，capture表示反过来，由外往内捕获
+- self：只有点击事件绑定的本身才会触发事件
+- once：事件只执行一次
+- prevent：阻止默认事件，如a标签的跳转
+- native：加在自定义组件上，保证事件能执行
+- sync：父子传值，子组件想更新值
 
-- v-bind:value="userName"，提供属性绑定机制，简写为：
+**指令**
 
-- v-on:click="scan",提供事件绑定机制，简写为@
-
-- v-cloak指令
-
-  ```
-  <div v-cloak>{{noData}}</div>
-  [v-cloak]{
-   display: none;
-  }
-  主要解决网速慢的时候，显示出插值表达式的代码的问题。
-  原理：Vue完成实例后，会删除v-cloak属性。
-  ```
-
-- v-once指令
-
-  ```
-  <div v-once>累加的值{{n}}</div>
-  初次渲染后，Vue视为静态内容，值不再变化
-  ```
-
-- v-pre指令
-
-  ```
-  <div v-pre>累加的值</div> //正常
-  <div v-pre>累加的值{{n}}</div>//报错
-  v-pre会跳过所在节点，提前编译
-  ```
-
-- .stop：等同于 JavaScript 中的 event.stopPropagation()，防止事件冒泡
-- .prevent：等同于 JavaScript 中的 event.preventDefault()，防止执行预设的行为（如果事件可取消， 则取消该事件，而不停止事件的进一步传播）
-- .capture：与事件冒泡的方向相反，事件捕获由外到内
-- .self：只会触发自己范围内的事件，不包含子元素
-- .once：只会触发一次
-
-技巧：this.opt=‘+’;const add=this.a+this.opt+this.b;this.res=eval(add);eval 把字符串转成表达式执行
-
-**按键修饰符**
-
-```
-@keyup.enter="submit"
-.enter
-.tab
-.delete (捕获 “删除” 和 “退格” 键)
-.esc
-.space
-.up
-.down
-.left
-.right
-
-其他按键值
-@keyup.f2="submit"
-//定义全局按键修饰符
-Vue.config.keyCodes.f2 = 113;
-```
-
-**Class**
-
-方式 0 字符串
-
-> 用于类名不确定，动态获取
-
-方式 1 数组
-
-> 绑定多个样式，个数确定，名字也确定
-
-```
-:class="[content]"，this.content = 'content-red'
-:class="content"，this.content = ['content-red']
-```
-
-方式 2 对象
-
-> 绑定多个样式，个数不确定，名字不确定
-
-```
-class="{ 'content-red': content }",this.content = true
-class="content",this.content = {'content-red':true}
-```
-
-**Style**
-
-方式 1 数组:style="[content]",this.content={'background-color': 'red'}
-
-方式 2 对象:style="{ 'background-color': content }"，this.content ='red'
-
-**自定义过滤器**
-
-过滤器可以用在两个地方：**双花括号插值和 `v-bind` 表达式** ,支持串行处理。
-
-局部过滤器
-
-```
-v-bind:value="userName | dataFormat('局部过滤器')"
-data() {
-    return {
-      userName: ''
-    };
-  },
-  filters: {
-    dataFormat: (msg, a) => {
-      // msg表示要过滤的数据，a表示传入的参数
-      return msg + a;
-    }
-  },
-```
-
-全局过滤器
-
-```
-v-bind:value="userName | dataFormatGlobal('全局过滤器')"
-Vue.filter('dataFormatGlobal', function (msg, a) {
-  return msg + a;
-});
-```
-
-技巧：padStart()用于头部补全，padEnd()用于尾部补全.'a'.padStart(3, '0') // '00a'。'a'.padEnd(3, '0') // 'a00'
+- v-html：更新innerHtml
+- v-text：更新textContent
+- v-bind：绑定变量属性
+- v-once：只渲染一次
+- v-if/v-for/v-show等
 
 **自定义指令**
 
@@ -566,6 +449,13 @@ Vue.directive('focusGlobal', {
 - 权限校验指令 `v-premission`
 - 实现页面水印 `v-waterMarker`
 - 拖拽指令 `v-draggable`
+
+## 动态class/动态style
+
+- 动态class对象：`<div :class="{ 'is-active': true, 'red': isRed }"></div>`
+- 动态class数组：`<div :class="['is-active', isRed ? 'red' : '' ]"></div>`
+- 动态style对象：`<div :style="{ color: textColor, fontSize: '18px' }"></div>`
+- 动态style数组：`<div :style="[{ color: textColor, fontSize: '18px' }, { fontWeight: '300' }]"></div>`
 
 ## 全局组件
 

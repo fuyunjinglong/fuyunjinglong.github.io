@@ -7,6 +7,30 @@ toc: true # 是否启用内容索引
 
 ---
 
+# 学习路线(包括前端)
+
+大黑书有一个共同点就是厚、并且很适合盖泡面。**哪有人开始打牌的时候就出王炸的呢**
+
+- [前端架构师亲述：前端工程师成长之路的 N 问 及 回答](https://github.com/biaochenxuying/blog/issues/33)
+
+**前言**
+
+1. 掌握基本的编程概念和语言：在开始学习前端开发之前，需要学习基本的编程概念和语言，例如HTML、CSS和JavaScript。建议您先学习HTML和CSS，因为这两种语言是构建网站和[应用程序](https://www.zhihu.com/search?q=应用程序&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A2920204100})的基础。然后，再学习JavaScript，因为它是使网站和应用程序更具交互性和动态性的关键语言。
+2. 学习前端开发框架和库：学习一些流行的前端开发框架和库，例如React、Angular和Vue.js等，可以帮助您更快速地构建现代化的网站和应用程序。这些框架和库不仅可以提高您的工作效率，还可以增强您的前端开发技能。
+3. 练习编写代码：编写代码是学习前端开发的最佳方法。您可以使用[在线编程](https://www.zhihu.com/search?q=在线编程&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A2920204100})平台，例如CodePen和JSFiddle等，创建自己的项目，并尝试实现不同的功能和特性。参与[开源项目](https://www.zhihu.com/search?q=开源项目&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A2920204100})也是一个很好的方式，可以帮助您学习如何与其他开发者协作，并了解最佳实践和流程。
+4. 学习如何进行测试和调试：在学习前端开发时，测试和调试是非常重要的。学习如何使用浏览器的开发者工具和调试工具，以及如何编写[单元测试](https://www.zhihu.com/search?q=单元测试&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A2920204100})和[集成测试](https://www.zhihu.com/search?q=集成测试&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A2920204100})等，可以帮助您更好地调试和优化代码。
+5. 持续学习新技术和趋势：前端开发是一个不断发展的领域，新的技术和趋势层出不穷。因此，您需要不断学习新的技术和趋势，以保持自己的竞争力。您可以通过参加线上/线下的培训、参与社区和论坛等方式来学习新技术和趋势。
+6. 发展自己的设计能力：在前端开发中，设计能力是非常重要的。您需要了解基本的设计原则和技巧，例如配色、排版和用户体验等。您可以通过学习基本的设计知识和使用设计工具来提高自己的设计能力。
+7. 建立自己的项目：最后，建议您尝试建立自己的项目。这可以帮助您将所学的知识应用到实际项目中，并且可以提高自己的经验和技能。您可以选择一个自己感兴
+
+> 学习套路
+
+**简单-快速使用(书籍入手 )**
+
+**中等-提高效率(视频)**
+
+**困难-回本溯源(源码)**
+
 # 如何成为一个优秀的人
 
 ```
@@ -64,30 +88,6 @@ Some people, when confronted with a problem, think “I know, I’ll use regular
 但我觉得，真实的情况可能是这样的：**不是工作中用不到，而是当你不熟悉一个技能的时候**，**遇到问题时根本不会考虑它** 。比如我们要删除掉文本中的所有数字，不知道正则的话，你可能会想到从 0 到 9 这样一个个替换，操作 10 次，但如果知道正则，那么只需要替换一次就可以搞定这个问题。
 
 我当时到底是怎么学会正则的？说实话，我那会儿根本没想什么，纯粹出于干一行爱一行的朴素想法。要用得多，就找书来，哪怕是囫囵吞枣，也要一鼓作气看完。**我一直觉得，真正值得学的东西，没有什么平滑学习曲线。在前面的阶段，你总得狠下心来，过了一个又一个坎儿，然后才能有一马平川。**
-
-# 前端学习路线
-
-大黑书有一个共同点就是厚、并且很适合盖泡面。**哪有人开始打牌的时候就出王炸的呢**
-
-- [前端架构师亲述：前端工程师成长之路的 N 问 及 回答](https://github.com/biaochenxuying/blog/issues/33)
-
-**前言**
-
-1. 掌握基本的编程概念和语言：在开始学习前端开发之前，需要学习基本的编程概念和语言，例如HTML、CSS和JavaScript。建议您先学习HTML和CSS，因为这两种语言是构建网站和[应用程序](https://www.zhihu.com/search?q=应用程序&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A2920204100})的基础。然后，再学习JavaScript，因为它是使网站和应用程序更具交互性和动态性的关键语言。
-2. 学习前端开发框架和库：学习一些流行的前端开发框架和库，例如React、Angular和Vue.js等，可以帮助您更快速地构建现代化的网站和应用程序。这些框架和库不仅可以提高您的工作效率，还可以增强您的前端开发技能。
-3. 练习编写代码：编写代码是学习前端开发的最佳方法。您可以使用[在线编程](https://www.zhihu.com/search?q=在线编程&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A2920204100})平台，例如CodePen和JSFiddle等，创建自己的项目，并尝试实现不同的功能和特性。参与[开源项目](https://www.zhihu.com/search?q=开源项目&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A2920204100})也是一个很好的方式，可以帮助您学习如何与其他开发者协作，并了解最佳实践和流程。
-4. 学习如何进行测试和调试：在学习前端开发时，测试和调试是非常重要的。学习如何使用浏览器的开发者工具和调试工具，以及如何编写[单元测试](https://www.zhihu.com/search?q=单元测试&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A2920204100})和[集成测试](https://www.zhihu.com/search?q=集成测试&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A2920204100})等，可以帮助您更好地调试和优化代码。
-5. 持续学习新技术和趋势：前端开发是一个不断发展的领域，新的技术和趋势层出不穷。因此，您需要不断学习新的技术和趋势，以保持自己的竞争力。您可以通过参加线上/线下的培训、参与社区和论坛等方式来学习新技术和趋势。
-6. 发展自己的设计能力：在前端开发中，设计能力是非常重要的。您需要了解基本的设计原则和技巧，例如配色、排版和用户体验等。您可以通过学习基本的设计知识和使用设计工具来提高自己的设计能力。
-7. 建立自己的项目：最后，建议您尝试建立自己的项目。这可以帮助您将所学的知识应用到实际项目中，并且可以提高自己的经验和技能。您可以选择一个自己感兴
-
-**简单-快速使用(书籍入手 )**
-
-《JavaScript高级程序设计》《精通CSS》
-
-**中等-提高效率(视频)**
-
-**困难-回本溯源(源码)**
 
 # 大前端趋势
 
