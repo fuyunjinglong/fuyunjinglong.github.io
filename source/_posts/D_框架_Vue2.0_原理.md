@@ -8,11 +8,11 @@ toc: true # 是否启用内容索引
 
 # 入门
 
-## Vue 的生命周期
+## 生命周期
 
 [vue生命周期详细全过程](https://blog.csdn.net/m0_70477767/article/details/124684195)
 
-![](/img/vue生命周期.png)
+![](/img/vue2生命周期.png)
 
 1.**beforeCreate**钩子函数
 

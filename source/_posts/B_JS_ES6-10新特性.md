@@ -6,6 +6,78 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
+# 箭头函数与普通函数区别
+
+参考
+
+- [ES6 - 箭头函数、箭头函数与普通函数的区别](https://juejin.cn/post/6844903805960585224#heading-0)
+
+区别：
+
+- 语法更加简洁、清晰
+- 箭头函数不会创建自己的this
+- 箭头函数继承而来的this指向在定义时指定后，永远不变
+- .call()/.apply()/.bind()无法改变箭头函数中this的指向
+- 箭头函数不能作为构造函数使用
+- 箭头函数没有自己的arguments
+- 箭头函数没有原型prototype
+- 箭头函数不能用作Generator函数，不能使用yeild关键字
+
+# 扩展运算符
+
+- 替代apply方法，一般在函数调用时处理参数
+- 剩余参数(rest运算符)，主要针对函数形参
+- 数据连接、合并
+- 数组和对象的拷贝
+- 字符串转数组
+
+替代apply方法，一般在函数调用时处理参数
+
+```
+function addFun(x, y, z) {
+    return x + y + z;
+}
+var args = [1, 2, 3];
+// 用apply方法直接传递数组
+addFun.apply(null, args);
+// 替代apply的扩展运算符
+addFun(...args);
+```
+
+剩余参数(rest运算符)，主要针对函数形参
+
+```
+function(argA, ...args){
+ //
+}
+```
+
+数据连接、合并
+
+```
+// ES5 合并
+var es5Arr = arr1.concat(arr2);
+// ES6 合并
+var es6Arr = [...arr1, ...arr2];
+```
+
+数组和对象的拷贝
+
+```
+var arr1 = [1, 2, 3];
+var arr2 = [...arr1];
+```
+
+字符串转数组
+
+```
+var str = 'hello';
+// ES5 处理方式
+var es5Arr = str.split('');
+// ES6 处理方式
+var es6Arr = [...str];
+```
+
 # **链判断运算符**
 
 ES2020引入了链判断运算符 ?. 来简化这个操作：
@@ -112,7 +184,7 @@ setTimeout(()=>console.log(i),0);
 // 0,1,2,3,4
 ```
 
-# ES6 声明变量的六种方法
+# 声明变量的六种方法
 
 - ES5 只有两种声明变量的方法：var 和 function 。
 - ES6 除了添加 let 和 const 命令。
@@ -655,21 +727,7 @@ for (let [key, value] of entries(obj)) {
 
 # Generator函数是什么
 
-Generator函数是将函数分步骤阻塞 ，只有主动调用next() 才能进行下一步 。
-
-# async函数是什么
-
-asyns函数是Generator函数的语法糖。
-
-相当于自执行的Generator函数，相当于自带一个状态机，在await的部分等待返回， 返回后自动执行下一步。而且相较于Promise,async的优越性就是把每次异步返回的结果从then中拿到最外层的方法中，不需要链式调用，只要用同步的写法就可以了。
-
-但是async必须以一个Promise对象开始 ，所以async通常是和Promise结合使用的。
-
-# Generator、Async详解
-
-**Generator**
-
-Generator 是ES6引入的新语法，Generator是一个可以暂停和继续执行的函数。
+Generator 是ES6引入的新语法，Generator是一个可以暂停和继续执行的函数。Generator函数是将函数分步骤阻塞 ，只有主动调用next() 才能进行下一步 。
 
 简单的用法，可以当做一个Iterator来用，进行一些遍历操作。复杂一些的用法，他可以在内部保存一些状态，成为一个状态机。
 
@@ -681,9 +739,9 @@ next，方法可以带一个参数，该参数就会被当作上一个yield表�
 
 ```
 function * foo(x) {
-    var y = 2 * (yield (x + 1));
-    var z = yield (y / 3);
-    return (x + y + z);
+  var y = 2 * (yield (x + 1));
+  var z = yield (y / 3);
+  return (x + y + z);
 
 }
 
@@ -694,11 +752,13 @@ b.next(13) // { value:42, done:true }
 
 ```
 
-**Async(推荐使用～～)**
+# async函数是什么
 
-async await 本身就是 promise+generator 的语法糖
+asyns函数是Generator函数的语法糖。
 
-Async 是 Generator 的一个语法糖。
+相当于自执行的Generator函数，相当于自带一个状态机，在await的部分等待返回， 返回后自动执行下一步。而且相较于Promise,async的优越性就是把每次异步返回的结果从then中拿到最外层的方法中，不需要链式调用，只要用同步的写法就可以了。
+
+但是async必须以一个Promise对象开始 ，所以async通常是和Promise结合使用的。
 
 async 对应的是 * 。
 
@@ -1086,44 +1146,6 @@ export { function1, function2 };
 // Empty import (for modules with side effects)
 import './lib0';
 ```
-
-# axios取消请求
-
-**方式1：AbortController**
-
-从 `v0.22.0` 开始，Axios 支持以 fetch API 方式—— [`AbortController`](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) 取消请求：
-
-```js
-const controller = new AbortController();
-// 取消重复请求
-controller.signal && controller.abort();
-axios.get('/foo/bar', {
-   signal: controller.signal
-}).then(function(response) {
-   //...
-});
-```
-
-**方式2：CancelToken** 
-
-通过传递一个 executor 函数到 `CancelToken` 的构造函数来创建一个 cancel token：。
-
-此 API 从 `v0.22.0` 开始已被弃用，不应在新项目中使用。
-
-```js
-const CancelToken = axios.CancelToken;
-let cancel;
-// 取消重复请求
-cancel && cancel();
-axios.get('/user/12345', {
-  cancelToken: new CancelToken(function executor(c) {
-    // executor 函数接收一个 cancel 函数作为参数
-    cancel = c;
-  })
-});
-```
-
-
 
 # 参考
 

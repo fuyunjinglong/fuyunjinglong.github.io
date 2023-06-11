@@ -232,7 +232,7 @@ export default defineComponent({
 <Son :modelValue="formData" @update:modelValue="formData = $event" />
 ```
 
-## Object.defineProperty与Proxy 
+## Object.defineProperty和Porxy
 
 **前言**
 
@@ -255,22 +255,29 @@ Vue都是采用数据劫持代理+发布订阅模式方式实现，vue2到vue3�
 > - defineProperty 会污染原对象，修改时是修改原对象，Proxy 是对原对象进行代理并会返回一个新的代理对象，修改的是代理对象
 > - defineProperty 不兼容 IE8，Proxy 不兼容 IE11
 
+| 对比                                | Object.defineProperty | Porxy          |
+| ----------------------------------- | --------------------- | -------------- |
+| 功能                                | 监听对象的单个属性    | 监听整个对象   |
+| 属性为对象时                        | 需要递归监            | 不需要         |
+| 对象新增一个属性时                  | 需要手动监听          | 不需要手动监听 |
+| 数组通过push、unshift方法增加的元素 | 无法监听              | 可以监听       |
+
 **一、Object.defineProperty**
+
+> 基本使用
 
 核心：
 
 - 对象: 通过 defineProperty 对对象的已有属性值的读取和修改进行劫持(监视/拦截)
-- 数组: 通过重写数组更新数组一系列更新元素的方法来实现元素修改的劫持
+- 数组: 通过重写数组原型方法实现元素修改的劫持
 
 缺陷：
 
-> - 初始化时需要遍历对象所有 key，如果对象层次较深，性能不好
-> - 通知更新过程需要维护大量 dep 实例和 watcher 实例，额外占用内存较多
-> - Object.defineProperty 无法监听到数组元素的变化，只能通过劫持重写数方法
-> - 动态新增，删除对象属性无法拦截，只能用特定 set/delete API 代替
-> - 不支持 Map、Set 等数据结构
-
-解决：针对常用数组原型方法`push`、`pop`、`shift`、`unshift`、`splice`、`sort`、`reverse`进行了hack处理；提供`Vue.set`监听对象/数组新增属性。对象的新增/删除响应，还可以`new`个新对象，新增则合并新属性和旧对象；删除则将删除属性后的对象深拷贝给新对象。
+- 初始化时需要遍历对象所有 key，如果对象层次较深，性能不好
+- 通知更新过程需要维护大量 dep 实例和 watcher 实例，额外占用内存较多
+- Object.defineProperty 无法监听到数组元素的变化，只能通过劫持重写方法
+- 动态新增，删除对象属性无法拦截，只能用特定 set/delete API 代替
+- 不支持 Map、Set 等数据结构
 
 ```
 let obj = {}
@@ -297,131 +304,174 @@ input.addEventListener('keyup', function(e) {
 })
 ```
 
-vue2中数组方法的实现原理:
+> 监听对象上的多个属性
 
 ```
-   const arrayProto = Array.prototype;
-   const subArrProto = Object.create(arrayProto);
-   const methods = ['pop', 'shift', 'unshift', 'sort', 'reverse', 'splice', 'push'];
-   methods.forEach(method => {
-     /* 重写原型方法 */
-     subArrProto[method] = function() {
-       arrayProto[method].call(this, ...arguments); 
-     };
-     /* 监听这些方法 */
-     Object.defineProperty(subArrProto, method, {
-       set() {},
-       get() {}
-     })
-   })
+Object.keys(person).forEach(function (key) {
+    Object.defineProperty(person, key, {
+        enumerable: true,
+        configurable: true,
+        // 默认会传入this
+        get() {
+            return person[key]
+        },
+        set(val) {
+            console.log(`对person中的${key}属性进行了修改`)
+            person[key] = val
+            // 修改之后可以执行渲染操作
+        }
+    })
+})
+console.log(person.age)
 ```
 
-**二、Proxy** 
+> 深度监听一个对象
 
-**Proxy** 也就是代理，可以帮助我们完成很多事情，例如对数据的处理，对构造函数的处理，对数据的验证，说白了，就是在我们访问对象前添加了一层拦截，可以过滤很多操作，而这些过滤，由你来定义，因此提供了一种机制，可以对外界的访问进行过滤和改写。
+```
+function defineProperty(obj, key, val) {
+    //如果某对象的属性也是一个对象，递归进入该对象，进行监听
+    if(typeof val === 'object'){
+    observer(val)
+    }
+    Object.defineProperty(obj, key, {
+        get() {
+            console.log(`访问了${key}属性`)
+            return val
+        },
+        set(newVal) {
+         // 如果原本的属性值是一个对象，递归进入该对象进行监听
+            if(typeof newVal === 'object'){
+                observer(key)
+            }
+            // 如果原本的属性值是一个字符串
+            console.log(`${key}属性被修改为${newVal}了`)
+            val = newVal
+        }
+    })
+}
+
+// 在observer里面加一个递归停止的条件
+function Observer(obj) {
+    //如果传入的不是一个对象，return
+    if (typeof obj !== "object" || obj === null) {
+        return
+    }
+    // for (key in obj) {
+    Object.keys(obj).forEach((key) => {
+        defineProperty(obj, key, obj[key])
+    })
+    // }
+}
+```
+
+> 监听数组
+
+如果还是按照基本用法，是无法监听数组变化，vue2采用重写Array原型上的方法实现监听。
+
+**Proxy**
+
+> 基本使用
+
+Proxy 也就是代理，可以帮助我们完成很多事情，例如对数据的处理，对构造函数的处理，对数据的验证，说白了，就是在我们访问对象前添加了一层拦截，可以过滤很多操作，而这些过滤，由你来定义，因此提供了一种机制，可以对外界的访问进行过滤和改写。
 
 核心：
 
-- 通过 Proxy(代理): 拦截对 data 任意属性的任意(13 种)操作, 包括属性值的读写, 属性的添加, 属性的删除等...
+- 通过 Proxy(代理): 拦截对 data 任意属性的任意(13 种)操作, 包括属性值的读写, 属性的添加, 属性的删除等…
 - 通过 Reflect(反射): 动态对被代理对象的相应属性进行特定的操作
 
-语法：
+语法：`const p = new Proxy(target, handler)` 参数:
 
-```js
-let p = new Proxy(target, handler);
-```
+1. target:要使用 `Proxy` 包装的目标对象（可以是任何类型的对象，包括原生数组，函数，甚至另一个代理）
+2. handler:一个通常以函数作为属性的对象，各属性中的函数分别定义了在执行各种操作时代理 `p` 的行为。
 
-`target` ：需要使用`Proxy`包装的目标对象（可以是任何类型的对象，包括原生数组，函数，甚至另一个代理）。
-
-`handler`: 一个对象，其属性是当执行一个操作时定义代理的行为的函数(可以理解为某种触发器)。具体的`handler`相关函数请查阅官网。
-
-```js
-  let w3cjs = {
-     name: "w3cjs",
-     age: 99
-  };
-  w3cjs = new Proxy(w3cjs, {
-    get(target, key) {
-         let result = target[key];
-         //如果是获取 年龄 属性，则添加 岁字
-         if (key === "age") result += "岁";
-         return result;
-    },
-    set(target, key, value) {
-           if (key === "age" && typeof value !== "number") {
-           throw Error("age字段必须为Number类型");
-        }
-        return Reflect.set(target, key, value);
-    }
-  });
-  console.log(`我叫${w3cjs.name}  我今年${w3cjs.age}了`);
-  w3cjs.age = 100;
-```
-
-上方案例中定义了 **w3cjs**对象，其中有 **age** 和 **name** 两个字段,我们在`Proxy`中的 **get** 拦截函数中添加了一个判断，如果是取 **age** 属性的值，则在后面添加 **岁**。在 **set** 拦截函数中判断了如果是更改 **age** 属性时，类型不是 `Number`则抛出错误。最后输出正确结果：我叫w3cjs 我今年99岁了。
-
-Proxy的表单验证：
+通过Proxy，我们可以对`设置代理的对象`上的一些操作进行拦截，外界对这个对象的各种操作，都要先通过这层拦截。
 
 ```
-  // 验证规则
-    const validators = {
-      name: {
-        validate(value) {
-          return value.length > 6;
-        },
-        message: '用户名长度不能小于六'
-      },
-      password: {
-        validate(value) {
-          return value.length > 10;
-        },
-        message: '密码长度不能小于十'
-      },
-      moblie: {
-        validate(value) {
-          return /^1(3|5|7|8|9)[0-9]{9}$/.test(value);
-        },
-        message: '手机号格式错误'
+let w3cjs = {
+   name: "w3cjs",
+   age: 99
+};
+w3cjs = new Proxy(w3cjs, {
+  get(target, key) {
+       let result = target[key];
+       //如果是获取 年龄 属性，则添加 岁字
+       if (key === "age") result += "岁";
+       return result;
+  },
+  set(target, key, value) {
+         if (key === "age" && typeof value !== "number") {
+         throw Error("age字段必须为Number类型");
       }
+      return Reflect.set(target, key, value);
+  }
+});
+console.log(`我叫${w3cjs.name}  我今年${w3cjs.age}了`);
+w3cjs.age = 100;
+```
+
+Proxy的表单验证
+
+```
+// 验证规则
+  const validators = {
+    name: {
+      validate(value) {
+        return value.length > 6;
+      },
+      message: '用户名长度不能小于六'
+    },
+    password: {
+      validate(value) {
+        return value.length > 10;
+      },
+      message: '密码长度不能小于十'
+    },
+    moblie: {
+      validate(value) {
+        return /^1(3|5|7|8|9)[0-9]{9}$/.test(value);
+      },
+      message: '手机号格式错误'
     }
+  }
 
 
-    // 验证方法
-    function validator(obj, validators) {
-      return new Proxy(obj, {
-        set(target, key, value) {
-          const validator = validators[key]
-          if (!validator) {
-            target[key] = value;
-          } else if (validator.validate(value)) {
-            target[key] = value;
-          } else {
-            alert(validator.message || "");
-          }
+  // 验证方法
+  function validator(obj, validators) {
+    return new Proxy(obj, {
+      set(target, key, value) {
+        const validator = validators[key]
+        if (!validator) {
+          target[key] = value;
+        } else if (validator.validate(value)) {
+          target[key] = value;
+        } else {
+          alert(validator.message || "");
         }
-      })
-    }
-    let form = {};
-    form = validator(form, validators);
-    form.name = '666'; // 用户名长度不能小于六
-    form.password = '113123123123123';
+      }
+    })
+  }
+  let form = {};
+  form = validator(form, validators);
+  form.name = '666'; // 用户名长度不能小于六
+  form.password = '113123123123123';
 ```
 
 **Proxy支持拦截的操作，一共有13种：**
 
-- **get(target, propKey, receiver)**：拦截对象属性的读取，比如 `proxy.foo` 和`proxy['foo']`。
-- **set(target, propKey, value, receiver)**：拦截对象属性的设置，比如`proxy.foo = v` 或 `proxy['foo'] = v`，返回一个布尔值。
-- **has(target, propKey)**：拦截 `propKey in proxy` 的操作，返回一个布尔值。
-- **deleteProperty(target, propKey)**：拦截 `delete proxy[propKey]`的操作，返回一个布尔值。
-- **ownKeys(target)**：拦截 `Object.getOwnPropertyNames(proxy)`、`Object.getOwnPropertySymbols(proxy)`、`Object.keys(proxy)`、`for...in`循环，返回一个数组。该方法返回目标对象所有自身的属性的属性名，而`Object.keys()`的返回结果仅包括目标对象自身的可遍历属性。
-- **getOwnPropertyDescriptor(target, propKey)**：拦截`Object.getOwnPropertyDescriptor(proxy, propKey)`，返回属性的描述对象。
-- **defineProperty(target, propKey, propDesc)**：拦截`Object.defineProperty(proxy, propKey, propDesc）`、`Object.defineProperties(proxy, propDescs)`，返回一个布尔值。
-- **preventExtensions(target)**：拦截`Object.preventExtensions(proxy)`，返回一个布尔值。
-- **getPrototypeOf(target)**：拦截`Object.getPrototypeOf(proxy)`，返回一个对象。
-- **isExtensible(target)**：拦截`Object.isExtensible(proxy)`，返回一个布尔值。
-- **setPrototypeOf(target, proto)**：拦截`Object.setPrototypeOf(proxy, proto)`，返回一个布尔值。如果目标对象是函数，那么还有两种额外操作可以拦截。
-- **apply(target, object, args)**：拦截 Proxy 实例作为函数调用的操作，比如`proxy(...args)`、`proxy.call(object, ...args)`、`proxy.apply(...)`。
-- **construct(target, args)**：拦截 Proxy 实例作为构造函数调用的操作，比如`new proxy(...args)`。
+- get(target, propKey, receiver)：拦截对象属性的读取，比如 `proxy.foo` 和`proxy['foo']`。
+
+- set(target, propKey, value, receiver)：拦截对象属性的设置，比如`proxy.foo = v` 或 `proxy['foo'] = v`，返回一个布尔值。
+- has(target, propKey)：拦截 `propKey in proxy` 的操作，返回一个布尔值。
+- deleteProperty(target, propKey)：拦截 `delete proxy[propKey]`的操作，返回一个布尔值。
+- ownKeys(target)：拦截 `Object.getOwnPropertyNames(proxy)`、`Object.getOwnPropertySymbols(proxy)`、`Object.keys(proxy)`、`for...in`循环，返回一个数组。该方法返回目标对象所有自身的属性的属性名，而`Object.keys()`的返回结果仅包括目标对象自身的可遍历属性。
+- getOwnPropertyDescriptor(target, propKey)：拦截`Object.getOwnPropertyDescriptor(proxy, propKey)`，返回属性的描述对象。
+- defineProperty(target, propKey, propDesc)：拦截`Object.defineProperty(proxy, propKey, propDesc）`、`Object.defineProperties(proxy, propDescs)`，返回一个布尔值。
+- preventExtensions(target)：拦截`Object.preventExtensions(proxy)`，返回一个布尔值。
+- getPrototypeOf(target)：拦截`Object.getPrototypeOf(proxy)`，返回一个对象。
+- isExtensible(target)：拦截`Object.isExtensible(proxy)`，返回一个布尔值。
+- setPrototypeOf(target, proto)：拦截`Object.setPrototypeOf(proxy, proto)`，返回一个布尔值。如果目标对象是函数，那么还有两种额外操作可以拦截。
+- apply(target, object, args)：拦截 Proxy 实例作为函数调用的操作，比如`proxy(...args)`、`proxy.call(object, ...args)`、`proxy.apply(...)`。
+- construct(target, args)：拦截 Proxy 实例作为构造函数调用的操作，比如`new proxy(...args)`。
 
 ## Virtual-DOM
 

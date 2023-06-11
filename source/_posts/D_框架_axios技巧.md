@@ -6,7 +6,7 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# 1.基本使用
+# 基本使用
 
 1. 安装axios `npm install axios --save`
 
@@ -89,7 +89,7 @@ axios.get('xxxx', {
 cancel('主动取消请求');
 ```
 
-# 2.axios是什么
+# axios是什么
 
 axios是一个基于[promise](https://so.csdn.net/so/search?q=promise&spm=1001.2101.3001.7020)的http库，可以用在浏览器和node.js的环境中；本质上也是对原生xhr的封装，只不过它是promise的实现版本，符合最新的ES规范。
 
@@ -106,7 +106,7 @@ axios是一个基于[promise](https://so.csdn.net/so/search?q=promise&spm=1001.2
 1.不支持jsonp,需要自己封装
 2.基于xhr实现，所以无法在service worker,web worker中使用
 
-# 3.实现简易的axios
+# 实现简易的axios
 
 Axios构造函数，核心代码为request
 
@@ -317,7 +317,7 @@ request(config) {
 
 完毕
 
-# 4.**源码分析**
+# **源码分析**
 
 axios的配置共分为3种，全局配置、实例配置、请求配置；这三个配置和我们进行的操作息息相关
 
@@ -562,7 +562,7 @@ if (config.cancelToken) {
 }
 ```
 
-# 5.Fetch网络请求及xhr、ajax、axios
+# Fetch网络请求及xhr、ajax、axios
 
 ## Fetch是什么
 
@@ -670,27 +670,40 @@ const response = fetch(url, {
 > };
 > ```
 
-## 取消网络请求
+## axios取消请求
 
-首先新建 AbortController 实例，然后发送`fetch()`请求，配置对象的`signal`属性必须指定接收 AbortController 实例发送的信号`controller.signal`。
+**方式1：AbortController**
 
-`controller.abort()`方法用于发出取消信号。这时会触发`abort`事件，这个事件可以监听，也可以通过`controller.signal.aborted`属性判断取消信号是否已经发出。
+从 `v0.22.0` 开始，Axios 支持以 fetch API 方式—— [`AbortController`](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) 取消请求：
 
 ```js
-let controller = new AbortController();
-setTimeout(() => controller.abort(), 1000);
+const controller = new AbortController();
+// 取消重复请求
+controller.signal && controller.abort();
+axios.get('/foo/bar', {
+   signal: controller.signal
+}).then(function(response) {
+   //...
+});
+```
 
-try {
-  let response = await fetch('/long-operation', {
-    signal: controller.signal
-  });
-} catch(err) {
-  if (err.name == 'AbortError') {
-    console.log('Aborted!');
-  } else {
-    throw err;
-  }
-}
+**方式2：CancelToken** 
+
+通过传递一个 executor 函数到 `CancelToken` 的构造函数来创建一个 cancel token：。
+
+此 API 从 `v0.22.0` 开始已被弃用，不应在新项目中使用。
+
+```js
+const CancelToken = axios.CancelToken;
+let cancel;
+// 取消重复请求
+cancel && cancel();
+axios.get('/user/12345', {
+  cancelToken: new CancelToken(function executor(c) {
+    // executor 函数接收一个 cancel 函数作为参数
+    cancel = c;
+  })
+});
 ```
 
 ## 其他xhr、ajax、axios

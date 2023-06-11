@@ -717,9 +717,23 @@ font-size，font-family，color，ul，li，dl，dd，dt；
 
 border padding margin width height 事实上，宽度也不是继承的，而是如果你不指定宽度，那么它就是 100%。由于你子 DIV 并没有指定宽度，那它就是 100%，也就是与父 DIV 同宽，但这与继承无关，高度自然也没有继承一说。
 
-优先级算法
+**CSS选择器优先级**
 
- 优先级为: !important > id > class > tag , important 比 内联优先级高
+> 第一优先级：`!important`会覆盖页面内任何位置的元素样式
+>
+> 1.内联样式，如`style="color: green"`，权值为`1000`
+>
+> 2.ID选择器，如`#app`，权值为`0100`
+>
+> 3.类、伪类、属性选择器，如`.foo, :first-child, div[class="foo"]`，权值为`0010`
+>
+> 4.标签、伪元素选择器，如`div::first-line`，权值为`0001`
+>
+> 5.通配符、子类选择器、兄弟选择器，如`*, >, +`，权值为`0000`
+>
+> 6.继承的样式没有权值
+
+
 
 ## 清除浮动
 
@@ -1605,7 +1619,13 @@ abbr,acronym {
 
 - PostCSS：它是一个对 CSS 进行处理的工具（平台），不能简单的把 PostCSS 归类成 CSS 预处理或后处理工具。PostCSS 一般不单独使用，而是与已有的构建工具进行集成。PostCSS 与主流的构建工具，如 Webpack、Grunt 和 Gulp 都可以进行集成。
 
-## 过度、变形、移动、动画
+## CSS动画
+
+css实现动画有三种方式：
+
+> - transition 实现渐变动画
+> - transform 转变动画
+> - animation 实现自定义动画
 
 | 属性               | 含义                                                         |
 | ------------------ | ------------------------------------------------------------ |
@@ -1614,14 +1634,133 @@ abbr,acronym {
 | translate（移动）  | 只是transform的一个属性值，即移动                            |
 | animation（动画）  | 用于设置动画属性，他是一个简写的属性，包含6个属性            |
 
-## **css3 动画效果属性有哪些 ?**
+**transition 实现渐变动画**
 
-- animation-name：规定需要绑定到选择器的 keyframe 名称。。
-- animation-duration：规定完成动画所花费的时间，以秒或毫秒计。
-- animation-timing-function：规定动画的速度曲线。
-- animation-delay：规定在动画开始之前的延迟。
-- animation-iteration-count：规定动画应该播放的次数。
-- animation-direction：规定是否应该轮流反向播放动画。
+`transition`的属性如下：
+
+- property:填写需要变化的css属性
+- duration:完成过渡效果需要的时间单位(s或者ms)
+- timing-function:完成效果的速度曲线
+- delay: 动画效果的延迟触发时间
+
+其中`timing-function`的值有如下：
+
+| 值                            | 描述                                                         |
+| ----------------------------- | ------------------------------------------------------------ |
+| linear                        | 匀速（等于 cubic-bezier(0,0,1,1)）                           |
+| ease                          | 从慢到快再到慢（cubic-bezier(0.25,0.1,0.25,1)）              |
+| ease-in                       | 慢慢变快（等于 cubic-bezier(0.42,0,1,1)）                    |
+| ease-out                      | 慢慢变慢（等于 cubic-bezier(0,0,0.58,1)）                    |
+| ease-in-out                   | 先变快再到慢（等于 cubic-bezier(0.42,0,0.58,1)），渐显渐隐效果 |
+| cubic-bezier(*n*,*n*,*n*,*n*) | 在 cubic-bezier 函数中定义自己的值。可能的值是 0 至 1 之间的数值 |
+
+注意：并不是所有的属性都能使用过渡的，如`display:none<->display:block`
+
+```
+<div class="base"></div>
+.base {
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  background-color: #0ea9ff;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #5daf34;
+  // transition-property: width, height, background-color, border-width;
+  // transition-duration: 2s;
+  // transition-timing-function: ease-in;
+  // transition-delay: 500ms;
+  /*简写*/
+  transition: all 2s ease-in 500ms;
+}
+
+.base:hover {
+  width: 200px;
+  height: 200px;
+  background-color: #5daf34;
+  border-width: 10px;
+  border-color: #3a8ee6;
+}   
+```
+
+**transform 转变动画**
+
+包含四个常用的功能：
+
+- translate：位移
+- scale：缩放
+- rotate：旋转
+- skew：倾斜
+
+一般配合`transition`过度使用
+
+注意的是，`transform`不支持`inline`元素，使用前把它变成`block`
+
+```
+.base {
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  background-color: #0ea9ff;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #5daf34;
+  // 搭配transition
+  transition: all 2s ease-in 500ms;
+}
+
+.base:hover {
+  width: 200px;
+  height: 200px;
+  background-color: #5daf34;
+  border-width: 10px;
+  border-color: #3a8ee6;
+  transform: scale(0.8, 1.5) rotate(35deg) skew(5deg) translate(15px, 25px);
+}
+```
+
+**animation 实现自定义动画**
+
+`animation`是由 8 个属性的简写，分别如下：
+
+| 属性                                   | 描述                                                         | 属性值                                        |
+| -------------------------------------- | ------------------------------------------------------------ | --------------------------------------------- |
+| animation-duration                     | 指定动画完成一个周期所需要时间，单位秒（s）或毫秒（ms），默认是 0 |                                               |
+| animation-timing-function              | 指定动画计时函数，即动画的速度曲线，默认是 "ease"            | linear、ease、ease-in、ease-out、ease-in-out  |
+| animation-delay                        | 指定动画延迟时间，即动画何时开始，默认是 0                   |                                               |
+| animation-iteration-count              | 指定动画播放的次数，默认是 1                                 |                                               |
+| animation-direction 指定动画播放的方向 | 默认是 normal                                                | normal、reverse、alternate、alternate-reverse |
+| animation-fill-mode                    | 指定动画填充模式。默认是 none                                | forwards、backwards、both                     |
+| animation-play-state                   | 指定动画播放状态，正在运行或暂停。默认是 running             | running、pauser                               |
+| animation-name                         | 指定 @keyframes 动画的名称                                   |                                               |
+
+`CSS` 动画只需要定义一些关键的帧，而其余的帧，浏览器会根据计时函数插值计算出来，
+
+通过 `@keyframes` 来定义关键帧
+
+```
+.base {
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  background-color: #0ea9ff;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #5daf34;
+}
+
+.base:hover {
+  animation: rotate 2s;
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+```
 
 ## ::before 和 :after 双冒号和单冒号的区别
 

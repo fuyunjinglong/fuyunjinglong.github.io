@@ -521,51 +521,11 @@ export const useName = () => {
 
 # Mixin-HOC-Hook
 
-## **Hook**
+参考
 
-```
-<template>
-  <p>{{ person.name }}</p>
-  <p>{{ car.name }}</p>
-  <p>{{ animal.name }}</p>
-</template>
+- [【React深入】从Mixin到HOC再到Hook](https://juejin.cn/post/6844903815762673671#heading-1)
 
-<script lang="ts" setup>
-import { usePerson, useCar, useAnimal } from "./hooks";
-
-const { person, changePersonName } = usePerson();
-
-const { car } = useCar();
-</script>
-```
-
-```
-// usePerson.ts
-import { reactive, watch } from "vue";
-
-export default function usePerson() {
-  const person = reactive<{ name: string; sex: string }>({
-    name: "小明",
-    sex: "male",
-  });
-  watch(
-    () => [person.name, person.sex],
-    ([nameVal, sexVal]) => {
-      console.log(`名字被修改了, 修改为 ${nameVal}`);
-      console.log(`名字被修改了, 修改为 ${sexVal}`);
-    }
-  );
-  function changePersonName() {
-    person.name = "小浪";
-  }
-  return {
-    person,
-    changePersonName,
-  };
-}
-```
-
-## **Mixin-HOC-Hook**
+**前言**
 
 Mixin-HOC的缺点：
 
@@ -584,6 +544,117 @@ Hook的优点：
 - 没有创建仅用于逻辑重用的不必要的组件实例。
 
 Hook的缺点：比如 `ref` 带来的心智负担
+
+## Mixin
+
+广义的mixin方法，就是用赋值的方式将mixin对象中的方法都挂载到原对象上，来实现对象的混入，类似ES6中的Object.assign()的作用。原理如下：
+
+```
+const mixin = function(obj, mixins){
+  const newObj = obj;
+  newObj.prototype = Object.create(obj.prototype);
+
+  for(let prop in mixins){ // 遍历mixins的属性
+    if(mixins.hasOwnPrototype(prop)){ // 判断是否为mixin的自身属性
+      newObj.prototype[prop] = mixins[prop]; // 赋值
+    }
+  }
+
+  return newObj;
+}
+```
+
+**React.createClass的mixins的危害**
+
+1. Mixin 可能会相互依赖，相互耦合，不利于代码维护
+2. 不同的 Mixin中的方法可能会相互冲突
+3. Mixin非常多时，组件是可以感知到的，甚至还要为其做相关处理，这样会给代码造成滚雪球式的复杂性 `React.createClass`现在已经不再推荐使用`Mixin`来解决代码复用问题，因为`Mixin`带来的危害比他产生的价值还要巨大，并且`HOC`是纯净的JavaScript，不用担心他们会被废弃。
+
+`React`现在已经不再推荐使用`Mixin`来解决代码复用问题，因为`Mixin`带来的危害比他产生的价值还要巨大，并且`React`全面推荐使用高阶组件来替代它。
+
+## HOC(High-Order-Components高阶组件)
+
+高阶组件可以看作`React`对装饰模式的一种实现，高阶组件就是一个纯函数，且该函数接受一个组件作为参数，并返回一个新的组件。
+
+**高阶组件实现的方法有两种：**
+
+1. 属性代理：通过被包裹组件的props来进行相关操作。主要进行组件的复用。
+2. 反向继承：继承被包裹的组件。主要进行渲染的劫持。
+
+**高阶组件可以实现什么功能:**
+
+1. **双向绑定**
+2. **组合渲染:** 可使用任何其他组件和原组件进行组合渲染，达到样式、布局复用等效果。
+3. **条件渲染:** 根据特定的属性决定原组件是否渲染
+4. **操作props:** 可以对传入组件的props进行增加、修改、删除或者根据特定的 props进行特殊的操作。
+5. **获取refs:** 高阶组件中可获取原组件的 ref，通过 ref获取组件实例, 从而可以实现对组件中的方法进行调用
+6. **状态管理:** 将原组件的状态提取到 HOC中进行管理
+7. **操作state:** 通过反向继承，我们可以直接操作原组件的 state
+8. **渲染劫持:** 高阶组件可以在render函数中做非常多的操作，从而控制原组件的渲染输出。只要改变了原组件的渲染，我们都将它称之为一种 渲染劫持。
+
+**HOC的缺陷**
+
+1. HOC需要在原组件上进行包裹或者嵌套，如果大量使用 HOC，将会产生非常多的嵌套，这让调试变得非常困难。
+2. HOC可以劫持 props，在不遵守约定的情况下也可能造成冲突。
+
+**为什么在 Vue 中实现高阶组件比较难**
+
+主要是二者的设计思想和设计目标不同，在 `React` 中写组件就是在写函数，函数拥有的功能组件都有。而 `Vue` 更像是高度封装的函数，在更高的层面 `Vue` 能够让你轻松的完成一些事情，但与高度的封装相对的就是损失一定的灵活，你需要按照一定规则才能使系统更好地运行。
+
+## **Hook**
+
+使用 Hooks，你可以在将含有 state的逻辑从组件中抽象出来，这将可以让这些逻辑容易被测试。 Hooks可以帮助你在不重写组件结构的情况下复用这些逻辑。
+
+```
+<template>
+ <p>{{ person.name }}</p>
+ <p>{{ car.name }}</p>
+ <p>{{ animal.name }}</p>
+</template>
+
+
+<script lang="ts" setup>
+import { usePerson, useCar, useAnimal } from "./hooks";
+
+
+const { person, changePersonName } = usePerson();
+
+const { car } = useCar();
+</script>
+```
+
+```
+// usePerson.ts
+import { reactive, watch } from "vue";
+
+export default function usePerson() {
+ const person = reactive<{ name: string; sex: string }>({
+  name: "小明",
+  sex: "male",
+ });
+ watch(
+  () => [person.name, person.sex],
+  ([nameVal, sexVal]) => {
+   console.log(`名字被修改了, 修改为 ${nameVal}`);
+   console.log(`名字被修改了, 修改为 ${sexVal}`);
+  }
+ );
+ function changePersonName() {
+  person.name = "小浪";
+ }
+ return {
+  person,
+  changePersonName,
+ };
+}
+```
+
+**使用Hooks的动机**
+
+1. 减少状态逻辑复用的风险: Hook和 Mixin在用法上有一定的相似之处，但是 Mixin引入的逻辑和状态是可以相互覆盖的，而多个 Hook之间互不影响，这让我们不需要在把一部分精力放在防止避免逻辑复用的冲突上。
+2. 避免地狱式嵌套
+3. 让组件更容易理解
+4. 使用函数代替class
 
 ## React Hook 和 Vue Hook 对比
 
@@ -617,19 +688,19 @@ Vue Hook的优点：
 
 - 对 Hooks 使用顺序无要求，而且可以放在条件语句里。
 
-  > 对 React Hooks 而言，调用必须放在最前面，而且不能被包含在条件语句里，这是因为 React Hooks 采用下标方式寻找状态，一旦位置不对或者 Hooks 放在了条件中，就无法正确找到对应位置的值。
-  >
-  > 而 Vue Function API 中的 Hooks 可以放在任意位置、任意命名、被条件语句任意包裹的，因为其并不会触发 `setup` 的更新，只在需要的时候更新自己的引用值即可，而 Template 的重渲染则完全继承 Vue 2.0 的依赖收集机制，它不管值来自哪里，只要用到的值变了，就可以重新渲染了。
+ > 对 React Hooks 而言，调用必须放在最前面，而且不能被包含在条件语句里，这是因为 React Hooks 采用下标方式寻找状态，一旦位置不对或者 Hooks 放在了条件中，就无法正确找到对应位置的值。
+ >
+ > 而 Vue Function API 中的 Hooks 可以放在任意位置、任意命名、被条件语句任意包裹的，因为其并不会触发 `setup` 的更新，只在需要的时候更新自己的引用值即可，而 Template 的重渲染则完全继承 Vue 2.0 的依赖收集机制，它不管值来自哪里，只要用到的值变了，就可以重新渲染了。
 
 - 不会再每次渲染重复调用，减少 GC 压力
 
-  > React的Hooks 都在渲染闭包中执行，每次重渲染都有一定性能压力，而且频繁的渲染会带来许多闭包，虽然可以依赖 GC 机制回收，但会给 GC 带来不小的压力。
-  >
-  > Vue Hooks 只有一个引用，所以存储的内容就非常精简，也就是占用内存小，而且当值变化时，也不会重新触发 `setup` 的执行，所以确实不会造成 GC 压力。
+ > React的Hooks 都在渲染闭包中执行，每次重渲染都有一定性能压力，而且频繁的渲染会带来许多闭包，虽然可以依赖 GC 机制回收，但会给 GC 带来不小的压力。
+ >
+ > Vue Hooks 只有一个引用，所以存储的内容就非常精简，也就是占用内存小，而且当值变化时，也不会重新触发 `setup` 的执行，所以确实不会造成 GC 压力。
 
 - React 必须要总包裹 `useCallback` 函数确保不让子元素频繁重渲染
 
-  >  Vue 3.0，由于 `setup` 仅执行一次，因此函数本身只会创建一次，不存在多实例问题，不需要 `useCallback` 的概念，更不需要使用 [lint 插件](https://link.juejin.cn/?target=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Feslint-plugin-react-hooks) 保证依赖书写正确.
+ > Vue 3.0，由于 `setup` 仅执行一次，因此函数本身只会创建一次，不存在多实例问题，不需要 `useCallback` 的概念，更不需要使用 [lint 插件](https://link.juejin.cn/?target=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Feslint-plugin-react-hooks) 保证依赖书写正确.
 
 - Vue不需要使用 `useEffect` `useMemo` 等进行性能优化，所有性能优化都是自动的。
 
@@ -652,9 +723,3 @@ JSX 与 Template 的根本区别：
 - template:Vue 采取的 Template 思路使数据层强制分离了，这也使代码分层更清晰
 
 **不建议在 JSX 中再实现类似 Mutable + JSX** 
-
-
-
-
-
-# 

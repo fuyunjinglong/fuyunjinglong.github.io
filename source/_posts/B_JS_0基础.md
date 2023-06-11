@@ -631,37 +631,11 @@ console.log(array1.push.apply(array1, array2)); // [1, 2, 3, 4, 5, 6]
 
 ## async和defer的作用是什么？有什么区别?
 
-defer延迟执行
+- `script` ：会阻碍 HTML 解析，只有下载好并执行完脚本才会继续解析 HTML。
+- `async script` ：解析 HTML 过程中进行脚本的异步下载，下载成功立马执行，有可能会阻断 HTML 的解析。
+- `defer script`：完全不会阻碍 HTML 的解析，解析完成之后再按照顺序执行脚本。
 
-> 解析完js脚本后不会立刻执行，而是在DOMContentLoaded 事件触发之前开始执行。defer 是顺序执行
->
-> 使用场景(依赖dom)：
->
-> - 评论框
-> - 代码语法高亮
-> - polyfill.js
->
-> defer 属性表示延迟执行引入的 JavaScript，即这段 JavaScript 加载时 HTML 并未停止解析，这两个过程是并行的。整个 document 解析完毕且 defer-script 也加载完成之后（这两件事情的顺序无关），会执行所有由 defer-script 加载的 JavaScript 代码，然后触发 DOMContentLoaded 事件。
-
-async异步下载
-
-> 解析完js脚本后会立即执行，与html解析过程异步同时执行。async是乱序执行
->
-> 使用场景：
->
-> - 百度统计
->
-> async 属性表示异步执行引入的 JavaScript，与 defer 的区别在于，如果已经加载好，就会开始执行——无论此刻是 HTML 解析阶段还是 DOMContentLoaded 触发之后。需要注意的是，这种方式加载的 JavaScript 依然会阻塞 load 事件。换句话说，async-script 可能在 DOMContentLoaded 触发之前或之后执行，但一定在 load 触发之前执行。
-
-![image-20211201070616431](C:/img/image-20211201070616431.png)
-
-尽量减少DOM访问；
-
-把脚本放在底部；
-
-把JavaScript和CSS放到外面，如果JavaScript和CSS在外部文件中，并且已经被浏览器缓存起来了，那么我们就成功地把HTML文档变小了，而且还没有增加HTTP请求数；
-
-压缩JavaScript和CSS，如启用了gzip模块；
+![image-20211201070616431](/img/image-20211201070616431.png)
 
 # 三大山-原型和原型链
 
@@ -1051,63 +1025,186 @@ Function.prototype.myBind = function(context) {
 
 # 三大山-作用域和闭包
 
-## 作用域-变量对象
+## 作用域-执行上下文
 
-**参考**
+参考
 
-- [JavaScript深入之变量对象](https://github.com/mqyqingfeng/Blog/issues/5#top)
+- [JavaScript 深入之执行上下文栈](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fmqyqingfeng%2FBlog%2Fissues%2F4)；
+- [JavaScript 深入之变量对象](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fmqyqingfeng%2FBlog%2Fissues%2F5)；
+- [JavaScript 深入之作用域链](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fmqyqingfeng%2FBlog%2Fissues%2F6)；
+- [JavaScript 深入之执行上下文](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fmqyqingfeng%2FBlog%2Fissues%2F8)。
 
 对于每个执行上下文，都有三个重要属性：
 
-- 变量对象( variable object ，VO)
-- 作用域链( scope chain)
-- this
+- 变量对象（Variable object，VO）；
+- 作用域链（Scope chain）；
+- [this](https://www.ruanyifeng.com/blog/2018/06/javascript-this.html)
 
-**变量对象**
+执行栈，也叫调用栈，具有 LIFO（后进先出）结构，用于存储在代码执行期间创建的**所有执行上下文**。
 
-变量对象是与执行上下文相关的数据作用域，存储了在上下文中定义的变量和函数声明。
+因为JS引擎创建了很多的执行上下文，所以JS引擎创建了执行上下文**栈**（Execution context stack，ECS）来**管理**执行上下文。
 
-接下来是：全局上下文下的变量对象和函数上下文下的变量对象。
+当 JavaScript 初始化的时候会向执行上下文栈压入一个**全局**执行上下文，我们用 globalContext 表示它，并且只有当整个应用程序结束的时候，执行栈才会被清空，所以程序结束之前， 执行栈最底部永远有个 globalContext。
 
-**全局上下文**
+**一、执行上下文**
 
-全局对象。在 [W3School](http://www.w3school.com.cn/jsref/jsref_obj_global.asp) 中也有介绍：
+执行上下文总共有三种类型
 
-> 全局对象是预定义的对象，作为 JavaScript 的全局函数和全局属性的占位符。通过使用全局对象，可以访问所有其他所有预定义的对象、函数和属性。
+- **全局执行上下文**：只有一个，浏览器中的全局对象就是 window 对象，`this` 指向这个全局对象。
+- **函数执行上下文**：存在无数个，只有在函数被调用的时候才会被创建，每次调用函数都会创建一个新的执行上下文。
+- **Eval 函数执行上下文**： 指的是运行在 `eval` 函数中的代码，很少用而且不建议使用。
 
-> 在顶层 JavaScript 代码中，可以用关键字 this 引用全局对象。因为全局对象是作用域链的头，这意味着所有非限定性的变量和函数名都会作为该对象的属性来查询。
+**二、执行上下文的创建**
 
-> 例如，当JavaScript 代码引用 parseInt() 函数时，它引用的是全局对象的 parseInt 属性。全局对象是作用域链的头，还意味着在顶层 JavaScript 代码中声明的所有变量都将成为全局对象的属性。
+分为2个阶段：
+
+- 创建阶段
+- 执行阶段
+
+**1.创建阶段**
+
+分为3部分：
+
+- 1、确定 **this** 的值，也被称为 **This Binding**。
+- 2、**LexicalEnvironment（词法环境）** 组件被创建。
+- 3、**VariableEnvironment（变量环境）** 组件被创建。
+
+**(1)This Binding**
+
+- **全局**执行上下文中，`this` 的值指向全局对象，在浏览器中`this` 的值指向 `window`对象，而在`nodejs`中指向这个文件的`module`对象。
+- **函数**执行上下文中，`this` 的值取决于函数的调用方式。具体有：默认绑定、隐式绑定、显式绑定（硬绑定）、`new`绑定、箭头函数，具体内容会在【this全面解析】部分详解。
+
+**(2)词法环境**
+
+分为2部分：
+
+- **环境记录**：存储变量和函数声明的实际位置
+- **对外部环境的引用**：可以访问其外部词法环境
+
+词法环境有两种**类型**
+
+- 1、**全局环境**：是一个没有外部环境的词法环境，其外部环境引用为 **null**。拥有一个全局对象（window 对象）及其关联的方法和属性（例如数组方法）以及任何用户自定义的全局变量，`this` 的值指向这个全局对象。
+- 2、**函数环境**：用户在函数中定义的变量被存储在**环境记录**中，包含了`arguments` 对象。对外部环境的引用可以是全局环境，也可以是包含内部函数的外部函数环境。
+
+**(3)变量环境**
+
+变量环境也是一个词法环境，因此它具有上面定义的词法环境的所有属性。
+
+在 ES6 中，**词法** 环境和 **变量** 环境的区别在于前者用于存储**函数声明和变量（ `let` 和 `const` ）**绑定，而后者仅用于存储**变量（ `var` ）**绑定。
+
+**2.执行阶段**
+
+完成对所有变量的分配，执行代码，函数出栈
+
+## 作用域-变量对象(VO/AO/GO)
+
+JS有两个特性，一个是单线程，一个是解释性语言。
+
+JS运行步骤：1.语法分析2.预编译3.解释执行
+
+函数执行四部曲：
+
+1.创建AO对象，供js引擎自己去访问
+
+activation object （活跃对象/执行期上下文）
+
+2.找变量和形参的声明，作为AO对象的属性名，值是undefined
+
+3.实参和形参相统一，实参赋值给形参
+
+4.找函数声明(注意不是函数表达式)，会覆盖变量的声明。
+
+```js
+   function fn(a,c){
+console.log(a);//function a(){}
+var a=123;
+console.log(a);//123
+console.log(c);//function c(){}
+function a(){}
+if(false){
+var d= 678;
+}
+console.log(d);//undefined
+console.log(b);//undefined
+var b=function(){}
+console.log(b);//function (){}
+function c(){}
+console.log(c);//function c(){}
+}
+fn(1,2);
+
+AO{
+a:undefined,1,function a(){}
+c:undefined,2,function c(){}
+d:undefined,
+b:undefined,
+}
+```
+
+**静态作用域与动态作用域**
+
+> JavaScript 采用词法作用域(lexical scoping)，就是静态作用域。
+
+因为 JavaScript 采用的是词法作用域，函数的作用域在函数定义的时候就决定了。
+
+而与词法作用域相对的是动态作用域，函数的作用域是在函数调用的时候才决定的。
 
 ```
-// 全局对象就是 Window 对象
-console.log(this);
-console.log(this instanceof Object);
-// 都能生效
-console.log(Math.random());
-console.log(this.Math.random());
-var a = 1;
-// 作为全局变量的宿主
-console.log(this.a);
-// 全局对象有 window 属性指向自身
-console.log(window.a);
-
-this.window.b = 2;
-console.log(this.b);
+var value = 1;
+function foo() {
+    console.log(value);
+}
+function bar() {
+    var value = 2;
+    foo();
+}
+bar();
+// 结果是 ???
 ```
 
-**函数上下文**
+假设JavaScript采用静态作用域，让我们分析下执行过程：
 
-在函数上下文中，我们用活动对象(activation object , AO)来表示变量对象。
+执行 foo 函数，先从 foo 函数内部查找是否有局部变量 value (价值) ，如果没有，就根据书写的位置，查找上面一层的代码，也就是 value (价值) 等于 1，所以结果会打印 1。
 
-**执行过程**
+假设JavaScript采用动态作用域，让我们分析下执行过程：
 
-执行上下文的代码会分成两个阶段进行处理：分析和执行，我们也可以叫做：
+执行 foo 函数，依然是从 foo 函数内部查找是否有局部变量 value (价值) 。如果没有，就从调用函数的作用域，也就是 bar 函数内部查找 value (价值) 变量，所以结果会打印 2。
 
-1. 进入执行上下文
-2. 代码执行
+前面我们已经说了，JavaScript采用的是静态作用域，所以这个例子的结果是 1。
 
-## 作用域-变量提升
+来自《JavaScript权威指南》中的例子：
+
+```
+var scope = "global scope";
+function checkscope(){
+    var scope = "local scope";
+    function f(){
+        return scope;
+    }
+    return f();
+}
+checkscope();
+```
+
+```
+var scope = "global scope";
+function checkscope(){
+    var scope = "local scope";
+    function f(){
+        return scope;
+    }
+    return f;
+}
+checkscope()();
+```
+
+两段代码都会打印：`local scope`。因为JavaScript采用的是词法作用域，函数的作用域基于函数创建的位置。
+
+> 引用《JavaScript权威指南》的回答就是：
+>
+> JavaScript 函数的执行用到了作用域链，这个作用域链是在函数定义的时候创建的。嵌套的函数 f() 定义在这个作用域链里，其中的变量 scope (范围) 一定是局部变量，不管何时何地执行函数 f()，这种绑定在执行 f() 时依然有效。
+
+**变量提升**
 
 var上升为全局，let是块级作用域，作用于当前。
 
@@ -1127,7 +1224,7 @@ var上升为全局，let是块级作用域，作用于当前。
     }
 ```
 
-例子一：**变量提升**
+例子一：变量提升
 
 ```js
 foo;  // undefined
@@ -1144,7 +1241,7 @@ var foo = function () {
 foo(); // foo2，foo重新赋值
 ```
 
-例子二：**函数提升**
+例子二：函数提升
 
 ```js
 foo();  // foo2
@@ -1161,7 +1258,7 @@ function foo() {
 foo(); // foo2
 ```
 
-例子三：声明优先级，**函数 > 变量**
+例子三：声明优先级，函数 > 变量
 
 ```js
 foo();  // foo2
@@ -1239,592 +1336,34 @@ b.x  // --> {n: 2}
 - 1、优先级。`.`的优先级高于`=`，所以先执行`a.x`，堆内存中的`{n: 1}`就会变成`{n: 1, x: undefined}`，改变之后相应的`b.x`也变化了，因为指向的是同一个对象。
 - 2、赋值操作是`从右到左`，所以先执行`a = {n: 2}`，`a`的引用就被改变了，然后这个返回值又赋值给了`a.x`，**需要注意**的是这时候`a.x`是第一步中的`{n: 1, x: undefined}`那个对象，其实就是`b.x`，相当于`b.x = {n: 2}`
 
-**参考**
+## 作用域-作用域与作用域链
 
-[JavaScript深入之变量对象](https://github.com/mqyqingfeng/Blog/issues/5)
+**`作用域`** 指代码当前上下文，控制着变量和函数的可见性和生命周期。最大的作用是隔离变量，不同作用域下同名变量不会冲突。
 
-## 作用域-VO/AO/GO
+**`作用域链`** 指如果在当前作用域中没有查到值，就会向上级作用域查询，直到全局作用域，这样一个查找过程所形成的链条就被称之为作用域链。
 
-JS有两个特性，一个是单线程，一个是解释性语言。
+作用域具体可细分为四种：**`全局作用域`**、**`模块作用域`**、**`函数作用域`**、**`块级作用域`**
 
-JS运行步骤：1.语法分析2.预编译3.解释执行
+**全局作用域：** 代码在程序的任何地方都能被访问，例如 window 对象。但全局变量会污染全局命名空间，容易引起命名冲突。
 
-函数执行四部曲：
+**模块作用域：** 早期 js 语法中没有模块的定义，因为最初的脚本小而简单。后来随着脚本越来越复杂，就出现了模块化方案（AMD、CommonJS、UMD、ES6模块等）。通常一个模块就是一个文件或者一段脚本，而这个模块拥有自己独立的作用域。
 
-1.创建AO对象，供js引擎自己去访问
+**函数作用域：** 顾名思义由函数创建的作用域。闭包就是在该作用域下产生，后面我们会单独介绍。
 
-activation object （活跃对象/执行期上下文）
-
-2.找变量和形参的声明，作为AO对象的属性名，值是undefined
-
-3.实参和形参相统一，实参赋值给形参
-
-4.找函数声明(注意不是函数表达式)，会覆盖变量的声明。
-
-```js
-   function fn(a,c){
-console.log(a);//function a(){}
-var a=123;
-console.log(a);//123
-console.log(c);//function c(){}
-function a(){}
-if(false){
-var d= 678;
-}
-console.log(d);//undefined
-console.log(b);//undefined
-var b=function(){}
-console.log(b);//function (){}
-function c(){}
-console.log(c);//function c(){}
-}
-fn(1,2);
-
-AO{
-a:undefined,1,function a(){}
-c:undefined,2,function c(){}
-d:undefined,
-b:undefined,
-}
-```
-
-**参考**
-
-- [JavaScript深入之词法作用域和动态作用域](https://github.com/mqyqingfeng/blog/issues/3)
-- [JavaScript深入之执行上下文栈](https://github.com/mqyqingfeng/Blog/issues/4)
-
-作用域是指程序源代码中定义变量的区域。
-
-JavaScript 采用词法作用域(lexical scoping)，也就是静态作用域。
-
-**静态作用域与动态作用域**
-
-因为 JavaScript 采用的是词法作用域，函数的作用域在函数定义的时候就决定了。
-
-而与词法作用域相对的是动态作用域，函数的作用域是在函数调用的时候才决定的。
+**块级作用域：** 由于 js 变量提升存在变量覆盖、变量污染等设计缺陷，所以 ES6 引入了块级作用域关键字来解决这些问题。典型的案例就是 let 的 for 循环和 var 的 for 循环。
 
 ```
-var value = 1;
-function foo() {
-    console.log(value);
-}
-function bar() {
-    var value = 2;
-    foo();
-}
-bar();
-// 结果是 ???
-```
-
-假设JavaScript采用静态作用域，让我们分析下执行过程：
-
-执行 foo 函数，先从 foo 函数内部查找是否有局部变量 value (价值) ，如果没有，就根据书写的位置，查找上面一层的代码，也就是 value (价值) 等于 1，所以结果会打印 1。
-
-假设JavaScript采用动态作用域，让我们分析下执行过程：
-
-执行 foo 函数，依然是从 foo 函数内部查找是否有局部变量 value (价值) 。如果没有，就从调用函数的作用域，也就是 bar 函数内部查找 value (价值) 变量，所以结果会打印 2。
-
-前面我们已经说了，JavaScript采用的是静态作用域，所以这个例子的结果是 1。
-
-来自《JavaScript权威指南》中的例子：
-
-```
-var scope = "global scope";
-function checkscope(){
-    var scope = "local scope";
-    function f(){
-        return scope;
-    }
-    return f();
-}
-checkscope();
-```
-
-```
-var scope = "global scope";
-function checkscope(){
-    var scope = "local scope";
-    function f(){
-        return scope;
-    }
-    return f;
-}
-checkscope()();
-```
-
-两段代码都会打印：`local scope`。因为JavaScript采用的是词法作用域，函数的作用域基于函数创建的位置。
-
-> 引用《JavaScript权威指南》的回答就是：
->
-> JavaScript 函数的执行用到了作用域链，这个作用域链是在函数定义的时候创建的。嵌套的函数 f() 定义在这个作用域链里，其中的变量 scope (范围) 一定是局部变量，不管何时何地执行函数 f()，这种绑定在执行 f() 时依然有效。
-
-## 作用域链
-
-再说第三个fun函数之前需要先说下，在*函数表达式*内部能不能访问存放当前函数的变量。  **测试1，对象内部的函数表达式：**
-
-```
-var o={
-  fn:function (){
-    console.log(fn);
-  }
-};
-o.fn();//ERROR报错
-```
-
-**测试2，非对象内部的函数表达式：**
-
-```
-var fn=function (){
-  console.log(fn);
-};
-fn();//function (){console.log(fn);};正确
-```
-
-结论是：使用var或是非对象内部的函数表达式内，可以访问到存放当前函数的变量；在对象内部的不能访问到。 原因也非常简单，因为**函数作用域链**的问题，采用var的是在外部创建了一个fn变量，函数内部当然可以在内部寻找不到fn后向上册作用域查找fn，而在创建对象内部时，因为没有在函数作用域内创建fn，所以无法访问。  所以综上所述，可以得知，**最内层的return出去的fun函数不是第二层fun函数，是最外层的fun函数**。 所以，三个fun函数的关系也理清楚了，第一个等于第三个，他们都不等于第二个。  
-
-**到底在调用哪个函数？**
-
-再看下原题，现在知道了程序中有两个fun函数(第一个和第三个相同)，遂接下来的问题是搞清楚，运行时他执行的是哪个fun函数？
-
-```
-function fun(n,o) {
-  console.log(o)
-  return {
-    fun:function(m){
-      return fun(m,n);
-    }
-  };
-}
-var a = fun(0);  a.fun(1);  a.fun(2);  a.fun(3);//undefined,?,?,?
-var b = fun(0).fun(1).fun(2).fun(3);//undefined,?,?,?
-var c = fun(0).fun(1);  c.fun(2);  c.fun(3);//undefined,?,?,?
-//问:三行a,b,c的输出分别是什么？
-```
-
- **1、第一行a**
-
-```
-var a = fun(0);  a.fun(1);  a.fun(2);  a.fun(3);
-```
-
-> 可以得知，第一个fun(0)是在调用**第一层fun函数**。第二个fun(1)是在调用前一个fun的返回值的fun函数，所以： 第后面几个fun(1),fun(2),fun(3),函数都是在调用**第二层fun函数**。 遂： 在第一次调用fun(0)时，o为undefined； 第二次调用fun(1)时m为1，此时fun闭包了外层函数的n，也就是第一次调用的n=0，即m=1，n=0，并在内部调用第一层fun函数fun(1,0);所以o为0； 第三次调用fun(2)时m为2，但依然是调用a.fun，所以还是闭包了第一次调用时的n，所以内部调用第一层的fun(2,0);所以o为0 第四次同理； 即：最终答案为undefined,0,0,0  
-
-**2、第二行b**
-
-```
-var b = fun(0).fun(1).fun(2).fun(3);//undefined,?,?,?
-```
-
-> 先从fun(0)开始看，肯定是调用的第一层fun函数；而他的返回值是一个对象，所以第二个fun(1)调用的是第二层fun函数，后面几个也是调用的第二层fun函数。 遂： 在第一次调用第一层fun(0)时，o为undefined； 第二次调用 .fun(1)时m为1，此时fun闭包了外层函数的n，也就是第一次调用的n=0，即m=1，n=0，并在内部调用第一层fun函数fun(1,0);所以o为0； 第三次调用 .fun(2)时m为2，此时当前的fun函数不是第一次执行的返回对象，而是**第二次执行的返回对象**。而在第二次执行第一层fun函数时时(1,0)所以n=1,o=0,返回时闭包了第二次的n，遂在第三次调用第三层fun函数时m=2,n=1，即调用第一层fun函数fun(2,1)，所以o为1； 第四次调用 .fun(3)时m为3，闭包了第三次调用的n，同理，最终调用第一层fun函数为fun(3,2)；所以o为2； 即最终答案：undefined,0,1,2  
-
-**3、第三行c**
-
-```
-var c = fun(0).fun(1);  c.fun(2);  c.fun(3);//undefined,?,?,?
-```
-
-> 根据前面两个例子，可以得知： fun(0)为执行第一层fun函数，.fun(1)执行的是fun(0)返回的第二层fun函数，这里语句结束，遂c存放的是fun(1)的返回值，而不是fun(0)的返回值，所以c中闭包的也是fun(1)第二次执行的n的值。c.fun(2)执行的是fun(1)返回的第二层fun函数，c.fun(3)执行的**也**是fun(1)返回的第二层fun函数。 遂： 在第一次调用第一层fun(0)时，o为undefined； 第二次调用 .fun(1)时m为1，此时fun闭包了外层函数的n，也就是第一次调用的n=0，即m=1，n=0，并在内部调用第一层fun函数fun(1,0);所以o为0； 第三次调用 .fun(2)时m为2，此时fun闭包的是第二次调用的n=1，即m=2，n=1，并在内部调用第一层fun函数fun(2,1);所以o为1； 第四次.fun(3)时同理，但依然是调用的第二次的返回值，遂最终调用第一层fun函数fun(3,1)，所以o还为1 即最终答案：undefined,0,1,1  
-
-## 作用域-调用堆栈
-
-执行栈，也叫调用栈，具有 LIFO（后进先出）结构，用于存储在代码执行期间创建的**所有执行上下文**。
-
-因为JS引擎创建了很多的执行上下文，所以JS引擎创建了执行上下文**栈**（Execution context stack，ECS）来**管理**执行上下文。
-
-当 JavaScript 初始化的时候会向执行上下文栈压入一个**全局**执行上下文，我们用 globalContext 表示它，并且只有当整个应用程序结束的时候，执行栈才会被清空，所以程序结束之前， 执行栈最底部永远有个 globalContext。
-
-**一、执行上下文**
-
-执行上下文总共有三种类型
-
-- **全局执行上下文**：只有一个，浏览器中的全局对象就是 window 对象，`this` 指向这个全局对象。
-- **函数执行上下文**：存在无数个，只有在函数被调用的时候才会被创建，每次调用函数都会创建一个新的执行上下文。
-- **Eval 函数执行上下文**： 指的是运行在 `eval` 函数中的代码，很少用而且不建议使用。
-
-**二、执行上下文的创建**
-
-分为2个阶段：
-
-- 创建阶段
-- 执行阶段
-
-**1.创建阶段**
-
-分为3部分：
-
-- 1、确定 **this** 的值，也被称为 **This Binding**。
-- 2、**LexicalEnvironment（词法环境）** 组件被创建。
-- 3、**VariableEnvironment（变量环境）** 组件被创建。
-
-**(1)This Binding**
-
-- **全局**执行上下文中，`this` 的值指向全局对象，在浏览器中`this` 的值指向 `window`对象，而在`nodejs`中指向这个文件的`module`对象。
-- **函数**执行上下文中，`this` 的值取决于函数的调用方式。具体有：默认绑定、隐式绑定、显式绑定（硬绑定）、`new`绑定、箭头函数，具体内容会在【this全面解析】部分详解。
-
-**(2)词法环境**
-
-分为2部分：
-
-- **环境记录**：存储变量和函数声明的实际位置
-- **对外部环境的引用**：可以访问其外部词法环境
-
-词法环境有两种**类型**
-
-- 1、**全局环境**：是一个没有外部环境的词法环境，其外部环境引用为 **null**。拥有一个全局对象（window 对象）及其关联的方法和属性（例如数组方法）以及任何用户自定义的全局变量，`this` 的值指向这个全局对象。
-- 2、**函数环境**：用户在函数中定义的变量被存储在**环境记录**中，包含了`arguments` 对象。对外部环境的引用可以是全局环境，也可以是包含内部函数的外部函数环境。
-
-**(3)变量环境**
-
-变量环境也是一个词法环境，因此它具有上面定义的词法环境的所有属性。
-
-在 ES6 中，**词法** 环境和 **变量** 环境的区别在于前者用于存储**函数声明和变量（ `let` 和 `const` ）**绑定，而后者仅用于存储**变量（ `var` ）**绑定。
-
-**2.执行阶段**
-
-完成对所有变量的分配，执行代码，函数出栈
-
-**参考**
-
-[理解 Javascript 执行上下文和执行栈](https://juejin.im/post/5bdfd3e151882516c6432c32)
-
-## 闭包-作用:保存和保护
-
-1.先要说到作用域和作用域链，即AO和GO
-
-js代码在预编译阶段，会有一个AO函数作用域和GO全局作用域。
-
-AO是指函数作用域，GO是指全局作用域。
-
-```js
-function a(){
-    var aa=111;
-    function b(){
-        var bb=22;
-        console.log(aa)
-    }
-    return  b;
-}
-var t=a();
-
-var a = 0, b = 0;
-function A(a) {
-  A = function (b) {
-    alert(a + b++);
-  };
-  alert(a++);
-}
-A(1);
-A(2); // ‘1’，‘4’
-```
-
-a的作用域scope：scope[0]=AO{aa,function b},scope[1]=GO{function a}
-
-b的作用域scope:scope[0]=AO{bb},scope[1]=AO{aa,function b},scope[2]=GO{function a}
-
-通俗理解：**闭包函数(被包裹的函数)中必须要使用到外部函数中的变量**
-
-优点：1.读取函数内部变量；2.让这些变量的值始终保持在内存中，不会在f1调用后被自动清除；
-
-缺点：滥用闭包导致内存泄漏，能不用尽量不用，即时释放内存。（闭包会加深作用域链，加长变量查找时间）
-
-场景：setTimeout的函数携带参数；回调；变量封装
-
-## 闭包-深入
-
-**定义**
-
-闭包是指有权访问另外一个函数作用域中的变量的函数。
-
-关键在于2点：
-
-- 是函数
-- 能够访问函数作用域外的变量
-
-**三个特性**
-
-- 闭包可以访问当前函数以外的变量
-- 即使外部函数已经返回，闭包仍能访问外部函数定义的变量
-- 闭包可以更新外部变量的值
-
-```
-// 闭包可以访问当前函数以外的变量
-function getOuter(){
-  var date = '815';
-  function getDate(str){
-    console.log(str + date);  //访问外部的date
-  }
-  return getDate('今天是：'); //"今天是：815"
-}
-getOuter();
-// 即使外部函数已经返回，闭包仍能访问外部函数定义的变量
-function getOuter(){
-  var date = '815';
-  function getDate(str){
-    console.log(str + date);  //访问外部的date
-  }
-  return getDate;     //外部函数返回
-}
-var today = getOuter();
-today('今天是：');   //"今天是：815"
-today('明天不是：');   //"明天不是：815"
-// 闭包可以更新外部变量的值
-function updateCount(){
-  var count = 0;
-  function getCount(val){
-    count = val;
-    console.log(count);
-  }
-  return getCount;     //外部函数返回
-}
-var count = updateCount();
-count(815); //815
-count(816); //816
-```
-
-**一个简单例子**
-
-```
-var scope = "global scope";
-function checkscope(){
-    var scope = "local scope";
-    function f(){
-        return scope;
-    }
-    return f;
-}
-
-var foo = checkscope(); // foo指向函数f
-foo();     // 调用函数f()
-```
-
-简要的执行过程如下：
-
-1. 进入全局代码，创建全局执行上下文，全局执行上下文**压入执行上下文栈**
-2. 全局执行**上下文初始化**
-3. 执行 checkscope 函数，创建 checkscope 函数执行上下文，checkscope 执行上下文被压入执行上下文栈
-4. checkscope 执行**上下文初始化**，创建变量对象、作用域链、this等
-5. checkscope 函数执行完毕，checkscope 执行上下文从执行上下文栈中弹出
-6. 执行 f 函数，创建 f 函数执行上下文，f 执行上下文被压入执行上下文栈
-7. f 执行**上下文初始化**，创建变量对象、作用域链、this等
-8. f 函数执行完毕，f 函数上下文从执行上下文栈中弹出
-
-那么**问题**来了， 函数f 执行的时候，checkscope 函数上下文已经被销毁了，那函数f是如何获取到scope变量的呢？
-
-> 函数f 执行上下文维护了一个作用域链，会指向指向`checkscope`作用域。
->
-> 所以指向关系是当前作用域 --> `checkscope`作用域--> 全局作用域，即使 checkscopeContext 被销毁了，但是 JavaScript 依然会让 checkscopeContext.AO（活动对象） 活在内存中，f 函数依然可以通过 f 函数的作用域链找到它，这就是闭包实现的**关键**。
-
-**一个闭包题**
-
-```
-var data = [];
-
-for (var i = 0; i < 3; i++) {
-  data[i] = function () {
+// var demo
+for(var i=0; i<10; i++) {
     console.log(i);
-  };
 }
+console.log(i); // 10
 
-data[0]();
-data[1]();
-data[2]();
-```
-
-如果知道闭包的，答案就很明显了，都是3
-
-如果要依次输出索引值，解决：改成闭包，方法就是`data[i]`返回一个函数，并访问变量`i`
-
-```
-var data = [];
-
-for (var i = 0; i < 3; i++) {
-  data[i] = (function (i) {
-      return function(){
-          console.log(i);
-      }
-  })(i);
-}
-
-data[0](); // 0
-data[1](); // 1
-data[2](); // 2
-```
-
-循环结束后的全局执行上下文没有变化。
-
-执行 data[0] 函数的时候，data[0] 函数的作用域链发生了改变：因为闭包执行上下文中贮存了变量`i`，所以根据作用域链会在`globalContext.VO`中查找到变量`i`,并输出0。
-
-**一、作用域**
-
-**1.变量提升**
-
-```js
-var scope="global";
-function scopeTest(){
-    console.log(scope);
-    var scope="local"  
-}
-scopeTest(); //undefined
-```
-
-上面的代码输出是`undefined`，这是因为局部变量`scope`变量提升了，等效于下面
-
-```js
-var scope="global";
-function scopeTest(){
-    var scope;
-    console.log(scope);
-    scope="local"  
-}
-scopeTest(); //undefined
-```
-
-**注意**，如果在局部作用域中忘记var，那么变量就被声明为全局变量。
-
-**2.没有块级作用域**
-
-```js
-var data = [];
-
-for (var i = 0; i < 3; i++) {
-  data[i] = function () {
+// let demo
+for(let i=0; i<10; i++) {
     console.log(i);
-  };
 }
-
-data[0](); // 3
-data[1](); // 3
-data[2](); // 3
-```
-
-**闭包**
-
-```
-function createClosure(){
-    var name = "jack";
-    return {
-        setStr:function(){
-            name = "rose";
-        },
-        getStr:function(){
-            return name + ":hello";
-        }
-    }
-}
-var builder = new createClosure();
-builder.setStr();
-console.log(builder.getStr()); //rose:hello
-```
-
-**面试题**
-
-由于作用域链机制的影响，闭包只能取得内部函数的最后一个值，这引起的一个副作用就是如果内部函数在一个循环中，那么变量的值始终为最后一个值。
-
-如果想以下代码按照预期输出索引值，怎么办？
-
-```
-var data = [];
-
-for (var i = 0; i < 3; i++) {
-  data[i] = function () {
-    console.log(i);
-  };
-}
-
-data[0](); // 3
-data[1](); // 3
-data[2](); // 3
-```
-
-**方法1：立即执行函数**
-
-```js
-for (var i = 0; i < 3; i++) {
-    (function(num) {
-        setTimeout(function() {
-            console.log(num);
-        }, 1000);
-    })(i);
-}
-// 0
-// 1
-// 2
-```
-
-**方法2：返回一个匿名函数赋值**
-
-```js
-var data = [];
-
-for (var i = 0; i < 3; i++) {
-  data[i] = (function (num) {
-      return function(){
-          console.log(num);
-      }
-  })(i);
-}
-
-data[0](); // 0
-data[1](); // 1
-data[2](); // 2
-```
-
-无论是**立即执行函数**还是**返回一个匿名函数赋值**，原理上都是因为变量的按值传递，所以会将变量`i`的值复制给实参`num`，在匿名函数的内部又创建了一个用于访问`num`的匿名函数，这样每个函数都有了一个`num`的副本，互不影响了。
-
-**方法3：使用ES6中的let**
-
-```js
-var data = [];
-
-for (let i = 0; i < 3; i++) {
-  data[i] = function () {
-    console.log(i);
-  };
-}
-
-data[0]();
-data[1]();
-data[2]();
-```
-
-解释下**原理**：
-
-```js
-var data = [];// 创建一个数组data;
-
-// 进入第一次循环
-{ 
- let i = 0; // 注意：因为使用let使得for循环为块级作用域
-            // 此次 let i = 0 在这个块级作用域中，而不是在全局环境中
-    data[0] = function() {
-     console.log(i);
- };
-}
-```
-
-## 闭包-奇葩的闭包面试题
-
-```
-function fun(n,o) {
-  console.log(o)
-  return {
-    fun:function(m){
-      return fun(m,n);
-    }
-  };
-}
-var a = fun(0);  a.fun(1);  a.fun(2);  a.fun(3);//undefined,?,?,?
-var b = fun(0).fun(1).fun(2).fun(3);//undefined,?,?,?
-var c = fun(0).fun(1);  c.fun(2);  c.fun(3);//undefined,?,?,?
-```
-
- 这是一道非常典型的JS闭包问题。其中嵌套了三层fun函数，搞清楚每层fun的函数是那个fun函数尤为重要。 可以先在纸上或其他地方写下你认为的结果，然后展开看看正确答案是什么？
-
-```
-//答案：
-//a: undefined,0,0,0
-//b: undefined,0,1,2
-//c: undefined,0,1,1
+console.log(i); //ReferenceError：i is not defined
 ```
 
 ## 深浅拷贝
@@ -2756,6 +2295,8 @@ console.log(button.getWidth()); // 600
 
 js是单线程阻塞执行的，js 引擎执行异步代码和支持多线程，主要依靠消息队列和事件循环机制。
 
+为什么js是一门单线程语言呢？最初设计JS是用来在浏览器验证表单以及操控DOM元素，为了避免同一时间对同一个DOM元素进行操作从而导致不可预知的问题，JavaScript从一诞生就是单线程。
+
 **基本概念**
 
 - 消息队列：消息队列是一个先进先出的队列，它里面存放着各种消息。
@@ -3193,6 +2734,89 @@ readyState是XMLHttpRequest对象的一个属性，用来标识当前XMLHttpRequ
 
 5：服务端错误
 
+# 手写setTimeout实现setInterval
+
+**为什么要用setTimeout来模拟setInterval的行为？**
+
+这里用setInerval不是更方便吗？
+
+```
+setTimeout(function(){··· }, n); // n毫秒后执行function
+setInterval(function(){··· }, n); // 每隔n毫秒执行一次function
+```
+
+可以看看setInterval有什么缺点：
+
+> 再次强调，定时器指定的时间间隔，表示的是何时将定时器的代码添加到消息队列，而不是何时执行代码。所以真正何时执行代码的时间是不能保证的，取决于何时被主线程的事件循环取到，并执行。
+
+```
+setInterval(function, N)  
+//即：每隔N秒把function事件推到消息队列中
+```
+
+截图:https://www.vue-js.com/topic/61e13ee5cbbfd1003b11f98b
+
+上图可见，setInterval每隔100ms往队列中添加一个事件；100ms后，添加T1定时器代码至队列中，主线程中还有任务在执行，所以等待，some event执行结束后执行T1定时器代码；又过了100ms，T2定时器被添加到队列中，主线程还在执行T1代码，所以等待；又过了100ms，理论上又要往队列里推一个定时器代码，但由于此时T2还在队列中，所以T3不会被添加，结果就是此时被跳过；这里我们可以看到，T1定时器执行结束后马上执行了T2代码，所以并没有达到定时器的效果。
+
+综上所述，setInterval有两个缺点：
+
+1. 使用setInterval时，某些间隔会被跳过；
+2. 可能多个定时器会连续执行；
+
+> 可以这么理解：**每个setTimeout产生的任务会直接push到任务队列中；而setInterval在每次把任务push到任务队列前，都要进行一下判断(看上次的任务是否仍在队列中)**。因而我们一般用setTimeout模拟setInterval，来规避掉上面的缺点。
+
+**使用setTimeout实现setInterval**
+
+> setInterval 的作用是每隔一段指定时间执行一个函数，但是这个执行不是真的到了时间立即执行，它真正的作用是每隔一段时间将事件加入事件队列中去，只有当当前的执行栈为空的时候，才能去从事件队列中取出事件执行。所以可能会出现这样的情况，就是当前执行栈执行的时间很长，导致事件队列里边积累多个定时器加入的事件，当执行栈结束的时候，这些事件会依次执行，因此就不能到间隔一段时间执行的效果。
+
+ 针对 setInterval 的这个缺点，我们可以使用 setTimeout 递归调用来模拟 setInterval，这样我们就确保了只有一个事件结束了，我们才会触发下一个定时器事件，这样解决了 setInterval 的问题。
+
+ 实现思路是使用递归函数，不断地去执行 setTimeout 从而达到 setInterval 的效
+
+```js
+ // 可避免setInterval因执行时间导致的间隔执行时间不一致
+function myInterval(fn,time){
+    let interval=()=>{
+      fn()
+      setTimeout(interval,time)
+    }
+    setTimeout(interval,time)
+}
+
+function mySetInterval2(fn, timeout) {
+        // 控制器，控制定时器是否继续执行
+        let timer = { flag: true };
+        // 设置递归函数，模拟定时器执行
+        function interval() {
+          if (timer.flag) {
+            fn();
+            setTimeout(interval, timeout);
+          }
+        }
+        // 启动定时器
+        setTimeout(interval, timeout);
+        // 返回控制器
+        return timer;
+      }
+```
+
+**使用setInterval实现setTimeout**
+
+```js
+function mySetInterval(fn, timeout) {
+        //timer用来接收setInterval返回的编号，用于后面清除setInterval
+        //setInterval会一直执行，但是在setInterval里面执行clearInterval()将会被清除
+        const timer = setInterval(() => {
+          //执行传入函数
+          fn();
+          //清除该次setInterval
+          clearInterval(timer);
+        }, timeout);
+      }
+```
+
+
+
 # 手写-EventBus
 
 极简版本
@@ -3496,6 +3120,77 @@ window.onload = function () {
 }
 ```
 
+# 手写-其他
+
+## 手写forEach
+
+```
+if(!Array.prototype.forEach) {
+    Array.prototype.forEach = function(fn, context) {
+        var context = arguments[1];
+        if(typeof fn !== "function") {
+            throw new TypeError(fn + "is not a function");
+        }
+
+        for(var i = 0; i < this.length; i++) {
+            fn.call(context, this[i], i, this);
+        }
+    };
+}
+```
+
+
+
+## 手写map
+
+```
+Array.prototype.map = function (fn) {
+    let arr = []
+    for (let i = 0; i < this.length; i++) {
+        arr.push(fn(this[i], i, this))
+    }
+    return arr
+}
+```
+
+## 手写reduce
+
+```
+Array.prototype.myReduce = function (fn, initVal) {
+    let res = initVal ? initVal : 0
+    for (let i = 0; i < this.length; i++) {
+        res = fn(res, this[i], i, this)
+    }
+    return res
+}
+```
+
+## 手写filter
+
+```
+Array.prototype.myFilter = function (fn) {
+    let arr = []
+    for (let i = 0; i < this.length; i++) {
+        if (fn(this[i], i, this)) {
+            arr.push(this[i])
+        }
+    }
+    return arr
+}
+```
+
+## **手写push**
+
+```
+Array.prototype.myPush = function () {
+    let args = arguments
+    for (let i = 0; i < args.length; i++) {
+        this[this.length] = args[i]
+    }
+    return this.length
+}
+```
+
 # 创建函数的几种方式
 
 说完函数的类型，还需要了解JS中创建函数都有几种创建方法。
@@ -3620,86 +3315,6 @@ function test() {
         2
         from_catch
       */
-```
-
-# 实现setTimeout和实现setInterval
-
-**为什么要用setTimeout来模拟setInterval的行为？**
-
-这里用setInerval不是更方便吗？
-
-```
-setTimeout(function(){··· }, n); // n毫秒后执行function
-setInterval(function(){··· }, n); // 每隔n毫秒执行一次function
-```
-
-可以看看setInterval有什么缺点：
-
-> 再次强调，定时器指定的时间间隔，表示的是何时将定时器的代码添加到消息队列，而不是何时执行代码。所以真正何时执行代码的时间是不能保证的，取决于何时被主线程的事件循环取到，并执行。
-
-```
-setInterval(function, N)  
-//即：每隔N秒把function事件推到消息队列中
-```
-
-截图:https://www.vue-js.com/topic/61e13ee5cbbfd1003b11f98b
-
-上图可见，setInterval每隔100ms往队列中添加一个事件；100ms后，添加T1定时器代码至队列中，主线程中还有任务在执行，所以等待，some event执行结束后执行T1定时器代码；又过了100ms，T2定时器被添加到队列中，主线程还在执行T1代码，所以等待；又过了100ms，理论上又要往队列里推一个定时器代码，但由于此时T2还在队列中，所以T3不会被添加，结果就是此时被跳过；这里我们可以看到，T1定时器执行结束后马上执行了T2代码，所以并没有达到定时器的效果。
-
-综上所述，setInterval有两个缺点：
-
-1. 使用setInterval时，某些间隔会被跳过；
-2. 可能多个定时器会连续执行；
-
-> 可以这么理解：**每个setTimeout产生的任务会直接push到任务队列中；而setInterval在每次把任务push到任务队列前，都要进行一下判断(看上次的任务是否仍在队列中)**。因而我们一般用setTimeout模拟setInterval，来规避掉上面的缺点。
-
-**使用setTimeout实现setInterval**
-
-> setInterval 的作用是每隔一段指定时间执行一个函数，但是这个执行不是真的到了时间立即执行，它真正的作用是每隔一段时间将事件加入事件队列中去，只有当当前的执行栈为空的时候，才能去从事件队列中取出事件执行。所以可能会出现这样的情况，就是当前执行栈执行的时间很长，导致事件队列里边积累多个定时器加入的事件，当执行栈结束的时候，这些事件会依次执行，因此就不能到间隔一段时间执行的效果。
-
- 针对 setInterval 的这个缺点，我们可以使用 setTimeout 递归调用来模拟 setInterval，这样我们就确保了只有一个事件结束了，我们才会触发下一个定时器事件，这样解决了 setInterval 的问题。
-
- 实现思路是使用递归函数，不断地去执行 setTimeout 从而达到 setInterval 的效果
-
-```js
- // 可避免setInterval因执行时间导致的间隔执行时间不一致
-function mySetInterval1(fn, timeout) {
-    setTimeout (function () {
-  // do something
-  setTimeout (arguments.callee, 500)
-}, 500)    
-}
-
-function mySetInterval2(fn, timeout) {
-        // 控制器，控制定时器是否继续执行
-        let timer = { flag: true };
-        // 设置递归函数，模拟定时器执行
-        function interval() {
-          if (timer.flag) {
-            fn();
-            setTimeout(interval, timeout);
-          }
-        }
-        // 启动定时器
-        setTimeout(interval, timeout);
-        // 返回控制器
-        return timer;
-      }
-```
-
-**使用setInterval实现setTimeout**
-
-```js
-function mySetInterval(fn, timeout) {
-        //timer用来接收setInterval返回的编号，用于后面清除setInterval
-        //setInterval会一直执行，但是在setInterval里面执行clearInterval()将会被清除
-        const timer = setInterval(() => {
-          //执行传入函数
-          fn();
-          //清除该次setInterval
-          clearInterval(timer);
-        }, timeout);
-      }
 ```
 
 # 九种跨域方式原理
@@ -4424,6 +4039,23 @@ b4(1); // 1 2
 在严格模式下，无论参数是否缺省，arguments和参数都是隔离开的。
 
 # 常用函数
+
+## 字符串自动补全padStart()和padEnd()
+
+`padStart`可以在字符串的前面进行字符补全.padEnd是在字符串后面补全。
+
+```
+let month  = 8;
+month.padStart(2, 0);// 08
+```
+
+可以省掉
+
+```
+if (month < 10) {
+    month = '0' + month;
+}
+```
 
 ## 随机生成10以下正数
 

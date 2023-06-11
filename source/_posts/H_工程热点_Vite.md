@@ -7,6 +7,10 @@ toc: true # 是否启用内容索引
 
 ---
 
+# **模板全宇宙入口**
+
+- [awesome-vite](https://github.com/vitejs/awesome-vite)
+
 # Vite是什么？
 
 参考

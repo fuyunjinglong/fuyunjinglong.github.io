@@ -305,87 +305,43 @@ let obj = myNew(person)('chen', 18) // {name: "chen", age: 18}
 
 ## **定义**
 
-闭包就是能够读取其他函数内部变量的函数
+闭包是指有权访问另外一个函数作用域中的变量的函数。当内部函数被保存到外部时会产生闭包。
 
-闭包的形成条件是内部函数需要通过外部函数 return 给返回出来，如下例所示：
+**两个核心**
 
-```js
-function funOne(){    // 外部函数
-    var num = 0;      // 局部变量
-    function funTwo(){   // 内部函数
-        num++;                 
-        return num;
-    }
-    return funTwo;
-}
-var fun = funOne();             // 返回函数 funTwo
-```
+- 是函数
+- 能够访问函数作用域外的变量
 
-首先要理解全局变量和局部变量，函数内部可以读取全局变量，但函数外部无法读取函数内部局部变量。
+**三个特性(如何判断是闭包)**
 
-闭包就是能够读取其他函数内部变量的函数。确定吗？
+- 闭包一定具有嵌套函数
+- 内层函数一定操作了外层函数的局部变量
+- 外层函数,将内层函数返回到外部(即使外部函数已经返回，闭包仍能访问外部函数定义的变量)
 
 ```js
-function funOne(){    // 外部函数
-    var num = 0;      // 局部变量
-    function funTwo(){   // 内部函数
-        num++; 
-        console.log(num);           
-    }
-     funTwo();
+// 内层函数一定操作了外层函数的局部变量
+function updateCount(){
+  var count = 0;
+  function getCount(val){
+    count = val;
+    console.log(count);
+  }
+  return getCount;     //外部函数返回
 }
-执行funOne();//不是闭包
-
-function funOne(){    // 外部函数
-    var num = 0;      // 局部变量
-    num++; 
-    return num
+var count = updateCount();
+count(815); //815
+count(816); //816
+// 即使外部函数已经返回，闭包仍能访问外部函数定义的变量
+function getOuter(){
+  var date = '815';
+  function getDate(str){
+    console.log(str + date);  //访问外部的date
+  }
+  return getDate;     //外部函数返回
 }
-var fun = funOne();
-执行fun;//不是闭包
-```
-
-真正的闭包：闭包是将函数内部和函数外部连接的桥梁。
-
-本质：funOne()的执行结果赋给了全局变量fun,导致的结果是funTwo和num始终在内存中没有回收。
-
-```js
-function funOne(){    // 外部函数
-    var num = 0;      // 局部变量
-    function funTwo(){   // 内部函数
-        num++; 
-        console.log('打印：'+num);           
-        return num;//对于闭包来说，可有可无
-    }
-    return funTwo;
-}
-// funOne()的执行结果是闭包
-var fun = funOne();
-fun()
-
-简化写法：
-function funOne(){    // 外部函数
-    var num = 0;      // 局部变量
-    return function (){   // 内部函数
-        num++; 
-        console.log('打印：'+num);           
-        return num;//对于闭包来说，可有可无
-    }
-}
-var fun = funOne();
-fun()
-```
-
-**闭包拥有自己独立的作用域**
-
-```js
-var fun = funOne();
-var fun2 = funOne();
-fun() // 1
-fun() // 2
-fun() // 3
-fun2() // 1
-fun2() // 2
+var today = getOuter();
+today('今天是：');   //"今天是：815"
+today('明天不是：');   //"明天不是：815"
 ```
 
 ## 为什么需要闭包
@@ -394,11 +350,24 @@ fun2() // 2
 
 ## **闭包的作用**
 
+优点：
+
 - 读取函数内部的变量
 - 让这些变量的值始终保持在内存中
 - 方便调用上下文的局部变量，利于代码封装
 
+缺点：滥用闭包导致内存泄漏，能不用尽量不用，及时释放内存。（闭包会加深作用域链，加长变量查找时间）
+
 ## **闭包的9个使用场景**
+
+**常用场景**
+
+- 实现公有变量 => 累加器
+- 可以做缓存,存储结构
+- 可以实现封装,属性私有化
+- 模块化开发,防止污染全局变量
+
+**9个场景**
 
 1. 返回值（最常用）
 2. 函数赋值
@@ -663,6 +632,51 @@ counter.increment();//2
 闭包相关例子
 
 [闭包例子1](https://cnodejs.org/topic/5d39c5259969a529571d73a8)
+
+## 闭包题
+
+**一个闭包题**
+
+```
+var data = [];
+
+for (var i = 0; i < 3; i++) {
+  data[i] = function () {
+    console.log(i);
+  };
+}
+
+data[0]();
+data[1]();
+data[2]();
+```
+
+**奇葩的闭包面试题**
+
+```
+function fun(n,o) {
+  console.log(o)
+  return {
+    fun:function(m){
+      return fun(m,n);
+    }
+  };
+}
+var a = fun(0);  a.fun(1);  a.fun(2);  a.fun(3);//undefined,?,?,?
+var b = fun(0).fun(1).fun(2).fun(3);//undefined,?,?,?
+var c = fun(0).fun(1);  c.fun(2);  c.fun(3);//undefined,?,?,?
+```
+
+ 这是一道非常典型的JS闭包问题。其中嵌套了三层fun函数，搞清楚每层fun的函数是那个fun函数尤为重要。 可以先在纸上或其他地方写下你认为的结果，然后展开看看正确答案是什么？
+
+```
+//答案：
+//a: undefined,0,0,0
+//b: undefined,0,1,2
+//c: undefined,0,1,1
+```
+
+
 
 # JS的8种继承方案
 

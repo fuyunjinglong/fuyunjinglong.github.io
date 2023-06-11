@@ -10,6 +10,10 @@ toc: true # 是否启用内容索引
 
 # **工作技能**
 
+## 汇总
+
+- [java-books-collections](https://github.com/RongleXie/java-books-collections)
+
 ## 前端
 
 [awesome-book](https://github.com/fuyunjinglong/awesome-books/)
