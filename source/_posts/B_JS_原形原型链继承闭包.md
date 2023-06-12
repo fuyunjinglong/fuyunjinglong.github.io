@@ -684,7 +684,7 @@ var c = fun(0).fun(1);  c.fun(2);  c.fun(3);//undefined,?,?,?
 
 继承的本质就是复制，即重写原型对象，代之以一个新类型的实例。
 
-```
+```js
 function SuperType() {
     this.property = true;
 }
