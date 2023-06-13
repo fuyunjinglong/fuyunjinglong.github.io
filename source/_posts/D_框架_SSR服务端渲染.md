@@ -221,7 +221,7 @@ FaaS 基础设施解决了大部分的性能问题和可用性问题，函数内
 
 像传统 CDN 通过缩短静态内容与最终用户之间的物理距离来加速资源访问，同时减少了应用服务器的负载一样，支持边缘计算的 CDN 允许将云函数部署到边缘节点中，加速服务响应，同时依托 CDN 轻松控制缓存策略，甚至能够实现动静分离的边缘流式渲染（ESR）。
 
-截图：http://www.ayqy.net/blog/2020-ssr/
+<img src="/img/image-20230614064045745.png" alt="image-20230614064045745" style="zoom:80%;" />
 
 ### **第二大机遇：low-code**
 
@@ -878,4 +878,4 @@ SEO（Search Engine Optimization），中文翻译为“**搜索引擎优化**�
 
 [SEO禅专注SEO优化](https://www.seozen.top/seo-course-first-step.html)
 
-[台湾加强网站SEO](
+台湾加强网站SEO

@@ -911,7 +911,7 @@ ES5的继承，实质上是先创造子类的实例对象this，然后再将父�
 
 > **es5的写法不能继承原生构造函数**（比如Array、Number等） 因为es5的继承是先创造子类的实例对象this，再将父类原型的属性和方法重写到子类上，因为没法访问父类的内部属性，导致**es5的继承方式无法继原生的构造函数**。
 
-截图：https://cloud.tencent.com/developer/article/1865384
+<img src="/img/image-20230614063858609.png" alt="image-20230614063858609" style="zoom:50%;" />
 
 **ES6 extend继承**
 
@@ -927,7 +927,7 @@ ES6的继承机制完全不同，实质上是先创造父类的实例对象this�
 
 >  es6允许继承构造函数生成子类。因为es6是先创建父类的实例对象this，然后再用子类的构造函数修饰，所以子类就可以继承父类的所有属性和方法。因此**class可以继承并自定义原生构造函数的子类**。extends不仅可以用来继承类，还能用来继承原生构造函数，因此也就可以在原生数据结构的基础上，构造自定义的数据结构。
 
-截图：https://cloud.tencent.com/developer/article/1865384
+<img src="/img/image-20230614063939130.png" alt="image-20230614063939130" style="zoom:50%;" />
 
 **ES6继承核心源码**
 
@@ -966,7 +966,10 @@ function _inherits(subClass, superClass) {
 
 _inherits通俗理解：
 
-- 代码1：保证了`c instanceof Parent`是true,Child的实例可以访问到父类的属性，包括内部属性，以及原型属性。截图：https://segmentfault.com/a/1190000014798678
+- 代码1：保证了`c instanceof Parent`是true,Child的实例可以访问到父类的属性，包括内部属性，以及原型属性。
+
+<img src="/img/image-20230614064228077.png" alt="image-20230614064228077" style="zoom:50%;" />
+
 - 代码2：子类能访问到父类的静态方法
 
 ```

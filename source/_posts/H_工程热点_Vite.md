@@ -251,11 +251,11 @@ esbuild总共提供了四个函数：transform、build、buildSync、Service
 
 首先来说它们都有一个对应的 js 入口，然后通过入口 js 进行扫描应用的子模块，当这些模块被解析的时候，当然一些动态的模块也会被解析，当这些模块被 bundle 之后，它会把这些 bundlejs 注入到 html 当中，然后才会启动 dev server，等待页面的访问。从这之中我们就能看到整个过程存在的一些问题。首先他会找到整个应用所依赖的所有模块，这也正是导致我们项目变大之后启动就会变的很卡的一个主要原因。虽然有很多模块都是动态加载的，但是要进行对应的 chunk 到 bundle 的操作，其实并不是真正意义上的动态加载。其必须等待所有模块构建完成，即使是分片的模块也需要构建。
 
-截图：https://cn.vitejs.dev/guide/why.html
+<img src="/img/image-20230614065023743.png" alt="image-20230614065023743" style="zoom:80%;" />![image-20230614065054406](/img/image-20230614065054406.png)
 
 ## Native ESM based dev server(vite)
 
-截图：https://cn.vitejs.dev/guide/why.html
+![image-20230614065054406](/img/image-20230614065054406.png)
 
 ESM 是 es6 提出的概念，也就是可以原生支持 import，当然你得在 script 标签上增加一个 type='moudle'的属性。当你 import 某一个模块的时候，浏览器会发一个对应的请求。具体去看看[ES Modules的规范](https://link.juejin.cn?target=https%3A%2F%2Fdeveloper.mozilla.org%2Fzh-CN%2Fdocs%2FWeb%2FJavaScript%2FGuide%2FModules)
 
@@ -303,7 +303,7 @@ Vite 的热加载原理，其实就是在客户端与服务端建立了一个 we
 
 Vite 的基本实现原理，就是启动一个 koa 服务器拦截由浏览器请求 ESM的请求。通过请求的路径找到目录下对应的文件做一定的处理最终以 ESM的格式返回给客户端。
 
-截图：https://zhuanlan.zhihu.com/p/424842555
+![image-20230614065216359](/img/image-20230614065216359.png)
 
 # Vite插件
 

@@ -368,7 +368,7 @@ const renderList = async () => {
 >
 > 其中`IntersectionObserver` 性能更好，但是我这里就拿`getBoundingClientRect`来举例
 
-截图：https://juejin.cn/post/7031923575044964389#heading-1
+<img src="/img/image-20230614065329214.png" alt="image-20230614065329214" style="zoom:70%;" />
 
 ```vue
 <script setup lang="ts">
@@ -424,7 +424,7 @@ onMounted(async () => {
 
 > 虚拟滚动，就是根据`容器可视区域`的`列表容积数量`，监听用户滑动或滚动事件，动态截取`长列表数据`中的`部分数据`渲染到页面上，动态使用空白站位填充容器`上下滚动区域内容`，模拟实现`原生滚动效果`。总结一句话：使用绝对定位和滚动监听实现。
 
-截图：https://juejin.cn/post/6966179727329460232
+<img src="/img/image-20230614065430330.png" alt="image-20230614065430330" style="zoom:80%;" />
 
 > - 浏览器渲染===康熙选秀：一次性渲染10000个肯定会使浏览器压力大，造成用户体验差
 > - 容器可视区域===选秀大殿：10000个排队去渲染，比如一次渲染10个
