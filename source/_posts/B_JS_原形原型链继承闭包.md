@@ -45,7 +45,7 @@ js之父在设计js原型、原型链的时候遵从以下两个准则
 >
 > prototype 原型允许引用其他对象。如果在 prototype 原型中没有找到指定的属性，则 JavaScript 将会根据引用关系，继续检索 prototype 原型对象的 prototype 原型，以此类推。
 
-```
+```js
 // 原型
 var Test = function(){
     a:111
@@ -91,7 +91,7 @@ function getProperty(obj, propName) {
 
 **任何一个函数都可以当做构造函数**。
 
-```
+```js
 // 惯例，构造函数应以大写字母开头
 function Person(name) {
   // 函数内this指向构造的对象
