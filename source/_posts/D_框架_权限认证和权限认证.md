@@ -74,7 +74,7 @@ toc: true # 是否启用内容索引
 
 **Token 的认证流程图**
 
-<img src="C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20230324072532875.png" alt="image-20230324072532875" style="zoom:65%;" />
+<img src="/img/image-20230324072532875.png" alt="image-20230324072532875" style="zoom:65%;" />
 
 **认证流程**
 
@@ -114,7 +114,7 @@ toc: true # 是否启用内容索引
 
 **Refresh Token 的认证流程图**
 
-<img src="C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20230324072624985.png" alt="image-20230324072624985" style="zoom:65%;" />
+<img src="/img/image-20230324072624985.png" alt="image-20230324072624985" style="zoom:65%;" />
 
 认证流程：
 
@@ -172,7 +172,7 @@ Signature 部分是对前两部分的签名，防止数据篡改。
 
 **JWT 的认证流程图**
 
-<img src="C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20230324073947821.png" alt="image-20230324073947821" style="zoom:67%;" />
+<img src="/img/image-20230324073947821.png" alt="image-20230324073947821" style="zoom:67%;" />
 
 **优点**
 
@@ -209,7 +209,7 @@ Signature 部分是对前两部分的签名，防止数据篡改。
 
 **单点登录下的 CAS 认证流程图**
 
-![image-20230324074042090](C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20230324074042090.png)
+![image-20230324074042090](/img/image-20230324074042090.png)
 
 认证流程：
 
@@ -285,7 +285,7 @@ OAuth 2.0 颁发令牌一共分成**四种授权**模式 **（Authorization Gran
 
 **唯一登录流程图**
 
-![image-20230324074132586](C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20230324074132586.png)
+![image-20230324074132586](/img/image-20230324074132586.png)
 
 认证流程：
 
@@ -307,7 +307,7 @@ OAuth 2.0 颁发令牌一共分成**四种授权**模式 **（Authorization Gran
 
 **扫码登录的认证流程图**
 
-![image-20230324074241004](C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20230324074241004.png)
+![image-20230324074241004](/img/image-20230324074241004.png)
 
 认证流程：
 

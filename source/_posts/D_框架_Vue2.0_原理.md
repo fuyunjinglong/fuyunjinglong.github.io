@@ -245,7 +245,7 @@ MVP 模式将 Controller 改名为 Presenter，同时改变了通信方向。解
 
 **MVVM**
 
-![image-20230611192344990](C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\image-20230611192344990.png)
+![image-20230611192344990](/img/image-20230611192344990.png)
 
 MVVM 模式将 Presenter 改名为 ViewModel，基本上与 MVP 模式完全一致。
 

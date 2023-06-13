@@ -30,7 +30,7 @@ toc: true # 是否启用内容索引
 末尾两个空格表示换行
 
 7.本地图片使用服务器绝对路径
-C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\
+/img/
 /img/
 
 8.竖线段落
