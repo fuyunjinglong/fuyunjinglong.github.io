@@ -94,7 +94,7 @@ var getDataType = function(o){
 
 缺点：无法区分null，数组，对象
 
-```
+```js
 typeof null            ------------------>"object"
 typeof [1,2,3]         ------------------>"object"
 typeof ibj          ------------------>"object"
