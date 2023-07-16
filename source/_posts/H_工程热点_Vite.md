@@ -391,3 +391,13 @@ export default function myPlugin() {
 -带有 enforce: 'post' 的用户插件
 
 -Vite 后置构建插件（最小化，manifest，报告）
+
+# Vite性能优化
+
+[记一次Vite打包优化](https://developer.aliyun.com/article/1166403)
+
+三部曲：
+
+- Network 分析
+- Lighthouse 分析
+- Bundle 分析
