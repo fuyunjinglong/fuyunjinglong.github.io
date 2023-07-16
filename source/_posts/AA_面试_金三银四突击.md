@@ -57,6 +57,8 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#BFC">对BFC规范的理解</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#canvas与svg的区别？">canvas 与 svg 的区别 ？</a>
 - <a target="_blank" href="{% post_path 'I_移动端_0基础' %}#rem、em、px、vh与vw的区别？">rem、em、px、vh 与 vw 的区别 ？</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#伪类和伪元素">伪类与伪元素</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#flex-1代表什么，用于什么场景">flex=1代表什么</a>
 
 # JS
 
@@ -76,6 +78,8 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#async和defer的作用是什么？有什么区别">async和defer的作用是什么？有什么区别</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#模块化规范">模块化规范</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS事件冒泡和事件捕获">事件冒泡和事件捕获</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS异步编程六大方案">JS异步编程六大方案</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#函数式编程">函数式编程</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2和Vue3比较' %}#Object-defineProperty与Proxy">必会20道JS-手写数据双向绑定</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#call-apply-bind">必会20道JS-手写call/apply/bind</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#instanceof操作符">必会20道JS-手写instanceof</a>

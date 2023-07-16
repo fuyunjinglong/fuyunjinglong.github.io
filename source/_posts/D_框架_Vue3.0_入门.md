@@ -1653,161 +1653,488 @@ const size = 10
 
 ## Hooks
 
+- 方式一：export default导出单一函数，导入参数，导出函数和出参
+- 方式二：参考大崔哥的新写法(同一vue和js文件共享数据)--推荐
+- 方式三：返璞归真，结合1和2，进化到hooks本质--强强强推荐
+
+**方式一：export default导出单一函数，导入参数，导出函数和出参**
+
+App.vue
+
 ```js
-template>
-  <p>{{ person.name }}</p>
+<template>
+   <p>{{ num1 }}</p>
+   <p>{{ num2 }}</p>
+   <p>{{ addNum }}</p>
 </template>
 <script lang="ts" setup>
-// 方式一：export default整体导出，用于复用变量和函数hook
-import { usePerson } from "./hooks";
-const { person, changePersonName } = usePerson();
-// 方式二(更推荐):export单一导出，用于复用函数hook
-import { changePersonName } from "./hooks/usePerson";
+const num1 = ref(2)
+const num2 = ref(1)
+// 方式一
+import {useAdd} from './useAdd.ts'     //引入自动hook 
+const { addNum, addFn } = useAdd({ num1, num2 })
+addFn(num1.value, num2.value)
 </script>
 ```
 
-```vue
-// 方式一：export default整体导出，用于复用变量和函数hook。/hooks/usePerson.ts
-import { reactive, watch } from "vue";
-export default function usePerson() {
-  const person = reactive<{ name: string; sex: string }>({
-    name: "小明"
+@/service/useAdd.ts
+
+```
+import { ref, watch } from 'vue';
+export const useAdd= ({ num1, num2 })  =>{
+ // 入参数
+    const addNum = ref(0)
+     watch([num1, num2], ([num1, num2]) => {
+        addFn(num1, num2)
+    })
+    const addFn = (num1, num2) => {
+        addNum.value = num1 + num2
+    }
+    return {
+     // 出参
+        addNum,
+        // 出函数
+        addFn
+    }
+}
+```
+
+**方式二：参考大崔哥的新写法(同一vue和js文件共享数据)--推荐**
+
+- Flow.vue--渲染页面(引入index.ts)
+
+- index.ts-总入口
+
+- tabs.ts--顶部tab业务
+
+- cardBLine.ts--卡片业务
+
+- dialog.ts--弹窗业务
+
+  @/view/Flow.vue--渲染页面
+
+```
+import { initAll, diaConfirm } from '@/services/reviewFlow';
+
+const tabs = reactive([]);
+const tab = ref();
+const cardBLine = ref({});
+const dia = ref({});
+initAll({ tabs, tab, cardBLine, dia });
+```
+
+@/services/index.ts-总入口
+
+```
+import { initTabs } from './tabs';
+import { initCardBLine } from './cardBLine';
+export { initDialog, diaConfirm } from './dialog';
+
+export function initAll(params) {
+  initTabs(params.tabs, params.tab);
+  initCardBLine(params.cardBLine);
+  initDialog(params.dia);
+}
+```
+
+@/services/tabs.ts--顶部tab业务
+
+```
+import * as myApi from '@/services/myApi';
+
+// 分解的产品线
+let tabs = [];
+let tab = {};
+
+export async function initTabs(tabsReactive, tabRef) {
+  declareTag(tabsReactive, tabRef);
+  await loadTabs();
+  loadTab();
+}
+function declareTag(tabsReactive, tabRef) {
+  // 1.初始化-变量
+  tabs = tabsReactive;
+  tab = tabRef;
+}
+
+async function loadTabs() {
+  // 载入tabs
+  tabs.length = 0;
+  const res = [];
+  res.forEach((r) => {
+    tabs.push(createTab(r));
   });
-  function changePersonName() {
-    person.name = "小浪";
-  }
+}
+
+function createTab(item) {
+  // 创建tab
+  const result = {
+    label: item.pbiNameCn,
+    value: item.pbiId,
+    product: getProduct(item.pbiId), // 有联动查询
+    ...item,
+  };
+  return result;
+}
+
+async function getProduct(id) {
+  const res = await myApi.baseLine_querBaseLine();
+  return res;
+}
+
+function loadTab() {
+  // 载入
+  const i = tabs.findIndex((t) => t.showFlag === '1');
+  // showFlag 0是查看，1是编辑
+  tab.value = tabs[i === -1 ? 0 : i];
+}
+```
+
+@/services/cardBLine.ts--卡片业务
+
+```
+import * as myApi from '@/services/myApi';
+
+// 基线对标卡片
+let cardBLine = {};
+
+export async function initCardBLine(cardBLineRef) {
+  declareTag(cardBLineRef);
+  await loadCardBLine();
+  setCardBLine();
+}
+function declareTag(cardBLineRef) {
+  // 1.初始化-变量
+  cardBLine = cardBLineRef;
+}
+
+function loadCardBLine() {
+  // 2.载入
+  const cbData = { a: 1, b: 2 };
+  cardBLine.value = createCardBaseLine(cbData);
+}
+
+export function createCardBaseLine(cbData) {
   return {
-    person,
-    changePersonName,
+    prop: 'baseLine',
+    label: cbData.a,
+    data: cbData.b,
   };
 }
- // 方式二：export单一导出，用于复用函数hook。/hooks/usePerson.ts
-import { reactive, watch } from "vue";
-export changePersonName(person) {
-  person.name = "小浪";
-}
-```
-
-方式三：参考大崔哥的新写法(直接赋值引用)--强烈推荐
-
-```
-// Task.vue
-<script setup lang="ts">
-import { ref,onBeforeMount } from 'vue';
-import { initListTag } from '@/service/task'
-
-let listTags =reactive([])
-onBeforeMount(async () => {
-   initListTag()
-})
-</script>
-<template>
-<div v-for="(listTag,i) in listTags" :key="'listTags'+i">{{ listTag.label }}</div>
-</template>
-
-// @/service/task.ts
-import { ref } from 'vue';
-import * as myapi from '@/service/myapi';
-
-let listTags =[]
-
- export async function initListTag(
-  listTagsReactive
-) {
-  // 0.初始化
-  declareListTag(listTagsReactive)
-  await loadTags()
-}
-
- function declareListTag(
-  listTagsReactive
-) {
-  // 1.初始化-变量
-  listTags = listTagsReactive
-}
-
-export async function loadTags() {
-  // 2.初始化-填充tags
-  const tab={}
-  listTags.push(createListTag(tag.name, tag.color, tag.parentTagId || undefined, tag.id))
-}
-
-export function createListTag(name, color?, parentTagId?, id = 0){
-  // 3.初始化-创建tag
-  return {
-    id,
-    name,
-    color: color || '',
-    parentTagId: parentTagId || null,
-    loadTasks: () => {
-      return myapi.getTasksByTagId(id)
-    },
+async function setCardBLine(result?) {
+  // 设值基线对标
+  let p0 = result ? result.benchmarkStatus : '';
+  setValue(cardBLine.value, 'mark', p0);
+  // 未接纳
+  if (p0 === 'DIC_MARK_STATUS_003') {
+    const markI = cardBLine.value.findIndex((d) => d.prop === 'mark');
+    cardBLine.value.splice(markI + 2, 1);
   }
 }
 
-export async function addListTag(tag) {
-  // 添加tag等其他逻辑处理,此处可以拿到listTags变量
-  const pIndex = await myapi.addTag(tag.name, tag.parentTagId, tag.color)
-  if (pIndex)
-    tag.id = pIndex
-  listTags.push(tag)
+export function setValue(prop, val) {
+  // 正常设值
+  const c1 = cardBLine.value.find((c) => c.prop === prop);
+  if (!c1) {
+    return;
+  }
+  c1.value = val;
+}
+function saveCardBLine() {
+  // 保存数据
+  const param = collectCardBLine();
+  myApi.baseLine_saveBaseLine(param);
+}
+
+function collectCardBLine() {
+  // 收集数据
+  const benchmarkStatus = findValue(cardBLine, 'mark');
+  return {
+    benchmarkStatus,
+  };
+}
+
+export function findValue(card, prop) {
+  // 正常获取
+  return cardBLine.value.data.find((c) => c.prop === prop)?.value;
+}
+
+export async function btnToOtherHandle(cb = cardBLine.value) {
+  // 可以自己调用，或第三方调用
+  await myApi.flow_transfer(cb);
 }
 ```
 
-方式四：参考大崔哥的新写法(返回值引用)
+@/services/dialog.ts--弹窗业务
 
 ```
-// User.vue
-<template>
-    <!-- 视图部分省略，在对应btn处引用onChangePassword和onChangeUserInfo即可 -->
-   <div @click="onChangePassword"> {{userInfo}}</div>
-</template>
+import { btnToOtherHandle } from './tabs';
+
+// 弹窗信息
+let dia = {};
+
+export async function initDialog(diaRef) {
+  declareTag(diaRef);
+  loadDia();
+}
+
+function declareTag(diaRef) {
+  // 1.初始化-变量
+  dia = diaRef;
+}
+
+function loadDia() {
+  // 2.载入
+  dia.value = createDia('transfer');
+}
+
+function createDia(type) {
+  const t = {
+    transfer: {
+      dVis: false,
+      dType: 'transfer',
+      dTitle: '转他人审批',
+      dClass: 'transfer',
+      dCont: {
+        val: '',
+      },
+    },
+  };
+  return t[type];
+}
+
+export async function btnToOther() {
+  // 转给他人审批
+  dia.value.dVis = true;
+}
+
+export async function diaConfirm(cardBLine) {
+  // 弹窗确认
+  const { dType } = dia.value;
+  if (dType === 'transfer') {
+    dia.value.dVis = false;
+    btnToOtherHandle(cardBLine);
+  }
+}
+```
+
+**方式三：返璞归真，结合1和2，进化到hooks本质--强强强推荐**
+
+@/view/Flow.vue--渲染页面
+
+```
 <script setup>
-import useUserControl from './useUserControl';
-const { userInfo, onChangeUserInfo,onChangePassword } = useUserControl();
-<script>
+import { userFlow } from '@/services/userFlow';
+const {tabs,tab,cardBLine,dia,diaConfirm} = userFlow()
+</script>
 
-// @/service/useUserControl.ts
-import useUser from './useUser';
-const useUserControl = () => {
-    // 组合用户hook
-    const { userInfo, getUserInfo, changeUserInfo } = useUser();
-    // 数据查询loading状态
-    const loading = ref(false);
-    // 初始化数据
-    const initData = () => {
-        getUserInfo();
-    }
-    // 修改密码
-     const onChangePassword = () => {
-    }
-    onMounted(initData);
-    return {
-        // 用户数据
-        userInfo,
-        // 修改用户信息
-        onChangeUserInfo: changeUserInfo,
-        onChangePassword:onChangePassword
-    }
-}
+<template>
+<Tab v-model:tab="tab" :tabs="tabs"></Tab>
+<CardBaseLine v-model:card="cardBLine"></CardBaseLine>
+<VDialog v-model:dVis="dia.dVis" v-bind="dia" @oprate="diaConfirm(dia)">
+      <div>
+        <span>转给</span>
+        <VUser v-model:user="dia.dCont"></VUser>
+      </div>
+    </VDialog>
+<template>
+```
 
-// @/service/useUser.ts
-const useUser = () => {
-    // vue版本的用户状态
-    const userInfo = ref({});
-    // 获取用户状态
-    const getUserInfo = () => {}
-    // 修改用户状态
-    const changeUserInfo = () => {};
-    return {
-        userInfo,
-        getUserInfo,
-        changeUserInfo
-    }
+@/services/userFlow.ts-总入口
+
+```
+import { useTabs } from './useTabs';
+import { useCardBLine } from './useCardBLine';
+export { userDialog } from './userDialog';
+
+export async function userFlow() {
+ const {tabs,tab} =await useTabs();
+ const {cardBLine} =await useCardBLine();
+ const {dia,diaConfirm} =await userDialog();
+  return {tabs,tab,cardBLine,dia,diaConfirm}
 }
 ```
 
+@/services/useTabs.ts--顶部tab业务
 
+```
+import * as myApi from '@/services/myApi';
+
+// 分解的产品线
+let tabs = reactive([]);
+let tab = ref();
+
+export async function  useTabs() {
+  async function initTabs(){
+   watchOnce(
+    () => tab.value,
+    (value) => {
+      // 其他操作
+    },
+  )
+    await loadTabs();
+   loadTab();
+  }
+  async function loadTabs() {
+  // 载入tabs
+  tabs.length = 0;
+  const res = [];
+  res.forEach((r) => {
+    tabs.push(createTab(r));
+  });
+}
+
+function createTab(item) {
+  // 创建tab
+  const result = {
+    label: item.pbiNameCn,
+    value: item.pbiId,
+    product: getProduct(item.pbiId), // 有联动查询
+    ...item,
+  };
+  return result;
+}
+
+async function getProduct(id) {
+  const res = await myApi.baseLine_querBaseLine();
+  return res;
+}
+
+function loadTab() {
+  // 载入
+  const i = tabs.findIndex((t) => t.showFlag === '1');
+  // showFlag 0是查看，1是编辑
+  tab.value = tabs[i === -1 ? 0 : i];
+}
+
+  initTabs()
+  return {
+   tabs,tab
+  }
+}
+```
+
+@/services/useCardBLine.ts--卡片业务
+
+```
+import * as myApi from '@/services/myApi';
+
+// 基线对标卡片
+let cardBLine = ref();
+
+export async function useCardBLine() {
+  async function initCardBLine(){
+     await loadCardBLine();
+     setCardBLine();
+  }
+  function loadCardBLine() {
+  // 2.载入
+  const cbData = { a: 1, b: 2 };
+  cardBLine.value = createCardBaseLine(cbData);
+}
+
+ function createCardBaseLine(cbData) {
+  return {
+    prop: 'baseLine',
+    label: cbData.a,
+    data: cbData.b,
+  };
+}
+ function setCardBLine(result?) {
+  // 设值基线对标
+  let p0 = result ? result.benchmarkStatus : '';
+  setValue(cardBLine.value, 'mark', p0);
+  // 未接纳
+  if (p0 === 'DIC_MARK_STATUS_003') {
+    const markI = cardBLine.value.findIndex((d) => d.prop === 'mark');
+    cardBLine.value.splice(markI + 2, 1);
+  }
+}
+
+ function setValue(prop, val) {
+  // 正常设值
+  const c1 = cardBLine.value.find((c) => c.prop === prop);
+  if (!c1) {
+    return;
+  }
+  c1.value = val;
+}
+function saveCardBLine() {
+  // 保存数据
+  const param = collectCardBLine();
+  myApi.baseLine_saveBaseLine(param);
+}
+
+function collectCardBLine() {
+  // 收集数据
+  const benchmarkStatus = findValue(cardBLine, 'mark');
+  return {
+    benchmarkStatus,
+  };
+}
+
+ function findValue(card, prop) {
+  // 正常获取
+  return cardBLine.value.data.find((c) => c.prop === prop)?.value;
+}
+
+ async function btnToOtherHandle(cb = cardBLine.value) {
+  // 可以自己调用，或第三方调用
+  await myApi.flow_transfer(cb);
+}
+
+  initCardBLine()
+  return {cardBLine,btnToOtherHandle}
+}
+```
+
+@/services/userDialog.ts--弹窗业务
+
+```
+// 弹窗信息
+let dia = ref();
+
+export async function userDialog() {
+  function initDialog(){
+     loadDia();
+  }
+  function loadDia() {
+  // 2.载入
+  dia.value = createDia('transfer');
+}
+
+function createDia(type) {
+  const t = {
+    transfer: {
+      dVis: false,
+      dType: 'transfer',
+      dTitle: '转他人审批',
+      dClass: 'transfer',
+      dCont: {
+        val: '',
+      },
+    },
+  };
+  return t[type];
+}
+
+ async function btnToOther() {
+  // 转给他人审批
+  dia.value.dVis = true;
+}
+
+ async function diaConfirm(cardBLine) {
+  // 弹窗确认
+  const { dType } = dia.value;
+  if (dType === 'transfer') {
+    dia.value.dVis = false;
+  }
+}
+  
+  initDialog()
+  return {dia,diaConfirm}
+}
+```
 
 ## pinia入门
 
@@ -1835,73 +2162,99 @@ const { count, doubleCount } = storeToRefs(counterStoreForSetup);
 const { increment } = counterStoreForSetup;
 ```
 
+## VueUse
+
+是一款基于组合式API的函数集合。
+
+**指南**
+
+核心包括9种函数：
+
+- 动画（Animation）—包含易于使用的过渡、超时和计时函数
+- 浏览器（Browser）—可用于不同的屏幕控制、剪贴板、首选项等
+- 组件（Component）— 为不同的组件方法提供简写
+- Formatters – 提供反应时间格式化功能
+- 传感器（Sensors ）—用于监听不同的 DOM 事件、输入事件和网络事件
+- 状态（State ）—管理用户状态（全局、本地存储、会话存储）
+- 实用程序（Utility）—不同的实用程序函数，如 getter、条件、引用同步等
+- Watch —更高级的观察者类型，如可暂停观察者、去抖动观察者和条件观察者
+
+**常用的5大函数**
+
+**1.useVModel**
+
+简化了 v-model 绑定
+
+```
+<div v-model="isPop"></div>
+import { useVModels } from '@vueuse/core';
+const props = defineProps({
+  isPop: {
+    default: false,
+  }})
+const { isPop } = useVModels(props, emits);
+const emits = defineEmits(['update:isPop']);
+// 修改值
+isPop.value = true
+```
+
+**2.onClickOutside**
+
+关闭模态
+
+```
+<button @click="open = true"> Open Popup </button>
+  <div class="popup" v-if='open'>
+  我是弹窗
+  </div>
+ import { onClickOutside } from '@vueuse/core'
+ const open = ref(false) // state of our popup
+const popup = ref() // template ref
+onClickOutside(popup, () => {
+  open.value  = false
+})
+```
+
+**3.useTransition** 
+
+允许我们在一行内平滑地转换数值
+
+步骤：
+
+> - 创建我们的 `count` ref并将其初始化为零
+> - 使用 `useTransition` 创建 `output` ref(设置持续时间和转换类型)
+> - 更改 `count` 的值
+
+```
+<template>
+  <h2> 
+    <p> Join over </p>
+    <p> {{ Math.round(output) }}+ </p>
+    <p>Developers </p>
+  </h2>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { useTransition, TransitionPresets } from '@vueuse/core'
+const source = ref()
+const output = useTransition(source, {
+  duration: 3000,
+  transition: TransitionPresets.easeOutExpo,
+})
+source.value = 5000
+</script>
+```
+
+**4.useRefHistory** 
+
+`useRefHistory` 跟踪对Ref所做的每一个改变，并将其存储在一个数组中。这使我们能够轻松地为我们的应用程序提供撤销和重做功能。
+
+**5.useIntersectionObserver**
+
+在确定两个元素是否重叠时，[Intersection Observers ](https://link.juejin.cn/?target=https%3A%2F%2Fdeveloper.mozilla.org%2Fen-US%2Fdocs%2FWeb%2FAPI%2FIntersectionObserver)非常强大。一个很好的用例是检查元素当前是否在视口中可见。
+
 # 高级
-
-## Vue3存在的问题
-
-- 丢失响应性
-- Vue3的TypeScript对类型的支持十分孱弱
-
-**一、丢失响应性**
-
-vue3还存在着很多问题 例如对ts支持不够友好 ref.value的混乱 解构丢失响应性（不知道有啥好的实践,目前是使用计算属性） 从体验上远不如vue2 目前个人认为最完善的库是solidjs 可惜生态没跟上来 可能对大家而言react vue并不是最好的解 react一个useeffct官网花6篇文章来描述这个api 我真是笑了 总而言之react vue3写起来不是很润。
-
-你没有发现吗?Vue团队是为了补坑而补坑,Vue2的ref仅仅是引用组件而已,而在Vue3变成了定义响应式变量,这一点我估计是参考了react,但react的运行机制与vue不同,react的ref是定义一个引用,避免组件重新渲染值被重置。
-
-vue3对ts的支持挺不错了，毕竟本身就是用ts写的，模板对ts的支持可能比较弱。
-解构这个绕不过去，不是vue3的问题，原生js就是那样，除非魔改，但是魔改的好几版提案都没落地。
-只能说各有取舍吧。
-
-**二、Vue3的TypeScript对类型的支持十分孱弱**
-
-参考：[为什么我感觉 Vue 3 TypeScript 还是不行？](https://www.zhihu.com/question/453332049)
-
-几个问题：
-
-1. option props define 的方式定义非常不灵活，这种值定义的思想意味着你必须要用值来定义类型，而不是利用类型来指导值应该长什么样，因此 vue 3 整体的类型设计不得不遭受了这个思想的严重毒害，不得不设计的很复杂（具体详见其 d.ts 实现）
-2. 值指导类型下不得不引入 ExtractPropTypes 来将 props 值定义转为类型定义，但 vue 没有提供 ExtractPropTypes 的逆运算，导致在定义共有 props 组件 (props 继承) 的时候十分难受
-3. defineComponent 不支持泛型；有个 hack 手段是包一层函数 wrapper来引入泛型，不过这样有运行时开销
-4. 应我看就应该取缔 SFC .vue 组件，这东西太反类型了，而且容易造成一个 vue 文件几千行的问题，有悖 VCA 所声称的组合优于继承的设计目标；或者说社区可以考虑去推动 ts 支持自定义文件后缀的 type loader （这样也可以解决 .pb 文件的类型问题）
-5. 写惯了 React 的来看 vue tsx 会感觉 slots 的设计很奇怪 ... 直接将 props 下的字段作为 slots 使用不是更符合直觉？感觉 vue props 整体的设计完全是 react prop 的子集 ...
-6. **emit、onXxx、vModel 等框架基础概念的类型做得很差, 用过的都懂, 太难受了**
-
-Vue 3 还是不够激进（真要激进了我感觉 Vue 就成 React With Reactive Object 了）
-
-> 尤大的回答：
->
-> Props 值定义确实是一个兼容性导致的包袱。但是在 <script setup> 下已经支持直接用 defineProps<{...}> 类型声明 props 了（自动编译为对应的值声明）。tsx 下也有方案在讨论。
->
-> sfc 的 TS IDE 支持请用 <script setup lang="ts"> + vscode + volar。volar 最近几个月很多改进，我个人用已经跟 tsx 感觉没太大差别了。配套的有 vue-tsc 可以做命令行检查。
->
-> 有了 VCA 还能写几千行的 SFC 组件那就纯粹是人的问题了，VCA 抽取逻辑跟纯 JS/TS 文件没什么区别，一个 TS 文件也能写几千行（几万行的 checker.ts 不也有么
->
-> tsx 本质上是 ts 团队给开了后门直接把 tsx 的推导做进了 ts 本身。ts 如果愿意开档更加完整的 plugin 机制，所有基于模板的框架的类型支持也不至于需要绕那么多弯子，然而 ts 团队怕增加维护成本不肯开。不管怎么说 vue 和 svelte 现在通过各种 hack 也算是做出来了基本完整的模板 ts 支持。
->
-> 模板在性能这块吊打 tsx，在 IDE 支持抹平了的前提下用 tsx 本质上是在为了开发者的偏好牺牲用户体验的性能（性能没遇到瓶颈就无所谓）
->
-> 这边自己不维护框架的人吐槽吐槽我也能理解，毕竟作为使用者只需要考虑自己爽不爽。作为维护者，Vue 的已有的用户习惯、生态和历史包袱摆在那里，能激进的程度是有限的，Vue 3 的大部分设计都是戴着镣铐跳舞，需要做很多折衷。如果真要激进还不如开个新项目，或者没人用的玩票项目，想怎么设计都可以。
->
-> 组件泛型的问题也有不少人提出了，这个目前确实不行，但不表示以后不会有。
->
-> 最后实话实说，所有前端里面像这个问题下面的类型体操运动员们毕竟是少数，绝大部分有 intellisense + 类型校验就满足需求了。真的对类型特别特别较真的用 React 也没什么不好，无非就是性能差点。
-
-> 松若章的回答：
->
-> 1. 我觉得 props 的问题很大程度上是兼容性包袱导致的，在 Vue 组件的 prop resolve 的过程里，如果没有大量编写经验其实很难记清楚每种配置会 [resolve](https://www.zhihu.com/search?q=resolve&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A1835420993}) 什么值。同时这些动态 resolve prop 的过程也对类型的编写造成了很多麻烦，即使在现在的版本，setup 函数中 props 的[静态类](https://www.zhihu.com/search?q=静态类&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A1835420993})型和 runtime 的实际表现都有不小的偏差。如果未来这些不一致可以全部修复的话倒也不算什么大问题了
->
-> 2. 定义共有 props 组件我觉得问题不是很大，只是相比于 React 在 interface 的层面就能共享，Vue 目前必须通过[展开运算符](https://www.zhihu.com/search?q=展开运算符&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A1835420993})才能解决。
->
->    我想提一下的是 ExtractPropTypes 的另一个问题，这个工具类型提取出来的其实是用于 setup 函数的 props 而不是外界传入的 props，这实际上对于类型的使用造成了一些阻碍。在 prop 没有 [required](https://www.zhihu.com/search?q=required&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A1835420993}) 的情况下需要使用 `Partial<ExtractPropTypes<typeof xxxProps>>` 才能给出实际外部的 props 的类型。
->
-> 3. 针对于组件 props 的泛型，目前似乎没啥好办法，我也很头大，只能采取比泛型更松的类型约束。[泛型类](https://www.zhihu.com/search?q=泛型类&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A1835420993})型对于[业务组件](https://www.zhihu.com/search?q=业务组件&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A1835420993})的编写可能不算特别常用，但是对于底层组件的编写其实非常重要。详见：
->
-> 4. 取缔 SFC 组件有点过于激进了，有点因噎废食的感觉。如果工具链能成熟多数场景下是可以使用 SFC 来编写的，既维持模板的优点也带有类型检查。当然前提是工具链能成熟，包含 vscode 的插件、类似 tsc --noEmit 的[命令行](https://www.zhihu.com/search?q=命令行&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A1835420993})类型检查，正确的 dts 文件生成。在年初的时候我尝试过 [vuedx](https://www.zhihu.com/search?q=vuedx&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A1835420993})、volar，vuedx 会让我的 vscode 卡死，volar 总有类型提示存在问题，发现不太能适应我的开发场景。但是 ts 不能不上，最后我把一个 .vue 的组件库用 .tsx 重写了
->
-> 5. slots 的位置确实有放到 props 的可能，毕竟它的机制和 [render props](https://www.zhihu.com/search?q=render props&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A1835420993}) 非常像，但是我个人觉得放到 prop 里面会导致 tsx 更加难看，因为 [vue3](https://www.zhihu.com/search?q=vue3&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A1835420993}) 的组件全量使用了函数 slot，不允许数组作为组件 children，在嵌套组件时候和别的 prop 会混起来，这两种风格可能大家各有喜好。
->
-> 6. 我在 vue3 从没使用过 [emits](https://www.zhihu.com/search?q=emits&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra={"sourceType"%3A"answer"%2C"sourceId"%3A1835420993})，实际上也非常建议不要允许 emits 属性在生产环境的使用，我相信这个选项留着更多的还是为了兼容性的问题。vModel 本身是个语法糖，类型支持如何完全取决于对 props 的类型支持，只能等着插件逐步完善了。至于对 onXxx 的支持，确实比 React 要弱一些，我觉得目前只能说达到基本可用的状态，由于 Vue 采取了原生事件，原生事件的类型没有对于 target 的泛型，对于事件的支持不如 React 一整套重写的事件类型也是情理之中。
->
->    总的来说 Vue3 的 typescript 支持在 TSX 的情境下其实是可以有不错的体验的（但是离 React 还有不小的差距）。但是模板之下，就看工具链是否给力了，还是希望 Vue 在 SFC 情况下的类型体验能早日达到 TSX 的程度。
 
 ## 案例-实现switch 功能组件
 

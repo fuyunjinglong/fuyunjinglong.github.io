@@ -8,8 +8,6 @@ toc: true # 是否启用内容索引
 
 # 入门
 
-
-
 ## 前言
 
 **module，chunk 和 bundle是什么**
@@ -601,6 +599,8 @@ splitChunks: {
 # 参考
 
 [webpack 优秀中文文章](https://github.com/webpack-china/awesome-webpack-cn)
+
+[掘金站内 webpack 优秀文章汇总](https://juejin.cn/post/6844903986185650190)
 
 [[万字总结] 一文吃透 Webpack 核心原理](https://mp.weixin.qq.com/s/SbJNbSVzSPSKBe2YStn2Zw)
 

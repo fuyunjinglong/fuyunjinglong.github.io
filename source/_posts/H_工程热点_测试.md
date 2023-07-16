@@ -191,9 +191,12 @@ Component 层，遵循以上的两测两不测原则
 
 ## Vue Test Utils
 
-[Vue测试实战](https://lmiller1990.github.io/vue-testing-handbook/zh-CN/#%E8%BF%99%E6%9C%AC%E6%8C%87%E5%8D%97%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F)
+- [Vue测试实战](https://lmiller1990.github.io/vue-testing-handbook/zh-CN/#%E8%BF%99%E6%9C%AC%E6%8C%87%E5%8D%97%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F)
 
-[Vue Test Utils实战](https://v1.test-utils.vuejs.org/zh/)
+- [Vue Test Utils实战](https://v1.test-utils.vuejs.org/zh/)
+
+- [使用 TDD 开发组件 --- Notification](https://juejin.cn/post/6844904013503152141#heading-19)
+- [【element3-开发日记】手摸手教你重写 Button 组件](https://juejin.cn/post/6898959238576472077#heading-0)
 
 # 测试解决方案落地
 

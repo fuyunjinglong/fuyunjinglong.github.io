@@ -12,6 +12,76 @@ toc: true # 是否启用内容索引
 
 项目可以是商城、SCRM 系统、OA 系统、物流系统、ERP 系统、CMS 系统、HIS 系统、支付系统、IM 聊天、微信公众号、微信小程序等等。
 
+# 项目问题
+
+## Echarts
+
+- [Echarts常见问题及解决方法](https://bbchin.com/archives/echart-cases#%E5%89%8D%E8%A8%80)
+
+**如何处理大量数据渲染**
+
+设置datazoom，类似分页效果
+
+**如何动态适配容器宽高**
+
+window.resize
+
+window.resizeObserver
+
+echart.resize()
+
+**文件超长如何处理**
+
+对formatter显示的文字长度做个截断展示，如a.slice(0,5)+'...'
+
+**切换图表卡顿**
+
+原因：可能内存溢出了
+
+解决：echarts.clear()和echarts.dispose()
+
+> `echarts.clear()`是清空当前实例，会移除实例中所有的组件和图表。类似v-show
+>
+> `echarts.dispose()`是销毁实例，销毁后实例无法再被使用。类似v-if
+
+## ElelemtUI
+
+**如何实现table组件自定义功能**
+
+开启slot插槽功能
+
+**如何覆盖组件样式**
+
+使用样式穿透
+
+**popover组件二次封装**
+
+自定义虚拟手动触发
+
+```
+v-model:visible="isPop"
+```
+
+是否将内容插入到body
+
+```
+:teleported="false" 
+```
+
+**国际化配置**
+
+```
+import zhCn from 'element-plus/es/locale/lang/zh-cn';
+import en from 'element-plus/es/locale/lang/en';
+
+<el-config-provider :locale="locale"> // zhCn : en
+    <router-view v-if="comStore.leaf" />
+     <div v-else class="noPermit">
+         <span>抱歉，您暂无访问权限！</span>
+     </div>
+</el-config-provider>
+```
+
 # 项目难点
 
 ## Vue2的CSP安全策略-202301

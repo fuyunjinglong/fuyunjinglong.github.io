@@ -94,6 +94,7 @@ Some people, when confronted with a problem, think “I know, I’ll use regular
 ## 汇总
 
 - [前端趋势热度榜单](https://bestofjs.org/)
+- 2022技术人的百宝黑皮书
 
 ## 2021年
 

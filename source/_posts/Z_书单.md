@@ -32,6 +32,8 @@ javascript三剑客
 - JavaScript DOM编程艺术 第2版     9787115249999
 - JavaScript高级程序设计 第4版       9787115545381
 
+《Javascript权威指南》
+
 javascript dom编程艺术
 
 javascript高级程序设计（红宝书） 和javascript权威指南（犀牛书）
@@ -234,6 +236,10 @@ javascript语言精粹与编程实践
 
 《程序员代码面试指南》《算法数据结构体系学习班》《算法与数据结构基础班》
 
+《数据结构与算法JavaScript描述》
+
+《JavaScript设计模式》
+
 《漫画算法-小灰的算法之旅》
 
 学习javascript数据结构和算法
@@ -425,7 +431,9 @@ javascript语言精粹与编程实践
 
 ## 设计模式
 
-javascript设计模式与开发实践
+《JavaScript设计模式与开发实践》
+
+《JavaScript设计模式核⼼原理与应⽤实践》
 
 - 《大话设计模式》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1iJSWVgqspqviEgHUUqhqDw)提取码：4o24
 - 《HeadFirst设计模式（中文版）》 [百度云链接 (opens new window)](https://pan.baidu.com/s/1lEz-hfm64QNJrrkx_skyrw)提取码：5c3f
