@@ -66,7 +66,7 @@ toc: true # 是否启用内容索引
 也可以使用 源码内部自带的调试案例
 
 > 启动服务
-> pnpm serve
+> npm run dev
 > 打开链接
 > http://localhost:5000/packages/vue/examples/composition/todomvc
 > 打断点
