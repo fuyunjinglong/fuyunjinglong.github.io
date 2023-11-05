@@ -6,25 +6,33 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# interview-imporant
+# interview
 
-**手写vue3源码之pnpm实现monorepo包管理**
+**1.项目经历**
+
+**1.1企业格局之策略制定**
+
+项目亮点：打飞机-UI和业务逻辑分离大崔哥
+
+[video](https://www.bilibili.com/video/BV143411M79D/?spm_id_from=333.999.0.0)
+
+**1.2需求力竞争PMT**
+
+项目亮点：手写vue3源码之pnpm实现monorepo包管理
 
 [video](https://www.bilibili.com/video/BV1WP4y1u7qi/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 
-**手写vue2源码之rollup打包**
+项目亮点：手写vue2源码之rollup打包
 
 00:00
 
 [video](https://www.bilibili.com/video/BV1DQ4y1z7TK/?spm_id_from=333.788.recommend_more_video.-1&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 
-**环境搭建-vue3+vite+ts(大崔哥)**
+2.**环境搭建-vue3+vite+ts(大崔哥)**
 
 [video](https://www.bilibili.com/video/BV1xr4y1A7H9/?spm_id_from=333.999.0.0)
 
-**项目亮点：打飞机-UI和业务逻辑分离(大崔哥)**
 
-[video](https://www.bilibili.com/video/BV143411M79D/?spm_id_from=333.999.0.0)
 
 # web前端导航
 
