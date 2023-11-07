@@ -32,8 +32,6 @@ toc: true # 是否启用内容索引
 
 [video](https://www.bilibili.com/video/BV1xr4y1A7H9/?spm_id_from=333.999.0.0)
 
-
-
 # web前端导航
 
 - [印记中文](https://docschina.org/)
