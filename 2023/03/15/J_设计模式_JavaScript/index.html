@@ -18,15 +18,15 @@
   
   
   <title>JavaScript中的设计模式 | Hexo</title>
-  <meta name="description" content="设计模式的源码应用ES6-Promise观察者模式   通过 Promise.prototype.then 和 Promise.prototype.catch 方法将观察者方法注册到被观察者 Promise 对象中，同时返回一个新的 Promise 对象，以便可以链式调用。  被观察者管理内部 pending、fulfilled 和 rejected 的状态转变，同时通过构造函数中传递的 reso">
+  <meta name="description" content="设计模式的源码应用ES6-Promise观察者模式  通过 Promise.prototype.then 和 Promise.prototype.catch 方法将观察者方法注册到被观察者 Promise 对象中，同时返回一个新的 Promise 对象，以便可以链式调用。  被观察者管理内部 pending、fulfilled 和 rejected 的状态转变，同时通过构造函数中传递的 resol">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JavaScript中的设计模式">
 <meta property="og:url" content="https://fuyunjinglong.github.io/2023/03/15/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_JavaScript/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="设计模式的源码应用ES6-Promise观察者模式   通过 Promise.prototype.then 和 Promise.prototype.catch 方法将观察者方法注册到被观察者 Promise 对象中，同时返回一个新的 Promise 对象，以便可以链式调用。  被观察者管理内部 pending、fulfilled 和 rejected 的状态转变，同时通过构造函数中传递的 reso">
+<meta property="og:description" content="设计模式的源码应用ES6-Promise观察者模式  通过 Promise.prototype.then 和 Promise.prototype.catch 方法将观察者方法注册到被观察者 Promise 对象中，同时返回一个新的 Promise 对象，以便可以链式调用。  被观察者管理内部 pending、fulfilled 和 rejected 的状态转变，同时通过构造函数中传递的 resol">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-03-14T22:33:16.000Z">
-<meta property="article:modified_time" content="2023-03-15T15:06:38.001Z">
+<meta property="article:modified_time" content="2023-06-11T12:59:05.692Z">
 <meta property="article:author" content="Elven">
 <meta name="twitter:card" content="summary">
   <!-- Canonical links -->
@@ -214,7 +214,7 @@
   <div class="widget">
     <h3 class="widget-title">分类</h3>
     <div class="widget-body">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">23</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">9</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">5</span></li></ul>
     </div>
   </div>
 
@@ -229,7 +229,7 @@
   <div class="widget">
     <h3 class="widget-title">归档</h3>
     <div class="widget-body">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/09/">九月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/06/">六月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">26</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/09/">九月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/06/">六月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -331,7 +331,7 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%BA%90%E7%A0%81%E5%BA%94%E7%94%A8"><span class="toc-text">设计模式的源码应用</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%BA%90%E7%A0%81%E5%BA%94%E7%94%A8"><span class="toc-text">设计模式的源码应用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ES6-Promise%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-text">ES6-Promise观察者模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue3-Proxy%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="toc-text">Vue3-Proxy策略模式+代理模式</span></a></li></ol></li></ol>
     </nav>
   </div>
 </aside>
@@ -373,8 +373,7 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h1 id="设计模式的源码应用"><a href="#设计模式的源码应用" class="headerlink" title="设计模式的源码应用"></a>设计模式的源码应用</h1><p><strong>ES6-Promise观察者模式</strong></p>
-<blockquote>
+        <h1 id="设计模式的源码应用"><a href="#设计模式的源码应用" class="headerlink" title="设计模式的源码应用"></a>设计模式的源码应用</h1><h2 id="ES6-Promise观察者模式"><a href="#ES6-Promise观察者模式" class="headerlink" title="ES6-Promise观察者模式"></a><strong>ES6-Promise观察者模式</strong></h2><blockquote>
 <ul>
 <li><p>通过 Promise.prototype.then 和 Promise.prototype.catch 方法将观察者方法注册到被观察者 Promise 对象中，同时返回一个新的 Promise 对象，以便可以链式调用。</p>
 </li>
@@ -382,13 +381,67 @@
 </li>
 </ul>
 </blockquote>
-<p><strong>Vue3-Proxy策略模式+代理模式</strong></p>
-<blockquote>
+<h2 id="Vue3-Proxy策略模式-代理模式"><a href="#Vue3-Proxy策略模式-代理模式" class="headerlink" title="Vue3-Proxy策略模式+代理模式"></a><strong>Vue3-Proxy策略模式+代理模式</strong></h2><blockquote>
 <ul>
 <li>Proxy的表单验证，使用各种策略校验数据类型</li>
 <li>Proxy代理原始数据，进行数据劫持和代理</li>
 </ul>
 </blockquote>
+<p>参考</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/jawil/blog/issues/19">探索两种优雅的表单验证</a></li>
+</ul>
+<p><strong>场景：前端表单校验</strong></p>
+<ul>
+<li>所有选项不能为空</li>
+<li>用户名长度不能少于6位</li>
+<li>密码长度不能少于6位</li>
+<li>手机号码必须符合格式</li>
+<li>邮箱地址必须符合格式</li>
+</ul>
+<p><strong>常规校验</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">let registerForm = document.querySelector(&#x27;#registerForm&#x27;)</span><br><span class="line">registerForm.addEventListener(&#x27;submit&#x27;, function() &#123;</span><br><span class="line">    if (registerForm.userName.value === &#x27;&#x27;) &#123;</span><br><span class="line">        alert(&#x27;用户名不能为空！&#x27;)</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line">    if (registerForm.userName.length &lt; 6) &#123;</span><br><span class="line">        alert(&#x27;用户名长度不能少于6位！&#x27;)</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line">    if (registerForm.passWord.value === &#x27;&#x27;) &#123;</span><br><span class="line">        alert(&#x27;密码不能为空！&#x27;)</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line">    if (registerForm.passWord.value.length &lt; 6) &#123;</span><br><span class="line">        alert(&#x27;密码长度不能少于6位！&#x27;)</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line">    if (registerForm.phoneNumber.value === &#x27;&#x27;) &#123;</span><br><span class="line">        alert(&#x27;手机号码不能为空！&#x27;)</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line">    if (!/^1(3|5|7|8|9)[0-9]&#123;9&#125;$/.test(registerForm.phoneNumber.value)) &#123;</span><br><span class="line">        alert(&#x27;手机号码格式不正确！&#x27;)</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line">    if (registerForm.emailAddress.value === &#x27;&#x27;) &#123;</span><br><span class="line">        alert(&#x27;邮箱地址不能为空！&#x27;)</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line">    if (!/^\w+([+-.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*</span><br><span class="line">    $/.test(registerForm.emailAddress.value)) &#123;</span><br><span class="line">        alert(&#x27;邮箱地址格式不正确！&#x27;)</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line">&#125;, false)</span><br></pre></td></tr></table></figure>
+
+<p>但存在很多问题，比如：</p>
+<blockquote>
+<ul>
+<li><code>registerForm.addEventListener</code>绑定的函数比较庞大，包含了很多的<code>if-else</code>语句，看着都恶心，这些语句需要覆盖所有的校验规则。</li>
+<li><code>registerForm.addEventListener</code>绑定的函数缺乏弹性，如果增加了一种新的校验规则，或者想要把密码的长度校验从6改成8，我们都必须深入<code>registerForm.addEventListener</code>绑定的函数的内部实现，这是违反了开放-封闭原则的。</li>
+<li>算法的复用性差，如果程序中增加了另一个表单，这个表单也需要进行一些类似的校验，那我们很可能将这些校验逻辑复制得漫天遍野。</li>
+</ul>
+</blockquote>
+<p><strong>用策略模式重构表单校验</strong></p>
+<blockquote>
+<p>思路：一键验证，使用策略模式，核心思想:将做什么和谁去做相分离</p>
+</blockquote>
+<p>策略模式的组成</p>
+<ul>
+<li>抽象策略角色：策略类，通常由一个接口或者抽象类实现。</li>
+<li>具体策略角色：包装了相关的算法和行为。</li>
+<li>环境角色：持有一个策略类的引用，最终给客户端用的。</li>
+</ul>
+<p>具体策略角色——编写策略类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">/*策略对象*/</span><br><span class="line">const strategies = &#123;</span><br><span class="line">        isNonEmpty(value, errorMsg) &#123;</span><br><span class="line">            return value === &#x27;&#x27; ?</span><br><span class="line">                errorMsg : false</span><br><span class="line">        &#125;,</span><br><span class="line">        minLength(value, length, errorMsg) &#123;</span><br><span class="line">            return value.length &lt; length ?</span><br><span class="line">                errorMsg : false</span><br><span class="line">        &#125;,</span><br><span class="line">        isMoblie(value, errorMsg) &#123;</span><br><span class="line">            return !/^1(3|5|7|8|9)[0-9]&#123;9&#125;$/.test(value) ?</span><br><span class="line">                errorMsg : false</span><br><span class="line">        &#125;,</span><br><span class="line">        isEmail(value, errorMsg) &#123;</span><br><span class="line">            return !/^\w+([+-.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(value) ?</span><br><span class="line">                errorMsg : false</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>抽象策略角色——编写Validator类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/*Validator类*/</span><br><span class="line">class Validator &#123;</span><br><span class="line">    constructor() &#123;</span><br><span class="line">        this.cache = [] //保存校验规则</span><br><span class="line">    &#125;</span><br><span class="line">    add(value,name,...other) &#123;</span><br><span class="line">        this.cache.push(strategies[name])</span><br><span class="line">    &#125;</span><br><span class="line">    start() &#123;</span><br><span class="line">        for (let validatorFunc of this.cache) &#123;</span><br><span class="line">            let errorMsg = validatorFunc()//开始校验，并取得校验后的返回信息</span><br><span class="line">            if (errorMsg) &#123;//r如果有确切返回值，说明校验没有通过</span><br><span class="line">                return errorMsg</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>环境角色——客户端调用代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 获取表单form元素</span><br><span class="line">let registerForm = document.querySelector(&#x27;#registerForm&#x27;)</span><br><span class="line">function validatorFunc()&#123;</span><br><span class="line">    // 创建表单校验实例</span><br><span class="line">    let validator = new Validator();</span><br><span class="line">    // 编写校验配置</span><br><span class="line">    validator.add(registerForm.userName, &#x27;isNonEmpty&#x27;, &#x27;用户名不能为空&#x27;)</span><br><span class="line">    validator.add(registerForm.userName, &#x27;minLength&#x27;, &#x27;用户名长度不能小于6&#x27;)</span><br><span class="line">    // 开始校验，并接收错误信息</span><br><span class="line">    let errorMsg = validator.start()</span><br><span class="line">    // 如果有错误信息输出，说明校验未通过</span><br><span class="line">    if(errorMsg)&#123;</span><br><span class="line">        alert(errorMsg)</span><br><span class="line">        return false//阻止表单提交</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">validatorFunc()</span><br></pre></td></tr></table></figure>
+
+<p><strong>策略模式的优缺点</strong></p>
+<ul>
+<li>策略模式利用组合、委托和多态等技术思想，可以有效的避免多种条件选择语句；</li>
+<li>策略模式提供了对开放-封闭原则的完美支持，将算法封装在独立的strategy中，使得它易于切换，易于理解，易于拓展；</li>
+<li>策略模式中的算法也可以复用在系统的其它地方，从而避免了许多重复的复制黏贴的工作；</li>
+<li>在策略模式利用组合和委托来让Context拥有执行算法的能力，这也是继承一种更轻便的替代方案。</li>
+</ul>
+<p>当然，策略模式也有一些缺点，但掌握了策略模式，这些缺点并不严重。</p>
+<ul>
+<li>编写难度加大，代码量变多了，这是最直观的一个缺点，也算不上缺点，毕竟不能完全以代码多少来衡量优劣。</li>
+<li>首先，使用策略模式会在程序中增加许多策略类或者策略对象，但实际上这比把它们负责的逻辑堆砌在Context中要好。</li>
+<li>其次，要使用策略模式，必须了解所有的strategy，必须了解各个strategy之间的不同点，这样才能选择一个合适的strategy。比如，我们要选择一种合适的旅游出行路线，必须先了解选择飞机、火车、自行车等方案的细节。此时strategy要向客户暴露它的所有实现，这是违反最少知识原则的。</li>
+</ul>
 <p><strong>参考</strong></p>
 <p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903734091186189#heading-1">16种JavaScript设计模式（中）</a></p>
 
@@ -447,7 +500,7 @@
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue2.0/" title="源码_Vue2.0"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+      <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue3.0/" title="源码_Vue3.0"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
     </li>
     
     

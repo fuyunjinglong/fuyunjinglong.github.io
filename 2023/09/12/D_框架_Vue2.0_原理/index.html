@@ -18,23 +18,25 @@
   
   
   <title>Vue2.0_原理 | Hexo</title>
-  <meta name="description" content="入门Vue 的生命周期vue生命周期详细全过程  1.beforeCreate钩子函数 a.用户使用 new Vue()新建 Vue 实例 b.父实例实例化子实例，确认组件间的父子关系，将父组件的自定义事件传递给子组件 c.初始化将 render 函数转为虚拟 dom 的方法 2. created钩子函数: a.初始化事件，进行数据的观测 b.数据已经和**data****属性进行绑定**（放在">
+  <meta name="description" content="入门生命周期vue生命周期详细全过程   beforeCreate():实例在内存中被创建出来，还没有初始化好data和methods属性。 create():实例已经在内存中创建，已经初始化好data和method，此时还没有开始编译模板。 beforeMount():已经完成了模板的编译，还没有挂载到页面中。 mounted()：将编译好的模板挂载到页面指定的容器中显示。 beforeUpda">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue2.0_原理">
 <meta property="og:url" content="https://fuyunjinglong.github.io/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="入门Vue 的生命周期vue生命周期详细全过程  1.beforeCreate钩子函数 a.用户使用 new Vue()新建 Vue 实例 b.父实例实例化子实例，确认组件间的父子关系，将父组件的自定义事件传递给子组件 c.初始化将 render 函数转为虚拟 dom 的方法 2. created钩子函数: a.初始化事件，进行数据的观测 b.数据已经和**data****属性进行绑定**（放在">
+<meta property="og:description" content="入门生命周期vue生命周期详细全过程   beforeCreate():实例在内存中被创建出来，还没有初始化好data和methods属性。 create():实例已经在内存中创建，已经初始化好data和method，此时还没有开始编译模板。 beforeMount():已经完成了模板的编译，还没有挂载到页面中。 mounted()：将编译好的模板挂载到页面指定的容器中显示。 beforeUpda">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://fuyunjinglong.github.io/img/vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/vue2%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png">
 <meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211225211541701.png">
 <meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211225211824003.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20230611192344990.png">
 <meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211012230610276.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20230614064728863.png">
 <meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211212174443165.png">
 <meta property="article:published_time" content="2023-09-11T23:33:16.000Z">
-<meta property="article:modified_time" content="2023-03-25T07:01:52.252Z">
+<meta property="article:modified_time" content="2023-07-16T03:26:18.811Z">
 <meta property="article:author" content="Elven">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png">
+<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/vue2%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png">
   <!-- Canonical links -->
   <link rel="canonical" href="https://fuyunjinglong.github.io/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/index.html">
   
@@ -220,7 +222,7 @@
   <div class="widget">
     <h3 class="widget-title">分类</h3>
     <div class="widget-body">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">23</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">9</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">5</span></li></ul>
     </div>
   </div>
 
@@ -235,7 +237,7 @@
   <div class="widget">
     <h3 class="widget-title">归档</h3>
     <div class="widget-body">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/09/">九月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/06/">六月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">26</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/09/">九月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/06/">六月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -337,7 +339,7 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%A5%E9%97%A8"><span class="toc-text">入门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue-%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">Vue 的生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%88%B6%E5%AD%90%E7%BB%84%E4%BB%B6%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%A1%BA%E5%BA%8F"><span class="toc-text">父子组件生命周期顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue2-x%E7%BB%84%E4%BB%B6%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="toc-text">Vue2.x组件通信方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#methods%E5%92%8Cwatch%E3%80%81computed"><span class="toc-text">methods和watch、computed</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#v-for%E5%92%8Cv-if%E4%B8%8D%E8%83%BD%E8%BF%9E%E7%94%A8"><span class="toc-text">v-for和v-if不能连用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E5%8F%98%E5%BC%82%E6%96%B9%E6%B3%95"><span class="toc-text">数组变异方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8%E5%93%AA%E4%B8%AA%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%86%85%E8%B0%83%E7%94%A8%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82%EF%BC%9F"><span class="toc-text">在哪个生命周期内调用异步请求？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vm-set-%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7%E6%96%B0%E5%A2%9E%E9%97%AE%E9%A2%98"><span class="toc-text">vm.$set()如何解决对象属性新增问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6%E4%B8%AD%E7%9A%84data%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0%EF%BC%9F"><span class="toc-text">组件中的data为什么是一个函数？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AB%98%E9%98%B6"><span class="toc-text">高阶</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MVC%E3%80%81MVP%E3%80%81MVVM%E4%B8%8EVue%E5%85%B3%E7%B3%BB"><span class="toc-text">MVC、MVP、MVVM与Vue关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%93%8D%E5%BA%94%E5%BC%8F"><span class="toc-text">数据响应式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A"><span class="toc-text">双向绑定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Observer-Dep-Watcher"><span class="toc-text">Observer&#x2F;Dep&#x2F;Watcher</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Virtual-DOM"><span class="toc-text">Virtual DOM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Virtual-DOM-diff%E7%AE%97%E6%B3%95"><span class="toc-text">Virtual DOM-diff算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#inject-provide%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E9%97%AE%E9%A2%98"><span class="toc-text">inject&#x2F;provide的响应式问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B"><span class="toc-text">Vue模板编译流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#keep-alive%E5%8E%9F%E7%90%86"><span class="toc-text">keep-alive原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nextTick%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">nextTick的实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue-router%E8%B7%AF%E7%94%B1-hash%E5%92%8Chistory"><span class="toc-text">Vue-router路由-hash和history</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue-router%E8%B7%AF%E7%94%B1-%E6%87%92%E5%8A%A0%E8%BD%BD"><span class="toc-text">Vue-router路由-懒加载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue-router%E5%AF%BC%E8%88%AA%E5%AE%88%E5%8D%AB%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-text">Vue-router导航守卫有哪些</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vue-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-text">vue 性能优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SFC"><span class="toc-text">SFC</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%A5%E9%97%A8"><span class="toc-text">入门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%88%B6%E5%AD%90%E7%BB%84%E4%BB%B6%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%9B%B4%E6%96%B0%E9%A1%BA%E5%BA%8F"><span class="toc-text">父子组件生命周期更新顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue2-x%E7%BB%84%E4%BB%B6%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="toc-text">Vue2.x组件通信方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#methods%E5%92%8Cwatch%E3%80%81computed"><span class="toc-text">methods和watch、computed</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#v-for%E5%92%8Cv-if%E4%B8%8D%E8%83%BD%E8%BF%9E%E7%94%A8"><span class="toc-text">v-for和v-if不能连用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E5%8F%98%E5%BC%82%E6%96%B9%E6%B3%95"><span class="toc-text">数组变异方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8%E5%93%AA%E4%B8%AA%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%86%85%E8%B0%83%E7%94%A8%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82%EF%BC%9F"><span class="toc-text">在哪个生命周期内调用异步请求？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vm-set-%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7%E6%96%B0%E5%A2%9E%E9%97%AE%E9%A2%98"><span class="toc-text">vm.$set()如何解决对象属性新增问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6%E4%B8%AD%E7%9A%84data%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0%EF%BC%9F"><span class="toc-text">组件中的data为什么是一个函数？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AB%98%E9%98%B6"><span class="toc-text">高阶</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MVC%E3%80%81MVP%E3%80%81MVVM%E4%B8%8EVue%E5%85%B3%E7%B3%BB"><span class="toc-text">MVC、MVP、MVVM与Vue关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%93%8D%E5%BA%94%E5%BC%8F"><span class="toc-text">数据响应式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A"><span class="toc-text">双向绑定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Observer-Dep-Watcher"><span class="toc-text">Observer&#x2F;Dep&#x2F;Watcher</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Virtual-DOM"><span class="toc-text">Virtual DOM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Virtual-DOM-diff%E7%AE%97%E6%B3%95"><span class="toc-text">Virtual DOM-diff算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#inject-provide%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E9%97%AE%E9%A2%98"><span class="toc-text">inject&#x2F;provide的响应式问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B"><span class="toc-text">Vue模板编译流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#keep-alive%E5%8E%9F%E7%90%86"><span class="toc-text">keep-alive原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nextTick%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">nextTick的实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue-router%E8%B7%AF%E7%94%B1-hash%E5%92%8Chistory"><span class="toc-text">Vue-router路由-hash和history</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue-router%E8%B7%AF%E7%94%B1-%E6%87%92%E5%8A%A0%E8%BD%BD"><span class="toc-text">Vue-router路由-懒加载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue-router%E5%AF%BC%E8%88%AA%E5%AE%88%E5%8D%AB%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-text">Vue-router导航守卫有哪些</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vue-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-text">vue 性能优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SFC"><span class="toc-text">SFC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Flow%E9%9D%99%E6%80%81%E7%B1%BB%E5%9E%8B%E6%A3%80%E6%B5%8B%E5%99%A8"><span class="toc-text">Flow静态类型检测器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E7%BC%96%E8%AF%91%E5%99%A8"><span class="toc-text">安装编译器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-Flow"><span class="toc-text">安装 Flow</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text"></span></a></li></ol>
     </nav>
   </div>
 </aside>
@@ -379,15 +381,25 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><h2 id="Vue-的生命周期"><a href="#Vue-的生命周期" class="headerlink" title="Vue 的生命周期"></a>Vue 的生命周期</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_70477767/article/details/124684195">vue生命周期详细全过程</a></p>
-<p><img src="/img/vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png"></p>
+        <h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_70477767/article/details/124684195">vue生命周期详细全过程</a></p>
+<p><img src="/img/vue2%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png"></p>
+<blockquote>
+<p>beforeCreate():实例在内存中被创建出来，还没有初始化好data和methods属性。</p>
+<p>create():实例已经在内存中创建，已经初始化好data和method，此时还没有开始编译模板。</p>
+<p>beforeMount():已经完成了模板的编译，还没有挂载到页面中。</p>
+<p>mounted()：将编译好的模板挂载到页面指定的容器中显示。</p>
+<p>beforeUpdate():状态更新之前执行函数，此时data中的状态值是最新的，但是界面上显示的数据还是旧的，因为还没有开始重新渲染DOM节点。</p>
+<p>updated():此时data中的状态值和界面上显示的数据都已经完成了跟新，界面已经被重新渲染好了！</p>
+<p>beforeDestroy():实例被销毁之前。</p>
+<p>destroyed():实例销毁后调用，Vue实例指示的所有东西都会解绑，所有的事件监听器都会被移除,所有的子实例也都会被销毁。组件已经被完全销毁，此时组建中所有data、methods、以及过滤器，指令等，都已经不可用了。</p>
+</blockquote>
 <p>1.<strong>beforeCreate</strong>钩子函数</p>
 <p>a.用户使用 new Vue()新建 Vue 实例</p>
 <p>b.父实例实例化子实例，确认组件间的父子关系，将父组件的自定义事件传递给子组件</p>
 <p>c.初始化将 render 函数转为虚拟 dom 的方法</p>
 <p><strong>2. created</strong>钩子函数:</p>
 <p>a.初始化事件，进行数据的观测</p>
-<p>b.数据已经和**data****属性进行绑定**（放在 data 中的属性当值发生改变的同时，视图也会改变）</p>
+<p>b.数据已经和data属性进行绑定（放在 data 中的属性当值发生改变的同时，视图也会改变）</p>
 <p>c.此时还是没有 el 选项</p>
 <p><strong>3.</strong> <strong>beforeMount</strong>钩子函数：</p>
 <p>a.<strong>el**<strong>选项</strong>。</strong>如果有的话就继续向下编译，如果没有<strong>el 选项</strong>，则停止编译，也就意味着停止了*<strong>*生命周期。</strong></p>
@@ -408,7 +420,7 @@
 <p>b.beforeDestroy 钩子函数在实例销毁之前调用。在这一步，实例仍然完全可用。</p>
 <p><strong>8. destroyed</strong>:</p>
 <p>a.在 Vue 实例销毁后调用，调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。</p>
-<h2 id="父子组件生命周期顺序"><a href="#父子组件生命周期顺序" class="headerlink" title="父子组件生命周期顺序"></a>父子组件生命周期顺序</h2><p>父组件先创建，然后子组件创建；子组件先挂载，然后父组件挂载。</p>
+<h2 id="父子组件生命周期更新顺序"><a href="#父子组件生命周期更新顺序" class="headerlink" title="父子组件生命周期更新顺序"></a>父子组件生命周期更新顺序</h2><p>父组件先创建，然后子组件创建；子组件先挂载，然后父组件挂载。</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">父beforeCreate-&gt; 父create -&gt; 子beforeCreate-&gt; 子created -&gt; 子mounted -&gt; 父mounted</span><br></pre></td></tr></table></figure>
 
 <h2 id="Vue2-x组件通信方式"><a href="#Vue2-x组件通信方式" class="headerlink" title="Vue2.x组件通信方式"></a>Vue2.x组件通信方式</h2><blockquote>
@@ -514,11 +526,12 @@
 <p>MVP 模式将 Controller 改名为 Presenter，同时改变了通信方向。解决MV的耦合性问题，但P层过于臃肿。</p>
 <p><img src="/img/image-20211225211824003.png" alt="image-20211225211824003"></p>
 <p><strong>MVVM</strong></p>
+<p><img src="/img/image-20230611192344990.png" alt="image-20230611192344990"></p>
 <p>MVVM 模式将 Presenter 改名为 ViewModel，基本上与 MVP 模式完全一致。</p>
 <p>唯一的区别是，它采用双向绑定（data-binding）：View的变动，自动反映在 ViewModel</p>
 <p>MVVM广泛应用于前端领域，不仅解决MV耦合问题，还解决了两者映射关系复杂和DOM操作代码，提高开发效率、代码可读性。</p>
 <p><strong>Vue</strong></p>
-<p>是MVVM框架(基于mvc升级，弱化了controller层。但没有完全遵循mvvm，因为传统mvvm是不能手动操作数据，而vue有ref操作dom数据)</p>
+<p>是MVVM框架(基于mvc升级，弱化了controller层。但没有完全遵循mvvm，因为MVVM规定Model和View不能直接通信，传统mvvm是不能手动操作数据，而vue有ref操作dom数据)</p>
 <h2 id="数据响应式"><a href="#数据响应式" class="headerlink" title="数据响应式"></a>数据响应式</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/forever__fish/article/details/127163227">数据响应式图1</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b1564296a78b">数据响应式图2</a></p>
 <p><strong>原理</strong></p>
@@ -643,6 +656,8 @@
 <p>如果结束后，oldNodeStart&gt;=oldNodeEnd，那么就需要删除旧节点中部分节点。newNodeStart&gt;=newNodeEnd，那么需要新增新节点中的部分节点。</p>
 <h2 id="inject-provide的响应式问题"><a href="#inject-provide的响应式问题" class="headerlink" title="inject/provide的响应式问题"></a>inject/provide的响应式问题</h2><p>官方说法： <strong>provide/inject</strong> 的 <strong>直接绑定数据</strong> 才不支持响应式，但又因为 <strong>没有对数据的进行深层次处理</strong>，所以原有的响应式数据才会继续触发整个响应式系统的改变。</p>
 <p>说人话：直接修改对象，inject监听不到改动；修改对象的某个属性，就能监听到改动。加一句，即使修改属性，computed也监听不到变化。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">// 祖先组件</span><br><span class="line">provide()&#123;</span><br><span class="line">  return &#123;</span><br><span class="line">  // keyName: &#123; name: this.name &#125;, // value 是对象才能实现响应式，也就是引用类型</span><br><span class="line">   keyName: this.changeValue // 通过函数的方式也可以[注意，这里是把函数作为value，而不是this.changeValue()]</span><br><span class="line">  // keyName: &#x27;test&#x27; value 如果是基本类型，就无法实现响应式</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;,</span><br><span class="line">data()&#123;</span><br><span class="line"> return &#123;</span><br><span class="line"> name:&#x27;张三&#x27;</span><br><span class="line">&#125;</span><br><span class="line"> &#125;,</span><br><span class="line"> methods: &#123;</span><br><span class="line">  changeValue()&#123;</span><br><span class="line">  this.name = &#x27;改变后的名字-李四&#x27;</span><br><span class="line">  &#125;</span><br><span class="line"> &#125; </span><br><span class="line"></span><br><span class="line"> // 后代组件</span><br><span class="line"> inject:[&#x27;keyName&#x27;]</span><br><span class="line"> create()&#123;</span><br><span class="line"> console.log(this.keyName) // 改变后的名字-李四</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>看源码:关闭了依赖数据的 响应式依赖收集;但对inject注入对象的深层处理，没有屏蔽响应式</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">export function initInjections(vm: Component) &#123;</span><br><span class="line">  // 对inject注入对象深层处理，没有屏蔽响应式</span><br><span class="line">  const result = resolveInject(vm.$options.inject, vm)</span><br><span class="line">  if (result) &#123;</span><br><span class="line">  // 关闭了依赖数据的 响应式依赖收集</span><br><span class="line">    toggleObserving(false)</span><br><span class="line">    Object.keys(result).forEach(key =&gt; &#123;</span><br><span class="line">      if (__DEV__) &#123;</span><br><span class="line">        defineReactive(vm, key, result[key], () =&gt; warn(&#x27;&#x27;))</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        defineReactive(vm, key, result[key])</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    toggleObserving(true)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">export function resolveInject(inject: any, vm: Component): Record&lt;string, any&gt; | undefined | null &#123;</span><br><span class="line">  if (inject) &#123;</span><br><span class="line">    const result = Object.create(null)</span><br><span class="line">    const keys = hasSymbol ? Reflect.ownKeys(inject) : Object.keys(inject)</span><br><span class="line"></span><br><span class="line">    for (let i = 0; i &lt; keys.length; i++) &#123;</span><br><span class="line">      const key = keys[i]</span><br><span class="line">      if (key === &#x27;__ob__&#x27;) continue</span><br><span class="line">      const provideKey = inject[key].from</span><br><span class="line">      if (provideKey in vm._provided) &#123;</span><br><span class="line">        result[key] = vm._provided[provideKey]</span><br><span class="line">      &#125; else if (&#x27;default&#x27; in inject[key]) &#123;</span><br><span class="line">        const provideDefault = inject[key].default</span><br><span class="line">        result[key] = isFunction(provideDefault) ? provideDefault.call(vm) : provideDefault</span><br><span class="line">      &#125; else if (__DEV__) &#123;</span><br><span class="line">        warn(&#x27;&#x27;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return result</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -666,11 +681,13 @@
 <p>编译核心流程：</p>
 <blockquote>
 <ul>
-<li>parse解析器：将模板解析成 AST</li>
+<li>parse解析器：将模板解析成 AST抽象语法树</li>
 <li>optimize优化器：标记静态节点</li>
 <li>generate代码生成器：将 AST 转换成“代码字符串”</li>
 </ul>
 </blockquote>
+<img src="/img/image-20230614064728863.png" alt="image-20230614064728863" style="zoom:80%;" />
+
 <p>编译渲染完整流程：</p>
 <blockquote>
 <p>template =&gt; ast =&gt; render函数 =&gt; VDOM =&gt; 真实DOM</p>
@@ -761,16 +778,12 @@
 
 <h2 id="Vue-router路由-hash和history"><a href="#Vue-router路由-hash和history" class="headerlink" title="Vue-router路由-hash和history"></a>Vue-router路由-hash和history</h2><blockquote>
 <ul>
-<li>hash 模式：<ul>
-<li>#后面 hash 值的变化，不会导致浏览器向服务器发出请求，浏览器不发出请求，就不会刷新页面</li>
-<li>通过监听 <strong>hashchange</strong> 事件可以知道 hash 发生了哪些变化，然后根据 hash 变化来实现更新页面部分内容的操作。</li>
-</ul>
+<li><p>hash模式：通过<code>#号</code>后面的内容的更改，触发<code>hashchange</code>事件，实现路由切换</p>
 </li>
-<li>history 模式：<ul>
-<li>history 模式的实现，主要是 HTML5 标准发布的两个 API，<strong>pushState</strong> 和 <strong>replaceState</strong>，这两个 API 可以在改变 url，但是不会发送请求。这样就可以监听 url 变化来实现更新页面部分内容的操作</li>
-</ul>
+<li><p>history模式：通过<code>pushState</code>和<code>replaceState</code>切换url，触发<code>popstate</code>事件，实现路由切换，需要后端配合</p>
 </li>
-<li>区别<ul>
+<li><p>区别</p>
+<ul>
 <li>url 展示上，hash 模式有“#”，history 模式没有</li>
 <li>刷新页面时，hash 模式可以正常加载到 hash 值对应的页面，而 history 没有处理的话，会返回 404，一般需要后端将所有页面都配置重定向到首页路由</li>
 <li>兼容性，hash 可以支持低版本浏览器和 IE。</li>
@@ -911,7 +924,57 @@
 <p>在将 .vue 整个遍历一遍后，得到的 sfc 对象即为我们需要的 SFCDescriptor。</p>
 <p><strong>6.生成 .js</strong></p>
 <p><code>compiler.parseComponent(file, [options])</code>得到的只是一个组件的 <code>SFCDescriptor</code>，最终编译成.js 文件是交给 vue-loader 等库来做的。</p>
+<h2 id="Flow静态类型检测器"><a href="#Flow静态类型检测器" class="headerlink" title="Flow静态类型检测器"></a>Flow静态类型检测器</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://flow.org/en/docs/install/">Flow官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhenyong.github.io/flowtype/docs/getting-started.html#_">Flow中文网</a></li>
+<li><a target="_blank" rel="noopener" href="https://flowjs.judysocute.com/startup/installation">Flow中文攻略</a></li>
+</ul>
+<h3 id="安装编译器"><a href="#安装编译器" class="headerlink" title="安装编译器"></a>安装编译器</h3><p>首先，你需要一个编译器来剔除<code>Flow</code>的类型注解。你可以选择<code>Babel</code>或<code>flow-remove-types</code>.</p>
+<p><strong>Babel</strong></p>
+<p><code>Babel</code>是一个支持<code>Flow</code>的<code>Javascript</code>编译器。<code>Babel</code>我们通俗的理解就是把现在浏览器不支持的新特性（比如：ES6）转换为可以支持的ES5语法，从而使我们能在项目中体测新标准带来的福利。<code>Babel</code>使用我们<code>Flow</code>代码，并剔除所有的类型注解。</p>
+<p>首先得安装 <code>babel-cli</code> 或 <code>babel-preset-flow</code></p>
+<p>npm环境</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev babel-cli babel-preset-flow</span><br></pre></td></tr></table></figure>
 
+<p>新建一个 <code>.babelrc</code>文件，并在 <code>presets</code>属性里设置 <code>flow</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;presets&quot;</span>: [<span class="string">&quot;flow&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果你的源代码在 <code>src</code> 目录里，你可以将这些代码编译到另一个目录中</p>
+<p>npm环境</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./node_modules/.bin/babel src/ -d lib/</span><br></pre></td></tr></table></figure>
+
+<p>当然，在 <code>package.json</code>配置运行</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;name&quot;</span>: <span class="string">&quot;my-project&quot;</span>,</span><br><span class="line">  <span class="string">&quot;main&quot;</span>: <span class="string">&quot;lib/index.js&quot;</span>,</span><br><span class="line">  <span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;build&quot;</span>: <span class="string">&quot;babel src/ -d lib/&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>flow-remove-types</strong></p>
+<p><code>flow-remove-types</code>是一个简单去掉类型注释的命令行工具，他是一个不需要 <code>Babel</code> 支持的轻量级代替 <code>Babel</code>的工具。</p>
+<p>首行安装 <code>flow-remove-types</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev flow-remove-types</span><br></pre></td></tr></table></figure>
+
+<p>如果你的源代码在 <code>src</code> 目录里，你可以将这些代码编译到另一个目录中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./node_modules/.bin/flow-remove-types src/ -d lib/</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>package.json</code>配置运行</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;name&quot;</span>: <span class="string">&quot;my-project&quot;</span>,</span><br><span class="line">  <span class="string">&quot;main&quot;</span>: <span class="string">&quot;lib/index.js&quot;</span>,</span><br><span class="line">  <span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;build&quot;</span>: <span class="string">&quot;flow-remove-types src/ -d lib/&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装-Flow"><a href="#安装-Flow" class="headerlink" title="安装 Flow"></a>安装 Flow</h3><p>把<code>npm</code>包安装到<code>devDependency</code>上</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev flow-bin</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>package.json</code> 的 <code>scripts</code> 里添加 <code>&quot;flow&quot;</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;name&quot;</span>: <span class="string">&quot;my-flow-project&quot;</span>,</span><br><span class="line">  <span class="string">&quot;version&quot;</span>: <span class="string">&quot;1.0.0&quot;</span>,</span><br><span class="line">  <span class="string">&quot;devDependencies&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;flow-bin&quot;</span>: <span class="string">&quot;^0.86.0&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;flow&quot;</span>: <span class="string">&quot;flow&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先运行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run flow init</span><br></pre></td></tr></table></figure>
+
+<p>在第一次运行了 <code>init</code> 后，运行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run flow</span><br></pre></td></tr></table></figure>
+
+<p>/src/index.js</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// @flow</span><br><span class="line">function square(n: number): number &#123;</span><br><span class="line">  return n * n;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">square(2);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1>
       
     </div>
     <div class="article-footer">
@@ -967,12 +1030,12 @@
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2%E5%92%8CVue3%E6%AF%94%E8%BE%83/" title="Vue2和Vue3比较"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+      <a href="/2099/03/01/D_%E6%A1%86%E6%9E%B6_0%E5%9F%BA%E7%A1%80/" title="0基础_框架"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
     </li>
     
     
     <li class="next">
-      <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue3.0/" title="源码_Vue3.0"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue3.0_%E5%8E%9F%E7%90%86/" title="Vue3.0_原理"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     

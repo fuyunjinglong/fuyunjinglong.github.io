@@ -18,17 +18,21 @@
   
   
   <title>VueReactAngular比较 | Hexo</title>
-  <meta name="description" content="三大框架解析11三大框架介绍 1)angular 历史:2012开始1.0版本，16年升级2.0版本。新版本支持es6和ts。 基本特点： 双向绑定； 依赖注入； 基于ts的组件； 良好的应用架构； 工具生态完整，angular-cli用于创建、开发、测试等。有整套的解决方案，适合大型项目。 缺点：中文文档较少，框架较重，学习成本高。 2)react 历史：2013年facebook发布版本。20">
+  <meta name="description" content="框架原理不用去在意 Vue 和 React 哪个好，这种比较没什么意义，重要的是哪个适合自己&#x2F;团队，能为自己&#x2F;团队实现价值。 卡颂大佬在《React 设计原理》中，提出了一个观点：现代前端框架的实现原理都可以用以下公式进行概括： UI &#x3D; f(state) 其中：  state —— 当前的视图的状态 f —— 框架内部的运行机制 UI —— 宿主环境的视图  如何描述 UI 前端领域经过长期发展">
 <meta property="og:type" content="article">
 <meta property="og:title" content="VueReactAngular比较">
 <meta property="og:url" content="https://fuyunjinglong.github.io/2023/03/01/D_%E6%A1%86%E6%9E%B6_VueReactAngular%E6%AF%94%E8%BE%83/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="三大框架解析11三大框架介绍 1)angular 历史:2012开始1.0版本，16年升级2.0版本。新版本支持es6和ts。 基本特点： 双向绑定； 依赖注入； 基于ts的组件； 良好的应用架构； 工具生态完整，angular-cli用于创建、开发、测试等。有整套的解决方案，适合大型项目。 缺点：中文文档较少，框架较重，学习成本高。 2)react 历史：2013年facebook发布版本。20">
+<meta property="og:description" content="框架原理不用去在意 Vue 和 React 哪个好，这种比较没什么意义，重要的是哪个适合自己&#x2F;团队，能为自己&#x2F;团队实现价值。 卡颂大佬在《React 设计原理》中，提出了一个观点：现代前端框架的实现原理都可以用以下公式进行概括： UI &#x3D; f(state) 其中：  state —— 当前的视图的状态 f —— 框架内部的运行机制 UI —— 宿主环境的视图  如何描述 UI 前端领域经过长期发展">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20230614065546092.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20230614065648667.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20230614065722172.png">
 <meta property="article:published_time" content="2023-02-28T23:33:16.000Z">
-<meta property="article:modified_time" content="2023-03-11T03:43:16.063Z">
+<meta property="article:modified_time" content="2023-07-16T09:39:52.649Z">
 <meta property="article:author" content="Elven">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/image-20230614065546092.png">
   <!-- Canonical links -->
   <link rel="canonical" href="https://fuyunjinglong.github.io/2023/03/01/D_%E6%A1%86%E6%9E%B6_VueReactAngular%E6%AF%94%E8%BE%83/index.html">
   
@@ -214,7 +218,7 @@
   <div class="widget">
     <h3 class="widget-title">分类</h3>
     <div class="widget-body">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">23</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">9</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">5</span></li></ul>
     </div>
   </div>
 
@@ -229,7 +233,7 @@
   <div class="widget">
     <h3 class="widget-title">归档</h3>
     <div class="widget-body">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/09/">九月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/06/">六月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">26</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/09/">九月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/06/">六月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -331,7 +335,7 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E5%A4%A7%E6%A1%86%E6%9E%B6%E8%A7%A3%E6%9E%901"><span class="toc-text">三大框架解析1</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E5%A4%A7%E6%A1%86%E6%9E%B6%E8%A7%A3%E6%9E%902"><span class="toc-text">三大框架解析2</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E5%BB%BA%E8%AE%AE"><span class="toc-text">技术选型建议</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Mixin-HOC-Hook"><span class="toc-text">Mixin-HOC-Hook</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hook"><span class="toc-text">Hook</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mixin-HOC-Hook-1"><span class="toc-text">Mixin-HOC-Hook</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#React-Hook-%E5%92%8C-Vue-Hook-%E5%AF%B9%E6%AF%94"><span class="toc-text">React Hook 和 Vue Hook 对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#React-%E5%92%8C-Vue%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84%E5%AF%B9%E6%AF%94"><span class="toc-text">React 和 Vue逻辑结构对比</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text"></span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6%E5%8E%9F%E7%90%86"><span class="toc-text">框架原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E5%A4%A7%E6%A1%86%E6%9E%B6%E8%A7%A3%E6%9E%901"><span class="toc-text">三大框架解析1</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E5%A4%A7%E6%A1%86%E6%9E%B6%E8%A7%A3%E6%9E%902"><span class="toc-text">三大框架解析2</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B%E5%BB%BA%E8%AE%AE"><span class="toc-text">技术选型建议</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Hooks"><span class="toc-text">Hooks</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Mixin-HOC-Hook"><span class="toc-text">Mixin-HOC-Hook</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Mixin"><span class="toc-text">Mixin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HOC-High-Order-Components%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6"><span class="toc-text">HOC(High-Order-Components高阶组件)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hook"><span class="toc-text">Hook</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#React-Hook-%E5%92%8C-Vue-Hook-%E5%AF%B9%E6%AF%94"><span class="toc-text">React Hook 和 Vue Hook 对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#React-%E5%92%8C-Vue%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84%E5%AF%B9%E6%AF%94"><span class="toc-text">React 和 Vue逻辑结构对比</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BF%83%E6%99%BA%E8%B4%9F%E6%8B%85"><span class="toc-text">心智负担</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SolidJS"><span class="toc-text">SolidJS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SolidJS%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-text">SolidJS是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-text">使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E7%82%B9"><span class="toc-text">特点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B3%E8%A1%A1%E4%BA%86-jsx-%E4%B8%8E-template-%E7%9A%84%E5%88%A9%E5%BC%8A"><span class="toc-text">平衡了 jsx 与 template 的利弊</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#No-Dom-Diff"><span class="toc-text">No Dom Diff</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%C2%B7%E7%BC%96%E8%AF%91%E6%97%B6"><span class="toc-text">重·编译时</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%BB%C2%B7%E8%BF%90%E8%A1%8C%E6%97%B6"><span class="toc-text">轻·运行时</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E8%A2%AB%E9%A1%BA%E5%BA%8F%E9%99%90%E5%88%B6%E7%9A%84-hook"><span class="toc-text">不被顺序限制的 hook</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-text">其他</span></a></li></ol></li></ol></li></ol>
     </nav>
   </div>
 </aside>
@@ -373,7 +377,88 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h1 id="三大框架解析1"><a href="#三大框架解析1" class="headerlink" title="三大框架解析1"></a>三大框架解析1</h1><p><strong>1三大框架介绍</strong><br> <strong>1)angular</strong><br> <strong>历史</strong>:2012开始1.0版本，16年升级2.0版本。新版本支持es6和ts。<br> <strong>基本特点</strong>：<br> 双向绑定；<br> 依赖注入；<br> 基于ts的组件；<br> 良好的应用架构；<br> 工具生态完整，angular-cli用于创建、开发、测试等。有整套的解决方案，适合大型项目。<br> <strong>缺点</strong>：中文文档较少，框架较重，学习成本高。<br> <strong>2)react</strong><br> <strong>历史</strong>：2013年facebook发布版本。2015年版本稳定，同年发布reacr-native。<br> <strong>基本特点</strong>：<br> 虚拟dom，跨浏览器兼容，性能较好；<br> 组件化，代码复用;<br> JSX,js语法的扩展，模板简单、直接、语义化。<br> 单项数据流：数据流清晰，组件状态更可控。<br> <strong>缺点</strong>：<br> 本身只是view，大型项目需要加上React Router和Redux。<br> <strong>3)VUE</strong><br> <strong>历史</strong>：<br> 2015年1.0版本发布，同年vue-router、vuex、vue-cli出现，标志从一个视图层发展成一个渐进式框架。<br> 2016年vue2.0发布，引入虚拟dom，性能大幅提升。<br> 2019年vue2.0公布源码。<br> <strong>基本特点</strong>：<br> 渐进式、轻量级框架;<br> 简单易用;<br> 双向数据绑定;<br> 组件化;<br> 轻量高效(使用虚拟dom，压缩后只有20kb)<br> <strong>缺点</strong>：<br> vue不支持IE8，生态比较差(语法提示不友好，插件数量比较少)</p>
+        <h1 id="框架原理"><a href="#框架原理" class="headerlink" title="框架原理"></a>框架原理</h1><p><strong>不用去在意 Vue 和 React 哪个好</strong>，这种比较没什么意义，<strong>重要的是哪个适合自己/团队，能为自己/团队实现价值</strong>。</p>
+<p>卡颂大佬在《React 设计原理》中，提出了一个观点：现代前端框架的实现原理都可以用以下公式进行概括：</p>
+<p><strong>UI = f(state)</strong></p>
+<p>其中：</p>
+<ul>
+<li>state —— 当前的视图的状态</li>
+<li>f —— 框架内部的运行机制</li>
+<li>UI —— 宿主环境的视图</li>
+</ul>
+<p><strong>如何描述 UI</strong></p>
+<p>前端领域经过长期发展，形成了两种主流的 UI 描述方案：</p>
+<ul>
+<li>JSX</li>
+<li>template</li>
+</ul>
+<p>JSX 是 Meta（原 Facebook）提出的一种 <strong>ECMAScript 的语法糖</strong>，增强了代码的可读性，但其实最终 JSX 在运行时会被转换成浏览器能够识别的标准 ECMAScript 语法。</p>
+<p>template 模板的历史更加久远，它是前后端未分离的时代，已经有的产物，它扩充的是 HTML 语法。</p>
+<p><strong>数据驱动</strong></p>
+<p>框架内部运行机制的实现，可以概括为以下两个步骤：</p>
+<ol>
+<li>根据 state 计算出 UI 变化，如， Vue 和 React 通过对比变化前后的 VNode，知道需要更新哪些元素</li>
+<li>根据 UI 变化，执行具体宿主（如浏览器）的 API。</li>
+</ol>
+<blockquote>
+<p>为什么需要分离成两个步骤？</p>
+<p>前端框架通常会抽离出一套抽象的元素操作的 API，例如：新增/删除/移动元素、修改元素属性等原子操作。不会直接操作浏览器 DOM。这样为了做到平台无关</p>
+</blockquote>
+<p><strong>按 state 变化后，引起框架的 UI 变更的抽象层级</strong>，作为分类依据，可以将框架分为三类：</p>
+<ul>
+<li>应用级框架：数据变化 &gt; 应用变化 &gt; 比对应用 &gt; 更新元素</li>
+<li>组件级框架：数据变化 &gt; 组件变化 &gt; 比对组件 &gt; 更新元素</li>
+<li>元素级框架：数据变化 &gt; 元素变化 &gt; 更新元素</li>
+</ul>
+<p>无论哪种路径，都是从最开始的数据变化，到最终的更新元素。只是<strong>不同框架，能够监听的变化层级不同，从而有了不同的处理</strong></p>
+<p>框架能够监听的层级越抽象，就需要<strong>花费更多的时间用于比对变化</strong>。例如应用级框架，需要比对整个应用前后的变化。</p>
+<p>在我们常见的框架中：</p>
+<ul>
+<li>React 属于应用级框架</li>
+<li>Vue 属于组件级框架</li>
+<li>Svelte 属于元素级框架</li>
+</ul>
+<p><strong>前端框架用到的技术</strong></p>
+<ul>
+<li>响应式：实现了细粒度的更新，是组件级应用的一种实现</li>
+<li>Virtual DOM：最终目的是快速找出一组 UI 元素中变化的部分，应用级和组件级框架需要使用。元素级框架由于直接指导变化的元素，因此不需要</li>
+<li>AOT 预编译优化：使用模板的框架，能从 AOT 预编译优化中受益，因为模板的结构固定，容易分析。JSX 则难以优化，除非约束 JSX 的灵活性</li>
+</ul>
+<blockquote>
+<p>响应式</p>
+</blockquote>
+<p>这是一种<strong>自动追踪依赖的技术</strong>，它用于自动追踪依赖的状态，当状态改变时进行更新。</p>
+<blockquote>
+<p>Virtual DOM</p>
+</blockquote>
+<p>VDOM 有以下优点：</p>
+<ul>
+<li>相对于 DOM 有体积优势</li>
+<li>多平台渲染能力</li>
+</ul>
+<p>VDOM 可以多平台渲染能力，但反过来，多平台渲染能力，不一定需要 VDOM</p>
+<p>VDOM 的最终目的，其实是用于 Diff，计算出 UI 中变化的部分。但刚好又可以用于多平台渲染。</p>
+<blockquote>
+<p>AOT 预编译优化</p>
+</blockquote>
+<p>现在前端框架一般都有编译这一步骤，用于：</p>
+<ul>
+<li>代码转换，如：ts 编译为 js，Vue 将 vue 文件转换成 js</li>
+<li>编译优化</li>
+<li>代码压缩、打包</li>
+</ul>
+<p>编译有两个执行时机：</p>
+<ul>
+<li>构建时编译（AOT，预编译）</li>
+<li>运行时编译（JIT，即时编译）</li>
+</ul>
+<p>它们的区别如下：</p>
+<ul>
+<li>AOT 可以提前进行编译，用户直接运行编译后的代码，可以减少首屏时间。而 <strong>JIT 则会消耗更多时间用于编译</strong></li>
+<li>JIT 的应用代码<strong>体积会更大</strong>，因为需要包含编译的相关逻辑</li>
+</ul>
+<p>因此，在大多数情况下，我们使用 AOT 更多。不过有些框架（例如 Vue）会同时提供了 AOT 和 JIT 两种使用方式，以应对一些特殊的情况。</p>
+<h1 id="三大框架解析1"><a href="#三大框架解析1" class="headerlink" title="三大框架解析1"></a>三大框架解析1</h1><p><strong>1三大框架介绍</strong><br> <strong>1)angular</strong><br> <strong>历史</strong>:2012开始1.0版本，16年升级2.0版本。新版本支持es6和ts。<br> <strong>基本特点</strong>：<br> 双向绑定；<br> 依赖注入；<br> 基于ts的组件；<br> 良好的应用架构；<br> 工具生态完整，angular-cli用于创建、开发、测试等。有整套的解决方案，适合大型项目。<br> <strong>缺点</strong>：中文文档较少，框架较重，学习成本高。<br> <strong>2)react</strong><br> <strong>历史</strong>：2013年facebook发布版本。2015年版本稳定，同年发布reacr-native。<br> <strong>基本特点</strong>：<br> 虚拟dom，跨浏览器兼容，性能较好；<br> 组件化，代码复用;<br> JSX,js语法的扩展，模板简单、直接、语义化。<br> 单项数据流：数据流清晰，组件状态更可控。<br> <strong>缺点</strong>：<br> 本身只是view，大型项目需要加上React Router和Redux。<br> <strong>3)VUE</strong><br> <strong>历史</strong>：<br> 2015年1.0版本发布，同年vue-router、vuex、vue-cli出现，标志从一个视图层发展成一个渐进式框架。<br> 2016年vue2.0发布，引入虚拟dom，性能大幅提升。<br> 2019年vue2.0公布源码。<br> <strong>基本特点</strong>：<br> 渐进式、轻量级框架;<br> 简单易用;<br> 双向数据绑定;<br> 组件化;<br> 轻量高效(使用虚拟dom，压缩后只有20kb)<br> <strong>缺点</strong>：<br> vue不支持IE8，生态比较差(语法提示不友好，插件数量比较少)</p>
 <p><strong>2.vue和react比较</strong></p>
 <p>工程实践上，由于耦合性、代码组织灵活性、平滑升级、测试、重构让我们最终放弃了 Vue。在 Vue 中你操作的是定义好的对象，React 中你操作的是一个函数。所谓前端开发，本质就是在编写下面几个函数。显然，React 对此的抽象更为彻底。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">S = async(A1)</span><br><span class="line">S = sync(A2)</span><br><span class="line">UI = f(S)</span><br></pre></td></tr></table></figure>
@@ -553,11 +638,55 @@
 <p><strong>Vue、React 和 Angular：该选哪个？</strong></p>
 <p> 为了选出最合适的库，你应该首先仔细分析这些框架并理解自己的需求。无论是有许多依赖项的现有项目，还是你想使用熟悉的库进行开发的新应用程序，Vue 都不会给你带来任何麻烦。你可以继续使用 Bootstrap 或 Bulma 这样的 CSS 框架，保留为јQuery 或 Backbone 编写的组件，集成你最喜欢的库执行 HTTP 请求，或使用 Promise 对象。</p>
 <p> 要开始使用 Vue 进行编程，你所要做的就是将 Vue.js 库连接到 Web 页面。不需要复杂的组装工具！从头到尾开发一个原型只需要 1 到 2 周的时间，这让你能够尽早并经常地收集用户反馈。Vue 2 引入了服务器端渲染（SSR）支持。这让你可以最小化初期的数据加载，并根据需要请求新的视图和资源。与高效的组件缓存相结合，可以进一步减少流量消耗。<br> React 库能够做一些令人惊叹的事情。因为整个用户界面都是用 JavaScript 定义的，所以你可以使用 JavaScript 的丰富功能在模板中执行各种操作。你只会受到 JavaScript 特性的限制，而不会受到模板框架特性的限制。当你想到完全用 JavaScript 定义的视觉效果时，你可能会想到很多引号、转义字符和 createElement 调用。别担心，React 库允许你（选择性地）使用可以与 JavaScript 代码共存的 HTML-like JSX 语法定义可视元素。<br> React 与其他两个框架在以下理念上有所不同：<br> 与其说它是一个框架，不如说它是一个库（最初是为了处理 UI 而创建的），因为它不受框架的限制，所以它的功能更多——更适合专业人士，而不是初学者；在 Angular 中许多可以“开箱即用”的主要特性，在这里必须单独连接（这种方法有优点，也有缺点，对于初学者来说是缺点，因为需要做不必要的动作）；更多地面向 JavaScript 而不是 TypeScript（尽管每个版本对 TS 的支持都在增加）；更便于创建原生 Android 和 iOS 移动应用程序，拥有大量适用于各种场合的第三方库（多于 Angular）。<br> Angular 已经被用在了许多规模最大、最复杂的 Web 应用程序中。</p>
-<h1 id="Mixin-HOC-Hook"><a href="#Mixin-HOC-Hook" class="headerlink" title="Mixin-HOC-Hook"></a>Mixin-HOC-Hook</h1><h2 id="Hook"><a href="#Hook" class="headerlink" title="Hook"></a><strong>Hook</strong></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;p&gt;&#123;&#123; person.name &#125;&#125;&lt;/p&gt;</span><br><span class="line">  &lt;p&gt;&#123;&#123; car.name &#125;&#125;&lt;/p&gt;</span><br><span class="line">  &lt;p&gt;&#123;&#123; animal.name &#125;&#125;&lt;/p&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script lang=&quot;ts&quot; setup&gt;</span><br><span class="line">import &#123; usePerson, useCar, useAnimal &#125; from &quot;./hooks&quot;;</span><br><span class="line"></span><br><span class="line">const &#123; person, changePersonName &#125; = usePerson();</span><br><span class="line"></span><br><span class="line">const &#123; car &#125; = useCar();</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="Hooks"><a href="#Hooks" class="headerlink" title="Hooks"></a>Hooks</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7066951709678895141#heading-1">浅谈：为啥vue和react都选择了Hooks</a></li>
+</ul>
+<p><strong>定义</strong></p>
+<p>“hooks” 直译是 “钩子”，它并不仅是 <code>react</code>，甚至不仅是前端界的专用术语，而是整个行业所熟知的用语。通常指：</p>
+<blockquote>
+<p>系统运行到某一时期时，会调用被注册到该时机的回调函数。</p>
+</blockquote>
+<p>以 <code>react</code> 为例，<code>hooks</code> 是：</p>
+<blockquote>
+<p>一系列以 <code>“use”</code> 作为开头的方法，它们提供了让你可以完全避开 <code>class式写法</code>，在函数式组件中完成生命周期、状态管理、逻辑复用等几乎全部组件开发工作的能力。</p>
+</blockquote>
+<p>而在 <code>vue</code> 中， <code>hooks</code> 的定义可能更模糊，姑且总结一下：</p>
+<blockquote>
+<p>在 <code>vue</code> 组合式API里，以 <code>“use”</code> 作为开头的，一系列提供了组件复用、状态管理等开发能力的方法。</p>
+</blockquote>
+<p><strong>命名规范和指导思想</strong></p>
+<p>在 <code>react</code> 官方文档里，对 <code>hooks</code> 的定义和使用提出了 <strong>“一个假设、两个只在”</strong> 核心指导思想。</p>
+<blockquote>
+<p><strong>一个假设：</strong> 假设任何以 「<code>use</code>」 开头并紧跟着一个大写字母的函数就是一个 <code>Hook</code>。</p>
+<p><strong>第一个只在：</strong> 只在 <code>React</code> 函数组件中调用 <code>Hook</code>，而不在普通函数中调用 <code>Hook</code>。（<code>Eslint</code> 通过判断一个方法是不是大坨峰命名来判断它是否是 <code>React</code> 函数）</p>
+<p><strong>第二个只在：</strong> 只在最顶层使用 <code>Hook</code>，而不要在循环，条件或嵌套函数中调用 Hook。</p>
+<p>因为是约定，因而 <code>useXxx</code> 的命名并非强制，你依然可以将你自定义的 <code>hook</code> 命名为 <code>byXxx</code> 或其他方式，但不推荐。</p>
+</blockquote>
+<p><strong>为什么我们需要 <code>hooks</code> ?</strong></p>
+<ul>
+<li>更好的代码组织</li>
+<li>更好的逻辑复用</li>
+</ul>
+<p><strong>如何开始玩 <code>hooks</code></strong> </p>
+<p>react 的 <code>Hooks</code> 写法，因为 react Hooks 仅支持“函数式”组件，因此需要创建一个函数式组件 <code>my-component.js</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// my-component.js</span><br><span class="line">import &#123; useState, useEffect &#125; from &#x27;React&#x27;</span><br><span class="line"></span><br><span class="line">export default () =&gt; &#123;</span><br><span class="line">  // 通过 useState 可以创建一个 状态属性 和一个赋值方法</span><br><span class="line">  const [ name, setName ] = useState(&#x27;&#x27;)</span><br><span class="line"></span><br><span class="line">  // 通过 useEffect 可以对副作用进行处理</span><br><span class="line">  useEffect(() =&gt; &#123;</span><br><span class="line">    console.log(name)</span><br><span class="line">  &#125;, [ name ])</span><br><span class="line"></span><br><span class="line">  // 通过 useMemo 能生成一个依赖 name 的变量 message</span><br><span class="line">  const message = useMemo(() =&gt; &#123;</span><br><span class="line">    return `hello, my name is $&#123;name&#125;`</span><br><span class="line">  &#125;, [name])</span><br><span class="line"></span><br><span class="line">  return &lt;div&gt;&#123; message &#125;&lt;/div&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// usePerson.ts</span><br><span class="line">import &#123; reactive, watch &#125; from &quot;vue&quot;;</span><br><span class="line"></span><br><span class="line">export default function usePerson() &#123;</span><br><span class="line">  const person = reactive&lt;&#123; name: string; sex: string &#125;&gt;(&#123;</span><br><span class="line">    name: &quot;小明&quot;,</span><br><span class="line">    sex: &quot;male&quot;,</span><br><span class="line">  &#125;);</span><br><span class="line">  watch(</span><br><span class="line">    () =&gt; [person.name, person.sex],</span><br><span class="line">    ([nameVal, sexVal]) =&gt; &#123;</span><br><span class="line">      console.log(`名字被修改了, 修改为 $&#123;nameVal&#125;`);</span><br><span class="line">      console.log(`名字被修改了, 修改为 $&#123;sexVal&#125;`);</span><br><span class="line">    &#125;</span><br><span class="line">  );</span><br><span class="line">  function changePersonName() &#123;</span><br><span class="line">    person.name = &quot;小浪&quot;;</span><br><span class="line">  &#125;</span><br><span class="line">  return &#123;</span><br><span class="line">    person,</span><br><span class="line">    changePersonName,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>vue 的 <code>Hooks</code> 写法，vue 的 <code>Hooks</code> 写法依赖于 <code>组合式API</code>，因此本例采用 <code>&lt;script setup&gt;</code> 来写：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &#123;&#123; message &#125;&#125;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script setup&gt;</span><br><span class="line">import &#123; computed, ref &#125; from &#x27;vue&#x27;</span><br><span class="line">// 定义了一个 ref 对象</span><br><span class="line">const name = ref(&#x27;&#x27;)</span><br><span class="line">// 定义了一个依赖 name.value 的计算属性</span><br><span class="line">const message = computed(() =&gt; &#123;</span><br><span class="line">  return `hello, my name is $&#123;name.value&#125;`</span><br><span class="line">&#125;)</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
 
-<h2 id="Mixin-HOC-Hook-1"><a href="#Mixin-HOC-Hook-1" class="headerlink" title="Mixin-HOC-Hook"></a><strong>Mixin-HOC-Hook</strong></h2><p>Mixin-HOC的缺点：</p>
+<p><strong>自定义Hooks</strong></p>
+<p>react写法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import React from &#x27;react&#x27;;</span><br><span class="line"></span><br><span class="line">export const useName = () =&gt; &#123;</span><br><span class="line">  // 这个 useMemo 很关键</span><br><span class="line">  const randomName = React.useMemo(() =&gt; genRandomName(), []);</span><br><span class="line">  const [ name, setName ] = React.useState(randomName)</span><br><span class="line"></span><br><span class="line">  return &#123;</span><br><span class="line">    name,</span><br><span class="line">    setName</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>vue写法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import &#123; ref &#125; from &#x27;vue&#x27;;</span><br><span class="line"></span><br><span class="line">export const useName = () =&gt; &#123;</span><br><span class="line">  const name = ref(genRandomName())</span><br><span class="line">  const setName = (v) =&gt; &#123;</span><br><span class="line">    name.value = v</span><br><span class="line">  &#125;</span><br><span class="line">  return &#123;</span><br><span class="line">    name,</span><br><span class="line">    setName</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Mixin-HOC-Hook"><a href="#Mixin-HOC-Hook" class="headerlink" title="Mixin-HOC-Hook"></a>Mixin-HOC-Hook</h1><p>参考</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903815762673671#heading-1">【React深入】从Mixin到HOC再到Hook</a></li>
+</ul>
+<p><strong>前言</strong></p>
+<p>Mixin-HOC的缺点：</p>
 <ul>
 <li><p>渲染上下文中公开的属性的来源不清楚。 例如，当使用多个 mixin 读取组件的模板时，可能很难确定从哪个 mixin 注入了特定的属性。</p>
 </li>
@@ -576,6 +705,52 @@
 </li>
 </ul>
 <p>Hook的缺点：比如 <code>ref</code> 带来的心智负担</p>
+<h2 id="Mixin"><a href="#Mixin" class="headerlink" title="Mixin"></a>Mixin</h2><p>广义的mixin方法，就是用赋值的方式将mixin对象中的方法都挂载到原对象上，来实现对象的混入，类似ES6中的Object.assign()的作用。原理如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">const mixin = function(obj, mixins)&#123;</span><br><span class="line">  const newObj = obj;</span><br><span class="line">  newObj.prototype = Object.create(obj.prototype);</span><br><span class="line"></span><br><span class="line">  for(let prop in mixins)&#123; // 遍历mixins的属性</span><br><span class="line">    if(mixins.hasOwnPrototype(prop))&#123; // 判断是否为mixin的自身属性</span><br><span class="line">      newObj.prototype[prop] = mixins[prop]; // 赋值</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return newObj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>React.createClass的mixins的危害</strong></p>
+<ol>
+<li>Mixin 可能会相互依赖，相互耦合，不利于代码维护</li>
+<li>不同的 Mixin中的方法可能会相互冲突</li>
+<li>Mixin非常多时，组件是可以感知到的，甚至还要为其做相关处理，这样会给代码造成滚雪球式的复杂性 <code>React.createClass</code>现在已经不再推荐使用<code>Mixin</code>来解决代码复用问题，因为<code>Mixin</code>带来的危害比他产生的价值还要巨大，并且<code>HOC</code>是纯净的JavaScript，不用担心他们会被废弃。</li>
+</ol>
+<p><code>React</code>现在已经不再推荐使用<code>Mixin</code>来解决代码复用问题，因为<code>Mixin</code>带来的危害比他产生的价值还要巨大，并且<code>React</code>全面推荐使用高阶组件来替代它。</p>
+<h2 id="HOC-High-Order-Components高阶组件"><a href="#HOC-High-Order-Components高阶组件" class="headerlink" title="HOC(High-Order-Components高阶组件)"></a>HOC(High-Order-Components高阶组件)</h2><p>高阶组件可以看作<code>React</code>对装饰模式的一种实现，高阶组件就是一个纯函数，且该函数接受一个组件作为参数，并返回一个新的组件。</p>
+<p><strong>高阶组件实现的方法有两种：</strong></p>
+<ol>
+<li>属性代理：通过被包裹组件的props来进行相关操作。主要进行组件的复用。</li>
+<li>反向继承：继承被包裹的组件。主要进行渲染的劫持。</li>
+</ol>
+<p><strong>高阶组件可以实现什么功能:</strong></p>
+<ol>
+<li><strong>双向绑定</strong></li>
+<li><strong>组合渲染:</strong> 可使用任何其他组件和原组件进行组合渲染，达到样式、布局复用等效果。</li>
+<li><strong>条件渲染:</strong> 根据特定的属性决定原组件是否渲染</li>
+<li><strong>操作props:</strong> 可以对传入组件的props进行增加、修改、删除或者根据特定的 props进行特殊的操作。</li>
+<li><strong>获取refs:</strong> 高阶组件中可获取原组件的 ref，通过 ref获取组件实例, 从而可以实现对组件中的方法进行调用</li>
+<li><strong>状态管理:</strong> 将原组件的状态提取到 HOC中进行管理</li>
+<li><strong>操作state:</strong> 通过反向继承，我们可以直接操作原组件的 state</li>
+<li><strong>渲染劫持:</strong> 高阶组件可以在render函数中做非常多的操作，从而控制原组件的渲染输出。只要改变了原组件的渲染，我们都将它称之为一种 渲染劫持。</li>
+</ol>
+<p><strong>HOC的缺陷</strong></p>
+<ol>
+<li>HOC需要在原组件上进行包裹或者嵌套，如果大量使用 HOC，将会产生非常多的嵌套，这让调试变得非常困难。</li>
+<li>HOC可以劫持 props，在不遵守约定的情况下也可能造成冲突。</li>
+</ol>
+<p><strong>为什么在 Vue 中实现高阶组件比较难</strong></p>
+<p>主要是二者的设计思想和设计目标不同，在 <code>React</code> 中写组件就是在写函数，函数拥有的功能组件都有。而 <code>Vue</code> 更像是高度封装的函数，在更高的层面 <code>Vue</code> 能够让你轻松的完成一些事情，但与高度的封装相对的就是损失一定的灵活，你需要按照一定规则才能使系统更好地运行。</p>
+<h2 id="Hook"><a href="#Hook" class="headerlink" title="Hook"></a><strong>Hook</strong></h2><p>使用 Hooks，你可以在将含有 state的逻辑从组件中抽象出来，这将可以让这些逻辑容易被测试。 Hooks可以帮助你在不重写组件结构的情况下复用这些逻辑。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line"> &lt;p&gt;&#123;&#123; person.name &#125;&#125;&lt;/p&gt;</span><br><span class="line"> &lt;p&gt;&#123;&#123; car.name &#125;&#125;&lt;/p&gt;</span><br><span class="line"> &lt;p&gt;&#123;&#123; animal.name &#125;&#125;&lt;/p&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;script lang=&quot;ts&quot; setup&gt;</span><br><span class="line">import &#123; usePerson, useCar, useAnimal &#125; from &quot;./hooks&quot;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">const &#123; person, changePersonName &#125; = usePerson();</span><br><span class="line"></span><br><span class="line">const &#123; car &#125; = useCar();</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// usePerson.ts</span><br><span class="line">import &#123; reactive, watch &#125; from &quot;vue&quot;;</span><br><span class="line"></span><br><span class="line">export default function usePerson() &#123;</span><br><span class="line"> const person = reactive&lt;&#123; name: string; sex: string &#125;&gt;(&#123;</span><br><span class="line">  name: &quot;小明&quot;,</span><br><span class="line">  sex: &quot;male&quot;,</span><br><span class="line"> &#125;);</span><br><span class="line"> watch(</span><br><span class="line">  () =&gt; [person.name, person.sex],</span><br><span class="line">  ([nameVal, sexVal]) =&gt; &#123;</span><br><span class="line">   console.log(`名字被修改了, 修改为 $&#123;nameVal&#125;`);</span><br><span class="line">   console.log(`名字被修改了, 修改为 $&#123;sexVal&#125;`);</span><br><span class="line">  &#125;</span><br><span class="line"> );</span><br><span class="line"> function changePersonName() &#123;</span><br><span class="line">  person.name = &quot;小浪&quot;;</span><br><span class="line"> &#125;</span><br><span class="line"> return &#123;</span><br><span class="line">  person,</span><br><span class="line">  changePersonName,</span><br><span class="line"> &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用Hooks的动机</strong></p>
+<ol>
+<li>减少状态逻辑复用的风险: Hook和 Mixin在用法上有一定的相似之处，但是 Mixin引入的逻辑和状态是可以相互覆盖的，而多个 Hook之间互不影响，这让我们不需要在把一部分精力放在防止避免逻辑复用的冲突上。</li>
+<li>避免地狱式嵌套</li>
+<li>让组件更容易理解</li>
+<li>使用函数代替class</li>
+</ol>
 <h2 id="React-Hook-和-Vue-Hook-对比"><a href="#React-Hook-和-Vue-Hook-对比" class="headerlink" title="React Hook 和 Vue Hook 对比"></a>React Hook 和 Vue Hook 对比</h2><p> React Hook 的缺点(限制非常多)：</p>
 <ul>
 <li><p>不要在循环，条件或嵌套函数中调用 Hook</p>
@@ -607,24 +782,27 @@
 <li><p>当 Hooks 要更新值时，Vue 只要用等于号赋值即可，而 React Hooks 需要调用赋值函数，当对象类型复杂时，还需借助第三方库才能保证进行了正确的 Immutable 更新。</p>
 </li>
 <li><p>对 Hooks 使用顺序无要求，而且可以放在条件语句里。</p>
+</li>
+</ul>
 <blockquote>
 <p>对 React Hooks 而言，调用必须放在最前面，而且不能被包含在条件语句里，这是因为 React Hooks 采用下标方式寻找状态，一旦位置不对或者 Hooks 放在了条件中，就无法正确找到对应位置的值。</p>
 <p>而 Vue Function API 中的 Hooks 可以放在任意位置、任意命名、被条件语句任意包裹的，因为其并不会触发 <code>setup</code> 的更新，只在需要的时候更新自己的引用值即可，而 Template 的重渲染则完全继承 Vue 2.0 的依赖收集机制，它不管值来自哪里，只要用到的值变了，就可以重新渲染了。</p>
 </blockquote>
-</li>
-<li><p>不会再每次渲染重复调用，减少 GC 压力</p>
+<ul>
+<li>不会再每次渲染重复调用，减少 GC 压力</li>
+</ul>
 <blockquote>
 <p>React的Hooks 都在渲染闭包中执行，每次重渲染都有一定性能压力，而且频繁的渲染会带来许多闭包，虽然可以依赖 GC 机制回收，但会给 GC 带来不小的压力。</p>
 <p>Vue Hooks 只有一个引用，所以存储的内容就非常精简，也就是占用内存小，而且当值变化时，也不会重新触发 <code>setup</code> 的执行，所以确实不会造成 GC 压力。</p>
 </blockquote>
-</li>
-<li><p>React 必须要总包裹 <code>useCallback</code> 函数确保不让子元素频繁重渲染</p>
+<ul>
+<li>React 必须要总包裹 <code>useCallback</code> 函数确保不让子元素频繁重渲染</li>
+</ul>
 <blockquote>
-<p> Vue 3.0，由于 <code>setup</code> 仅执行一次，因此函数本身只会创建一次，不存在多实例问题，不需要 <code>useCallback</code> 的概念，更不需要使用 <a href="https://link.juejin.cn/?target=https://www.npmjs.com/package/eslint-plugin-react-hooks">lint 插件</a> 保证依赖书写正确.</p>
+<p>Vue 3.0，由于 <code>setup</code> 仅执行一次，因此函数本身只会创建一次，不存在多实例问题，不需要 <code>useCallback</code> 的概念，更不需要使用 <a href="https://link.juejin.cn/?target=https://www.npmjs.com/package/eslint-plugin-react-hooks">lint 插件</a> 保证依赖书写正确.</p>
 </blockquote>
-</li>
-<li><p>Vue不需要使用 <code>useEffect</code> <code>useMemo</code> 等进行性能优化，所有性能优化都是自动的。</p>
-</li>
+<ul>
+<li>Vue不需要使用 <code>useEffect</code> <code>useMemo</code> 等进行性能优化，所有性能优化都是自动的。</li>
 </ul>
 <p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904079181905927">React Hook + TS 购物车实战（性能优化、闭包陷阱、自定义 hook）</a></p>
 <p><strong>参考</strong></p>
@@ -640,7 +818,112 @@
 <li>template:Vue 采取的 Template 思路使数据层强制分离了，这也使代码分层更清晰</li>
 </ul>
 <p><strong>不建议在 JSX 中再实现类似 Mutable + JSX</strong> </p>
-<h1 id=""><a href="#" class="headerlink" title=""></a></h1>
+<h1 id="心智负担"><a href="#心智负担" class="headerlink" title="心智负担"></a>心智负担</h1><p><strong>React的心智负担</strong></p>
+<p>不能在条件语句中使用，<code>useMemo</code> 和 <code>useCallback</code> 需要显式指定依赖，解决子组件重新渲染可能还需要配合 <code>React.memo</code> 使用等等。虽然有对应的 <code>eslint-plugin</code> 可以帮助填充依赖，但是依赖项一旦很多，代码的可能读会非常差。现在普遍的观点是计算量大的再用 <code>useMemo</code>, 而 <code>useCallback</code> 能不用就不用。因为这点优化对性能的影响是微乎其微的，99% 的情况下都不会出现问题，等到出现问题的时候再进行优化也不迟。</p>
+<p><strong>Vue的心智负担</strong></p>
+<blockquote>
+<p>定义状态</p>
+</blockquote>
+<p>ref定义的变量使用时，需要.value。虽然有了 <code>$ref</code> 语法糖，但最新已经废弃了。解构 <code>props</code> 也会出现响应丢失的问题，还要使用 <code>toRefs</code> 来解决。</p>
+<blockquote>
+<p>插槽</p>
+</blockquote>
+<p>因为在 <code>react</code> 中万物皆 <code>props</code>。Vue中需要具名插槽和作用于插槽等。</p>
+<blockquote>
+<p>props 和 emits 的定义</p>
+</blockquote>
+<p>属性 和 事件 还需要分成 defineProps 和 defineEmits 两个 api。反观 react，还是万物皆 props 。</p>
+<blockquote>
+<p>侦听 watch</p>
+</blockquote>
+<p>watch监听对象里的某个属性时，第一个参数还需要是一个函数。还分为好多种，watch、watchPostEffect、watchSyncEffect、watchEffect。watch 的第三个参数又有很多属性。</p>
+<blockquote>
+<p>渲染函数</p>
+</blockquote>
+<p><code>vue3</code> 提供了一个 <code>h</code> 函数，但还是很难用,还不如tsx。</p>
+<blockquote>
+<p>typescript 支持</p>
+</blockquote>
+<p>存在语法限制。给 <code>defineProps</code> 定义的 ts 类型，不能从其它文件导入，只能写在这个文件里。想分开写到别的文件，只能不使用 ts 来定义类型，要使用 <code>defineProps</code> 的第一个参数来指定类型，这样才能从别的文件导入了。这就是为什么大多数组件库没有使用 ts 来定义类型的原因，这样定义的类型要用 <code>ExtractPropTypes</code> 来提取 ts 类型。</p>
+<blockquote>
+<p>breaking change</p>
+</blockquote>
+<p><code>vue2</code> 升级到 <code>vue3</code> 是不兼容的，旧项目升级是很麻烦的。反观 <code>react</code>，几乎是没什么影响。</p>
+<h1 id="SolidJS"><a href="#SolidJS" class="headerlink" title="SolidJS"></a>SolidJS</h1><h2 id="SolidJS是什么"><a href="#SolidJS是什么" class="headerlink" title="SolidJS是什么"></a>SolidJS是什么</h2><p>号称支持现代前端特性：<strong>JSX</strong>、<strong>Fragments</strong>、<strong>Context</strong>、<strong>Portals</strong>、<strong>Suspense</strong>、<strong>Streaming SSR</strong>、<strong>Error Boundaries</strong>、<strong>并发渲染</strong>等现代功能。</p>
+<p>又一个摒弃 虚拟DOM，跟 Svelte 一样走编译型路线的框架，没了虚拟DOM 运行时，又通过优秀的响应式系统保证更新颗粒度非常小，性能爆表。和 Svelte 不同的是 Solid 直接借用了 React 社区的 JSX 来编写模板，没有像 Vue Svelte 那样去自定义模板语法。总体来讲 React 有的 API 大部分都能在它里面找到，甚至包括 React 18 的 useTransition，SuspenseList. 另外不提供 Class 组件玩法，所有的组件都是函数组件，且该组件函数只会执行一次。内置了 For 组件来替代 map 来优化性能。支持自定指令等</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import &#123; render &#125; from &#x27;solid-js/web&#x27;;</span><br><span class="line">import &#123; createSignal, createEffect &#125; from &#x27;solid-js&#x27;;</span><br><span class="line"></span><br><span class="line">const Counter = () =&gt; &#123;</span><br><span class="line">  const [getCount, setCount] = createSignal(0);</span><br><span class="line">  const add = () =&gt; setCount(getCount() + 1);</span><br><span class="line">  createEffect(() =&gt; &#123;</span><br><span class="line">    console.log(&#x27;count is change:&#x27;, getCount());</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;button type=&#x27;button&#x27; onClick=&#123;add&#125;&gt;</span><br><span class="line">      &#123;getCount()&#125;</span><br><span class="line">    &lt;/button&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">render(() =&gt; &lt;Counter /&gt;, document.getElementById(&#x27;root&#x27;));</span><br></pre></td></tr></table></figure>
+
+<p><strong>SolidJS</strong>不仅打包体积小，性能也是 <strong>Number 1</strong></p>
+<p>参照<a href="https://link.juejin.cn/?target=https://krausest.github.io/js-framework-benchmark/index.html">js-framework-benchmark</a> 跑分结果</p>
+<img src="/img/image-20230614065546092.png" alt="image-20230614065546092" style="zoom:80%;" />
+
+<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><h3 id="平衡了-jsx-与-template-的利弊"><a href="#平衡了-jsx-与-template-的利弊" class="headerlink" title="平衡了 jsx 与 template 的利弊"></a>平衡了 jsx 与 template 的利弊</h3><p><strong>jsx</strong> 和 <strong>template</strong> 的优缺点：</p>
+<blockquote>
+<p>jsx</p>
+<ul>
+<li>优点：作为<code>js</code>的语法糖拥有高度灵活性，可以随意编写</li>
+<li>缺点：因为过于灵活在 <strong>编译阶段</strong> 很难分析操作意图</li>
+</ul>
+<p>template</p>
+<ul>
+<li>优点：因为语法有限制，大部分带有 <strong>操作意图（v-if、v-for）</strong> 的代码都可以在 <strong>编译阶段</strong>被识别以做优化</li>
+<li>缺点：写法受限，大部分情况下不如<code>jsx</code>灵活</li>
+</ul>
+</blockquote>
+<p><strong>Vue3</strong> 对比 <strong>Vue2</strong> 性能之所以实现了一个质的飞跃，这其中就离不开 <strong>编译阶段优化</strong>。</p>
+<blockquote>
+<p>1、 比如在<strong>编译阶段</strong>标记出<code>template</code>中永远不会变化的节点作为<strong>静态节点</strong>存储，将来更新时直接绕过他们；</p>
+<p>2、提前对<code>v-if、v-for</code>这一类<strong>区块</strong>做区分，将来diff时绕过不必要的判断；</p>
+<p>3、绑定<code>props</code>时记录哪些<strong>属性</strong>可能会变，将来 <strong>diff</strong> 时只对比“可能会变化的动态节点和属性”，跳过“永远不会变化的节点和属性”。</p>
+<p>除此之外还有<strong>缓存事件处理程序</strong>等等</p>
+</blockquote>
+<p>但JSX就不能识别操作意图，主要是写法太灵活。如果每种情况都去判断一遍，那么 <strong>编译阶段</strong> 将会非常复杂且耗时，另外显得也非常麻瓜。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">v-if的写法就有三种：</span><br><span class="line">// 写法1</span><br><span class="line">return status === 1 ? &lt;span&gt;通过&lt;/span&gt; : status === 2 ? &lt;span&gt;拒绝&lt;/span&gt; : null;</span><br><span class="line">// 写法2</span><br><span class="line">return (</span><br><span class="line">  &lt;&gt;</span><br><span class="line">    &#123;status === 1 &amp;&amp; &lt;span&gt;通过&lt;/span&gt;&#125;</span><br><span class="line">    &#123;status === 2 &amp;&amp; &lt;span&gt;拒绝&lt;/span&gt;&#125;</span><br><span class="line">  &lt;/&gt;</span><br><span class="line">);</span><br><span class="line">// 写法3</span><br><span class="line">switch (status) &#123;</span><br><span class="line">  case 1:</span><br><span class="line">    return &lt;span&gt;通过&lt;/span&gt;;</span><br><span class="line">  case 2:</span><br><span class="line">    return &lt;span&gt;拒绝&lt;/span&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>SolidJS</strong> 采用的方案是：在 <strong>JSX</strong> 的基础上做了一层规范，中文译名为 <a href="https://link.juejin.cn/?target=https://www.solidjs.com/docs/latest/api%23%E6%8E%A7%E5%88%B6%E6%B5%81">控制流</a>。写法上类似某种预设的组件，用于<strong>编译阶段</strong>优化。这样在<strong>编译阶段</strong>就可以做<strong>意图分析</strong>，提前知道这是在<strong>做按条件渲染</strong>，然后编译成对应的<strong>dom操作</strong>即可。</p>
+<p>SolidJS小结：</p>
+<blockquote>
+<ul>
+<li>即借鉴了 <strong>template</strong> 更容易做编译阶段优化的优势</li>
+<li>又保留了 <strong>JSX</strong> 的灵活性</li>
+</ul>
+</blockquote>
+<h3 id="No-Dom-Diff"><a href="#No-Dom-Diff" class="headerlink" title="No Dom Diff"></a>No Dom Diff</h3><p><strong>No Dom Diff</strong> 是说 <strong>SolidJS</strong>在<strong>更新粒度</strong>方面，摒弃了<strong>虚拟dom</strong>，采用<strong>节点级更新</strong>。</p>
+<p>目前前端主流的几种方案：</p>
+<ul>
+<li>应用级更新：状态更新会引起整个应用<code>render</code>，具体渲染哪些内容取决于<strong>协调</strong>的结果。代表作有 <strong>React</strong>(因为 <strong>React</strong> 每次更新都会重新走一遍更新流程，做这些限制是为了获取到完整的<strong>VDom树/Fiber树</strong>，通过 <strong>diff新旧两棵树</strong>来决定真正更新哪些组件，所以 <strong>React</strong> 并不是<strong>组件级更新</strong>)</li>
+<li>组件级更新：状态更新时只会引起绑定了该状态的组件渲染，具体渲染哪些内容同样取决于<strong>协调</strong>的结果。代表作有<strong>vue2.x</strong></li>
+<li>节点级更新：状态更新时直接触法绑定该状态的节点更新，也就是<strong>指向型更新</strong>。代表作有<strong>vue1.x</strong>、<strong>Svelte</strong>、<strong>SolidJS</strong></li>
+</ul>
+<p>而<strong>SolidJS</strong>对于三大对象均采用<strong>简单对象</strong>存储，另外不需要<strong>递归观察</strong>，所以占用内存非常少。对于<strong>如何更新dom</strong>，具体的做法是：在<strong>编译阶段</strong>提前生成类似 <code>insert</code>、<code>update</code>、<code>delete</code>的<strong>dom操作</strong>方法，将来更新时直接调用。</p>
+<h3 id="重·编译时"><a href="#重·编译时" class="headerlink" title="重·编译时"></a>重·编译时</h3><ul>
+<li>提前生成节点渲染方法</li>
+</ul>
+<p>刚才说到 <strong>SolidJS</strong> 在 <strong>jsx</strong> 中借鉴了部分 <strong>template</strong> 的规范写法，在编译阶段 <strong>分析意图</strong>，提前生成对应的<strong>dom操作方法</strong></p>
+<ul>
+<li>按需打包，缩小体积</li>
+</ul>
+<p>这一步也就是 <strong>tree-shaking</strong>，只打包用到的模块，近一步缩小打包资源体积。</p>
+<h3 id="轻·运行时"><a href="#轻·运行时" class="headerlink" title="轻·运行时"></a>轻·运行时</h3><p>由于没有了<strong>diff</strong>这一大规模计算，使得运行时代码更轻量，所以<strong>SolidJS</strong>在更新时也更<strong>简洁</strong>。</p>
+<p><strong>SolidJS</strong> 在更新时的<strong>js调用栈</strong>如图：</p>
+<img src="/img/image-20230614065648667.png" alt="image-20230614065648667" style="zoom:80%;" />
+
+<p><strong>React v16</strong> 在更新时的<strong>js调用栈</strong>如图：</p>
+<img src="/img/image-20230614065722172.png" alt="image-20230614065722172" style="zoom:80%;" />
+
+<h3 id="不被顺序限制的-hook"><a href="#不被顺序限制的-hook" class="headerlink" title="不被顺序限制的 hook"></a>不被顺序限制的 hook</h3><p>说到前端框架中的 <strong>Hook</strong>，最先将这个方案落地的是<strong>React</strong>，但由于<strong>React</strong>一直推崇 <strong>immutable</strong> 思想，每次更新必须重新走一遍整个树的更新流程，使得 <strong>React Hook</strong> 不可以在条件循环中使用，否则<strong>可能</strong>使渲染结果受到影响。</p>
+<p>后来尤大发布了<strong>Vue3.0</strong>，伴随而来的一大特性是<strong>Composition API</strong>，俗称<strong>Vue3 hook</strong>，由于<strong>Vue2</strong>以后都采用<strong>组件级</strong>的<strong>更新粒度</strong>，再加上<strong>响应式原理</strong>采用的是<strong>自动收集依赖</strong>，所以<strong>Vue3 hook</strong>不会有顺序/条件的限制，另外还可以嵌套使用。</p>
+<p><strong>SolidJS</strong>的<strong>响应式原理</strong>主要借鉴了<strong>React Hook</strong>的思想，同时也保留了<strong>Vue3</strong>的<strong>依赖收集模型</strong>，所以用起来非常丝滑。</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ul>
+<li>脚手架：<strong>degit</strong>，内部集成了 <strong>vite</strong>。</li>
+<li>支持<code>TS</code>且<strong>类型</strong>友好</li>
+<li>现代前端框架大部分特性：<code>Fragments</code>、<code>Portals</code>、<code>Context</code>、<code>Suspense</code>、<code>事件委托</code>、<code>SSR</code>等等</li>
+</ul>
+<p><strong>参考</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7018846783203704863#heading-1">比React还Vue3的框架SolidJS</a></li>
+</ul>
+
       
     </div>
     <div class="article-footer">
