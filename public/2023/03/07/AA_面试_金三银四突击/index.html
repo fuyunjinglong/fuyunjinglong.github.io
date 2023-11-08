@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>金三银四突击 | Hexo</title>
+  <meta name="description" content="interview1.项目经历 1.1企业格局之策略制定 项目亮点：打飞机-UI和业务逻辑分离大崔哥 video 1.2需求力竞争PMT 项目亮点：手写vue3源码之pnpm实现monorepo包管理 video 项目亮点：手写vue2源码之rollup打包 00:00 video 2.环境搭建-vue3+vite+ts(大崔哥) video web前端导航 印记中文 前站导航 程序员盒子  前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="金三银四突击">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2023/03/07/AA_%E9%9D%A2%E8%AF%95_%E9%87%91%E4%B8%89%E9%93%B6%E5%9B%9B%E7%AA%81%E5%87%BB/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="interview1.项目经历 1.1企业格局之策略制定 项目亮点：打飞机-UI和业务逻辑分离大崔哥 video 1.2需求力竞争PMT 项目亮点：手写vue3源码之pnpm实现monorepo包管理 video 项目亮点：手写vue2源码之rollup打包 00:00 video 2.环境搭建-vue3+vite+ts(大崔哥) video web前端导航 印记中文 前站导航 程序员盒子  前端">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-03-06T22:33:16.000Z">
+<meta property="article:modified_time" content="2023-11-07T12:48:47.461Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2023/03/07/AA_%E9%9D%A2%E8%AF%95_%E9%87%91%E4%B8%89%E9%93%B6%E5%9B%9B%E7%AA%81%E5%87%BB/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://fuyunjinglong.github.io/" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Elven</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/09/">九月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/06/">六月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/06/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_0%E5%9F%BA%E7%A1%80/" class="title">0基础_工程热点</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-05T22:33:16.000Z" itemprop="datePublished">2099-11-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/05/I_%E7%A7%BB%E5%8A%A8%E7%AB%AF_0%E5%9F%BA%E7%A1%80/" class="title">0基础_移动端</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-04T22:33:16.000Z" itemprop="datePublished">2099-11-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/" class="title">0基础_计算机网络</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-03T22:33:16.000Z" itemprop="datePublished">2099-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_0%E5%9F%BA%E7%A1%80/" class="title">0基础_数据结构</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_%E5%9F%BA%E7%A1%80/" class="title">0基础_设计模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#interview"><span class="toc-text">interview</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web%E5%89%8D%E7%AB%AF%E5%AF%BC%E8%88%AA"><span class="toc-text">web前端导航</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96"><span class="toc-text">前端工程化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#H5"><span class="toc-text">H5</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CSS"><span class="toc-text">CSS</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JS"><span class="toc-text">JS</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ES6"><span class="toc-text">ES6</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6-%E5%9F%BA%E7%A1%80"><span class="toc-text">框架-基础</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6-vue2"><span class="toc-text">框架-vue2</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6-vue3"><span class="toc-text">框架-vue3</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C"><span class="toc-text">计算机网络</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9"><span class="toc-text">工程热点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95"><span class="toc-text">数据结构与算法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-text">性能优化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#React"><span class="toc-text">React</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-AA_面试_金三银四突击" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      金三银四突击
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/03/07/AA_%E9%9D%A2%E8%AF%95_%E9%87%91%E4%B8%89%E9%93%B6%E5%9B%9B%E7%AA%81%E5%87%BB/" class="article-date">
+	  <time datetime="2023-03-06T22:33:16.000Z" itemprop="datePublished">2023-03-07</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/03/07/AA_%E9%9D%A2%E8%AF%95_%E9%87%91%E4%B8%89%E9%93%B6%E5%9B%9B%E7%AA%81%E5%87%BB/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="interview"><a href="#interview" class="headerlink" title="interview"></a>interview</h1><p><strong>1.项目经历</strong></p>
+<p><strong>1.1企业格局之策略制定</strong></p>
+<p>项目亮点：打飞机-UI和业务逻辑分离大崔哥</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV143411M79D/?spm_id_from=333.999.0.0">video</a></p>
+<p><strong>1.2需求力竞争PMT</strong></p>
+<p>项目亮点：手写vue3源码之pnpm实现monorepo包管理</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1WP4y1u7qi/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247">video</a></p>
+<p>项目亮点：手写vue2源码之rollup打包</p>
+<p>00:00</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1DQ4y1z7TK/?spm_id_from=333.788.recommend_more_video.-1&vd_source=bd4c7d99d71adf64d6e88c65370e0247">video</a></p>
+<p>2.<strong>环境搭建-vue3+vite+ts(大崔哥)</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1xr4y1A7H9/?spm_id_from=333.999.0.0">video</a></p>
+<h1 id="web前端导航"><a href="#web前端导航" class="headerlink" title="web前端导航"></a>web前端导航</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://docschina.org/">印记中文</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.frontendjs.com/">前站导航</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.coderutil.com/">程序员盒子</a></li>
+</ul>
+<h1 id="前端工程化"><a href="#前端工程化" class="headerlink" title="前端工程化"></a>前端工程化</h1><ul>
+<li><a target="_blank" href="/2099/11/06/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_0%E5%9F%BA%E7%A1%80/#前端工程化">前端工程化</a></li>
+</ul>
+<h1 id="H5"><a href="#H5" class="headerlink" title="H5"></a>H5</h1><ul>
+<li><a target="_blank" href="/2099/09/12/C_H5_0%E5%9F%BA%E7%A1%80/#为什么多个域名来存储网站资源会更有效">为什么利用多个域名来存储网站资源会更有效 ？</a></li>
+<li><a target="_blank" href="/2099/09/12/C_H5_0%E5%9F%BA%E7%A1%80/#iframe内嵌框架缺点">iframe 内嵌框架缺点</a></li>
+<li><a target="_blank" href="/2099/09/12/C_H5_0%E5%9F%BA%E7%A1%80/#Html语义化">html语义化是什么</a></li>
+</ul>
+<h1 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h1><ul>
+<li><a target="_blank" href="/2099/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/#对reflow和repaint的理解">对 reflow 和 repaint 的理解</a></li>
+<li><a target="_blank" href="/2099/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/#CSS盒子模型">盒子模型</a></li>
+<li><a target="_blank" href="/2099/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/#页面样式导入link和-import区别">页面样式导入link 和 @import 区别</a></li>
+<li><a target="_blank" href="/2099/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/#常见兼容性问题？">常见兼容性问题？</a></li>
+<li><a target="_blank" href="/2099/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/#清除浮动">清除浮动</a></li>
+<li><a target="_blank" href="/2099/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/#如何保持水平垂直居中-？">如何保持水平垂直居中 ？</a></li>
+<li><a target="_blank" href="/2099/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/#position、float和display的取值意思">position 、float 和 display 的取值意思</a></li>
+<li><a target="_blank" href="/2099/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/#CSS常用3种引入方式">CSS 常用3种引入方式</a></li>
+<li><a target="_blank" href="/2099/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/#CSS选择符有哪些？哪些属性可以继承？优先级？">CSS 选择符有哪些 ？哪些属性可以继承 ？优先级？</a></li>
+<li><a target="_blank" href="/2099/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/#CSS3有哪些新特性？">CSS3 有哪些新特性 ?</a></li>
+<li><a target="_blank" href="/2099/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/#BFC">对BFC规范的理解</a></li>
+<li><a target="_blank" href="/2099/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/#canvas与svg的区别？">canvas 与 svg 的区别 ？</a></li>
+<li><a target="_blank" href="/2099/11/05/I_%E7%A7%BB%E5%8A%A8%E7%AB%AF_0%E5%9F%BA%E7%A1%80/#rem、em、px、vh与vw的区别？">rem、em、px、vh 与 vw 的区别 ？</a></li>
+<li><a target="_blank" href="/2099/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/#伪类和伪元素">伪类与伪元素</a></li>
+<li><a target="_blank" href="/2099/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/#flex-1代表什么，用于什么场景">flex=1代表什么</a></li>
+</ul>
+<h1 id="JS"><a href="#JS" class="headerlink" title="JS"></a>JS</h1><ul>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#彻底搞懂this">彻底搞懂this(看题给结果)</a></li>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#消息队列和事件循环">消息队列和事件循环(看题给结果)</a></li>
+<li><a target="_blank" href="/2022/05/29/B_JS_%E5%8E%9F%E5%BD%A2%E5%8E%9F%E5%9E%8B%E9%93%BE%E7%BB%A7%E6%89%BF%E9%97%AD%E5%8C%85/#闭包">闭包(看题给结果)</a></li>
+<li><a target="_blank" href="#原型、原型链、继承">原型、原型链、继承(看题给结果)</a></li>
+<li><a target="_blank" href="/2099/09/12/C_H5_0%E5%9F%BA%E7%A1%80/#浏览器内核的理解">浏览器内核的理解</a></li>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#8种数据类型">null 和 undefined</a></li>
+<li><a target="_blank" href="#JS的8种继承方案">JS的8种继承方案</a></li>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#柯里化-实现add-1-2-3-6">实现 add(1)(2)(3) = 6</a></li>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#垃圾回收">垃圾回收</a></li>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#内存溢出和内存泄漏">内存泄露</a></li>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#JS-类型判断-对象-数组">JS 判断变量是对象还是数组</a></li>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#JS类型判断-typeof-instanceof-constructor-toString">JS类型判断—typeof, constructor, instanceof, toString</a></li>
+<li><a target="_blank" href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/#常见六大Web安全攻防解析">常见六大Web安全攻防解析</a></li>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#async和defer的作用是什么？有什么区别">async和defer的作用是什么？有什么区别</a></li>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#模块化规范">模块化规范</a></li>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#JS事件冒泡和事件捕获">事件冒泡和事件捕获</a></li>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#JS异步编程六大方案">JS异步编程六大方案</a></li>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#函数式编程">函数式编程</a></li>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2%E5%92%8CVue3%E6%AF%94%E8%BE%83/#Object-defineProperty与Proxy">必会20道JS-手写数据双向绑定</a></li>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#call-apply-bind">必会20道JS-手写call/apply/bind</a></li>
+<li><a target="_blank" href="#instanceof操作符">必会20道JS-手写instanceof</a></li>
+<li><a target="_blank" href="#Object-create">必会20道JS-手写Object.create</a></li>
+<li><a target="_blank" href="#new操作符">必会20道JS-手写new操作符</a></li>
+<li><a target="_blank" href="/2022/05/29/B_JS_Promise%E8%BF%9B%E9%98%B6/#手写Promise-核心流程">必会20道JS-手写Promise</a></li>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#深浅拷贝">必会20道JS-手写深浅拷贝</a></li>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#实现setTimeout和实现setInterval">必会20道JS-手写setTimeout模拟setInterval</a></li>
+<li><a target="_blank" href="#原型式继承">必会20道JS-手写一种原型式继承和构造函数继承</a></li>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#手写-EventBus">必会20道JS-手写-EventBus发布订阅</a></li>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#手写-简单路由">必会20道JS-手写简单路由</a></li>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#手写-rem实现原理">必会20道JS-手写rem实现原理</a></li>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#手写-实现拖拽">必会20道JS-手写实现拖拽</a></li>
+<li><a target="_blank" href="/2099/05/29/B_JS_0%E5%9F%BA%E7%A1%80/#防抖和节流">必会20道JS-手写防抖和节流</a></li>
+</ul>
+<h1 id="ES6"><a href="#ES6" class="headerlink" title="ES6"></a>ES6</h1><ul>
+<li><a target="_blank" href="/2022/05/05/B_JS_ES6-10%E6%96%B0%E7%89%B9%E6%80%A7/#for-循环中的-var-、let-与-const-区别">for 循环中的 var 、let 与 const 区别(看题给结果)</a></li>
+<li><a target="_blank" href="/2022/05/05/B_JS_ES6-10%E6%96%B0%E7%89%B9%E6%80%A7/#ES5和ES6之默认值的区别-？">ES5和ES6之默认值的区别？</a></li>
+<li><a target="_blank" href="/2022/05/05/B_JS_ES6-10%E6%96%B0%E7%89%B9%E6%80%A7/#ES5和ES6之继承的区别-？">ES5和ES6之继承的区别？</a></li>
+<li><a target="_blank" href="/2022/05/29/B_JS_Promise%E8%BF%9B%E9%98%B6/#Promise是什么">Promise是什么</a></li>
+<li>Generator函数是什么</li>
+<li>async函数是什么</li>
+<li><a target="_blank" href="/2022/05/05/B_JS_ES6-10%E6%96%B0%E7%89%B9%E6%80%A7/#axios取消请求">axios取消请求</a></li>
+<li><a target="_blank" href="/2022/05/05/B_JS_ES6-10%E6%96%B0%E7%89%B9%E6%80%A7/#for-in、for-of、forEach的比较">for in、for of、forEach的比较</a></li>
+</ul>
+<h1 id="框架-基础"><a href="#框架-基础" class="headerlink" title="框架-基础"></a>框架-基础</h1><ul>
+<li><a target="_blank" href="/2022/05/13/D_%E6%A1%86%E6%9E%B6_%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81%E5%92%8C%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81/#权限认证">权限认证</a></li>
+<li><a target="_blank" href="/2022/05/13/D_%E6%A1%86%E6%9E%B6_%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81%E5%92%8C%E6%9D%83%E9%99%90%E8%AE%A4%E8%AF%81/#权限控制">权限控制</a></li>
+</ul>
+<h1 id="框架-vue2"><a href="#框架-vue2" class="headerlink" title="框架-vue2"></a>框架-vue2</h1><ul>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#双向绑定">如何理解双向绑定</a></li>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#数据响应式">如何理解数据响应式</a></li>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#methods和watch、computed">computed和watch区别</a></li>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#父子组件生命周期顺序">父子组件生命周期钩子函数执行顺序</a></li>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#在哪个生命周期内调用异步请求？">在哪个生命周期内调用异步请求？</a></li>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#keep-alive原理">谈谈对keep-alive的理解</a></li>
+<li><a target="_blank" href="/2022/04/17/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%85%A5%E9%97%A8/#vuex">谈谈对vuex的理解</a></li>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#Vue模板编译流程">Vue模板编译流程(编译器原理)</a></li>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#Vue-router路由-hash和history">router路由hash和history原理</a></li>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#Vue-router路由-懒加载">router路由-懒加载</a></li>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#Vue-router导航守卫有哪些">Vue-router导航守卫有哪些</a></li>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#vm-set-如何解决对象属性新增问题">vm.$set()如何解决对象属性新增问题</a></li>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#数组变异方法">vue2.x中如何监测数组变化</a></li>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#nextTick的实现原理">nextTick实现原理</a></li>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#vue-性能优化">性能优化-Vue</a></li>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#Vue2-x组件通信方式">Vue2.x组件通信方式</a></li>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#v-for和v-if不能连用">v-for和v-if为什么不能连用</a></li>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#组件中的data为什么是一个函数？">组件中的data为什么是一个函数？</a></li>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#双向绑定">如何理解vue的单向数据流</a></li>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#Virtual-DOM">Virtual-DOM虚拟DOM</a></li>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2.0_%E5%8E%9F%E7%90%86/#Virtual-DOM-diff算法">Virtual-DOM-diff算法</a></li>
+</ul>
+<h1 id="框架-vue3"><a href="#框架-vue3" class="headerlink" title="框架-vue3"></a>框架-vue3</h1><ul>
+<li><a target="_blank" href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2%E5%92%8CVue3%E6%AF%94%E8%BE%83/#Virtual-DOM-diff算法">Vue2和Vue3的diff算法对比</a></li>
+</ul>
+<h1 id="计算机网络"><a href="#计算机网络" class="headerlink" title="计算机网络"></a>计算机网络</h1><ul>
+<li><a target="_blank" href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/#HTTP-常见的状态码">HTTP-常见的状态码</a></li>
+<li><a target="_blank" href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/#一文读懂-HTTP-1、HTTP-2、HTTP-3">一文读懂 HTTP/1、HTTP/2、HTTP/3</a></li>
+<li><a target="_blank" href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/#彻底搞懂Https">彻底搞懂Https</a></li>
+<li><a target="_blank" href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/#既然有-HTTP-协议，为什么还要有-RPC？">RPC是什么？</a></li>
+<li><a target="_blank" href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/#既然有-HTTP-协议，为什么还要有-WebSocket？">webSocket是什么？</a></li>
+<li><a target="_blank" href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/#TCP是什么">TCP是什么？</a></li>
+<li><a target="_blank" href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/#TCP为什么是三次握手？四次挥手？">TCP为什么是三次握手？四次挥手？</a></li>
+<li><a target="_blank" href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/#TCP-与-UDP-的区别">TCP 与 UDP 的区别</a></li>
+<li><a target="_blank" href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/#网络缓存-http缓存">Http缓存原理</a></li>
+<li><a target="_blank" href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/#Cookies、SessionStorage和LocalStorage">cookies，sessionStorage 和 localStorage 的区别</a></li>
+<li><a target="_blank" href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/#Cookie">Cookie的实现原理</a></li>
+<li><a target="_blank" href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/#应用缓存-manifest即HTML5的离线缓存">应用缓存-manifest即HTML5的离线缓存</a></li>
+</ul>
+<h1 id="工程热点"><a href="#工程热点" class="headerlink" title="工程热点"></a>工程热点</h1><ul>
+<li><a target="_blank" href="/2023/03/12/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96_webpack/#webpack-loader机制">性能优化-webpack-loader机制</a></li>
+</ul>
+<h1 id="数据结构与算法"><a href="#数据结构与算法" class="headerlink" title="数据结构与算法"></a>数据结构与算法</h1><ul>
+<li>两个变量交换</li>
+</ul>
+<h1 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h1><ul>
+<li><a target="_blank" href="/2023/03/12/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96_0%E5%9F%BA%E7%A1%80/#性能优化总策略">性能优化总策略</a></li>
+<li><a target="_blank" href="/2023/03/12/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96_0%E5%9F%BA%E7%A1%80/#从输入url到渲染完成整个过程">从输入url到渲染完成整个过程</a></li>
+</ul>
+<h1 id="React"><a href="#React" class="headerlink" title="React"></a>React</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000018604138">必须要会的 50 道 React 面试题</a></li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2023/03/07/AA_%E9%9D%A2%E8%AF%95_%E9%87%91%E4%B8%89%E9%93%B6%E5%9B%9B%E7%AA%81%E5%87%BB/" title="金三银四突击" target="_blank" rel="external">https://fuyunjinglong.github.io/2023/03/07/AA_面试_金三银四突击/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://fuyunjinglong.github.io/" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://fuyunjinglong.github.io/" target="_blank"><span class="text-dark">Elven</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2023/03/11/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_%E5%A4%A7%E8%AF%9D%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="大话数据结构"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2023/03/05/Z_%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F_%E5%8D%8E%E4%B8%BA%E6%8A%80%E6%9C%AF/" title="华为技术"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

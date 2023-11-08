@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>TCP的网络拆包粘包 | Hexo</title>
+  <meta name="description" content="什么是粘包、拆包由于TCP传输协议是面向字节流的传输协议，没有消息保护边界，所以发送方发送的多个数据包，接收方应用层不知如何区分，可能会被当成一个包来处理，这就是粘包；或者，发送方将一个打包分成多个小包发送，而接收方将它们当成多个包进行处理，这就是拆包。 TCP传输的四种情况：  客户端向服务器发送了两个包，两个数据包之间互不影响，这是正常的，我们不需要管； 客户端向服务器发送了两个包，但是两个包">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TCP的网络拆包粘包">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2022/05/17/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_TCP%E7%9A%84%E7%BD%91%E7%BB%9C%E6%8B%86%E5%8C%85%E7%B2%98%E5%8C%85/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="什么是粘包、拆包由于TCP传输协议是面向字节流的传输协议，没有消息保护边界，所以发送方发送的多个数据包，接收方应用层不知如何区分，可能会被当成一个包来处理，这就是粘包；或者，发送方将一个打包分成多个小包发送，而接收方将它们当成多个包进行处理，这就是拆包。 TCP传输的四种情况：  客户端向服务器发送了两个包，两个数据包之间互不影响，这是正常的，我们不需要管； 客户端向服务器发送了两个包，但是两个包">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-16T23:33:16.000Z">
+<meta property="article:modified_time" content="2022-12-11T10:00:26.740Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2022/05/17/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_TCP%E7%9A%84%E7%BD%91%E7%BB%9C%E6%8B%86%E5%8C%85%E7%B2%98%E5%8C%85/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://fuyunjinglong.github.io/" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Elven</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/09/">九月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/06/">六月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/06/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_0%E5%9F%BA%E7%A1%80/" class="title">0基础_工程热点</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-05T22:33:16.000Z" itemprop="datePublished">2099-11-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/05/I_%E7%A7%BB%E5%8A%A8%E7%AB%AF_0%E5%9F%BA%E7%A1%80/" class="title">0基础_移动端</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-04T22:33:16.000Z" itemprop="datePublished">2099-11-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/" class="title">0基础_计算机网络</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-03T22:33:16.000Z" itemprop="datePublished">2099-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_0%E5%9F%BA%E7%A1%80/" class="title">0基础_数据结构</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_%E5%9F%BA%E7%A1%80/" class="title">0基础_设计模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%B2%98%E5%8C%85%E3%80%81%E6%8B%86%E5%8C%85"><span class="toc-text">什么是粘包、拆包</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B2%98%E5%8C%85%E5%8F%91%E7%94%9F%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-text">粘包发生的原因</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8B%86%E5%8C%85%E5%8F%91%E7%94%9F%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-text">拆包发生的原因</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E6%8B%86%E5%8C%85%E7%B2%98%E5%8C%85"><span class="toc-text">如何解决拆包粘包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%95%BF%E5%BA%A6%E5%9B%BA%E5%AE%9A"><span class="toc-text">消息长度固定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E5%AE%9A%E5%88%86%E9%9A%94%E7%AC%A6"><span class="toc-text">特定分隔符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%95%BF%E5%BA%A6-%E6%B6%88%E6%81%AF%E5%86%85%E5%AE%B9"><span class="toc-text">消息长度 + 消息内容</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88UDP%E6%B2%A1%E6%9C%89%E7%B2%98%E5%8C%85%EF%BC%9F"><span class="toc-text">为什么UDP没有粘包？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Netty%E5%AF%B9%E7%B2%98%E5%8C%85%E5%92%8C%E6%8B%86%E5%8C%85%E9%97%AE%E9%A2%98%E7%9A%84%E5%A4%84%E7%90%86"><span class="toc-text">Netty对粘包和拆包问题的处理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-F_计算机网络_TCP的网络拆包粘包" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      TCP的网络拆包粘包
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/05/17/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_TCP%E7%9A%84%E7%BD%91%E7%BB%9C%E6%8B%86%E5%8C%85%E7%B2%98%E5%8C%85/" class="article-date">
+	  <time datetime="2022-05-16T23:33:16.000Z" itemprop="datePublished">2022-05-17</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/05/17/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_TCP%E7%9A%84%E7%BD%91%E7%BB%9C%E6%8B%86%E5%8C%85%E7%B2%98%E5%8C%85/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="什么是粘包、拆包"><a href="#什么是粘包、拆包" class="headerlink" title="什么是粘包、拆包"></a>什么是粘包、拆包</h1><p>由于<code>TCP</code>传输协议是面向字节流的传输协议，没有消息保护边界，所以发送方发送的多个数据包，接收方应用层不知如何区分，可能会被当成一个包来处理，这就是粘包；或者，发送方将一个打包分成多个小包发送，而接收方将它们当成多个包进行处理，这就是拆包。</p>
+<p><code>TCP</code>传输的四种情况：</p>
+<ol>
+<li>客户端向服务器发送了两个包，两个数据包之间互不影响，这是正常的，我们不需要管；</li>
+<li>客户端向服务器发送了两个包，但是两个包被并在了一起，当作一个包发送，这就是发生了粘包现象，服务器可能会将它们当成一个数据包处理；</li>
+<li>客户端向服务器发送了两个包<code>D1</code>和<code>D2</code>，但是<code>D2</code>的一部分与<code>D1</code>合并在了一起，发生了粘包，而<code>D2</code>另一部分被单独发送，也就是说<code>D2</code>被拆分成了两个小包，发生了拆包现象；</li>
+<li>第四种情况和第三种类似，只是顺序反了一下，<code>D1</code>发生了拆包，而<code>D1</code>的后半部分与<code>D2</code>发生了粘包；</li>
+</ol>
+<p>以下几种情况：</p>
+<ul>
+<li>正常的理想情况，两个包恰好满足TCP缓冲区的大小或达到TCP等待时长，分别发送两个包；</li>
+<li>粘包：两个包较小，间隔时间短，发生粘包，合并成一个包发送；</li>
+<li>拆包：一个包过大，超过缓存区大小，拆分成两个或多个包发送；</li>
+<li>拆包和粘包：Packet1过大，进行了拆包处理，而拆出去的一部分又与Packet2进行粘包处理。</li>
+</ul>
+<h1 id="粘包发生的原因"><a href="#粘包发生的原因" class="headerlink" title="粘包发生的原因"></a>粘包发生的原因</h1><p><strong>（1）套接字缓冲区</strong></p>
+<p>  应用层需要发送数据时，假设是基于<code>TCP</code>发送，则会将数据交给<code>TCP</code>套接字。数据被放入套接字发送缓存中，由于各种原因，往往不会立即发送，比如数据来的太快，还来不及发送。这就导致在发送缓存中，可能存在多个不同的数据包的字节并排在一起。当<code>TCP</code>需要发送数据时，会从发送缓存中读取一段字节，封装成<code>TCP</code>报文段发送出去，而读取的这些字节，可能属于多个数据包。</p>
+<p>  在接收端，<code>TCP</code>接收到的数据也会被放入套接字的接收缓冲区中，再由应用层进行读取。但是，应用层可能并不会立即读取缓冲区中的数据，或者来不及读取，此时就会造成多个数据包同时在缓冲区中。因为没有划定边界，所以应用层也无法将它们拆分开来，而是一同读取，这就会造成粘包。</p>
+<p> <strong>（2）Nagle算法</strong></p>
+<p>  <code>TCP</code>的发送方每次发送报文段，都希望能包含尽量多的字节，这样可以最大限度的利用网络带宽。假设发送方需要要向接收方发送一个字节的数据，经过运输层和网络层的封装后，将会为这一个字节加上<code>40</code>个字节的首部，这是一种非常浪费的情况，而<code>Nagle</code>算法正是为了减少这种情况。</p>
+<p>  <code>Nagle</code>算法是基本原则就是：<strong>在任意时刻，只能有一个未被确认的小段报文</strong>。未被确认就是已经发送，但是还没有接收到<code>ACK</code>的报文段，而小段报文指的是没有达到网络最大传输单元的报文段。使用<code>Nagle</code>算法时，会尽量地将一些小段凑成一个大段进行发送，而这就导致了粘包现象的发生。</p>
+<h1 id="拆包发生的原因"><a href="#拆包发生的原因" class="headerlink" title="拆包发生的原因"></a>拆包发生的原因</h1><p><strong>（1）最大报文段长度MSS、最大传输单元MTU</strong></p>
+<p>  <code>MSS</code>表示一个<code>TCP</code>报文段能够承载数据的最大字节数，而<code>MTU</code>则是网络传输种能够接受的报文的最大长度。这两个概念说明网络传输中，每个报文能够承载的数据是有限的。<code>TCP</code>为了能将数据发送出去，且每个报文中的数据不超过<code>MSS</code>，会将一个大的数据包分为多个小段，为每个段加上首部后逐一发送，而这就造成了拆包。比如说，对于一张图片，一般都需要拆分成多个段进行发送。</p>
+<p> <strong>（2）TCP滑动窗口</strong></p>
+<p>  <code>TCP</code>采用了流水线的传输机制，而流水线传输中通过维护一个窗口来限制数据的发送，也可以叫做一个区间。只有序号落在窗口中的那些字节，才允许被发送。而窗口是动态变化的，它受到网络拥塞情况以及接收方缓冲区剩余空间的限制。如果当前要发送的数据包的长度，大于窗口中的剩余空间，那这个数据包就会被拆分，先发送一部分，这样也就造成了拆包。</p>
+<h1 id="如何解决拆包粘包"><a href="#如何解决拆包粘包" class="headerlink" title="如何解决拆包粘包"></a>如何解决拆包粘包</h1><p>解决拆包/粘包的唯一方法：<strong>定义应用层的通信协议</strong></p>
+<p><code>TCP</code>可以保证完整，并且按序地接收字节，但是并不会帮忙拆分多个包的字节，真正做这个工作的是应用层的协议，应用层负责解决粘包和拆包。</p>
+<h2 id="消息长度固定"><a href="#消息长度固定" class="headerlink" title="消息长度固定"></a>消息长度固定</h2><p>每个数据报文都需要一个固定的长度。当接收方累计读取到固定长度的报文后，就认为已经获得一个完整的消息。当发送方的数据小于固定长度时，则需要空位补齐。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+----+------+------+---+----+</span><br><span class="line"></span><br><span class="line">| AB | CDEF | GHIJ | K | LM |</span><br><span class="line"></span><br><span class="line">+----+------+------+---+----+</span><br></pre></td></tr></table></figure>
+
+<p>假设我们的固定长度为 4 字节，那么如上所示的 5 条数据一共需要发送 4 个报文：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+------+------+------+------+</span><br><span class="line"></span><br><span class="line">| ABCD | EFGH | IJKL | M000 |</span><br><span class="line"></span><br><span class="line">+------+------+------+------+</span><br></pre></td></tr></table></figure>
+
+<p>消息定长法使用非常简单，但是缺点也非常明显，无法很好设定固定长度的值，如果长度太大会造成字节浪费，长度太小又会影响消息传输，所以在一般情况下消息定长法不会被采用。</p>
+<h2 id="特定分隔符"><a href="#特定分隔符" class="headerlink" title="特定分隔符"></a>特定分隔符</h2><p>既然接收方无法区分消息的边界，那么我们可以在每次发送报文的尾部加上<strong>特定分隔符</strong>，接收方就可以根据特殊分隔符进行消息拆分。以下报文根据特定分隔符 \n 按行解析，即可得到 AB、CDEF、GHIJ、K、LM 五条原始报文。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+-------------------------+</span><br><span class="line"></span><br><span class="line">| AB\nCDEF\nGHIJ\nK\nLM\n |</span><br><span class="line"></span><br><span class="line">+-------------------------+</span><br></pre></td></tr></table></figure>
+
+<p>由于在发送报文时尾部需要添加特定分隔符，所以对于分隔符的选择一定要避免和消息体中字符相同，以免冲突。否则可能出现错误的消息拆分。比较推荐的做法是将消息进行编码，例如 base64 编码，然后可以选择 64 个编码字符之外的字符作为特定分隔符。特定分隔符法在消息协议足够简单的场景下比较高效，例如大名鼎鼎的 Redis 在通信过程中采用的就是换行分隔符。</p>
+<h2 id="消息长度-消息内容"><a href="#消息长度-消息内容" class="headerlink" title="消息长度 + 消息内容"></a>消息长度 + 消息内容</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">消息头     消息体</span><br><span class="line"></span><br><span class="line">+--------+----------+</span><br><span class="line"></span><br><span class="line">| Length |  Content |</span><br><span class="line"></span><br><span class="line">+--------+----------+</span><br></pre></td></tr></table></figure>
+
+<p><strong>消息长度 + 消息内容</strong>是项目开发中最常用的一种协议，如上展示了该协议的基本格式。消息头中存放消息的总长度，例如使用 4 字节的 int 值记录消息的长度，消息体实际的二进制的字节数据。接收方在解析数据时，首先读取消息头的长度字段 Len，然后紧接着读取长度为 Len 的字节数据，该数据即判定为一个完整的数据报文。依然以上述提到的原始字节数据为例，使用该协议进行编码后的结果如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+-----+-------+-------+----+-----+</span><br><span class="line"></span><br><span class="line">| 2AB | 4CDEF | 4GHIJ | 1K | 2LM |</span><br><span class="line"></span><br><span class="line">+-----+-------+-------+----+-----+</span><br></pre></td></tr></table></figure>
+
+<p>消息长度 + 消息内容的使用方式非常灵活，且不会存在消息定长法和特定分隔符法的明显缺陷。当然在消息头中不仅只限于存放消息的长度，而且可以自定义其他必要的扩展字段，例如消息版本、算法类型等。</p>
+<h1 id="为什么UDP没有粘包？"><a href="#为什么UDP没有粘包？" class="headerlink" title="为什么UDP没有粘包？"></a>为什么UDP没有粘包？</h1><p>粘包拆包问题在数据链路层、网络层以及传输层都有可能发生。日常的网络应用开发大都在传输层进行，由于UDP有消息保护边界，不会发生粘包拆包问题，因此粘包拆包问题只发生在TCP协议中。</p>
+<h1 id="Netty对粘包和拆包问题的处理"><a href="#Netty对粘包和拆包问题的处理" class="headerlink" title="Netty对粘包和拆包问题的处理"></a>Netty对粘包和拆包问题的处理</h1><p>Netty对解决粘包和拆包的方案做了抽象，提供了一些解码器（Decoder）来解决粘包和拆包的问题。如：</p>
+<ul>
+<li>LineBasedFrameDecoder：以行为单位进行数据包的解码；</li>
+<li>DelimiterBasedFrameDecoder：以特殊的符号作为分隔来进行数据包的解码；</li>
+<li>FixedLengthFrameDecoder：以固定长度进行数据包的解码；</li>
+<li>LenghtFieldBasedFrameDecode：适用于消息头包含消息长度的协议（最常用）；</li>
+</ul>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>[计算机网络——浅析TCP粘包，拆包发生的原因以及解决方式](</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2022/05/17/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_TCP%E7%9A%84%E7%BD%91%E7%BB%9C%E6%8B%86%E5%8C%85%E7%B2%98%E5%8C%85/" title="TCP的网络拆包粘包" target="_blank" rel="external">https://fuyunjinglong.github.io/2022/05/17/F_计算机网络_TCP的网络拆包粘包/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://fuyunjinglong.github.io/" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://fuyunjinglong.github.io/" target="_blank"><span class="text-dark">Elven</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/05/19/D_%E6%A1%86%E6%9E%B6_SSR%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%B8%B2%E6%9F%93/" title="SSR服务端渲染"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2022/05/17/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_%E4%B8%AD%E5%8F%B0%E6%98%AF%E4%BB%80%E4%B9%88/" title="中台是什么"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

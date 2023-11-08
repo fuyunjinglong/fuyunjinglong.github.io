@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>0基础_设计模式 | Hexo</title>
+  <meta name="description" content="概述“设计模式”这个术语最初并不是出现在软件设计中，而是被用于建筑领域的设计中。 1977 年，美国著名建筑大师、加利福尼亚大学伯克利分校环境结构中心主任克里斯托夫·亚历山大（Christopher Alexander）在他的著作《建筑模式语言：城镇、建筑、构造（A Pattern Language: Towns Building Construction）中描述了一些常见的建筑设计问题，并提出了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0基础_设计模式">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2099/11/01/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="概述“设计模式”这个术语最初并不是出现在软件设计中，而是被用于建筑领域的设计中。 1977 年，美国著名建筑大师、加利福尼亚大学伯克利分校环境结构中心主任克里斯托夫·亚历山大（Christopher Alexander）在他的著作《建筑模式语言：城镇、建筑、构造（A Pattern Language: Towns Building Construction）中描述了一些常见的建筑设计问题，并提出了">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220514122304792.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220514122436666.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220514122551211.png">
+<meta property="article:published_time" content="2099-10-31T22:33:16.000Z">
+<meta property="article:modified_time" content="2023-03-25T03:24:21.876Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/image-20220514122304792.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2099/11/01/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_%E5%9F%BA%E7%A1%80/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://fuyunjinglong.github.io/" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Elven</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/09/">九月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/06/">六月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/06/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_0%E5%9F%BA%E7%A1%80/" class="title">0基础_工程热点</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-05T22:33:16.000Z" itemprop="datePublished">2099-11-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/05/I_%E7%A7%BB%E5%8A%A8%E7%AB%AF_0%E5%9F%BA%E7%A1%80/" class="title">0基础_移动端</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-04T22:33:16.000Z" itemprop="datePublished">2099-11-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/" class="title">0基础_计算机网络</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-03T22:33:16.000Z" itemprop="datePublished">2099-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_0%E5%9F%BA%E7%A1%80/" class="title">0基础_数据结构</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_%E5%9F%BA%E7%A1%80/" class="title">0基础_设计模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-text">概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-text">软件设计模式的概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E8%A6%81%E7%B4%A0"><span class="toc-text">基本要素</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MV%E6%A8%A1%E5%BC%8F"><span class="toc-text">MV模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MVC%E6%A8%A1%E5%BC%8F"><span class="toc-text">MVC模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MVP%E6%A8%A1%E5%BC%8F"><span class="toc-text">MVP模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MVVM%E6%A8%A1%E5%BC%8F-vue%E4%BD%BF%E7%94%A8%E6%A8%A1%E5%BC%8F"><span class="toc-text">MVVM模式-vue使用模式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GoF-%E7%9A%84-23-%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-text">GoF 的 23 种设计模式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%94%E5%A4%A7%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="toc-text">五大设计原则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SOLID%E5%8E%9F%E5%88%99"><span class="toc-text">SOLID原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DRY%E5%8E%9F%E5%88%99"><span class="toc-text">DRY原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#KISS%E5%8E%9F%E5%88%99"><span class="toc-text">KISS原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#YAGNI%E5%8E%9F%E5%88%99"><span class="toc-text">YAGNI原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LOD%E5%8E%9F%E5%88%99-%E8%BF%AA%E7%B1%B3%E7%89%B9%E6%B3%95%E5%88%99"><span class="toc-text">LOD原则&#x2F;迪米特法则</span></a></li></ol></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-J_设计模式_基础" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      0基础_设计模式
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2099/11/01/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_%E5%9F%BA%E7%A1%80/" class="article-date">
+	  <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2099/11/01/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_%E5%9F%BA%E7%A1%80/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>“设计模式”这个术语最初并不是出现在软件设计中，而是被用于建筑领域的设计中。</p>
+<p>1977 年，美国著名建筑大师、加利福尼亚大学伯克利分校环境结构中心主任克里斯托夫·亚历山大（Christopher Alexander）在他的著作《建筑模式语言：城镇、建筑、构造（A Pattern Language: Towns Building Construction）中描述了一些常见的建筑设计问题，并提出了 253 种关于对城镇、邻里、住宅、花园和房间等进行设计的基本模式。</p>
+<p>1995 年，艾瑞克·伽马（ErichGamma）、理査德·海尔姆（Richard Helm）、拉尔夫·约翰森（Ralph Johnson）、约翰·威利斯迪斯（John Vlissides）等 4 位作者合作出版了《设计模式：可复用面向对象软件的基础》，在软件开发领域里也以他们的“四人组”（Gang of Four，GoF）匿名著称。</p>
+<h2 id="软件设计模式的概念"><a href="#软件设计模式的概念" class="headerlink" title="软件设计模式的概念"></a><strong>软件设计模式的概念</strong></h2><p>软件设计模式（Software Design Pattern），又称设计模式，是一套被<strong>反复使用、分类编目、代码设计经验</strong>的总结。其目的是为了提高代码的可<strong>复用性、可读性和可靠性</strong>。</p>
+<p>设计模式的本质是面向对象设计原则的实际运用，是对类的<strong>封装性、继承性和多态性</strong>以及类的<strong>关联关系和组合关系</strong>的充分理解。</p>
+<p>优点：</p>
+<ul>
+<li>可以提高程序员的<strong>思维</strong>能力、<strong>编程</strong>能力和<strong>设计</strong>能力。</li>
+<li>使程序设计更加<strong>标准化</strong>、代码编制更加<strong>工程化</strong>，使软件开发效率大大提高，从而缩短软件的开发周期。</li>
+<li>使设计的代码可<strong>复用性</strong>高、<strong>可读性</strong>强、<strong>可靠性</strong>高、<strong>灵活性</strong>好、<strong>可维护性</strong>强。</li>
+</ul>
+<h2 id="基本要素"><a href="#基本要素" class="headerlink" title="基本要素"></a><strong>基本要素</strong></h2><ol>
+<li>模式名称</li>
+</ol>
+<p>每一个模式都有自己的名字，通常用一两个词来描述，可以根据模式的问题、特点、解决方案、功能和效果来命名。模式名称（PatternName）有助于我们理解和记忆该模式，也方便我们来讨论自己的设计。</p>
+<ol start="2">
+<li>问题</li>
+</ol>
+<p>问题（Problem）描述了该模式的应用环境，即何时使用该模式。它解释了设计问题和问题存在的前因后果，以及必须满足的一系列先决条件。</p>
+<ol start="3">
+<li>解决方案</li>
+</ol>
+<p>模式问题的解决方案（Solution）包括设计的组成成分、它们之间的相互关系及各自的职责和协作方式。因为模式就像一个模板，可应用于多种不同场合，所以解决方案并不描述一个特定而具体的设计或实现，而是提供设计问题的抽象描述和怎样用一个具有一般意义的元素组合（类或对象的 组合）来解决这个问题。</p>
+<ol start="4">
+<li>效果</li>
+</ol>
+<p>描述了模式的应用效果以及使用该模式应该权衡的问题，即模式的优缺点。主要是对时间和空间的衡量，以及该模式对系统的灵活性、扩充性、可移植性的影响，也考虑其实现问题。显式地列出这些效果（Consequence）对理解和评价这些模式有很大的帮助。</p>
+<h1 id="MV模式"><a href="#MV模式" class="headerlink" title="MV模式"></a><strong>MV模式</strong></h1><h2 id="MVC模式"><a href="#MVC模式" class="headerlink" title="MVC模式"></a><strong>MVC模式</strong></h2><ul>
+<li>Model（模型）表示应用程序核心（如数据库）。</li>
+<li>View（视图）显示效果（HTML页面）。</li>
+<li>Controller（控制器）处理输入（业务逻辑）。</li>
+</ul>
+<img src="/img/image-20220514122304792.png" alt="image-20220514122304792" style="zoom:67%;" />
+
+<p>流程：</p>
+<ul>
+<li>View传送指令到Controller</li>
+<li>Controller完成业务逻辑后，要求Model改变状态</li>
+<li>Model将新的数据发送到View，用户得到反馈</li>
+</ul>
+<h2 id="MVP模式"><a href="#MVP模式" class="headerlink" title="MVP模式"></a><strong>MVP模式</strong></h2><ul>
+<li>模型(Model)：提供数据</li>
+<li>视图(View)：用户界面</li>
+<li>表示器(Presenter)：逻辑的处理</li>
+</ul>
+<img src="/img/image-20220514122436666.png" alt="image-20220514122436666" style="zoom:67%;" />
+
+<p>流程：</p>
+<ul>
+<li>View与Model<strong>无联系</strong>，都通过Presenter传递</li>
+<li>View中<strong>不部署任何业务逻辑</strong> - 被动视图</li>
+<li>所有逻辑都部署在Presenter</li>
+</ul>
+<p>与MVC的区别，View不能直接从Model中读取数据</p>
+<h2 id="MVVM模式-vue使用模式"><a href="#MVVM模式-vue使用模式" class="headerlink" title="MVVM模式-vue使用模式"></a><strong>MVVM模式</strong>-vue使用模式</h2><ul>
+<li>模型(Model)：保存数据</li>
+<li>视图(View)：用户界面</li>
+<li>数据驱动(View-Model)：业务逻辑</li>
+</ul>
+<img src="/img/image-20220514122551211.png" alt="image-20220514122551211" style="zoom:67%;" />
+
+<p>流程：</p>
+<ul>
+<li>操作View时，ViewModel感知变化，通知Model发生相应的变化，若Model改变时，ViewModel感知变化，通知View进行更新</li>
+<li>ViewModel与View双向数据绑定，Model通过接口请求数据交互，承上启下。</li>
+</ul>
+<h1 id="GoF-的-23-种设计模式"><a href="#GoF-的-23-种设计模式" class="headerlink" title="GoF 的 23 种设计模式"></a>GoF 的 23 种设计模式</h1><p><strong>根据目的来分</strong></p>
+<p>根据模式是用来完成什么工作来划分，这种方式可分为创建型模式、结构型模式和行为型模式 3 种。</p>
+<ol>
+<li>创建型模式：用于描述“怎样创建对象”，它的主要特点是“将对象的创建与使用分离”。GoF 中提供了单例、原型、工厂方法、抽象工厂、建造者等 5 种创建型模式。</li>
+<li>结构型模式：用于描述如何将类或对象按某种布局组成更大的结构，GoF 中提供了代理、适配器、桥接、装饰、外观、享元、组合等 7 种结构型模式。</li>
+<li>行为型模式：用于描述类或对象之间怎样相互协作共同完成单个对象都无法单独完成的任务，以及怎样分配职责。GoF 中提供了模板方法、策略、命令、职责链、状态、观察者、中介者、迭代器、访问者、备忘录、解释器等 11 种行为型模式。</li>
+</ol>
+<p> <strong>根据作用范围来分</strong></p>
+<p>根据模式是主要用于类上还是主要用于对象上来分，这种方式可分为类模式和对象模式两种。</p>
+<ol>
+<li>类模式：用于处理类与子类之间的关系，这些关系通过继承来建立，是静态的，在编译时刻便确定下来了。GoF中的工厂方法、（类）适配器、模板方法、解释器属于该模式。</li>
+<li>对象模式：用于处理对象之间的关系，这些关系可以通过组合或聚合来实现，在运行时刻是可以变化的，更具动态性。GoF 中除了以上 4 种，其他的都是对象模式。</li>
+</ol>
+<p><strong>各个模式的功能</strong></p>
+<ol>
+<li><strong>单例（Singleton）模式</strong>：某个类只能生成一个实例，该类提供了一个全局访问点供外部获取该实例，其拓展是有限多例模式。</li>
+<li><strong>原型（Prototype）模式</strong>：将一个对象作为原型，通过对其进行复制而克隆出多个和原型类似的新实例。</li>
+<li>工厂方法（Factory Method）模式：定义一个用于创建产品的接口，由子类决定生产什么产品。</li>
+<li><strong>抽象工厂（AbstractFactory）模式</strong>：提供一个创建产品族的接口，其每个子类可以生产一系列相关的产品。</li>
+<li>建造者（Builder）模式：将一个复杂对象分解成多个相对简单的部分，然后根据不同需要分别创建它们，最后构建成该复杂对象。</li>
+<li><strong>代理（Proxy）模式</strong>：为某对象提供一种代理以控制对该对象的访问。即客户端通过代理间接地访问该对象，从而限制、增强或修改该对象的一些特性。</li>
+<li>适配器（Adapter）模式：将一个类的接口转换成客户希望的另外一个接口，使得原本由于接口不兼容而不能一起工作的那些类能一起工作。</li>
+<li>桥接（Bridge）模式：将抽象与实现分离，使它们可以独立变化。它是用组合关系代替继承关系来实现，从而降低了抽象和实现这两个可变维度的耦合度。</li>
+<li>装饰（Decorator）模式：动态的给对象增加一些职责，即增加其额外的功能。</li>
+<li>外观（Facade）模式：为多个复杂的子系统提供一个一致的接口，使这些子系统更加容易被访问。</li>
+<li>享元（Flyweight）模式：运用共享技术来有效地支持大量细粒度对象的复用。</li>
+<li>组合（Composite）模式：将对象组合成树状层次结构，使用户对单个对象和组合对象具有一致的访问性。</li>
+<li>模板方法（TemplateMethod）模式：定义一个操作中的算法骨架，而将算法的一些步骤延迟到子类中，使得子类可以不改变该算法结构的情况下重定义该算法的某些特定步骤。</li>
+<li>策略（Strategy）模式：定义了一系列算法，并将每个算法封装起来，使它们可以相互替换，且算法的改变不会影响使用算法的客户。</li>
+<li>命令（Command）模式：将一个请求封装为一个对象，使发出请求的责任和执行请求的责任分割开。</li>
+<li>职责链（Chain of Responsibility）模式：把请求从链中的一个对象传到下一个对象，直到请求被响应为止。通过这种方式去除对象之间的耦合。</li>
+<li>状态（State）模式：允许一个对象在其内部状态发生改变时改变其行为能力。</li>
+<li><strong>观察者（Observer）模式</strong>：多个对象间存在一对多关系，当一个对象发生改变时，把这种改变通知给其他多个对象，从而影响其他对象的行为。</li>
+<li>中介者（Mediator）模式：定义一个中介对象来简化原有对象之间的交互关系，降低系统中对象间的耦合度，使原有对象之间不必相互了解。</li>
+<li>迭代器（Iterator）模式：提供一种方法来顺序访问聚合对象中的一系列数据，而不暴露聚合对象的内部表示。</li>
+<li>访问者（Visitor）模式：在不改变集合元素的前提下，为一个集合中的每个元素提供多种访问方式，即每个元素有多个访问者对象访问。</li>
+<li>备忘录（Memento）模式：在不破坏封装性的前提下，获取并保存一个对象的内部状态，以便以后恢复它。</li>
+<li>解释器（Interpreter）模式：提供如何定义语言的文法，以及对语言句子的解释方法，即解释器。</li>
+</ol>
+<h1 id="五大设计原则"><a href="#五大设计原则" class="headerlink" title="五大设计原则"></a>五大设计原则</h1><p>原则的目的只有一个：降低对象之间的耦合，增加程序的可复用性、可扩展性和可维护性。</p>
+<p>核心五大原则：SOLID、DRY、KISS、YAGNI、LOD</p>
+<h3 id="SOLID原则"><a href="#SOLID原则" class="headerlink" title="SOLID原则"></a><strong>SOLID</strong>原则</h3><ul>
+<li>SRP(Single Responsibility Principle) 单一职责</li>
+<li>OCP(Open Closed Principle) 开闭原则</li>
+<li>LSP(Liskov Substitution Principle) 里氏替换</li>
+<li>ISO(Interface Segregation Principle) 接口隔离</li>
+<li>DIP(Dependency Inversion Principle) 依赖倒置/依赖反转</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>设计原则</th>
+<th>一句话归纳</th>
+<th>目的</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>开闭原则</td>
+<td>对扩展开放，对修改关闭</td>
+<td>降低维护带来的新风险</td>
+</tr>
+<tr>
+<td>依赖倒置原则</td>
+<td>高层不应该依赖低层，要面向接口编程</td>
+<td>更利于代码结构的升级扩展</td>
+</tr>
+<tr>
+<td>单一职责原则</td>
+<td>一个类只干一件事，实现类要单一</td>
+<td>便于理解，提高代码的可读性</td>
+</tr>
+<tr>
+<td>接口隔离原则</td>
+<td>一个接口只干一件事，接口要精简单一</td>
+<td>功能解耦，高聚合、低耦合</td>
+</tr>
+<tr>
+<td>迪米特法则</td>
+<td>不该知道的不要知道，一个类应该保持对其它对象最少的了解，降低耦合度</td>
+<td>只和朋友交流，不和陌生人说话，减少代码臃肿</td>
+</tr>
+<tr>
+<td>里氏替换原则</td>
+<td>不要破坏继承体系，子类重写方法功能发生改变，不应该影响父类方法的含义</td>
+<td>防止继承泛滥</td>
+</tr>
+<tr>
+<td>合成复用原则</td>
+<td>尽量使用组合或者聚合关系实现代码复用，少使用继承</td>
+<td>降低代码耦合</td>
+</tr>
+</tbody></table>
+<p><strong>一、SRP(Single Responsibility Principle) 单一职责</strong></p>
+<p>定义：一个类或模块只负责完成一个功能</p>
+<p>理解：不要设计大而全的类，要设计粒度小、高性能单一的类。该原则的目的是为了实现代码高内聚、低耦合、提高代码复用性、可读性以及可维护性。</p>
+<p>补充：在保证单一职责时，要避免过分拆分，否则会降低内聚性，影响代码可维护性。</p>
+<p>以下场景可能会出现类没有指责单一：</p>
+<blockquote>
+<ul>
+<li>类中的代码行数、函数、属性是否过多。可以考虑对该类进行拆分；</li>
+<li>类依赖的其他类过多，或者依赖类的其他类过多，不符合高内聚、低耦合的设计思想；</li>
+<li>私有方法过多，可以考虑将私有方法独立到新类中，设置为 public 方法，提高代码复用性；</li>
+<li>当发现类名比较难命名或类名笼统、冗长时，说明该类职责定义不够清晰；</li>
+<li>类中大量方法集中操作某几个属性时，可以考虑将这几个属性和方法拆分出去；</li>
+</ul>
+</blockquote>
+<p>举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 如果下面的用户信息类仅在一个场景中使用，则没有什么问题；</span><br><span class="line">* 如果后面用户的地址信息在其他模块中使用时，就可以将地址信息进行拆分。</span><br><span class="line">* 以及各个属性的操作方法都要进行聚合到一个类中，提高代码的维护性。</span><br><span class="line">*/</span><br><span class="line">data class UserData(val userId:Long, </span><br><span class="line">                    val userName:String, </span><br><span class="line">                    val email:String,</span><br><span class="line">                    val telephone:String,</span><br><span class="line">                    val provinceOfAddress:String,</span><br><span class="line">                    val cityOfAddress:String,</span><br><span class="line">                    val regionOfAddress:String,</span><br><span class="line">                    //.....其他属性</span><br><span class="line">                   )</span><br></pre></td></tr></table></figure>
+
+<p><strong>二、OCP(Open Closed Principle) 开闭原则</strong></p>
+<p>定义：(模块、类、方法)对拓展开放，对修改关闭。</p>
+<p>理解：对于新功能尽量通过拓展已有代码而非修改的方式完成。</p>
+<p>补充：在开发中不需要识别、预留所有拓展点，切勿过度设计。最合理的做法是，保证短期内、可确定的部分进行拓展设计。做常用的代码扩展性的方法：多态、依赖注入、基于接口开发，以及部分设计模式(装饰、策略、模板、责任链、状态等)</p>
+<p>举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 基于接口开发。对于外部调用者，内部逻辑是无感知的，方便后面进行逻辑拓展，例如国内更新逻辑后面可能会支持跳转指定应用商店、H5链接等。</span><br><span class="line">*/</span><br><span class="line">interface IUpgradeService&#123;</span><br><span class="line">  fun checkUpgrade(ctx:Activity)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">abstract class BaseUpgradeService : IUpgradeService&#123;</span><br><span class="line">  override fun checkUpgrade(ctx:Activity)&#123;</span><br><span class="line">    //网络请求</span><br><span class="line">    //....</span><br><span class="line">    //执行需要更新</span><br><span class="line">    startUpgrade()</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  fun startUpgrade()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class CnUpgradeService : BaseUpgradeService&#123;</span><br><span class="line">  override fun startUpgrade()&#123;</span><br><span class="line">    //国内执行更新逻辑。例如应用内下载安装等</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class I18nUpgradeService : BaseUpgradeService&#123;</span><br><span class="line">  override fun startUpgrade()&#123;</span><br><span class="line">    //海外执行更新逻辑。例如跳转google play</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//实际执行Activity</span><br><span class="line">class MainActivity : AppCompactActivity&#123;</span><br><span class="line">  override fun onCreate(savedInstanceState : Bundle)&#123;</span><br><span class="line">    super.onCreate(savedInstanceState);</span><br><span class="line">    setContentView(R.layout.activity_main);</span><br><span class="line">    //执行更新逻辑</span><br><span class="line">    ServiceLoader.instance.load(IUpgradeService::class.java).checkUpgrade(this)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>三、LSP(Liskov Substitution Principle) 里氏替换</strong></p>
+<p>定义：子类对象能够替换程序中父类对象出现的任何地方，并保证原来程序的逻辑行为不变及正确性不被破坏。</p>
+<p>理解：在代码中可以用子类来替换父类，和多态类似，区别在于“里氏替换原则”是子类不能违背父类的协议，如父类要实现的功能、入参、出参、异常情况等。</p>
+<p>举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 下面代码违反里氏替换原则。因为父类并没有对参数进行校验和抛异常，子类违背了父类的协议(入参判断、异常情况)。</span><br><span class="line">*/</span><br><span class="line">class UpgradeService&#123;</span><br><span class="line">  fun checkUpgrade(ctx: Activity, appId:Int, channelId:Int)&#123;</span><br><span class="line">    //... 检查逻辑</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class CnUpgradeService : UpgradeService&#123;</span><br><span class="line">  override fun checkUpgrade(ctx: Activity, appId:Int, channelId:Int)&#123;</span><br><span class="line">    if(appId == 0 || channelId == 0)&#123;</span><br><span class="line">      throw Exception(...);</span><br><span class="line">    &#125;</span><br><span class="line">    //...国内检测逻辑</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>四、ISO(Interface Segregation Principle) 接口隔离</strong></p>
+<p>定义：客户端(接口调用者)不应该被强迫依赖它不需要的接口。</p>
+<p>理解：与“单一职责”类似，区别在于“单一职责”针对的是模块、类、接口的设计，“接口隔离”一方面更侧重于接口的设计，另一方面思考的角度不同。</p>
+<p>补充：这里的“接口”可以理解为：①一组API接口集合；②单个API接口或函数；③OOP中的接口概念</p>
+<p>举例:</p>
+<ul>
+<li>一组API接口集合</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 下面代码违背了接口隔离原则。</span><br><span class="line">* 因为后期新增的删除接口，对外所有服务都可以调用，非常容易导致误操作场景。</span><br><span class="line">* 在没有做鉴权时，建议将删除接口单独做一个接口服务，供特殊场景使用。</span><br><span class="line">*/</span><br><span class="line">interface UserService&#123;</span><br><span class="line">  fun register(userName:String, password:String):Boolean</span><br><span class="line">  fun login(userName:String, password:String):Boolean</span><br><span class="line">  </span><br><span class="line">  //后期新增了删除用户信息的接口</span><br><span class="line">  fun deleteUserById(userId:Long):Boolean</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>单个API接口或函数</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">enum class ComputeType&#123;</span><br><span class="line">    ADD,</span><br><span class="line">    SUBTRACT, </span><br><span class="line">    MULTIPLY , </span><br><span class="line">    DIVIDE</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">* 假设下面代码每一种计算方式都比较复杂，则违背了接口隔离原则。</span><br><span class="line">* 如果逻辑复杂的情况下，建议将每种情况作为一个单独的接口或函数进行处理。</span><br><span class="line">* 例如:</span><br><span class="line">* fun dataAdd()&#123;&#125;</span><br><span class="line">* fun dataSubtract()&#123;&#125;</span><br><span class="line">*/</span><br><span class="line">fun dataCompute(firstNum:Int, secondNum:Int, computeType:ComputeType): Int&#123;</span><br><span class="line">  retrun when(computeType)&#123;</span><br><span class="line">    ComputeType.ADD -&gt; //....</span><br><span class="line">    //....</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>OOP中的接口概念</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 尽量避免设计大而全的接口，大而全会导致强迫调用者依赖不必要的接口</span><br><span class="line">* 例如下面接口，如果调用者只是想配置监控和更新，还必须空实现配置日志数据。推荐根据功能进行拆分。</span><br><span class="line">*/</span><br><span class="line">interface IConfig&#123;</span><br><span class="line">  //更新配置信息</span><br><span class="line">  fun update()</span><br><span class="line">  //配置日志输出</span><br><span class="line">  fun outputLog():String</span><br><span class="line">  //配置监控</span><br><span class="line">  fun monitorConfig()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>五、DIP(Dependency Inversion Principle) 依赖倒置/依赖反转</strong></p>
+<p>定义：高层模块不依赖低层模块，它们共同依赖同一个抽象，抽象不要依赖具体实现细节，具体实现细节依赖抽象。</p>
+<p>理解：该原则用于指导框架层面的设计，调用者与被调用者没有直接依赖关系，而是通过一个抽象(规范)来建立关系，同时抽象(规范)不依赖具体的调用者和被调用者的实现细节，而调用者和被调用者需要依赖抽象(规范)。例如，暴露请求参数，由调用者来实现具体的请求，并将结果再返回。</p>
+<p><strong>控制反转(IOC)、依赖反转(DIP)、依赖注入(DI)的区别与联系</strong></p>
+<ul>
+<li>控制反转：提供一个可拓展的代码骨架，用来组装对象、管理整个执行流程。不是一种具体的实现技巧，而是一种设计思想，一般用于指导框架层面的设计，具体的方式有很多，例如依赖注入、模板模式等。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">abstract class TestCase&#123;</span><br><span class="line">  fun run()&#123;</span><br><span class="line">    if(doTest())&#123;</span><br><span class="line">      println(&quot;Test success&quot;)</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">      println(&quot;Test failed&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  abstract fun doTest():Boolean</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class UserServiceTest: TestCase&#123;</span><br><span class="line">  override doTest():Boolean&#123;</span><br><span class="line">    //....控制逻辑</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main()&#123;</span><br><span class="line">  UserServiceTest().run()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>依赖注入：不通过 new()方式在类内部创建依赖类对象，而是将依赖的类对象在外部创建好后，通过构造函数、函数参数等方式传递(或注入)给类使用。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">//Notification类使用通过构造函数传入的类对象messageSender调用发送逻辑</span><br><span class="line">class Notification(val messageSender: MessageSender)&#123;</span><br><span class="line">  fun sendMessage(cellphone: String, message: String)&#123;</span><br><span class="line">    messageSender.send(cellphone, message)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">interface MessageSender&#123;</span><br><span class="line">  fun send(cellphone: String, message: String)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class SmsSender: MessgeSender&#123;</span><br><span class="line">  override fun send(cellphone: String, message: String)&#123;</span><br><span class="line">    //...短信通知逻辑</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class EmailSender: MessageSender&#123;</span><br><span class="line">  override fun send(cellphone: String, message: String)&#123;</span><br><span class="line">    //...邮件通知逻辑</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main()&#123;</span><br><span class="line">  val messageSender = SmsSender()</span><br><span class="line">  val notification = Notification(messageSender)</span><br><span class="line">  notification.sendMessage(&quot;xxxxx&quot;,&quot;xxxxx&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>依赖反转：高层模块(调用者)不要依赖底层模块(被调用者代码)。高层模块和底层模块赢通过抽象来互相依赖。除此之外，抽象不要依赖具体实现细节，具体实现细节依赖抽象。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">//抽象层</span><br><span class="line">interface ISendTypeConfig&#123;</span><br><span class="line">    fun httpRequest(params: String)</span><br><span class="line">    fun socketRequest(params: String)</span><br><span class="line">&#125;</span><br><span class="line">//底层模块逻辑</span><br><span class="line">class SendTypeManager(private val config: ISendTypeConfig)&#123;</span><br><span class="line">    fun sendMessage(sendByHttp:Boolean, params: String)&#123;</span><br><span class="line">        if (sendByHttp)&#123;</span><br><span class="line">            config.httpRequest(params)</span><br><span class="line">            return</span><br><span class="line">        &#125;</span><br><span class="line">        //使用socket进行消息发送</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//高层模块逻辑</span><br><span class="line">class SendTypeConfig: ISendTypeConfig&#123;</span><br><span class="line">    override fun httpRequest(params: String) &#123;</span><br><span class="line">        //使用http请求</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun socketRequest(params: String) &#123;</span><br><span class="line">        //使用socket请求</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main()&#123;</span><br><span class="line">    //这段代码属于[底层模块]逻辑。高层模块只需关注消息发送方式的具体实现，然后调用底层模块的发送消息即可，不会关注底层模块的具体实现。</span><br><span class="line">    SendTypeManager(SendTypeConfig()).sendMessage(true, &quot;这是一条http发送的消息&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="DRY原则"><a href="#DRY原则" class="headerlink" title="DRY原则"></a>DRY原则</h3><p>(Don’t Repeat Yourself)原则，不要重复自己</p>
+<p>理解：不要开发重复代码，可以复用或提取公共代码，同时也要注意遵守“单一职责”和“接口隔离”原则。</p>
+<p>提升代码复用性的方法：</p>
+<ul>
+<li>减少代码耦合</li>
+<li>满足单一职责原则</li>
+<li>模块化</li>
+<li>业务与非业务逻辑分离</li>
+<li>通用代码下沉</li>
+<li>继承、抽象、多态、封装</li>
+<li>应用模板等设计模式</li>
+</ul>
+<h3 id="KISS原则"><a href="#KISS原则" class="headerlink" title="KISS原则"></a>KISS原则</h3><p>(Keep It Simple And Stupid)原则</p>
+<p>理解：尽量保证代码简洁，使用通用技术(同事都懂的技术)、不重复造轮子、不过度优化。</p>
+<p>举例：对于某个数值的提取或者匹配判断，使用正则表达式可以使代码行数更少，看似更简单，但其实并不是所有同事都熟悉正则表达式，而且在编写正则规则时易出现bug，所以可以采用通用技术来实现。</p>
+<h3 id="YAGNI原则"><a href="#YAGNI原则" class="headerlink" title="YAGNI原则"></a>YAGNI原则</h3><p>(You Aint’t Gonna Need It)原则，你不会用到它的</p>
+<p>理解：不去设计与开发当前功能用不到的代码，但并不意味着不考虑拓展性，可以预留好拓展点，后面需要时再开发。</p>
+<p>举例：目前项目只对国内市场，未来将会面向国内海外同时使用。所以在开发中不需要提前编写海外部分代码，但是在国内海外有差异的逻辑上要预留好拓展点，方便后面对海外逻辑进行补充。</p>
+<h3 id="LOD原则-迪米特法则"><a href="#LOD原则-迪米特法则" class="headerlink" title="LOD原则/迪米特法则"></a>LOD原则/迪米特法则</h3><p>(Law of Demeter)原则/迪米特法则</p>
+<p>理解：不该有直接依赖关系的类之间，不要有依赖；有依赖关系的类之间，尽量只依赖必要的接口。</p>
+<p>举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* NetworkTransporter 类负责底层网络通信，根据请求获取数据。</span><br><span class="line">*</span><br><span class="line">* 该类的入参类型为 HtmlRequest 对象，作为底层类，应保证通用性，而不是仅服务于下载HTML。所以违反了迪米特法则，依赖了不该有直接依赖的 HtmlRequest 类。</span><br><span class="line">*/</span><br><span class="line">public class NetworkTransporter &#123;</span><br><span class="line">    // 省略属性和其他方法...</span><br><span class="line">    public Byte[] send(HtmlRequest htmlRequest) &#123;</span><br><span class="line">      //...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class HtmlDownloader &#123;</span><br><span class="line">  private NetworkTransporter transporter;//通过构造函数或IOC注入</span><br><span class="line">  </span><br><span class="line">  public Html downloadHtml(String url) &#123;</span><br><span class="line">    Byte[] rawHtml = transporter.send(new HtmlRequest(url));</span><br><span class="line">    return new Html(rawHtml);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">* Document 表示网页文档，后续的网页内容抽取、分词、索引都是以此为处理对象。</span><br><span class="line">*</span><br><span class="line">* 该类总有如下3个问题:</span><br><span class="line">* 1. 构造函数中的 downloader.downloadHtml() 逻辑复杂，耗时长，不应该放到构造函数中，会影响代码的可测试性。</span><br><span class="line">* 2. HtmlDownloader 对象在构造函数中通过 new 来创建，违反了基于接口而非实现编程的设计思想，也会影响到代码的可测试性。</span><br><span class="line">* 3. 从业务含义上来讲，Document 网页文档没必要依赖 HtmlDownloader 类，违背了迪米特法则。</span><br><span class="line">*/</span><br><span class="line">public class Document &#123;</span><br><span class="line">  private Html html;</span><br><span class="line">  private String url;</span><br><span class="line">  </span><br><span class="line">  public Document(String url) &#123;</span><br><span class="line">    this.url = url;</span><br><span class="line">    HtmlDownloader downloader = new HtmlDownloader();</span><br><span class="line">    this.html = downloader.downloadHtml(url);</span><br><span class="line">  &#125;</span><br><span class="line">  //...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2099/11/01/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_%E5%9F%BA%E7%A1%80/" title="0基础_设计模式" target="_blank" rel="external">https://fuyunjinglong.github.io/2099/11/01/J_设计模式_基础/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://fuyunjinglong.github.io/" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://fuyunjinglong.github.io/" target="_blank"><span class="text-dark">Elven</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2099/11/01/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_0%E5%9F%BA%E7%A1%80/" title="0基础_数据结构"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2099/09/12/C_H5_0%E5%9F%BA%E7%A1%80/" title="H5_0基础"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

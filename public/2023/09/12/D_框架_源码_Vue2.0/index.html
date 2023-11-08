@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>源码_Vue2.0 | Hexo</title>
+  <meta name="description" content="前言关于源码   为了面试 为了在简历上写自己会源码 了解底层原理 学习高手思路 通过源码来学习一些小技巧(骚操作) 对框架如何实现的各种功能感到好奇 内卷严重 不看不行 逆水行舟 不进则退 自己也想造轮子 先看看别人都是怎么做的 各种公众号和卖课的都在贩卖焦虑 被洗脑洗的   怎样学习源码才是最科学的方式呢？  我们来看一个例子：有一些听起来非常高大上的高科技产品，如电磁轨道炮。那么当我们拆解一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="源码_Vue2.0">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue2.0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言关于源码   为了面试 为了在简历上写自己会源码 了解底层原理 学习高手思路 通过源码来学习一些小技巧(骚操作) 对框架如何实现的各种功能感到好奇 内卷严重 不看不行 逆水行舟 不进则退 自己也想造轮子 先看看别人都是怎么做的 各种公众号和卖课的都在贩卖焦虑 被洗脑洗的   怎样学习源码才是最科学的方式呢？  我们来看一个例子：有一些听起来非常高大上的高科技产品，如电磁轨道炮。那么当我们拆解一">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-09-11T23:33:16.000Z">
+<meta property="article:modified_time" content="2023-05-20T01:05:42.702Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue2.0/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://fuyunjinglong.github.io/" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Elven</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">18</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/09/">九月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/06/">六月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/06/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_0%E5%9F%BA%E7%A1%80/" class="title">0基础_工程热点</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-05T22:33:16.000Z" itemprop="datePublished">2099-11-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/05/I_%E7%A7%BB%E5%8A%A8%E7%AB%AF_0%E5%9F%BA%E7%A1%80/" class="title">0基础_移动端</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-04T22:33:16.000Z" itemprop="datePublished">2099-11-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/" class="title">0基础_计算机网络</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-03T22:33:16.000Z" itemprop="datePublished">2099-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_0%E5%9F%BA%E7%A1%80/" class="title">0基础_数据结构</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_%E5%9F%BA%E7%A1%80/" class="title">0基础_设计模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Vue%E6%BA%90%E7%A0%81%E8%B0%83%E8%AF%95"><span class="toc-text">Vue源码调试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Vue%E6%BA%90%E7%A0%81%E7%9B%AE%E5%BD%95"><span class="toc-text">Vue源码目录</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Vue%E4%BB%8E%E5%AE%9E%E4%BE%8B%E5%8C%96%E5%88%B0%E6%B8%B2%E6%9F%93%E7%9A%84%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B"><span class="toc-text">Vue从实例化到渲染的完整流程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Vue%E6%BA%90%E7%A0%81%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90"><span class="toc-text">Vue源码深度解析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E8%BF%87%E7%A8%8B-%E5%BE%85%E7%BB%AD"><span class="toc-text">生命周期过程-待续</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E5%8C%96%E7%9B%91%E6%B5%8B%E5%8E%9F%E7%90%86-%E5%BE%85%E7%BB%AD"><span class="toc-text">变化监测原理-待续</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86-%E5%BE%85%E7%BB%AD"><span class="toc-text">模板编译原理-待续</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E6%8B%9FDOM%E5%8E%9F%E7%90%86-%E5%BE%85%E7%BB%AD"><span class="toc-text">虚拟DOM原理-待续</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%89%8B%E5%86%99Vue2-%E7%8F%A0%E5%B3%B0-%E5%BE%85%E7%BB%AD"><span class="toc-text">手写Vue2-珠峰-待续</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Rollup%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83"><span class="toc-text">Rollup搭建环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%8D%E5%BA%94%E5%BC%8F%E5%AE%9E%E7%8E%B0"><span class="toc-text">响应式实现</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-D_框架_源码_Vue2.0" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      源码_Vue2.0
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue2.0/" class="article-date">
+	  <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue2.0/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><strong>关于源码</strong></p>
+<blockquote>
+<ul>
+<li>为了面试</li>
+<li>为了在简历上写自己会源码</li>
+<li>了解底层原理 学习高手思路</li>
+<li>通过源码来学习一些小技巧(<em>骚操作</em>)</li>
+<li>对框架如何实现的各种功能感到好奇</li>
+<li>内卷严重 不看不行 逆水行舟 不进则退</li>
+<li>自己也想造轮子 先看看别人都是怎么做的</li>
+<li>各种公众号和卖课的都在贩卖焦虑 被洗脑洗的</li>
+</ul>
+</blockquote>
+<p><strong>怎样学习源码才是最科学的方式呢？</strong></p>
+<blockquote>
+<p>我们来看一个例子：有一些听起来非常高大上的高科技产品，如<code>电磁轨道炮</code>。那么当我们拆解一个电磁轨道炮的时候，大概率你是看不懂它的。</p>
+<p>但用了一些磁铁、若干钢珠、以及几个我们日常生活中能够搞到的材料来制作了一个<code>简易版的电磁轨道炮</code>。这样我们一下子就能够搞懂<code>电磁轨道炮的真正原理</code>。</p>
+<p>虽然这样的轨道炮并不能真正的用于实战，但只要我们明白了最基础的那部分，我们就可以在此基础上一步步进行扩展，慢慢弄懂整个能够用于实战的复杂轨道炮。</p>
+</blockquote>
+<h1 id="Vue源码调试"><a href="#Vue源码调试" class="headerlink" title="Vue源码调试"></a>Vue源码调试</h1><p><strong>1.下载源码</strong></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/tree/v2.6.14">vue-v2.6.14版本</a>下载</p>
+<p><strong>2.安装依赖</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i</span><br></pre></td></tr></table></figure>
+
+<p>安装依赖报错1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">报错phantomjs-prebuilt@2.1.14 install: `node install.js`</span><br><span class="line">解决方案：npm install phantomjs-prebuilt@2.1.14 --ignore-scripts</span><br></pre></td></tr></table></figure>
+
+<p>安装依赖报错2</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">报错(plugin Rollup Core) Error: Could not load</span><br><span class="line">解决方案：</span><br><span class="line">手动下载依赖包https://github.com/ideayuye/rollup-plugin-alias，并覆盖掉本地文件夹 \node_modules\rollup-plugin-alias。进入rollup-plugin-alias文件夹，依次执行npm i</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.开启打包源文件</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// package.json</span><br><span class="line">&quot;dev&quot;: &quot;rollup -w -c scripts/config.js --environment TARGET:web-full-dev --sourcemap&quot;,</span><br></pre></td></tr></table></figure>
+
+<p><strong>4.开始调试源码</strong></p>
+<blockquote>
+<p>在源码目录中添加断点调试即可，比如\vue-2.6.14\src\core\instance\init.js</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;style&gt;</span><br><span class="line">      #demo &#123;</span><br><span class="line">        font-family: &quot;Helvetica&quot;, Arial, sans-serif;</span><br><span class="line">        text-align: center;</span><br><span class="line">      &#125;</span><br><span class="line">    &lt;/style&gt;</span><br><span class="line">    &lt;script src=&quot;./dist/vue.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">  &lt;/head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;div id=&quot;demo&quot;&gt;</span><br><span class="line">      &lt;button @click=&quot;num++&quot;&gt;Object类型自增加：&#123;&#123;num&#125;&#125;&lt;/button&gt;</span><br><span class="line">      &lt;button @click=&quot;add&quot;&gt;Array类型自增加：&#123;&#123;arr&#125;&#125;&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;script&gt;</span><br><span class="line">      new Vue(&#123;</span><br><span class="line">        el: &quot;#demo&quot;,</span><br><span class="line">        data: &#123;</span><br><span class="line">          num: 0,</span><br><span class="line">          arr: [1, 2, 3],</span><br><span class="line">        &#125;,</span><br><span class="line">        methods: &#123;</span><br><span class="line">          add() &#123;</span><br><span class="line">            this.arr.push(this.arr[this.arr.length - 1] + 1);</span><br><span class="line">            // this.$set(this.arr, 0, this.arr[0] + 1);</span><br><span class="line">          &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;);</span><br><span class="line">    &lt;/script&gt;</span><br><span class="line">  &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Vue源码目录"><a href="#Vue源码目录" class="headerlink" title="Vue源码目录"></a>Vue源码目录</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">├── benchmarks                  性能、基准测试</span><br><span class="line">├── dist                        构建打包的输出目录</span><br><span class="line">├── examples                    案例目录</span><br><span class="line">├── flow                        因为Vue使用了Flow来进行静态类型检查，这里定义了声明了一些静态类型</span><br><span class="line">├── packages                    一些额外的包，比如：负责服务端渲染的包 vue-server-renderer、配合 vue-loader 使用的的 vue-template-compiler，还有 weex 相关的</span><br><span class="line">    ├── vue-server-renderer</span><br><span class="line">    ├── vue-template-compiler</span><br><span class="line">    ├── weex-template-compiler</span><br><span class="line">    └── weex-vue-framework</span><br><span class="line">├── scripts                     所有的配置文件的存放位置，比如 rollup 的配置文件</span><br><span class="line">├── src                         vue 源码目录</span><br><span class="line">│   ├── compiler                编译器</span><br><span class="line">      |—codegen     根据ast生成render函数</span><br><span class="line">         |—directives    通用生成render函数之前需要处理的指令</span><br><span class="line">         |—parser     模板解析</span><br><span class="line">│   ├── core                    运行时的核心包</span><br><span class="line">│   │   ├── components          全局组件，比如 keep-alive</span><br><span class="line">│   │   ├── config.js           一些默认配置项</span><br><span class="line">│   │   ├── global-api          全局方法，也就是添加在Vue对象上的方法，比如Vue.use,Vue.extend,,Vue.mixin等</span><br><span class="line">│   │   ├── instance            实例相关内容，包括实例方法，生命周期，事件等</span><br><span class="line">│   │   ├── observer            响应式原理</span><br><span class="line">│   │   ├── util                工具方法</span><br><span class="line">│   │   └── vdom                虚拟 DOM 相关，比如熟悉的 patch 算法就在这儿</span><br><span class="line">│   ├── platforms               平台相关的编译器代码</span><br><span class="line">│   │   ├── web</span><br><span class="line">    |— web web端独有文件</span><br><span class="line">                |— compiler 编译阶段需要处理的指令和模块</span><br><span class="line">                |— runtime 运行阶段需要处理的组件、指令和模块</span><br><span class="line">                |— server 服务端渲染相关</span><br><span class="line">                |— util 工具库</span><br><span class="line">│   │   └── weex</span><br><span class="line">│   ├── server                  服务端渲染相关</span><br><span class="line">├── test                        测试目录</span><br><span class="line">├── types                       TS 类型声明</span><br></pre></td></tr></table></figure>
+
+<h1 id="Vue从实例化到渲染的完整流程"><a href="#Vue从实例化到渲染的完整流程" class="headerlink" title="Vue从实例化到渲染的完整流程"></a>Vue从实例化到渲染的完整流程</h1><p>参考：<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000023649060">vue源码分析</a></p>
+<blockquote>
+<p>new Vue-&gt;init-&gt;mount-&gt;compile-&gt;render-&gt;vnode-&gt;patch-&gt;dom</p>
+</blockquote>
+<p><strong>1. 定义Vue</strong>构造函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">initMixin(Vue);  // 定义 _init</span><br><span class="line">stateMixin(Vue);  // 定义 $set $get $delete $watch 等</span><br><span class="line">eventsMixin(Vue);   // 定义事件  $on  $once $off $emit</span><br><span class="line">lifecycleMixin(Vue); // 定义 _update  $forceUpdate  $destroy</span><br><span class="line">renderMixin(Vue); // 定义 _render 返回虚拟dom  </span><br></pre></td></tr></table></figure>
+
+<p><strong>2. initMixin</strong></p>
+<p>实例化Vue时，执行 _init, _init 定义在 initMixin 中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Vue.prototype._init = function (options) &#123;</span><br><span class="line">  // 合并 options</span><br><span class="line">  if (options &amp;&amp; options._isComponent) &#123;</span><br><span class="line">    initInternalComponent(vm, options); // 组件合并</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    // 非组件合并</span><br><span class="line">    vm.$options = mergeOptions(</span><br><span class="line">      resolveConstructorOptions(vm.constructor), </span><br><span class="line">      options || &#123;&#125;,</span><br><span class="line">      vm</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">  initLifecycle(vm); // 定义 vm.$parent vm.$root vm.$children  vm.$refs 等</span><br><span class="line">  initEvents(vm);   // 定义 vm._events  vm._hasHookEvent 等</span><br><span class="line">  initRender(vm); // 定义 $createElement $c</span><br><span class="line">  callHook(vm, &#x27;beforeCreate&#x27;); // 挂载 beforeCreate 钩子函数</span><br><span class="line">  initInjections(vm); // resolve injections before data/props</span><br><span class="line">  initState(vm);  // 初始化 props methods data computed watch 等方法</span><br><span class="line">  initProvide(vm); // resolve provide after data/props</span><br><span class="line">  callHook(vm, &#x27;created&#x27;); // 挂载 created 钩子函数</span><br><span class="line">  if (vm.$options.el) &#123;</span><br><span class="line">    vm.$mount(vm.$options.el); // 实例挂载渲染dom</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3. $mount</strong></p>
+<p>vue最终都是通过render函数将dom编译为虚拟dom</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 构建render函数</span><br><span class="line">if (!options.render) &#123;</span><br><span class="line">  // 如果没有render属性，那么将template模版编译转为render</span><br><span class="line">&#125;</span><br><span class="line">// 最后调用 mount</span><br><span class="line">return mount.call(this, el, hydrating)</span><br><span class="line">// mount 调用 mountComponent</span><br><span class="line">return mountComponent(this, el, hydrating)</span><br></pre></td></tr></table></figure>
+
+<p><strong>4. mountComponent</strong></p>
+<p>通过 new Watcher 调用执行 updateComponent, vm._render获取虚拟dom, vm._update将虚拟dom转为真实的dom并挂载到页面。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// hydrating 代表服务端渲染 hydrating =&gt; false</span><br><span class="line">updateComponent = function () &#123;</span><br><span class="line">  vm._update(vm._render(), hydrating); // 关键点</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>5. _render</strong></p>
+<p>_render执行render函数 返回vnode。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Vue.prototype._render = function () &#123;</span><br><span class="line">    // 此处的 vm._renderProxy 等价于 vm</span><br><span class="line">    vnode = render.call(vm._renderProxy, vm.$createElement);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>$createElement 主要是参数重载，整合为统一格式后调用 _createElement函数。</p>
+<p><strong>6. _update</strong></p>
+<p>_update 主要实现 vnode 转化为实际的dom， 注入到页面的同时并销毁页面模版。</p>
+<h1 id="Vue源码深度解析"><a href="#Vue源码深度解析" class="headerlink" title="Vue源码深度解析"></a>Vue源码深度解析</h1><p><strong>参考</strong></p>
+<blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.1024zyz.com/3206.html">Vue.js源码全方位深入解析-黄轶-video</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Jb4y1D7eA/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247">李永宁Vue源码解读-video</a></li>
+<li><a target="_blank" rel="noopener" href="https://winteroo.github.io/ylblog/docs/vue/01introduce.html#%E5%89%8D%E8%A8%80">vue核心四大模块</a></li>
+<li><a target="_blank" rel="noopener" href="https://vue-js.com/learn-vue/">Vue源码系列-Vue中文社区</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/column/6960553066101735461">李永宁Vue源码解读</a></li>
+<li><a target="_blank" rel="noopener" href="https://wangtunan.github.io/blog/vueAnalysis/introduction/">汪道南源码解析</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/FrontEndGitHub/FrontEndGitHub/issues/35">推荐 7 个 Vue2、Vue3 源码解密分析的开源项目</a></li>
+</ul>
+</blockquote>
+<p><strong>Vue核心四大模块</strong></p>
+<ul>
+<li>生命周期过程</li>
+<li>变化监测原理</li>
+<li>模板编译原理</li>
+<li>虚拟DOM原理</li>
+</ul>
+<h2 id="生命周期过程-待续"><a href="#生命周期过程-待续" class="headerlink" title="生命周期过程-待续"></a>生命周期过程-待续</h2><h2 id="变化监测原理-待续"><a href="#变化监测原理-待续" class="headerlink" title="变化监测原理-待续"></a>变化监测原理-待续</h2><h2 id="模板编译原理-待续"><a href="#模板编译原理-待续" class="headerlink" title="模板编译原理-待续"></a>模板编译原理-待续</h2><h2 id="虚拟DOM原理-待续"><a href="#虚拟DOM原理-待续" class="headerlink" title="虚拟DOM原理-待续"></a>虚拟DOM原理-待续</h2><h1 id="手写Vue2-珠峰-待续"><a href="#手写Vue2-珠峰-待续" class="headerlink" title="手写Vue2-珠峰-待续"></a>手写Vue2-珠峰-待续</h1><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1aq4y1o7Ny/?spm_id_from=333.999.top_right_bar_window_history.content.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247">video</a></p>
+<h2 id="Rollup搭建环境"><a href="#Rollup搭建环境" class="headerlink" title="Rollup搭建环境"></a>Rollup搭建环境</h2><p><strong>Rollup是什么</strong></p>
+<p>Rollup是一个JS模块打包器，可以将小块代码编译成大块复杂代码，rollup.js更专注JS类库打包(开发应用使用webpack，开发库使用Rollup)</p>
+<p><strong>环境搭建</strong></p>
+<p>1.初始化package.json</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm init -y</span><br></pre></td></tr></table></figure>
+
+<p>2.安装rollup环境</p>
+<blockquote>
+<ul>
+<li>@babel/core是es6转es5低级语法的核心包</li>
+<li>@babel/preset-env是babel插件的集合</li>
+<li>rollup-plugin-babel是rollup和babel的插件，是桥梁</li>
+</ul>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i rollup @babel/core @babel/preset-env rollup-plugin-babel -D</span><br></pre></td></tr></table></figure>
+
+<p><strong>目录配置</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">// rollup.config.js</span><br><span class="line">import babel from &#x27;rollup-plugin-babel&#x27;</span><br><span class="line">export default&#123;</span><br><span class="line">    input:&#x27;./src/index.js&#x27;,// 打包项目的入口</span><br><span class="line">    output:&#123;</span><br><span class="line">        file:&#x27;dist/vue.js&#x27;,// 打包输出的结果</span><br><span class="line">        format:&#x27;umd&#x27;, // 采用的模块化规范</span><br><span class="line">        name:&#x27;Vue&#x27;, // 指定的打包后全局变量</span><br><span class="line">        sourcemap:true</span><br><span class="line">    &#125;,</span><br><span class="line">    plugins:[</span><br><span class="line">        babel(&#123;// 自动读取babel配置文件</span><br><span class="line">            exclude:&quot;./node_module/**&quot; // 排除babel解析目录，**是glob写法</span><br><span class="line">        &#125;)</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//.babelrc配置文件</span><br><span class="line">&#123;</span><br><span class="line">    &quot;presets&quot;: [</span><br><span class="line">        // presets叫预设，也是插件的集合，主要把高级语法转为低级语法，如e6-&gt;es5</span><br><span class="line">        &quot;@babel/preset-env&quot;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// index.js入口文件</span><br><span class="line">export default&#123;</span><br><span class="line">    a:1,</span><br><span class="line">    b:2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// package.json</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;vue2-rollup&quot;,</span><br><span class="line">  &quot;version&quot;: &quot;1.0.0&quot;,</span><br><span class="line">  &quot;description&quot;: &quot;&quot;,</span><br><span class="line">  &quot;main&quot;: &quot;index.js&quot;,</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;dev&quot;: &quot;rollup -c -w&quot;// 执行打包，并读取默认config配置，watch动态监听文件变化</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;keywords&quot;: [],</span><br><span class="line">  &quot;author&quot;: &quot;&quot;,</span><br><span class="line">  &quot;license&quot;: &quot;ISC&quot;,</span><br><span class="line">  &quot;devDependencies&quot;: &#123;</span><br><span class="line">    &quot;@babel/core&quot;: &quot;^7.21.3&quot;,</span><br><span class="line">    &quot;@babel/preset-env&quot;: &quot;^7.20.2&quot;,</span><br><span class="line">    &quot;rollup&quot;: &quot;^2.79.1&quot;,</span><br><span class="line">    &quot;rollup-plugin-babel&quot;: &quot;^4.4.0&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 打包后的结果</span><br><span class="line">支持commonjs,amd,有全局Vue参数</span><br></pre></td></tr></table></figure>
+
+<h2 id="响应式实现"><a href="#响应式实现" class="headerlink" title="响应式实现"></a>响应式实现</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">// \src\index.js</span><br><span class="line">/**</span><br><span class="line"> * Class方法扩展与构造函数方法扩展比较：</span><br><span class="line"> * 1.Class用于扩展方法耦合的场景，但扩展方法都在class内部</span><br><span class="line"> * 2.构造函数用于外部方法的任意扩展，使用原型属性继承扩展方法，可以无限扩展，不受约束</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">import initMixin from &#x27;./init&#x27;</span><br><span class="line">function Vue(options)&#123;</span><br><span class="line">this._init(options)</span><br><span class="line">&#125;</span><br><span class="line">initMixin(Vue) // 扩展方法通过传入Vue构造函数，通过原形添加方法，并分文件管理</span><br><span class="line">export default Vue</span><br><span class="line"></span><br><span class="line">// \src\init.js</span><br><span class="line">import &#123;initState&#125; from &#x27;./state&#x27;</span><br><span class="line">export default function initMixin(Vue)&#123;</span><br><span class="line">// 扩展Vue的方法</span><br><span class="line">Vue.prototype._init=function(options)&#123;</span><br><span class="line">    // 绑定所有选项参数到实例上，后续所有的扩展方法都可以拿到这些选项</span><br><span class="line">    const vm = this</span><br><span class="line">    // $表示Vue自己的属性参数</span><br><span class="line">    vm.$options= options</span><br><span class="line">    // 初始化数据，如prop,data,methods,computed,watch</span><br><span class="line">    initState(vm)</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//\src\state.js</span><br><span class="line">import &#123; observe &#125; from &quot;./observe/index.js&quot;;</span><br><span class="line">export  function initState(vm)&#123;</span><br><span class="line">    const options =vm.$options</span><br><span class="line"></span><br><span class="line">    if(options.data)&#123;</span><br><span class="line">        initData(vm)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function initData(vm)&#123;</span><br><span class="line">let data = vm.$options.data;</span><br><span class="line">// 判断是否为函数，如果是则执行函数获取返回值。</span><br><span class="line">// 代理后，添加到vm实例上_data</span><br><span class="line">data=vm._data = typeof data ===&#x27;function&#x27;?data.call(vm):data;</span><br><span class="line">// 观察数据,实现响应式</span><br><span class="line">observe(data)</span><br><span class="line">console.log(data);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// \src\observe\index.js</span><br><span class="line">// 高类聚，低耦合</span><br><span class="line">class Observer&#123;</span><br><span class="line">    constructor(data)&#123;</span><br><span class="line">        this.walk(data);</span><br><span class="line">    &#125;</span><br><span class="line">    walk(data)&#123;</span><br><span class="line">        // 遍历一遍数据，添加响应式</span><br><span class="line">        Object.keys(data).forEach(key=&gt;&#123;</span><br><span class="line">            defineReactive(data,key,data[key])</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function defineReactive(data,key,value)&#123;</span><br><span class="line">    // 属性全部被重写</span><br><span class="line">    // 递归代理属性</span><br><span class="line">    observe(value);</span><br><span class="line">    Object.defineProperty(data,key,&#123;</span><br><span class="line">        get()&#123;</span><br><span class="line">            return value</span><br><span class="line">        &#125;,</span><br><span class="line">        set(newV)&#123;</span><br><span class="line">            observe(value);</span><br><span class="line">            value = newV===value?value:newV;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export function observe(data)&#123;</span><br><span class="line">    // 数据响应式</span><br><span class="line">    if(typeof data !== &#x27;object&#x27;||data===null)&#123;</span><br><span class="line">        return;// 如果不是对象，就不处理</span><br><span class="line">    &#125;</span><br><span class="line">    /**</span><br><span class="line"> * Class方法扩展与构造函数方法扩展比较：</span><br><span class="line"> * 1.Class用于扩展方法耦合的场景，但扩展方法都在class内部</span><br><span class="line"> * 2.构造函数用于外部方法的任意扩展，使用原型属性继承扩展方法，可以无限扩展，不受约束</span><br><span class="line"> */</span><br><span class="line">// 这里采用Class类</span><br><span class="line">    return new Observer(data)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue2.0/" title="源码_Vue2.0" target="_blank" rel="external">https://fuyunjinglong.github.io/2023/09/12/D_框架_源码_Vue2.0/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://fuyunjinglong.github.io/" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://fuyunjinglong.github.io/" target="_blank"><span class="text-dark">Elven</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2%E5%92%8CVue3%E6%AF%94%E8%BE%83/" title="Vue2和Vue3比较"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue3.0/" title="源码_Vue3.0"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
