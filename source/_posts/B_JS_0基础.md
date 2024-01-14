@@ -2575,7 +2575,7 @@ document.getElementById("div").style.offsetWidth = "120px";//不可行
 </script>
 ```
 
-## JS事件冒泡和事件捕获
+## JS事件冒泡和事件捕获(事件委托)
 
 DOM事件流（event flow ）存在三个阶段：**事件捕获阶段、处于目标阶段、事件冒泡阶段。**
 
@@ -2598,6 +2598,21 @@ Dom事件流：包含userCapture ture 和 false
 捕获阶段的处理函数最先执行，其次是目标阶段的处理函数，最后是冒泡阶段的处理函数。
 目标阶段的处理函数，先注册的先执行，后注册的后执行。
 ```
+
+**事件委托**
+
+```
+var ul = document.getElementById('ul');
+ul.onclick = function(event){
+	event= event||window.event;
+	const target = event.target;
+	if(target.nodeName==='LI'){
+		alert(target.innerHTML)
+	}
+}
+```
+
+
 
 ## 监听串口变化
 
@@ -3991,10 +4006,17 @@ if (month < 10) {
 }
 ```
 
-## 随机生成10以下正数
+## 获取20~50随机数
 
 ```
-Math.floor(Math.random()*10)
+function randomNum(min,max){
+	const range = max -min;
+	const xishu = Math.random();// [0,1]
+	const res=min+math.round(xishu*range);
+	return res;
+}
+
+randomNum(20,50)
 ```
 
 ## 数组的交集，差集，并集，补集
