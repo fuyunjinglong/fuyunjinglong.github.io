@@ -9,6 +9,56 @@ toc: true # 是否启用内容索引
 
 # 设计模式的源码应用
 
+## 单例模式(闭包的应用)
+
+> 点击登录，弹出登录弹窗
+
+```js
+// 基础版
+let createLogin = (function(){
+    let div = null;
+    return function(){
+        if(!div){
+            div = document.createElement('div');
+            div.innerHTML = '我是登录的弹窗';
+            div.style.display = 'none';
+            document.body.append(div);
+        }
+        return div
+    }
+})()
+
+document.getElementById('login').onclick = function(){
+    let login = createLogin();
+    login.style.display = 'block';
+}
+
+改进：单一职责的闭包
+// 最经典的闭包
+let getSingle = function(fn){
+    let result = null;
+    return function(){
+        return result||(result = fn());
+    }
+}
+// 单一职责
+let createLogin = function(){
+   let div = document.createElement('div');
+   div.innerHTML = '我是登录的弹窗';
+   div.style.display = 'none';
+   document.body.append(div);
+   return div
+}
+// 还可以创建createIframe等等
+const singleLogin = getSingle(createLogin);
+document.getElementById('login').onclick = function(){
+    let login = singleLogin();
+    login.style.display = 'block';
+}
+```
+
+
+
 ## **ES6-Promise观察者模式**
 
 > - 通过 Promise.prototype.then 和 Promise.prototype.catch 方法将观察者方法注册到被观察者 Promise 对象中，同时返回一个新的 Promise 对象，以便可以链式调用。

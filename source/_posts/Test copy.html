@@ -1,0 +1,23 @@
+<script>
+// 最经典的闭包
+let getSingle = function(fn){
+    let result = null;
+    return function(){
+        return result||(result = fn());
+    }
+}
+// 单一职责
+let createLogin = function(){
+   let div = document.createElement('div');
+   div.innerHTML = '我是登录的弹窗';
+   div.style.display = 'none';
+   document.body.append(div);
+   return div
+}
+// 还可以创建createIframe等等
+const singleLogin = getSingle(createLogin);
+document.getElementById('login').onclick = function(){
+    let login = singleLogin();
+    login.style.display = 'block';
+}
+</script>

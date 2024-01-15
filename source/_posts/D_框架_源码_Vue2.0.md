@@ -238,6 +238,7 @@ _update 主要实现 vnode 转化为实际的dom， 注入到页面的同时并�
 
 > - [Vue.js源码全方位深入解析-黄轶-video](https://www.1024zyz.com/3206.html)
 > - [李永宁Vue源码解读-video](https://www.bilibili.com/video/BV1Jb4y1D7eA/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+> - [Vue.js源码全方位深入解析-黄轶](https://ustbhuangyi.github.io/vue-analysis/v2/prepare/)
 > - [vue核心四大模块](https://winteroo.github.io/ylblog/docs/vue/01introduce.html#%E5%89%8D%E8%A8%80)
 > - [Vue源码系列-Vue中文社区](https://vue-js.com/learn-vue/)
 > - [李永宁Vue源码解读](https://juejin.cn/column/6960553066101735461)
