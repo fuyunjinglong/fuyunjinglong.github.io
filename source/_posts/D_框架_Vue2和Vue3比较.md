@@ -8,6 +8,149 @@ toc: true # 是否启用内容索引
 
 ---
 
+# Vue3和Vue2的区别
+
+## 生命周期
+
+| vue2.x        | vue3            |
+| ------------- | --------------- |
+| beforeCreate  | –               |
+| created       | –               |
+| beforeMount   | onBeforeMount   |
+| mounted       | onMounted       |
+| beforeUpdate  | onBeforeUpdate  |
+| updated       | onUpdated       |
+| beforeDestroy | onBeforeUnmount |
+| destroyed     | onUnmounted     |
+
+**Tips**： *setup是围绕beforeCreate和created生命周期钩子运行的，所以不需要显式地去定义*
+
+## 多根节点
+
+Vue3 支持了多根节点组件，也就是fragment。
+
+## 异步组件
+
+Vue3 提供 Suspense组件，允许程序在等待异步组件时渲染兜底的内容，如 loading ，使用户体验更平滑。使用它，需在模板中声明，并包括两个命名插槽：default和fallback。Suspense确保加载完异步内容时显示默认插槽，并将fallback插槽用作加载状态。
+
+```
+<tempalte>
+   <suspense>
+     <template #default>
+       <todo-list />
+     </template>
+     <template #fallback>
+       <div>
+         Loading...
+       </div>
+     </template>
+   </suspense>
+</template>
+```
+
+*真实的项目中踩过坑，若想在 setup 中调用异步请求，需在 setup 前加async关键字。这时，会受到警告async setup() is used without a suspense boundary。*
+
+**解决方案**：*在父页面调用当前组件外包裹一层Suspense组件*
+
+## Teleport
+
+Vue3 提供Teleport组件可将部分DOM移动到 Vue app之外的位置。
+
+```
+<button @click=dialogVisible = true>点击</button>
+<teleport to=body>
+   <div class=dialog v-if=dialogVisible>
+   </div>
+</teleport>
+```
+
+## 组合式API
+
+- 更好的逻辑复用
+- 更灵活的代码组织
+- 更好的类型推导
+- 更小的生产包体积
+
+## 响应式原理
+
+Vue2 响应式原理基础是Object.defineProperty；Vue3 响应式原理基础是Proxy。
+
+**Object.defineProperty**
+
+基本用法：直接在一个对象上定义新的属性或修改现有的属性，并返回对象。
+**Tips**： writable 和 value 与 getter 和 setter 不共存。
+
+```
+let obj = {}
+let name =  瑾行 
+Object.defineProperty(obj,  name , {
+  enumerable: true, // 可枚举（是否可通过for...in 或 Object.keys()进行访问）
+  configurable: true, // 可配置（是否可使用delete删除，是否可再次设置属性）
+  // value:   , // 任意类型的值，默认undefined
+  // writable: true, // 可重写
+  get: function() {
+    return name
+  },
+  set: function(value) {
+    name = value
+  }
+})
+```
+
+那 Vue3 为何会抛弃它呢？那肯定是有一些缺陷的。
+
+**主要原因**：无法监听对象或数组新增、删除的元素。
+Vue2 方案：针对常用数组原型方法push、pop、shift、unshift、splice、sort、reverse进行了hack处理；提供Vue.set监听对象/数组新增属性。对象的新增/删除响应，还可以new个新对象，新增则合并新属性和旧对象；删除则将删除属性后的对象深拷贝给新对象。
+
+**Tips**： *Object.defineOProperty是可以监听数组已有元素，但 Vue2 没有提供的原因是性能问题。*
+
+
+
+**Proxy**
+
+Proxy是ES6新特性，通过第2个参数handler拦截目标对象的行为。相较于Object.defineProperty提供语言全范围的响应能力，消除了局限性。
+
+消除局限性：
+
+1.对象/数组的新增、删除。
+2.监测.length修改。
+3.Map、Set、WeakMap、WeakSet的支持。
+基本用法：创建对象的代理，从而实现基本操作的拦截和自定义操作
+
+```
+function createReactiveObject(target, isReadOnly, baseHandlers, collectionHandlers, proxyMap) {
+  ...
+  // collectionHandlers: 处理Map、Set、WeakMap、WeakSet
+  // baseHandlers: 处理数组、对象
+  const proxy = new Proxy(
+    target,
+    targetType === TargetType.COLLECTION ? collectionHandlers : baseHandlers
+  )
+  proxyMap.set(target, proxy)
+  return proxy
+}
+```
+
+## 打包优化
+
+*tree-shaking：模块打包webpack、rollup等中的概念。移除 JavaScript 上下文中未引用的代码。主要依赖于import和export语句，用来检测代码模块是否被导出、导入，且被 JavaScript 文件使用。*
+
+以nextTick为例子，在 Vue2 中，全局 API 暴露在 Vue 实例上，即使未使用，也无法通过tree-shaking进行消除。
+
+Vue3 中针对全局 和内部的API进行了重构，并考虑到tree-shaking的支持。因此，全局 API 现在只能作为ES模块构建的命名导出进行访问。
+
+```
+import { nextTick } from vue
+nextTick(() => {  // 一些和DOM有关的东西}) 
+```
+
+## TypeScript 支持
+
+Vue3 由TS重写，相对于 Vue2 有更好地TypeScript支持。
+
+- Vue2 Option API中 option 是个简单对象，而TS是一种类型系统，面向对象的语法，不是特别匹配。
+- Vue2 需要vue-class-component强化vue原生组件，也需要vue-property-decorator增加更多结合Vue特性的装饰器，写法比较繁琐。
+
 # 入门
 
 ## 体系架构比较

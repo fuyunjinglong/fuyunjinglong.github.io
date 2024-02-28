@@ -1653,6 +1653,8 @@ const size = 10
 
 ## Hooks
 
+### Hooks实战
+
 - 方式一：export default导出单一函数，导入参数，导出函数和出参
 - 方式二：参考大崔哥的新写法(同一vue和js文件共享数据)--推荐
 - 方式三：返璞归真，结合1和2，进化到hooks本质--强强强推荐
@@ -1732,8 +1734,6 @@ export { initDialog, diaConfirm } from './dialog';
 
 export function initAll(params) {
   initTabs(params.tabs, params.tab);
-  initCardBLine(params.cardBLine);
-  initDialog(params.dia);
 }
 ```
 
@@ -1766,156 +1766,6 @@ async function loadTabs() {
   });
 }
 
-function createTab(item) {
-  // 创建tab
-  const result = {
-    label: item.pbiNameCn,
-    value: item.pbiId,
-    product: getProduct(item.pbiId), // 有联动查询
-    ...item,
-  };
-  return result;
-}
-
-async function getProduct(id) {
-  const res = await myApi.baseLine_querBaseLine();
-  return res;
-}
-
-function loadTab() {
-  // 载入
-  const i = tabs.findIndex((t) => t.showFlag === '1');
-  // showFlag 0是查看，1是编辑
-  tab.value = tabs[i === -1 ? 0 : i];
-}
-```
-
-@/services/cardBLine.ts--卡片业务
-
-```
-import * as myApi from '@/services/myApi';
-
-// 基线对标卡片
-let cardBLine = {};
-
-export async function initCardBLine(cardBLineRef) {
-  declareTag(cardBLineRef);
-  await loadCardBLine();
-  setCardBLine();
-}
-function declareTag(cardBLineRef) {
-  // 1.初始化-变量
-  cardBLine = cardBLineRef;
-}
-
-function loadCardBLine() {
-  // 2.载入
-  const cbData = { a: 1, b: 2 };
-  cardBLine.value = createCardBaseLine(cbData);
-}
-
-export function createCardBaseLine(cbData) {
-  return {
-    prop: 'baseLine',
-    label: cbData.a,
-    data: cbData.b,
-  };
-}
-async function setCardBLine(result?) {
-  // 设值基线对标
-  let p0 = result ? result.benchmarkStatus : '';
-  setValue(cardBLine.value, 'mark', p0);
-  // 未接纳
-  if (p0 === 'DIC_MARK_STATUS_003') {
-    const markI = cardBLine.value.findIndex((d) => d.prop === 'mark');
-    cardBLine.value.splice(markI + 2, 1);
-  }
-}
-
-export function setValue(prop, val) {
-  // 正常设值
-  const c1 = cardBLine.value.find((c) => c.prop === prop);
-  if (!c1) {
-    return;
-  }
-  c1.value = val;
-}
-function saveCardBLine() {
-  // 保存数据
-  const param = collectCardBLine();
-  myApi.baseLine_saveBaseLine(param);
-}
-
-function collectCardBLine() {
-  // 收集数据
-  const benchmarkStatus = findValue(cardBLine, 'mark');
-  return {
-    benchmarkStatus,
-  };
-}
-
-export function findValue(card, prop) {
-  // 正常获取
-  return cardBLine.value.data.find((c) => c.prop === prop)?.value;
-}
-
-export async function btnToOtherHandle(cb = cardBLine.value) {
-  // 可以自己调用，或第三方调用
-  await myApi.flow_transfer(cb);
-}
-```
-
-@/services/dialog.ts--弹窗业务
-
-```
-import { btnToOtherHandle } from './tabs';
-
-// 弹窗信息
-let dia = {};
-
-export async function initDialog(diaRef) {
-  declareTag(diaRef);
-  loadDia();
-}
-
-function declareTag(diaRef) {
-  // 1.初始化-变量
-  dia = diaRef;
-}
-
-function loadDia() {
-  // 2.载入
-  dia.value = createDia('transfer');
-}
-
-function createDia(type) {
-  const t = {
-    transfer: {
-      dVis: false,
-      dType: 'transfer',
-      dTitle: '转他人审批',
-      dClass: 'transfer',
-      dCont: {
-        val: '',
-      },
-    },
-  };
-  return t[type];
-}
-
-export async function btnToOther() {
-  // 转给他人审批
-  dia.value.dVis = true;
-}
-
-export async function diaConfirm(cardBLine) {
-  // 弹窗确认
-  const { dType } = dia.value;
-  if (dType === 'transfer') {
-    dia.value.dVis = false;
-    btnToOtherHandle(cardBLine);
-  }
-}
 ```
 
 **方式三：返璞归真，结合1和2，进化到hooks本质--强强强推荐**
@@ -2136,6 +1986,63 @@ function createDia(type) {
 }
 ```
 
+### **什么是Hooks**
+
+Hooks并不是VUE特有的概念，实际上它原本被用于指代一些特定时间点会触发的勾子。而在React16之后，它被赋予了新的意义：
+
+> 一系列以 `use` 作为开头的方法，它们提供了让你可以完全避开 `class式写法`，在函数式组件中完成生命周期、状态管理、逻辑复用等几乎全部组件开发工作的能力
+>
+> ```
+> Hooks最核心的价值来自于内部的状态管理
+> ```
+
+在VUE3中，`Hooks`的概念结合了VUE的响应式系统，被称为`组合函数`。组合函数是VUE3组合式API中提供的新的逻辑复用的方案，是一类利用 Vue 的组合式 API 来封装和复用有状态逻辑的函数。
+
+### Hook规则
+
+**React官方规范**
+
+> Hook 本质就是 JavaScript 函数，但是在使用它时需要遵循两条规则。我们提供了一个 [linter 插件](https://www.npmjs.com/package/eslint-plugin-react-hooks)来强制执行这些规则
+>
+> - **只在最顶层使用 Hook**
+>
+>   **不要在循环，条件或嵌套函数中调用 Hook，** 确保总是在你的 React 函数的最顶层以及任何 return 之前调用他们。遵守这条规则，你就能确保 Hook 在每一次渲染中都按照同样的顺序被调用。这让 React 能够在多次的 `useState` 和 `useEffect` 调用之间保持 hook 状态的正确。
+>
+> - **只在 React 函数中调用 Hook**
+>
+>   **不要在普通的 JavaScript 函数中调用 Hook。**你可以：
+>
+>   - ✅ 在 React 的函数组件中调用 Hook
+>   - ✅ 在自定义 Hook 中调用其他 Hook
+
+**其他规范**
+
+> - 通常来讲，一个Hook的命名需要以use开头，比如useTimeOut，这是约定俗成的，开发者看到useXXX即可明白这是一个Hook。Hook的名称需要清楚地表明其功能。
+> - 函数必须是纯函数，没有副作用
+> - 返回值是一个函数或数据，供外部使用
+> - Hook内部可以使用其他的Hook，组合功能
+> - 数据必须依赖于输入，不依赖于外部状态，保持数据流的明确性
+> - 在Hook内部处理错误，不要把错误抛出到外部，否则会增加hook的使用成本
+> - Hook是单一功能的，不要给一个Hook设计过多功能。单个Hook只负责做一件事，复杂的功能可以使用多个Hook互相组合实现，如果给单个Hook增加过多功能，又会陷入过于臃肿、使用成本高、难维护的问题中
+
+### **Hooks与composition Api**
+
+Hooks是一种`基于闭包`的函数式编程思维产物，所以通常我们会在`函数式风格`的框架或组件中使用Hook，比如VUE的组合式API(Composition Api)。Hooks在VUE2所使用的`选项式风格API`中也不是不可以使用，毕竟Hook本质只是一个函数，只要hook内部所使用的api能够得到支持，我们可以在任何地方使用它们，只是可能需要额外的支持以及效果没有函数式组件中那么好，因为仍会被选项分割。
+
+### 为什么要使用Hook
+
+Mixin/Class的局限性：
+
+- **不清晰的数据来源**：当使用了多个mixin/class时，哪个数据是哪个模块提供的将变得难以追寻，这将提高维护难度
+- **命名空间冲突**：来自多个class/mixin的开发者可能会注册同样的属性名，造成冲突
+- **隐性的跨模块交流**：不同的mixin/class之间可能存在某种相互作用，产生未知的后果
+
+其实Mixin/Class的缺点反过来就是**Hooks的优点**：
+
+- 清晰一目了然的源头：Hooks不是一个类，没有将状态、方法存放在对象中，然后通过导出对象的形式实现复用，也就不会有对象间过度`耦合`、`干扰`等问题。Hooks中的各类状态是封装在内部的，与外界隔离，仅暴露部分函数、变量，这使得其来源、功能`清晰可辨`且`不易被干扰`
+- 没有命名冲突的问题：Hooks本质是闭包函数，内部所导出的变量、方法支持重命名，因而同一个Hook在同一个组件中可以N次使用而不冲突
+- 精简逻辑：一个Hook开发完成后，在使用Hook时不需要关心其内部逻辑，只需知道有什么效果、如何使用即可，专注于其他核心业务逻辑，可以节省大量重复代码
+
 ## pinia入门
 
 推荐使用使用composition API模式定义store
@@ -2302,5 +2209,3 @@ export default defineComponent({
 })
 </script>
 ```
-
-11

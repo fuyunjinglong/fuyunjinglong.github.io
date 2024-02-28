@@ -241,6 +241,24 @@ Vue 3 还是不够激进（真要激进了我感觉 Vue 就成 React With Reacti
 >
 >    总的来说 Vue3 的 typescript 支持在 TSX 的情境下其实是可以有不错的体验的（但是离 React 还有不小的差距）。但是模板之下，就看工具链是否给力了，还是希望 Vue 在 SFC 情况下的类型体验能早日达到 TSX 的程度。
 
+## vue3代码实践建议
+
+**Typescript**
+
+TS严格模式：使用TS时，要开启tsconfig中的严格模式，如果关闭严格模式，类型检查的效果将大打折扣
+
+避免AnyScript：使用TS时要进行严格的类型声明，避免过多的any，因为使用any将失去类型检查，如果实在难以描述类型，则可以考虑使用unknow。TS项目中如果存在很多的any，不如抛弃TypeScript
+
+不要保留报错：各类报错通常是用来处理`边界情况`的，这正是此类报错存在的意义，需要重视并解决。有时候开发者会比TS更清楚数据的类型，此时一些不必要的类型报错可以通过`类型断言`解决。重视并解决所有报错可以为代码提供更好的`健壮性`
+
+**代码建议**
+
+- 规范、明确的命名： 在命名变量或函数时，名称应该尽可能的明确它的作用/功能，不要使用缩写特别是拼音缩写，这将导致代码可读性严重下降，复杂变量/方法使用注释进行注解
+- 积极使用新的ES语法：包括可选链操作符(?.)、解构、剩余参数语法、空值合并运算符(??)等，合理地使用它们将有效地提高代码可读性
+- 合理的代码组织：单个函数中，一些相关的函数内容写在一起可以有效的规范代码结构，在某个代码块比较复杂时，还可以提取为一个函数置于函数后部，前半部分仅`保留核心逻辑`，可以有效提升代码可读性。在VUE组件中也是类似的逻辑
+- 语义化代码：在编写代码时，调用各类JSAPI时，应该注重`语义化`，比如要对数组进行某种批处理，就使用Array.map而不是使用Array.forEach或其他循环方式然后配合外部创建的另一个空数组进行处理。要实现什么效果就使用什么API，这样既可以让代码精简，也可以增强可读性，让代码`自己描述自己`，这是`增强代码可读性的关键`
+- 基础功能使用工具类：在进行一些基础判断等操作时，尽量使用一些封装好的工具类，这样可以`避免`判断时的`疏漏`而产生错误；使用某功能时也先查询是否已有相关工具，同一类功能使用同一个封装好的工具将更`方便管理`，但要注意的是此类工具`不能过于复杂`，否则大范围应用后将会导致`难以维护`、牵一发而动全身
+
 ## Vapor Mode
 
 Vapor Mode是一种替代编译策略，受到Solid的启发，我们一直在进行实验。使用相同的Vue SFC，Vapor Mode将其编译为JavaScript输出，与当前基于Virtual DOM的输出相比，它更具有性能、内存占用和运行时支持代码方面的优势。尽管它仍处于早期阶段，拥有以下优点：
@@ -275,5 +293,233 @@ Vapor Mode是一种替代编译策略，受到Solid的启发，我们一直在�
 
 `Vapor mode`可以在给定相同的`Vue SFC`前提下，与当前基于`虚拟DOM`的输出相比，`Vapor Mode`将其编译成性能更高、使用更少内存且需要更少运行时支持代码的`JavaScript`输出。
 
+## 手写Vue3-珠峰(pnpm的workspace来实现monorepo包管理)
 
+- [从零手写Vue3响应式模块 - 珠峰培训-video](https://www.bilibili.com/video/BV1WP4y1u7qi/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+
+### pnpm是什么
+
+pnpm是快速、节省磁盘空间的包管理器，主要采用符号链接的方式管理模块。
+
+### 搭建monorepo环境
+
+**初始化**
+
+```
+npm init -y
+```
+
+安装基本的依赖包
+
+- typescript：做类型检查
+- rollup：打包
+- rollup-plugin-typescript2：打包时解析ts
+- @rollup/plugin-json:打包时解析json
+- @rollup/plugin-node-resolve:按照node的方式解析模块
+- @rollup/plugin-commonjs：解析低版本模块
+- minimist：解析用户提供的参数
+- execa@4：启动多个进程打包程序，指定版本4
+
+```
+pnpm install typescript rollup rollup-plugin-typescript2 @rollup/plugin-json @rollup/plugin-node-resolve @rollup/plugin-commonjs minimist execa@4 -D -w
+```
+
+创建packages目录，在根目录下pnpm-workspace.yaml配置文件，指定打包目录
+
+```
+packages:
+  - "packages/*" 
+```
+
+安装tsc即tsconfig配置文件
+
+```
+pnpm tsc --init 
+tsconfig.json配置
+{
+  "compilerOptions": {
+    "outDir": "dist", // 输出目录
+    "sourceMap": true, // 采用source
+    "target": "ES2016", // 目标语法
+    "module": "ESNext", //  模块格式
+    "moduleResolution": "Node", // 模块解析方式
+    "strict": true, // 严格模式
+    "resolveJsonModule": true, //解析json
+    "esModuleInterop": true, // 允许es6语法引入commonjs模块
+    "jsx": "preserve", // jsx不转义
+    "lib": ["ESNext", "DOM"], // 支持的类库esnext和dom
+    "baseUrl": ".", //以当前路径为基准进行查找
+    "paths": {
+      "@vue/*": ["packages/*/src"] // 别名前缀
+    }
+  }
+}
+```
+
+**创建reactivity模块和shared模块**
+
+其中reactivity会依赖shared
+
+```
+创建packages/reactivity/src/index.js
+创建packages/reactivity/package.json
+{
+  "name": "@vue/reactivity",
+  "version": "1.0.0",
+  "main": "index.js",
+  "module": "dist/reactivity.esm-bundler.js",
+  "unpkg": "dist/reactivity.global.js",
+  "buildOptions": {
+    "name": "VueReactivity",
+    "formats": [
+      "esm-bundler",
+      "cjs",
+      "global"
+    ]
+  }
+}
+```
+
+```
+创建packages/shared/src/index.js
+创建packages/shared/package.json
+{
+  "name": "@vue/shared",
+  "version": "1.0.0",
+  "main": "index.js",
+  "module": "dist/shared.esm-bundler.js",
+  "buildOptions": {
+    "formats": [
+      "esm-bundler",
+      "cjs"
+    ]
+  }
+}
+```
+
+给reactivity指定安装shared的依赖，让它找得到它
+
+```
+pnpm i @vue/shared@workspace --filter @vue/reactivity
+```
+
+```
+packages/reactivity/src/index.js
+import { isObject } from "@vue/shared";
+
+packages/shared/src/index.js
+export function isObject(value: unknown): value is Record<any, any> {
+  return typeof value === "object" && value !== null;
+}
+
+```
+
+**创建打包脚本**
+
+```
+package.json
+"scripts": {
+    "dev":"node scripts/dev.js reactivity -f global -s" //表示打包响应式模块，使用global方式打包，输出sourcemap
+  },
+```
+
+```
+scripts/dev.js
+const minimist = require("minimist");
+const execa = require("execa");
+// import minimist from "minimist";
+// import execa from "execa";
+const args = minimist(process.argv.slice(2)); //获取打包命令的执行参数
+
+// 获取执行命名时，打包的参数
+const target = args._.length ? args._[0] : "reactivity"; //目标模块
+const formats = args.f || "global"; // 打包的方式es6还是global全局等等
+const sourcemap = args.s || false; // 是否生产源码模式
+console.log(target, formats, sourcemap);
+// 读取参数后，执行子进程命令
+execa(
+  "rollup",
+  [
+    "-wc", // --watch --config监视文件变化和读取配置文件
+    "--environment", // 配置环境
+    [
+      `TARGET:${target}`,
+      `FORMATS:${formats}`,
+      sourcemap ? `SOURCE_MAP:true` : "",
+    ]
+      .filter(Boolean)
+      .join(","), //过滤掉空值或false的值
+  ],
+  {
+    stdio: "inherit", // 子进程命令在当前命令进程下继续执行
+  }
+);
+```
+
+```
+rollup.config.js
+import path from "path";
+import ts from "rollup-plugin-typescript2";
+import json from "@rollup/plugin-json";
+import { nodeResolve } from "@rollup/plugin-node-resolve";
+import commonjs from "@rollup/plugin-commonjs";
+
+// 命令参数获取-打包格式
+const packageFormats = process.env.FORMATS && process.env.FORMATS.split(",");
+// 命令参数获取-源码
+const sourcemap = process.env.SOURCE_MAP;
+const target = process.env.TARGET;
+console.log(packageFormats, sourcemap, target);
+
+// 根据target找到要打包的目录
+const packagesDir = path.resolve(__dirname, "packages");
+// 要打包的入口
+const packageDir = path.resolve(packagesDir, process.env.TARGET);
+// 以打包的目录解析文件
+const resolve = (p) => path.resolve(packageDir, p);
+// 获取打包的名字
+const name = path.basename(packageDir);
+const pkg = require(resolve("package.json"));
+// 输出配置
+const outputConfig = {
+  "esm-bundler": {
+    file: resolve(`dist/${name}.esm-bundler.js`),
+    format: "es",
+  },
+  cjs: {
+    file: resolve(`dist/${name}.cjs.js`),
+    format: "cjs",
+  },
+  global: {
+    file: resolve(`dist/${name}.global.js`),
+    format: "iife",
+  },
+};
+// 稍后打包的所有文件，可能命令中不含packageFormats值
+const packageConfigs = packageFormats || pkg.buildOptions.formats;
+
+function createConfig(format, output) {
+  output.sourcemap = sourcemap;
+  output.export = "named";
+  // 外部模块，哪些模块不需要打包
+  let external = [];
+  if (format === "global") {
+    // 填充全局名称
+    output.name = pkg.buildOptions.name;
+  } else {
+    // 哪些内部依赖不需要打包
+    external = [...Object.keys(pkg.dependencies)];
+  }
+  return {
+    input: resolve(`src/index.ts`),
+    output,
+    external,
+    plugins: [json(), ts(), commonjs(), nodeResolve()],
+  };
+}
+// 返回数组，会依次进行打包
+export default packageConfigs.map((format) =>
+  createConfig(format, outputConfig[format])
+);
+```
 

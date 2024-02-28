@@ -62,40 +62,40 @@ toc: true # 是否启用内容索引
 
 # 环境搭建-vue3+vite+ts(大崔哥)
 
-**初始化模板框架**
+创建基本模板
 
 ```
-yarn create vite vue3-cuixiaorui --template vue-ts
+npm create vite@latest my-vue-app --template vue-ts
 ```
-
-**集成jest&vtu单元测试环境**
 
 安装jest
 
 ```
-yarn add jest -D
+npm i jest -D
 ```
 
-验证
+配置package.json
 
 ```
-test/unit/index.spec.js
-test("1+1=2",()=>{
-    expect(1+1).toBe(2);
-})
-
-package.json
- "scripts": {
-    "test:unit":"jest"
+"scripts": {
+    "test:unit": "jest"
   },
-  
-npm run test:unit验证
 ```
 
-安装vue下jest语法提示
+编写第一个测试用例
+
+test/unit/index.spec.js
 
 ```
-yarn add @types/jest -D
+test("1+1=2", () => {
+  expect(1 + 1).toBe(2);
+});
+```
+
+执行单元测试命令
+
+```
+npm run test:unit
 ```
 
 # 使用vite初始化

@@ -53,6 +53,8 @@ toc: true # 是否启用内容索引
 
 ## 选择测试框架
 
+**A.远古测试框架**
+
 > Jest 是一个“零配置”的前端测试工具，具有诸如模拟和代码覆盖之类的开箱即用特性
 
 我们团队对采用 JEST 做前端测试的结果非常满意。它提供了一种“零配置”的开发体验，并具备诸多开箱即用的功能，比如 Mock 和代码覆盖率等。你不仅可以将此测试框架应用于 React.js 应用程序，也可以应用于其他 JavaScript 框架。Jest 经常被炒作的功能之一是用户界面的快照测试。快照测试可以作为测试金字塔上层一个很好的补充，但请记住，单元测试仍然是坚实的基础。
@@ -90,9 +92,47 @@ Jest几大好处：
 
 Vue和React 的默认测试框架是 Jest，Augular 的默认测试框架就是 Karma + Jasmine
 
+**B.现代测试框架**
+
+- vitest
+- Jest
+- Cypress
+- WebdriverIO
+- Web Test Runner
+- uvu
+
+**Jest**
+
+[Jest](https://jestjs.io/) 通过为大多数 JavaScript 项目提供开箱即用的支持、舒适的 API（`it` 和 `expect`）以及大多数设置所需的完整测试功能（快照、模拟和覆盖率），在测试框架领域占据了主导地位。
+
+**Cypress**
+
+[Cypress](https://www.cypress.io/) 是基于浏览器的测试工具，是 Vitest 的补充工具之一。如果你想使用 Cypress，建议将 Vitest 用于测试项目中非浏览器逻辑，将 Cypress 用于测试依赖浏览器的逻辑。
+
+Cypress 是著名的端到端测试工具，他们[最新的组件测试运行器](https://on.cypress.io/component) 对测试 Vite 组件有很好的支持，是测试任何在浏览器中渲染的东西的理想选择。
+
+基于浏览器运行测试的框架，例如 Cypress, WebdriverIO 和 Web Test Runner，会捕获到 Vitest 无法捕获的问题，因为他们都是使用真实的浏览器和 APIs。
+
+Cypress 的测试更加专注于确定元素是否可见，是否可以访问和交互。
+
+**WebdriverIO**
+
+[WebdriverIO](https://webdriver.io/) 类似于 Cypress，一个基于浏览器的替代测试运行器和 Vitest 的补充工具。它可以用作端到端测试工具以及测试 [web 组件](https://webdriver.io/docs/component-testing)。它甚至在底层使用了 Vitest 的组件，例如对于组件测试中的 [mocking and stubing](https://webdriver.io/docs/mocksandspies/)。
+
+WebdriverIO 具有与 Cypress 相同的优点，允许你在真实浏览器中测试逻辑。然而，它使用实际的[ web 标准](https://w3c.github.io/webdriver/)进行自动化，在运行 Cypress 测试时克服了一些权衡和限制。此外，它还允许你在移动设备上运行测试，使你可以在更多环境中测试应用程序。
+
+**Web Test Runner**
+
+[@web/test-runner](https://modern-web.dev/docs/test-runner/overview/) 在无头浏览器中进行测试，提供与你的 Web 应用程序相同的运行环境，而不需要模拟浏览器的 API 和 DOM。虽然没有像 Cypress 那样显示用于单步执行测试的 UI，但也使得我们可以使用 devtools 在浏览器中进行调试。
+
+**uvu**
+
+[uvu](https://github.com/lukeed/uvu) 是一个适用于 Node.js 和浏览器的测试运行器。
+
 ## 参考
 
-[Vue 应用单元测试的策略与实践 01 - 前言和目标](https://blog.jimmylv.info/2018-09-19-vue-application-unit-test-strategy-and-practice-01-introduction/)
+- [Vue 应用单元测试的策略与实践 01 - 前言和目标](https://blog.jimmylv.info/2018-09-19-vue-application-unit-test-strategy-and-practice-01-introduction/)
+- [测试框架比较](https://cn.vitest.dev/guide/comparisons.html#webdriverio)
 
 # TDD
 

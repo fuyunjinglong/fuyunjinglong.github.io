@@ -1542,6 +1542,17 @@ abbr,acronym {
 }
 ```
 
+## line-height
+
+- [腾讯ISD团队-深入理解CSS行高](https://cloud.tencent.com/developer/article/1534973)
+
+line-height，是指同一个元素中，两个文本行基线间的垂直距离。
+
+应用场景
+
+- 单行文字的垂直居中对齐：把line-height设置为您需要的box的大小可以实现单行文字的垂直居中，不需要设置height
+- 多行文字的垂直居中：使用`padding`就好了
+
 # 进阶
 
 ## 伪类和伪元素

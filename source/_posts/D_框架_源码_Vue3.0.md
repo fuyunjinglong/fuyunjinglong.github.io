@@ -6,6 +6,10 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
+# 库和框架的区别
+
+库和框架的区别是什么？库是你主动使用的工具，而框架是你被动适应的环境。
+
 # Vue源码调试
 
 **1.下载源码**
@@ -171,6 +175,8 @@ bue.runtime.esm-bundler.js
 > - [催学社-Vue3 源码实战课-video](https://www.1024zyz.com/4724.html)
 > - [Vue.js 3.0 核心源码-黄轶-video](https://www.1024zyz.com/3771.html)
 > - [Vue3源码解析，打造自己的Vue3框架-video](https://www.1024zyz.com/5016.html)
+> - [vue 源码 全宇宙](https://github.com/vue3/vue3-News/issues/16?content_source_url=https://github.com/vue3/vue3-News)
+> - [vue3js源码](https://vue3js.cn/start/)
 
 **Vue核心四大模块**
 
@@ -683,3 +689,72 @@ function createApp(Component, container) {
 createApp(Component, document.getElementById('app'))
 </script>
 ```
+
+# Vue3源码中学到了什么
+
+## 性能
+
+- 缓存
+- Diff算法：贪心+二分
+- 位运算
+
+> **缓存**
+
+缓存的本质是**用空间换时间**。 Vue 里使用了 `WeakMap` 这个内置对象缓存响应式数据。使用 `WeakMap` 而不是 `Map` 的目的，是让 JS 引擎在垃圾回收时**释放已经没有引用的内存对象**，提升查询速度和避免内存溢出。
+
+> **Diff算法：贪心+二分**
+
+**Diff** 算法应该说是 Vue 源码里**难度最高**的算法。即便是整个源码中最难的算法，在 Leetcode 上也只是**中等难度**的题目。
+
+一个流行的框架最伟大、最核心的地方，不是他用了多难的算法，而是他从某一类别应用的传统的开发方式中，**抽象出一套公式**。将固化的、重复的、复杂的事情留给框架自己，让使用者可以更关注自己的需求如何实现，同时又提供了一定的灵活性。
+
+算法只是锦上添花。引入算法以优化框架的性能，能让框架更有竞争力，但框架主张的开发模式、带来的设计思想，才是核心。
+
+ 根据二八定律，一件事情的核心工作只占20%，在安全漏洞、性能瓶颈方面也一样。识别出软件的性能瓶颈，储备一定的算法知识，再加以实际应用，做好这20%，也就离100%不远了。
+
+- Diff算法解析：http://hcysun.me/vue-design/zh/renderer-diff.html#减小dom操作的性能开销
+- LeetCode.300：https://leetcode-cn.com/problems/longest-increasing-subsequence/
+
+> **位运算**
+
+位运算大量用于底层软件开发,在计算资源和内存资源寸土寸金的板子上，用一个bit的高低电平来判断是或否，位运算精准而优雅。
+
+ 位运算在 框架/平台 类核心模块编码时可以借鉴，而以CRUD为主的业务类需求，则尽量使用人类（开发者）易于理解的表述方式。
+
+ 一是因为**业务逻辑变化频繁**，使用标志位和位运算往往需要**事先对所有枚举值做全面的规划**，如 Linux 文件系统的权限标志位；
+
+ 二是**方便自己和其他开发者阅读代码**，好的代码应该是写一次而经得起读百次的。
+
+## 可扩展性
+
+ Vue3 的源码采用 Monorepo 来管理各个包，repo 的组织结构非常完整而合理，各模块各司其职，充分解耦并且提供了极大的可扩展性，每一个 package 都独立提供了足够通用和抽象的API。
+
+## Composition API：组合 > 继承
+
+Vue3 提供了 Composition API，借鉴了 React Hooks。
+
+ 从 Vue 的 Options API、React 的 Class Component，两大框架殊途同归，最终都拥抱了 Function Component，说明**函数式编程**十分适应前端（UI）的开发。
+
+## 计算机底层知识：编译
+
+模板或JSX**为用户提供了足够简单、直观的编码方式**（而不是让你自己去写渲染函数），把复杂的事情留给了框架自己。
+
+在Vue2.x版本之前，Vue 没有将编译器与核心模块分离，在运行时引入编译器会使 Vue 整个包的体积变大，在Vue2.x之后，如果使用 webpack + SFC，webpack 会在打包编译阶段将 template 转成**渲染函数**（render function），并且提供了选项，使得运行时 Vue 可以剥离其编译器，减少体积，在 webpack 打包阶段完成 template 编译，也能提升运行时性能。
+
+## 工具
+
+**Typescript**
+
+人总是会犯错，任何事情的成功都不能依赖人的自觉性。Typescript 的编译时类型检查能让大部分常见的错误在开发阶段消除，让代码更加健壮和易于维护。
+
+**Rollup**
+
+Rollup是一款小巧的 Javascript 模块打包工具，更适合于**库应用的构建工具**；可以将小块代码编译成大块复杂的代码，基于ES6 modules，它可以让你的 bundle 最小化，有效减少文件请求大小。
+
+**Monorepo & Lerna**
+
+越来越多的主流框架/库采用monorepo方式来组织自己的代码仓。
+
+lerna 是一个管理多个 npm 模块的工具，是 Babel 自己用来维护自己的 Monorepo 并开源出的一个项目。优化维护多包的工作流，解决多个包互相依赖，且发布需要手动维护多个包的问题。
+
+lerna 现在已经被很多著名的项目组织使用，如：Babel, React, Vue, Angular, Ember, Meteor, Jest 。

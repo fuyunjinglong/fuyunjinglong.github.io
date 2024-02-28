@@ -4092,4 +4092,61 @@ const judgeDeviceType =
 const copyText = async (text) => await navigator.clipboard.writeText(text)
 ```
 
-## 
+## 添加水印
+
+```
+export function paintWaterMark(msg='仅测试用途', className='water', transparency='0.3') {
+  // 在Vue中可改为ES6写法
+  var childNode = document.getElementsByClassName('fixed-water-mark');
+  if (childNode && childNode.length !== 0) {
+    document.getElementsByClassName(className)[0].removeChild(childNode[0]);
+  }
+  var wrap = document.createElement('div'); // 创建一个div
+  wrap.className = 'fixed-water-mark'; // 给div添加类名
+  var wm = document.createElement('canvas'); // 单个水印画布
+  wm.id = 'watermark'; // 给canvas标签添加id
+  wm.width = 450; // 设置canvas宽
+  wm.height = 200; // 设置canvas高
+  wm.style.display = 'none'; // 设置画布隐藏属性
+  wrap.appendChild(wm); // 在div中添加画布
+  var rwm = document.createElement('canvas'); // 重复绘制水印画布，用于整个页面
+  rwm.id = 'repeat-watermark';
+  wrap.appendChild(rwm);
+  document.getElementsByClassName(className)[0].appendChild(wrap);
+
+  // 绘制单个水印
+  var cw = document.getElementById('watermark');
+  var ctx = cw.getContext('2d');
+
+  // 清空矩形
+  ctx.clearRect(0, 0, 450, 200);
+
+  // 设置字体
+  ctx.font = '16px Arial';
+
+  // 文字居中
+  ctx.textAlign = 'center';
+
+  // 逆时针旋转20度
+  ctx.rotate((-30 * Math.PI) / 180);
+
+  // 填充透明度为 transparency 的灰色
+  ctx.fillStyle = `rgba(255,128,64,${transparency})`;
+  ctx.fillText(msg, 55, 95); // 填充内容为工号
+  var date = new Date();
+  var currentDateText = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate();
+
+  // 填充内容为当前时间
+  ctx.fillText(currentDateText, 55, 115);
+
+  // 在另一个画布上重复绘制单个水印
+  var crw = document.getElementById('repeat-watermark');
+  crw.width = window.innerWidth; // 设置画布宽度等于窗口显示宽度
+  crw.height = window.innerHeight; // 设置画布高度等于窗口显示高度
+  var ctxr = crw.getContext('2d');
+  ctxr.clearRect(0, 0, crw.width, crw.height);
+  var pat = ctxr.createPattern(cw, 'repeat'); // 在水平和垂直方向重复绘制单个水印
+  ctxr.fillStyle = pat;
+  ctxr.fillRect(0, 0, crw.width, crw.height);
+}
+```
