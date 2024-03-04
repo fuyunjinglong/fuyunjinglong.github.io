@@ -3339,6 +3339,69 @@ function myBrowser() {
 } 
 ```
 
+# 隐式转换
+
+逻辑非，会将类型转换为Boolean类型，只有6种值取反会转为true,其他都是false。6种：0,NaN,undefined,null,'',false。
+
+两边都是引用类型时，不会隐式转换，比较的是地址。
+
+```
+console.log([]==0);
+console.log(![]==0);
+console.log([]==![]);
+console.log([]==[]);
+console.log({}==!{});
+console.log({}=={});
+结果：
+VM2986:1 true
+VM2986:2 true
+VM2986:3 true
+VM2986:4 false
+VM2986:5 false
+VM2986:6 false
+解析：
+[].valueof.toString() 转为''
+{}.valueof.toString() 转为[object,Object]
+```
+
+数值运算
+
+```
+console.log(1+"true");
+console.log(1+true);
+console.log(1+undefined);
+console.log(1+null);
+结果：
+1true
+2
+NAN
+1
+解析：都会转成1+Number(xx)
+```
+
+关系运算符比较，只要有一个是数值类型，都会被转为数值型。如果都不值数值型，则转为unicode码进行比较
+
+```
+console.log("2">10);
+console.log("2">"10");
+console.log("abc">"b");
+console.log("abc">"aad");
+console.log(undefined==undefined);
+console.log(undefined==null);
+console.log(null==null);
+console.log(NaN==NaN);
+结果：
+VM2590:1 false
+VM2590:2 true
+VM2590:3 false
+VM2590:4 true
+VM2590:5 true
+VM2590:6 true
+VM2590:7 true
+VM2590:8 false
+解析：都会转成1+Number(xx)
+```
+
 # 高级函数
 
 ## 函数式编程
