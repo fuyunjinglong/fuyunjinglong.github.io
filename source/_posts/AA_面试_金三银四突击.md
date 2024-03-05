@@ -24,9 +24,11 @@ toc: true # 是否启用内容索引
 
 项目亮点：手写vue2源码之rollup打包
 
-00:00
-
 [video](https://www.bilibili.com/video/BV1DQ4y1z7TK/?spm_id_from=333.788.recommend_more_video.-1&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+
+**1.3客户关注**
+
+项目亮点：定制化修改elementui源码适配场景
 
 2.**环境搭建-vue3+vite+ts(大崔哥)**
 

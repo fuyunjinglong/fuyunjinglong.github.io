@@ -88,7 +88,7 @@ var getDataType = function(o){
 };
 ```
 
-## JS类型判断-typeof,  instanceof, constructor,toString
+## JS类型判断-完整
 
 **typeof**
 
@@ -3132,8 +3132,6 @@ if(!Array.prototype.forEach) {
     };
 }
 ```
-
-
 
 ## 手写map
 
