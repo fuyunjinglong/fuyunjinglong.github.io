@@ -10,7 +10,8 @@ toc: true # 是否启用内容索引
 
 - [左神-先读先读先读](https://cloud.fynote.com/share/s/7615)
 - [算法与数据结构全阶班-左神video](https://www.1024zyz.com/2975.html)
-- [基础班入门-左神video](https://www.bilibili.com/video/BV1Zr4y1W7ww?p=37&spm_id_from=pageDriver&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [00-算法和数据结构新手班【完结】](https://www.bilibili.com/video/BV1g3411i7of/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [01-左神-算法与数据结构基础班【完结】](https://www.bilibili.com/video/BV1Ef4y1T7Qi?p=2&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - [左神部分笔记](https://dairongpeng.github.io/algorithm-note/)
 - [数据结构-浙江大学(opens new window)-video](https://www.bilibili.com/video/av18586085?from=search&seid=15275956372728133584)
 - [清华大学-邓俊辉MOOC数据结构与算法全套-video](https://www.bilibili.com/video/av49361421?from=search&seid=2756779141930403558)

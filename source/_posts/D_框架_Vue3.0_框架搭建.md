@@ -482,6 +482,8 @@ npm i less -D
 
 ## 引入Eslint和Prettier
 
+- [网最全的讲清eslint和prettier关系的视频](https://www.bilibili.com/video/BV183411r7YK/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+
 ### **通用引入Eslint**
 
 安装全局eslint
