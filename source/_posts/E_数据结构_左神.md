@@ -6,7 +6,7 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# 前言
+# 大纲
 
 - [左神-先读先读先读](https://cloud.fynote.com/share/s/7615)
 - [算法与数据结构全阶班-左神video](https://www.1024zyz.com/2975.html)

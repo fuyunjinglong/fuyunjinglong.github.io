@@ -7,7 +7,7 @@ toc: true # 是否启用内容索引
 
 ---
 
-# 大牛
+# 大纲
 
 - [JavaScript 数据结构与算法之美 - 十大经典排序算法](https://juejin.cn/post/6844903902484103182#heading-0)
 
