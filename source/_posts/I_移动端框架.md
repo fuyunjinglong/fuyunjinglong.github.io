@@ -6,6 +6,33 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
+# 大纲
+
+## 跨端APP
+
+跨端APP：Flutter、React Native、UniApp
+
+- Dart Flutter入门实战基础视频教程
+- Flutter从入门到进阶 实战携程网App-mk
+- SpringBoot+Uniapp实战开发全新仿抖音短视频App-mk
+- React Native从入门到实战 打造高质量上线App-mk
+- ReactNative+TypeScript仿喜马拉雅开发App-mk
+
+## **小程序**
+
+WXML原生、UniApp、taro支持vue
+
+- Taro3+Mysql+Express开发企业级出行全栈项目 
+- 掌握Taro多端框架 快速上手小程序/H5开发
+- 扫码点餐微信小程序云开发，uniapp，vue，nodejs带后台管理
+- SpringBoot2.X + Vue + UniAPP，全栈开发医疗小程序-mk
+
+## 微信公众号
+
+WeRoBot、Flask-WeChat、Tornado-WeRoBot、django-weixin
+
+- 微信公众号开发课程
+
 **一个完整 HTML5 页面的展示要经历浏览器控件的加载、解析和渲染三大过程，性能消耗要比原生开发增加 N 个数量级**。
 
 # 前言

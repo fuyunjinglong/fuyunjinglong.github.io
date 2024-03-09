@@ -6,6 +6,18 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
+# 大纲
+
+**10套教程**
+
+- [Node基础-尚硅谷](https://www.bilibili.com/video/BV1gM411W7ex/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)/[千峰前端Node.JS基础](https://www.bilibili.com/video/BV1rA4y1Z7fd/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- Node.js+Express+Koa2 开发Web Server博客-慕课网mk
+- Vue Element＋Node.js开发企业通用管理后台系统-mk
+- Node.js-Koa2框架生态实战－从零模拟新浪微博-mk
+- Node.js+Koa2+MySQL 打造前后端分离精品项目《旧岛》-mk
+- Vue3 + TS仿知乎专栏企业级项目-mk
+- Vue核心技术（Vue+Vue-Router+Vuex+SSR）实战精讲-mk
+
 # 初始化项目
 
 ```
