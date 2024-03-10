@@ -179,8 +179,10 @@ single-spa、qiankun、Piral、Mosaic、
 
 - <a target="_blank" href="{% post_path 'D_框架_源码_Vue2.0' %}#大纲">源码_Vue2.0</a>
 - <a target="_blank" href="{% post_path 'D_框架_源码_Vue3.0' %}#大纲">源码_Vue3.0</a>
-- Vue.js源码全方位深入解析-黄轶
-- Vue.js 3.0 核心源码-黄轶
+- Vue.js源码全方位深入解析-video-黄轶
+- Vue.js 3.0 核心源码-video-黄轶
+- [ElementUI源码解析-樱满空-video](https://www.bilibili.com/video/BV1kR4y1x7hc/?vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [Element-UI 源码简析-崇序员](https://juejin.cn/column/7020288124198600718)
 
 ## 性能优化
 

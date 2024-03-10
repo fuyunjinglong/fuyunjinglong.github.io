@@ -9,10 +9,10 @@ toc: true # 是否启用内容索引入门
 # 大纲
 
 - [TS 学习指南1.8w字]()/[轻松学 TypeScript-Video](https://space.bilibili.com/406258607/channel/collectiondetail?sid=334301&ctype=0)/[20 道 TS 练习题](https://mp.weixin.qq.com/s?__biz=MzI2MjcxNTQ0Nw==&mid=2247495521&idx=1&sn=dd26b5b4f2cd2c78dcbcc9fd15b27df7&scene=21#wechat_redirect)--阿宝哥
-- TypeScript 全面进阶指南
-- 专为小白设计的TypeScript入门课-mk
-- TS从入门到深度掌握，晋级TypeScript高手
-- TypeScript 类型体操通关秘籍
+- TypeScript 全面进阶指南-video
+- 专为小白设计的TypeScript入门课-video-mk
+- TS从入门到深度掌握，晋级TypeScript高手-video
+- TypeScript 类型体操通关秘籍-video
 - [ts类型体操](https://github.com/type-challenges/type-challenges/blob/main/README.zh-CN.md)
 
 # 入门

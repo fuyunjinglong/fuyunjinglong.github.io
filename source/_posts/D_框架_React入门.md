@@ -9,7 +9,9 @@ toc: true # 是否启用内容索引
 # 大纲
 
 - [尚硅谷React教程](https://www.bilibili.com/video/BV1wy4y1D7JT/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
-- React18 系统入门 进阶实战《欢乐购》-mk
+- React18+TS 通用后台管理系统解决方案落地实战-video-mk
+- React16.4 开发简书项目 从零基础入门到实战(欢乐购旧版)-video-mk
+- 2023 React18 系统入门 进阶实战《欢乐购》-video-mk
 - [全栈萧晨](https://xiaochen1024.com/)
 - [scrimba 的互动式 React 教程](https://scrimba.com/learn/learnreact)
 
