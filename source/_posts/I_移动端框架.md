@@ -12,17 +12,17 @@ toc: true # 是否启用内容索引
 
 跨端APP：Flutter、React Native、UniApp
 
-- Dart Flutter入门实战基础视频教程-video（待保存https://www.1024zyz.com/5222.html）
-- Flutter从入门到进阶 实战携程网App-video-mk（待保存https://www.1024zyz.com/1729.html）
-- SpringBoot+Uniapp实战开发全新仿抖音短视频App-video-mk（待保存https://www.1024zyz.com/2237.html）
-- React Native从入门到实战 打造高质量上线App-video-mk（待保存https://www.1024zyz.com/6411.html）
-- ReactNative+TypeScript仿喜马拉雅开发App-video-mk（待保存https://www.1024zyz.com/2009.html）
+- Dart Flutter入门实战基础视频教程-video
+- Flutter从入门到进阶 实战携程网App-video-mk
+- SpringBoot+Uniapp实战开发全新仿抖音短视频App-video-mk
+- React Native从入门到实战 打造高质量上线App-video-mk
+- React Native+TypeScript仿喜马拉雅开发App-video-mk
 
 ## **小程序**
 
 WXML原生、UniApp、taro支持vue
 
-- Taro3+Mysql+Express开发企业级出行全栈项目 -video（待保存https://www.1024zyz.com/2253.html）
+- Taro3+Mysql+Express开发企业级出行全栈项目 -video
 - 掌握Taro多端框架 快速上手小程序/H5开发-video（待保存https://www.1024zyz.com/1768.html）
 - 扫码点餐微信小程序云开发，uniapp，vue，nodejs带后台管理-video（待保存https://www.1024zyz.com/7672.html）
 - SpringBoot2.X + Vue + UniAPP，全栈开发医疗小程序-video-mk（待保存https://www.1024zyz.com/4838.html）

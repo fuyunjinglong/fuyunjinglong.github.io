@@ -15,9 +15,9 @@ toc: true # 是否启用内容索引
 - Vue Element＋Node.js开发企业通用管理后台系统-video-mk
 - Node.js-Koa2框架生态实战－从零模拟新浪微博-video-mk
 - Node.js+Koa2+MySQL 打造前后端分离精品项目《旧岛》-小程序服务端-video-mk
-- 中级-Vue3 + TS仿知乎专栏企业级项目-mk(待保存https://www.1024zyz.com/4442.html)
-- 高级-Vue3.0+TS打造企业级组件库-mk(待保存https://www.1024zyz.com/2063.html)
-- Vue核心技术（Vue+Vue-Router+Vuex+SSR）实战精讲-mk（待保存https://www.1024zyz.com/738.html）
+- 中级-Vue3 + TS仿知乎专栏企业级项目-mk
+- 高级-Vue3.0+TS打造企业级组件库-mk
+- Vue核心技术（Vue+Vue-Router+Vuex+SSR）实战精讲-mk
 
 # 初始化项目
 
