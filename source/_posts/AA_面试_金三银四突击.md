@@ -8,6 +8,16 @@ toc: true # 是否启用内容索引
 
 # interview
 
+- [ ]  2024年前端简历（node.js，ts,react，Flutter、Rn，微前端，低代码，小程序，移动端）
+- [ ] [2024前端面试](https://www.bilibili.com/video/BV1sN411974w?p=130&vd_source=bd4c7d99d71adf64d6e88c65370e0247)，p147/158
+- [ ] [JavaScript专项](https://www.bilibili.com/video/BV1rq4y1U7gh/?spm_id_from=333.788&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [ ]  vue2源码:PC本地-Vue2.js源码全方位深入解析-黄轶-第1章 准备工作(1-6)
+- [ ]  vue3源码:PC本地-催学社-Vue3源码实战课
+- [ ]  react入门
+- [ ]  移动端
+- [ ] 小程序
+- [ ] 
+
 **1.项目经历**
 
 **1.1企业格局之策略制定**

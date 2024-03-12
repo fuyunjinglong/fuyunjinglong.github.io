@@ -23,15 +23,15 @@ toc: true # 是否启用内容索引
 WXML原生、UniApp、taro支持vue
 
 - Taro3+Mysql+Express开发企业级出行全栈项目 -video
-- 掌握Taro多端框架 快速上手小程序/H5开发-video（待保存https://www.1024zyz.com/1768.html）
-- 扫码点餐微信小程序云开发，uniapp，vue，nodejs带后台管理-video（待保存https://www.1024zyz.com/7672.html）
-- SpringBoot2.X + Vue + UniAPP，全栈开发医疗小程序-video-mk（待保存https://www.1024zyz.com/4838.html）
+- 掌握Taro多端框架 快速上手小程序/H5开发-video
+- 扫码点餐微信小程序云开发，uniapp，vue，nodejs带后台管理-video
+- SpringBoot2.X + Vue + UniAPP，全栈开发医疗小程序-video-mk
 
 ## 微信公众号
 
 WeRoBot、Flask-WeChat、Tornado-WeRoBot、django-weixin
 
-- 微信公众号开发课程-video（待保存https://www.1024zyz.com/7073.html）
+- 微信公众号开发课程-video
 
 **一个完整 HTML5 页面的展示要经历浏览器控件的加载、解析和渲染三大过程，性能消耗要比原生开发增加 N 个数量级**。
 
