@@ -7,6 +7,10 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
+# 大纲
+
+- [快速掌握前端必会的 7 种设计模式-video-mk](https://pan.baidu.com/disk/main?from=homeFlow#/index?category=all&path=%2F%E5%AD%A6%E4%B9%A0%E7%A7%91%E7%A0%94%2F200%E5%B7%A5%E4%BD%9C%2F%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%2FJS)
+
 # 设计模式的源码应用
 
 ## 单例模式(闭包的应用)

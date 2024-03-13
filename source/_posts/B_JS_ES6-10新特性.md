@@ -6,6 +6,10 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
+# 大纲
+
+- JavaScript ES(6-11)全版本语法
+
 # ES新特性
 
 ## ES7新特性
