@@ -15,6 +15,66 @@ toc: true # 是否启用内容索引
 - [全栈萧晨](https://xiaochen1024.com/)
 - [scrimba 的互动式 React 教程](https://scrimba.com/learn/learnreact)
 
+# React入门
+
+```
+<html>
+<head>
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+</body>
+</html>
+<script type="text/babel">
+    // OH的右边的内容就是JSX的语法：类似XML的js的扩展语法
+    // 需要这么写，不然就会报错，需要告诉babel需要转哪些，只需要在script标签写type="text/babel"就可以了）
+    let oH = <div id='xx'>hello react!</div>;
+    // ReactDOM.render(要渲染什么内容，渲染到哪里)
+    // 只有用了这个才会创建虚拟DOM，先创建再更新
+    ReactDOM.render(oH, document.querySelector("#app"));
+</script>
+```
+
+**基本语法规则**
+
+- 遇到<>开头的代码，以标签的语法解析
+- 遇到{}开头的代码，以js的语法解析
+
+**渲染虚拟dom**
+
+- 使用纯JS方式创建
+- 使用JSX方式创建
+
+```
+// 使用纯JS方式创建
+let oH = React.createElement('h1',{id:'xx'},'hello react!')
+// 使用JSX方式创建'
+let oH = <div id='xx'>hello react!</div>;
+```
+
+**声明组件的两种方式**
+
+类组件->函数组件就好像vue2->vue3进化过程一样
+
+- 类组件
+- 函数组件及react-hooks
+
+```
+// 类组件
+
+// 函数组件及react-hooks，要求：函数名首字母大写，div根节点只能有一个。
+function App(){
+        return (<div>这是函数组件</div>)
+    }
+ReactDOM.render(<App/>, document.querySelector("#app"));
+```
+
+
+
 # 用了Vue-两天学会React(实战)
 
 ## 组件传值
