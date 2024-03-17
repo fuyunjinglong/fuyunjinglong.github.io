@@ -65,7 +65,39 @@ let oH = <div id='xx'>hello react!</div>;
 
 ```
 // 类组件
-
+ class App extends React.Component{
+        // 方式1：需要使用到props传值继承时
+        constructor(props){
+            super(props)
+            console.log(props)
+            this.state={
+                flag:false
+            }
+        }
+        // 方式2：不需要props传值
+        // state={
+        //         flag:false
+        //     }
+         handleClick=()=> {
+            debugger
+            const {flag} =this.state
+            this.setState({
+                flag:!flag
+            })
+        }
+        render(){
+            const {flag} = this.state
+            const msg = flag?'a':'b' 
+            return(
+                <div>
+                    <h1 onClick={this.handleClick}></h1>
+                    {msg}
+                    </div>
+            )
+        }
+   }
+    ReactDOM.render(<App name="test"/>, document.querySelector("#app"));
+   
 // 函数组件及react-hooks，要求：函数名首字母大写，div根节点只能有一个。
 function App(){
         return (<div>这是函数组件</div>)
