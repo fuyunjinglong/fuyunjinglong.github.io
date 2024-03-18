@@ -2365,7 +2365,7 @@ async function async1() {
 **小结**
 
 - 函数防抖和函数节流都是防止某一时间频繁触发，但原理不一样。
-- 函数防抖是某一段时间内只执行一次，而函数节流是间隔时间执行。
+- 防抖是多次操作变成一次，而节流是一定时间内只调用一次。
 
 **应用场景**
 
@@ -2394,27 +2394,12 @@ async function async1() {
 
   **节流**
 
-  完成节流可以使用**时间戳与定时器**的写法
-
-  使用时间戳写法，事件会立即执行，停止触发后没有办法再次执行
-
-  ```js
-  function throttled1(fn, delay = 500) {
-      let oldtime = Date.now()
-      return function (...args) {
-          let newtime = Date.now()
-          if (newtime - oldtime >= delay) {
-              fn.apply(null, args)
-              oldtime = Date.now()
-          }
-      }
-  }
-  ```
+  完成节流可以使用**定时器与时间戳**的写法
 
   使用定时器写法，`delay`毫秒后第一次执行，第二次事件停止触发后依然会再一次执行
 
   ```js
-  function throttled2(fn, delay = 500) {
+  function throttled1(fn, delay = 500) {
       let timer = null
       return function (...args) {
           if (!timer) {
@@ -2423,6 +2408,21 @@ async function async1() {
                   timer = null
               }, delay);
         }
+      }
+  }
+```
+  
+使用时间戳写法，事件会立即执行，停止触发后没有办法再次执行
+  
+  ```
+  function throttled2(fn, delay = 500) {
+      let oldtime = Date.now()
+      return function (...args) {
+          let newtime = Date.now()
+          if (newtime - oldtime >= delay) {
+              fn.apply(null, args)
+              oldtime = Date.now()
+          }
       }
   }
   ```
@@ -2453,19 +2453,28 @@ async function async1() {
 
   简单版本
 
-  ```js
-  function debounce(func, wait) {
-      let timeout;
-  return function () {
-      let context = this; // 保存this指向
-      let args = arguments; // 拿到event对象
-      clearTimeout(timeout)
-    timeout = setTimeout(function(){
-          func.apply(context, args)
-    }, wait);
-  }
+```html
+<html>
+<body>
+    <input/>
+</body>
+</html>
+<script >
+   let tInput = document.querySelector('input')
+   tInput.addEventListener('input',debounce(demo,2000));
+
+   function  debounce(fn,wait){
+    let timeOut = null;
+    return args=>{
+        if(timeOut) clearTimeout(timeOut);
+        timeOut = setTimeout(fn,wait);
     }
-  ```
+   }
+   function demo(){
+    console.log('发起请求')
+   }
+</script>
+```
 
   防抖如果需要立即执行，可加入第三个参数用于判断，实现如下：
 
