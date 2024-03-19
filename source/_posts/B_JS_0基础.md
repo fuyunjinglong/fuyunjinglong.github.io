@@ -2398,24 +2398,46 @@ async function async1() {
 
   使用定时器写法，`delay`毫秒后第一次执行，第二次事件停止触发后依然会再一次执行
 
-  ```js
-  function throttled1(fn, delay = 500) {
-      let timer = null
-      return function (...args) {
-          if (!timer) {
-              timer = setTimeout(() => {
-                  fn.apply(this, args)
-                  timer = null
-              }, delay);
-        }
-      }
-  }
 ```
-  
-使用时间戳写法，事件会立即执行，停止触发后没有办法再次执行
-  
-  ```
-  function throttled2(fn, delay = 500) {
+<html>
+    <head>
+        <style>
+            .box{
+                width: 500px;
+                height: 500px;
+                background-color: aqua;
+            }
+        </style>
+    </head>
+<body>
+    <div class="box"></div>
+</body>
+</html>
+<script >
+   let tBox = document.querySelector('.box')
+   tBox.addEventListener('touchmove',demo);
+
+   function throttled1(fn, delay = 500) {
+    let timer = null
+    return function (...args) {
+        if (!timer) {
+            timer = setTimeout(() => {
+                fn.apply(this, args)
+                timer = null
+            }, delay);
+      }
+    }
+}
+   function demo(){
+    console.log('发起请求')
+   }
+</script>
+```
+
+ 使用时间戳写法，事件会立即执行，停止触发后没有办法再次执行
+
+```
+function throttled2(fn, delay = 500) {
       let oldtime = Date.now()
       return function (...args) {
           let newtime = Date.now()
@@ -2425,12 +2447,12 @@ async function async1() {
           }
       }
   }
+```
+
+可以将时间戳写法的特性与定时器写法的特性相结合，实现一个更加精确的节流。实现如下
+
   ```
-
-  可以将时间戳写法的特性与定时器写法的特性相结合，实现一个更加精确的节流。实现如下
-
-  ```js
-  function throttled(fn, delay) {
+function throttled(fn, delay) {
       let timer = null
       let starttime = Date.now()
       return function () {

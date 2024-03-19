@@ -24,12 +24,12 @@ js之父在设计js原型、原型链的时候遵从以下两个准则
 >
 >  Person.prototype.constructor == Person //
 >
->  **准则2：实例的__proto__ 保存着构造函数的prototype即实例（即person01）的__proto__和原型对象指向同一个地方**
+>  **准则2：实例的-proto-保存着构造函数的prototype即实例（即person01）的-proto-和原型对象指向同一个地方**
 >
->  person01.__proto__ == Person.prototype
+>  person01._-proto_- == Person.prototype
 
 - Person.prototype是显示原形属性
-- person01.__proto__是隐式原形属性
+- person01._-proto_-是隐式原形属性,对应新版google中的[[prototype]]
 
 ## 定义
 
@@ -37,7 +37,9 @@ js之父在设计js原型、原型链的时候遵从以下两个准则
 
 原型对象：prototype是函数fn的原形属性，所以prototype叫fn的原形对象。注意原型对象中默认有一个`constructor`属性，指回该构造函数。
 
-原型链：一句话就是以对象为基准，以proto为连接点，一直到Object.prototype为止的一条链条。(原型链顶层Object.prototype._proto__=null)
+原型链：一句话就是以对象为基准，以proto为连接点，一直到Object.prototype为止的一条链条。(原型链顶层Object.prototype.-proto-=null)
+
+三角恋关系：
 
 > 官方描述
 >

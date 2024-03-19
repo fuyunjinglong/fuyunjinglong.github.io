@@ -8,7 +8,7 @@ toc: true # 是否启用内容索引
 
 # interview
 
-- [ ] [2022前端面试题](https://www.bilibili.com/video/BV1ZB4y1Q7fo/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)，p4/35
+- [ ] [2022前端面试题](https://www.bilibili.com/video/BV1ZB4y1Q7fo/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)，p8/35
 - [ ] [JavaScript专项](https://www.bilibili.com/video/BV1rq4y1U7gh/?spm_id_from=333.788&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - [ ]  vue2源码:PC本地-Vue2.js源码全方位深入解析-黄轶-第1章 准备工作(1-6)
 - [ ]  vue3源码:PC本地-催学社-Vue3源码实战课
@@ -81,10 +81,10 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#彻底搞懂this">彻底搞懂this(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#消息队列和事件循环">消息队列和事件循环(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包' %}#闭包">闭包(看题给结果)</a>
-- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#原型、原型链、继承">原型、原型链、继承(看题给结果)</a>
+- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包' %}#原型、原型链、继承">原型、原型链、继承(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'C_H5_0基础' %}#浏览器内核的理解">浏览器内核的理解</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#8种数据类型">null 和 undefined</a>
-- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#JS的8种继承方案">JS的8种继承方案</a>
+- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包' %}#JS的8种继承方案">JS的8种继承方案</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#柯里化-实现add-1-2-3-6">实现 add(1)(2)(3) = 6</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#垃圾回收">垃圾回收</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#内存溢出和内存泄漏">内存泄露</a>
@@ -98,13 +98,13 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#函数式编程">函数式编程</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2和Vue3比较' %}#Object-defineProperty与Proxy">必会20道JS-手写数据双向绑定</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#call-apply-bind">必会20道JS-手写call/apply/bind</a>
-- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#instanceof操作符">必会20道JS-手写instanceof</a>
-- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#Object-create">必会20道JS-手写Object.create</a>
-- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#new操作符">必会20道JS-手写new操作符</a>
+- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包承' %}#instanceof操作符">必会20道JS-手写instanceof</a>
+- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包承' %}#Object-create">必会20道JS-手写Object.create</a>
+- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包承' %}#new操作符">必会20道JS-手写new操作符</a>
 - <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#手写Promise-核心流程">必会20道JS-手写Promise</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#深浅拷贝">必会20道JS-手写深浅拷贝</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#实现setTimeout和实现setInterval">必会20道JS-手写setTimeout模拟setInterval</a>
-- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承' %}#原型式继承">必会20道JS-手写一种原型式继承和构造函数继承</a>
+- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包承' %}#原型式继承">必会20道JS-手写一种原型式继承和构造函数继承</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-EventBus">必会20道JS-手写-EventBus发布订阅</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-简单路由">必会20道JS-手写简单路由</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-rem实现原理">必会20道JS-手写rem实现原理</a>
