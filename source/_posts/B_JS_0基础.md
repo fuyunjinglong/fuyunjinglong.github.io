@@ -723,6 +723,9 @@ foo(); // 小猪课堂
 **2.隐式绑定(函数作为对象方法调用)**
 
 ```
+//var foo=()=> {
+//  console.log(this.name) // undefined
+//}
 function foo() {
   console.log(this.name) // 小猪课堂
 }
@@ -3433,6 +3436,10 @@ VM2590:8 false
 
 # 高级函数
 
+## 函数是一等公民
+
+> scheme语言，将函数提升为一等公民。指的是函数可以作为参数，也可作为返回值，也可赋值给变量，是灵活的。
+
 ## 函数式编程
 
 **概述**
@@ -3860,42 +3867,56 @@ function fact(n){
 
 柯里化是一种将使用多个参数的一个函数转换成一系列使用一个参数的函数的技术。
 
-举个例子
+实现一个简单柯里化
 
 ```
-function add(a, b) {
-    return a + b;
-}
+    function add() {
+      let sum = 0;
+      return function innerFn(num) {
+        if (num !== undefined) {
+          sum += num;
+          return innerFn;
+        } else {
+          return sum;
+        }
+      }
+    }
 
-// 执行 add 函数，一次传入两个参数即可
-add(1, 2) // 3
-
-// 假设有一个 curry 函数可以做到柯里化
-var addCurry = curry(add);
-addCurry(1)(2) // 3
+    console.log(add()(1)(2)(3)()); // 输出 6
 ```
+
+> 我们首先定义了一个 `add` 函数，它返回了一个内部函数 `innerFn`。在 `innerFn` 中，我们首先定义了一个变量 `sum`，用于保存累加的结果。当传入的参数不为 `undefined` 时，我们将其加到 `sum` 中，并返回 `innerFn`。这样就可以继续传递下一个参数了。当参数为 `undefined` 时，我们返回 `sum`，表示累加完毕
+>
+> 但是，这种简单的实现方式存在一个问题，那就是只能处理参数数量为 2 的函数，无法处理参数数量不确定的函数。因此我们需要更加通用的柯里化实现方式
+>
+> 这里是一个更加通用的函数柯里化的实现方式：
 
 **柯里化写法**
 
 ```
-高颜值写法：
-const curry = fn =>
-    judge = (...args) =>
-        args.length === fn.length
-            ? fn(...args)
-            : (arg) => judge(...args, arg)
-高颜值的等效写法：
-const curry = (fn) =>
-  (judge = (...args) =>
-    args.length >= fn.length ? fn(...args) : (...arg) => judge(...args, ...arg));
-            
-简单写法：
+// es6写法
 const curry = (fn, ...args) => 
             args.length < fn.length 
             // 参数长度不足时,重新柯里化函数,等待接受新参数
             ? (...arguments) => curry(fn, ...args, ...arguments)
             // 函数长度满足时,执行函数
              : fn(...args);
+// es5写法
+function curry(fn) {
+      return function curried(...args) {
+        if (args.length >= fn.length) {
+          return fn.apply(this, args);
+        } else {
+          return function(...args2) {
+            return curried.apply(this, args.concat(args2));
+          }
+        }
+      }
+    }
+该函数的参数是一个函数 fn，它返回一个柯里化后的函数。在函数内部，我们定义了一个 curried 函数，它的作用是接受函数需要的所有参数。当传入的参数数量大于或等于原函数需要的参数数量时，就直接调用原函数并返回结果；否则，返回一个新函数，然后使用闭包将当前已经传入的参数保存下来。这个新函数再次接受一个参数，并将这个参数与之前已经保存的参数合并，然后递归调用 curried 函数
+const add = (a, b, c) => a + b + c;
+const curriedAdd = curry(add);
+console.log(curriedAdd(1)(2)(3));
 ```
 
 currying 函数详解：
@@ -3920,12 +3941,6 @@ fn("a", "b")("c") // ["a", "b", "c"]
 fn("a")("b")("c") // ["a", "b", "c"]
 fn("a")("b", "c") // ["a", "b", "c"]
 ```
-
-- 注释 1：第一次调用获取函数 fn 参数的长度，后续调用获取 fn 剩余参数的长度
-- 注释 2：currying 包裹之后返回一个新函数，接收参数为 `...args`
-- 注释 3：新函数接收的参数长度是否大于等于 fn 剩余参数需要接收的长度
-- 注释 4：满足要求，执行 fn 函数，传入新函数的参数
-- 注释 5：不满足要求，递归 currying 函数，新的 fn 为 `bind` 返回的新函数（`bind` 绑定了 `...args` 参数，未执行），新的 length 为 fn 剩余参数的长度
 
 **柯里化应用场景**
 
