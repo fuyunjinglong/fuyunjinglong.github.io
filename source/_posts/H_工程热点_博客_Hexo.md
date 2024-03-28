@@ -263,6 +263,28 @@ hexo s -p 端口号,也可不加端口
 
 # hexo常见问题
 
+**基本**
+
+```
+1.代码段
+{% codeblock %}
+{% endcodeblock %}
+2.图片
+![image](/img/2024-03-29_065127.png)
+或
+C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\
+/img/
+3.加粗
+**加粗**
+4.链接
+{% link 深入理解分布式事务 http://wwwe/distributed-transaction.html [external] [title] %}
+5.点点li
+- 风格1
+- 风格2
+```
+
+**高级**
+
 ```
 1.页面内跳转
 i.跳转到任意位置
