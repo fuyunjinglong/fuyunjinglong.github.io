@@ -10,6 +10,8 @@ toc: true # 是否启用内容索引
 # 大纲
 
 - [JS数据结构与算法-video](https://www.bilibili.com/video/BV1yD4y127vy/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- 数据结构与算法-千峰教育kript-video
+- 数据结构与算法专题课-珠峰-video
 - [JavaScript 数据结构与算法之美 - 十大经典排序算法](https://juejin.cn/post/6844903902484103182#heading-0)
 
 # 初级算法
