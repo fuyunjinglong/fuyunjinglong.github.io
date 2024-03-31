@@ -8,7 +8,7 @@ toc: true # 是否启用内容索引
 
 # interview
 
-- [ ] 
+- [ ] [项目实战汇总-小程序](https://www.bilibili.com/video/BV187411c7Bi/?vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - [ ] [JavaScript专项](https://www.bilibili.com/video/BV1rq4y1U7gh/?spm_id_from=333.788&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - [ ]  vue2源码:PC本地-Vue2.js源码全方位深入解析-黄轶-第1章 准备工作(1-6)
 - [ ]  vue3源码:PC本地-催学社-Vue3源码实战课
@@ -176,7 +176,8 @@ toc: true # 是否启用内容索引
 
 # 数据结构与算法
 
-- 两个变量交换
+- <a target="_blank" href="{% post_path 'E_数据结构_左神' %}#大纲">数据结构_左神</a>
+- <a target="_blank" href="{% post_path 'E_数据结构_JavaScript' %}#大纲">数据结构_JavaScript</a>
 
 # 性能优化
 

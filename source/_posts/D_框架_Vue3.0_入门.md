@@ -101,6 +101,9 @@ npm run dev
 比如发布一些 Vue3 的教程：
 
 - [我要成为海贼王的男人-Vue3最全宇宙入口](https://github.com/vue3/vue3-News#%E6%88%91%E6%98%AF%E8%A6%81%E6%88%90%E4%B8%BA%E6%B5%B7%E8%B4%BC%E7%8E%8B%E7%9A%84%E7%94%B7%E4%BA%BA)
+- [Vue3+TS快速上手-尚硅谷-video](https://www.bilibili.com/video/BV1ra4y1H7ih/?p=2&spm_id_from=pageDriver&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [Vue3+TS快速上手-尚硅谷](https://24kcs.github.io/vue3_study/)
+- [Vite + Vue3 + Pinia + 实战项目 + TypeScript-小鹿线-video](https://www.bilibili.com/video/BV1aU4y1U7Gv/?p=12&spm_id_from=pageDriver&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - [📺 VueMastery原版](https://link.juejin.cn/?target=https%3A%2F%2Fwww.bilibili.com%2Fvideo%2FBV1my4y1m7sz%3Fp%3D6)
 - [📺 然叔与杨村长的深度解读](https://link.juejin.cn/?target=https%3A%2F%2Fwww.bilibili.com%2Fvideo%2FBV1my4y1m7sz%3Fp%3D7)
 - [🔥 39岁的夺路狂奔| 掘金年度征文](https://juejin.cn/post/6903701243361755149) 98赞
