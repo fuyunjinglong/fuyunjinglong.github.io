@@ -110,7 +110,7 @@ npm i
 ├── dist                        构建打包的输出目录
 ├── examples                    案例目录
 ├── flow                        因为Vue使用了Flow来进行静态类型检查，这里定义了声明了一些静态类型
-├── packages                    一些额外的包，比如：负责服务端渲染的包 vue-server-renderer、配合 vue-loader 使用的的 vue-template-compiler，还有 weex 相关的
+├── packages                    一些额外的包，比如：负责服务端渲染的包 vue-server-renderer、配合 vue-loader 使用的 									vue-template-compiler，还有 weex 相关的
     ├── vue-server-renderer
     ├── vue-template-compiler
     ├── weex-template-compiler
@@ -130,13 +130,13 @@ npm i
 │   │   ├── util                工具方法
 │   │   └── vdom                虚拟 DOM 相关，比如熟悉的 patch 算法就在这儿
 │   ├── platforms               平台相关的编译器代码
-│   │   ├── web
+│   │   ├── web					
+│   │   ├── weex 				类似react native跨端平台
     |— web web端独有文件
                 |— compiler 编译阶段需要处理的指令和模块
                 |— runtime 运行阶段需要处理的组件、指令和模块
                 |— server 服务端渲染相关
                 |— util 工具库
-│   │   └── weex
 │   ├── server                  服务端渲染相关
 ├── test                        测试目录
 ├── types                       TS 类型声明
