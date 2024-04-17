@@ -14,6 +14,66 @@ toc: true # 是否启用内容索引
 - 数据结构与算法专题课-珠峰-video
 - [JavaScript 数据结构与算法之美 - 十大经典排序算法](https://juejin.cn/post/6844903902484103182#heading-0)
 
+# [JS数据结构算法-codewhy](https://www.bilibili.com/video/BV1yD4y127vy?p=9&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+
+## 栈
+
+**1.实现栈有两种常用方式：**
+
+- 数组
+- 链表
+
+数组
+
+```
+<html>
+    <head>
+    </head>
+<body>
+    <h1>栈</h1>
+</body>
+<script >
+function Stack(){
+    this.item =[]
+    // 这种写法会在所有实例对象中添加函数，不推荐
+    this.push = function(el){
+        this.item.push(el)
+    }
+    // 这种写法只在原型上添加函数，节省内存，推荐
+    Stack.prototype.push=function(el){
+        this.item.push(el)
+    }
+    Stack.prototype.pop=function(el){
+       return this.item.pop()
+    }
+    Stack.prototype.peek=function(el){
+       return  this.item[this.item.length-1]
+    }
+    Stack.prototype.isEmpty=function(el){
+       return  this.item.length===0
+    }
+    Stack.prototype.size=function(el){
+       return this.item.length
+    }
+    Stack.prototype.toString=function(el){
+       return this.item.reduce((pre,cur)=>pre+cur+'','')
+    }
+}
+
+let a = new Stack()
+a.push(1)
+a.push(2)
+console.log(a.toString())
+ </script>
+</html>
+```
+
+实现栈
+
+
+
+## 链表
+
 # 初级算法
 
 ## 一维数组转为二维数组
