@@ -14,7 +14,76 @@ toc: true # 是否启用内容索引
 - 数据结构与算法专题课-珠峰-video
 - [JavaScript 数据结构与算法之美 - 十大经典排序算法](https://juejin.cn/post/6844903902484103182#heading-0)
 
-# [JS数据结构算法-codewhy](https://www.bilibili.com/video/BV1yD4y127vy?p=9&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+# [JS数据结构算法-coderwhy王红元](https://www.bilibili.com/video/BV1yD4y127vy?p=9&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+
+- [笔记](https://juejin.cn/post/7017349585446125575)
+
+## 字符串
+
+**字符串-判断是否为回文**
+
+```
+// 方法1，允许使用reverse
+function isPalindromicStr(str) {  
+    return str == str.split('').reverse().join('');
+}
+
+// 方法12，不允许使用reverse
+function isPalindromicStr(str){
+    if(!str.length){
+        return true
+    }
+    str = str.toLowerCase().split('');
+    let start =0;
+    let end = str.length-1;
+    while(start<end){
+        if(str[start]===str[end]){
+            start++;
+            end--;
+        }else{
+            return false
+        }
+    }
+    return true
+}
+```
+
+**字符串-去重**
+
+```
+<html>
+<script >
+// for实现    
+function removeDuplicateChar(str){
+    let result =[];
+    let json ={}
+    for(let i =0;i<str.length;i++){
+        let char = str[i]
+        if(!json[char]){
+            result.push(char);
+            json[char] = true
+        }
+    }
+    return result.join('');
+}
+// 借助filter实现
+function removeDuplicateChar1(str){
+   let result = Array.prototype.filter.call(str,function(char,index,arr){
+       return arr.indexOf(char) === index;
+    })
+    return result.join('');
+}
+// set实现
+function removeDuplicateChar2(str){
+    let set = new Set(str.split(''));
+    return [...set].join('')
+}
+alert(removeDuplicateChar2('abac'))
+ </script>
+</html>
+```
+
+
 
 ## 栈
 
@@ -23,9 +92,9 @@ toc: true # 是否启用内容索引
 - 数组
 - 链表
 
-数组
+数组实现
 
-```
+```html
 <html>
     <head>
     </head>
@@ -68,11 +137,90 @@ console.log(a.toString())
 </html>
 ```
 
-实现栈
+**2.栈的作用**
 
+- js中基本数据类型存储栈内存中
 
+- js执行时有执行栈,事件循环中将以次执行执行栈中的回调
+
+**3.用栈实现十进制转二进制**
+
+```html
+<html>
+<script >
+function dec2bin(decNumber){
+    // 定义栈对象,Stack是前文声明的对象
+    let stack = new Stack();
+    // 循环操作
+    while(decNumber>0){
+        // 获取余数，入栈(算法：第一次的余数对应二进制的第一位)
+        stack.push(decNumber%2);
+        // 向下取整，继续循环
+        decNumber = Math.floor(decNumber/2);
+    }
+    let res='';
+    while(!stack.isEmpty()){
+        res+=stack.pop()
+    }
+    return res
+}
+alert(dec2bin(2))
+ </script>
+</html>
+```
 
 ## 链表
+
+## 队列
+
+**1.实现队列方式：**
+
+- 数组-简单但效率低
+- 链表-复杂但效率高
+
+数组实现
+
+```
+<html>
+<script >
+function Queue(){
+    this.item =[]
+    // 入队，这种写法只在原型上添加函数，节省内存，推荐
+    Queue.prototype.enqueue=function(el){
+        this.item.push(el)
+    }
+    // 出队
+    Queue.prototype.dequeue=function(el){
+       return this.item.shift()
+    }
+    // 查看队列头部元素
+    Queue.prototype.font=function(el){
+       return  this.item[0]
+    }
+    Queue.prototype.isEmpty=function(el){
+       return  this.item.length===0
+    }
+    Queue.prototype.size=function(el){
+       return this.item.length
+    }
+    Queue.prototype.toString=function(el){
+       return this.item.reduce((pre,cur)=>pre+cur+'','')
+    }
+}
+
+let queue = new Queue()
+queue.enqueue(1)
+queue.enqueue(2)
+alert(queue.toString())
+ </script>
+</html>
+```
+
+**2.队列的作用**
+
+- 所有先进先出的场景
+- 打印队列、线程队列等
+- js 异步中的任务队列 一个leetcode题 第933题
 
 # 初级算法
 
@@ -424,14 +572,6 @@ function randomString(n) {
     tmp += str.charAt(Math.floor(Math.random() * l));
   }
   return tmp;
-}
-```
-
-## 判断是否为回文
-
-```
-function checkPalindrom(str) {  
-    return str == str.split('').reverse().join('');
 }
 ```
 
