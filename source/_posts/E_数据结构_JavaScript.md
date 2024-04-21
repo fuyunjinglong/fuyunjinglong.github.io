@@ -579,9 +579,67 @@ passGame(['lw','mm','aj'],2)
 </html>
 ```
 
-**4.优先级队列**
+## 优先级队列
+
+**1.什么是优先级队列**
 
 定义：它会自动根据元素的优先级将其插入到合适的位置。当你从 PriorityQueue 中删除一个元素时，它会自动将优先级最高的元素出队。
+
+**2.优先级队列的应用**
+
+- **数据压缩**：赫夫曼编码算法；
+- **最短路径算法**：Dijkstra 算法；
+- **最小生成树算法**：Prim 算法；
+- **任务调度器**：根据优先级执行系统任务；
+- **事件驱动仿真**：顾客排队算法；
+- **排序问题**：查找第 k 个最小元素。
+
+**3.实现优先级队列**
+
+三种方案实现优先级队列：
+
+- **数组（顺序存储）实现优先队列**：入队操作直接插入到数组队尾，时间复杂度为 *O*(1)。出队操作需要遍历整个数组，找到优先级最高的元素，返回并删除该元素，时间复杂度为 O*(*n)。
+- **链表（链式存储）实现优先队列**：链表中的元素按照优先级排序，入队操作需要为待插入元素创建节点，并在链表中找到合适的插入位置，时间复杂度为 O*(*n)。出队操作直接返回链表队头元素，并删除队头元素，时间复杂度为 O(1)。
+- **二叉堆结构实现优先队列**：构建一个二叉堆结构，二叉堆按照优先级进行排序。入队操作就是将元素插入到二叉堆中合适位置，时间复杂度为 (log⁡2)*O*(log2*n*)。出队操作则返回二叉堆中优先级最大节点并删除，时间复杂度也是 O*(log*n*)。
+
+**3.1数组实现优先级队列**
+
+```
+// MinPriorityQueue Implementation
+class PriorityQueue {
+  constructor() {
+    this.values = [];
+  }
+
+  enqueue(node, priority) {
+    var flag = false;
+    for (let i = 0; i < this.values.length; i++) {
+      if (this.values[i].priority > priority) {
+        this.values.splice(i, 0, { node, priority });
+        flag = true;
+        break;
+      }
+    }
+    if (!flag) {
+      this.values.push({ node, priority });
+    }
+  }
+
+  dequeue() {
+    return this.values.shift();
+  }
+
+  size() {
+    return this.values.length;
+  }
+}
+
+// Example Usage
+var a = new PriorityQueue();
+a.enqueue(10, 1);
+a.enqueue(1, 0);
+a.enqueue(8, 2);
+```
 
 
 
