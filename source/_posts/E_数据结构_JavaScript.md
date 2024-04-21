@@ -20,7 +20,7 @@ toc: true # 是否启用内容索引
 
 ## 字符串
 
-**字符串-判断是否为回文**
+**1.字符串-判断是否为回文**
 
 ```
 // 方法1，允许使用reverse
@@ -48,12 +48,12 @@ function isPalindromicStr(str){
 }
 ```
 
-**字符串-去重**
+**2.字符串-去重**
 
 ```
 <html>
 <script >
-// for实现    
+// 借助json实现    
 function removeDuplicateChar(str){
     let result =[];
     let json ={}
@@ -83,148 +83,74 @@ alert(removeDuplicateChar2('abac'))
 </html>
 ```
 
+**3.输出字符串中次数最多的字符和次数**
 
-
-## 栈
-
-**1.实现栈有两种常用方式：**
-
-- 数组
-- 链表
-
-数组实现
-
-```html
-<html>
-    <head>
-    </head>
-<body>
-    <h1>栈</h1>
-</body>
-<script >
-function Stack(){
-    this.item =[]
-    // 这种写法会在所有实例对象中添加函数，不推荐
-    this.push = function(el){
-        this.item.push(el)
+```
+function findMostFrequentChar(str) {
+  if (typeof str !== 'string') {
+    return '输入必须是字符串。';
+  }
+  if (str.length === 0) {
+    return '字符串不能为空！';
+  }
+  const occurrenceMap = new Map();
+  for (const char of str) {
+    occurrenceMap.set(char, (occurrenceMap.get(char) || 0) + 1);
+  }
+  let maxChar = { char: '', occur: -Infinity };
+  for (const [char, occur] of occurrenceMap) {
+    if (occur > maxChar.occur) {
+      maxChar = { char, occur };
     }
-    // 这种写法只在原型上添加函数，节省内存，推荐
-    Stack.prototype.push=function(el){
-        this.item.push(el)
-    }
-    Stack.prototype.pop=function(el){
-       return this.item.pop()
-    }
-    Stack.prototype.peek=function(el){
-       return  this.item[this.item.length-1]
-    }
-    Stack.prototype.isEmpty=function(el){
-       return  this.item.length===0
-    }
-    Stack.prototype.size=function(el){
-       return this.item.length
-    }
-    Stack.prototype.toString=function(el){
-       return this.item.reduce((pre,cur)=>pre+cur+'','')
-    }
+  }
+  return `出现次数最多的字符是 "${maxChar.char}"，出现次数为 ${maxChar.occur} 次。`;
 }
 
-let a = new Stack()
-a.push(1)
-a.push(2)
-console.log(a.toString())
- </script>
-</html>
+console.log(findMostFrequentChar("Hello")); // 输出：出现次数最多的字符是 "l"，出现次数为 2 次。
 ```
 
-**2.栈的作用**
-
-- js中基本数据类型存储栈内存中
-
-- js执行时有执行栈,事件循环中将以次执行执行栈中的回调
-
-**3.用栈实现十进制转二进制**
-
-```html
-<html>
-<script >
-function dec2bin(decNumber){
-    // 定义栈对象,Stack是前文声明的对象
-    let stack = new Stack();
-    // 循环操作
-    while(decNumber>0){
-        // 获取余数，入栈(算法：第一次的余数对应二进制的第一位)
-        stack.push(decNumber%2);
-        // 向下取整，继续循环
-        decNumber = Math.floor(decNumber/2);
-    }
-    let res='';
-    while(!stack.isEmpty()){
-        res+=stack.pop()
-    }
-    return res
-}
-alert(dec2bin(2))
- </script>
-</html>
-```
-
-## 链表
-
-## 队列
-
-**1.实现队列方式：**
-
-- 数组-简单但效率低
-- 链表-复杂但效率高
-
-数组实现
+**4.字符串逆序输出**
 
 ```
 <html>
 <script >
-function Queue(){
-    this.item =[]
-    // 入队，这种写法只在原型上添加函数，节省内存，推荐
-    Queue.prototype.enqueue=function(el){
-        this.item.push(el)
-    }
-    // 出队
-    Queue.prototype.dequeue=function(el){
-       return this.item.shift()
-    }
-    // 查看队列头部元素
-    Queue.prototype.font=function(el){
-       return  this.item[0]
-    }
-    Queue.prototype.isEmpty=function(el){
-       return  this.item.length===0
-    }
-    Queue.prototype.size=function(el){
-       return this.item.length
-    }
-    Queue.prototype.toString=function(el){
-       return this.item.reduce((pre,cur)=>pre+cur+'','')
-    }
+// 方法1:借助数组的reverse
+function reverseString(str) {
+  return str.split("").reverse().join("");
 }
-
-let queue = new Queue()
-queue.enqueue(1)
-queue.enqueue(2)
-alert(queue.toString())
+// 方法2：借助字符串的charAt()
+function reverseString2(str) {
+  let res = '';
+  for(let i =str.length-1;i>=0;i--){
+  	res += str.charAt(i);
+  }
+  return res;
+}
+// 方法3：借助递归
+function reverseString3(str,pos,res) {
+    // str原始字符串，pos字符串的最后一个索引值，res返回值
+  if(pos <0){
+    return res;
+  }
+  res += str.charAt(pos);
+  pos--;
+  return reverseString3(str,pos,res)
+}
+// 方法4：借助slice将字符串转为数组
+function reverseString4(str) {
+    let arr = Array.prototype.slice.call(str);
+    return arr.reverse().join("");
+}
+alert(reverseString4('abcd'))
  </script>
 </html>
 ```
 
-**2.队列的作用**
 
-- 所有先进先出的场景
-- 打印队列、线程队列等
-- js 异步中的任务队列 一个leetcode题 第933题
 
-# 初级算法
+## 数组
 
-## 一维数组转为二维数组
+**1.一维数组转为二维数组**
 
 ```
 function convertTo2DArray(arr, chunkSize) {
@@ -239,7 +165,7 @@ function convertTo2DArray(arr, chunkSize) {
  var outputArray = convertTo2DArray(inputArray, 3);
 ```
 
-## 数组扁平化
+**2.数组扁平化**
 
 ```
 ['a','b','c'] //这是一个拥有3个元素的数组，是一个一维数组（不存在数组嵌套）。`
@@ -349,9 +275,7 @@ var arr1 = [1, 2, 3, [1, 2, 3, 4, [2, 3, 4]]];
     flatten(arr1); //[1, 2, 3, 1, 2, 3, 4, 2, 3, 4]
 ```
 
-
-
-## 树转扁平数组
+**3.树转扁平数组**
 
 ```
 var data = [{
@@ -387,9 +311,7 @@ function getId(treeData, arr) {
 getId(data, idArr)
 ```
 
-
-
-## 扁平数组转树
+**4.扁平数组转树**
 
 ```
 let arr = [
@@ -489,6 +411,181 @@ const arrayToTree = (data, pid) => {
   return result;
 }
 ```
+
+## 栈
+
+**1.实现栈有两种常用方式**
+
+- 数组
+- 链表
+
+数组实现
+
+```html
+<html>
+    <head>
+    </head>
+<body>
+    <h1>栈</h1>
+</body>
+<script >
+function Stack(){
+    this.item =[]
+    // 这种写法会在所有实例对象中添加函数，不推荐
+    this.push = function(el){
+        this.item.push(el)
+    }
+    // 这种写法只在原型上添加函数，节省内存，推荐
+    Stack.prototype.push=function(el){
+        this.item.push(el)
+    }
+    Stack.prototype.pop=function(el){
+       return this.item.pop()
+    }
+    Stack.prototype.peek=function(el){
+       return  this.item[this.item.length-1]
+    }
+    Stack.prototype.isEmpty=function(el){
+       return  this.item.length===0
+    }
+    Stack.prototype.size=function(el){
+       return this.item.length
+    }
+    Stack.prototype.toString=function(el){
+       return this.item.reduce((pre,cur)=>pre+cur+'','')
+    }
+}
+
+let a = new Stack()
+a.push(1)
+a.push(2)
+console.log(a.toString())
+ </script>
+</html>
+```
+
+**2.栈的作用**
+
+- js中基本数据类型存储栈内存中
+
+- js执行时有执行栈,事件循环中将以次执行执行栈中的回调
+
+**3.栈的应用**
+
+**3.1用栈实现十进制转二进制**
+
+```html
+<html>
+<script >
+function dec2bin(decNumber){
+    // 定义栈对象,Stack是前文声明的对象
+    let stack = new Stack();
+    // 循环操作
+    while(decNumber>0){
+        // 获取余数，入栈(算法：第一次的余数对应二进制的第一位)
+        stack.push(decNumber%2);
+        // 向下取整，继续循环
+        decNumber = Math.floor(decNumber/2);
+    }
+    let res='';
+    while(!stack.isEmpty()){
+        res+=stack.pop()
+    }
+    return res
+}
+alert(dec2bin(2))
+ </script>
+</html>
+```
+
+## 链表
+
+## 队列
+
+**1.实现队列方式：**
+
+- 数组-简单但效率低
+- 链表-复杂但效率高
+
+数组实现
+
+```
+<html>
+<script >
+function Queue(){
+    this.item =[]
+    // 入队，这种写法只在原型上添加函数，节省内存，推荐
+    Queue.prototype.enqueue=function(el){
+        this.item.push(el)
+    }
+    // 出队
+    Queue.prototype.dequeue=function(el){
+       return this.item.shift()
+    }
+    // 查看队列头部元素
+    Queue.prototype.font=function(el){
+       return  this.item[0]
+    }
+    Queue.prototype.isEmpty=function(el){
+       return  this.item.length===0
+    }
+    Queue.prototype.size=function(el){
+       return this.item.length
+    }
+    Queue.prototype.toString=function(el){
+       return this.item.reduce((pre,cur)=>pre+cur+'','')
+    }
+}
+
+let queue = new Queue()
+queue.enqueue(1)
+queue.enqueue(2)
+alert(queue.toString())
+ </script>
+</html>
+```
+
+**2.队列的作用**
+
+- 所有先进先出的场景
+- 打印队列、线程队列等
+- js 异步中的任务队列 一个leetcode题 第933题
+
+**3.队列的应用**
+
+**3.1击鼓传花升级版**
+
+```
+<html>
+<script >
+// 击鼓传花的升级版：每数到第n个人就淘汰，循环往复，最后剩下的人就是冠军
+function passGame(arr,n){
+    let queue = new Queue();
+    arr.forEach(a => {
+        queue.enqueue(a)
+    });
+    while(queue.size()>1){
+        for(let i=0;i<n-1;i++){
+        // 轮询到不是第n个人，直接先出队再入队
+        queue.enqueue(queue.dequeue())
+    }
+    // 第n个人出队淘汰
+    queue.dequeue()
+    }
+    alert('最后的冠军是：'+queue.font())
+}
+passGame(['lw','mm','aj'],2)
+ </script>
+</html>
+```
+
+**4.优先级队列**
+
+定义：它会自动根据元素的优先级将其插入到合适的位置。当你从 PriorityQueue 中删除一个元素时，它会自动将优先级最高的元素出队。
+
+
+
+# 初级算法
 
 ## 两个变量交换
 

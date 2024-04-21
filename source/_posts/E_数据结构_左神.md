@@ -15,6 +15,7 @@ toc: true # 是否启用内容索引
 - [左神部分笔记](https://dairongpeng.github.io/algorithm-note/)
 - [数据结构-浙江大学(opens new window)-video](https://www.bilibili.com/video/av18586085?from=search&seid=15275956372728133584)
 - [清华大学-邓俊辉MOOC数据结构与算法全套-video](https://www.bilibili.com/video/av49361421?from=search&seid=2756779141930403558)
+- [算法通关手册](https://algo.itcharge.cn/)
 - 大话数据结构
 - 算法图解
 
@@ -5487,7 +5488,7 @@ public class Prim {
 
     public static Set<Edge> primSet(Graph graph) {
         // P算法
-        // 优先级队列，按照从小到大排序
+        // ，按照从小到大排序
         PriorityQueue<Edge> priorityQueue = new PriorityQueue<>(new EdgeComparator());
         //解锁出来的Node
         HashSet<Node> nodeSet = new HashSet<>();
