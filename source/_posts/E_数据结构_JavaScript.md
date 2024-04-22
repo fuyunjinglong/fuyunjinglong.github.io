@@ -641,6 +641,94 @@ a.enqueue(1, 0);
 a.enqueue(8, 2);
 ```
 
+## 链表
+
+**1.链表特点**
+
+- 每个元素（通常称为节点）包含两个部分：存储的数据和指向下一个节点的链接
+- 不必连续空间
+
+与数组的比较：
+
+- 内存不必连续，充分利用内存，内存动态管理
+- 必须不必确定大小，大小可无限延伸
+- 插入和删除数据，可达到O(1),效率高
+
+**2.实现链表常见操作**
+
+```
+<html>
+<script >
+function LinkList(){
+  // 内部类
+  function Node(data){
+    this.data =data;
+    this.next = null
+  }
+  // 属性
+  this.head = null;
+  this.length = 0;
+  // 添加节点
+  LinkList.prototype.append=function(data){
+    let node = new Node(data);
+    if(this.length === 0){
+      this.head = node;
+    }else{
+      // 遍历，找到链表的最后一个节点
+      let curNode = this.head;
+      while(curNode.next){
+        curNode = curNode.next
+      }
+      curNode.next = node;
+    }
+    this.length+=1;
+  }
+    // 打印
+    LinkList.prototype.toString=function(data){
+      let curNode = this.head;
+      let str='';
+      while(curNode){
+        str += ','+curNode.data;
+        curNode = curNode.next;
+      }
+      return str.slice(1);// 把第一个逗号去掉
+    }
+    // 指定位置插入元素
+    LinkList.prototype.insert=function(position,data){
+      if(position<0||position>this.length){
+        return false;
+      }
+      let node = new Node(data);
+      if(position === 0){
+        // 插入的是第一个元素：换头，先换后再换前
+        node.next = this.head;
+        this.head = node;
+      }else{
+        // 中间插入
+        let index =0;
+        let curNode = this.head;
+        let preNode = null;
+        while(index++<position){
+          preNode = curNode;
+          curNode = curNode.next;
+        }
+        node.next = curNode;
+        preNode.next = node;
+
+      }
+      length+=1;
+      return true;
+    }    
+}
+let linkList = new LinkList();
+linkList.append('abc');
+linkList.append('edf');
+linkList.insert(0,'123')
+alert(linkList.toString())
+ </script>
+</html>
+```
+
 
 
 # 初级算法

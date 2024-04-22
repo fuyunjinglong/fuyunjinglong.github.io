@@ -52,6 +52,33 @@ undefined 表示未定义，它的类型只有一个值，就是 undefined，判
 >
 > 给一个全局变量赋值为undefined，相当于将这个对象的值清空，但是这个对象依旧存在,如果是给对象的属性赋值 为undefined，说明这个值为空值
 
+**isNaN和Number.isNaN**
+
+- isNaN是es5的语法特性,自动进行隐式转为数字类型，如果非数字则为true,数字则为false
+- Number.isNaN是es6的语法特性，除了Number.isNaN(NaN)返回true,其他任意值都是返回false
+
+```
+<html>
+<script >
+console.log(isNaN(NaN));// true
+console.log(isNaN(12));// false
+console.log(isNaN('d'));// true
+console.log(isNaN('0xd'));// false,十六进制
+console.log(isNaN('123abc'));// true
+console.log(NaN === NaN);// false
+console.log(NaN === undefined);// false
+console.log(typeof NaN);// number
+console.log(Object.prototype.toString.call(NaN));// [object,Number]
+
+console.log(Number.isNaN(NaN));// true
+console.log(Number.isNaN(123));// false
+console.log(Number.isNaN('abc'));// false
+ </script>
+</html>
+```
+
+
+
 ## JS 类型判断-对象,数组
 
 第一，使用 typeof 加 length 属性
