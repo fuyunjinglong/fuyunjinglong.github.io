@@ -656,7 +656,7 @@ a.enqueue(8, 2);
 
 **2.实现链表常见操作**
 
-```
+```html
 <html>
 <script >
 function LinkList(){
@@ -719,11 +719,51 @@ function LinkList(){
       length+=1;
       return true;
     }    
+    // 获取第i个元素
+    LinkList.prototype.get=function(position){
+        // 越界判断
+        if(position<0||position>=this.length) return null;
+        let index =0;
+        let curNode = this.head;
+        while(index++<position){
+            curNode=curNode.next;
+        }
+        return curNode.data;
+    }
+    // 获取元素位置
+    LinkList.prototype.indexOf=function(data){
+        let index =0;
+        let curNode = this.head;
+        // 开始查找
+        while(curNode){
+            // 找到即返回索引值
+            if(curNode.data===data){
+                return index;
+            }
+            curNode=curNode.next;
+            index++;
+        }
+        // 找到了最后
+        return -1;
+    }
+    // 更新元素
+    LinkList.prototype.update=function(position,data){
+         // 越界判断
+         if(position<0||position>=this.length) return false;
+        let index =0;
+        let curNode = this.head;
+        while(index++<position){
+            curNode=curNode.next;
+        }
+        curNode.data = data;
+        return true
+    }
 }
 let linkList = new LinkList();
 linkList.append('abc');
 linkList.append('edf');
-linkList.insert(0,'123')
+// linkList.insert(0,'123')
+alert(linkList.update(1,'123'))
 alert(linkList.toString())
  </script>
 </html>
