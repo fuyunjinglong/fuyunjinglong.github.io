@@ -716,7 +716,7 @@ function LinkList(){
         preNode.next = node;
 
       }
-      length+=1;
+      this.length+=1;
       return true;
     }    
     // 获取第i个元素
@@ -758,13 +758,50 @@ function LinkList(){
         curNode.data = data;
         return true
     }
+        // 从指定位置删除元素，类似插入元素
+        LinkList.prototype.removeAt=function(position){
+         // 越界判断
+         if(position<0||position>=this.length) return false;
+          if(position === 0){
+          // 删除的是第一个元素：换头，先换后再换前
+            this.head = this.head.next
+          }else{
+            // 中间删除
+            let index =0;
+            let curNode = this.head;
+            let preNode = null;
+            while(index++<position){
+              // 循环查找
+              preNode = curNode;
+              curNode = curNode.next;
+            }
+            // 前一个节点的next,指向当前节点的next
+            preNode.next = curNode.next;
+            }
+            this.length--;
+          }
+
+           // 删除元素
+        LinkList.prototype.removeAt=function(data){
+          const index = this.indexOf(data);
+          return this.removeAt(index)
+        }
+          // 是否为空
+       LinkList.prototype.isEmpty=function(){
+          return this.length===0;
+        }
+            // 链表大小
+        LinkList.prototype.size=function(){
+          return this.length;
+        }
+
 }
 let linkList = new LinkList();
 linkList.append('abc');
 linkList.append('edf');
 // linkList.insert(0,'123')
-alert(linkList.update(1,'123'))
-alert(linkList.toString())
+// linkList.removeAt(0)
+alert(linkList.size())
  </script>
 </html>
 ```
