@@ -656,6 +656,8 @@ a.enqueue(8, 2);
 
 **2.实现链表常见操作**
 
+![image](/img/2024-04-24_07-07-15.png)
+
 ```html
 <html>
 <script >
@@ -759,7 +761,7 @@ function LinkList(){
         return true
     }
         // 从指定位置删除元素，类似插入元素
-        LinkList.prototype.removeAt=function(position){
+    LinkList.prototype.removeAt=function(position){
          // 越界判断
          if(position<0||position>=this.length) return false;
           if(position === 0){
@@ -782,16 +784,16 @@ function LinkList(){
           }
 
            // 删除元素
-        LinkList.prototype.removeAt=function(data){
+     LinkList.prototype.removeAt=function(data){
           const index = this.indexOf(data);
           return this.removeAt(index)
         }
           // 是否为空
-       LinkList.prototype.isEmpty=function(){
+     LinkList.prototype.isEmpty=function(){
           return this.length===0;
         }
             // 链表大小
-        LinkList.prototype.size=function(){
+     LinkList.prototype.size=function(){
           return this.length;
         }
 
@@ -806,7 +808,13 @@ alert(linkList.size())
 </html>
 ```
 
+## 双向链表
 
+**1.链表特点**
+
+**2.实现双向链表常见操作**
+
+![image](/img/2024-04-27_10-54-06.png)
 
 # 初级算法
 
