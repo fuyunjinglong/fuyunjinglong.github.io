@@ -686,7 +686,7 @@ function LinkList(){
     this.length+=1;
   }
     // 打印
-    LinkList.prototype.toString=function(data){
+   LinkList.prototype.toString=function(data){
       let curNode = this.head;
       let str='';
       while(curNode){
