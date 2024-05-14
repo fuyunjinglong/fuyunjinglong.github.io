@@ -9,10 +9,50 @@ toc: true # 是否启用内容索引
 
 # 大纲
 
-- [JS数据结构与算法-video](https://www.bilibili.com/video/BV1yD4y127vy/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [JS数据结构与算法(函数式)-coderwhy-video](https://www.bilibili.com/video/BV1yD4y127vy/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [JS数据结构与算法(es6)-coderwhy-video](https://www.bilibili.com/video/BV1a5411t7vZ?p=1&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - 数据结构与算法-千峰教育kript-video
 - 数据结构与算法专题课-珠峰-video
 - [JavaScript 数据结构与算法之美 - 十大经典排序算法](https://juejin.cn/post/6844903902484103182#heading-0)
+
+# 类的封装
+
+建议优先使用es6方式
+
+- es5通过构造函数实现类
+- es6通过class关键字实现类
+
+```
+//es5通过构造函数实现类的功能。
+    function Person(name,age){
+        this.name = name,
+        this.age = age
+    }
+    Person.prototype.say = function(){
+        console.log(`我叫${this.name},今年${this.age}岁`);
+    }
+    const p1 = new Person("jerry",21);
+    console.log(p1);
+    p1.say();
+```
+
+```
+// es6通过class关键字实现类
+class Person{
+        constructor(name,age){
+            this.name = name,
+            this.age = age
+        }
+        say(){
+        console.log(`我叫${this.name},今年${this.age}岁`);
+        }
+    }
+    const p2 = new Person("tom",22);
+    console.log(typeof(Person));
+    p2.say();
+```
+
+
 
 # [JS数据结构算法-coderwhy王红元](https://www.bilibili.com/video/BV1yD4y127vy?p=9&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 
