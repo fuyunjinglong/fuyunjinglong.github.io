@@ -54,7 +54,7 @@ class Person{
 
 
 
-# [JS数据结构算法-coderwhy王红元](https://www.bilibili.com/video/BV1yD4y127vy?p=9&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+# [(函数式)-coderwhy王红元](https://www.bilibili.com/video/BV1yD4y127vy?p=9&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 
 - [笔记](https://juejin.cn/post/7017349585446125575)
 
@@ -855,6 +855,8 @@ alert(linkList.size())
 **2.实现双向链表常见操作**
 
 ![image](/img/2024-04-27_10-54-06.png)
+
+# (es6)-coderwhy王红元
 
 # 初级算法
 
