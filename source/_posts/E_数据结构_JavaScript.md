@@ -17,7 +17,33 @@ toc: true # 是否启用内容索引
 
 # 类的封装
 
-建议优先使用es6方式
+[**React的class和hooks的区别**](https://zhuanlan.zhihu.com/p/627026165)
+
+function是面向过程编程，class是面向对象编程。
+
+> React的Hooks是React 16.8版本中引入的新特性，它们可以让我们在不使用Class组件的情况下管理状态和其他React特性。相比于Class组件，Hooks可以更好地解决组件之间共享状态和逻辑的问题。使用Hooks可以提供了一种新的、更简单的方式来管理组件状态和逻辑。同时，使用Hooks还可以避免Class组件中的一些常见问题，如this绑定、生命周期函数过于复杂等。
+
+Hooks优点
+
+> 1.简化代码：Hooks可以让我们更好地抽象和组合组件逻辑，从而使代码更加简单。
+>
+> 2.更好的可测试性：使用Hooks可以使组件更加可测试，因为我们可以更容易地测试组件的各个部分。
+>
+> 3.更好的性能：使用Hooks可以使React更高效，因为它们可以避免在组件渲染时进行不必要的操作。
+
+Class优点
+
+> 1.更好的兼容性：Class组件是React最早引入的一种组件类型，因此它们在React的生态系统中有更广泛的应用和更好的兼容性。
+>
+> 2.生命周期：Class组件具有生命周期方法，这些方法可以在组件的不同阶段执行特定的操作。这使得Class组件更加灵活，可以用于处理一些复杂的场景。
+>
+> 3.更好的TypeScript支持：TypeScript对Class组件的支持比Hooks更好，因为它们有更严格的类型定义。
+>
+> 4.更好的可读性：Class组件的代码结构更加清晰明了，更容易理解和调试。
+
+**类封装的实现方式**
+
+连React都有限使用hooks,我们也有限使用es5写法
 
 - es5通过构造函数实现类
 - es6通过class关键字实现类
@@ -28,7 +54,10 @@ toc: true # 是否启用内容索引
         this.name = name,
         this.age = age
     }
-    Person.prototype.say = function(){
+    this.say = function(){
+        console.log(`我叫${this.name},今年${this.age}岁`);
+    }
+     Person.prototype.say2 = function(){
         console.log(`我叫${this.name},今年${this.age}岁`);
     }
     const p1 = new Person("jerry",21);
@@ -52,9 +81,13 @@ class Person{
     p2.say();
 ```
 
+两者区别：
 
+1. 类的声明没有提升、和函数是不同的
+2. 同一个类不能被重复定义（'Identifier 'XXX' has already been declared'），而函数则是下面的会覆盖上一个函数
+3. 类也可以看作构造函数的一个语法糖
 
-# [(函数式)-coderwhy王红元](https://www.bilibili.com/video/BV1yD4y127vy?p=9&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+# [(函数式)-coderwhy王红元](https://www.bilibili.com/video/BV1yD4y127vy?p=9&vd_source=bd4c7d99d71adf64d6e88c65370e0247)-优先
 
 - [笔记](https://juejin.cn/post/7017349585446125575)
 
