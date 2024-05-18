@@ -13,6 +13,7 @@ toc: true # 是否启用内容索引
 - [JS数据结构与算法(es6)-coderwhy-video](https://www.bilibili.com/video/BV1a5411t7vZ?p=1&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - 数据结构与算法-千峰教育kript-video
 - 数据结构与算法专题课-珠峰-video
+- [JavaScript数据结构工具](https://www.javaguides.net/2019/06/javascript-queue-implementation.html)
 - [JavaScript 数据结构与算法之美 - 十大经典排序算法](https://juejin.cn/post/6844903902484103182#heading-0)
 
 # 类的封装
@@ -87,7 +88,7 @@ class Person{
 2. 同一个类不能被重复定义（'Identifier 'XXX' has already been declared'），而函数则是下面的会覆盖上一个函数
 3. 类也可以看作构造函数的一个语法糖
 
-# [(函数式)-coderwhy王红元](https://www.bilibili.com/video/BV1yD4y127vy?p=9&vd_source=bd4c7d99d71adf64d6e88c65370e0247)-优先
+# [(函数式)-coderwhy王红元](https://www.bilibili.com/video/BV1yD4y127vy?p=9&vd_source=bd4c7d99d71adf64d6e88c65370e0247)-推荐
 
 - [笔记](https://juejin.cn/post/7017349585446125575)
 
