@@ -9,7 +9,7 @@ toc: true # 是否启用内容索引
 # interview
 
 - [ ] [项目实战汇总-小程序](https://www.bilibili.com/video/BV187411c7Bi/?vd_source=bd4c7d99d71adf64d6e88c65370e0247)
-- [ ] [JavaScript专项](https://www.bilibili.com/video/BV1rq4y1U7gh/?spm_id_from=333.788&vd_source=bd4c7d99d71adf64d6e88c65370e0247)-js里的switch语句
+- [ ] [JavaScript专项](https://www.bilibili.com/video/BV1rq4y1U7gh/?spm_id_from=333.788&vd_source=bd4c7d99d71adf64d6e88c65370e0247)-js里的switch语句1
 - [ ]  vue2源码:PC本地-Vue2.js源码全方位深入解析-黄轶-第1章 准备工作(1-8)
 - [ ]  vue3源码:PC本地-催学社-Vue3源码实战课
 - [ ]  [JS数据结构与算法-video](https://www.bilibili.com/video/BV1yD4y127vy/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)-p34_14
