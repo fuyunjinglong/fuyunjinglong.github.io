@@ -43,13 +43,15 @@ toc: true # 是否启用内容索引
 
 ## 测试分类
 
-- 单元测试Unit
-- 集成测试Integration
-- 端到端测试E2E
+- 静态测试：在编写代码逻辑阶段时进行报错提示。(代表库: ESLint、Flow、TypeScript)
+- 单元测试Unit：在奖杯模型中, 单元测试的职责是对一些边界情况或者特定的算法进行测试。(代表库: [Jest](https://github.com/facebook/jest)、[Mocha](https://github.com/mochajs/mocha))
+- 集成测试Integration：模拟用户的行为进行测试，对网络请求、获取数据库的数据等依赖第三方环境的行为进行 Mock。（代表库: [Jest](https://github.com/facebook/jest)、[react-testing-library](https://github.com/testing-library/react-testing-library)、[Vue Testing Library](https://github.com/testing-library/vue-testing-library) 等）
+- 端到端测试E2E：模拟用户在真实环境上操作行为（包括网络请求、获取数据库数据等）的测试。（代表库: [Cypress](https://github.com/cypress-io/cypress)）
 
 其它的功能测试、UI 测试、界面测试只是它们中里面的一种。
 
-[前端测试一共有哪几种？](https://www.51cto.com/article/707816.html)
+- [前端测试一共有哪几种？](https://www.51cto.com/article/707816.html)
+- [前端测试](https://www.yuque.com/lipengzhou/frontend-testing/gg965i#e8JOr)
 
 ## 选择测试框架
 
@@ -68,6 +70,12 @@ Jest几大好处：
 
 测试框架比较：
 
+**Jest**
+
+> Jest 基于 Jasmine, 做了大量修改并添加了很多特性，同样开箱即用，但异步测试支持良好。
+>
+> Jest === Mocha + Chai + Sinon + mockserver + istanbul
+
 **Mocha**
 
 > Mocha 是生态最好，使用最广泛的单测框架，但是他需要较多的配置来实现它的高扩展性。
@@ -79,10 +87,6 @@ Jest几大好处：
 **Jasmine**
 
 > Jasmine 是单测框架的“元老”，开箱即用，但是异步测试支持较弱。
-
-**Jest**
-
-> Jest 基于 Jasmine, 做了大量修改并添加了很多特性，同样开箱即用，但异步测试支持良好。
 
 **Karma**
 
@@ -135,6 +139,11 @@ WebdriverIO 具有与 Cypress 相同的优点，允许你在真实浏览器中�
 - [测试框架比较](https://cn.vitest.dev/guide/comparisons.html#webdriverio)
 
 # TDD
+
+个人推荐：
+
+- 建议开发功能函数库使用 TDD 方案；
+- 建议开发业务系统使用 BDD 方案；
 
 ## TDD与BDD
 

@@ -1462,6 +1462,11 @@ document.addEventListener('click', (event: MouseEvent) => {
 const fragment: DocumentFragment = document.createDocumentFragment()
 ```
 
+# TS类型体操
+
+- [TS类型体操1](https://juejin.cn/post/7073070819219505166)
+- [TS类型体操2](https://juejin.cn/post/7077464587313872932)
+
 # 进阶
 
 ## interface和type什么区别

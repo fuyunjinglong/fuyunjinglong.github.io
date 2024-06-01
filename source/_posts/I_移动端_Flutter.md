@@ -8,7 +8,7 @@ toc: true # 是否启用内容索引
 
 # 1.Flutter是什么?
 
-[Flutter官网](https://flutter.dev/)
+- [Flutter官网](https://flutter.dev/)
 
 Flutter是一款移动应用程序SDK，一份代码可以同时生成iOS和Android两个高性能、高保真的应用程序。
 
@@ -52,6 +52,8 @@ Flutter高性能主要靠两点来保证：
 - 其次，Flutter使用自己的渲染引擎来绘制UI，布局数据等由Dart语言直接控制，所以在布局过程中不需要像RN那样通过JavaScriptCore在JavaScript和原生之间进行通信，这在一些滑动和拖动的场景下具有明显优势，因为在滑动和拖动过程中往往都会引起布局发生变化，所以JavaScript需要和原生之间不停的同步布局信息，这和在浏览器中要JavaScript频繁操作DOM所带来的问题是相同的，都会带来比较可观的性能开销。
 
 ## 为什么Flutter采用Dart语言开发？
+
+- [为什么 Flutter 选择了 Dart 语言](https://juejin.cn/post/6870286147541696525)
 
 介绍两个概念：JIT和AOT。
 
