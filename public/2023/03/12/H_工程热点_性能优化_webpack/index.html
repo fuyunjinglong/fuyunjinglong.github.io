@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>性能优化_webpack | Hexo</title>
+  <meta name="description" content="入门前言module，chunk 和 bundle是什么   同一份逻辑代码在不同转换场景下的取了三个名字， module是源码，module经过webpack处理成chunk，webpack最后输出bundle。 module：源码文件，包括 ESM或commonJS 或是UMD chunk：webpack 会根据文件引用关系生成 chunk 文件，webpack 会对这个 chunk 文件进行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="性能优化_webpack">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2023/03/12/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96_webpack/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="入门前言module，chunk 和 bundle是什么   同一份逻辑代码在不同转换场景下的取了三个名字， module是源码，module经过webpack处理成chunk，webpack最后输出bundle。 module：源码文件，包括 ESM或commonJS 或是UMD chunk：webpack 会根据文件引用关系生成 chunk 文件，webpack 会对这个 chunk 文件进行">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211215065353682.png">
+<meta property="og:image" content="c:/img/image-20211222073047966.png">
+<meta property="og:image" content="c:/img/image-20211222073237881.png">
+<meta property="og:image" content="c:/img/image-20211222073348756.png">
+<meta property="og:image" content="c:/img/image-20211222073538232.png">
+<meta property="og:image" content="c:/img/image-20211222073711287.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211222073804134.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211215065812474.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211215065505606.png">
+<meta property="article:published_time" content="2023-03-12T02:33:16.000Z">
+<meta property="article:modified_time" content="2023-07-16T03:53:27.403Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/image-20211215065353682.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2023/03/12/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96_webpack/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://fuyunjinglong.github.io/" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Elven</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/09/">九月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/06/">六月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">二月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/06/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_0%E5%9F%BA%E7%A1%80/" class="title">0基础_工程热点</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-05T22:33:16.000Z" itemprop="datePublished">2099-11-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/05/I_%E7%A7%BB%E5%8A%A8%E7%AB%AF_0%E5%9F%BA%E7%A1%80/" class="title">0基础_移动端</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-04T22:33:16.000Z" itemprop="datePublished">2099-11-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/" class="title">0基础_计算机网络</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-03T22:33:16.000Z" itemprop="datePublished">2099-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_0%E5%9F%BA%E7%A1%80/" class="title">0基础_数据结构</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_%E5%9F%BA%E7%A1%80/" class="title">0基础_设计模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%A5%E9%97%A8"><span class="toc-number">1.</span> <span class="toc-text">入门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">1.2.</span> <span class="toc-text">webpack是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack%E6%89%93%E5%8C%85%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.</span> <span class="toc-text">webpack打包原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5"><span class="toc-number">1.4.</span> <span class="toc-text">webpack优化策略</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6"><span class="toc-number">2.</span> <span class="toc-text">进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack-loader%E6%9C%BA%E5%88%B6"><span class="toc-number">2.1.</span> <span class="toc-text">webpack-loader机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack-plugin%E6%9C%BA%E5%88%B6"><span class="toc-number">2.2.</span> <span class="toc-text">webpack-plugin机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack-vueloader%E6%9C%BA%E5%88%B6"><span class="toc-number">2.3.</span> <span class="toc-text">webpack-vueloader机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack-%E6%89%8B%E5%86%99loader"><span class="toc-number">2.4.</span> <span class="toc-text">webpack-手写loader</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack-%E6%89%8B%E5%86%99plugin"><span class="toc-number">2.5.</span> <span class="toc-text">webpack-手写plugin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack3%E3%80%814%E3%80%815%E6%AF%94%E8%BE%83"><span class="toc-number">2.6.</span> <span class="toc-text">webpack3、4、5比较</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ESbuild%E5%B0%B1%E6%AF%94webpack%E5%BF%AB"><span class="toc-number">2.7.</span> <span class="toc-text">ESbuild就比webpack快</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7"><span class="toc-number">3.</span> <span class="toc-text">高级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack-code-splitting%E4%BB%A3%E7%A0%81%E5%88%86%E5%89%B2"><span class="toc-number">3.1.</span> <span class="toc-text">webpack-code splitting代码分割</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack%E5%88%86%E5%8C%85%E7%AD%96%E7%95%A5"><span class="toc-number">3.2.</span> <span class="toc-text">webpack分包策略</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-H_工程热点_性能优化_webpack" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      性能优化_webpack
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/03/12/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96_webpack/" class="article-date">
+	  <time datetime="2023-03-12T02:33:16.000Z" itemprop="datePublished">2023-03-12</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/03/12/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96_webpack/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><strong>module，chunk 和 bundle是什么</strong></p>
+<blockquote>
+<ul>
+<li>同一份逻辑代码在不同转换场景下的取了三个名字， module是源码，module经过webpack处理成chunk，webpack最后输出bundle。</li>
+<li>module：源码文件，包括 ESM或commonJS 或是UMD</li>
+<li>chunk：webpack 会根据文件引用关系生成 chunk 文件，webpack 会对这个 chunk 文件进行一些操作</li>
+<li>bundle：webpack 处理好 chunk 文件后，最后会输出 <strong>bundle</strong> 文件，这个 bundle 文件包含了经过加载和编译的最终源文件，所以它可以直接在浏览器中运行</li>
+</ul>
+</blockquote>
+<p><strong>打包后文件目录</strong></p>
+<blockquote>
+<ul>
+<li>app.js:就是app.vue文件 </li>
+<li>mainfest.js:一些异步加载的实现方法</li>
+<li>vender.js:vue核心功能被打包到这里</li>
+<li>chunk.js:主要的页面路由被打包编译在此</li>
+</ul>
+</blockquote>
+<h2 id="webpack是什么"><a href="#webpack是什么" class="headerlink" title="webpack是什么"></a>webpack是什么</h2><p><strong>定义</strong></p>
+<blockquote>
+<p>webpack 是一个模块打包机，将根据文件间的依赖关系对其进行静态分析，然后按指定规则递归地构建一个依赖关系图，最终打包成一个或多个 bundle。</p>
+</blockquote>
+<p><strong>核心模块</strong></p>
+<blockquote>
+<ul>
+<li>entry: 入口</li>
+<li>output: 输出</li>
+<li>loader: 模块转换器，用于把模块原内容按照需求转换成新内容</li>
+<li>插件(plugins): 扩展插件，在webpack构建流程中的特定时机注入扩展逻辑来改变构建结果或做你想要做的事情</li>
+</ul>
+</blockquote>
+<p><strong>特点</strong></p>
+<blockquote>
+<ul>
+<li>支持多种模块化标准方案，包括ES Module,CommonJS,UMD</li>
+<li>支持code splitting代码分割和文件分块</li>
+<li>支持loader静态文件串联处理，强大的plugin插件扩展功能</li>
+</ul>
+</blockquote>
+<p><strong>打包工具</strong></p>
+<p>gulp/grunt是自动化任务构建工具。</p>
+<blockquote>
+<ul>
+<li>gulp/grunt：是一种能够优化前端开发的工作流程的工具，比如css/js的压缩混淆，预处理语言的编译、图片体积优化等等。与webpack有部分重合，比如打包、压缩混淆、图片转 base64 等等。但它们的目的跟要解决的问题是不一样的。</li>
+</ul>
+</blockquote>
+<p>webapck/browserify/seajs/requirejs是模块化解决方案，强调模块化开发，而那些文件压缩合并、预处理等功能，不过是附带的功能。</p>
+<blockquote>
+<ul>
+<li>seajs/requirejs： 是一种在线”编译” 模块的方案，相当于在页面上加载一个 CMD/AMD 解释器。这样浏览器就认识了 define、exports、module 这些东西。也就实现了模块化。</li>
+<li>webpack/browserify： 是一个预编译模块的方案，相比于上面 ，这个方案更加智能。以webpack为例。首先，它是预编译的，不需要在浏览器中加载解释器。另外，你在本地直接写JS，不管是 AMD / CMD / ES6 风格的模块化，它都能认识，并且编译成浏览器认识的JS。</li>
+</ul>
+</blockquote>
+<h2 id="webpack打包原理"><a href="#webpack打包原理" class="headerlink" title="webpack打包原理"></a>webpack打包原理</h2><p>打包概况：</p>
+<blockquote>
+<ul>
+<li>从入口文件开始，分析整个个应用的依赖树</li>
+<li>将每个依赖模块包装起来，放到一个数组中，等待被调用</li>
+<li>执行模块加载方法，确定模块之间以互相调用</li>
+<li>把执行入口文件的逻辑放在一个立即执行函数汇总，参数就是模块数组</li>
+</ul>
+</blockquote>
+<p>详细流程:</p>
+<blockquote>
+<p>（1）初始化参数：解析webpack配置参数，合并shell传入和webpack.config.js文件配置的参数，形成最后的配置结果。</p>
+<p>（2）开始编译：上一步得到的参数初始化compiler对象，注册所有配置的插件，插件监听webpack构建生命周期的事件节点，做出相应的反应，执行对象的 run 方法开始执行编译。</p>
+<p>（3）确定入口：从配置的entry入口，开始解析文件构建AST语法树，找出依赖，递归下去。</p>
+<p>（4）编译模块：递归中根据文件类型和loader配置，调用所有配置的loader对文件进行转换，再找出该模块依赖的模块，再递归本步骤直到所有入口依赖的文件都经过了本步骤的处理。</p>
+<p>（5）完成模块编译并输出：递归完事后，得到每个文件结果，包含每个模块以及他们之间的依赖关系，根据entry配置生成代码块chunk。</p>
+<p>（6）输出完成：输出所有的chunk到文件系统。</p>
+</blockquote>
+<p>打包流程：</p>
+<p><img src="/img/image-20211215065353682.png" alt="image-20211215065353682"></p>
+<p>打包核心源码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">1)首先是一个自执行函数</span><br><span class="line">2)参数通过对象形式传递，key是文件路径，value是函数，eval()表示执行字符串代码。eval执行vaule函数字符串。</span><br><span class="line">3)如果有多个依赖文件，最终会打包成一个文件</span><br><span class="line">4)__webpack_require__最重要，模拟了require方法，将所有的引入合并成一个文件</span><br><span class="line">5)通过递归的方式不断调用自己__webpack_require__，检查自己的依赖关系</span><br><span class="line">(function(modules)&#123;</span><br><span class="line">    //module缓存对象</span><br><span class="line">    var installedModules = &#123;&#125;;</span><br><span class="line">    //require函数精髓</span><br><span class="line">    function __webpack_require__(moduleId)&#123;</span><br><span class="line">        //检查module是否在cache中</span><br><span class="line">        if(installedModules[moduleId])&#123;</span><br><span class="line">            return installedModules[moduleId].exports;</span><br><span class="line">        &#125;</span><br><span class="line">        //若不在cache中则新建module并放入cache中</span><br><span class="line">        var module = installedModules[moduleId] = &#123;</span><br><span class="line">            exports: &#123;&#125;,</span><br><span class="line">            id: moduleId,</span><br><span class="line">            loaded: false</span><br><span class="line">        &#125;;</span><br><span class="line">        //执行module函数</span><br><span class="line">        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);</span><br><span class="line">        //标记module已经加载</span><br><span class="line">        module.loaded = true;</span><br><span class="line">        //返回module的导出模块</span><br><span class="line">        return module.exports;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //暴露modules对象（__webpack_modules__）</span><br><span class="line">    __webpack_require__.m = modules;</span><br><span class="line">    //暴露modules缓存</span><br><span class="line">    __webpack_require__.c = installedModules;</span><br><span class="line">    //设置webpack公共路径__webpack_public_path__</span><br><span class="line">    __webpack_require__.p = &quot;&quot;;</span><br><span class="line">    //读取入口模块并且返回exports导出</span><br><span class="line">    return __webpack_require__(0);</span><br><span class="line"></span><br><span class="line">&#125;)([function(module, exports, __webpack_require__)&#123; /*模块Id为0*/</span><br><span class="line">    var text = __webpack_require__(1);</span><br><span class="line">    console.log(text);</span><br><span class="line">&#125;,function(module, exports)&#123; /*模块Id为1*/</span><br><span class="line">    module.exports = &#x27;Hello world&#x27;;</span><br><span class="line">&#125;]);</span><br></pre></td></tr></table></figure>
+
+<h2 id="webpack优化策略"><a href="#webpack优化策略" class="headerlink" title="webpack优化策略"></a>webpack优化策略</h2><p><strong>分析工具</strong></p>
+<blockquote>
+<ul>
+<li>webpack-bundle-analyzer打包分析神器</li>
+<li>speed-measure-webpack-plugin分析整个打包时长，涉及所有 loader 和 plugins</li>
+</ul>
+</blockquote>
+<p><strong>优化指标</strong></p>
+<blockquote>
+<ul>
+<li>体积更小<ul>
+<li>使用摇树技术Tree-Shaking</li>
+<li>使用作用域提升scope-hositing</li>
+<li>缩小打包范围</li>
+<li>压缩h5图片样式文件</li>
+<li>splitChunks 代码分割，抽取公共代码</li>
+</ul>
+</li>
+<li>速度更快<ul>
+<li>使用多线程打包</li>
+<li>使用中间缓存优化</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><strong>一、体积更小</strong></p>
+<p><strong>使用摇树技术Tree-Shaking</strong></p>
+<blockquote>
+<p>DCE（Dead Code Elimination）消除无用js代码。Tree-Shaking 目前只适用于 ESModule模块化的代码，不适用commonjs。通过静态分析将无用代码打上标记，然后删除标记的无用代码。配置usedExports: true,配置mode：production生产环境。或者配置terser-webpack-plugin</p>
+</blockquote>
+<p><strong>使用作用域提升scope-hositing</strong></p>
+<blockquote>
+<p>把多个作用域用一个作用域取代，以减少内存消耗并减少包裹块代码</p>
+</blockquote>
+<p><strong>缩小打包范围</strong></p>
+<blockquote>
+<ul>
+<li>压缩html,如html-webpack-plugin</li>
+<li>cacheDirectory开启babel缓存，提高二次构建速度，缓存loader执行结果；</li>
+<li>优化 module.noParse,不解析依赖打包，externals编译后不打包</li>
+<li>优化 resolve.modules，默认值为 [‘node_modules’]，会逐层查找第三方模块，直接指定绝对路径，更快速查找；</li>
+<li>优化 resolve.extensions ,默认值为 [‘.wasm’, ‘.mjs’, ‘.js’, ‘.json’],修改为js,ts，更快速匹配文件；</li>
+<li>排除对于语言包的打包,比如moment，排除多余语言，new webpack.IgnorePlugin(/./locale/,/moment/)</li>
+</ul>
+</blockquote>
+<p><strong>压缩h5图片样式文件</strong></p>
+<blockquote>
+<ul>
+<li>HtmlWebpackPlugin优化压缩html</li>
+<li>UglifyjsWebpackPlugin升级后的minimize压缩</li>
+<li>压缩图片，使用 url-loader 减少 http 请求,图片转为内置base64URI</li>
+<li>使用 optimize-css-assets-plugin 压缩 CSS</li>
+</ul>
+</blockquote>
+<p><strong>splitChunks 代码分割，抽取公共代码</strong></p>
+<blockquote>
+<ul>
+<li>entry 配置多入口</li>
+<li>动态路由载入</li>
+<li>splitChunks 配置</li>
+</ul>
+</blockquote>
+<p>splitChunks 规则和配置</p>
+<blockquote>
+<p>拆分合并规则：<br>a.命名规则：vendor<del>a</del>b.js。vendor前缀表示命中缓存，a-b表示a和b有相同模块合并。cacheGroups表示缓存组，被命中的缓存组模块，会以vendor为前缀。<br>b.如果都是异步代码，都会被默认拆分出来打包成独立文件。相同模块会自动合并，命名后缀均为a_lodash.js。<br>c.如果都是同步代码，在”async”模式下，不拆分不合并;在“initial或all”模式下，会拆分且合并；vendors_a-b_lodash.js。<br>d.如果是一同步一异步代码，在”async”模式下，同步代码不拆分不合并;在”initial”模式下，会拆分同步代码，但是同步代码与异步代码相同模块不会合并；在”all”模式下，会拆分且合并。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="attr">optimization</span>: &#123;</span><br><span class="line">        <span class="attr">splitChunks</span>: &#123;</span><br><span class="line">            <span class="attr">chunks</span>: <span class="string">&#x27;async&#x27;</span>, <span class="comment">// 三选一： &quot;initial&quot; | &quot;all&quot; | &quot;async&quot; (默认)</span></span><br><span class="line">            <span class="attr">minSize</span>: <span class="number">30000</span>, <span class="comment">// 最小尺寸，30K，development 下是10k，越大那么单个文件越大，chunk 数就会变少（针对于提取公共 chunk 的时候，不管再大也不会把动态加载的模块合并到初始化模块中）当这个值很大的时候就不会做公共部分的抽取了</span></span><br><span class="line">            <span class="attr">maxSize</span>: <span class="number">0</span>, <span class="comment">// 文件的最大尺寸，0为不限制，优先级：maxInitialRequest/maxAsyncRequests &lt; maxSize &lt; minSize</span></span><br><span class="line">            <span class="attr">minChunks</span>: <span class="number">1</span>, <span class="comment">// 默认1，被提取的一个模块至少需要在几个 chunk 中被引用，这个值越大，抽取出来的文件就越小</span></span><br><span class="line">            <span class="attr">maxAsyncRequests</span>: <span class="number">5</span>, <span class="comment">// 在做一次按需加载的时候最多有多少个异步请求，为 1 的时候就不会抽取公共 chunk 了</span></span><br><span class="line">            <span class="attr">maxInitialRequests</span>: <span class="number">3</span>, <span class="comment">// 针对一个 entry 做初始化模块分隔的时候的最大文件数，优先级高于 cacheGroup，所以为 1 的时候就不会抽取 initial common 了</span></span><br><span class="line">            <span class="attr">automaticNameDelimiter</span>: <span class="string">&#x27;~&#x27;</span>, <span class="comment">// 打包文件名分隔符</span></span><br><span class="line">            <span class="attr">name</span>: <span class="literal">true</span>, <span class="comment">// 拆分出来文件的名字，默认为 true，表示自动生成文件名，如果设置为固定的字符串那么所有的 chunk 都会被合并成一个</span></span><br><span class="line">            <span class="attr">cacheGroups</span>: &#123;</span><br><span class="line">                <span class="attr">vendors</span>: &#123;</span><br><span class="line">                    <span class="attr">test</span>: <span class="regexp">/[\\/]node_modules[\\/]/</span>, <span class="comment">// 正则规则，如果符合就提取 chunk</span></span><br><span class="line">                    <span class="attr">priority</span>: -<span class="number">10</span> <span class="comment">// 缓存组优先级，当一个模块可能属于多个 chunkGroup，这里是优先级</span></span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="attr">default</span>: &#123;</span><br><span class="line">                    <span class="attr">minChunks</span>: <span class="number">2</span>,</span><br><span class="line">                    <span class="attr">priority</span>: -<span class="number">20</span>, <span class="comment">// 优先级</span></span><br><span class="line">                    <span class="attr">reuseExistingChunk</span>: <span class="literal">true</span> <span class="comment">// 如果该chunk包含的modules都已经另一个被分割的chunk中存在，那么直接引用已存在的chunk，不会再重新产生一个</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>二、速度更快</strong></p>
+<p><strong>使用多线程打包happypack-loader</strong></p>
+<blockquote>
+<p>原理：每次 <code>webapck</code> 解析一个模块，<code>HappyPack</code> 会将它及它的依赖分配给 <code>worker</code> 线程中。处理完成之后，再将处理好的资源返回给 <code>HappyPack</code> 的主进程，从而加快打包速度。</p>
+</blockquote>
+<p><strong>使用中间缓存优化HardSourceWebpackPlugin</strong></p>
+<h1 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h1><h2 id="webpack-loader机制"><a href="#webpack-loader机制" class="headerlink" title="webpack-loader机制"></a>webpack-loader机制</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7157739406835580965#heading-16">【万字长文｜趣味图解】彻底弄懂Webpack中的Loader机制</a></li>
+</ul>
+<p>loader是文件加载器，能够加载资源文件，并对这些文件进行一些处理，如编译、压缩等、语法分析及转换，然后交由下一环节进行处理，所有载入的模块最终都会经过moduleFactory处理，转成javascript可以识别和运行的代码，从而完成模块的集成。</p>
+<p><strong>Loader本质</strong></p>
+<p>Loader 本质上是导出为函数的 JavaScript 模块。<code>它接收资源文件或者上一个 Loader 产生的结果作为入参，也可以用多个 Loader 函数组成 loader chain（链），最终输出转换后的结果</code>。</p>
+<p><strong>Loader的四种类型</strong></p>
+<p>分为：<a href="https://link.juejin.cn/?target=https://webpack.docschina.org/configuration/module/%23ruleenforce">前置(pre)</a>、<a href="https://link.juejin.cn/?target=https://webpack.docschina.org/configuration/module/%23ruleenforce">普通(normal)</a>、<a href="https://link.juejin.cn/?target=https://webpack.docschina.org/configuration/module/%23ruleenforce">行内(inline)</a>、<a href="https://link.juejin.cn/?target=https://webpack.docschina.org/configuration/module/%23ruleenforce">后置(post)</a>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">module: &#123;</span><br><span class="line">  rules: [</span><br><span class="line">    &#123;</span><br><span class="line">      test: /\.css$/,</span><br><span class="line">      use: [</span><br><span class="line">        &quot;style-loader&quot;, //将css内容变成style标签插入到html中去</span><br><span class="line">        &quot;css-loader&quot;, //解析css文件的路径等</span><br><span class="line">        &quot;less-loader&quot;, //将less=&gt;css</span><br><span class="line">      ],</span><br><span class="line">      enforce: &quot;pre&quot;, //这里也可以是post，默认不写就是normal</span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p><strong>Loader执行顺序</strong></p>
+<p>简单说：Loader 的执行顺序是由右向左，或者由下到上执行。</p>
+<p>官方说法：<strong>Pitching</strong> 阶段和<strong>Normal</strong> 阶段</p>
+<p>所有一个接一个地进入的 Loader，都有两个阶段：</p>
+<ol>
+<li><strong>Pitching</strong> 阶段: Loader 上的 pitch 方法，按照 <code>后置(post)、行内(inline)、普通(normal)、前置(pre)</code> 的顺序调用。</li>
+<li><strong>Normal</strong> 阶段: Loader 上的 常规方法，按照 <code>前置(pre)、普通(normal)、行内(inline)、后置(post)</code> 的顺序调用。模块源码的转换， 发生在这个阶段。</li>
+<li>同等类型下的 Loader 执行顺序才是由右向左，或者由下到上执行。</li>
+</ol>
+<blockquote>
+<p>以处理SCSS文件为例：</p>
+<ul>
+<li>SCSS源代码会先交给<code>sass-loader</code>把SCSS转换成CSS；</li>
+<li>把<code>sass-loader</code>输出的CSS交给<code>css-loader</code>处理，找出CSS中依赖的资源、压缩CSS等；</li>
+<li>把<code>css-loader</code>输出的CSS交给<code>style-loader</code>处理，转换成通过脚本加载的JavaScript代码；</li>
+</ul>
+<p>先<code>sass-loader</code>再<code>css-loader</code>再<code>style-loader</code>，每个<code>Loader</code>会链式的顺序执行， 第一个Loader将会拿到需处理的原内容，上一个<code>Loader</code>处理后的结果会传给下一个接着处理。</p>
+</blockquote>
+<p><strong>babel文件编译器</strong></p>
+<blockquote>
+<p>bebel-loader中核心的是，@babel-core核心包、@babel-preset-env预设。<br>babel是javascript语法的编译器。比如class，let,for…of promise等等这样的，低版本浏览器不支持，babel编译器将es6代码转换成浏览器能识别的代码。默认情况下对新的语法和API中的，新的语法进行转换。<br>在Babel执行编译的过程中，会从项目的根目录下的 .babelrc文件中读取配置。.babelrc是一个json格式的文件。<br>在.babelrc配置文件中，主要是对预设(presets) 和 插件(plugins) 进行配置。</p>
+</blockquote>
+<h2 id="webpack-plugin机制"><a href="#webpack-plugin机制" class="headerlink" title="webpack-plugin机制"></a>webpack-plugin机制</h2><p><strong>原理</strong></p>
+<p>plugin<code>是一个扩展器，它丰富了 webpack 本身，针对是</code>loader` 结束后，webpack 打包的整个过程，它并不直接操作文件，而是基于事件机制工作，会监听webpack 打包过程中的某些节点，执行广泛的任务。</p>
+<p><strong>Plugin 的作用</strong>：</p>
+<ul>
+<li>能够 hook 到在每个编译(compilation)中触发的所有关键事件。</li>
+<li>在插件实例的 apply 方法中，可以通过 compiler.options 获取 Webpack 配置，并进行修改。</li>
+</ul>
+<h2 id="webpack-vueloader机制"><a href="#webpack-vueloader机制" class="headerlink" title="webpack-vueloader机制"></a>webpack-vueloader机制</h2><p><strong>完整流程</strong></p>
+<p>.vue 单文件文件组件类型的文件（下文简称 <strong>SFC</strong>）。Webpack 需要增加 vue-loader 和 vueLoaderPlugin 对 SFC 进行支持。入参 source 是 SFC 源码，经过处理逻辑后，输出 export default 的代码字符串。</p>
+<p><img src="C:/img/image-20211222073047966.png" alt="image-20211222073047966"></p>
+<p>1.SFC 的输入和输出</p>
+<p><img src="C:/img/image-20211222073237881.png" alt="image-20211222073237881"></p>
+<p>2.template、script、style 代码块切分</p>
+<p> template、script、style 代码块在输出结果中已经转化为对应的 import 逻辑。这一步是 vue-loader 调用了 @vue/component-compiler-utils 的 parse 函数进行解析后，分别生成了对应的 import 逻辑.</p>
+<p><img src="C:/img/image-20211222073348756.png" alt="image-20211222073348756"></p>
+<p>3.VueLoaderPlugin 的作用</p>
+<p>vue&amp;type=template 的作用是什么?</p>
+<p>VueLoaderPlugin 通过plugin的第2作用，对 module.rules 进行动态修改。</p>
+<p>VueLoaderPlugin 的处理流程中，修改了 module.rules，在原来的基础上加入了 pitcher 和 cloneRules 。这一步的作用是：新增的 rule ，能识别形如 ?vue&amp;type=template 的 querystring，让不同语言的代码块匹配到对应的 rule。</p>
+<p><img src="C:/img/image-20211222073538232.png" alt="image-20211222073538232"></p>
+<p>4.SFC 转化流程</p>
+<p>每个代码块都导出了对应逻辑，我们以 script 块为例，结合第二节的 PitcherLoader 再次进行转化.</p>
+<p><img src="C:/img/image-20211222073711287.png" alt="image-20211222073711287"></p>
+<p>5.再次执行 VueLoader</p>
+<p>在 PitchLoader 的转化结果中，还是会以 vue-loader 作为第一个处理的 loader，但 vue-loader 不是一开始就转化过了吗 ？与第一次不同的是，这次 vue-loader 的作用，仅仅是<strong>把 SFC 中语法块的源码提取出来，并交给后面的 loader 进行处理</strong>。</p>
+<p><img src="/img/image-20211222073804134.png" alt="image-20211222073804134"></p>
+<h2 id="webpack-手写loader"><a href="#webpack-手写loader" class="headerlink" title="webpack-手写loader"></a>webpack-手写loader</h2><p>自定义loader分为:同步loader和异步loader</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">webpack.config.js</span><br><span class="line">const path = require(&#x27;path&#x27;);</span><br><span class="line">module:&#123;</span><br><span class="line"> rules:[</span><br><span class="line">  &#123;</span><br><span class="line">   test:/.js$/,</span><br><span class="line">   use:[</span><br><span class="line">    path.resolve(__dirname,&#x27;./loaders/replace.js&#x27;)</span><br><span class="line">   ]</span><br><span class="line">  &#125;</span><br><span class="line"> ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">index.js</span><br><span class="line">console.log(&#x27;luwentest&#x27;)</span><br><span class="line"></span><br><span class="line">//同步loader,修改打包内容</span><br><span class="line">replace.js</span><br><span class="line">module.export = function(context)&#123;</span><br><span class="line">//没有使用箭头函数，可能需要修改this指向</span><br><span class="line">return context.replace(/luwentest/g,&#x27;luwenProduction&#x27;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">asyncReplace.js</span><br><span class="line">//异步loader</span><br><span class="line">const sleep = num =&gt;new Promise((resolve)=&gt;&#123;</span><br><span class="line"> setTimeout(()=&gt;&#123;</span><br><span class="line">  resolve();</span><br><span class="line"> &#125;,num)</span><br><span class="line">&#125;);</span><br><span class="line">module.export = function(content)&#123;</span><br><span class="line">//获取loader的异步回调函数</span><br><span class="line"> cosnt callback= this.async();</span><br><span class="line"> ;(async()=&gt;&#123;</span><br><span class="line"> //立即执行函数</span><br><span class="line"> await sleep(3000);</span><br><span class="line"> content = context.replace(/luwentest/g,&#x27;luwenProduction&#x27;)</span><br><span class="line"> //执行回调函数，传入4个参数，第1个是error信息，2是内容，3，4未知</span><br><span class="line"> callback(null,content);</span><br><span class="line"> &#125;)();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="webpack-手写plugin"><a href="#webpack-手写plugin" class="headerlink" title="webpack-手写plugin"></a>webpack-手写plugin</h2><p>必须条件：</p>
+<ul>
+<li>必须是一个class类；</li>
+<li>必须重写apply方法；</li>
+<li>必须调用complier API来影响打包结果；</li>
+</ul>
+<blockquote>
+<ul>
+<li>1.webpack 读取配置的过程中会先执行 <code>new HelloPlugin(options)</code> 初始化一个 <code>HelloPlugin</code> 获得其实例。</li>
+<li>2.初始化 <code>compiler</code> 对象后调用 <code>HelloPlugin.apply(compiler)</code> 给插件实例传入 compiler 对象。</li>
+<li>3.插件实例在获取到 <code>compiler</code> 对象后，就可以通过 <code>compiler.plugin</code> (事件名称, 回调函数) 监听到 Webpack 广播出来的事件。 并且可以通过 <code>compiler</code> 对象去操作 Webpack</li>
+</ul>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">//在项目打包时，动态创建license证书</span><br><span class="line">license-webpack-plugin.js</span><br><span class="line">class LicenseWebpackPlugins&#123;</span><br><span class="line"> constructor(parmas)&#123;</span><br><span class="line">  console.log(parmas);</span><br><span class="line"> &#125;</span><br><span class="line"> apply(complier)&#123;</span><br><span class="line">  // 在emit阶段插入钩子函数，用于特定时机处理额外的逻辑；</span><br><span class="line">    compiler.hooks.emit.tap(&#x27;HelloPlugin&#x27;, (compilation) =&gt; &#123;</span><br><span class="line">      // 在功能流程完成后可以调用 webpack 提供的回调函数；</span><br><span class="line">    &#125;)</span><br><span class="line">    // 如果事件是异步的，会带两个参数，第二个参数为回调函数，</span><br><span class="line">    compiler.plugin(&#x27;emit&#x27;, function (compilation, callback) &#123;</span><br><span class="line">      // 处理完毕后执行 callback 以通知 Webpack</span><br><span class="line">      // 如果不执行 callback，运行流程将会一直卡在这不往下执行</span><br><span class="line">      callback()</span><br><span class="line">    &#125;)</span><br><span class="line"> //Compiler 代表了整个 Webpack 从启动到关闭的生命周期</span><br><span class="line"> //Compilation 只是代表了一次新的编译，只要文件有改动，compilation 就会被重新创建。</span><br><span class="line"> //tapAsync表示异步处理，接收2个参数，第1个参数是类名，第2个是函数，</span><br><span class="line"> //第2个是函数,包括2个参数，第1个参数是compliation类似可编译对象实例，第2个是cb回调函数</span><br><span class="line">  complier.hook.emit.tapAsync(&#x27;LicenseWebpackPlugins&#x27;,(compliation,cb)=&gt;&#123;</span><br><span class="line">   compliation.assets[&#x27;LICENSE&#x27;]=&#123;</span><br><span class="line">    source:function()&#123;</span><br><span class="line">     return &#x27;xxxxx我的证书信息&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">   &#125;</span><br><span class="line">  &#125;)</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="webpack3、4、5比较"><a href="#webpack3、4、5比较" class="headerlink" title="webpack3、4、5比较"></a>webpack3、4、5比较</h2><p>webpack4比3的优化：</p>
+<blockquote>
+<ul>
+<li><p><code>v8</code> 引擎带来的优化（<code>for of</code> 替代 <code>forEach</code>、<code>Map</code> 和 <code>Set</code> 替代 <code>Object</code>、<code>includes</code> 替代 <code>indexOf</code>）</p>
+</li>
+<li><p>默认使用更快的 <code>md4 hash</code> 算法</p>
+</li>
+<li><p><code>webpack AST</code> 可以直接从 <code>loader</code> 传递给 <code>AST</code>，减少解析时间</p>
+</li>
+<li><p>增加了mode配置，development | production，production配置默认启用 FlagDependencyUsagePlugin, FlagIncludedChunksPlugin, ModuleConcatenationPlugin, NoEmitOnErrorsPlugin, OccurrenceOrderPlugin, SideEffectsFlagPlugin 和 UglifyJsPlugin。</p>
+</li>
+<li><p>splitChunks替代了CommonChunksPlugin</p>
+</li>
+<li><p>MiniCssExtractPlugin取代ExtractTextWebpackPlugin</p>
+</li>
+<li><p>代码分割，支持动态import，而不是用system.import或者require.ensure</p>
+</li>
+<li><p>vue-loader，使用vue-loader插件为.vue文件中的各部分使用相对应的loader，比如css-loader</p>
+</li>
+<li><p>UglifyJsPlugin，使用optimization.minimize为true就行</p>
+</li>
+</ul>
+</blockquote>
+<p>webpack5比4的优化：</p>
+<blockquote>
+<ul>
+<li><p>内置 terser-webpack-plugin,mode=“production” 配置自动开启js压缩，自动开启 tree-shaking。而webpack4需要安装 terser-webpack-plugin。</p>
+</li>
+<li><p>内置 cache 缓存机制，cache 会在开发模式下被设置成 type： memory 而且会在生产模式把cache 给禁用掉。wepback4需要npm install hard-source-webpack-plugin -D</p>
+</li>
+<li><p>5需要webpack serve 启动服务。日志不好。4可以webpack-dev-server 启动服务</p>
+</li>
+<li><p>raw-loader 将文件导入为字符串，asset/source 替换 raw-loader（导出源代码）</p>
+<p>url-loader 将文件作为 data url 内联到 bundle文件中，asset/inline 替换 url-loader （导出 url）</p>
+<p>file-loader 将文件发送到输出目录中，asset/resource 替换 file-loader(发送单独文件)</p>
+</li>
+<li><p>5.2版本以后提供npx webpack全局命令，支持全局操作,原理：当前目录下查找node_module,如果没有用，则下载webpack</p>
+</li>
+</ul>
+</blockquote>
+<h2 id="ESbuild就比webpack快"><a href="#ESbuild就比webpack快" class="headerlink" title="ESbuild就比webpack快"></a>ESbuild就比webpack快</h2><p><img src="/img/image-20211215065812474.png" alt="image-20211215065812474"></p>
+<p>我的主基准测试会将 three.js 库复制 10 次并从头开始构建单个包，过程中没有任何缓存，从而模拟一个大型代码库。在这个基准测试中，esbuild 比我测试的其他 JavaScript 打包器（Webpack、Rollup、Parcel 和 FuseBox）<strong>快 10-100 倍</strong>。这个基准测试可以使用’make bench-three’来运行。</p>
+<p>目前支持：</p>
+<blockquote>
+<ul>
+<li>CommonJS 模块</li>
+<li>ES6 模块</li>
+<li>使用’–bundle’与 ES6 模块的静态绑定打包</li>
+<li>使用’–minify’完全压缩（空格、标识符和修饰符）</li>
+<li>启用’–sourcemap’时，完全支持源映射</li>
+<li>.jsx 文件的 JSX 到 JavaScript 转换</li>
+<li>通过’–define’进行编译时标识符替换</li>
+<li>使用 package.json 中的’browser’字段进行路径替换</li>
+<li>自动检测 tsconfig.json 中的’baseUrl’</li>
+</ul>
+</blockquote>
+<p>为什么这么快：</p>
+<blockquote>
+<ul>
+<li>它是用 Go 语言编写的，该语言可以编译为原生代码；</li>
+<li>解析，打印和源映射生成全部完全并行化；</li>
+<li>无需昂贵的数据转换，只需很少的几步即可完成所有操作；</li>
+<li>编写代码时处处注意速度表现，并尽量避免不必要的配置。</li>
+</ul>
+</blockquote>
+<p>webpack性能瓶颈</p>
+<blockquote>
+<ul>
+<li><p>代码构建</p>
+<p>浏览器的很多包分析工具是用<code>C/C++</code>写的, 显然是要比 <code>webpack</code> 使用 <code>js</code> 去分析整个<code>依赖图谱</code>更具优势，速度上也是要快很多的。</p>
+</li>
+<li><p>代码压缩</p>
+<p><code>webpack</code> 使用的 <code>terser</code>, 是用 <code>js</code> 写的，不如go语言编写的esbuild</p>
+</li>
+</ul>
+</blockquote>
+<p><img src="/img/image-20211215065505606.png" alt="image-20211215065505606"></p>
+<h1 id="高级"><a href="#高级" class="headerlink" title="高级"></a>高级</h1><h2 id="webpack-code-splitting代码分割"><a href="#webpack-code-splitting代码分割" class="headerlink" title="webpack-code splitting代码分割"></a>webpack-code splitting代码分割</h2><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903793151180807#heading-0">详解webpack code splitting</a></p>
+<p><strong>代码分割需要做的事情：</strong></p>
+<blockquote>
+<p>为 Vendor 单独打包（Vendor 指第三方的库或者公共的基础组件，因为 Vendor 的变化比较少，单独打包利于缓存）</p>
+<p>为 Manifest （Webpack 的 Runtime 代码）单独打包</p>
+<p>为不同入口的业务代码打包，也就是代码分割异步加载（同理，也是为了缓存和加载速度）</p>
+<p>为异步公共加载的代码打一个的包</p>
+</blockquote>
+<p><strong>分割的两种方式：</strong></p>
+<blockquote>
+<ol>
+<li>require.ensure代码分割：通过require.ensure定义分割点，将代码进行分割打包，异步加载</li>
+<li>dynamic import代码分割：在动态代码拆分方面，webpack支持符合ECMAScript提议的import()语法进行代码分割和异步加载。</li>
+</ol>
+</blockquote>
+<p>1.require.ensure代码分割</p>
+<p>webpack 在编译时，会静态地解析代码中的 require.ensure()，同时将模块添加到一个分开的 chunk 当中，这个新的 chunk 会被 webpack 通过 jsonp 来异步加载，其他包则会同步加载。</p>
+<p>2.dynamic import 代码分割</p>
+<p>requre.ensure好像已被webpack4废弃。es6提供了一种更好的代码分割方案也就是dynamic import（动态加载）的方式，webpack打包时会根据import()自动代码分割；</p>
+<h2 id="webpack分包策略"><a href="#webpack分包策略" class="headerlink" title="webpack分包策略"></a>webpack分包策略</h2><ul>
+<li>基础类库 <code>chunk-libs</code></li>
+<li>UI 组件库 <code>chunk-elementUI</code></li>
+<li>自定义共用组件/函数 <code>chunk-commons</code></li>
+<li>低频组件 <code>chunk-eachrts</code>/<code>chunk-xlsx</code>等</li>
+<li>业务代码 lazy-loading <code>xxxx.js</code></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">类型</th>
+<th align="center">共用率</th>
+<th align="center">使用频率</th>
+<th align="center">更新频率</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">基础类库</td>
+<td align="center">高</td>
+<td align="center">高</td>
+<td align="center">低</td>
+<td>vue/react、vuex/mobx、xx-router、axios 等</td>
+</tr>
+<tr>
+<td align="left">UI 组件库</td>
+<td align="center">高</td>
+<td align="center">高</td>
+<td align="center">中</td>
+<td>Element-UI/Ant Design 等</td>
+</tr>
+<tr>
+<td align="left">必要组件/函数</td>
+<td align="center">高</td>
+<td align="center">高</td>
+<td align="center">中</td>
+<td>Nav/Header/Footer 组件、路由定义、权限验证、全局 State 、全局配置等</td>
+</tr>
+<tr>
+<td align="left">非必要组件/函数</td>
+<td align="center">高</td>
+<td align="center">高</td>
+<td align="center">中</td>
+<td>封装的 Select/Radio 组件、utils 函数 等 (必要和非必要组件可合并)</td>
+</tr>
+<tr>
+<td align="left">低频组件</td>
+<td align="center">低</td>
+<td align="center">低</td>
+<td align="center">低</td>
+<td>富文本、Mardown-Editor、Echarts、Dropzone 等</td>
+</tr>
+<tr>
+<td align="left">业务代码</td>
+<td align="center">低</td>
+<td align="center">高</td>
+<td align="center">高</td>
+<td>业务组件、业务模块、业务页面  等</td>
+</tr>
+</tbody></table>
+<ul>
+<li>基础类库 chunk-libs</li>
+</ul>
+<p>它是构成我们项目必不可少的一些基础类库，比如 <code>vue</code>+<code>vue-router</code>+<code>vuex</code>+<code>axios</code> 这种标准的全家桶，它们的升级频率都不高，但每个页面都需要它们。（一些全局被共用的，体积不大的第三方库也可以放在其中：比如 nprogress、js-cookie、clipboard 等）</p>
+<ul>
+<li>UI 组件库</li>
+</ul>
+<p>理论上 UI 组件库也可以放入 libs 中，但这里单独拿出来的原因是： 它实在是比较大，不管是 <code>Element-UI</code>还是<code>Ant Design</code> gizp 压缩完都可能要 200kb 左右，它可能比 libs 里面所有的库加起来还要大不少，而且 UI 组件库的更新频率也相对的比 libs 要更高一点。我们不时的会升级 UI 组件库来解决一些现有的 bugs 或使用它的一些新功能。所以建议将 UI 组件库也单独拆成一个包。</p>
+<ul>
+<li>自定义组件/函数 chunk-commons</li>
+</ul>
+<p>这里的 commons 主要分为 <strong>必要</strong>和<strong>非必要</strong>。</p>
+<p>必要组件是指那些项目里必须加载它们才能正常运行的组件或者函数。比如你的路由表、全局 state、全局侧边栏/Header/Footer 等组件、自定义 Svg 图标等等。这些其实就是你在入口文件中依赖的东西，它们都会默认打包到<code>app.js</code>中。</p>
+<p>非必要组件是指被大部分页面使用，但在入口文件 entry 中未被引入的模块。比如：一个管理后台，你封装了很多 select 或者 table 组件，由于它们的体积不会很大，它们都会被默认打包到到每一个懒加载页面的 chunk 中，这样会造成不少的浪费。你有十个页面引用了它，就会包重复打包十次。所以应该将那些被大量共用的组件单独打包成<code>chunk-commons</code>。</p>
+<p>不过还是要结合具体情况来看。一般情况下，你也可以将那些<em>非必要组件\函数</em>也在入口文件 entry 中引入，和<em>必要组件\函数</em>一同打包到<code>app.js</code>之中也是没什么问题的。</p>
+<ul>
+<li>低频组件</li>
+</ul>
+<p>低频组件和上面的共用组件 <code>chunk-commons</code> 最大的区别是，它们只会在一些特定业务场景下使用，比如富文本编辑器、<code>js-xlsx</code>前端 excel 处理库等。一般这些库都是第三方的且大于 30kb，所以 webpack 4 会默认打包成一个独立的 bundle。也无需特别处理。小于 30kb 的情况下会被打包到具体使用它的页面 bundle 中。</p>
+<ul>
+<li>业务代码</li>
+</ul>
+<p>这部分就是我们平时经常写的业务代码。一般都是按照页面的划分来打包，比如在 vue 中，使用<a target="_blank" rel="noopener" href="https://router.vuejs.org/zh/guide/advanced/lazy-loading.html">路由懒加载</a>的方式加载页面 <code>component: () =&gt; import(&#39;./Foo.vue&#39;)</code> webpack 默认会将它打包成一个独立的 bundle。</p>
+<p>完整配置代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">splitChunks</span>: &#123;</span><br><span class="line">  <span class="attr">chunks</span>: <span class="string">&quot;all&quot;</span>,</span><br><span class="line">  <span class="attr">cacheGroups</span>: &#123;</span><br><span class="line">    <span class="attr">libs</span>: &#123;</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&quot;chunk-libs&quot;</span>,</span><br><span class="line">      <span class="attr">test</span>: <span class="regexp">/[\\/]node_modules[\\/]/</span>,</span><br><span class="line">      <span class="attr">priority</span>: <span class="number">10</span>,</span><br><span class="line">      <span class="attr">chunks</span>: <span class="string">&quot;initial&quot;</span> <span class="comment">// 只打包初始时依赖的第三方</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">elementUI</span>: &#123;</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&quot;chunk-elementUI&quot;</span>, <span class="comment">// 单独将 elementUI 拆包</span></span><br><span class="line">      <span class="attr">priority</span>: <span class="number">20</span>, <span class="comment">// 权重要大于 libs 和 app 不然会被打包进 libs 或者 app</span></span><br><span class="line">      <span class="attr">test</span>: <span class="regexp">/[\\/]node_modules[\\/]element-ui[\\/]/</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">commons</span>: &#123;</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&quot;chunk-comomns&quot;</span>,</span><br><span class="line">      <span class="attr">test</span>: <span class="title function_">resolve</span>(<span class="string">&quot;src/components&quot;</span>), <span class="comment">// 可自定义拓展你的规则</span></span><br><span class="line">      <span class="attr">minChunks</span>: <span class="number">2</span>, <span class="comment">// 最小共用次数</span></span><br><span class="line">      <span class="attr">priority</span>: <span class="number">5</span>,</span><br><span class="line">      <span class="attr">reuseExistingChunk</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://github.com/webpack-china/awesome-webpack-cn">webpack 优秀中文文章</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903986185650190">掘金站内 webpack 优秀文章汇总</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/SbJNbSVzSPSKBe2YStn2Zw">[万字总结] 一文吃透 Webpack 核心原理</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000021953371">webpack三部曲-带你深度解锁Webpack系列(基础篇)</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000022041106">webpack三部曲带-你深度解锁Webpack系列(进阶篇)</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000022205477">webpack三部曲-带你深度解锁Webpack系列(优化篇)</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000022561279">浅谈webpack性能优化</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6908897055599509512">记一次真实的Webpack优化经历</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6951297954770583565">17项关于webpack的性能优化</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/152097785">Webpack之SplitChunks插件用法详解</a></p>
+<p><a target="_blank" rel="noopener" href="https://imweb.io/topic/5b66dd601402769b60847149">webpack 4 Code Splitting 的 splitChunks 配置探索</a></p>
+<p><a target="_blank" rel="noopener" href="https://champyin.com/2019/11/15/webpack%E4%BC%98%E5%8C%96%E4%B9%8B%E7%8E%A9%E8%BD%AC%E4%BB%A3%E7%A0%81%E5%88%86%E5%89%B2%E5%92%8C%E5%85%AC%E5%85%B1%E4%BB%A3%E7%A0%81%E6%8F%90%E5%8F%96/">webpack优化之玩转代码分割和公共代码提取</a></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2023/03/12/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96_webpack/" title="性能优化_webpack" target="_blank" rel="external">https://fuyunjinglong.github.io/2023/03/12/H_工程热点_性能优化_webpack/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://fuyunjinglong.github.io/" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://fuyunjinglong.github.io/" target="_blank"><span class="text-dark">Elven</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2023/03/12/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96_0%E5%9F%BA%E7%A1%80/" title="性能优化_0基础"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2023/03/11/D_%E6%A1%86%E6%9E%B6_React%E5%85%A5%E9%97%A8/" title="React入门"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

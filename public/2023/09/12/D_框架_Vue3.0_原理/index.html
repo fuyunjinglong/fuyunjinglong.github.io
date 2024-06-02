@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Vue3.0_原理 | Hexo</title>
+  <meta name="description" content="入门生命周期  setup() :开始创建组件之前，在beforeCreate和created之前执行。创建的是data和methodonBeforeMount() : 组件挂载到节点上之前执行的函数。onMounted() : 组件挂载完成后执行的函数。onBeforeUpdate(): 组件更新之前执行的函数。onUpdated(): 组件更新完成之后执行的函数。onBeforeUnmount">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue3.0_原理">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue3.0_%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="入门生命周期  setup() :开始创建组件之前，在beforeCreate和created之前执行。创建的是data和methodonBeforeMount() : 组件挂载到节点上之前执行的函数。onMounted() : 组件挂载完成后执行的函数。onBeforeUpdate(): 组件更新之前执行的函数。onUpdated(): 组件更新完成之后执行的函数。onBeforeUnmount">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/vue3%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/vue3%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png">
+<meta property="article:published_time" content="2023-09-11T23:33:16.000Z">
+<meta property="article:modified_time" content="2024-02-28T23:03:21.894Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/vue3%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue3.0_%E5%8E%9F%E7%90%86/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://fuyunjinglong.github.io/" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Elven</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/09/">九月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/06/">六月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">二月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/06/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_0%E5%9F%BA%E7%A1%80/" class="title">0基础_工程热点</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-05T22:33:16.000Z" itemprop="datePublished">2099-11-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/05/I_%E7%A7%BB%E5%8A%A8%E7%AB%AF_0%E5%9F%BA%E7%A1%80/" class="title">0基础_移动端</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-04T22:33:16.000Z" itemprop="datePublished">2099-11-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/" class="title">0基础_计算机网络</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-03T22:33:16.000Z" itemprop="datePublished">2099-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_0%E5%9F%BA%E7%A1%80/" class="title">0基础_数据结构</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_%E5%9F%BA%E7%A1%80/" class="title">0基础_设计模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%A5%E9%97%A8"><span class="toc-number">1.</span> <span class="toc-text">入门</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.1.</span> <span class="toc-text">生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%88%B6%E5%AD%90%E7%BB%84%E4%BB%B6%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%9B%B4%E6%96%B0%E9%A1%BA%E5%BA%8F"><span class="toc-number">1.2.</span> <span class="toc-text">父子组件生命周期更新顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F-1"><span class="toc-number">1.3.</span> <span class="toc-text">生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Proxy%E6%98%AF%E4%BB%A3%E7%90%86%EF%BC%8CReflect%E6%98%AF%E5%B9%B2%E5%98%9B%E7%94%A8%E7%9A%84%EF%BC%9F"><span class="toc-number">1.4.</span> <span class="toc-text">Proxy是代理，Reflect是干嘛用的？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6"><span class="toc-number">2.</span> <span class="toc-text">进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue3%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.1.</span> <span class="toc-text">Vue3存在的问题</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-D_框架_Vue3.0_原理" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Vue3.0_原理
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue3.0_%E5%8E%9F%E7%90%86/" class="article-date">
+	  <time datetime="2023-09-11T23:33:16.000Z" itemprop="datePublished">2023-09-12</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue3.0_%E5%8E%9F%E7%90%86/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2><p><img src="/img/vue3%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png"></p>
+<blockquote>
+<p>setup() :开始创建组件之前，在beforeCreate和created之前执行。创建的是data和method<br>onBeforeMount() : 组件挂载到节点上之前执行的函数。<br>onMounted() : 组件挂载完成后执行的函数。<br>onBeforeUpdate(): 组件更新之前执行的函数。<br>onUpdated(): 组件更新完成之后执行的函数。<br>onBeforeUnmount(): 组件卸载之前执行的函数。<br>onUnmounted(): 组件卸载完成后执行的函数<br>onActivated(): 被包含在中的组件，会多出两个生命周期钩子函数。被激活时执行。<br>onDeactivated(): 比如从 A 组件，切换到 B 组件，A 组件消失时执行。<br>onErrorCaptured(): 当捕获一个来自子孙组件的异常时激活钩子函数。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Vue2</th>
+<th>Vue3</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>beforeCreate</td>
+<td>❌setup(替代)</td>
+</tr>
+<tr>
+<td>created</td>
+<td>❌setup(替代)</td>
+</tr>
+<tr>
+<td>beforeMount</td>
+<td>onBeforeMount</td>
+</tr>
+<tr>
+<td>mounted</td>
+<td>onMounted</td>
+</tr>
+<tr>
+<td>beforeUpdate</td>
+<td>onBeforeUpdate</td>
+</tr>
+<tr>
+<td>updated</td>
+<td>onUpdated</td>
+</tr>
+<tr>
+<td>beforeDestroy</td>
+<td>onBeforeUnmount</td>
+</tr>
+<tr>
+<td>destroyed</td>
+<td>onUnmounted</td>
+</tr>
+<tr>
+<td>errorCaptured</td>
+<td>onErrorCaptured</td>
+</tr>
+<tr>
+<td></td>
+<td>🎉onRenderTracked</td>
+</tr>
+<tr>
+<td></td>
+<td>🎉onRenderTriggered</td>
+</tr>
+</tbody></table>
+<p><strong>新增的钩子函数onRenderTracked()和 onRenderTriggered()</strong></p>
+<p>onRenderTracked()</p>
+<blockquote>
+<p>直译过来就是<code>状态跟踪</code>，它会跟踪页面上所有响应式变量和方法的状态。只要页面有<code>update</code>的情况，他就会跟踪，然后生成一个<code>event</code>对象。</p>
+</blockquote>
+<p>onRenderTriggered()</p>
+<blockquote>
+<p>直译过来是<code>状态触发</code>，它不会跟踪每一个值，而是给你变化值的信息，并且新值和旧值都会给你明确的展示出来。 与<code>watch</code>相似。</p>
+<p>event 对象属性的详细介绍：</p>
+<ul>
+<li>key 那边变量发生了变化</li>
+<li>newValue 更新后变量的值</li>
+<li>oldValue 更新前变量的值</li>
+<li>target 目前页面中的响应变量和函数</li>
+</ul>
+</blockquote>
+<p><strong>实际开发中如何使用</strong></p>
+<blockquote>
+<p> beforecreate : 可以在这函数中初始化加载动画<br> created ：做一些数据初始化，实现函数自执行<br> mounted： 调用后台接口进行网络请求，拿回数据，配合路由钩子做一些事情<br> destoryed ：当前组件已被删除，清空相关内容<br> mounted中做网络请求和重新赋值，在destoryed中清空页面数据。</p>
+</blockquote>
+<p><strong>单组件</strong></p>
+<blockquote>
+<p>页面首次加载</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setup -&gt; onBeforeMount -&gt; onRenderTracked -&gt; onMounted</span><br></pre></td></tr></table></figure>
+
+<p>页面更新</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">onRenderTriggered -&gt; onBeforeUpdate -&gt; onUpdated</span><br></pre></td></tr></table></figure>
+
+<p>页面卸载</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">onBeforeUnmount -&gt; onUnmounted</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="父子组件生命周期更新顺序"><a href="#父子组件生命周期更新顺序" class="headerlink" title="父子组件生命周期更新顺序"></a><strong>父子组件生命周期更新顺序</strong></h2><blockquote>
+<p><strong>页面首次加载</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">父组件setup -&gt; 父组件onBeforeMount -&gt; 父组件onRenderTracked -&gt; 子组件setup -&gt; 子组件onBeforeMount -&gt; 子组件onRenderTracked -&gt; 子组件onMounted -&gt; 父组件onMounted</span><br></pre></td></tr></table></figure>
+
+<p><strong>页面更新</strong></p>
+<p>纯父组件属性更新 <code>onRenderTriggered -&gt; onBeforeUpdate -&gt; onUpdated</code></p>
+<p>纯子组件属性更新 <code>onRenderTriggered -&gt; onBeforeUpdate -&gt; onUpdated</code></p>
+<p>父组件属性更新，该属性在子组件中有被使用 <code>父组件onRenderTriggered -&gt; 父组件onBeforeUpdate -&gt; 子组件onBeforeUpdate -&gt; 子组件onUpdated -&gt; 父组件onUpdated</code></p>
+<p>子组件属性更新，该属性在父组件中有被使用 <code>子组件onRenderTriggered -&gt; 父组件onRenderTriggered -&gt; 父组件onBeforeUpdate -&gt; 子组件onBeforeUpdate -&gt; 子组件onUpdated -&gt; 父组件onUpdated</code></p>
+<p><strong>页面卸载</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">父组件onBeforeUnmount -&gt; 子组件onBeforeUnmount -&gt; 子组件onUnmounted -&gt; 父组件onUnmounted</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="生命周期-1"><a href="#生命周期-1" class="headerlink" title="生命周期"></a>生命周期</h2><p><img src="/img/vue3%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png"></p>
+<h2 id="Proxy是代理，Reflect是干嘛用的？"><a href="#Proxy是代理，Reflect是干嘛用的？" class="headerlink" title="Proxy是代理，Reflect是干嘛用的？"></a>Proxy是代理，Reflect是干嘛用的？</h2><p>准确讲应该是这样的，Reflect更像是一种语法变体，其挂在的所有方法都能找到对应的原始语法，也就是Reflect的替代性非常强。</p>
+<p>比较常用的两个方法就是<code>get()</code>和<code>set()</code>方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Reflect.get(target, propertyKey)</span><br><span class="line">Reflect.set(target, propertyKey, value)</span><br></pre></td></tr></table></figure>
+
+<p>等效于</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">target[propertyKey]</span><br><span class="line">target[propertyKey] = value;</span><br></pre></td></tr></table></figure>
+
+<p>Reflect对象经常和Proxy代理一起使用，原因有三点：</p>
+<ol>
+<li>Reflect提供的所有静态方法和Proxy第2个handle参数方法是一模一样的。</li>
+<li>Proxy get/set()方法需要的返回值正是Reflect的get/set方法的返回值，可以天然配合使用，比直接对象赋值/获取值要更方便和准确(通过返回值知道是否赋值成功，并不会因为报错而中断正常代码执行)。</li>
+<li>receiver参数具有不可替代性。</li>
+</ol>
+<p><strong>关于receiver参数</strong></p>
+<p>receiver是接受者的意思，表示调用对应属性或方法的主体对象，通常情况下，receiver参数是无需使用的，但是如果发生了继承，为了<em>明确调用主体</em>，receiver参数就需要出马了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">let miaoMiao = &#123;</span><br><span class="line">  _name: &#x27;疫苗&#x27;,</span><br><span class="line">  get name () &#123;</span><br><span class="line">    return this._name;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">let miaoXy = new Proxy(miaoMiao, &#123;</span><br><span class="line">  get (target, prop, receiver) &#123;</span><br><span class="line">    return target[prop];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">let kexingMiao = &#123;</span><br><span class="line">  __proto__: miaoXy,</span><br><span class="line">  _name: &#x27;科兴疫苗&#x27;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// 结果是疫苗</span><br><span class="line">console.log(kexingMiao.name);</span><br></pre></td></tr></table></figure>
+
+<p>实际上，这里预期显示应该是“科兴疫苗”，而不是“疫苗”。</p>
+<p>这个时候，就需要使用<code>receiver</code>参数了，代码变化部分参见下面标红的那一行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">return Reflect.get(target, prop, receiver);</span><br><span class="line">// 也可以简写为 Reflect.get(...arguments) </span><br></pre></td></tr></table></figure>
+
+<h1 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h1><h2 id="Vue3存在的问题"><a href="#Vue3存在的问题" class="headerlink" title="Vue3存在的问题"></a>Vue3存在的问题</h2><p><strong>参考</strong></p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://www.vue-js.com/topic/61e622a4cbbfd1003b11fa19">Vue3的漏洞</a></p>
+</li>
+<li><p>丢失响应性</p>
+</li>
+<li><p>Vue3的TypeScript对类型的支持十分孱弱</p>
+</li>
+</ul>
+<p><strong>一、丢失响应性</strong></p>
+<p>vue3还存在着很多问题 例如对ts支持不够友好 ref.value的混乱 解构丢失响应性（不知道有啥好的实践,目前是使用计算属性） 从体验上远不如vue2 目前个人认为最完善的库是solidjs 可惜生态没跟上来 可能对大家而言react vue并不是最好的解 react一个useeffct官网花6篇文章来描述这个api 我真是笑了 总而言之react vue3写起来不是很润。</p>
+<p>你没有发现吗?Vue团队是为了补坑而补坑,Vue2的ref仅仅是引用组件而已,而在Vue3变成了定义响应式变量,这一点我估计是参考了react,但react的运行机制与vue不同,react的ref是定义一个引用,避免组件重新渲染值被重置。</p>
+<p>vue3对ts的支持挺不错了，毕竟本身就是用ts写的，模板对ts的支持可能比较弱。<br>解构这个绕不过去，不是vue3的问题，原生js就是那样，除非魔改，但是魔改的好几版提案都没落地。<br>只能说各有取舍吧。</p>
+<p><strong>二、Vue3的TypeScript对类型的支持十分孱弱</strong></p>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/453332049">为什么我感觉 Vue 3 TypeScript 还是不行？</a></p>
+<p>几个问题：</p>
+<ol>
+<li>option props define 的方式定义非常不灵活，这种值定义的思想意味着你必须要用值来定义类型，而不是利用类型来指导值应该长什么样，因此 vue 3 整体的类型设计不得不遭受了这个思想的严重毒害，不得不设计的很复杂（具体详见其 d.ts 实现）</li>
+<li>值指导类型下不得不引入 ExtractPropTypes 来将 props 值定义转为类型定义，但 vue 没有提供 ExtractPropTypes 的逆运算，导致在定义共有 props 组件 (props 继承) 的时候十分难受</li>
+<li>defineComponent 不支持泛型；有个 hack 手段是包一层函数 wrapper来引入泛型，不过这样有运行时开销</li>
+<li>应我看就应该取缔 SFC .vue 组件，这东西太反类型了，而且容易造成一个 vue 文件几千行的问题，有悖 VCA 所声称的组合优于继承的设计目标；或者说社区可以考虑去推动 ts 支持自定义文件后缀的 type loader （这样也可以解决 .pb 文件的类型问题）</li>
+<li>写惯了 React 的来看 vue tsx 会感觉 slots 的设计很奇怪 … 直接将 props 下的字段作为 slots 使用不是更符合直觉？感觉 vue props 整体的设计完全是 react prop 的子集 …</li>
+<li><strong>emit、onXxx、vModel 等框架基础概念的类型做得很差, 用过的都懂, 太难受了</strong></li>
+</ol>
+<p>Vue 3 还是不够激进（真要激进了我感觉 Vue 就成 React With Reactive Object 了）</p>
+<blockquote>
+<p>尤大的回答：</p>
+<p>Props 值定义确实是一个兼容性导致的包袱。但是在 <script setup> 下已经支持直接用 defineProps<{...}> 类型声明 props 了（自动编译为对应的值声明）。tsx 下也有方案在讨论。</p>
+<p>sfc 的 TS IDE 支持请用 <script setup lang="ts"> + vscode + volar。volar 最近几个月很多改进，我个人用已经跟 tsx 感觉没太大差别了。配套的有 vue-tsc 可以做命令行检查。</p>
+<p>有了 VCA 还能写几千行的 SFC 组件那就纯粹是人的问题了，VCA 抽取逻辑跟纯 JS/TS 文件没什么区别，一个 TS 文件也能写几千行（几万行的 checker.ts 不也有么</p>
+<p>tsx 本质上是 ts 团队给开了后门直接把 tsx 的推导做进了 ts 本身。ts 如果愿意开档更加完整的 plugin 机制，所有基于模板的框架的类型支持也不至于需要绕那么多弯子，然而 ts 团队怕增加维护成本不肯开。不管怎么说 vue 和 svelte 现在通过各种 hack 也算是做出来了基本完整的模板 ts 支持。</p>
+<p>模板在性能这块吊打 tsx，在 IDE 支持抹平了的前提下用 tsx 本质上是在为了开发者的偏好牺牲用户体验的性能（性能没遇到瓶颈就无所谓）</p>
+<p>这边自己不维护框架的人吐槽吐槽我也能理解，毕竟作为使用者只需要考虑自己爽不爽。作为维护者，Vue 的已有的用户习惯、生态和历史包袱摆在那里，能激进的程度是有限的，Vue 3 的大部分设计都是戴着镣铐跳舞，需要做很多折衷。如果真要激进还不如开个新项目，或者没人用的玩票项目，想怎么设计都可以。</p>
+<p>组件泛型的问题也有不少人提出了，这个目前确实不行，但不表示以后不会有。</p>
+<p>最后实话实说，所有前端里面像这个问题下面的类型体操运动员们毕竟是少数，绝大部分有 intellisense + 类型校验就满足需求了。真的对类型特别特别较真的用 React 也没什么不好，无非就是性能差点。</p>
+</blockquote>
+<blockquote>
+<p>松若章的回答：</p>
+<ol>
+<li><p>我觉得 props 的问题很大程度上是兼容性包袱导致的，在 Vue 组件的 prop resolve 的过程里，如果没有大量编写经验其实很难记清楚每种配置会 <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=resolve&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22answer%22,%22sourceId%22:1835420993%7D">resolve</a> 什么值。同时这些动态 resolve prop 的过程也对类型的编写造成了很多麻烦，即使在现在的版本，setup 函数中 props 的<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E9%9D%99%E6%80%81%E7%B1%BB&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22answer%22,%22sourceId%22:1835420993%7D">静态类</a>型和 runtime 的实际表现都有不小的偏差。如果未来这些不一致可以全部修复的话倒也不算什么大问题了</p>
+</li>
+<li><p>定义共有 props 组件我觉得问题不是很大，只是相比于 React 在 interface 的层面就能共享，Vue 目前必须通过<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E5%B1%95%E5%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22answer%22,%22sourceId%22:1835420993%7D">展开运算符</a>才能解决。</p>
+<p>我想提一下的是 ExtractPropTypes 的另一个问题，这个工具类型提取出来的其实是用于 setup 函数的 props 而不是外界传入的 props，这实际上对于类型的使用造成了一些阻碍。在 prop 没有 <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=required&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22answer%22,%22sourceId%22:1835420993%7D">required</a> 的情况下需要使用 <code>Partial&lt;ExtractPropTypes&lt;typeof xxxProps&gt;&gt;</code> 才能给出实际外部的 props 的类型。</p>
+</li>
+<li><p>针对于组件 props 的泛型，目前似乎没啥好办法，我也很头大，只能采取比泛型更松的类型约束。<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E6%B3%9B%E5%9E%8B%E7%B1%BB&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22answer%22,%22sourceId%22:1835420993%7D">泛型类</a>型对于<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E4%B8%9A%E5%8A%A1%E7%BB%84%E4%BB%B6&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22answer%22,%22sourceId%22:1835420993%7D">业务组件</a>的编写可能不算特别常用，但是对于底层组件的编写其实非常重要。详见：</p>
+</li>
+<li><p>取缔 SFC 组件有点过于激进了，有点因噎废食的感觉。如果工具链能成熟多数场景下是可以使用 SFC 来编写的，既维持模板的优点也带有类型检查。当然前提是工具链能成熟，包含 vscode 的插件、类似 tsc –noEmit 的<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=%E5%91%BD%E4%BB%A4%E8%A1%8C&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22answer%22,%22sourceId%22:1835420993%7D">命令行</a>类型检查，正确的 dts 文件生成。在年初的时候我尝试过 <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=vuedx&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22answer%22,%22sourceId%22:1835420993%7D">vuedx</a>、volar，vuedx 会让我的 vscode 卡死，volar 总有类型提示存在问题，发现不太能适应我的开发场景。但是 ts 不能不上，最后我把一个 .vue 的组件库用 .tsx 重写了</p>
+</li>
+<li><p>slots 的位置确实有放到 props 的可能，毕竟它的机制和 [render props](<a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=render">https://www.zhihu.com/search?q=render</a> props&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra={“sourceType”%3A”answer”%2C”sourceId”%3A1835420993}) 非常像，但是我个人觉得放到 prop 里面会导致 tsx 更加难看，因为 <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=vue3&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22answer%22,%22sourceId%22:1835420993%7D">vue3</a> 的组件全量使用了函数 slot，不允许数组作为组件 children，在嵌套组件时候和别的 prop 会混起来，这两种风格可能大家各有喜好。</p>
+</li>
+<li><p>我在 vue3 从没使用过 <a target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=emits&search_source=Entity&hybrid_search_source=Entity&hybrid_search_extra=%7B%22sourceType%22:%22answer%22,%22sourceId%22:1835420993%7D">emits</a>，实际上也非常建议不要允许 emits 属性在生产环境的使用，我相信这个选项留着更多的还是为了兼容性的问题。vModel 本身是个语法糖，类型支持如何完全取决于对 props 的类型支持，只能等着插件逐步完善了。至于对 onXxx 的支持，确实比 React 要弱一些，我觉得目前只能说达到基本可用的状态，由于 Vue 采取了原生事件，原生事件的类型没有对于 target 的泛型，对于事件的支持不如 React 一整套重写的事件类型也是情理之中。</p>
+<p>总的来说 Vue3 的 typescript 支持在 TSX 的情境下其实是可以有不错的体验的（但是离 React 还有不小的差距）。但是模板之下，就看工具链是否给力了，还是希望 Vue 在 SFC 情况下的类型体验能早日达到 TSX 的程度。</p>
+</li>
+</ol>
+</blockquote>
+<h2 id="vue3代码实践建议"><a href="#vue3代码实践建议" class="headerlink" title="vue3代码实践建议"></a>vue3代码实践建议</h2><p><strong>Typescript</strong></p>
+<p>TS严格模式：使用TS时，要开启tsconfig中的严格模式，如果关闭严格模式，类型检查的效果将大打折扣</p>
+<p>避免AnyScript：使用TS时要进行严格的类型声明，避免过多的any，因为使用any将失去类型检查，如果实在难以描述类型，则可以考虑使用unknow。TS项目中如果存在很多的any，不如抛弃TypeScript</p>
+<p>不要保留报错：各类报错通常是用来处理<code>边界情况</code>的，这正是此类报错存在的意义，需要重视并解决。有时候开发者会比TS更清楚数据的类型，此时一些不必要的类型报错可以通过<code>类型断言</code>解决。重视并解决所有报错可以为代码提供更好的<code>健壮性</code></p>
+<p><strong>代码建议</strong></p>
+<ul>
+<li>规范、明确的命名： 在命名变量或函数时，名称应该尽可能的明确它的作用/功能，不要使用缩写特别是拼音缩写，这将导致代码可读性严重下降，复杂变量/方法使用注释进行注解</li>
+<li>积极使用新的ES语法：包括可选链操作符(?.)、解构、剩余参数语法、空值合并运算符(??)等，合理地使用它们将有效地提高代码可读性</li>
+<li>合理的代码组织：单个函数中，一些相关的函数内容写在一起可以有效的规范代码结构，在某个代码块比较复杂时，还可以提取为一个函数置于函数后部，前半部分仅<code>保留核心逻辑</code>，可以有效提升代码可读性。在VUE组件中也是类似的逻辑</li>
+<li>语义化代码：在编写代码时，调用各类JSAPI时，应该注重<code>语义化</code>，比如要对数组进行某种批处理，就使用Array.map而不是使用Array.forEach或其他循环方式然后配合外部创建的另一个空数组进行处理。要实现什么效果就使用什么API，这样既可以让代码精简，也可以增强可读性，让代码<code>自己描述自己</code>，这是<code>增强代码可读性的关键</code></li>
+<li>基础功能使用工具类：在进行一些基础判断等操作时，尽量使用一些封装好的工具类，这样可以<code>避免</code>判断时的<code>疏漏</code>而产生错误；使用某功能时也先查询是否已有相关工具，同一类功能使用同一个封装好的工具将更<code>方便管理</code>，但要注意的是此类工具<code>不能过于复杂</code>，否则大范围应用后将会导致<code>难以维护</code>、牵一发而动全身</li>
+</ul>
+<h2 id="Vapor-Mode"><a href="#Vapor-Mode" class="headerlink" title="Vapor Mode"></a>Vapor Mode</h2><p>Vapor Mode是一种替代编译策略，受到Solid的启发，我们一直在进行实验。使用相同的Vue SFC，Vapor Mode将其编译为JavaScript输出，与当前基于Virtual DOM的输出相比，它更具有性能、内存占用和运行时支持代码方面的优势。尽管它仍处于早期阶段，拥有以下优点：</p>
+<ul>
+<li>1、Vapor模式旨在用于性能是主要关注点的用例。它是选择性的，不会影响现有的代码库。</li>
+<li>2、您将能够将Vapor组件子树嵌入到任何现有的Vue 3应用程序中。理想情况下，我们希望在组件级别实现细粒度选择，这意味着可以在同一个应用程序中自由混合Vapor和非Vapor组件。</li>
+<li>3、仅使用Vapor组件构建应用程序允许您从构建包中删除虚拟DOM运行时，从而显着减少基线运行时大小。</li>
+<li>4、为了实现最佳性能，Vapor模式将仅支持Vue功能的子集。特别地，Vapor模式组件将仅支持Composition API和<script setup>。然而，这个受支持的子集在Vapor和非Vapor组件之间将完全相同。</li>
+</ul>
+<p>不同框架的编译策略对比：</p>
+<ul>
+<li>🚀 React编译之后是<code>Jsx</code>函数返回的<code>虚拟DOM</code></li>
+<li>🚀 Vue编译之后是<code>render</code>函数返回的<code>虚拟DOM</code></li>
+<li>🚀 SolidJS编译之后返回的<code>真实DOM</code>字符串</li>
+<li>🚀 Svelte编译之后返回的是<code>真实DOM</code>片段</li>
+</ul>
+<blockquote>
+<p>粗颗粒度：<code>React</code>由于架构机制决定了每当状态发生改变，从当前组件开始一直到叶子组件重新加载。</p>
+<p>中颗粒度：<code>Vue</code>由于给每个组件建立了<code>watchEffect</code>监听机制，每当组件依赖的状态发生改变，当前组件重新加载。</p>
+<p>细颗粒度：<code>SolidJS</code>和<code>Svelte</code>由于在编译之后就确定了当状态发生改变<code>UI</code>随之变化的关系，所以仅仅是具体<code>DOM</code>的重新加载。</p>
+</blockquote>
+<p>对于组件更新时：</p>
+<ul>
+<li><code>React</code>在当前组件状态发生变化时，从当前组件开始，包括子组件都被重新加载了。</li>
+<li><code>Vue</code>仅仅是当前组件重新加载。</li>
+<li><code>SolidJS</code>、<code>Svelte</code>仅仅是重新加载对应的<code>DOM</code>！</li>
+</ul>
+<p>在项目比较小时，<code>SolidJS</code>、<code>Svelte</code>的优势不会很明显，</p>
+<p>但是当面对大型项目时，<code>React</code>和<code>Vue</code>的性能短板就显露出来了。</p>
+<p><code>Vapor mode</code>可以在给定相同的<code>Vue SFC</code>前提下，与当前基于<code>虚拟DOM</code>的输出相比，<code>Vapor Mode</code>将其编译成性能更高、使用更少内存且需要更少运行时支持代码的<code>JavaScript</code>输出。</p>
+<h2 id="手写Vue3-珠峰-pnpm的workspace来实现monorepo包管理"><a href="#手写Vue3-珠峰-pnpm的workspace来实现monorepo包管理" class="headerlink" title="手写Vue3-珠峰(pnpm的workspace来实现monorepo包管理)"></a>手写Vue3-珠峰(pnpm的workspace来实现monorepo包管理)</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1WP4y1u7qi/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247">从零手写Vue3响应式模块 - 珠峰培训-video</a></li>
+</ul>
+<h3 id="pnpm是什么"><a href="#pnpm是什么" class="headerlink" title="pnpm是什么"></a>pnpm是什么</h3><p>pnpm是快速、节省磁盘空间的包管理器，主要采用符号链接的方式管理模块。</p>
+<h3 id="搭建monorepo环境"><a href="#搭建monorepo环境" class="headerlink" title="搭建monorepo环境"></a>搭建monorepo环境</h3><p><strong>初始化</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm init -y</span><br></pre></td></tr></table></figure>
+
+<p>安装基本的依赖包</p>
+<ul>
+<li>typescript：做类型检查</li>
+<li>rollup：打包</li>
+<li>rollup-plugin-typescript2：打包时解析ts</li>
+<li>@rollup/plugin-json:打包时解析json</li>
+<li>@rollup/plugin-node-resolve:按照node的方式解析模块</li>
+<li>@rollup/plugin-commonjs：解析低版本模块</li>
+<li>minimist：解析用户提供的参数</li>
+<li>execa@4：启动多个进程打包程序，指定版本4</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pnpm install typescript rollup rollup-plugin-typescript2 @rollup/plugin-json @rollup/plugin-node-resolve @rollup/plugin-commonjs minimist execa@4 -D -w</span><br></pre></td></tr></table></figure>
+
+<p>创建packages目录，在根目录下pnpm-workspace.yaml配置文件，指定打包目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">packages:</span><br><span class="line">  - &quot;packages/*&quot; </span><br></pre></td></tr></table></figure>
+
+<p>安装tsc即tsconfig配置文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">pnpm tsc --init </span><br><span class="line">tsconfig.json配置</span><br><span class="line">&#123;</span><br><span class="line">  &quot;compilerOptions&quot;: &#123;</span><br><span class="line">    &quot;outDir&quot;: &quot;dist&quot;, // 输出目录</span><br><span class="line">    &quot;sourceMap&quot;: true, // 采用source</span><br><span class="line">    &quot;target&quot;: &quot;ES2016&quot;, // 目标语法</span><br><span class="line">    &quot;module&quot;: &quot;ESNext&quot;, //  模块格式</span><br><span class="line">    &quot;moduleResolution&quot;: &quot;Node&quot;, // 模块解析方式</span><br><span class="line">    &quot;strict&quot;: true, // 严格模式</span><br><span class="line">    &quot;resolveJsonModule&quot;: true, //解析json</span><br><span class="line">    &quot;esModuleInterop&quot;: true, // 允许es6语法引入commonjs模块</span><br><span class="line">    &quot;jsx&quot;: &quot;preserve&quot;, // jsx不转义</span><br><span class="line">    &quot;lib&quot;: [&quot;ESNext&quot;, &quot;DOM&quot;], // 支持的类库esnext和dom</span><br><span class="line">    &quot;baseUrl&quot;: &quot;.&quot;, //以当前路径为基准进行查找</span><br><span class="line">    &quot;paths&quot;: &#123;</span><br><span class="line">      &quot;@vue/*&quot;: [&quot;packages/*/src&quot;] // 别名前缀</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>创建reactivity模块和shared模块</strong></p>
+<p>其中reactivity会依赖shared</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">创建packages/reactivity/src/index.js</span><br><span class="line">创建packages/reactivity/package.json</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;@vue/reactivity&quot;,</span><br><span class="line">  &quot;version&quot;: &quot;1.0.0&quot;,</span><br><span class="line">  &quot;main&quot;: &quot;index.js&quot;,</span><br><span class="line">  &quot;module&quot;: &quot;dist/reactivity.esm-bundler.js&quot;,</span><br><span class="line">  &quot;unpkg&quot;: &quot;dist/reactivity.global.js&quot;,</span><br><span class="line">  &quot;buildOptions&quot;: &#123;</span><br><span class="line">    &quot;name&quot;: &quot;VueReactivity&quot;,</span><br><span class="line">    &quot;formats&quot;: [</span><br><span class="line">      &quot;esm-bundler&quot;,</span><br><span class="line">      &quot;cjs&quot;,</span><br><span class="line">      &quot;global&quot;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">创建packages/shared/src/index.js</span><br><span class="line">创建packages/shared/package.json</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;@vue/shared&quot;,</span><br><span class="line">  &quot;version&quot;: &quot;1.0.0&quot;,</span><br><span class="line">  &quot;main&quot;: &quot;index.js&quot;,</span><br><span class="line">  &quot;module&quot;: &quot;dist/shared.esm-bundler.js&quot;,</span><br><span class="line">  &quot;buildOptions&quot;: &#123;</span><br><span class="line">    &quot;formats&quot;: [</span><br><span class="line">      &quot;esm-bundler&quot;,</span><br><span class="line">      &quot;cjs&quot;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>给reactivity指定安装shared的依赖，让它找得到它</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pnpm i @vue/shared@workspace --filter @vue/reactivity</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">packages/reactivity/src/index.js</span><br><span class="line">import &#123; isObject &#125; from &quot;@vue/shared&quot;;</span><br><span class="line"></span><br><span class="line">packages/shared/src/index.js</span><br><span class="line">export function isObject(value: unknown): value is Record&lt;any, any&gt; &#123;</span><br><span class="line">  return typeof value === &quot;object&quot; &amp;&amp; value !== null;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>创建打包脚本</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">package.json</span><br><span class="line">&quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;dev&quot;:&quot;node scripts/dev.js reactivity -f global -s&quot; //表示打包响应式模块，使用global方式打包，输出sourcemap</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">scripts/dev.js</span><br><span class="line">const minimist = require(&quot;minimist&quot;);</span><br><span class="line">const execa = require(&quot;execa&quot;);</span><br><span class="line">// import minimist from &quot;minimist&quot;;</span><br><span class="line">// import execa from &quot;execa&quot;;</span><br><span class="line">const args = minimist(process.argv.slice(2)); //获取打包命令的执行参数</span><br><span class="line"></span><br><span class="line">// 获取执行命名时，打包的参数</span><br><span class="line">const target = args._.length ? args._[0] : &quot;reactivity&quot;; //目标模块</span><br><span class="line">const formats = args.f || &quot;global&quot;; // 打包的方式es6还是global全局等等</span><br><span class="line">const sourcemap = args.s || false; // 是否生产源码模式</span><br><span class="line">console.log(target, formats, sourcemap);</span><br><span class="line">// 读取参数后，执行子进程命令</span><br><span class="line">execa(</span><br><span class="line">  &quot;rollup&quot;,</span><br><span class="line">  [</span><br><span class="line">    &quot;-wc&quot;, // --watch --config监视文件变化和读取配置文件</span><br><span class="line">    &quot;--environment&quot;, // 配置环境</span><br><span class="line">    [</span><br><span class="line">      `TARGET:$&#123;target&#125;`,</span><br><span class="line">      `FORMATS:$&#123;formats&#125;`,</span><br><span class="line">      sourcemap ? `SOURCE_MAP:true` : &quot;&quot;,</span><br><span class="line">    ]</span><br><span class="line">      .filter(Boolean)</span><br><span class="line">      .join(&quot;,&quot;), //过滤掉空值或false的值</span><br><span class="line">  ],</span><br><span class="line">  &#123;</span><br><span class="line">    stdio: &quot;inherit&quot;, // 子进程命令在当前命令进程下继续执行</span><br><span class="line">  &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">rollup.config.js</span><br><span class="line">import path from &quot;path&quot;;</span><br><span class="line">import ts from &quot;rollup-plugin-typescript2&quot;;</span><br><span class="line">import json from &quot;@rollup/plugin-json&quot;;</span><br><span class="line">import &#123; nodeResolve &#125; from &quot;@rollup/plugin-node-resolve&quot;;</span><br><span class="line">import commonjs from &quot;@rollup/plugin-commonjs&quot;;</span><br><span class="line"></span><br><span class="line">// 命令参数获取-打包格式</span><br><span class="line">const packageFormats = process.env.FORMATS &amp;&amp; process.env.FORMATS.split(&quot;,&quot;);</span><br><span class="line">// 命令参数获取-源码</span><br><span class="line">const sourcemap = process.env.SOURCE_MAP;</span><br><span class="line">const target = process.env.TARGET;</span><br><span class="line">console.log(packageFormats, sourcemap, target);</span><br><span class="line"></span><br><span class="line">// 根据target找到要打包的目录</span><br><span class="line">const packagesDir = path.resolve(__dirname, &quot;packages&quot;);</span><br><span class="line">// 要打包的入口</span><br><span class="line">const packageDir = path.resolve(packagesDir, process.env.TARGET);</span><br><span class="line">// 以打包的目录解析文件</span><br><span class="line">const resolve = (p) =&gt; path.resolve(packageDir, p);</span><br><span class="line">// 获取打包的名字</span><br><span class="line">const name = path.basename(packageDir);</span><br><span class="line">const pkg = require(resolve(&quot;package.json&quot;));</span><br><span class="line">// 输出配置</span><br><span class="line">const outputConfig = &#123;</span><br><span class="line">  &quot;esm-bundler&quot;: &#123;</span><br><span class="line">    file: resolve(`dist/$&#123;name&#125;.esm-bundler.js`),</span><br><span class="line">    format: &quot;es&quot;,</span><br><span class="line">  &#125;,</span><br><span class="line">  cjs: &#123;</span><br><span class="line">    file: resolve(`dist/$&#123;name&#125;.cjs.js`),</span><br><span class="line">    format: &quot;cjs&quot;,</span><br><span class="line">  &#125;,</span><br><span class="line">  global: &#123;</span><br><span class="line">    file: resolve(`dist/$&#123;name&#125;.global.js`),</span><br><span class="line">    format: &quot;iife&quot;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">// 稍后打包的所有文件，可能命令中不含packageFormats值</span><br><span class="line">const packageConfigs = packageFormats || pkg.buildOptions.formats;</span><br><span class="line"></span><br><span class="line">function createConfig(format, output) &#123;</span><br><span class="line">  output.sourcemap = sourcemap;</span><br><span class="line">  output.export = &quot;named&quot;;</span><br><span class="line">  // 外部模块，哪些模块不需要打包</span><br><span class="line">  let external = [];</span><br><span class="line">  if (format === &quot;global&quot;) &#123;</span><br><span class="line">    // 填充全局名称</span><br><span class="line">    output.name = pkg.buildOptions.name;</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    // 哪些内部依赖不需要打包</span><br><span class="line">    external = [...Object.keys(pkg.dependencies)];</span><br><span class="line">  &#125;</span><br><span class="line">  return &#123;</span><br><span class="line">    input: resolve(`src/index.ts`),</span><br><span class="line">    output,</span><br><span class="line">    external,</span><br><span class="line">    plugins: [json(), ts(), commonjs(), nodeResolve()],</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line">// 返回数组，会依次进行打包</span><br><span class="line">export default packageConfigs.map((format) =&gt;</span><br><span class="line">  createConfig(format, outputConfig[format])</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue3.0_%E5%8E%9F%E7%90%86/" title="Vue3.0_原理" target="_blank" rel="external">https://fuyunjinglong.github.io/2023/09/12/D_框架_Vue3.0_原理/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://fuyunjinglong.github.io/" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://fuyunjinglong.github.io/" target="_blank"><span class="text-dark">Elven</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2%E5%92%8CVue3%E6%AF%94%E8%BE%83/" title="Vue2和Vue3比较"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_Vue2.0/" title="源码_Vue2.0"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
