@@ -890,6 +890,191 @@ alert(linkList.size())
 
 ![image](/img/2024-04-27_10-54-06.png)
 
+```
+<html>
+<script >
+function DoubleLinkList(){
+  // 内部类
+  function Node(data){
+    this.data =data;
+    this.prev = null;
+    this.next = null;
+  }
+  // 属性
+  this.head = null;
+  this.tail = null;
+  this.length = 0;
+  // 添加节点
+  DoubleLinkList.prototype.append=function(data){
+    let newNode = new Node(data)
+    // 判断是否添加的是第一个节点
+  if(this.length == 0){
+     this.head = newNode
+    }else{
+      this.tail.next = newNode
+      newNode.prev = this.tail
+    }
+    this.tail = newNode
+      this.length += 1
+  }
+    // 2.将链表转为字符串
+    DoubleLinkList.prototype.toString=function(){
+      // 默认是从前往后遍历
+      return this.backWardString()
+    }
+    // 2.1 forwardString向前遍历转为字符串
+    DoubleLinkList.prototype.forwardString=function(){
+      let curNode = this.tail;
+      let res='';
+      while(curNode){
+        res+=curNode.data+',';
+        curNode = curNode.prev;
+      }
+     return res;
+    }
+
+    // 2.2 backWardString向后遍历转为字符串
+    DoubleLinkList.prototype.backWardString=function(){
+      let curNode = this.head;
+      let res='';
+      while(curNode){
+        res+=curNode.data+',';
+        curNode = curNode.next;
+      }
+     return res;
+    }
+
+    // 指定位置插入元素
+    DoubleLinkList.prototype.insert=function(position,data){
+      if(position<0||position>this.length){
+        return false;
+      }
+      let node = new Node(data);
+      // 1.链表为空时，直接首尾节点替换
+      if(this.length===0){
+        this.head = node;
+        this.tail = node;
+      }else{
+        // 2.链表不为空
+        if(position === 0){
+          // 2.1插入的是第一个元素：换头，先换后再换前
+          this.head.prev = node;// 旧节点的pre指向新节点
+          node.next = this.head;// 新节点的next指向旧节点
+          this.head = node;// 头结点执行新节点
+      }else if(position===this.length){
+          // 2.2插入的是最后一个元素
+          node.prev = this.tail;
+          this.tail.next = node;
+          this.tail = node;
+      }else{
+        // 2.3中间插入
+        let index =0;
+        let curNode = this.head;
+        while(index++<position){
+          curNode = curNode.next;
+        }
+        node.next = curNode;
+        node.prev = curNode.prev;
+        curNode.prev.next = node;
+        curNode.prev = node;
+      }
+      }
+      this.length+=1;
+      return true;
+    }    
+    // 获取第i个元素
+    DoubleLinkList.prototype.get=function(position){
+        // 越界判断
+        if(position<0||position>=this.length) return null;
+        let index =0;
+        let curNode = this.head;
+        while(index++<position){
+            curNode=curNode.next;
+        }
+        return curNode.data;
+    }
+    // 获取元素位置
+    DoubleLinkList.prototype.indexOf=function(data){
+        let index =0;
+        let curNode = this.head;
+        // 开始查找
+        while(curNode){
+            // 找到即返回索引值
+            if(curNode.data===data){
+                return index;
+            }
+            curNode=curNode.next;
+            index++;
+        }
+        // 找到了最后
+        return -1;
+    }
+    // 更新元素
+    DoubleLinkList.prototype.update=function(position,data){
+         // 越界判断
+         if(position<0||position>=this.length) return false;
+        let index =0;
+        let curNode = this.head;
+        while(index++<position){
+            curNode=curNode.next;
+        }
+        curNode.data = data;
+        return true
+    }
+        // 从指定位置删除元素，类似插入元素
+        DoubleLinkList.prototype.removeAt=function(position){
+         // 越界判断
+         if(position<0||position>=this.length) return false;
+          if(position === 0){
+          // 删除的是第一个元素：换头，先换后再换前
+            this.head = this.head.next
+          }else{
+            // 中间删除
+            let index =0;
+            let curNode = this.head;
+            let preNode = null;
+            while(index++<position){
+              // 循环查找
+              preNode = curNode;
+              curNode = curNode.next;
+            }
+            // 前一个节点的next,指向当前节点的next
+            preNode.next = curNode.next;
+            }
+            this.length--;
+          }
+
+           // 删除元素
+        DoubleLinkList.prototype.removeAt=function(data){
+          const index = this.indexOf(data);
+          return this.removeAt(index)
+        }
+          // 是否为空
+       DoubleLinkList.prototype.isEmpty=function(){
+          return this.length===0;
+        }
+            // 链表大小
+        DoubleLinkList.prototype.size=function(){
+          return this.length;
+        }
+
+}
+// 测试代码
+let doubleLinkList = new DoubleLinkList();
+doubleLinkList.append('abc');
+doubleLinkList.append('edf');
+// alert(doubleLinkList.backWardString())
+// alert(doubleLinkList.forwardString())
+doubleLinkList.insert(0,'aaa')
+doubleLinkList.insert(3,'bbb')
+doubleLinkList.insert(1,'ccc')
+alert(doubleLinkList)
+ </script>
+</html>
+```
+
+
+
 # (es6)-coderwhy王红元
 
 # 初级算法
