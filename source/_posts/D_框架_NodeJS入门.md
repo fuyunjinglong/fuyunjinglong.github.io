@@ -122,10 +122,16 @@ vue create 是vuecli3的初始化方式
 
 ## 安装常见镜像
 
+**npm清空缓存**
+
+```
+npm cache clean --force
+```
+
 **npm淘宝镜像**
 
 ```
-npm config set registry https://registry.npm.taobao.org，切换国内镜像，使用淘宝镜像
+npm config set registry https://registry.npmmirror.com，切换国内镜像，使用淘宝镜像
 
 npm config get registry，查看当前镜像使用的地址，返回成功，则代表设置成功
 ```
@@ -133,7 +139,7 @@ npm config get registry，查看当前镜像使用的地址，返回成功，则
 **cnpm淘宝镜像**
 
 ```
-npm install -g cnpm --registry=https://registry.npm.taobao.org，安装cnpm
+npm install -g cnpm --registry=https://registry.npmmirror.com，安装cnpm
 
 cnpm install xxx，使用cnpm安装所想要的包
 ```

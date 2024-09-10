@@ -41,19 +41,23 @@ toc: true # 是否启用内容索引
 npm i
 ```
 
-安装依赖报错1
+安装依赖报错-phantomjs-prebuilt@2.1.14 install: `node install.js`
 
 ```
-报错phantomjs-prebuilt@2.1.14 install: `node install.js`
 解决方案：npm install phantomjs-prebuilt@2.1.14 --ignore-scripts
 ```
 
-安装依赖报错2
+安装依赖报错-(plugin Rollup Core) Error: Could not load
 
 ```
-报错(plugin Rollup Core) Error: Could not load
-解决方案：
 手动下载依赖包https://github.com/ideayuye/rollup-plugin-alias，并覆盖掉本地文件夹 \node_modules\rollup-plugin-alias。进入rollup-plugin-alias文件夹，依次执行npm i
+```
+
+安装依赖报错-idealTree:vue: sill idealTree buildDeps
+
+```
+清除npm缓存npm cache clean --force
+设置新的淘宝镜像源npm config set registry https://registry.npmmirror.com
 ```
 
 **3.开启打包源文件**
