@@ -366,4 +366,154 @@ flow
 ├── vnode.js           # 虚拟 node 相关
 ```
 
+## Vue.js 源码构建
 
+Vue.js 源码是基于 [Rollup](https://github.com/rollup/rollup) 构建的，它的构建相关配置都在 scripts 目录下。
+
+**构建脚本**
+
+总共有 3 条命令，Vue.js 源码构建的脚本如下：
+
+```
+{
+  "script": {
+    "build": "node scripts/build.js",
+    "build:ssr": "npm run build -- web-runtime-cjs,web-server-renderer",
+    "build:weex": "npm run build -- weex"
+  }
+}
+```
+
+**构建过程**
+
+> scripts/build.js
+
+```
+// 1.读取配置文件
+let builds = require('./config').getAllBuilds()
+
+// 2.根据package.json中脚本的配置参数，得到需要打包的平台，然后过滤配置
+if (process.argv[2]) {
+  const filters = process.argv[2].split(',')
+  builds = builds.filter(b => {
+    return filters.some(f => b.output.file.indexOf(f) > -1 || b._name.indexOf(f) > -1)
+  })
+} else {
+  // filter out weex builds by default
+  builds = builds.filter(b => {
+    return b.output.file.indexOf('weex') === -1
+  })
+}
+// 3.开始构建
+build(builds)
+
+function build (builds) {
+  let built = 0
+  const total = builds.length
+  const next = () => {
+    // 根据配置逐个构建对应平台的js文件
+    buildEntry(builds[built]).then(() => {
+      built++
+      if (built < total) {
+        next()
+      }
+    }).catch(logError)
+  }
+
+  next()
+}
+
+function buildEntry (config) {
+  const output = config.output
+  const { file, banner } = output
+  const isProd = /(min|prod)\.js$/.test(file)
+  return rollup.rollup(config)// 生成bundle
+    .then(bundle => bundle.generate(output))// 生成输出文件
+    .then(({ output: [{ code }] }) => {
+      if (isProd) {// 如果是生产环境，是否需要压缩代码
+        const minified = (banner ? banner + '\n' : '') + terser.minify(code, {
+          toplevel: true,
+          output: {
+            ascii_only: true
+          },
+          compress: {
+            pure_funcs: ['makeMap']
+          }
+        }).code
+        // 最后生成打包文件
+        return write(file, minified, true)
+      } else {
+        return write(file, code)
+      }
+    })
+}
+```
+
+> scripts/config.js
+
+```
+if (process.env.TARGET) {
+  module.exports = genConfig(process.env.TARGET)
+} else {
+  exports.getBuild = genConfig
+  // 根据package.json的脚本配置，生成rollup所需要的配置文件格式数组，genConfig是最终格式
+  exports.getAllBuilds = () => Object.keys(builds).map(genConfig)
+}
+// 所有平台需要配的配置
+const builds = {
+  // Runtime only (CommonJS). Used by bundlers e.g. Webpack & Browserify
+  'web-runtime-cjs-dev': {
+    entry: resolve('web/entry-runtime.js'),
+    dest: resolve('dist/vue.runtime.common.dev.js'),
+    format: 'cjs',
+    env: 'development',
+    banner
+  },
+  'web-runtime-cjs-prod': {
+    entry: resolve('web/entry-runtime.js'),
+    dest: resolve('dist/vue.runtime.common.prod.js'),
+    format: 'cjs',
+    env: 'production',
+    banner
+  },
+  ....
+  }
+  
+// 转换为rollup最终需要的配置数据格式，并添加其他配置
+function genConfig (name) {
+  const opts = builds[name]
+  const config = {
+    input: opts.entry,
+    external: opts.external,
+    plugins: [
+      flow(),
+      alias(Object.assign({}, aliases, opts.alias))
+    ].concat(opts.plugins || []),
+    output: {
+      file: opts.dest,
+      format: opts.format,
+      banner: opts.banner,
+      name: opts.moduleName || 'Vue'
+    },
+    onwarn: (msg, warn) => {
+      if (!/Circular/.test(msg)) {
+        warn(msg)
+      }
+    }
+  }
+  ...
+  return config
+}
+```
+
+## Runtime Only VS Runtime + Compiler
+
+通常我们利用 vue-cli 去初始化我们的 Vue.js 项目的时候会询问我们用 Runtime Only 版本的还是 Runtime + Compiler 版本。下面我们来对比这两个版本。
+
+- Runtime Only
+
+我们在使用 Runtime Only 版本的 Vue.js 的时候，通常需要借助如 webpack 的 vue-loader 工具把 .vue 文件编译成 JavaScript，因为是在编译阶段做的，所以它只包含运行时的 Vue.js 代码，因此代码体积也会更轻量。
+
+- Runtime + Compiler
+
+我们如果没有对代码做预编译，但又使用了 Vue 的 template 属性并传入一个字符串，则需要在客户端编译模板
