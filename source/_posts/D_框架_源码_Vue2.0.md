@@ -269,7 +269,9 @@ _update 主要实现 vnode 转化为实际的dom， 注入到页面的同时并�
 
 - [2.x版本笔记](https://ustbhuangyi.github.io/vue-analysis/v2/prepare/)
 
-## 认识Flow
+## 准备工作
+
+### 认识Flow
 
 [Flow](https://flow.org/en/docs/getting-started/) 是 facebook 出品的 JavaScript 静态类型检查工具。Vue.js 的源码利用了 Flow 做了静态类型检查。
 
@@ -366,7 +368,7 @@ flow
 ├── vnode.js           # 虚拟 node 相关
 ```
 
-## Vue.js 源码构建
+### Vue.js 源码构建
 
 Vue.js 源码是基于 [Rollup](https://github.com/rollup/rollup) 构建的，它的构建相关配置都在 scripts 目录下。
 
@@ -461,12 +463,13 @@ if (process.env.TARGET) {
 }
 // 所有平台需要配的配置
 const builds = {
-  // Runtime only (CommonJS). Used by bundlers e.g. Webpack & Browserify
-  'web-runtime-cjs-dev': {
-    entry: resolve('web/entry-runtime.js'),
-    dest: resolve('dist/vue.runtime.common.dev.js'),
-    format: 'cjs',
+    // Runtime+compiler development build (Browser)
+  'web-full-dev': {
+    entry: resolve('web/entry-runtime-with-compiler.js'),// 后面分析的入口
+    dest: resolve('dist/vue.js'),
+    format: 'umd',
     env: 'development',
+    alias: { he: './entity-decoder' },
     banner
   },
   'web-runtime-cjs-prod': {
@@ -506,7 +509,7 @@ function genConfig (name) {
 }
 ```
 
-## Runtime Only VS Runtime + Compiler
+### Runtime Only VS Runtime + Compiler
 
 通常我们利用 vue-cli 去初始化我们的 Vue.js 项目的时候会询问我们用 Runtime Only 版本的还是 Runtime + Compiler 版本。下面我们来对比这两个版本。
 
@@ -517,3 +520,30 @@ function genConfig (name) {
 - Runtime + Compiler
 
 我们如果没有对代码做预编译，但又使用了 Vue 的 template 属性并传入一个字符串，则需要在客户端编译模板
+
+### 从入口开始
+
+我们之前提到过 Vue.js 构建过程，在 web 应用下，我们来分析 Runtime + Compiler 构建出来的 Vue.js，它的入口是 `src/platforms/web/entry-runtime-with-compiler.js`：
+
+```
+import Vue from './runtime/index'
+Vue.prototype.$mount = function (){
+...// luwen重写了原型mount方法
+}
+export default Vue // luwen来自另外一个地方
+```
+
+`src\platforms\web\runtime\index.js`：
+
+```
+import Vue from 'core/index'
+// luwen定义一些静态方法
+Vue.config.mustUseProp = mustUseProp
+Vue.prototype.$mount = function (
+  ...// luwen重写了原型mount方法
+  }
+export default Vue // luwen来自另外一个地方
+```
+
+`src\core\index.js`：
+
