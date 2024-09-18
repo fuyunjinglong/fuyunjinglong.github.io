@@ -547,3 +547,65 @@ export default Vue // luwen来自另外一个地方
 
 `src\core\index.js`：
 
+```
+import Vue from './instance/index'
+// luwen定义全局方法
+initGlobalAPI(Vue)
+export default Vue // luwen来自另外一个地方
+```
+
+`src\core\instance\index.js`
+
+```
+// luwen最后发现Vue本质是一个函数
+function Vue (options) {
+  if (process.env.NODE_ENV !== 'production' &&
+    !(this instanceof Vue)
+  ) {
+    warn('Vue is a constructor and should be called with the `new` keyword')
+  }
+  this._init(options)
+}
+// luwen通过重写原型，扩展函数
+initMixin(Vue)
+stateMixin(Vue)
+eventsMixin(Vue)
+lifecycleMixin(Vue)
+renderMixin(Vue)
+
+export default Vue
+```
+
+`src\core\global-api\index.js`
+
+```
+export function initGlobalAPI (Vue: GlobalAPI) {
+  // luwen定义了一些工具函数吗，但有可能会变化，所以有使用风险
+  Vue.util = {
+    warn,
+    extend,
+    mergeOptions,
+    defineReactive
+  }
+// luwen定义了全局的set,delete,delete
+  Vue.set = set
+  Vue.delete = del
+  Vue.delete = nextTick
+// luwen定义了全局的方法component、directive、filter,合并到options上
+  ASSET_TYPES.forEach(type => {
+    Vue.options[type + 's'] = Object.create(null)
+  })
+  // luwen定义了全局内置组件KeepAlive
+  extend(Vue.options.components, builtInComponents)
+  
+  initUse(Vue)// luwen定义了全局use方法
+  initMixin(Vue)// luwen定义了全局mixin方法
+  initExtend(Vue)// luwen定义了全局extend方法
+  initAssetRegisters(Vue)// luwen定义了全局component、directive、filter方法处理
+}
+
+```
+
+**总结**
+
+> 本质上是一个Vue函数，通过`src\core\instance\index.js`重写原型方法和`src\core\global-api\index.js`挂载静态全局方法，扩展功能方法。
