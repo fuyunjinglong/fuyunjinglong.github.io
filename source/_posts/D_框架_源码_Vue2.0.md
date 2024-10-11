@@ -523,6 +523,10 @@ function genConfig (name) {
 
 ### 从入口开始
 
+**核心**
+
+> 本质上是一个Vue函数，通过`src\core\instance\index.js`重写原型方法和`src\core\global-api\index.js`挂载静态全局方法，扩展功能方法。
+
 我们之前提到过 Vue.js 构建过程，在 web 应用下，我们来分析 Runtime + Compiler 构建出来的 Vue.js，它的入口是 `src/platforms/web/entry-runtime-with-compiler.js`：
 
 ```
@@ -566,7 +570,7 @@ function Vue (options) {
   }
   this._init(options)
 }
-// luwen通过重写原型，扩展函数
+// luwen-通过重写原型，扩展Vue函数的方法
 initMixin(Vue)
 stateMixin(Vue)
 eventsMixin(Vue)
@@ -597,7 +601,7 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   })
   // luwen定义了全局内置组件KeepAlive
   extend(Vue.options.components, builtInComponents)
-  
+  // luwen-通过重写原型，扩展全局静态方法
   initUse(Vue)// luwen定义了全局use方法
   initMixin(Vue)// luwen定义了全局mixin方法
   initExtend(Vue)// luwen定义了全局extend方法
@@ -606,6 +610,84 @@ export function initGlobalAPI (Vue: GlobalAPI) {
 
 ```
 
-**总结**
+## 数据驱动
 
-> 本质上是一个Vue函数，通过`src\core\instance\index.js`重写原型方法和`src\core\global-api\index.js`挂载静态全局方法，扩展功能方法。
+### new Vue 发生了什么
+
+我们看下Vue的构造函数
+
+`src\core\instance\index.js`
+
+```
+// luwen最后发现Vue本质是一个函数
+function Vue (options) {
+  if (process.env.NODE_ENV !== 'production' &&
+    !(this instanceof Vue)
+  ) {
+    warn('Vue is a constructor and should be called with the `new` keyword')
+  }
+  // luwen-最初的初始化方法，_init是在initMixin函数中实现的原形重写定义
+  this._init(options)
+}
+// luwen-通过重写原型，扩展Vue函数的方法
+initMixin(Vue)// luwen-来自另外一个地方
+```
+
+`src\core\instance\init.js`
+
+```
+export function initMixin (Vue: Class<Component>) {
+  Vue.prototype._init = function (options?: Object) {
+  // luwen-最终将options合并并挂载到$options上,方便后续调用。这里的options就是Vue函数的入参
+   vm.$options = mergeOptions(
+        resolveConstructorOptions(vm.constructor),
+        options || {},
+        vm
+      )
+   initLifecycle(vm)// luwen-初始化生命周期
+    initEvents(vm)// luwen-初始化事件中心
+    initRender(vm)// luwen-初始化渲染函数
+    callHook(vm, 'beforeCreate')
+    initInjections(vm) // resolve injections before data/props
+    initState(vm)// luwen-初始化用户数据
+    initProvide(vm) // resolve provide after data/props
+    callHook(vm, 'created')    
+     // luwen-最后判断是否存在el,存在则挂载dom
+    if (vm.$options.el) {
+      vm.$mount(vm.$options.el)
+    }
+  }
+  }
+```
+
+**为什么this.num就能访问data定义中的num？**
+
+> this.num本质就是访问this._data.num
+
+`src\core\instance\state.js`
+
+```
+function initData (vm: Component) {
+  let data = vm.$options.data
+  // luwen-data赋值到_data
+  data = vm._data = typeof data === 'function'
+    ? getData(data, vm)
+    : data || {}
+    
+    // luwen-比较data和props有没有重复定义
+  while (i--) {
+    const key = keys[i]
+    if (process.env.NODE_ENV !== 'production') {
+      if (methods && hasOwn(methods, key)) {
+        warn(
+          `Method "${key}" has already been defined as a data property.`,
+          vm
+        )
+      }
+    }
+    // luwen-就是访问this.num本质就是访问this._data.num。
+    // luwen-将vm的数据通过代理访问到_data上
+      proxy(vm, `_data`, key)
+  }
+```
+
