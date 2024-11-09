@@ -10,16 +10,34 @@ toc: true # 是否启用内容索引
 # 大纲
 
 - [《代码随想录》](https://github.com/fuyunjinglong/leetcode-master)
-- [《算法通关手册》](https://github.com/itcharge/LeetCode-Py)
+- [《算法通关手册》](https://github.com/fuyunjinglong/LeetCode-Py)
 - [Hello 算法](https://www.hello-algo.com/chapter_sorting/selection_sort/)
 - [Leecode-CN](https://leetcode.cn/problemset/)
 
 # 工具函数
 
+交换位置上的值
+
+```
+// 交换arr的i和j位置上的值
+function swap(arr,  i, j) {
+    let tmp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = tmp;
+          // 更骚的交换，但i和j是一个位置的话，会出错
+    /*arr[i] = arr[i] ^ arr[j];
+    arr[j] = arr[i] ^ arr[j];
+    arr[i] = arr[i] ^ arr[j];
+    */
+   }
+```
+
 # 排序算法
 
-**冒泡排序**
+## **冒泡排序**-傻
 
+> 一句话：通过相邻元素之间的比较与交换，把当前最大的泡泡冒泡到水面/右区间
+>
 > - 数组元素想象成泡泡
 > - 从左到右依次比较，如果左侧泡泡比右侧泡泡大，则交换。[0,i]
 > - 这1趟完，最大泡泡就在最右侧。然后循环。[0-,j]
@@ -45,27 +63,109 @@ function bubbleSort(arr){
 }
 ```
 
-**选择排序**
+## **选择排序**-傻
 
+> 一句话：数组分两个区间，左侧为已排序区间，右侧为未排序区间。每次从未排序区间找到最小值放到左区间末尾。
+>
 > - 数组分为左右两个区间：左边是已排序区间，右边是未排序区间。
 > - 遍历右区间，找到最小值，并放到左区间末尾
 > - 这一趟完，最小值出现在左区间最左侧。然后循环
 
-**插入排序**
+```
+function selectionSort(arr) {
+  // 外循环：未排序区间为 [0, n-1]
+  for (let j = 0; j < arr.length - 1; j++) {
+    let minIndex = j;
+    // 内循环：找到未排序区间内的最小元素
+    for (let i = j; i < arr.length - 1; i++) {
+      if (arr[i + 1] < arr[minIndex]) {
+        minIndex = i + 1;
+      }
+    }
+    // 最小值放到左区间的末尾
+    swap(arr, j, minIndex);
+  }
+  return arr;
+}
+```
 
-**希尔排序**
+## 插入排序-傻
 
-**归并排序**
+> 一句话：将数组分为两个区间：左侧为有序区间，右侧为无序区间。每趟从无序区间取出一个元素，然后将其插入到有序区间的适当位置。类似打扑克牌
 
-**快速排序**
+```
+function insertionSort(arr) {
+  // 外层循环0 ~ i 做到有序
+  for (let i = 1; i < arr.length; i++) {
+    // 内层始终保持最大值在左区间末尾
+    for (let j = i - 1; j >= 0 && arr[j] > arr[j + 1]; j--) {
+      swap(arr, j, j + 1);
+    }
+  }
+  return arr;
+}
+```
 
-**堆排序**
+## 归并排序
 
-**计数排序**
+> 一句话：采用经典的分治策略，先递归地将当前数组平均分成两半，然后将有序数组两两合并，最终合并成一个有序数组。
 
-**桶排序**
+```
+function mergeSort(arr) {
+  if (arr == null || arr.length < 2) {
+    return;
+  }
+  process(arr, 0, arr.length - 1);
+  return arr;
+}
 
-**基数排序**
+function process(arr, L, R) {
+  if (L == R) {
+    return;
+  }
+  let mid = L + ((R - L) >> 1);
+  process(arr, L, mid);
+  process(arr, mid + 1, R);
+  merge(arr, L, mid, R);
+}
+
+function merge(arr, L, M, R) {
+  let help = [];
+  let i = 0;
+  let p1 = L;
+  let p2 = M + 1;
+  while (p1 <= M && p2 <= R) {
+    help[i++] = arr[p1] <= arr[p2] ? arr[p1++] : arr[p2++];
+  }
+
+  while (p1 <= M) {
+    help[i++] = arr[p1++];
+  }
+
+  while (p2 <= R) {
+    help[i++] = arr[p2++];
+  }
+
+  for (let i = 0; i < help.length; i++) {
+    arr[L + i] = help[i];
+  }
+  return;
+}
+```
+
+## **快速排序**
+
+> 一句话：采用经典的分治策略，选择数组中某个元素作为基准数，通过一趟排序将数组分为独立的两个子数组，一个子数组中所有元素值都比基准数小，另一个子数组中所有元素值都比基准数大。然后再按照同样的方式递归的对两个子数组分别进行快速排序，以达到整个数组有序。
+
+## **希尔排序**
+
+## **堆排序**
+
+## **计数排序**
+
+## **桶排序**
+
+## **基数排序**
 
 # 查找算法
 
