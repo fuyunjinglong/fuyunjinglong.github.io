@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Hexo</title>
+  <meta name="description" content="性能优化_0基础浏览器的渲染原理简记： 生成DOM树 –&gt; 生成CSS规则树 –&gt; 构建渲染树 –&gt; 布局 –&gt; 绘制   解析HTML标签，构建DOM树 解析CSS标签，并构建CSSOM样式规则树 调用js引擎处理script标记、绑定事件、修改DOM树&#x2F;CSS树 将DOM和CSSOM合并成一个Render dom渲染树; 根据渲染树来布局（Layout回流&#x2F;reflow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2022/09/12/%E6%A8%A1%E6%9D%BF/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="性能优化_0基础浏览器的渲染原理简记： 生成DOM树 –&gt; 生成CSS规则树 –&gt; 构建渲染树 –&gt; 布局 –&gt; 绘制   解析HTML标签，构建DOM树 解析CSS标签，并构建CSSOM样式规则树 调用js引擎处理script标记、绑定事件、修改DOM树&#x2F;CSS树 将DOM和CSSOM合并成一个Render dom渲染树; 根据渲染树来布局（Layout回流&#x2F;reflow">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-09-12T03:55:29.067Z">
+<meta property="article:modified_time" content="2024-11-09T02:01:37.152Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2022/09/12/%E6%A8%A1%E6%9D%BF/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://fuyunjinglong.github.io/" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Elven</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/09/">九月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/06/">六月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">二月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/06/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_0%E5%9F%BA%E7%A1%80/" class="title">0基础_工程热点</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-05T22:33:16.000Z" itemprop="datePublished">2099-11-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/05/I_%E7%A7%BB%E5%8A%A8%E7%AB%AF_0%E5%9F%BA%E7%A1%80/" class="title">0基础_移动端</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-04T22:33:16.000Z" itemprop="datePublished">2099-11-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/" class="title">0基础_计算机网络</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-03T22:33:16.000Z" itemprop="datePublished">2099-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_0%E5%9F%BA%E7%A1%80/" class="title">0基础_数据结构</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_%E5%9F%BA%E7%A1%80/" class="title">0基础_设计模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-模板" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/09/12/%E6%A8%A1%E6%9D%BF/" class="article-date">
+	  <time datetime="2022-09-12T03:55:29.067Z" itemprop="datePublished">2022-09-12</time>
+	</a>
+</span>
+        
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/09/12/%E6%A8%A1%E6%9D%BF/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="性能优化-0基础"><a href="#性能优化-0基础" class="headerlink" title="性能优化_0基础"></a>性能优化_0基础</h1><h2 id="浏览器的渲染原理"><a href="#浏览器的渲染原理" class="headerlink" title="浏览器的渲染原理"></a>浏览器的渲染原理</h2><p>简记： 生成DOM树 –&gt; 生成CSS规则树 –&gt; 构建渲染树 –&gt; 布局 –&gt; 绘制</p>
+<blockquote>
+<ul>
+<li>解析HTML标签，构建DOM树</li>
+<li>解析CSS标签，并构建CSSOM样式规则树</li>
+<li>调用js引擎处理script标记、绑定事件、修改DOM树/CSS树</li>
+<li>将DOM和CSSOM合并成一个Render dom渲染树;</li>
+<li>根据渲染树来布局（Layout回流/reflow重绘），来计算每个节点的几何信息</li>
+<li>调用渲染引擎绘制render树（paint），绘制页面像素信息</li>
+<li>浏览器会将各层的信息发送给GPU，GPU会将各层合成（composite）</li>
+</ul>
+</blockquote>
+<h1 id="H5-0基础"><a href="#H5-0基础" class="headerlink" title="H5_0基础"></a>H5_0基础</h1><h2 id="Html语义化"><a href="#Html语义化" class="headerlink" title="Html语义化"></a>Html语义化</h2><h3 id="什么是语义化"><a href="#什么是语义化" class="headerlink" title="什么是语义化"></a>什么是语义化</h3><p>语义化，指对文本内容的结构化（内容语义化），选择合乎语义的标签（代码语义化）。</p>
+<p>语义化标签：<code>header</code>、<code>nav</code>、<code>main</code>、<code>article</code>、<code>section</code>、<code>aside</code>、<code>footer</code>等。</p>
+<p>优点：</p>
+<ul>
+<li>代码结构清晰，易于阅读，有利于维护</li>
+<li>方便其他设备解析（如：屏幕阅读器）</li>
+<li>有利于搜索引擎优化（SEO），搜索引擎爬虫会根据不同的标签来赋予不同的权重</li>
+</ul>
+<h2 id="DOCTYPE-的作用是什么？"><a href="#DOCTYPE-的作用是什么？" class="headerlink" title="DOCTYPE 的作用是什么？"></a>DOCTYPE 的作用是什么？</h2><p><code>&lt;!DOCTYE&gt;</code> 声明一般位于文档的第一行，它的作用主要是告诉浏览器以什么样的模式来解析文档。一般指定了之后会以“标准模式”进行文档解析，否则就以“兼容模式”进行解析。</p>
+<ul>
+<li>在<code>标准模式</code>下，浏览器的解析规则都是按照最新的标准进行解析的。</li>
+<li>而在<code>兼容模式</code>下，浏览器会以向后兼容的方式来模拟老式浏览器的行为，以保证一些老的网站能正常访问。</li>
+</ul>
+<h2 id="SGML、HTML、XML-和-XHTML的区别"><a href="#SGML、HTML、XML-和-XHTML的区别" class="headerlink" title="SGML、HTML、XML 和 XHTML的区别"></a>SGML、HTML、XML 和 XHTML的区别</h2><ul>
+<li><code>SGML</code> 是标准通用标记语言，是一种定义电子文档结构和描述其内容的国际标准语言，是所有电子文档标记语言的起源。</li>
+<li><code>HTML</code> 是超文本标记语言，主要是用于规定怎样显示网页。</li>
+<li><code>XML</code> 是可扩展标记语言，是未来网页语言的发展方向，XML 和 HTML 的最大区别就在于 XML 的标签是可以自己创建的，数量无限多，而 HTML 的标签都是固定的而且数量有限。</li>
+<li><code>XHTML</code> 也是现在基本上所有网页都在用的标记语言，他其实和 HTML 没什么本质的区别，标签都一样，用法也都一样，就是比 HTML 更严格，比如标签必须都用小写，标签都必须有闭合标签等。</li>
+</ul>
+<h2 id="HTML5-有哪些新特性、移除了哪些元素？"><a href="#HTML5-有哪些新特性、移除了哪些元素？" class="headerlink" title="HTML5 有哪些新特性、移除了哪些元素？"></a>HTML5 有哪些新特性、移除了哪些元素？</h2><p>HTML5 现在已经不是 SGML 的子集，主要是关于图像、位置、存储、多任务等功能的增加。</p>
+<p>新增的：</p>
+<ul>
+<li>绘图 <code>canvas</code></li>
+<li>用于媒介回放的 <code>video</code> 和 <code>audio</code> 元素</li>
+<li>本地离线存储 <code>localStorage</code> 、<code>sessionStorage</code></li>
+<li>语义化更好的内容元素，如：<code>header</code>、<code>article</code>、<code>nav</code>、<code>section</code>、<code>footer</code>等</li>
+<li>表单控件 <code>calendar</code>、<code>date</code>、<code>time</code>、<code>email</code>、<code>url</code>、<code>search</code> 等</li>
+<li>新的技术 <code>webworker</code>、<code>websocket</code></li>
+<li>新的文档属性 <code>document.visibilityState</code></li>
+</ul>
+<p>移除的：</p>
+<ul>
+<li>纯表现的元素：<code>basefont</code>、<code>big</code>、<code>center</code>、<code>s</code>、<code>tt</code>、<code>u</code></li>
+<li>对可用性产生负面影响的元素：<code>frame</code>、<code>frameset</code>、<code>noframes</code></li>
+</ul>
+<h2 id="对浏览器内核的理解"><a href="#对浏览器内核的理解" class="headerlink" title="对浏览器内核的理解"></a>对浏览器内核的理解</h2><p>主要分为两部分：渲染引擎和JS引擎。</p>
+<ul>
+<li><code>渲染引擎</code>：其职责就是渲染，即在浏览器窗口中显示所请求的内容。默认情况下，渲染引擎可以显示 HTML、 XML 文档及图片，它也可以借助一些浏览器扩展插件显示其他类型数据，如：使用PDF阅读器插件可以显示 PDF 格式。</li>
+<li><code>JS引擎</code>：解析和执行 JavaScript 来实现网页的动态效果。</li>
+</ul>
+<p>最开始渲染引擎和JS引擎并没有区分的很明显，后来JS引擎越来越独立，内核就倾向于只指渲染引擎了。</p>
+<h2 id="iframe-有哪些优缺点？"><a href="#iframe-有哪些优缺点？" class="headerlink" title="iframe 有哪些优缺点？"></a>iframe 有哪些优缺点？</h2><p>优点：</p>
+<ol>
+<li>iframe 能原封不动的把嵌入的网页展现出来。</li>
+<li>如果有多个网页引用 iframe，只需修改 iframe 的内容，就可以实现调用每一个页面的更改，方便快捷。</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>iframe 会阻塞主页面的 onload 事件。</li>
+<li>iframe 和主页面共享链接池，而浏览器对相同域的链接有限制，所以会影响页面的并行加载。</li>
+<li>不利于 SEO，代码复杂，无法一下被搜索引擎索引到。</li>
+<li>iframe 框架页面会增加服务器的 http 请求，对于大型网站不可取。</li>
+<li>很多移动设备无法完全显示框架，设备兼容性差。</li>
+</ol>
+<p>注意：通过动态给 iframe 添加 src 属性值，可解决前两个问题。</p>
+<h2 id="style标签和script标签的位置"><a href="#style标签和script标签的位置" class="headerlink" title="style标签和script标签的位置"></a>style标签和script标签的位置</h2><p><strong>style标签</strong></p>
+<ul>
+<li>推荐写在head标签里最底部即body标签前：有利于浏览器逐步渲染 resources downloading –&gt; cssDOM + DOM –&gt; Render Tree –&gt; layout –&gt; paint</li>
+<li>不推荐写在body标签后：在这之前的元素的样式就不会生效，会导致页面结构出来了，而CSS还没开始渲染。IE 下可能出现样式失效导致的页面闪烁问题。</li>
+</ul>
+<p><strong>script标签</strong></p>
+<ul>
+<li>推荐写在body标签里最底部：等到页面所有内容加载完成之后，再来加载JavaScript</li>
+<li>不推荐写在body标签前：会造成页面阻塞</li>
+</ul>
+<h1 id="CSS-0基础"><a href="#CSS-0基础" class="headerlink" title="CSS_0基础"></a>CSS_0基础</h1><h2 id="CSS选择器及优先级"><a href="#CSS选择器及优先级" class="headerlink" title="CSS选择器及优先级"></a>CSS选择器及优先级</h2><ol>
+<li>选择器<ul>
+<li>id选择器(#myid)</li>
+<li>类选择器(.myclass)</li>
+<li>属性选择器(a[rel=”external”])</li>
+<li>伪类选择器(a:hover, li:nth-child)</li>
+<li>标签选择器(div, h1, p)</li>
+<li>伪元素选择器(p::first-line)</li>
+<li>相邻选择器（h1 + p）</li>
+<li>子选择器(ul &gt; li)</li>
+<li>后代选择器(li a)</li>
+<li>通配符选择器(*)</li>
+</ul>
+</li>
+<li>优先级<ul>
+<li><code>!important</code></li>
+<li>内联样式（1000）</li>
+<li>ID选择器（0100）</li>
+<li>类选择器 / 属性选择器 / 伪类选择器（0010）</li>
+<li>标签选择器 / 伪元素选择器（0001）</li>
+<li>关系选择器 / 通配符选择器（0000）</li>
+</ul>
+</li>
+</ol>
+<p>带 !important 标记的样式属性优先级最高；样式表的来源相同时：<code>!important &gt; 行内样式&gt; ID选择器 &gt; 类选择器 &gt; 标签 &gt; 通配符 &gt; 继承 &gt; 浏览器默认属性</code></p>
+<p>3.继承性</p>
+<ul>
+<li>可继承的样式：font-size，font-family，color，ul，li，dl，dd，dt；</li>
+<li>不可继承的样式：border padding margin width height 事实上，宽度也不是继承的，而是如果你不指定宽度，那么它就是 100%。由于你子 DIV 并没有指定宽度，那它就是 100%，也就是与父 DIV 同宽，但这与继承无关，高度自然也没有继承一说。</li>
+</ul>
+<h2 id="rgba-和-opacity-设置透明度的区别是什么？"><a href="#rgba-和-opacity-设置透明度的区别是什么？" class="headerlink" title="rgba() 和 opacity 设置透明度的区别是什么？"></a>rgba() 和 opacity 设置透明度的区别是什么？</h2><p>rgba() 和 opacity 都能实现透明效果</p>
+<ul>
+<li> opacity 作用于元素，以及元素内的所有内容的透明度</li>
+<li> rgba() 只作用于元素的颜色或其背景色，设置 rgba() 透明的元素的子元素不会继承透明效果。</li>
+</ul>
+<h2 id="浏览器是如何解析-css-选择器的？"><a href="#浏览器是如何解析-css-选择器的？" class="headerlink" title="浏览器是如何解析 css 选择器的？"></a>浏览器是如何解析 css 选择器的？</h2><p><code>从右向左解析的。</code>若从左向右匹配，发现不符合规则，需要回溯，会损失很多性能。若从右向左匹配，先找到所有的最后节点，对于每一个节点，向上寻找其父节点直到查找至根元素或满足条件的匹配规则，则结束这个分支的遍历。</p>
+<h2 id="display-none-和-visibility-hidden-两者的区别"><a href="#display-none-和-visibility-hidden-两者的区别" class="headerlink" title="display: none 和 visibility: hidden 两者的区别"></a>display: none 和 visibility: hidden 两者的区别</h2><ol>
+<li>display: none 隐藏后不占用文档流；而 visibility: hidden 会占用文档流。</li>
+<li>visibility 具有继承性，给父元素设置 “visibility: hidden”，子元素也会继承该属性，但如果重新给子元素设置 “visibility: visible”，则子元素又会显示出来。</li>
+<li>visibility: hidden 不会影响计数器的计数，虽然隐藏了，但计数器依然运行着。</li>
+<li>在 css3 中 transition 支持 visibility 属性，但不支持 display。因为 transition 可以延迟执行，因此配合 visibility 使用纯 css 延时显示效果可以提高用户体验。</li>
+<li>display: none 会引起回流（重排）和重绘；visibility: hidden 会引起重绘。</li>
+</ol>
+<h2 id="简述-transform，transition，animation-的作用"><a href="#简述-transform，transition，animation-的作用" class="headerlink" title="简述 transform，transition，animation 的作用"></a>简述 transform，transition，animation 的作用</h2><ol>
+<li><code>transform</code>：描述了元素的静态样式，本身不会呈现动画效果，可以对元素进行旋转 rotate、扭曲 skew、缩放 scale 和移动 translate 以及矩阵变形 matrix。<code>transition</code> 和 <code>animation</code> 两者都能实现动画效果。<code>transform</code> 常配合<code>transition</code> 和 <code>animation</code> 使用。</li>
+<li><code>transition</code>：样式过渡，从一种效果逐渐改变为另一种效果，它是一个合写属性。transition: transition-property  transition-duration  transition-timing-function  transition-delay 从左到右，依次是：过渡效果的css属性名称、过渡效果花费时间、速度曲线、过渡开始的延迟时间  <code>transition</code> 通常和 hover 等事件配合使用，需要由事件来触发过渡。</li>
+<li><code>animation</code>：动画，有 <code>@keyframes</code> 来描述每一帧的样式。</li>
+</ol>
+<p>区别：</p>
+<ul>
+<li><code>transform</code> 仅描述元素的静态样式，常配合<code>transition</code> 和 <code>animation</code> 使用。</li>
+<li><code>transition</code> 通常和 hover 等事件配合使用；<code>animation</code> 是自发的，立即播放。</li>
+<li><code>animation</code> 可以设置循环次数。</li>
+<li><code>animation</code> 可以设置每一帧的样式和时间，<code>transition</code> 只能设置头尾。</li>
+<li><code>transition</code> 可以与 js 配合使用， js 设定要变化的样式，<code>transition</code> 负责动画效果。</li>
+</ul>
+<h2 id="position-属性的值有哪些？"><a href="#position-属性的值有哪些？" class="headerlink" title="position 属性的值有哪些？"></a>position 属性的值有哪些？</h2><ul>
+<li><code>static</code>: 默认位置; 元素将会像通常那样流入页面。 <code>top</code>, <code>right</code>, <code>bottom</code>, <code>left</code> 和 <code>z-index</code> 属性不生效。</li>
+<li><code>relative</code>：元素的位置相对于它自己进行调整，而不改变布局（从而在元素没有被定位的情况下为它留下一个缺口）。</li>
+<li><code>absolute</code>：该元素从页面流中移除，并相对于其最近的祖先（如果有的话）或相对于初始包含块的指定位置定位。 绝对位置的方框可以有边距，而且它们不会与任何其他外边距一起折叠。 这些元素不影响其他元素的位置。</li>
+<li><code>fixed</code>：该元素被从页面流中移除，并被定位在相对于视口的指定位置，滚动时不会移动。</li>
+<li><code>sticky</code>：粘性定位是相对定位和固定定位的一种混合。 该元素被视为 <code>relative</code> 定位，直到它越过一个指定的阈值，超过这一阈值它将被视为 <code>fixed</code> 定位。</li>
+</ul>
+<h2 id="css-盒模型？"><a href="#css-盒模型？" class="headerlink" title="css 盒模型？"></a>css 盒模型？</h2><ul>
+<li><code>标准盒模型(box-sizing:content-box)</code>，width 指 content 的宽度，总宽度 = width + border+ padding+ margin；随着边距撑开</li>
+<li><code>怪异盒模型/IE盒模型(box-sizing:border-box)</code>，width 指 content + border+ padding，总宽度 = width + margin；宽度固定，推荐</li>
+</ul>
+<h2 id="元素水平-垂直居中"><a href="#元素水平-垂直居中" class="headerlink" title="元素水平/垂直居中"></a>元素水平/垂直居中</h2><ol>
+<li>水平居中</li>
+</ol>
+<ul>
+<li>行内元素：<code>text-align: center;</code></li>
+<li>对于确定宽度的块级元素<ul>
+<li>width 和 margin 实现： <code>mragin: 0 auto;</code></li>
+<li>绝对定位和 margin-left 实现： <code>margin-left: (父width - 子 width)/2；</code>(前提是父元素相对定位)</li>
+</ul>
+</li>
+<li>对于宽度未知的块级元素<ul>
+<li>table 标签配合 margin 左右 auto 实现</li>
+<li>inline-block 实现：<code>display: inline-block; text-align: center;</code></li>
+<li>绝对定位和 transform 实现， translateX 可以移动本身元素的50%</li>
+<li>flex 布局 <code>justify-content: center</code></li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>垂直居中</li>
+</ol>
+<ul>
+<li>纯文字类，设置 line-height 等于 height</li>
+<li>子绝父相，子元素通过 margin 实现自适应居中</li>
+<li>子绝父相，通过位移 transform 实现</li>
+<li>flex 布局，<code>align-items: center;</code></li>
+<li>table 布局，父级通过转换为表格形式，子级设置 vertical-align 实现</li>
+</ul>
+<h2 id="Flex弹性布局"><a href="#Flex弹性布局" class="headerlink" title="Flex弹性布局"></a>Flex弹性布局</h2><p>小技巧：剩余填充可以使用width:0;flex:1;</p>
+<h3 id="容器属性"><a href="#容器属性" class="headerlink" title="容器属性"></a>容器属性</h3><p>flex 布局，是一种弹性盒布局模型，给子元素提供了空间分布和对齐能力，由<code>container</code>（容器）及<code>item</code>（项目）组成。该布局模型提供了一种更加高效的方式来对容器中的项目进行布局、对齐和分配空间。适用于在不同尺寸的屏幕中创建可自动扩展和收缩布局，通常可用于<code>水平/垂直居中</code>，<code>两栏</code>、<code>三栏布局</code>等的场景里。</p>
+<p>其中<code>flex</code>属性是<code>flex-grow</code>，<code>flex-shrink</code>和<code>flex-basis</code>的简写，默认值为<code>0 1 auto</code>。<strong>该属性有两个快捷值：<code>auto (1 1 auto)</code> 和 <code>none (0 0 auto)</code>。</strong></p>
+<ul>
+<li><code>flex-grow</code>：定义项目的放大比例，默认值为 0，即如果存在剩余空间，也不放大。如果所有项目的<code>flex-grow</code>属性都为 1，则它们将等分剩余空间（如果有的话）。如果一个项目的<code>flex-grow</code>属性为 2，其他项目都为 1，则前者占据的剩余空间将比其他项多一倍。</li>
+<li><code>flex-shrink</code>：项目的缩小比例，默认为 1，即如果空间不足，项目将缩小。如果所有项目的<code>flex-shrink</code>属性都为 1，当空间不足时，都将等比例缩小。如果一个项目的<code>flex-shrink</code>属性为 0，其他项目都为 1，则空间不足时，前者不缩小。</li>
+<li><code>flex-basis</code>：定义了在分配多余空间之前，项目占据的主轴空间。浏览器会根据该属性，计算主轴是否有多余空间。它的默认值为 auto，即项目的本来大小。当设置为 0 的是，会根据内容撑开。也可以设为跟<code>width</code>或<code>height</code>属性一样的值（比如 350px），则项目将占据固定空间。</li>
+</ul>
+<p><code>flex</code>常用的属性值：</p>
+<ul>
+<li>flex: 1 –&gt; flex: 1 1 0%</li>
+<li>flex: 2 –&gt; flex: 2 1 0%</li>
+<li>flex: auto –&gt; flex: 1 1 auto</li>
+<li>flex: none –&gt; flex: 0 0 auto【常用于固定尺寸不伸缩】</li>
+</ul>
+<h2 id="清除浮动"><a href="#清除浮动" class="headerlink" title="清除浮动"></a>清除浮动</h2><p>1.直接把 <code>&lt;div style=&quot;clear: both;&quot;&gt;&lt;/div&gt;</code>作为最后一个子标签</p>
+<ul>
+<li>优点：通俗易懂，容易掌握；</li>
+<li>缺点：会添加较多无意义的空标签，有违结构与表现的分离，在后期维护中将是噩梦</li>
+</ul>
+<p>2.clearfix { overflow: hidden; zoom: 1; }</p>
+<ul>
+<li>优点：不存在结构和语义化问题，代码量极少</li>
+<li>缺点：内容增多时容易造成不自动换行，导致内容被隐藏掉，无法显示需要溢出的元素</li>
+</ul>
+<p>3.建立伪类选择器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.fix:after&#123;</span><br><span class="line">content:&#x27;&#x27;;/*设置添加子元素的内容为空*/</span><br><span class="line">display:block;</span><br><span class="line">height:0;</span><br><span class="line">visibility:hidden;</span><br><span class="line">clear:both;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="css-sprites-（雪碧图-精灵图）"><a href="#css-sprites-（雪碧图-精灵图）" class="headerlink" title="css sprites （雪碧图/精灵图）"></a>css sprites （雪碧图/精灵图）</h2><p>css sprites 就是把网页中一些小图片整合到一张图片文件中，再利用 css 的 background-image、background-repeat、background-position 的组合进行背景定位。</p>
+<p>优点： 减少图片体积；减少 http 请求次数</p>
+<p>缺点：维护比较麻烦；不能随便改变大小，会失真模糊</p>
+<h2 id="圣杯布局和双飞翼布局（经典三分栏布局）"><a href="#圣杯布局和双飞翼布局（经典三分栏布局）" class="headerlink" title="圣杯布局和双飞翼布局（经典三分栏布局）"></a>圣杯布局和双飞翼布局（经典三分栏布局）</h2><p>圣杯布局和双飞翼布局的目的：</p>
+<ul>
+<li>三栏布局，中间一栏最先加载和渲染（<strong>内容最重要，这就是为什么还需要了解这种布局的原因</strong>）。</li>
+<li>两侧内容固定，中间内容随着宽度自适应。</li>
+<li>一般用于 PC 网页。</li>
+</ul>
+<p>圣杯布局和双飞翼布局的技术总结：</p>
+<ul>
+<li>使用 <code>float</code> 布局。</li>
+<li>两侧使用 <code>margin</code> 负值，以便和中间内容横向重叠。</li>
+<li>防止中间内容被两侧覆盖，圣杯布局用 <code>padding</code> ，双飞翼布局用 <code>margin</code> 。</li>
+</ul>
+<p><strong>圣杯布局</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;container&quot; class=&quot;clearfix&quot;&gt;</span><br><span class="line">  &lt;p class=&quot;center&quot;&gt;我是中间&lt;/p&gt;</span><br><span class="line">  &lt;p class=&quot;left&quot;&gt;我是左边&lt;/p&gt;</span><br><span class="line">  &lt;p class=&quot;right&quot;&gt;我是右边&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">#container &#123;</span><br><span class="line">  padding-left: 200px;</span><br><span class="line">  padding-right: 150px;</span><br><span class="line">  overflow: auto;</span><br><span class="line">&#125;</span><br><span class="line">#container p &#123;</span><br><span class="line">  float: left;</span><br><span class="line">&#125;</span><br><span class="line">.center &#123;</span><br><span class="line">  width: 100%;</span><br><span class="line">  background-color: lightcoral;</span><br><span class="line">&#125;</span><br><span class="line">.left &#123;</span><br><span class="line">  width: 200px;</span><br><span class="line">  position: relative;</span><br><span class="line">  left: -200px;</span><br><span class="line">  margin-left: -100%;</span><br><span class="line">  background-color: lightcyan;</span><br><span class="line">&#125;</span><br><span class="line">.right &#123;</span><br><span class="line">  width: 150px;</span><br><span class="line">  margin-right: -150px;</span><br><span class="line">  background-color: lightgreen;</span><br><span class="line">&#125;</span><br><span class="line">.clearfix:after &#123;</span><br><span class="line">  content: &quot;&quot;;</span><br><span class="line">  display: table;</span><br><span class="line">  clear: both;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>双飞翼布局</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;main&quot; class=&quot;float&quot;&gt;</span><br><span class="line">  &lt;div id=&quot;main-wrap&quot;&gt;main&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;div id=&quot;left&quot; class=&quot;float&quot;&gt;left&lt;/div&gt;</span><br><span class="line">&lt;div id=&quot;right&quot; class=&quot;float&quot;&gt;right&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">.float &#123;</span><br><span class="line">  float: left;</span><br><span class="line">&#125;</span><br><span class="line">#main &#123;</span><br><span class="line">  width: 100%;</span><br><span class="line">  height: 200px;</span><br><span class="line">  background-color: lightpink;</span><br><span class="line">&#125;</span><br><span class="line">#main-wrap &#123;</span><br><span class="line">  margin: 0 190px 0 190px;</span><br><span class="line">&#125;</span><br><span class="line">#left &#123;</span><br><span class="line">  width: 190px;</span><br><span class="line">  height: 200px;</span><br><span class="line">  background-color: lightsalmon;</span><br><span class="line">  margin-left: -100%;</span><br><span class="line">&#125;</span><br><span class="line">#right &#123;</span><br><span class="line">  width: 190px;</span><br><span class="line">  height: 200px;</span><br><span class="line">  background-color: lightskyblue;</span><br><span class="line">  margin-left: -190px;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="0基础-JS"><a href="#0基础-JS" class="headerlink" title="0基础_JS"></a>0基础_JS</h1><h2 id="理解回流和重绘？"><a href="#理解回流和重绘？" class="headerlink" title="理解回流和重绘？"></a>理解回流和重绘？</h2><p>1.概念：</p>
+<ul>
+<li><code>回流(Reflow)</code>：当 DOM 的变化影响了元素的几何信息，浏览器需要重新计算元素的几何属性，将其安放在界面中的正确位置，这个过程叫做回流（也可以叫做重排）。表现为重新生成布局，重新排列元素。</li>
+<li><code>重绘(Repaint)</code>：当一个元素的外观发生改变，重新把元素外观绘制出来的过程，叫做重绘。表现为某些元素的外观被改变。</li>
+</ul>
+<p>2.常见引起回流和重绘的属性和方法：</p>
+<p>任何会改变元素几何信息（元素的位置和尺寸大小）的操作都会触发回流。</p>
+<ul>
+<li>添加或删除可见的 DOM 元素</li>
+<li>元素尺寸改变–边距、填充、宽度、高度</li>
+<li>浏览器尺寸改变– resize 事件发生时</li>
+<li>计算 offsetWidth 和 offsetHeight 属性</li>
+<li>设置 style 属性的值</li>
+<li>修改网页默认字体</li>
+</ul>
+<p><strong>回流必定会发生重绘，重绘不一定会引发回流。回流所需的成本比重绘高得多</strong></p>
+<p>3.如何减少回流？</p>
+<ul>
+<li>使用 transform 代替 top</li>
+<li>不要把节点的属性值放在一个循环里，当成循环里的变量</li>
+<li>不要使用 table 布局，可能很小的一个改动会造成整个 table 的重新布局</li>
+<li>把 DOM 离线后修改。如：使用 documentFragment 对象在内存里操作 DOM</li>
+<li>不要一条一条的修改样式，可以预先定义好 class，然后修改 DOM 的 className</li>
+<li>使用 absolute 或 fixed 使元素脱离文档流</li>
+</ul>
+<h1 id="组件库开发"><a href="#组件库开发" class="headerlink" title="组件库开发"></a>组件库开发</h1><h2 id="基于Vue3-vite开发"><a href="#基于Vue3-vite开发" class="headerlink" title="基于Vue3+vite开发"></a>基于Vue3+vite开发</h2><p><strong>提供方</strong></p>
+<p>src\components\exportCom\test\Test.vue</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;Test&quot;&gt;</span><br><span class="line">    &lt;div&gt;&#123;&#123; list &#125;&#125;&lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script setup&gt;</span><br><span class="line">import &#123; ref, onMounted &#125; from &#x27;vue&#x27;;</span><br><span class="line">const props = defineProps([&#x27;comParams&#x27;]);</span><br><span class="line">const list = ref([]);</span><br><span class="line">onMounted(() =&gt; &#123;</span><br><span class="line">  init();</span><br><span class="line">&#125;);</span><br><span class="line">async function init() &#123;</span><br><span class="line">  list.value = props.comParams;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>src\components\exportCom\index.js</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import Test from &#x27;@/components/exportCom/test/Test.vue&#x27;;</span><br><span class="line">export const comps = &#123;</span><br><span class="line">  Test,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const compAbility = &#123;</span><br><span class="line">  ...comps,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">window.compAbility = compAbility;</span><br><span class="line">export default compAbility;</span><br></pre></td></tr></table></figure>
+
+<p>vite.comp.js</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">import &#123; defineConfig &#125; from &#x27;vite&#x27;;</span><br><span class="line">import vue from &#x27;@vitejs/plugin-vue&#x27;;</span><br><span class="line">import &#123; fileURLToPath, URL &#125; from &#x27;node:url&#x27;;</span><br><span class="line">import basicSsl from &#x27;@vitejs/plugin-basic-ssl&#x27;;</span><br><span class="line">import path from &#x27;path&#x27;;</span><br><span class="line">import AutoImport from &#x27;unplugin-auto-import/vite&#x27;;</span><br><span class="line">import Components from &#x27;unplugin-vue-components/vite&#x27;;</span><br><span class="line">import &#123; ElementPlusResolver &#125; from &#x27;unplugin-vue-components/resolvers&#x27;;</span><br><span class="line">const resolveFile = function (filePath) &#123;</span><br><span class="line">  return path.join(__dirname, filePath);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default defineConfig((&#123; command, mode, ssrBuild &#125;) =&gt; &#123;</span><br><span class="line">  return &#123;</span><br><span class="line">    resolve: &#123;</span><br><span class="line">      alias: &#123;</span><br><span class="line">        &#x27;@&#x27;: fileURLToPath(new URL(&#x27;./src&#x27;, import.meta.url)),</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">    plugins: [</span><br><span class="line">      basicSsl(),</span><br><span class="line">      vue(),</span><br><span class="line">      AutoImport(&#123;</span><br><span class="line">        resolvers: [ElementPlusResolver()],</span><br><span class="line">      &#125;),</span><br><span class="line">      Components(&#123;</span><br><span class="line">        resolvers: [ElementPlusResolver()],</span><br><span class="line">      &#125;),</span><br><span class="line">    ],</span><br><span class="line">    build: &#123;</span><br><span class="line">      sourcemap: true,</span><br><span class="line">      rollupOptions: &#123;</span><br><span class="line">        input: resolveFile(&#x27;./src/components/exportCom/index.js&#x27;),</span><br><span class="line">        external: [&#x27;vue&#x27;, &#x27;vue-router&#x27;, &#x27;pinia&#x27;, &#x27;element-plus&#x27;],</span><br><span class="line">        output: &#123;</span><br><span class="line">          dir: &#x27;dist&#x27;,</span><br><span class="line">          name: &#x27;compAbility&#x27;,</span><br><span class="line">          entryFileNames: &#x27;compAbility.js&#x27;,</span><br><span class="line">          globals: &#123;</span><br><span class="line">            vue: &#x27;Vue&#x27;,</span><br><span class="line">            &#x27;vue-router&#x27;: &#x27;VueRouter&#x27;,</span><br><span class="line">            pinia: &#x27;pinia&#x27;,</span><br><span class="line">            &#x27;element-plus&#x27;: &#x27;ElementPlus&#x27;,</span><br><span class="line">          &#125;,</span><br><span class="line">          format: &#x27;iife&#x27;,</span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>package.json</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;build&quot;: &quot;vite build --config vite.comp.js&quot;,</span><br></pre></td></tr></table></figure>
+
+<p><strong>调用方</strong></p>
+<p>src\hooks\useRemoteAsynCom.ts</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">import &#123; defineAsyncComponent &#125; from &#x27;vue&#x27;;</span><br><span class="line"></span><br><span class="line">function getMSJsUrl() &#123;</span><br><span class="line">  return &#x27;xx/compAbility.js&#x27;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export const loadJs = (url: string) =&gt; &#123;</span><br><span class="line">  return new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line">    const headerJs = document.createElement(&#x27;script&#x27;);</span><br><span class="line">    headerJs.src = url;</span><br><span class="line">    document.body.append(headerJs);</span><br><span class="line">    headerJs.onload = function () &#123;</span><br><span class="line">      resolve(null);</span><br><span class="line">    &#125;;</span><br><span class="line">    headerJs.onerror = function () &#123;</span><br><span class="line">      reject();</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export const resolveComp = (compPromise, comp, compName) =&gt; &#123;</span><br><span class="line">  // 加载js完成后，异步导出组件，compPromise是组件的jsPromise,comp是组件js定义的全局变量，compName是最终的组件名称</span><br><span class="line">  return window[compPromise].then(() =&gt; &#123;</span><br><span class="line">    const res = window[comp][compName];</span><br><span class="line">    res.name = compName;</span><br><span class="line">    return res;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br><span class="line">export const useComps = () =&gt; &#123;</span><br><span class="line">  const Test = defineAsyncComponent(() =&gt; resolveComp(&#x27;marketSharePromise&#x27;, &#x27;compAbility&#x27;, &#x27;Test&#x27;));</span><br><span class="line">  return &#123; Test &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// 加载js组件</span><br><span class="line">if (!window.marketSharePromise) &#123;</span><br><span class="line">  window.marketSharePromise = loadJs(getMSJsUrl());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>src\view\home\Home.vue</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;home&quot;&gt;</span><br><span class="line">    &lt;div&gt;首页&lt;/div&gt;</span><br><span class="line">    &lt;Test :comParams=&quot;comParams&quot;&gt;&lt;/Test&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script setup lang=&quot;ts&quot;&gt;</span><br><span class="line">import &#123; ref, reactive, toRefs, computed, onMounted &#125; from &#x27;vue&#x27;;</span><br><span class="line">// import Test from &#x27;@/components/exportCom/test/Test.vue&#x27;;</span><br><span class="line">import &#123; useComps &#125; from &#x27;@/hooks/useRemoteAsynCom.ts&#x27;;</span><br><span class="line"></span><br><span class="line">const &#123; Test &#125; = useComps();</span><br><span class="line">const a = ref(&#x27;这是测试&#x27;);</span><br><span class="line">const comParams = reactive(&#123; name: &#x27;xxx&#x27; &#125;);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="I-移动端框架"><a href="#I-移动端框架" class="headerlink" title="I_移动端框架"></a>I_移动端框架</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><h3 id="移动跨平台"><a href="#移动跨平台" class="headerlink" title="移动跨平台"></a>移动跨平台</h3><p>跨平台方案可以分为三个时代：</p>
+<blockquote>
+<ul>
+<li>Web 容器时代：包括 Cordova、Ionic 和<a target="_blank" rel="noopener" href="https://cloud.tencent.com/product/tcb?from_column=20065&from=20065">微信小程序</a>。主要采用的是原生应用内嵌浏览器控件 WebView的方式进行 HTML5 页面渲染，并定义 HTML5 与原生代码交互协议，将部分原生系统能力暴露给 HTML5，从而扩展 HTML5 的边界。这类交互协议，就是我们通常说的 JS Bridge。</li>
+<li>泛 Web 容器时代：采用类 Web 标准进行开发，但在运行时把绘制和渲染交由原生系统接管的技术，代表框架有 React Native、Weex 和快应用等。</li>
+<li>自绘引擎时代：自带渲染引擎，客户端仅提供一块画布即可获得从业务逻辑到功能呈现的多端高度一致的渲染体验。Flutter，是为数不多的代表。</li>
+</ul>
+</blockquote>
+<p>移动端跨平台主要需求：</p>
+<ul>
+<li>桌面端跨移动端：桌面向移动端过渡的早期，希望 PC Web 与移动 Web 复用同一套代码。</li>
+<li>Native 跨 Web：一套功能差不多的 Web 页能够在端外访问，需要跨 Native App 与 Web。</li>
+<li>跨系统双端：出于开发效率等原因，希望 Android、iOS 双端复用一套业务代码，这也是目前主要的需求点。</li>
+</ul>
+<p>未来需求：</p>
+<ul>
+<li>跨<a target="_blank" rel="noopener" href="https://cloud.tencent.com/product/tcb?from_column=20065&from=20065">小程序</a>/轻应用：即用即走的轻量级应用，如各平台的小程序、 Android 快应用、iOS App Clips。</li>
+<li>跨 IoT 设备：各种有显示屏的设备都会成为新的入口，如车载设备、智能电视等。</li>
+</ul>
+<h1 id="E-数据结构-JavaScript"><a href="#E-数据结构-JavaScript" class="headerlink" title="E_数据结构_JavaScript"></a>E_数据结构_JavaScript</h1><p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.30secondsofcode.org/js/interviews/p/1/">30-seconds-of-code- 代码片段</a></li>
+</ul>
+<h1 id="D-框架-VueReactAngular比较"><a href="#D-框架-VueReactAngular比较" class="headerlink" title="D_框架_VueReactAngular比较"></a>D_框架_VueReactAngular比较</h1><h2 id="三大框架解析"><a href="#三大框架解析" class="headerlink" title="三大框架解析"></a>三大框架解析</h2><p><strong>angular</strong></p>
+<p>2012开始1.0版本，16年升级2.0版本。缺点：中文文档较少，框架较重，学习成本高。</p>
+<blockquote>
+<p>双向绑定；<br>依赖注入；<br>基于ts的组件；<br>良好的应用架构；<br>工具生态完整，angular-cli用于创建、开发、测试等。有整套的解决方案，适合大型项目。</p>
+</blockquote>
+<p><strong>react</strong></p>
+<p>2013年facebook发布版本。2015年版本稳定，同年发布reacr-native。缺点：本身只是view，大型项目需要加上React Router和Redux。</p>
+<blockquote>
+<p>虚拟dom，跨浏览器兼容，性能较好；<br>组件化，代码复用;<br>JSX,js语法的扩展，模板简单、直接、语义化。<br>单项数据流：数据流清晰，组件状态更可控。</p>
+</blockquote>
+<p><strong>Vue</strong></p>
+<p>2015年1.0版本发布，同年vue-router、vuex、vue-cli出现，标志从一个视图层发展成一个渐进式框架。<br>2016年vue2.0发布，引入虚拟dom，性能大幅提升。<br>2019年vue2.0公布源码。</p>
+<blockquote>
+<p> 渐进式、轻量级框架;<br> 简单易用;<br> 双向数据绑定;<br> 组件化;<br> 轻量高效(使用虚拟dom，压缩后只有20kb)</p>
+</blockquote>
+<p><strong>vue和react比较</strong></p>
+<p><strong>相同点：</strong></p>
+<blockquote>
+<p>(1)都使用Virtural DOM</p>
+<p>(2)都使用组件化思想，流程基本一致</p>
+<p>(3)都是响应式，推崇单向数据流</p>
+<p>(4)都有成熟的社区，都支持服务端渲染</p>
+<p>(5)实现原理和流程基本一致，都是使用Virtual DOM + Diff算法.不管是Vue的template模板 + options api/composition api写法，还是React的Class或者Function（js 的class写法也是function函数的一种）写法，底层最终都是为了生成render函数,</p>
+<p>Vue和React通用流程：vue template/react jsx -&gt; render函数 -&gt; 生成VNode -&gt; 当有变化时，新老VNode diff -&gt; diff算法对比，并真正去更新真实DOM。</p>
+</blockquote>
+<p><strong>不同点-青铜：</strong></p>
+<blockquote>
+<ul>
+<li><code>Vue API</code> 多，<code>React API</code> 少</li>
+<li><code>Vue</code> 双向绑定，修改数据自动更新视图，而 <code>React</code> 单向数据流，需要手动 <code>setState</code></li>
+<li><code>Vue template</code> 结构表现分离，<code>React</code> 用 <code>jsx</code> 结构表现融合，html/css都可以写到js里</li>
+<li>都可以通过 <code>props</code> 进行父子组件数据传递，只是 <code>Vue props</code> 要声明，<code>React</code> 不用声明可能直接使用</li>
+<li><code>Vue</code> 可以用插槽，<code>React</code> 是万物皆可 <code>props</code></li>
+<li><code>Vue2</code> 利用基本都是 <code>Mixin</code>，<code>React</code> 可以用高阶函数、自定义 <code>hook</code> 实现</li>
+<li><code>Vue</code> 的 <code>fragment</code>、<code>hook</code> 到 <code>Vue3</code> 才有，<code>Vue</code> 还有丰富的指令，过滤器</li>
+</ul>
+</blockquote>
+<p><strong>不同点-白银：</strong></p>
+<blockquote>
+<ul>
+<li>组件化<ul>
+<li>vue2组件本质是通过new Vue()生产的Vue实例。Vue组件的script导出的是挂满options的纯对象。Vue的插件都是基于Vue原型类基础上的，Vue.install挂到Vue实例上，保证第三方库调用的是同一个Vue对象。this指向Vue实例，对开发者不透明。</li>
+<li>React比较简单，直接定义render函数生成vnode,立马通过四个组件类包装vnode。不同类型的vnode用响应的组件类处理。React类组件都是继承与React.component类，它的this指向我们自定义的类，对开发者透明。</li>
+</ul>
+</li>
+<li>hook<ul>
+<li>Vue3 hook是基于响应式实现的，它声明在setup里，一次组件实例化值调用一次setup,而React每次重新渲染都要重新调用，性能差。Vue可以在循环/条件判断/嵌套函数里使用，自动实现了依赖收集，而React需要手动传入依赖。</li>
+<li>React hool是根据调用顺序确定下一次重新渲染时的state是来源于哪个，所以有一些限制，比如不能再循环/条件判断/嵌套函数里使用，必须在函数最顶层调用hook。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><strong>不同点-黄金：</strong></p>
+<blockquote>
+<ul>
+<li>响应式<ul>
+<li>Vue2响应式特点是依赖收集，数据改变，自动派发更新。初始化时通过Object.defineProperty递归劫持data所有属性添加getter/setter，触发getter的时候进行依赖收集，修改时触发setter自动派发更新找到引用组件重新渲染。</li>
+<li>Vue3响应式使用原生Proxy重构，一解决了Vue2响应式缺陷，二是性能更好，支持更多数据结构，不再一开始递归劫持对象属性，而是只代理第一层对象。运行时才递归，用到才代理，用effect副作用代替Vue2的watcher,用一个依赖管理中心trackMap统一管理依赖代替Vue2中的Dep，这样不需要维护特别多的依赖关系。</li>
+<li>React则是基于状态，单项数据流，数据不可变，需要手动setState来更新，而且当数据改变时，会以组件根为目录，默认全部重新渲染整个组件树，只能额外用<code>pureComponent</code>/<code>shouldComponentUpdate</code>/<code>useMemo</code>/<code>useCallback</code> 等方法来进行控制，更新粒度更粗</li>
+</ul>
+</li>
+<li>Diff算法<ul>
+<li>Vue2是同层比较新老vnode,新的不存在老的存在就删除，新的存在老的不存在就创建，子节点采用双指针头对尾两端对比的方式，全量diff，然后移动节点时通过 splice 进行数组操作。</li>
+<li><code>Vue3</code> 是采用 <code>Map</code> 数据结构以及动静结合的方式，在编译阶段提前标记静态节点，<code>Diff</code> 过程中直接跳过有静态标记的节点，并且子节点对比会使用一个 <code>source</code> 数组来记录节点位置及最长递增子序列算法优化了对比流程，快速 <code>Diff</code>，需要处理的边际条件会更少。</li>
+<li><code>React</code> 是递归同层比较，标识差异点保存到 <code>Diff</code> 队列保存，得到 <code>patch</code> 树，再统一操作批量更新 <code>DOM</code>。<code>Diff</code> 总共就是移动、删除、增加三个操作，如果结构发生改变就直接卸载重新创建，如果没有则将节点在新集合中的位置和老集合中的 <code>lastIndex</code> 进行比较是否需要移动，如果遍历过程中发现新集合没有，但老集合有就删除。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><strong>不同点-钻石：</strong></p>
+<blockquote>
+<ul>
+<li><p>核心思想和设计理念</p>
+<ul>
+<li><code>React</code> 一开始定位的就是 UI 开发的新思路，它制定规则，改动开发者。Vue是尽可能降低开发的门槛，让开发者怎么爽怎来。后续两者架构的变化都是围绕这个。</li>
+</ul>
+</li>
+<li><p>数据管理方式</p>
+<p><code>Vue</code> 是响应式的，<code>React</code> 是手动 <code>setState</code>，这个对后面的架构产生不可逆的影响。</p>
+<ul>
+<li>Vue是对数据进行劫持/代理，它监测数据更加精准，更新粒度很小。而React推崇函数式，没办法感知数据变化，即使setstate触发更新，也不知道更新哪个组件，而是渲染整个DOM。当然Vue精准刷新也是有代价的，就是给每个组件配置监视器来管理依赖收集和派发更新。React迭代是增加了避免刷新的钩子函数或者采用Fiber的架构做时间片优化性能。</li>
+<li>正是这种设计，影响了hooks的实现和表现。React hook底层是基于链表实现的，每次组件被render时候都会按照顺序执行所有hooks,因为是链表，所以每个hooks的next是指向下一个hooks。所以代码不能写条件判断/函数嵌套，会导致错乱。而Vue hook知会被注册调用一次，一次组件实例化只调用一次setup，vue之所以能避开这些问题，得益于数据响应式。它不是链表对hooks进行记录，而是直接对数据代理观察，但不得不返回一个包装对象(通过.value返回)。因为js基础类型只有值，没有引用。必须依赖这个对象进行响应式追踪。</li>
+<li>再比如编译优化问题。Vue能做到数据劫持，再到Vue3动静结合的Diff思想得益于它的模板语法实现了静态编译，就是预编译优化，可以静态分析，在解析模板时根据不同标签执行对应的回调函数来构造AST。而React虽然JSX语法更加灵活，但重新渲染时一堆递归调用<code>React.createElement</code>，无法从模板层面进行静态分析，也就做不到双向绑定，即使是很厉害的 <code>fiber</code>，也是因为伤害已经造成，所以通过时间分片的优化来弥补，因为已经无法在编译阶段进行优化了。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><strong>项目选型：</strong></p>
+<blockquote>
+<ul>
+<li>(如果公司主要用 <code>Vue</code> 技术栈的话)：<code>Vue</code> 性能上会更有优势一点，特别是 <code>Vue3</code> 更加灵活，有很好的可扩展性，同时有更快的渲染速度和更小的打包体积。从 <code>mixins</code> 到 <code>HOC</code> 到 <code>render props</code> 再到 <code>hooks</code>，<code>React</code> 基本已经废掉了过去很多基于组件的逻辑抽象模式，抹掉了 <code>JSX</code> 对比模板的一个优势，<code>Vue3</code> 中现在也都能做到，所以我会偏向 <code>Vue3</code>。</li>
+<li>(如果公司主要用 <code>React</code> 技术栈的话)：一些不大的系统或者 <code>H5</code> 就用 <code>Vue</code>，因为不管是上手还是开发难度上都很简单，开发效率也高嘛，而且它有更小的打包体积，毕竟在移动端网络差异大的情况下，资源体积是非常重要的。但像是一些中后台系统，或者一些大点的项目，会越做越大的，多人协作开发的，就用 <code>React</code>，因为它的函数式编程有更加灵活的结构和可扩展性，丰富的生态圈和工具链，解决方案多，后期也更方便迭代与维护，还适用原生 <code>APP</code>，所以我会偏向 <code>React</code>。</li>
+</ul>
+</blockquote>
+<h1 id="性能优化-0基础-1"><a href="#性能优化-0基础-1" class="headerlink" title="性能优化_0基础"></a>性能优化_0基础</h1><p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://web.dev/learn-web-vitals/">Web Vitals</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6904517485349830670">工作中如何进行前端性能优化(23 种优化+10 种定位方式</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6892994632968306702">前端性能优化 24 条建议（2020）</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7020212914020302856">写在 2021 的前端性能优化指南</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000041753539">前端性能优化实践</a></li>
+</ul>
+<h2 id="三大核心指标"><a href="#三大核心指标" class="headerlink" title="三大核心指标"></a>三大核心指标</h2><p>主要分为：三大核心指标与其它常见的性能指标。</p>
+<p>三大核心指标</p>
+<blockquote>
+<p>LCP最大内容绘制、FID首次输入延迟、CLS累计布局偏移</p>
+</blockquote>
+<p>其他指标</p>
+<blockquote>
+<p>FP首次绘制、FCP首次内容绘制、FMP首次有意义绘制、DCL DOM解析完成、L事件触发、SI速度指数、FSP首屏时间、TTI首次可交互时间、TTFB接收首字节时间、TBT阻塞总时间</p>
+</blockquote>
+<p><strong>三大核心指标</strong></p>
+<p>主要衡量<em>加载性能</em>、<em>交互性</em>和<em>视觉稳定性</em>。</p>
+<blockquote>
+<ul>
+<li>LCP（<a target="_blank" rel="noopener" href="https://web.dev/articles/lcp">Largest Contentful Paint</a>）：最大内容绘制，测量<em>加载</em>性能。为了提供良好的用户体验，LCP 应在页面首次开始加载后的<strong>2.5 秒</strong>内发生。</li>
+<li>FID（<a target="_blank" rel="noopener" href="https://web.dev/articles/fid">First Input Delay</a>）(被替换为INP):首次输入延迟，测量<em>交互性</em>。为了提供良好的用户体验，页面的 FID 应为<strong>100 毫秒</strong>或更短。</li>
+<li>CLS（<a target="_blank" rel="noopener" href="https://web.dev/articles/cls">Cumulative Layout Shift</a>）:累积布局偏移，测量<em>视觉稳定性</em>。为了提供良好的用户体验，页面的 CLS 应保持在  <strong>0.1.</strong>  或更少。</li>
+</ul>
+</blockquote>
+<p><strong>1.LCP</strong></p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://web.dev/lcp/">Largest Contentful Paint 最大内容绘制 (LCP)</a> 代表代表着页面最大元素的渲染时间，通常来说页面中最大元素能快速渲染会让用户感觉页面性能还不错。该时间会随着页面渲染变化而变化，因为页面中的最大元素在渲染过程中可能会发生改变，另外该指标会在用户第一次交互后停止记录。</p>
+<p>最大内容绘制考量的元素类型为：</p>
+<ul>
+<li><code>&lt;img&gt;</code>元素</li>
+<li>内嵌在<code>&lt;svg&gt;</code>元素内的<code>&lt;image&gt;</code>元素</li>
+<li><code>&lt;video&gt;</code>元素（使用封面图像）</li>
+<li>通过<a target="_blank" rel="noopener" href="https://developer.mozilla.org/docs/Web/CSS/url()"><code>url()</code></a>函数（而非使用<a target="_blank" rel="noopener" href="https://developer.mozilla.org/docs/Web/CSS/CSS_Images/Using_CSS_gradients">CSS 渐变</a>）加载的带有背景图像的元素</li>
+<li>包含文本节点或其他行内级文本元素子元素的<a target="_blank" rel="noopener" href="https://developer.mozilla.org/docs/Web/HTML/Block-level_elements">块级元素</a></li>
+</ul>
+</blockquote>
+<p>使用 <a target="_blank" rel="noopener" href="https://wicg.github.io/event-timing">Event Timing API</a> 在 JavaScript 中衡量LCP</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">new PerformanceObserver((entryList) =&gt; &#123;</span><br><span class="line">  for (const entry of entryList.getEntries()) &#123;</span><br><span class="line">    console.log(&#x27;LCP candidate:&#x27;, entry.startTime, entry);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).observe(&#123;type: &#x27;largest-contentful-paint&#x27;, buffered: true&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>如何优化LCP</p>
+<blockquote>
+<ul>
+<li>服务端响应时间</li>
+<li>Javascript和CSS引起的渲染卡顿</li>
+<li>资源加载时间</li>
+<li>客户端渲染</li>
+</ul>
+</blockquote>
+<p><strong>2.FID(被替换为INP)</strong></p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://web.dev/fid/">First Input Delay 首次输入延迟</a> 记录用户和页面首次交互操作所花费的时间，即是说用户与页面交互时（如点击链接或按钮），页面可以在多长时间内作出反馈。</p>
+<p>FID 指标会影响用户对页面交互性和响应性的第一印象。为了提供良好的用户体验，页面的 FID 应当小于 100 毫秒。</p>
+<p>还有一个性能指标 TTI（Time to Interactive）它反映的是用户什么时候可以开始和页面进行交互，但如果用户在 TTI 的时间内，没有与页面产生交互，TTI 是影响不到用户的；而如果想要知道 TTI 对用户的影响，需要 FID 这个指标，不同用户与网页发送交互的时间是不同的，所以对应的 FID 也不同</p>
+</blockquote>
+<p>使用 <a target="_blank" rel="noopener" href="https://wicg.github.io/event-timing">Event Timing API</a> 在 JavaScript 中衡量 FID</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">new PerformanceObserver((entryList) =&gt; &#123;</span><br><span class="line">  for (const entry of entryList.getEntries()) &#123;</span><br><span class="line">    const delay = entry.processingStart - entry.startTime;</span><br><span class="line">    console.log(&#x27;FID candidate:&#x27;, delay, entry);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).observe(&#123;type: &#x27;first-input&#x27;, buffered: true&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><code>Interaction to Next Paint (INP)</code></p>
+<p>注意：实际上，从 2024 年 3 月开始，FID 将替换为 Interaction to Next Paint (INP)。用于通过观察用户在访问网页期间发生的所有符合条件的互动的延迟时间，评估网页对用户互动的总体响应情况。</p>
+<blockquote>
+<p>INP 不仅会衡量首次互动，还会考虑所有互动，并报告网页整个生命周期内最慢的互动。此外，INP 不仅会测量延迟部分，还会测量从互动开始，一直到事件处理脚本，再到浏览器能够绘制下一帧的完整时长。因此是 Interaction to Next Paint。这些实现细节使得 INP 能够比 FID 更全面地衡量用户感知的响应能力。</p>
+</blockquote>
+<p>如何优化FID</p>
+<blockquote>
+<ul>
+<li>减少第三方代码的影响</li>
+<li>减少Javascript的执行时间</li>
+<li>最小化主线程工作</li>
+<li>减小请求数量和请求文件大小</li>
+</ul>
+</blockquote>
+<p><strong>3.CLS</strong></p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://web.dev/cls">Cumulative Layout Shift 累积布局偏移 (CLS)</a> 测量整个页面生命周期内发生的所有意外布局偏移中最大一连串的布局偏移分数，CLS 分数越低，代表页面的布局越稳定。在手机上这个指标更为重要。因为手机屏幕较小，CLS 值大的话会让用户觉得页面体验做的很差。</p>
+<p>比如在页面未加载完全时，想要点击页面某个未知，结果页面的广告刚刚加载完动态注入了页面，导致点击的地方被偏移，点到了广告，造成用户交互行为不期望的结果。</p>
+<p>CLS 较差的最常见原因为：</p>
+<ul>
+<li>无尺寸的图像</li>
+<li>无尺寸的广告、嵌入和 iframe</li>
+<li>动态注入的内容</li>
+<li>导致不可见文本闪烁/无样式文本闪烁的网络字体</li>
+<li>在更新 DOM 之前等待网络响应的操作</li>
+</ul>
+<p>关于如何优化 CLS，可以参考该文章：<a target="_blank" rel="noopener" href="https://web.dev/optimize-cls/#dynamic-content">优化 Cumulative Layout Shift 累积布局偏移</a></p>
+</blockquote>
+<p>使用 <a target="_blank" rel="noopener" href="https://wicg.github.io/event-timing">Event Timing API</a> 在 JavaScript 中衡量 CLS</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">addEventListener(&quot;load&quot;, () =&gt; &#123;</span><br><span class="line">    let DCLS = 0;</span><br><span class="line">    new PerformanceObserver((list) =&gt; &#123;</span><br><span class="line">        list.getEntries().forEach((entry) =&gt; &#123;</span><br><span class="line">            if (entry.hadRecentInput)</span><br><span class="line">                return;  // Ignore shifts after recent input.</span><br><span class="line">            DCLS += entry.value;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;).observe(&#123;type: &quot;layout-shift&quot;, buffered: true&#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>如何优化CLS</p>
+<blockquote>
+<ul>
+<li>图片或视屏元素有大小属性，或者给他们保留一个空间大小，设置width、height，或者使用 <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=beD5dOyPL6T/NhwU+N990w==.zdCxa1BbAm0h8J60KMd53LAphirRqxQoNkStyqRcal/Hs8eQG8Kg6rUez0ACPbWOcw1tl4iOluFL+1tawysWIgQF3acTjGd3vF8k7mxZQD+SnmPcnUGMUI72M1gsdcZU0PK38/ODPtAxEY2Z08L9gnxgibYNglgBVgMDRAFzPCDCSzqcKBI41FmY/1/lyHNN">unsized-media feature policy</a> 。</li>
+<li>不要在一个已存在的元素上面插入内容，除了相应用户输入。</li>
+<li>使用animation或transition而不是直接触发布局改变。</li>
+</ul>
+</blockquote>
+<p><strong>其他指标</strong></p>
+<blockquote>
+<ul>
+<li><p>FP（First Paint）首次绘制：FP是页面首次绘制像素的时间（不包括默认背景绘制），即为页面在屏幕上首次发生视觉变化的时间。</p>
+</li>
+<li><p>FCP（First Contentful Paint）首次内容绘制：FCP 指浏览器在页面渲染第一帧内容 DOM（包括任何文本、图片、SVG、非空白 canvas 等）的时间点。</p>
+</li>
+<li><p>FMP（First Meaningful Paint）首次有意义绘制：首次有效绘制，标记主角元素渲染完成的时间点，主角元素可以是视频网站的视频控件，内容网站的页面框架也可以是资源网站的头图等。目前对FMP尚无标准化的定义，因为比较难以用通用的方式确定有效/有意义的渲染。对于博客网站来说，渲染出标题与首屏文字就是首要内容，对于商城/图片网站来说，渲染图片是首要内容，才是有意义的渲染时间。比如掘金文章详情页，如果头图的重要性大于标题的话，那它就是有效绘制。以前使用 Lighthouse 工具是有该指标评分，现 Lighthouse 6.0 已弃用，使用了 LCP 指标来替代。</p>
+</li>
+<li><p>DCL（DOMContentLoaded）DOM 解析完成：当DOMContentLoaded事件触发时，仅当DOM解析完成,不包括样式表，图片等。在文档中没有脚本时，HTML被完全加载以及解析时，DOMContentLoaded 事件会被触发，无需等待样式表、图片等；如果文档中包含脚本，则脚本会阻塞 HTML 文档的解析。</p>
+</li>
+<li><p>L（Onload Event）onload 事件触发：当  <code>onload</code> 事件触发时，代表页面上所有的 DOM、样式表、脚本、图片都已加载完成，即整个页面完全加载完成。</p>
+</li>
+<li><p>SI（Speed Index）速度指数：用来衡量页面可见内容填充快慢的指标。该指标涵盖了浏览器何时呈现所有元素，包括不可见的脚本和影响性能的元素；</p>
+</li>
+<li><p>TTI（Time To Interactive）首次可交互时间：可交互状态指的是页面上的 UI 组件是可以交互的（比如可以响应按钮的点击等）。通过 TTI 可以让我们了解我们的页面需要多久可以真正达到“可用”的状态，能够快速可靠响应用户操作所需的时间长短。</p>
+</li>
+<li><p>TTFB（Time To First Byte）接收首字节时间：浏览器从请求页面开始到接收第一字节的时间，这个时间段包括 DNS 查找、TCP 连接和 SSL 连接。</p>
+<p>TTFB 是由三个主要过程组成的：</p>
+<ol>
+<li>浏览器发送 HTTP 请求所花费的时间</li>
+<li>服务器处理该请求所花费的时间</li>
+<li>服务器将响应的第一个字节发送回浏览器所花费的时间</li>
+</ol>
+</li>
+<li><p>TBT（Total Blocking Time）阻塞总时间：TBT 测量页面被阻止响应用户输入（例如鼠标点击、屏幕点击或按下键盘）的总时间。总和是 FCP 和 TTI 之间所有长任务的<em>阻塞部分</em>之和。任何执行时间超过 50 毫秒的任务都是长任务。50 毫秒后的时间量是阻塞部分。例如，如果 Lighthouse 检测到一个 70 毫秒长的任务，则阻塞部分将为 20 毫秒。</p>
+</li>
+<li><p>FSP（First Screen Paint）首屏时间：该指标灵活性较大，表示页面从开始加载到首屏内容全部绘制完成的时间，即用户可以看到首屏的全部内容</p>
+</li>
+</ul>
+</blockquote>
+<h2 id="性能测量工具"><a href="#性能测量工具" class="headerlink" title="性能测量工具"></a>性能测量工具</h2><p><strong>实验室工具</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=8DBlObu5IKLVCa/T/uLtXw==.Mpk0rDRf3mnYKQ9/HoNaqFF7w6GJDSxCwf/9XoTyarnUGltBGQ+vi1Nz4Hgae2FJny/pkyEma5GQmt3XaG2EMoHwJIHEGtvdstnNoaoF8VM9wIYvOB7dhxhJADzsxnSZeWDdoqAD6DgzKfKVQJGKug==">Chrome DevTools</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=HwUf+fUgir80mlHPnk8Feg==.R6iQFHvyTBXP2qIJ2kACHWcfFMGoNKoTaSAtBqMxU2TFQbprYHrYoIvili7Kr80KAwxC3N48w/AaEbrQGq1GEzcW10AuJLxldmM+loMWvxRub7AmoFISpiikWknJZPeQ/FsGPQc4Pltx2k+vJssHww==">Lighthouse</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=Kk7uewuTW1XcUB9VN50faQ==.cGl4p3u0mMCThVGYSVblRh+heZ/oVfIrJBBEVTeBG5hggHi4H+7NyzduJ9i9OTwjCGKf+EKoMLy0ZRLrVHGvBg==">WebPageTest</a></li>
+</ul>
+<p><strong>线上测量工具</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=jp9fcpfCs2iaWjZV3NqwbA==.pwSJD+b9F/G9XCCvDMCbcjcBeIhPZIc/XH7WtDhMzNSppygMpPaZPIkpqw+N6QsW9xciN+5DhoJ231zPLUcgxsQhkupI4u3PB26WmWgbS05wQlehzyUOBg/WZclwKhhGnVKK3yaZz2xtM0v9no5357x19CYAdmorC6GoMKn7pxQ=">Chrome User Experience Report</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=ooamxIP42PIfZlOKbKW4gg==.PVWioBHGcHCccQ0XLqLzvZ8iv79izMGvkKzpHZntNQIzlQVsBlzNx27MkZe5PUPpYqWNKyTZKyygeD24wpPj/RgE0C19qkApf/+u/jTGtRN7UShlpIiB+IEQK6YXf2egWvTqd5t6zhpGIYdvd3FU4g==">PageSpeed Insights</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=yY/qQKEkRIZJT7nlyV3e3w==.S0SqhprFiqgcfz82kDzlKtuhD8aei0lMJPnlX5acZm2UA789vG+KKzKlrfkv3ku9SnfZk7CdqSa24tSuCP8FWcfgD7aRoB0a0HlYsz9kvo3t2zndY75h2nJNIRHVa9ce">Search Console (Core Web Vitals report)</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=ov4SVHhOvJL9r3gk3l3Iyw==.ZkILm2NC9uUY0VnxCWiC5IRRvaMtYNKGBPVFis5+IChp6B2p4wjsCBtneCmHM3n0sl7BdPSSaf3VP5vqm8g5jHpQBmelid2PA3Jd07nxeNFkUfWDBYSGQiDYlAwQcdiR">web-vitals JavaScript library</a></li>
+</ul>
+<p><strong>其他工具</strong></p>
+<p>Google开发的 <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=Ec26FI8dVVeX5pQAJaWbUQ==.D44hFt9hrHRzm0kvMGXtNrv7d6Hi1TKaI+eOt93EX61yl8uIvmxS+IA393xKGnVMYi9PzdnVsZIc5pHJip8YEuw/zLy49vPEGmmdeJIhFBg=">所有工具</a> 都支持Core Web Vitals的测量。工具如下：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=Dga5qzDdl+aptHvPcb+0WQ==.K5rm5CezayNwIjw6wMcdg3riLG54mLKm1KpkVtihb8n+oMRr303Q4UYoKGsLPPkqIv3Ic5aaelE/Y0GuTq39Y0V1/NfB5uD+VjfYBS1AUc0vt6SLWR69p//sSWHf6CxB">Lighthouse</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=SU2D/x7oCWvspDdnRYiISg==.nByAkvHpryemTGOGGhpwT1ZZsPtGrE0aRR79Tsz3yWYFW2ZolUlvZqgPaDnhOWfyTsaXGnEfWsn2dz52U+76FZZ+eD8qUXN8umVTAyuVsQhUMzs+H/cDX3+kjFYVNiav8qRSgxTQZSV4lw8psXBUEQ==">PageSpeed Insights</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=OTrgiTkQQ5zO95vW2FTKRA==.C4o8OdtOp0IdAC6JtJhxT/n6VgQXdK4ZD2HY8j2rj9075hty2h521a05HjpIMfAkph1pcmc/4M+fuqvuMyRhWC3c3zbpqsTc31puLsWm73vRa0JF6B7/Tg1JSA+VqDvqxTU8K8N21IjoTzDRbEh7fg==">Chrome DevTools</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=rxEA7USPJUDBB60Ige0qnA==.Vgz52+rA38eSrI+VMnlIv1PQsBv2LkdMonDEuOEz+FclOu2LGjfm/hVKFTr2N8w1e2yqTGokvxO4LACbyOupFo9Wi7onrq3Qg1/TtvpkzJ+eArLNcQxecfrAGBSUpgfL">Search Console</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=+qTn7DYUKIRWXtqxVmEpVg==.Ge/hCzYT8aTsT5gIp3s3bUgkNGxeYozvM/bFoLW7dK31QV3RRg3BVk88pF+aJ1aK+jujsxKdRt9SuZKH6ljY1zqb0pL8ow8pB7UNJ7dkN8c=">web.dev’s提供的测量工具</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=9on8lUeDxW7RZg+LDfF98w==.UJo5foZ6gMm00jFatqaotEAzoMil611Nd0sQR3M4ff7SrnaKCuiwTSEMJSo9yhaz8wLOwND9WZZ0m3yu21kYr2JoVcdc6JB9LElwDI76QrzoFSQdfJm9XeYgRVTBd3laP00Nw+uISPxXcnih7ICspWp96akGFxFnUHqHsrathwWR5l30ru8LHEoT0EK3tajt">Web Vitals扩展</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=EpAFRizemhNj5uCU1m8nhw==.3P8Jg+nwcWGvrtTVhiv2NkADmLxE2wFCpZtFnBGeyQ9m0HocBF1hcLuUw0Wl38tVHDKYX2YGkmuORocxlPEYcGeRg/mPkmhnatLjh9qE4HxVesjq5E+vSdTiG4Bg6EiIlwR9AWIWDc1CDhPgNE3zu4u/5txg/Ehaf9zaXN7OcEc=">Chrome UX Report</a> API</li>
+</ul>
+<p><strong>1.1Chrome DevTools</strong></p>
+<p>一般关注Network 和 Performance 面板。</p>
+<p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7067332850927796238">浅析 Chrome Devtools 的 Performance 面板</a></li>
+</ul>
+<p><strong>1.2Lighthouse</strong></p>
+<p>Lighthouse 用来生成网页的性能评测报告，该工具是性能评分工具中使用频率较高的，安装<a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/lighthouse/blipmdconlkpinefehnmjammfjpmpbjk">Lighthouse</a>插件，生成报告查看各指标评分。</p>
+<p>建议在无痕浏览器下进行测试，排除其它干扰因素测量出来较为准确。</p>
+<p><strong>1.3WebPageTest</strong><br>WebPageTest 用来进行整体的网站质量评估、一站式性能评估。</p>
+<p>使用步骤：</p>
+<ol>
+<li>输入要测试的网页网址</li>
+<li>选择高级配置</li>
+<li>选择地理位置，从接近你位置最近的测试机器进行测试，并选择 Chrome 浏览器</li>
+<li>点击 Start Test</li>
+</ol>
+<p><strong>2.1web-vitals</strong></p>
+<p>上述是通过工具来测量的，假设我们想在 JS 代码中来获取，最简单的方式就是使用集成 <a target="_blank" rel="noopener" href="https://github.com/GoogleChrome/web-vitals">Web Vitals</a> 的 JS 库，该项目是由 Chrome 发起的，可获取 CLS、FID、FCP、LCP、TTFB 指标。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import &#123; getCLS, getFID, getLCP &#125; from &#x27;web-vitals&#x27;</span><br><span class="line"></span><br><span class="line">getCLS(console.log)</span><br><span class="line">getFID(console.log)</span><br><span class="line">getLCP(console.log)</span><br></pre></td></tr></table></figure>
+
+<p>此话，还有对应的 Chrome 扩展工具：<a target="_blank" rel="noopener" href="https://github.com/GoogleChrome/web-vitals-extension">web-vitals-extension</a></p>
+<p><strong>工具实战</strong></p>
+<blockquote>
+<ul>
+<li>首先我们可以使用Lighthouse，在本地进行测量，根据报告给出的一些建议进行优化；</li>
+<li>发布之后，我们可以使用PageSpeed Insights去看下线上的性能情况；</li>
+<li>接着，我们可以使用Chrome User Experience Report API去捞取线上过去28天的数据；</li>
+<li>发现数据有异常，我们可以使用DevTools工具进行具体代码定位分析；</li>
+<li>使用Search Console’s Core Web Vitals report查看网站功能整体情况；</li>
+<li>使用Web Vitals扩展方便的看页面核心指标情况；</li>
+</ul>
+</blockquote>
+<h1 id="性能优化-webpack"><a href="#性能优化-webpack" class="headerlink" title="性能优化_webpack"></a>性能优化_webpack</h1><h2 id="webpack-loader机制"><a href="#webpack-loader机制" class="headerlink" title="webpack-loader机制"></a>webpack-loader机制</h2><p>同步和异步loader：</p>
+<p>1.同步Loader通过return或者this.callback来返回结果，交给下一个Loader来处理（后者可以传递更多参数）。</p>
+<p>2.异步Loader，使用this.async来获取callback函数，等后端操作完成后，再调用callback函数</p>
+<p><strong>常见Loader</strong></p>
+<blockquote>
+<p>file-loader：将打包过程中遇到的文件，复制到对应输出目录，并返回文件的路径<br>url-loader：将打包过程中用到的文件转换为 base64 格式字符串<br>raw-loader：提取文件的内容，转换为字符串形式进行返回<br>style-loader：将 css 代码注入到 js 中，运行时，通过创建 style 标签，将样式插入到 head 中<br>postcss-loader：将 css 代码转换为兼容性更好的 css 代码<br>Html-loader、babel-loader、ts-loader、vue-loader……</p>
+</blockquote>
+<h2 id="webpack-plugin机制"><a href="#webpack-plugin机制" class="headerlink" title="webpack-plugin机制"></a>webpack-plugin机制</h2><p><strong>1.原理</strong></p>
+<p>plugin<code>是一个扩展器，它丰富了 webpack 本身，针对是</code>loader` 结束后，webpack 打包的整个过程，它并不直接操作文件，而是基于事件机制工作，会监听webpack 打包过程中的某些节点，执行广泛的任务。</p>
+<p><strong>2.Plugin 的作用</strong>：</p>
+<ul>
+<li>能够 hook 到在每个编译(compilation)中触发的所有关键事件。</li>
+<li>在插件实例的 apply 方法中，可以通过 compiler.options 获取 Webpack 配置，并进行修改。</li>
+</ul>
+<p>插件的应用场景：</p>
+<blockquote>
+<p><strong>性能优化：</strong> 包括对资源（如 JavaScript、CSS、图片）的压缩、代码分离以及资源的按需加载，旨在减少体积和提升加载速度。</p>
+<p><strong>开发和构建体验</strong>： 提供开发时的便利功能，如热模块替换（HMR）、友好的错误提示、定义全局变量，以及自动化生成和管理构建输出文件。</p>
+<p><strong>多页面和自动化支持：</strong> 处理多页面应用的构建需求，以及集成自动化任务和持续集成流程，如测试、部署、生成 Service Worker 等。</p>
+<p><strong>兼容性和安全性：</strong> 确保代码能够兼容不同的浏览器和环境，同时增强应用的安全性，通过编译、添加前缀和生成安全策略。</p>
+</blockquote>
+<p>Plugin与Loader的区别:</p>
+<blockquote>
+<p>loader 用于对模块的源代码进行转换，如将 ES6 转换为 ES5 或将 SCSS 转换为 CSS</p>
+<p>plugin用于自定义功能扩展，使用plugin丰富的自定义API及生命周期事件，控制webpack编译流程的每个环节</p>
+</blockquote>
+<p><strong>3.常用的Webpack Plugin</strong></p>
+<blockquote>
+<p>HtmlWebpackPlugin： 可以根据模板自动生成 HTML 文件，并将打包好的资源自动注入到该文件中。<br>CleanWebpackPlugin： 用于在每次构建之前自动清理输出目录，确保输出目录中没有旧的或不再需要的文件。<br>MiniCssExtractPlugin： 用于将 CSS 从 JavaScript 文件中分离出来，生成单独的 CSS 文件。</p>
+</blockquote>
+<p><strong>4.插件中重要的两个对象compiler 和 compilation</strong></p>
+<p>compiler是Webpack的主要控制对象，它在构建过程的起始阶段被创建，并负责整个构建过程的管理</p>
+<blockquote>
+<p>初始化构建: compiler 读取和解析 Webpack 配置文件，设置插件和加载器，并准备开始构建。<br>管理生命周期: 从构建的启动到完成，compiler 负责协调所有的构建步骤。<br>全局协调: compiler 包含了所有的构建钩子（hooks），允许插件在构建的各个阶段插入自定义逻辑。</p>
+</blockquote>
+<p>compilation是Webpack每次构建过程中的具体实例</p>
+<blockquote>
+<p>模块处理: 在 compilation 中，Webpack 解析和处理所有模块，生成依赖图，并执行模块的加载和转换。<br>生成和优化: compilation 负责优化代码，生成最终的输出文件，如 JavaScript 和 CSS。<br>局部处理: 每次构建会创建一个新的 compilation 实例，compilation 处理特定构建过程中的所有细节。</p>
+</blockquote>
+<p><strong>5.Webpack生命周期钩子</strong></p>
+<blockquote>
+<p>run：与构建启动相关的钩子，控制Webpack的启动和初始化。<br>compile：与编译相关的钩子，控制Compilation对象的创建和准备。<br>optimize：与优化相关的钩子，控制代码的优化过程。<br>seal：与封装相关的钩子，控制模块解析完成后到生成输出文件之前的步骤。<br>emit：与文件生成和输出相关的钩子，控制资源的生成和写入文件系统。<br>done：与构建结束相关的钩子，控制构建完成后的操作。</p>
+</blockquote>
+<h1 id="构建工具"><a href="#构建工具" class="headerlink" title="构建工具"></a>构建工具</h1><h2 id="过去：前端构建工具简史"><a href="#过去：前端构建工具简史" class="headerlink" title="过去：前端构建工具简史"></a>过去：前端构建工具简史</h2><p><strong>为什么需要前端构建工具？</strong></p>
+<blockquote>
+<p>•<strong>性能优化：</strong>通过减少HTTP请求数量和优化文件大小（如tree-shaking）来减少加载时间。</p>
+<p>•<strong>兼容性：</strong>确保用现代 JavaScript 或其他语言编写的代码与所有浏览器兼容。</p>
+<p>•<strong>开发效率：</strong>提供 HMR 和资产管理等功能，简化开发工作流程。</p>
+</blockquote>
+<p><strong>~2009</strong> <strong>无模块化时期</strong></p>
+<blockquote>
+<p>•早期的Web开发比较简单，甚至由后端人员编写（JSP）</p>
+<p>•2009 年，Node.js 发布初始版本，CommonJS 模块定义规范被提出</p>
+<p>•2010 年，npm包管理发布</p>
+</blockquote>
+<p><strong>2011~2015</strong> <strong>社区模块化</strong></p>
+<blockquote>
+<p>•为了解决浏览器端JS异步模块化问题，出现了AMD/CMD规范</p>
+<p>•Browserify：实现浏览器中使用CommonJS模块</p>
+<p>•Grunt：将处理过程定义为多个不同的任务，每个任务执行一个函数或插件</p>
+<p>•Gulp：引入代码和文件流的概念</p>
+<p>•Webpack：模块依赖间关系</p>
+</blockquote>
+<p><strong>2016~2019</strong> <strong>打包一切</strong></p>
+<blockquote>
+<p>•Webpack：一切皆可打包，支持AMD\CommonJS\ESM、css/less/sass/stylus、babel、TypeScript、JSX、Angular、Vue</p>
+<p>•Rollup：基于ES Module 主打工具库的打包，率先提出Tree-Shaking的概念</p>
+</blockquote>
+<p><strong>2020~</strong> <strong>性能优化</strong></p>
+<blockquote>
+<p>•Webpack5：多进程编译、缓存机制</p>
+<p>•Vite：开发态Bundleless、ESM</p>
+<p>•esbuild：go语言实现</p>
+<p>•SWC: rust语言实现</p>
+</blockquote>
+<h2 id="现在：主流构建工具对比"><a href="#现在：主流构建工具对比" class="headerlink" title="现在：主流构建工具对比"></a>现在：主流构建工具对比</h2><table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Webpack</strong></th>
+<th><strong>Rollup</strong></th>
+<th><strong>Vite</strong></th>
+<th><strong>Esbuild</strong></th>
+<th><strong>Turbopack</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>使用场景</strong></td>
+<td>应用构建</td>
+<td>库构建</td>
+<td>应用构建</td>
+<td>代码转译</td>
+<td>应用构建</td>
+</tr>
+<tr>
+<td><strong>优点</strong></td>
+<td>•功能全面  •生态丰富  •高度可配置</td>
+<td>•输出产物精简  •优先ESM标准</td>
+<td>•配置简单  •启动服务快</td>
+<td>•速度快</td>
+<td>•速度快  •兼容webpack</td>
+</tr>
+<tr>
+<td><strong>缺点</strong></td>
+<td>•配置复杂  •输出产物复杂  •构建速度慢</td>
+<td>•CJS兼容依赖插件  •有限的HMR支持</td>
+<td>/</td>
+<td>•成熟度不够，一直没发1.0版  •code splitting开发中  •HMR不支持</td>
+<td>•主要支持Next.js  •Beta状态</td>
+</tr>
+</tbody></table>
+<p>•新项目建议优先使用Vite</p>
+<p>•已有的Webpack项目，可利用swc替换babel提升构建性能</p>
+<p>•新兴构建工具可以尝鲜,如等待rolldown</p>
+<h2 id="未来：前端构建的未来趋势"><a href="#未来：前端构建的未来趋势" class="headerlink" title="未来：前端构建的未来趋势"></a>未来：前端构建的未来趋势</h2><p><strong>Rust</strong>语言是前端基建的未来。</p>
+<p>JavaScript与Rust比较：</p>
+<table>
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>Rust</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>编译器宽松<br/>入门快，体验好<br/>性能一般</td>
+<td>编译器严格<br/>学习曲线陡峭<br/>性能高</td>
+</tr>
+<tr>
+<td>偏应用</td>
+<td>偏系统</td>
+</tr>
+</tbody></table>
+<h1 id="E-左神"><a href="#E-左神" class="headerlink" title="E_左神"></a>E_左神</h1><h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><p><strong>十大排序算法思想</strong></p>
+<blockquote>
+<p>冒泡排序：两个相邻元素比较，如果顺序相反则交换位置。</p>
+<p>插入排序：假设前面的数字都已经排好序，再向有序数组中插入一个元素，使得插入后的数组有序。</p>
+<p>选择排序：选择未排序数组中最大或者最小的数组放在前面。</p>
+<p>希尔排序：按照增量不同，进行多次插入排序。</p>
+<p>归并排序：将两个有序的数组合并成一个有序的数组，运用分治算法的思想解决排序问题。</p>
+<p>堆排序：将数组看成一个堆，运用堆的性质完成排序。</p>
+<p>快速排序：每次选择数组内第一个数，将大于、小于它的数分别放到它的左边、右边。</p>
+<p>计数排序：用哈希表记录数字出现的次数，再按顺序输出。</p>
+<p>基数排序：从低位到高位利用计数排序的思想进行排序。</p>
+<p>桶排序：用若干个区间为一定范围的桶，将数放入对于桶内，当所有桶的数字不大于一个时停止。</p>
+</blockquote>
+<h1 id="低代码微前端"><a href="#低代码微前端" class="headerlink" title="低代码微前端"></a>低代码微前端</h1><h2 id="低代码"><a href="#低代码" class="headerlink" title="低代码"></a>低代码</h2><p><strong>参考</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7088121411981541390">解放双手！推荐一款阿里开源的低代码工具，YYDS！</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7164694758588153863">推荐20个开源的前端低代码项目</a></li>
+</ul>
+<h2 id="微前端"><a href="#微前端" class="headerlink" title="微前端"></a>微前端</h2><blockquote>
+<p>1.微前端的3种应用场景：巨石应用拆分、跨技术栈聚合、兼容遗留系统；</p>
+<p>2.微前端的6种典型实现方式：路由分发式、前端容器化、微应用化、应用组件化、前端服务化和微件化；</p>
+<p>3.微前端的2个关键技术：运行时集成和应用隔离；</p>
+</blockquote>
+<p><strong>1.简介</strong></p>
+<p>微前端是一种类似于微服务的架构，微前端特点：<strong>独立开发，独立部署，独立运行</strong></p>
+<p>1.1微前端适用范围</p>
+<ul>
+<li>兼容遗留系统，比如适用iframe兼容</li>
+<li>拆分巨石应用，按照业务拆分，如支付宝</li>
+<li>聚合小应用，比如目前业界常用的是npm库，趋势是模块联邦</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th><strong>微前端模式</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IFrame</td>
+<td>优点：原生支持、简单易用，天然沙箱；  缺点：类似MPA，白屏场景多、跨域问题；</td>
+</tr>
+<tr>
+<td>三方微前端框架</td>
+<td>蚂蚁  Qiankun、腾讯Wujie、京东MicroApp、字节Garfish等等  优点：支持当前主流的前端框架、都提供了一定的沙箱能力  缺点：依赖三方框架，不定期处理开源和升级问题；需要根据前端框架进行不同程度的改造适配</td>
+</tr>
+<tr>
+<td>模块联邦</td>
+<td>基于ContainerPlugin、ContainerReferencePlugin和SharePlugin的Webpack5(Vite)能力，支持模块共享、独立构建、集中运行  优点：原生打包支持、模块共享，减少加载文件体积、接近本地应用、去中心化  缺点：没有提供沙箱能力（如果有沙箱的话就没法模块共享了）</td>
+</tr>
+<tr>
+<td>WebComponents</td>
+<td>原生技术，主流浏览器都已经支持，仅仅是运行时技术，没有提供打包技术，需要和其他技术（npm、模块联邦、wujie等）结合使用。可以构建独立运行环境，但不具备js沙箱能力</td>
+</tr>
+</tbody></table>
+<p><strong>2.微前端架构演进</strong></p>
+<p>2.1微前端的典型实现方式</p>
+<ul>
+<li>路由分发式和前端容器化</li>
+<li>微应用化和应用组件化</li>
+<li>前端微服务化和微件化</li>
+</ul>
+<p><strong>路由分发式和前端容器化</strong></p>
+<blockquote>
+<p><strong>路由分发式</strong>：统一域名，依托反向代理，通过路由将不同的业务分发到不同的独立前端应用上。</p>
+<p><strong>优点</strong>：框架无关，独立开发部署和运行，应用隔离完全</p>
+<p><strong>缺点</strong>：技术栈混乱，无法共享复用，还是烟囱</p>
+<hr>
+<p><strong>前端容器化</strong>，采用iFrame技术，将另一个应用/页面嵌入到当前页面中，相互隔离，又可以保持通信</p>
+<p><strong>优点</strong>：简单实用，技术无关，不同应用页面可以聚合</p>
+<p><strong>缺点</strong>：性能和体验一致性都不好</p>
+</blockquote>
+<p><strong>微应用化和应用组件化</strong></p>
+<blockquote>
+<p><strong>微应用化</strong>：npm包模式，把应用拆解为单一、微小组件的形式，通过构建系统合并，组合成一个新的前端应用。</p>
+<p><strong>优点</strong>：工程化，组合式集成，成熟的包管理机制</p>
+<p><strong>缺点</strong>：组件包的变更，需要重新编译构建</p>
+<hr>
+<p><strong>应用组件化</strong>：采用 Web Components 技术，开发者创建可重用的定制元素，在Web应用中直接使用。</p>
+<p><strong>优点</strong>：未来的Web标准，不依赖前端框架</p>
+<p><strong>缺点</strong>：还不成熟，依赖特定浏览器。截至目前 IE 和 Safari 对 Web Components 的支持都不够好。</p>
+</blockquote>
+<p><strong>前端微服务化和微件化</strong></p>
+<blockquote>
+<p><strong>前端微服务化</strong>：微服务架构在前端的实施，完全独立（技术栈、开发、部署、构建独立），自主运行，最后通过模块化的方式组合出完整的前端应用。</p>
+<p><strong>优点</strong>：不需要使用IFrame了</p>
+<p><strong>缺点</strong>：现有的微前端框架（ Single-SPA/Mooa/Qiankun ）尚不支持多应用同时运行</p>
+<hr>
+<p><strong>微件(Widget)化</strong>：参照服务化思路，把完整页面拆解为一个个具有独立业务意义的微件（卡片），并根据不同的用户场景组合出新的页面。</p>
+<p><strong>优点</strong>：只包含业务代码，体积小，加载快，用户体验好</p>
+<p><strong>缺点</strong>：依赖共享，框架强相关，需要有统一的标准规范</p>
+</blockquote>
+<p>2.2微前端的关键技术</p>
+<ul>
+<li>模块加载——JS Entry与HTML Entry方式</li>
+<li>应用隔离</li>
+</ul>
+<p><strong>模块加载——JS Entry与HTML Entry方式</strong></p>
+<blockquote>
+<p><strong>JS Entry</strong>：子应用将资源打成一个 entry script，并将生命周期函数暴露给主应用，主应用检测路由命中子应用的规则之后就会触发其渲染函数，把子应用挂载到相应的DOM下。</p>
+<p><strong>HTML Entry</strong>：主应用直接将子应用打出来 HTML 作为入口，然后通过 fetch html 的方式获取子应用的静态资源，同时将 HTML document 作为子节点塞到主应用的容器中。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th><strong>App  Entry</strong></th>
+<th><strong>优点</strong></th>
+<th><strong>缺点</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>JS  Entry</td>
+<td>主子应用使用同一个bundle，可以方便做构建时优化</td>
+<td>1.子应用发布时需要主应用重新打包  2.主应用需要为每个子应用预留一个容器节点，且该节点id需与子应用的容器id保持一致  3.子应用各类资源需要一起打包成一个bundle，资源加载效率较低</td>
+</tr>
+<tr>
+<td>HTML  Entry</td>
+<td>1.子应用开发、发布完全独立  2.子应用具备与独立应用开发一致的开发体验</td>
+<td>1.多一次请求，子应用资源解析消耗转移到运行时  2.主子应用不处于同一构建环境</td>
+</tr>
+</tbody></table>
+<p><strong>应用隔离</strong></p>
+<blockquote>
+<p><strong>CSS隔离</strong>：利用Shadow DOM,让一个DOM拥有自己的“影子”DOM树，这个DOM树不能在主文档中被任意访问，可以拥有局部样式规则，天然实现了样式隔离。</p>
+<p><strong>JS隔离</strong>：利用ES6的Proxy语法，把window对象代理到fakeWindow上，子应用操作的是fakeWindow，从而避免对全局window对象的污染。</p>
+</blockquote>
+<p>2.3业界主流微前端框架</p>
+<ul>
+<li>2015.10的single-spa</li>
+<li>2019.6的qiankun和ICESTARK飞冰</li>
+<li>2019.11的piral</li>
+<li>2020.10的EMP</li>
+<li>2021.7的Micro App</li>
+<li>2021.9的字节Grafish</li>
+<li>2022.10的华为AthenA</li>
+</ul>
+<p><strong>single-spa</strong></p>
+<blockquote>
+<p>Single-spa 是一个将多个单页面应用聚合为一个整体应用的 JavaScript 微前端框架。 核心(注册子应用+路由管理+应用加载器)</p>
+<p>使用 single-spa 进行前端架构设计可以带来很多好处，例如:</p>
+<p>•在同一页面上<a target="_blank" rel="noopener" href="https://zh-hans.single-spa.js.org/docs/ecosystem">使用多个前端框架</a> <a target="_blank" rel="noopener" href="https://zh-hans.single-spa.js.org/docs/building-applications">而不用刷新页面</a> (<a target="_blank" rel="noopener" href="https://zh-hans.single-spa.js.org/docs/ecosystem-react">React</a>, <a target="_blank" rel="noopener" href="https://zh-hans.single-spa.js.org/docs/ecosystem-angularjs">AngularJS</a>, <a target="_blank" rel="noopener" href="https://zh-hans.single-spa.js.org/docs/ecosystem-angular">Angular</a>, <a target="_blank" rel="noopener" href="https://zh-hans.single-spa.js.org/docs/ecosystem-ember">Ember</a>, 你正在使用的框架)</p>
+<p>•独立部署每一个单页面应用</p>
+<p>•新功能使用新框架，旧的单页应用不用重写可以共存</p>
+<p>•改善初始加载时间，延迟加载代码</p>
+</blockquote>
+<p><strong>qiankun</strong></p>
+<blockquote>
+<p>•<strong>基于</strong> <strong><a target="_blank" rel="noopener" href="https://github.com/CanopyTax/single-spa">single-spa</a></strong> 封装，提供了更加开箱即用的 API。</p>
+<p>•<strong>技术栈无关</strong>，任意技术栈的应用均可 使用/接入，不论是 React/Vue/Angular/JQuery 还是其他等框架。</p>
+<p>•<strong>HTML</strong> <strong>Entry</strong> <strong>接入方式</strong>，让你接入微应用像使用 iframe 一样简单。</p>
+<p>•<strong>样式隔离</strong>，确保微应用之间样式互相不干扰。</p>
+<p>•<strong>JS</strong> <strong>沙箱</strong>，确保微应用之间 全局变量/事件 不冲突。</p>
+<p>•<strong>资源预加载</strong>，在浏览器空闲时间预加载未打开的微应用资源，加速微应用打开速度。</p>
+<p>•<strong>umi</strong> <strong>插件</strong>，提供了 <a target="_blank" rel="noopener" href="https://github.com/umijs/plugins/tree/master/packages/plugin-qiankun">@</a><a target="_blank" rel="noopener" href="https://github.com/umijs/plugins/tree/master/packages/plugin-qiankun">umijs</a><a target="_blank" rel="noopener" href="https://github.com/umijs/plugins/tree/master/packages/plugin-qiankun">/plugin-</a><a target="_blank" rel="noopener" href="https://github.com/umijs/plugins/tree/master/packages/plugin-qiankun">qiankun</a> 供 umi 应用一键切换成微前端架构系统</p>
+</blockquote>
+<p><strong>icestark</strong></p>
+<blockquote>
+<p>• <strong>开箱即用</strong>：TypeScript/Webpack5/CSS Modules/Mock/SSR，各种方案 All in One</p>
+<p>•<strong>贴合业务的最佳实践</strong>：目录规范、代码规范、路由方案、状态管理、数据请求等</p>
+<p>•<strong>多种应用模式</strong>：支持服务端渲染 SSR 以及静态构建 SSG</p>
+<p>•<strong>强大的插件能力</strong>：官方所有能力都通过插件实现，业务可以通过插件扩展各种能力</p>
+<p>•<strong>丰富的领域方案</strong>：微前端 ICESTARK、一体化方案等</p>
+</blockquote>
+<p><strong>piral</strong></p>
+<blockquote>
+<p>高度模块化</p>
+<p>多框架兼容</p>
+<p>支持资源文件的拆分</p>
+<p>全局状态管理</p>
+<p>独立开发和部署</p>
+<p>CLI工具</p>
+</blockquote>
+<p><strong>micro-app</strong></p>
+<blockquote>
+<p>•类 WebComponent + HTML Entry</p>
+<p>•生命周期</p>
+<p>•资源地址补全</p>
+<p>•JS 沙箱、样式隔离、元素隔离</p>
+<p>•数据通信</p>
+<p>•预加载</p>
+<p>•插件系统</p>
+</blockquote>
+<p><strong>emp</strong></p>
+<blockquote>
+<p>•基于Webpack5模块联邦实现</p>
+<p>•每个微应用独立部署运行，</p>
+<p>•动态更新微应用：</p>
+<p>•去中心化，</p>
+<p>•跨技术栈组件式调用，</p>
+<p>•按需加载，</p>
+<p>•应用间通信，</p>
+<p>•生成对应技术栈模板，</p>
+<p>•远程拉取ts声明文件</p>
+</blockquote>
+<p><strong>garfish</strong></p>
+<blockquote>
+<p>•加载器（Loader）</p>
+<ul>
+<li>HTML 入口类型，拆解 HTML Dom、Script、Style</li>
+<li>JS 入口类型，提供基础 Dom 容器</li>
+<li>负责注册平台侧提供的应用列表</li>
+<li>负责加载和解析子应用入口资源</li>
+<li>预加载能力</li>
+<li>解析子应用导出内容</li>
+</ul>
+<p>•沙箱隔离（Sandbox）</p>
+<ul>
+<li>提供代码执行能力，收集执行代码时存在的副作用</li>
+<li>提供销毁收集副作用的能力</li>
+<li>支持沙箱多实例，收集不同实例的副作用</li>
+</ul>
+<p>•路由托管（Router）</p>
+<ul>
+<li>解决不同应用间的路由不同步问题</li>
+<li>提供路由劫持能力，在主应用上管控子应用路由</li>
+<li>提供路由驱动能力来拼装完整的平台的能力</li>
+</ul>
+<p>•子应用通信（Store）</p>
+<ul>
+<li>建立通信桥梁</li>
+<li>提供共享机制</li>
+</ul>
+</blockquote>
+<p><strong>Athena</strong></p>
+<blockquote>
+<p>1.<strong>远程加载</strong>：支持远程按需加载基于HTML Entry+ESM技术规范的微模块；</p>
+<p>2.<strong>一模多态</strong>：支持动态配置微模块渲染方式：组件方式、页面方式和应用方式；</p>
+<p>3.<strong>依赖共享</strong>：支持三方件和公共服务依赖共享；</p>
+<p>4.<strong>快速接入</strong>：业务仅需在模块外层非侵入式的做轻量级的包装即可接入微前端框架</p>
+</blockquote>
+<p><strong>3.业界主流微前端技术方案对比</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>技术方案</strong></th>
+<th><strong>开发成本</strong></th>
+<th><strong>维护成本</strong></th>
+<th><strong>可行性</strong></th>
+<th><strong>技术栈无关</strong></th>
+<th><strong>实现难度</strong></th>
+<th><strong>潜在风险</strong></th>
+<th><strong>落地实践</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路由分发</td>
+<td>低</td>
+<td>低</td>
+<td>高</td>
+<td>是</td>
+<td>easy</td>
+<td>无</td>
+<td>http服务器反向代理，如nginx配置location</td>
+</tr>
+<tr>
+<td>iframe</td>
+<td>低</td>
+<td>低</td>
+<td>高</td>
+<td>是</td>
+<td>easy</td>
+<td>seo不友好、cookie管理、通信机制、弹窗问题、刷新后退、安全问题</td>
+<td>SEP、GDE</td>
+</tr>
+<tr>
+<td>应用微服务</td>
+<td>高</td>
+<td>低</td>
+<td>中</td>
+<td>是</td>
+<td>hard</td>
+<td>共享及隔离粒度不统一</td>
+<td>qiankun、icestark及类single-spa应用</td>
+</tr>
+<tr>
+<td>微件化</td>
+<td>高</td>
+<td>中</td>
+<td>低</td>
+<td>否</td>
+<td>hard</td>
+<td>实现微件管理机制</td>
+<td>icestark</td>
+</tr>
+<tr>
+<td>微应用化</td>
+<td>中</td>
+<td>中</td>
+<td>高</td>
+<td>否</td>
+<td>normal</td>
+<td>多个项目组合，需要考虑各个部署升级情况</td>
+<td>EMP</td>
+</tr>
+<tr>
+<td>Web  Components</td>
+<td>高</td>
+<td>低</td>
+<td>高</td>
+<td>是</td>
+<td>normal</td>
+<td>新api，浏览器兼容性</td>
+<td>Micro-app</td>
+</tr>
+</tbody></table>
+<p>微前端技术选型建议</p>
+<blockquote>
+<p>Ø<strong>遗留系统需要聚合、涉及多技术栈场景</strong></p>
+<p>1.如果系统之间相对独立，无耦合，建议采用<strong>iframe</strong>集成方式，技术简单，成本最低；</p>
+<p>2.如果系统之间有交互，并且体验要求较高，建议选用较为成熟的应用微服务框架-<strong>qiankun</strong>；</p>
+<p>Ø<strong>单一SPA巨石应用，需要拆解场景</strong></p>
+<p>1.如果拆解的子应用需要能够独立运行，应用之间需要隔离，建议选用<strong>qiankun</strong>或者<strong>icestark</strong>；</p>
+<p>2.如果子应用不考虑独立运行，而更关注更灵活、更细粒度的组装，建议选用<strong>Micro-app</strong>或者<strong>Athena</strong>；</p>
+<p>Ø<strong>多个SPA应用，烟囱效应明显，需要提取公共底座场景</strong></p>
+<p>1.如果需要依赖共享，且在构建时聚合，建议选用<strong>EMP</strong>，能够解决多个应用之间的代码共享问题；</p>
+<p>2.如果需要依赖共享且技术栈统一，但需要运行时按需聚合，建议选用<strong>Athena</strong>。</p>
+</blockquote>
+<h1 id="职业规划"><a href="#职业规划" class="headerlink" title="职业规划"></a>职业规划</h1><h2 id="2023年"><a href="#2023年" class="headerlink" title="2023年"></a>2023年</h2><p><strong>参考</strong></p>
+<ul>
+<li>撒大声地</li>
+</ul>
+<blockquote>
+<p>区块链技术<br>渐进式网络应用程序 (PWA)<br>物联网 (IoT)<br>加速移动页面 (AMP)<br>语音搜索优化<br>API优先开发<br>人工智能驱动的聊天机器人<br>通知推送<br>通过机器学习实现内容个性化<br>Motion UI<br>数据安全<br>多重体验<br>网络安全<br>微前端<br>虚拟现实<br>无服务器架构（serverless）<br>云计算<br>单页应用程序 (SPA)<br>JavaScript 框架<br>自动化测试<br>响应式网站<br>深色模式<br>WebAssembly<br>无代码/低代码开发<br>增强现实<br>移动友好的 Web 开发<br>核心网络生命力<br>WordPress开发</p>
+</blockquote>
+<h2 id="2024年"><a href="#2024年" class="headerlink" title="2024年"></a>2024年</h2><p><strong>参考</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7194710741427945527#heading-0">登高望远，一文解答 2023 年你最关心的前端热点问题</a></li>
+<li><a href="">2024 最新 Web 前端开发系统学习图文教程</a></li>
+</ul>
+<p><strong>一、PWA技术的全面普及</strong></p>
+<p>PWA（Progressive Web Apps）即渐进式Web应用，是一种旨在提供接近原生应用体验的前端技术。预计在2024年，随着网络环境的不断优化和用户体验的日益重视，PWA技术将得到更广泛的应用。通过利用Service Workers、Manifest文件等关键技术，PWA能够为用户提供更快的加载速度、更流畅的操作体验以及更好的离线访问能力。</p>
+<p><strong>二、WebAssembly的崛起</strong></p>
+<p>WebAssembly是一种为浏览器设计的二进制指令格式，它可以让开发者在Web上运行高性能代码。2024年，随着WebAssembly技术的不断成熟和更多浏览器的支持，越来越多的复杂应用将采用这一技术来提升性能和响应速度。无论是游戏、3D渲染还是数据分析，WebAssembly都将成为前端领域的重要力量。</p>
+<p><strong>三、AI与前端的深度融合</strong></p>
+<p>人工智能技术在前端的应用将越来越广泛。从智能推荐、语音交互到自动化测试，AI正以前所未有的速度改变着前端开发的面貌。2024年，我们可以期待更多的前端项目将融入AI技术，提升用户体验和开发效率。</p>
+<p><strong>四、组件化和微前端架构的盛行</strong></p>
+<p>随着前端项目的复杂度和规模的增加，组件化和微前端架构成为提高团队协作和可维护性的重要手段。2024年，这些架构将更受青睐，它们能够帮助团队更好地拆分和管理功能，提高代码的复用性和可维护性。</p>
+<p><strong>五、响应式设计与无障碍性的重要性</strong></p>
+<p>随着移动设备的普及和多样化，响应式设计已成为前端开发的基本要求。而在2024年，无障碍性设计也将受到更多关注。开发者需要确保网站和应用能够方便地被所有人使用，无论他们是否有特殊需求或使用不同的设备。</p>
+<p>综上所述，2024年的前端技术趋势将充满挑战与机遇。作为前端开发者，我们需要不断学习和掌握新技术，紧跟时代步伐，为用户创造更好的体验和价值。</p>
+<h1 id="el-table插槽-递归"><a href="#el-table插槽-递归" class="headerlink" title="el-table插槽+递归"></a>el-table插槽+递归</h1><p>父组件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;el-table</span><br><span class="line">&lt;TableCol v-for=&quot;(tTitle, tIndex) in showColumns&quot;</span><br><span class="line">          :key=&quot;tIndex + tTitle.colId + isUpdate&quot;</span><br><span class="line">          v-bind=&quot;&#123; tTitle, ...colProps() &#125;&quot;</span><br><span class="line">&gt;&lt;/TableCol&gt;</span><br><span class="line">&lt;/el-table&gt;</span><br></pre></td></tr></table></figure>
+
+<p>子组件-TableCol</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;el-table-column :prop=&quot;tTitle.colId&quot; :label=&quot;tTitle[colNameCnEn]&quot;&gt;</span><br><span class="line">    &lt;!--一级表头--&gt;</span><br><span class="line">    &lt;template #header=&quot;&#123; row, column, $index &#125;&quot;&gt;</span><br><span class="line">      &lt;div&gt;表头&lt;/div&gt;</span><br><span class="line">    &lt;/template&gt;</span><br><span class="line">    &lt;template v-if=&quot;!tTitle.isDirector&quot; #default=&quot;&#123; row, column, $index &#125;&quot;&gt;</span><br><span class="line">      &lt;div&gt;表内容&lt;/div&gt;</span><br><span class="line">    &lt;/template&gt;</span><br><span class="line">     &lt;!--表头递归--&gt;</span><br><span class="line">    &lt;TableCol v-for=&quot;(tTitleChild, tIndexChild) in tTitle.children&quot; :key=&quot;tIndexChild + tTitleChild.colId&quot; v-bind=&quot;&#123; ...props, tTitle: tTitleChild &#125;&quot;&gt;&lt;/TableCol&gt;</span><br><span class="line">  &lt;/el-table-column&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script setup name=&quot;TableCol&quot;&gt;</span><br><span class="line">const props = defineProps([</span><br><span class="line">  &#x27;tTitle&#x27;</span><br><span class="line">]);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Vue2-0-入门"><a href="#Vue2-0-入门" class="headerlink" title="Vue2.0_入门"></a>Vue2.0_入门</h1><h2 id="修饰符与指令"><a href="#修饰符与指令" class="headerlink" title="修饰符与指令"></a>修饰符与指令</h2><p>在 <em>vue</em> 中修饰符可以分为 <em>3</em> 类：</p>
+<ul>
+<li>事件修饰符</li>
+<li>按键修饰符</li>
+<li>表单修饰符</li>
+</ul>
+<p>事件修饰符</p>
+<blockquote>
+<ul>
+<li><em>.stop</em>：阻止冒泡。</li>
+<li><em>.prevent</em>：阻止默认事件。</li>
+<li><em>.capture</em>：使用事件捕获模式。</li>
+<li><em>.self</em>：只在当前元素本身触发。</li>
+<li><em>.once</em>：只触发一次。</li>
+<li><em>.passive</em>：默认行为将会立即触发。</li>
+</ul>
+</blockquote>
+<p>按键修饰符</p>
+<blockquote>
+<ul>
+<li>.<em>left</em>：左键</li>
+<li>.<em>right</em>：右键</li>
+<li>.<em>middle</em>：滚轮</li>
+<li>.<em>enter</em>：回车</li>
+<li>.<em>tab</em>：制表键</li>
+<li>.<em>delete</em>：捕获 “删除” 和 “退格” 键</li>
+<li>.<em>esc</em>：返回</li>
+<li>.<em>space</em>：空格</li>
+</ul>
+</blockquote>
+<p>表单修饰符</p>
+<blockquote>
+<ul>
+<li>.<em>lazy</em>：在文本框失去焦点时才会渲染</li>
+<li>.<em>number</em>：将文本框中所输入的内容转换为number类型</li>
+<li>.<em>trim</em>：可以自动过滤输入首尾的空格</li>
+</ul>
+</blockquote>
+<h1 id="Vue2-0-原理"><a href="#Vue2-0-原理" class="headerlink" title="Vue2.0_原理"></a>Vue2.0_原理</h1><h2 id="Vue模板编译流程"><a href="#Vue模板编译流程" class="headerlink" title="Vue模板编译流程"></a>Vue模板编译流程</h2><p>编译核心流程：</p>
+<blockquote>
+<ul>
+<li>parse解析器：将template模板中的节点和数据解析成 AST抽象语法树</li>
+<li>optimize优化器：标记静态节点，提升渲染性能</li>
+<li>generate代码生成器：将 AST 转换成“代码字符串”，然后将 render 字符串通过 new Function 的方式转换成渲染函数</li>
+</ul>
+</blockquote>
+<h1 id="B-JS-0基础"><a href="#B-JS-0基础" class="headerlink" title="B_JS_0基础"></a>B_JS_0基础</h1><h2 id="splice新增-删除-替换"><a href="#splice新增-删除-替换" class="headerlink" title="splice新增-删除-替换"></a>splice新增-删除-替换</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const arr = [1, 2, 3];</span><br><span class="line">// 新增，在索引1处新增,删除个数为0</span><br><span class="line">arr.splice(1, 0, ...[7, 8]); // 1,7,8,2,3</span><br><span class="line">// 删除，在索引1处删除,删除个数为1</span><br><span class="line">arr.splice(1, 1); // 1,3</span><br><span class="line">// 替换，在索引1处替换,替换个数为1</span><br><span class="line">arr.splice(1, 1, ...[7, 8]); // 1,7,8,3</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="JS复制粘贴"><a href="#JS复制粘贴" class="headerlink" title="JS复制粘贴"></a>JS复制粘贴</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">function addEventListenerCopyPaste() &#123;</span><br><span class="line">  // 支持复制粘贴</span><br><span class="line">  const target = document.getElementById(uniId.value);</span><br><span class="line">  target.addEventListener(&#x27;copy&#x27;, (event) =&gt; &#123;</span><br><span class="line">    // 复制,使用ClipboardApi来设置剪贴板里的内容,参考张鑫旭的博客</span><br><span class="line">    const clipboardData = event.clipboardData || window.clipboardData;</span><br><span class="line">    if (!clipboardData) &#123;</span><br><span class="line">      return;</span><br><span class="line">    &#125;</span><br><span class="line">    let text = window.getSelection().toString();</span><br><span class="line">    if (text) &#123;</span><br><span class="line">      event.preventDefault();</span><br><span class="line">      text = text.replace(/\n\n/g, &#x27;,&#x27;);</span><br><span class="line">      text = text.replace(/\n/g, &#x27; &#x27;);</span><br><span class="line">      clipboardData.setData(&#x27;text/plain&#x27;, text);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  target.addEventListener(&#x27;paste&#x27;, (event) =&gt; &#123;</span><br><span class="line">    // 粘贴</span><br><span class="line">    event.preventDefault();</span><br><span class="line">    let paste = (event.clipboardData || window.clipboardData).getData(&#x27;text&#x27;);</span><br><span class="line">    paste = paste.toUpperCase();</span><br><span class="line">    pasteHandle(paste);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="D-框架-axios技巧"><a href="#D-框架-axios技巧" class="headerlink" title="D_框架_axios技巧"></a>D_框架_axios技巧</h1><h2 id="axios取消请求"><a href="#axios取消请求" class="headerlink" title="axios取消请求"></a>axios取消请求</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">const requestIdMap = new Map(); // 存放请求映射关系</span><br><span class="line"></span><br><span class="line">// 注意cancelId必须全局唯一</span><br><span class="line">  const cancelId = config.cancelId;</span><br><span class="line">  if (cancelId) &#123;</span><br><span class="line">    // 取消重复网络请求</span><br><span class="line">    const controll = requestIdMap.get(cancelId);</span><br><span class="line">    if (controll) &#123;</span><br><span class="line">      controll.abort();</span><br><span class="line">      requestIdMap.delete(cancelId);</span><br><span class="line">    &#125;</span><br><span class="line">    requestIdMap.set(cancelId, new AbortController());</span><br><span class="line">    config = &#123;</span><br><span class="line">      ...config,</span><br><span class="line">      signal: requestIdMap.get(cancelId)?.signal,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="D-框架-TypeScript入门"><a href="#D-框架-TypeScript入门" class="headerlink" title="D_框架_TypeScript入门"></a>D_框架_TypeScript入门</h1><h2 id="Typescript-简介"><a href="#Typescript-简介" class="headerlink" title="Typescript 简介"></a>Typescript 简介</h2><ul>
+<li>ECMAScript 的超集 (stage 3)</li>
+<li>编译期的类型检查</li>
+<li>不引入额外开销（零依赖，不扩展 js 语法，不侵入运行时）</li>
+<li>编译出通用的、易读的 js 代码</li>
+</ul>
+<h2 id="为什么使用-Typescript"><a href="#为什么使用-Typescript" class="headerlink" title="为什么使用 Typescript"></a>为什么使用 Typescript</h2><ul>
+<li>增加了代码的可读性和可维护性</li>
+<li>减少运行时错误，写出的代码更加安全，减少 BUG</li>
+<li>享受到代码提示带来的好处</li>
+<li>重构神器</li>
+</ul>
+<h2 id="基础类型"><a href="#基础类型" class="headerlink" title="基础类型"></a>基础类型</h2><ul>
+<li>boolean</li>
+<li>number</li>
+<li>string</li>
+<li>array</li>
+<li>tuple</li>
+<li>enum</li>
+<li>void</li>
+<li>null &amp; undefined</li>
+<li>any &amp; unknown</li>
+<li>never</li>
+</ul>
+<h3 id="any-和-unknown-的区别"><a href="#any-和-unknown-的区别" class="headerlink" title="any 和 unknown 的区别"></a><code>any</code> 和 <code>unknown</code> 的区别</h3><ul>
+<li><code>any</code>: 任意类型</li>
+<li><code>unknown</code>: 未知的类型</li>
+</ul>
+<p>任何类型都能分配给 <code>unknown</code>，但 <code>unknown</code> 不能分配给其他基本类型，而 <code>any</code> 啥都能分配和被分配。</p>
+<h2 id="函数类型"><a href="#函数类型" class="headerlink" title="函数类型"></a>函数类型</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">function fn(): number &#123;</span><br><span class="line">  return 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const fn = function (): number &#123;</span><br><span class="line">  return 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const fn = (): number =&gt; &#123;</span><br><span class="line">  return 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const obj = &#123;</span><br><span class="line">  fn (): number &#123;</span><br><span class="line">    return 1</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="B-JS-ES6-10新特性"><a href="#B-JS-ES6-10新特性" class="headerlink" title="B_JS_ES6-10新特性"></a>B_JS_ES6-10新特性</h1><p>数组转为 Map</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const arr = [[a,&#x27;aa&#x27;],[b,&#x27;bb&#x27;]]</span><br><span class="line">const map = new Map(arr)</span><br><span class="line">// &#123;a:&#x27;aa&#x27;,b:&#x27;bb&#x27;&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h1><p>设计模式说白了就是“封装变化”。比如“创建型”封装了创建对象的变化过程，“结构型”将对象之间组合的变化封装，“行为型”则是抽离对象的变化行为。</p>
+<p>SOLID 可以简单概括为六个字，即“高内聚，低耦合”：</p>
+<ul>
+<li><strong>高</strong>层模块不依赖底层模块，即为依赖反转原则。</li>
+<li><strong>内</strong>部修改关闭，外部扩展开放，即为开放封闭原则。</li>
+<li><strong>聚</strong>合单一功能，即为单一功能原则。</li>
+<li><strong>低</strong>知识要求，对外接口简单，即为迪米特法则。</li>
+<li><strong>耦</strong>合多个接口，不如独立拆分，即为接口隔离原则。</li>
+<li><strong>合</strong>成复用，子类继承可替换父类，即为里式替换原则。</li>
+</ul>
+<h1 id="J-设计模式-JavaScript"><a href="#J-设计模式-JavaScript" class="headerlink" title="J_设计模式_JavaScript"></a>J_设计模式_JavaScript</h1><h2 id="创建型"><a href="#创建型" class="headerlink" title="创建型"></a>创建型</h2><h3 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h3><p><strong>小结：</strong> 构造函数和创建对象分离，符合开放封闭原则。</p>
+<p><strong>使用场景：</strong> 比如根据权限生成不同用户。</p>
+<p>工厂模式根据抽象程度可分为三种，分别为简单工厂、工厂方法和抽象工厂。其核心在于将创建对象的过程封装其他，然后通过同一个接口创建新的对象。 简单工厂模式又叫静态工厂方法，用来创建某一种产品对象的实例，用来创建单一对象。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// 简单工厂</span><br><span class="line">class Factory &#123;</span><br><span class="line">  constructor (username, pwd, role) &#123;</span><br><span class="line">   this.username = username;</span><br><span class="line">    this.pwd = pwd;</span><br><span class="line">    this.role = role;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class CreateRoleFactory &#123;</span><br><span class="line"> static create (username, pwd, role) &#123;</span><br><span class="line">   return new Factory(username, pwd, role);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const admin = CreateRoleFactory.create(&#x27;张三&#x27;, &#x27;222&#x27;, &#x27;admin&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>在实际工作中，各用户角色所具备的能力是不同的,可以考虑使用工厂方法来代替。工厂方法的本意是将实际创建对象的工作推迟到子类中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">class User &#123;</span><br><span class="line">constructor (name, menuAuth) &#123;</span><br><span class="line">   if (new.target === User) throw new Error(&#x27;User 不能被实例化&#x27;);</span><br><span class="line">    this.name = name;</span><br><span class="line">    this.menuAuth = menuAuth;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class UserFactory extends User &#123;</span><br><span class="line">constructor (...props) &#123;</span><br><span class="line">   super(...props);</span><br><span class="line">  &#125;</span><br><span class="line">  static create (role) &#123;</span><br><span class="line">   const roleCollection = new Map([</span><br><span class="line">     [&#x27;admin&#x27;, () =&gt; new UserFactory(&#x27;管理员&#x27;, [&#x27;首页&#x27;, &#x27;个人中心&#x27;])],</span><br><span class="line">      [&#x27;user&#x27;, () =&gt; new UserFactory(&#x27;普通用户&#x27;, [&#x27;首页&#x27;])]</span><br><span class="line">    ])</span><br><span class="line">   </span><br><span class="line">    return roleCollection.get(role)();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const admin = UserFactory.create(&#x27;admin&#x27;);</span><br><span class="line">console.log(admin); // &#123;name: &quot;管理员&quot;, menuAuth: Array(2)&#125;</span><br><span class="line">const user = UserFactory.create(&#x27;user&#x27;);</span><br><span class="line">console.log(user); // &#123;name: &quot;普通用户&quot;, menuAuth: Array(1)&#125;</span><br></pre></td></tr></table></figure>
+
+<p>随着业务形态的变化，一个用户可能在多个平台上同时存在，显然工厂方法也不再满足了，这时候就要用到抽象工厂。抽象工厂模式是对类的工厂抽象用来创建产品类簇，不负责创建某一类产品的实例。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">class User &#123;</span><br><span class="line">  constructor (hospital) &#123;</span><br><span class="line">    if (new.target === User) throw new Error(&#x27;抽象类不能实例化!&#x27;);</span><br><span class="line">    this.hospital = hospital;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 浙一</span><br><span class="line">class ZheYiUser extends User &#123;</span><br><span class="line">  constructor(name, departmentsAuth) &#123;</span><br><span class="line">    super(&#x27;zheyi_hospital&#x27;);</span><br><span class="line">    this.name = name;</span><br><span class="line">    this.departmentsAuth = departmentsAuth;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 萧山医院</span><br><span class="line">class XiaoShanUser extends User &#123;</span><br><span class="line">  constructor(name, departmentsAuth) &#123;</span><br><span class="line">    super(&#x27;xiaoshan_hospital&#x27;);</span><br><span class="line">    this.name = name;</span><br><span class="line">    this.departmentsAuth = departmentsAuth;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const getAbstractUserFactory = (hospital) =&gt; &#123;</span><br><span class="line">  switch (hospital) &#123;</span><br><span class="line">    case &#x27;zheyi_hospital&#x27;:</span><br><span class="line">      return ZheYiUser;</span><br><span class="line">      break;</span><br><span class="line">    case &#x27;xiaoshan_hospital&#x27;:</span><br><span class="line">      return XiaoShanUser;</span><br><span class="line">      break;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const ZheYiUserClass = getAbstractUserFactory(&#x27;zheyi_hospital&#x27;);</span><br><span class="line">const XiaoShanUserClass = getAbstractUserFactory(&#x27;xiaoshan_hospital&#x27;);</span><br><span class="line"></span><br><span class="line">const user1 = new ZheYiUserClass(&#x27;王医生&#x27;, [&#x27;外科&#x27;, &#x27;骨科&#x27;, &#x27;神经外科&#x27;]);</span><br><span class="line">console.log(user1);</span><br><span class="line">const user2 = newXiaoShanUserClass(&#x27;王医生&#x27;, [&#x27;外科&#x27;, &#x27;骨科&#x27;]);</span><br><span class="line">console.log(user2);</span><br></pre></td></tr></table></figure>
+
+<h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><p><strong>小结：</strong> 实例如果存在，直接返回已创建的，符合开放封闭原则。</p>
+<p><strong>使用场景：</strong> Redux、Vuex 等状态管理工具，还有我们常用的 window 对象、全局缓存等。</p>
+<p>单例模式，就是保证一个类只能存在一个实例，并提供一个访问它的全局接口。单例模式又分懒汉式和饿汉式两种，其区别在于懒汉式在调用的时候创建实例，而饿汉式则是在初始化就创建好实例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 懒汉式</span><br><span class="line">class Single &#123;</span><br><span class="line">static getInstance () &#123;</span><br><span class="line">   if (!Single.instance) &#123;</span><br><span class="line">     Single.instance = new Single();</span><br><span class="line">    &#125;</span><br><span class="line">    return Single.instance;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">const test1 = Single.getInstance();</span><br><span class="line">const test2 = Single.getInstance();</span><br><span class="line">console.log(test1 === test2); // true</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 饿汉式</span><br><span class="line">class Single &#123;</span><br><span class="line">static instance = new Single();</span><br><span class="line"></span><br><span class="line">  static getInstance () &#123;</span><br><span class="line">    return Single.instance;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">const test1 = Single.getInstance();</span><br><span class="line">const test2 = Single.getInstance();</span><br><span class="line">console.log(test1 === test2); // true</span><br></pre></td></tr></table></figure>
+
+<h3 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h3><p><strong>小结：</strong> 原型模式最简单的实现方式—Object.create()。</p>
+<p><strong>使用场景：</strong> 新创建对象和已有对象无较大差别时，可以使用原型模式来减少创建新对象的成本。</p>
+<p>当新创建的对象和已有对象存在较大共性时，可以通过对象的复制来达到创建新的对象，这就是原型模式。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">// Object.create()实现原型模式</span><br><span class="line">const user = &#123;</span><br><span class="line">name: &#x27;zhangsan&#x27;,</span><br><span class="line">  age: 18</span><br><span class="line">&#125;;</span><br><span class="line">let userOne = Object.create(user);</span><br><span class="line">console.log(userOne.__proto__); // &#123;name: &quot;zhangsan&quot;, age: 18&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 原型链继承实现原型模式</span><br><span class="line">class User &#123;</span><br><span class="line">constructor (name) &#123;</span><br><span class="line">   this.name = name;</span><br><span class="line">  &#125;</span><br><span class="line">  getName () &#123;</span><br><span class="line">   return this.name;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Admin extends User &#123;</span><br><span class="line">constructor (name) &#123;</span><br><span class="line">   super(name);</span><br><span class="line">  &#125;</span><br><span class="line">  setName (_name) &#123;</span><br><span class="line">   return this.name = _name;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const admin = new Admin(&#x27;zhangsan&#x27;);</span><br><span class="line">console.log(admin.getName());</span><br><span class="line">console.log(admin.setName(&#x27;lisi&#x27;));</span><br></pre></td></tr></table></figure>
+
+<h2 id="结构型"><a href="#结构型" class="headerlink" title="结构型"></a>结构型</h2><h3 id="装饰器模式"><a href="#装饰器模式" class="headerlink" title="装饰器模式"></a>装饰器模式</h3><p><strong>小结：</strong> 装饰器模式将现有对象和装饰器进行分离，两者独立存在，符合开放封闭原则和单一职责模式。</p>
+<p><strong>使用场景：</strong> es7 装饰器、vue mixins、core-decorators 等。</p>
+<p>讲装饰器模式之前，先聊聊高阶函数。高阶函数就是一个函数就可以接收另一个函数作为参数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const add = (x, y, f) =&gt; &#123;</span><br><span class="line"> return f(x) + f(y);</span><br><span class="line">&#125;</span><br><span class="line">const num = add(2, -2, Math.abs);</span><br></pre></td></tr></table></figure>
+
+<p>add 相对于 Math.abs 来说相当于一个装饰器，因此这个例子也可以理解为一个简单的装饰器模式。在 react 中，高阶组件(HOC)也是装饰器模式的一种体现，通常用来不改变原来组件的情况下添加一些属性，达到组件复用的功能。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import React from &#x27;react&#x27;;</span><br><span class="line">const BgHOC = WrappedComponent =&gt; class extends React.Component &#123;</span><br><span class="line"> render () &#123;</span><br><span class="line">   return (</span><br><span class="line">     &lt;div style=&#123;&#123; background: &#x27;blue&#x27; &#125;&#125;&gt;</span><br><span class="line">       &lt;WrappedComponent /&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="适配器模式"><a href="#适配器模式" class="headerlink" title="适配器模式"></a>适配器模式</h3><p><strong>小结：</strong> 不改变原有接口的情况下，统一接口、统一入参、统一出参、统一规则，符合开发封闭原则。</p>
+<p><strong>使用场景</strong> ：拥抱变化，兼容代码。</p>
+<p>适配器别名包装器，其作用是解决两个软件实体间的接口不兼容的问题。以 axios 源码为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">function getDefaultAdapter() &#123;</span><br><span class="line">  var adapter;</span><br><span class="line">  // 判断当前是否是 node 环境</span><br><span class="line">  if (typeof process !== &#x27;undefined&#x27; &amp;&amp; Object.prototype.toString.call(process) === &#x27;[object process]&#x27;) &#123;</span><br><span class="line">    // 如果是 node 环境，调用 node 专属的 http 适配器</span><br><span class="line">    adapter = require(&#x27;./adapters/http&#x27;);</span><br><span class="line">  &#125; else if (typeof XMLHttpRequest !== &#x27;undefined&#x27;) &#123;</span><br><span class="line">    // 如果是浏览器环境，调用基于 xhr 的适配器</span><br><span class="line">    adapter = require(&#x27;./adapters/xhr&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">  return adapter;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// http adapter</span><br><span class="line">module.exports = function httpAdapter(config) &#123;</span><br><span class="line">  return new Promise(function dispatchHttpRequest(resolvePromise, rejectPromise) &#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// xhr adapter</span><br><span class="line">module.exports = function xhrAdapter(config) &#123;</span><br><span class="line">  return new Promise(function dispatchXhrRequest(resolve, reject) &#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h3><p><strong>小结：</strong> 通过修改代理类来增加功能，符合开放封闭模式。</p>
+<p><strong>使用场景：</strong> 图片预加载、缓存服务器、处理跨域以及拦截器等。</p>
+<p>代理模式就是为对象提供一个代理，用来控制对这个对象的访问。在我们业务开发中最常见的有四种代理类型：事件代理，虚拟代理、缓存代理和保护代理。</p>
+<p>虚拟代理，其最具代表性的例子就是图片预加载。解决方案是先给 img 标签展示一个占位图，然后创建一个 Image 实例，让这个实例的 src 指向真实的默认图片地址，当默认图片加载完成之后，再将 DOM 上的 img 标签的 src 属性指向真实图片地址。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class ProxyImg &#123;</span><br><span class="line">constructor (imgELe) &#123;</span><br><span class="line">   this.imgELe = imgELe;</span><br><span class="line">    this.DEFAULT_URL = &#x27;xxx&#x27;;</span><br><span class="line">  &#125;</span><br><span class="line">  setUrl (targetUrl) &#123;</span><br><span class="line">   this.imgEle.src = this.DEFAULT_URL;</span><br><span class="line">    const image = new Image();</span><br><span class="line">   </span><br><span class="line">    image.onload = () =&gt; &#123;</span><br><span class="line">     this.imgEle.src = targetUrl;</span><br><span class="line">    &#125;</span><br><span class="line">    image.src = targetUrl;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>缓存代理常用于一些计算量较大的场景。当计算的值已经被出现过的时候，不需要进行第二次重复计算。以传参求和为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">const countSum = (...arg) =&gt; &#123;</span><br><span class="line">console.log(&#x27;count...&#x27;);</span><br><span class="line">  let result = 0;</span><br><span class="line">  arg.forEach(v =&gt; result += v);</span><br><span class="line">  return result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const proxyCountSum = (() =&gt; &#123;</span><br><span class="line">const cache = &#123;&#125;;</span><br><span class="line">  return (...arg) =&gt; &#123;</span><br><span class="line">   const args = arg.join(&#x27;,&#x27;);</span><br><span class="line">    if (args in cache) return cache[args];</span><br><span class="line">    return cache[args] = countSum(...arg);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;)()</span><br><span class="line"></span><br><span class="line">proxyCountSum(1,2,3,4); // count...  10</span><br><span class="line">proxyCountSum(1,2,3,4); // 10</span><br></pre></td></tr></table></figure>
+
+<h2 id="行为型"><a href="#行为型" class="headerlink" title="行为型"></a>行为型</h2><h3 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h3><p><strong>小结：</strong> 定义一系列算法，将其一一封装起来，并且使它们可相互替换。符合开放封闭原则。</p>
+<p><strong>使用场景：</strong> 表单验证、存在大量 if-else 场景、各种重构等。</p>
+<p>介绍策略模式之前，简单实现一个常见的促销活动规则：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 人人喊打的ifelse</span><br><span class="line">const activity = (type, price) =&gt; &#123;</span><br><span class="line"> if (type === &#x27;pre&#x27;) &#123;</span><br><span class="line">   return price * 0.95;</span><br><span class="line">  &#125; else if (type === &#x27;onSale&#x27;) &#123;</span><br><span class="line">   return price * 0.9;</span><br><span class="line">  &#125; else if (type === &#x27;back&#x27;) &#123;</span><br><span class="line">   return price * 0.85;</span><br><span class="line">  &#125; else if (type === &#x27;limit&#x27;) &#123;</span><br><span class="line">   return price * 0.8;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 优雅的扩展性</span><br><span class="line">const activity = new Map([</span><br><span class="line">[&#x27;pre&#x27;, (price) =&gt; price * 0.95],</span><br><span class="line">  [&#x27;onSale&#x27;, (price) =&gt; price * 0.9],</span><br><span class="line">  [&#x27;back&#x27;, (price) =&gt; price * 0.85],</span><br><span class="line">  [&#x27;limit&#x27;, (price) =&gt; price * 0.8]</span><br><span class="line">]);</span><br><span class="line"></span><br><span class="line">const getActivityPrice = (type, price) =&gt; activity.get(type)(price);</span><br><span class="line"></span><br><span class="line">// 新增新手活动</span><br><span class="line">activity.set(&#x27;newcomer&#x27;, (price) =&gt; price * 0.7);</span><br></pre></td></tr></table></figure>
+
+<h3 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h3><p><strong>小结：</strong> 为解耦而生，为事件而生，符合开放封闭原则。</p>
+<p><strong>使用场景：</strong> 跨层级通信、事件绑定等。</p>
+<p>观察者模式又叫发布-订阅模式，其用来定义对象之间的一对多依赖关系，以便当一个对象更改状态时，将通知其所有依赖关系。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">// 定义发布者类</span><br><span class="line">class Publisher &#123;</span><br><span class="line">  constructor () &#123;</span><br><span class="line">    this.observers = [];</span><br><span class="line">    this.prdState = null;</span><br><span class="line">  &#125;</span><br><span class="line">  // 增加订阅者</span><br><span class="line">  add (observer) &#123;</span><br><span class="line">    this.observers.push(observer);</span><br><span class="line">  &#125;</span><br><span class="line">  // 通知所有订阅者</span><br><span class="line">  notify () &#123;</span><br><span class="line">    this.observers.forEach((observer) =&gt; &#123;</span><br><span class="line">      observer.update(this);</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  // 该方法用于获取当前的 prdState</span><br><span class="line">  getState () &#123;</span><br><span class="line">    return this.prdState;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // 该方法用于改变 prdState 的值</span><br><span class="line">  setState (state) &#123;</span><br><span class="line">    // prd 的值发生改变</span><br><span class="line">    this.prdState = state;</span><br><span class="line">    // 需求文档变更，立刻通知所有开发者</span><br><span class="line">    this.notify();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 定义订阅者类</span><br><span class="line">class Observer &#123;</span><br><span class="line">  constructor () &#123;</span><br><span class="line">  this.prdState = &#123;&#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  update (publisher) &#123;</span><br><span class="line">    // 更新需求文档</span><br><span class="line">    this.prdState = publisher.getState();</span><br><span class="line">    // 调用工作函数</span><br><span class="line">    this.work();</span><br><span class="line">  &#125;</span><br><span class="line">  // work 方法，一个专门搬砖的方法</span><br><span class="line">  work () &#123;</span><br><span class="line">    // 获取需求文档</span><br><span class="line">    const prd = this.prdState;</span><br><span class="line">    console.log(prd);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 创建订阅者：前端开发小王</span><br><span class="line">const wang = new Observer();</span><br><span class="line">// 创建订阅者：后端开发小张</span><br><span class="line">const zhang = new Observer();</span><br><span class="line">// 创建发布者：产品经理小曾</span><br><span class="line">const zeng = new Publisher();</span><br><span class="line">// 需求文档</span><br><span class="line">const prd = &#123;</span><br><span class="line">  url: &#x27;xxxxxxx&#x27;</span><br><span class="line">&#125;;</span><br><span class="line">// 小曾开始拉人入群</span><br><span class="line">zeng.add(wang);</span><br><span class="line">zeng.add(zhang);</span><br><span class="line">// 小曾发布需求文档并通知所有人</span><br><span class="line">zeng.setState(prd);</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="前端代码规范"><a href="#前端代码规范" class="headerlink" title="前端代码规范"></a>前端代码规范</h1><ul>
+<li><a target="_blank" rel="noopener" href="http://tgideas.qq.com/doc/index.html">腾讯前端代码规范</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ecomfe/spec/blob/master/javascript-style-guide.md">百度前端代码规范文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/standard/standard">JavaScript Standard Style</a></li>
+<li><a target="_blank" rel="noopener" href="https://cn.vuejs.org/v2/style-guide/index.html">Vue 官方特有的代码风格指南</a></li>
+<li><a target="_blank" rel="noopener" href="https://es6.ruanyifeng.com/#docs/style">玩一峰的 ES6 编程风格</a></li>
+<li><a target="_blank" rel="noopener" href="https://eslint.bootcss.com/">ESLint 代码规范检测工具</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/airbnb/javascript">Airbnb</a></li>
+</ul>
+<h1 id="屎山代码"><a href="#屎山代码" class="headerlink" title="屎山代码"></a>屎山代码</h1><h2 id="一号屎山–目录杂乱"><a href="#一号屎山–目录杂乱" class="headerlink" title="一号屎山–目录杂乱"></a>一号屎山–目录杂乱</h2><h2 id="二号屎山–奇葩命名法"><a href="#二号屎山–奇葩命名法" class="headerlink" title="二号屎山–奇葩命名法"></a>二号屎山–奇葩命名法</h2><p>奇葩命名法有以下几种情况：</p>
+<ul>
+<li>全拼音命名法</li>
+<li>拼音首字母命名法</li>
+<li>中西合璧命名法</li>
+<li>英文首字母命名法</li>
+</ul>
+<h2 id="三号屎山–组件不拆分"><a href="#三号屎山–组件不拆分" class="headerlink" title="三号屎山–组件不拆分"></a>三号屎山–组件不拆分</h2><p>每一个.vue文件的行数会非常多，难以维护，Vue2中一个最明显的屎山就是<code>几千行、甚至上万行的代码</code>，用专业的术语来讲就是<code>不符合单一职责原则</code>，一个组件应该只干一件事情，一个函数应该只处理一个逻辑，剩下的逻辑交给其他函数或者组件来做。时刻牢记“SOLID”原则是远离屎山的第一心法；</p>
+<h2 id="四号屎山–复杂的表达式"><a href="#四号屎山–复杂的表达式" class="headerlink" title="四号屎山–复杂的表达式"></a>四号屎山–复杂的表达式</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:class=&quot;&#123; disabled: !isAllowRead &amp;&amp; hasNotPassed &amp;&amp; aaa &amp;&amp; (bbb || ccc) &#125;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>为了判断一个禁用状态，使用了大量的运算符，导致逻辑不清晰</p>
+<h2 id="五号屎山–大量重复节点"><a href="#五号屎山–大量重复节点" class="headerlink" title="五号屎山–大量重复节点"></a>五号屎山–大量重复节点</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;span&gt;姓名:&#123;&#123; name &#125;&#125;&lt;/span&gt;</span><br><span class="line">    &lt;span&gt;年龄:&#123;&#123; age &#125;&#125;&lt;/span&gt;</span><br><span class="line">    &lt;span&gt;性别:&#123;&#123; gender &#125;&#125;&lt;/span&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="六号屎山–if-else-switch"><a href="#六号屎山–if-else-switch" class="headerlink" title="六号屎山–if else switch"></a>六号屎山–if else switch</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">if(!values.username)&#123;</span><br><span class="line">    this.$message.error(&quot;用户名不能为空&quot;)</span><br><span class="line">&#125; else if(!values.password)&#123;</span><br><span class="line">    this.$message.error(&quot;密码不能为空&quot;)</span><br><span class="line">&#125; else if(!values.phoneNumber)&#123;</span><br><span class="line">    this.$message.error(&quot;手机号不能为空&quot;)</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    this.submit();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以使用对象校验</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">const validators = [</span><br><span class="line">  &#123; message: &quot;用户名不能为空&quot;, key: &quot;username&quot; &#125;,</span><br><span class="line">  &#123; message: &quot;密码不能为空&quot;, key: &quot;password&quot; &#125;,</span><br><span class="line">  &#123; message: &quot;手机号不能为空&quot;, key: &quot;phoneNumber&quot; &#125;</span><br><span class="line">];</span><br><span class="line">const result = validators.some(el =&gt; &#123;</span><br><span class="line">        if (!values[el.key]) &#123;</span><br><span class="line">          this.$message.error(el.message);</span><br><span class="line">          return true;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="七号屎山–后端参数处理"><a href="#七号屎山–后端参数处理" class="headerlink" title="七号屎山–后端参数处理"></a>七号屎山–后端参数处理</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">handleParams() &#123;</span><br><span class="line">      const params = &#123;&#125;;</span><br><span class="line">      params.id = this.formItem.id;</span><br><span class="line">      params.startDate = this.formItem.startDate.format(&quot;YYYY-MM-DD&quot;);</span><br><span class="line">      params.endDate = this.formItem.endDate.format(&quot;YYYY-MM-DD&quot;);</span><br><span class="line">      params.price = this.formItem.price.toString();</span><br><span class="line">      params.type = this.formItem.type;</span><br><span class="line">      params.total = this.formItem.total;</span><br><span class="line">      params.name = this.formItem.name;</span><br><span class="line">      params.comment = this.formItem.comment;</span><br><span class="line">      // ... 此处省略一万行代码</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  handleParams() &#123;</span><br><span class="line">      const &#123; startDate, endDate, price, ...params &#125; = this.formItem;</span><br><span class="line">      params.startDate = startDate.format(&quot;YYYY-MM-DD&quot;);</span><br><span class="line">      params.endDate = endDate.format(&quot;YYYY-MM-DD&quot;);</span><br><span class="line">      params.price = price.toString();</span><br><span class="line">      // ... 此处省掉一万行代码</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="八号屎山–硬编码"><a href="#八号屎山–硬编码" class="headerlink" title="八号屎山–硬编码"></a>八号屎山–硬编码</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">computed: &#123;</span><br><span class="line">    isGood() &#123;</span><br><span class="line">      return this.type === 1;</span><br><span class="line">    &#125;,</span><br><span class="line">    isBad() &#123;</span><br><span class="line">      return this.type === 0;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>好的做法就是写成常量配置文件，单独写一个文件config.js，然后组件去引用这个常量:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">isGood() &#123;</span><br><span class="line">      return this.type === GOODS_TYPE.good</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">// 货物的品质枚举值</span><br><span class="line">export const GOODS_TYPE = &#123;</span><br><span class="line">  good: 1, // 质量好</span><br><span class="line">  bad: 0   // 质量差</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="九号屎山–Mixins屎山"><a href="#九号屎山–Mixins屎山" class="headerlink" title="九号屎山–Mixins屎山"></a>九号屎山–Mixins屎山</h2><h2 id="十号屎山–无用代码不删除"><a href="#十号屎山–无用代码不删除" class="headerlink" title="十号屎山–无用代码不删除"></a>十号屎山–无用代码不删除</h2><h2 id="十一号屎山–类名无规范"><a href="#十一号屎山–类名无规范" class="headerlink" title="十一号屎山–类名无规范"></a>十一号屎山–类名无规范</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;test&quot;&gt;</span><br><span class="line">    &lt;div class=&quot;test-left&quot;&gt;</span><br><span class="line">      &lt;div class=&quot;test-left-nav&quot;&gt;</span><br><span class="line">        &lt;ul class=&quot;test-ul&quot;&gt;</span><br><span class="line">          &lt;li class=&quot;test-ul-li&quot;&gt;</span><br><span class="line">            &lt;span class=&quot;title&quot;&gt;&lt;/span&gt;</span><br><span class="line">          &lt;/li&gt;</span><br><span class="line">        &lt;/ul&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">      &lt;div class=&quot;oprate&quot;&gt;</span><br><span class="line">        &lt;div class=&quot;oprate-btn&quot;&gt;</span><br><span class="line">          &lt;div class=&quot;cancel&quot;&gt;&lt;/div&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">    &lt;div class=&quot;test-main&quot;&gt;&lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;style scoped lang=&quot;scss&quot;&gt;</span><br><span class="line">// css层次始终保持不超过3层</span><br><span class="line">.test &#123;</span><br><span class="line">  &amp;-left &#123;</span><br><span class="line">    &amp;-nav &#123;</span><br><span class="line">      height: 100%;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  &amp;-ul &#123;</span><br><span class="line">    &amp;-li &#123;</span><br><span class="line">      height: 100%;</span><br><span class="line">    &#125;</span><br><span class="line">    .title &#123;</span><br><span class="line">      height: 100%;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  .oprate &#123;</span><br><span class="line">    &amp;-btn &#123;</span><br><span class="line">      height: 100%;</span><br><span class="line">    &#125;</span><br><span class="line">    .cancel &#123;</span><br><span class="line">      height: 100%;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="十二号屎山–样式大量重复"><a href="#十二号屎山–样式大量重复" class="headerlink" title="十二号屎山–样式大量重复"></a>十二号屎山–样式大量重复</h2><h1 id="2024-年前端开发趋势"><a href="#2024-年前端开发趋势" class="headerlink" title="2024 年前端开发趋势"></a>2024 年前端开发趋势</h1><p>参考：</p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzUzNTk3MjE2Ng==&mid=2247508444&idx=1&sn=a3db610dc4dcf5d135234d2636fa4974&chksm=faffb1f5cd8838e3b1e8c37c4d9293c746f215b61f3a3f4fd5697685134526bae01dc86cff1e&scene=132&exptype=timeline_recommend_article_extendread_samebiz#wechat_redirect">前端永生！2024 年 7 个 Web 前端开发趋势！！！</a></p>
+<ul>
+<li>趋势一：新的样式解决方案和组件库将持续涌现</li>
+<li>趋势二：利用 AI 来增强开发流程</li>
+<li>趋势三：SSR 和 SSG 两种框架之间的竞争将会愈演愈烈</li>
+<li>趋势四：前端、后端和全栈开发之间的界限将越来越模糊</li>
+<li>趋势五：将会有更多人使用 TypeScript</li>
+</ul>
+<blockquote>
+<p>趋势一：新的样式解决方案和组件库将持续涌现</p>
+</blockquote>
+<p>除了大量的基于 Angular、React 和 Vue 的组件库之外，还有 40 种以上的 CSS 框架 和 40 种以上的 CSS-in-JS 库 可以选择。</p>
+<p>2023 年，我们看到了诸如 Shadcn UI、Ark UI、Panda CSS 和 StyleX（来自 Meta）等新发布的样式解决方案。除此之外，还有 Lemon Squeezy 开源的 React UI 库 Wedges，该库在本文撰写的前几天才刚刚发布。</p>
+<p>除了新的样式解决方案会不断发布之外，未来以下这些方面也值得我们期待：</p>
+<ol>
+<li>现有解决方案的持续更新。</li>
+<li>CSS-in-JS 解决方案将被抛弃，因为该方案不仅会增加运行时开销、构建包的大小，还无法很好地与 SSR 配合使用。</li>
+<li>Open Props 将取代 Tailwind CSS 的宝座。根据 《2023 年 CSS 现态》 这篇文章的数据，开发人员对 Tailwind CSS 的兴趣值从 2022 年的 50.1% 下降到了 2023 年的 47%。与此同时，Open Props 的关注度从 2022 年的不到 10% 上升到了 2023 年的 60%。</li>
+</ol>
+<blockquote>
+<p>趋势二：利用 AI 来增强开发流程</p>
+</blockquote>
+<p>Vercel 发布的 v0 就是一个活生生的例子，它是一个基于提示词生成用户界面的工具。例如，我们可以通过提示词让 v0 创建一个电子商务风格的 dashboard 页面。</p>
+<p>根据 Retool 的 《2023 年 AI 现状》 报告，自 2022 年以来，57% 的开发人员减少了对 Stack Overflow 的使用，甚至有 10% 的开发人员因为有了 ChatGPT 和 GitHub Copilot 而不再使用 Stack Overflow。GitHub 的 Copilot 和 Sourcegraph 的 AI 编码助手 Cody 都是很好的例子。</p>
+<blockquote>
+<p>趋势三：SSR 和 SSG 两种框架之间的竞争将会愈演愈烈</p>
+</blockquote>
+<p>服务器端渲染（SSR）和静态网站生成（SSG）这两种渲染方法，因在 SEO 和性能方面的优势而备受关注。最近的一个 SSR/SSG 框架之争的例子是 Tech Twitter 上对比 Next.js 和 Remix 的话题。</p>
+<blockquote>
+<p>趋势四：前端、后端和全栈开发之间的界限将越来越模糊</p>
+</blockquote>
+<p>在早期的 Web 开发中，开发人员遵循的原则是 “关注点分离 “。因此，前端、后端和全栈开发人员被分配在了不同的系统和领域中。</p>
+<p>然而，随着时间的推移，这些界限变得越来越模糊：</p>
+<ol>
+<li>Next.js 提供了 路由处理程序（Route Handlers），它允许我们处理 HTTP 请求、从数据库获取数据、运行服务器端逻辑以及执行从数据库获取数据等任务。</li>
+<li>React 18 内置了 RSC（React Server Components），该功能允许我们预渲染应用程序，并在服务器端而不是客户端进行数据库查询，从而进一步模糊了两者之间的界限。这意味着我们可以直接在 React 组件中编写数据库查询功能。</li>
+<li>Next.js 还发布了 Server Actions 功能，该功能允许我们直接在客户端上定义函数操作服务器上的数据。</li>
+</ol>
+<p>除了这些发展之外，诸如 Supabase、Appwrite 和 Xata 等后端即服务（BaaS）解决方案的出现和流行，也让前端开发人员可以更容易地创建全栈应用程序。</p>
+<blockquote>
+<p>趋势五：将会有更多人使用 TypeScript</p>
+</blockquote>
+<p>事实上，你会看到更多公司和开源社区将他们的代码库迁移到 TypeScript。Stripe 就是一个例子，它将其最大的 JavaScript 代码库（约 370 万行的代码）迁移到了 TypeScript。</p>
+<p>Stack Overflow 的开发者调查显示，TypeScript 的受欢迎程度已从 2022 年的 34.83% 上升到了 2023 年的 38.87%。TypeScript 的使用已经非常广泛，以至于许多开发人员的文档中都设置了用于切换 TypeScript 和 JavaScript 代码的按钮。</p>
+<p>我们给出的一些可以为 2024 年做准备的建议：</p>
+<ol>
+<li>尝试使用 Ark UI、Open Props 和 Shadcn UI 等新的样式解决方案并熟悉它们。</li>
+<li>学习如何将 GitHub Copilot 等人工智能工具集成到日常开发工作流程中。</li>
+<li>如果还没有，请开始学习 SSR/SSG 框架。可以考虑从 Astro 或 Next.js 开始。</li>
+<li>探索使用 Xata 和 Supabase 等 BaaS 平台构建全栈应用程序。</li>
+<li>在你参与的每个项目中都使自己成为无障碍性的倡导者。</li>
+<li>成为 VS Code 专家，学习可提高工作效率的插件。</li>
+<li>开始学习 TypeScript。它很可能会在开发领域存在一段时间。</li>
+</ol>
+<h1 id="Vite"><a href="#Vite" class="headerlink" title="Vite"></a>Vite</h1><p>它主要由两部分组成：</p>
+<ul>
+<li>一个开发服务器，它基于 原生 <code>ES</code> 模块 提供了 丰富的内建功能，如速度快到惊人的 模块热更新（HMR）。</li>
+<li>一套构建指令，它使用 <code>Rollup</code> 打包你的代码，并且它是预配置的，可以输出用于生产环境的优化过的静态资源。</li>
+</ul>
+<h1 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h1><h2 id="webpack是什么？"><a href="#webpack是什么？" class="headerlink" title="webpack是什么？"></a>webpack是什么？</h2><p>Webpack是一种前端资源打包工具，它可以将多个文件或模块合并成一个或多个优化的文件，从而提高网页的性能和用户体验。Webpack的作用主要有以下几点：</p>
+<p>代码转换：Webpack可以使用Loader来处理各种类型的文件，例如将ES6转换成ES5，将Sass转换成CSS，将图片转换成Base64等。</p>
+<p>代码分割：Webpack可以使用SplitChunksPlugin或Dynamic Imports来实现代码分割，将不同功能或页面的代码分割成不同的文件，实现按需加载，减少首屏加载时间。</p>
+<p>代码优化：Webpack可以使用Plugin来实现代码优化，例如压缩代码，删除无用代码，提取公共代码等。</p>
+<p>其他功能：Webpack还可以实现热更新，模块替换，模块注入，资源管理等功能。</p>
+<p>Webpack的配置方法主要是通过创建一个webpack.config.js文件来进行。该文件是一个Node.js模块，它导出一个对象，该对象包含了Webpack的配置选项。Webpack的配置选项主要有以下几类：</p>
+<p>entry：指定入口文件，可以是一个或多个。</p>
+<p>output：指定输出文件，可以设置文件名，路径，格式等。</p>
+<p>module：指定模块处理规则，可以使用Loader来处理不同类型的文件。</p>
+<p>plugins：指定插件列表，可以使用Plugin来实现各种功能。</p>
+<p>devServer：指定开发服务器的配置，可以设置端口，代理，热更新等。</p>
+<p>optimization：指定优化选项，可以设置代码分割，压缩等。</p>
+<p>mode：指定模式，可以是development或production。</p>
+<h1 id="JS"><a href="#JS" class="headerlink" title="JS"></a>JS</h1><h2 id="原型和原型链"><a href="#原型和原型链" class="headerlink" title="原型和原型链"></a>原型和原型链</h2><p>JS原型和原型链是一种实现对象之间继承和共享属性的机制。每个对象都有一个内部属性-proto-(google浏览器是[[Prototype]])，指向另一个对象，称为该对象的原型。原型对象也有自己的原型，这样就形成了一个原型链，直到某个对象的原型为null为止。</p>
+<h2 id="Promise是什么？"><a href="#Promise是什么？" class="headerlink" title="Promise是什么？"></a>Promise是什么？</h2><p>Promise是一种用于处理异步操作的编程模式，它可以表示一个未来可能完成或失败的事件。Promise有三种状态：pending（等待）、fulfilled（成功）和rejected（失败）。Promise对象可以通过then方法或async/await语法来获取异步操作的结果或处理错误。Promise还可以通过all、race、resolve和reject等静态方法来创建或组合多个Promise。</p>
+<h2 id="虚拟dom是什么"><a href="#虚拟dom是什么" class="headerlink" title="虚拟dom是什么?"></a>虚拟dom是什么?</h2><p>虚拟DOM是一种编程技术，它使用JavaScript对象来表示真实的DOM元素。</p>
+<p>虚拟DOM的原理是，当数据或状态发生变化时，不直接操作真实的DOM，而是创建一个新的虚拟DOM树，然后与旧的虚拟DOM树进行比较，找出差异，最后只更新真实DOM中有变化的部分。</p>
+<p>虚拟DOM的优势是，它可以提高页面渲染的性能，避免不必要的DOM操作，减少浏览器的重绘和回流，同时也可以实现跨平台的渲染，例如在服务器端或移动端。</p>
+<h1 id="Vue3优秀代码实践"><a href="#Vue3优秀代码实践" class="headerlink" title="Vue3优秀代码实践"></a>Vue3优秀代码实践</h1><h2 id="使用Ref还是Reactive？"><a href="#使用Ref还是Reactive？" class="headerlink" title="使用Ref还是Reactive？"></a>使用Ref还是Reactive？</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/chuckQu/p/17350975.html">使用Ref还是Reactive？</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/656470876"><code>reactive</code>和 <code>ref</code> 对比</a></li>
+</ul>
+<blockquote>
+<p>一句话总结：默认情况下使用<code>ref</code>，当你需要对变量分组时使用<code>reactive</code>。(在一个<code>reactive</code>对象中对<code>ref</code>分组)</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>reactive</th>
+<th>ref</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>❌只支持对象和数组(引用数据类型)</td>
+<td>✅支持基本数据类型+引用数据类型</td>
+</tr>
+<tr>
+<td>✅在 <script> 和 <template> 中无差别使用</td>
+<td>❌在 <script> 和 <template> 使用方式不同(script中要.value)</td>
+</tr>
+<tr>
+<td>❌重新分配一个新对象会丢失响应性</td>
+<td>✅重新分配一个新对象不会失去响应</td>
+</tr>
+<tr>
+<td>能直接访问属性</td>
+<td>需要使用 .value 访问属性</td>
+</tr>
+<tr>
+<td>❌将对象传入函数时,失去响应</td>
+<td>✅传入函数时,不会失去响应</td>
+</tr>
+<tr>
+<td>❌解构时会丢失响应性,需使用toRefs</td>
+<td>❌解构对象时会丢失响应性,需使用toRefs</td>
+</tr>
+</tbody></table>
+<ul>
+<li>ref 用于将<strong>基本类型的数据（如字符串、数字，布尔值等）和引用数据类型(对象)</strong> 转换为响应式数据。使用 ref 定义的数据可以通过 <strong><code>.value</code></strong> 属性访问和修改。</li>
+<li>reactive 用于将<strong>对象</strong>转换为响应式数据，包括复杂的嵌套对象和数组。使用 reactive 定义的数据可以<strong>直接</strong>访问和修改属性。</li>
+</ul>
+<p>一种推荐使用的模式是在 <code>reactive</code> 对象中嵌套 refs,如果你不需要响应式的 <code>state</code> object，则可以将 refs 放入普通的 JavaScript object 。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">const loading = ref(true)</span><br><span class="line">const error = ref(null)</span><br><span class="line"></span><br><span class="line">const state = reactive(&#123;</span><br><span class="line">  loading,</span><br><span class="line">  error,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">// 可以 watch 响应式 object</span><br><span class="line">watchEffect(() =&gt; console.log(state.loading))</span><br><span class="line"></span><br><span class="line">// ...和 ref</span><br><span class="line">watch(loading, () =&gt; console.log(&#x27;loading has changed&#x27;))</span><br><span class="line"></span><br><span class="line">setTimeout(() =&gt; &#123;</span><br><span class="line">  loading.value = false</span><br><span class="line">  // 触发所有的 watchers</span><br><span class="line">&#125;, 500)</span><br></pre></td></tr></table></figure>
+
+<h2 id="一定要用TS"><a href="#一定要用TS" class="headerlink" title="一定要用TS"></a>一定要用TS</h2><p>TS最核心功能是类型检查和代码提示，只增加一点学习成本，Vue3本身就是用TS重构的,Vue3有较好的TS支持，越是大型复杂的项目，越是有必要。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2022/09/12/%E6%A8%A1%E6%9D%BF/" title="" target="_blank" rel="external">https://fuyunjinglong.github.io/2022/09/12/模板/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://fuyunjinglong.github.io/" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://fuyunjinglong.github.io/" target="_blank"><span class="text-dark">Elven</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/10/22/Test/" title="(no title)"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2022/09/12/Z_%E4%B9%A6%E5%8D%95/" title="书单"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

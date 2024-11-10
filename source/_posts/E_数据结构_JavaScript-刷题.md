@@ -261,11 +261,61 @@ function heapify(arr, i, size) {
 
 ## **希尔排序**
 
-> 一句话：将整个数组切按照一定的间隔取值划分为若干个子数组，每个子数组分别进行插入排序。然后逐渐缩小间隔进行下一轮划分子数组和对子数组进行插入排序。直至最后一轮排序间隔为 1，对整个数组进行插入排序。
+> 一句话：将整个数组切按照一定的间隔取值划分为若干个子数组，每个子数组分别进行插入排序。然后逐渐缩小间隔进行下一轮划分子数组和对子数组进行插入排序。直至最后一轮排序间隔为 1，对整个数组进行插入排序。是插入排序的一种高速而稳定的改进版本。
+
+```
+function shellSort(arr) {
+  //增量gap，并逐步缩小增量
+  for (let gap = arr.length / 2; gap > 0; gap /= 2) {
+    //从第gap个元素，逐个对其所在组进行直接插入排序操作
+    for (let i = gap; i < arr.length; i++) {
+      let j = i;
+      while (j - gap >= 0 && arr[j] < arr[j - gap]) {
+        //插入排序采用交换法
+        swap(arr, j, j - gap);
+        j -= gap;
+      }
+    }
+  }
+  return arr;
+}
+```
 
 ## **计数排序**
 
+> 一句话：通过统计元素数量来实现排序，通常应用于整数数组。
+
+```
+function countingSort(arr) {
+  // 1. 统计数组最大元素 m
+  let m = 0;
+  for (const num of arr) {
+    m = Math.max(m, num);
+  }
+  // 2. 统计各数字的出现次数
+  // counter[num] 代表 num 的出现次数
+  const counter = new Array(m + 1).fill(0);
+  for (const num of arr) {
+    counter[num]++;
+  }
+  // 3. 遍历 counter ，将各元素填入原数组 arr
+  let i = 0;
+  for (let num = 0; num < m + 1; num++) {
+    for (let j = 0; j < counter[num]; j++, i++) {
+      arr[i] = num;
+    }
+  }
+  return arr;
+}
+```
+
+
+
 ## **桶排序**
+
+> 一句话：是分治策略的一个典型应用。它通过设置一些具有大小顺序的桶，每个桶对应一个数据范围，将数据平均分配到各个桶中；然后，在每个桶内部分别执行排序；最终按照桶的顺序将所有数据合并。
+>
+> 前述几种排序算法都属于“基于比较的排序算法”，它们通过比较元素间的大小来实现排序。
 
 ## **基数排序**
 
