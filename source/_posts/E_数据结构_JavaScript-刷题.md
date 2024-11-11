@@ -34,7 +34,7 @@ function swap(arr,  i, j) {
 
 # 排序算法
 
-## **冒泡排序**-傻
+## **冒泡排序**-傻O(N^2)
 
 > 一句话：通过相邻元素之间的比较与交换，把当前最大的泡泡冒泡到水面/右区间
 >
@@ -63,7 +63,7 @@ function bubbleSort(arr){
 }
 ```
 
-## **选择排序**-傻
+## **选择排序**-傻O(N^2)
 
 > 一句话：数组分两个区间，左侧为已排序区间，右侧为未排序区间。每次从未排序区间找到最小值放到左区间末尾。
 >
@@ -89,7 +89,7 @@ function selectionSort(arr) {
 }
 ```
 
-## 插入排序-傻
+## 插入排序-傻O(N^2)
 
 > 一句话：将数组分为两个区间：左侧为有序区间，右侧为无序区间。每趟从无序区间取出一个元素，然后将其插入到有序区间的适当位置。类似打扑克牌
 
@@ -106,56 +106,7 @@ function insertionSort(arr) {
 }
 ```
 
-## 归并排序
-
-> 一句话：采用经典的分治策略，先递归地将当前数组平均分成两半，然后将有序数组两两合并，最终合并成一个有序数组。
-
-测试链接：https://leetcode.cn/problems/sort-an-array/description/
-
-```
-function mergeSort(arr) {
-  if (arr == null || arr.length < 2) {
-    return;
-  }
-  process(arr, 0, arr.length - 1);
-  return arr;
-}
-
-function process(arr, L, R) {
-  if (L == R) {
-    return;
-  }
-  let mid = L + ((R - L) >> 1);
-  process(arr, L, mid);
-  process(arr, mid + 1, R);
-  merge(arr, L, mid, R);
-}
-
-function merge(arr, L, M, R) {
-  let help = [];
-  let i = 0;
-  let p1 = L;
-  let p2 = M + 1;
-  while (p1 <= M && p2 <= R) {
-    help[i++] = arr[p1] <= arr[p2] ? arr[p1++] : arr[p2++];
-  }
-
-  while (p1 <= M) {
-    help[i++] = arr[p1++];
-  }
-
-  while (p2 <= R) {
-    help[i++] = arr[p2++];
-  }
-
-  for (let i = 0; i < help.length; i++) {
-    arr[L + i] = help[i];
-  }
-  return;
-}
-```
-
-## **快速排序**
+## **快速排序**-O(N*logN)
 
 > 一句话：采用经典的分治策略，选择数组中某个元素作为基准数，通过一趟排序将数组分为独立的两个子数组，一个子数组中所有元素值都比基准数小，另一个子数组中所有元素值都比基准数大。然后再按照同样的方式递归的对两个子数组分别进行快速排序，以达到整个数组有序。
 
@@ -213,7 +164,56 @@ function netherlandsFlag(arr, L, R) {
 }
 ```
 
-## **堆排序**
+## 归并排序-O(N*logN)
+
+> 一句话：采用经典的分治策略，先递归地将当前数组平均分成两半，然后将有序数组两两合并，最终合并成一个有序数组。
+
+测试链接：https://leetcode.cn/problems/sort-an-array/description/
+
+```
+function mergeSort(arr) {
+  if (arr == null || arr.length < 2) {
+    return;
+  }
+  process(arr, 0, arr.length - 1);
+  return arr;
+}
+
+function process(arr, L, R) {
+  if (L == R) {
+    return;
+  }
+  let mid = L + ((R - L) >> 1);
+  process(arr, L, mid);
+  process(arr, mid + 1, R);
+  merge(arr, L, mid, R);
+}
+
+function merge(arr, L, M, R) {
+  let help = [];
+  let i = 0;
+  let p1 = L;
+  let p2 = M + 1;
+  while (p1 <= M && p2 <= R) {
+    help[i++] = arr[p1] <= arr[p2] ? arr[p1++] : arr[p2++];
+  }
+
+  while (p1 <= M) {
+    help[i++] = arr[p1++];
+  }
+
+  while (p2 <= R) {
+    help[i++] = arr[p2++];
+  }
+
+  for (let i = 0; i < help.length; i++) {
+    arr[L + i] = help[i];
+  }
+  return;
+}
+```
+
+## **堆排序**--O(N*logN)
 
 > 一句话：是一种基于「堆结构」实现的高效排序算法
 
@@ -281,12 +281,20 @@ function shellSort(arr) {
 }
 ```
 
-## **计数排序**
+## **桶排序**-O(N)
+
+> 一句话：是分治策略的一个典型应用。它通过设置一些具有大小顺序的桶，每个桶对应一个数据范围，将数据平均分配到各个桶中；然后，在每个桶内部分别执行排序（使用插入排序、归并排序、快排排序等算法）；最终按照桶的顺序将所有数据合并。
+>
+> 桶排序、计数排序、基数排序都是线性排序，都是非基于比较的排序算法，都不涉及元素之间的比较操作。
+
+## **计数排序**-O(N)
 
 > 一句话：通过统计元素数量来实现排序，通常应用于整数数组。
+>
+> 适用于数据量 n 较大但数据范围 m 较小的情况。
 
 ```
-function countingSort(arr) {
+function countSort(arr) {
   // 1. 统计数组最大元素 m
   let m = 0;
   for (const num of arr) {
@@ -311,13 +319,9 @@ function countingSort(arr) {
 
 
 
-## **桶排序**
+## **基数排序**-O(N)
 
-> 一句话：是分治策略的一个典型应用。它通过设置一些具有大小顺序的桶，每个桶对应一个数据范围，将数据平均分配到各个桶中；然后，在每个桶内部分别执行排序；最终按照桶的顺序将所有数据合并。
->
-> 前述几种排序算法都属于“基于比较的排序算法”，它们通过比较元素间的大小来实现排序。
-
-## **基数排序**
+> 一句话：核心思想与计数排序一致，也通过统计个数来实现排序。在此基础上，基数排序利用数字各位之间的递进关系，依次对每一位进行排序，从而得到最终的排序结果。
 
 # 查找算法
 
