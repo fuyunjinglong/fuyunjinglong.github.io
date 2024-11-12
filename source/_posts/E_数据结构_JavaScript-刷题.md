@@ -262,6 +262,9 @@ function heapify(arr, i, size) {
 ## **希尔排序**
 
 > 一句话：将整个数组切按照一定的间隔取值划分为若干个子数组，每个子数组分别进行插入排序。然后逐渐缩小间隔进行下一轮划分子数组和对子数组进行插入排序。直至最后一轮排序间隔为 1，对整个数组进行插入排序。是插入排序的一种高速而稳定的改进版本。
+>
+> 1、设定初始步长，按照步长比较元素大小并交换
+> 2、步长减一，比较元素大小并交换
 
 ```
 function shellSort(arr) {
@@ -287,43 +290,299 @@ function shellSort(arr) {
 >
 > 桶排序、计数排序、基数排序都是线性排序，都是非基于比较的排序算法，都不涉及元素之间的比较操作。
 
-## **计数排序**-O(N)
-
-> 一句话：通过统计元素数量来实现排序，通常应用于整数数组。
->
-> 适用于数据量 n 较大但数据范围 m 较小的情况。
-
 ```
-function countSort(arr) {
-  // 1. 统计数组最大元素 m
-  let m = 0;
-  for (const num of arr) {
-    m = Math.max(m, num);
+function bucketSort(arr) {
+  let max = Math.max(...arr);
+  let min = Math.min(...arr);
+  // 桶的数量 = （最大值 - 最小值）/ 数组长度 + 1。
+  let bucketNum = parseInt((max - min) / arr.length) + 1;
+  let bucketArr = new Array(bucketNum);
+  for (var i = 0; i < bucketNum; i++) {
+    bucketArr[i] = new Array();
   }
-  // 2. 统计各数字的出现次数
-  // counter[num] 代表 num 的出现次数
-  const counter = new Array(m + 1).fill(0);
-  for (const num of arr) {
-    counter[num]++;
+  // 元素位置 =（ 元素大小 - 最小值）/ 数组长度
+  for (let i of arr) {
+    let num = parseInt((i - min) / arr.length);
+    bucketArr[num].push(i);
   }
-  // 3. 遍历 counter ，将各元素填入原数组 arr
-  let i = 0;
-  for (let num = 0; num < m + 1; num++) {
-    for (let j = 0; j < counter[num]; j++, i++) {
-      arr[i] = num;
+  // 使用系统自带的快排
+  for (let i of bucketArr) {
+    i.sort();
+  }
+  let k = 0;
+  // 最后合并
+  for (let i = 0; i < bucketArr.length; i++) {
+    for (let j = 0; j < bucketArr[i].length; j++) {
+      arr[k++] = bucketArr[i][j];
     }
   }
   return arr;
 }
 ```
 
+## **计数排序**-O(N)
 
+> 一句话：通过统计元素数量来实现排序，通常应用于正整数数组。
+>
+> 适用于数据量 n 较大但数据范围 m 较小的情况。
+>
+> 1、建立0-M号桶
+> 2、把元素按大小放入对应桶
+> 3、依次把0-M号桶中的元素倒出
+
+```
+function countSort(arr) {
+  if (arr == null || arr.length < 2) {
+    return;
+  }
+  let max = Math.max(...arr);
+  let bucket = new Array(max + 1).fill(0);
+  for (let i = 0; i < arr.length; i++) {
+    bucket[arr[i]]++;
+  }
+  let i = 0;
+  for (let j = 0; j < bucket.length; j++) {
+    while (bucket[j]-- > 0) {
+      arr[i++] = j;
+    }
+  }
+  return arr;
+}
+```
 
 ## **基数排序**-O(N)
 
-> 一句话：核心思想与计数排序一致，也通过统计个数来实现排序。在此基础上，基数排序利用数字各位之间的递进关系，依次对每一位进行排序，从而得到最终的排序结果。
+> 1、准备0-9号桶
+> 2、元素按个位数放入对应桶
+> 3、依次把0-9号桶中的元素倒出（先进先出），成为序列
+> 4、按序列把元素按十位数放入对应桶
+>
+> 注：计数排序和基数排序都属于桶排序的实现，桶排序是一种排序思想。计数排序必须是非负数组，不是则需要提前转换。
+
+```
+function radixSort(arr) {
+  if (arr == null || arr.length < 2) {
+    return;
+  }
+  // 数组中的每个数字，减去数组中的最小值，就把arr转成了非负数组
+  let min = Math.min(...arr);
+  for (let i = 0; i < arr.length; i++) {
+    // 数组中的每个数字，减去数组中的最小值，就把arr转成了非负数组
+    arr[i] -= min;
+  }
+  handel(arr, 0, arr.length - 1, maxbits(arr));
+  // 数组中所有数都减去了最小值，所以最后不要忘了还原
+  for (let i = 0; i < arr.length; i++) {
+    arr[i] += min;
+  }
+  return arr;
+}
+
+// arr[L..R]排序  ,  最大值的十进制位数digit
+function handel(arr, L, R, digit) {
+  let radix = 10;
+  let i = 0,
+    j = 0;
+  // 有多少个数准备多少个辅助空间
+  let help = new Array(R - L + 1);
+  for (let d = 1; d <= digit; d++) {
+    // 有多少位就进出几次
+    // 10个空间
+    // count[0] 当前位(d位)是0的数字有多少个
+    // count[1] 当前位(d位)是(0和1)的数字有多少个
+    // count[2] 当前位(d位)是(0、1和2)的数字有多少个
+    // count[i] 当前位(d位)是(0~i)的数字有多少个
+    let count = new Array(radix).fill(0); // count[0..9]
+    for (i = L; i <= R; i++) {
+      // 103  1   3
+      // 209  1   9
+      j = getDigit(arr[i], d);
+      count[j]++;
+    }
+    for (i = 1; i < radix; i++) {
+      count[i] = count[i] + count[i - 1];
+    }
+    for (i = R; i >= L; i--) {
+      j = getDigit(arr[i], d);
+      help[count[j] - 1] = arr[i];
+      count[j]--;
+    }
+    for (i = L, j = 0; i <= R; i++, j++) {
+      arr[i] = help[j];
+    }
+  }
+}
+// 返回最大值的位数
+function maxbits(arr) {
+  let max = 0;
+  for (let i = 0; i < arr.length; i++) {
+    max = Math.max(max, arr[i]);
+  }
+  let res = 0;
+  while (max != 0) {
+    res++;
+    max /= 10;
+  }
+  return res;
+}
+
+// 返回x这个数在倒数第d位上的数是几
+function getDigit(x, d) {
+  return (x / parseInt(Math.pow(10, d - 1))) % 10;
+}
+```
 
 # 查找算法
+
+## 二分查找
+
+经常看到在有序数组上，开展二分搜索。但有序是所有问题使用二分的必要条件吗？不是，只要能正确构建左右两侧的淘汰逻辑，就可以用二分。
+
+- 题目1:在一个有序数组中，找某个数是否存在。
+- 题目2:在一个有序数组中，找>=某个数最左侧的位置
+- 题目3:在一个有序数组中，找<=某个数最右侧的位置
+- 题目4:局部最小值问题，无序数组，任意两个相邻的数不相等，返回一个局部最小值。注意：这个局部最小值可能有多个，只要找到一个就可以。
+
+```
+// 题目1:在一个有序数组中，找某个数是否存在。
+// 测试链接：https://leetcode.cn/problems/binary-search/submissions/580111267/
+function exist(sortedArr, num) {
+  // 默认sortedArr是升序的
+  if (sortedArr == null || sortedArr.length == 0) {
+    return -1;
+  }
+  let L = 0;
+  let R = sortedArr.length - 1;
+  let mid = 0;
+  // L..R
+  while (L < R) {
+    // L..R 至少两个数的时候
+    mid = L + ((R - L) >> 1);
+    if (sortedArr[mid] == num) {
+      return mid;
+    } else if (sortedArr[mid] > num) {
+      // 因为数组是升序的，中间>num,去左半边查询
+      R = mid - 1;
+    } else {
+      // 去右半边查询
+      L = mid + 1;
+    }
+  }
+  return sortedArr[L] === num ? L : -1;
+}
+// 题目2:在一个有序数组中，找>=某个数最左侧的位置
+public static int nearestIndex(int[] arr, int value) {
+ int L = 0;
+ int R = arr.length - 1;
+ int index = -1; // 记录最左的对号
+ // 相当于，在大于等于value区域，一直往左收缩，直到index左边没有数为止
+ while (L <= R) { // 至少一个数的时候
+  int mid = L + ((R - L) >> 1);
+  if (arr[mid] >= value) {
+   // 记录mid,往左收缩
+   index = mid;
+   R = mid - 1;
+  } else {
+   // 往右收缩
+   L = mid + 1;
+  }
+ }
+ return index;
+}
+// 题目3:在一个有序数组中，找<=某个数最右侧的位置
+public static int nearestIndex(int[] arr, int value) {
+ int L = 0;
+ int R = arr.length - 1;
+ int index = -1; // 记录最右的对号
+ // 相当于，在小于等于value区域，一直往右收缩，直到index右边没有数为止
+ while (L <= R) {
+  int mid = L + ((R - L) >> 1);
+  if (arr[mid] <= value) {
+   // 记录mid,往右收缩
+   index = mid;
+   L = mid + 1;
+  } else {
+   // 往左收缩
+   R = mid - 1;
+  }
+ }
+ return index;
+}
+// 题目4:局部最小值问题
+public static int getLessIndex(int[] arr) {
+ if (arr == null || arr.length == 0) {
+  return -1;
+ }
+ // 情况1：如果一个数组(0~1)(0 1)是升序排列，则局部最小值是 0 位置
+ if (arr.length == 1 || arr[0] < arr[1]) {
+  return 0;
+ }
+ // 情况2：如果一个数组(n-2, n-1)(n−2,n−1)是降序排列，则局部最小值是 n - 1n−1 位置
+ if (arr[arr.length - 1] < arr[arr.length - 2]) {
+  return arr.length - 1;
+ }
+ int left = 1;
+ int right = arr.length - 2;
+ int mid = 0;
+ // 情况3：数组开头向下，结尾向上，那这个局部最小位置一定在中间
+ while (left < right) {
+  mid = (left + right) / 2;
+  if (arr[mid] > arr[mid - 1]) {
+   right = mid - 1;
+  } else if (arr[mid] > arr[mid + 1]) {
+   left = mid + 1;
+  } else {
+   return mid;
+  }
+ }
+ return left;
+}
+```
+
+**二分下标题目**
+
+- [ 二分查找](https://leetcode.cn/problems/binary-search/)
+- [猜数字大小](https://leetcode.cn/problems/guess-number-higher-or-lower/)
+- [搜索插入位置](https://leetcode.cn/problems/search-insert-position/)
+- [在排序数组中查找元素的第一个和最后一个位置](https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/)
+- [两数之和 II - 输入有序数组](https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/)
+- [寻找旋转排序数组中的最小值](https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array/)
+- [寻找旋转排序数组中的最小值 II](https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array-ii/)
+- [搜索旋转排序数组](https://leetcode.cn/problems/search-in-rotated-sorted-array/)
+- [搜索旋转排序数组 II](https://leetcode.cn/problems/search-in-rotated-sorted-array-ii/)
+- [第一个错误的版本](https://leetcode.cn/problems/first-bad-version/)
+- [寻找峰值](https://leetcode.cn/problems/find-peak-element/)
+- [ 山脉数组的峰顶索引](https://leetcode.cn/problems/peak-index-in-a-mountain-array/)
+- [山脉数组中查找目标值](https://leetcode.cn/problems/find-in-mountain-array/)
+- [寻找比目标字母大的最小字母](https://leetcode.cn/problems/find-smallest-letter-greater-than-target/)
+- [寻找两个正序数组的中位数](https://leetcode.cn/problems/median-of-two-sorted-arrays/)
+- [搜索二维矩阵](https://leetcode.cn/problems/search-a-2d-matrix/)
+- [搜索二维矩阵 II](https://leetcode.cn/problems/search-a-2d-matrix-ii/)
+
+**二分答案题目**
+
+- [x 的平方根](https://leetcode.cn/problems/sqrtx/)
+- [寻找重复数](https://leetcode.cn/problems/find-the-duplicate-number/)
+- [Pow(x, n)](https://leetcode.cn/problems/powx-n/)
+- [有效的完全平方数](https://leetcode.cn/problems/valid-perfect-square/)
+- [ 转变数组后最接近目标值的数组和](https://leetcode.cn/problems/sum-of-mutated-array-closest-to-target/)
+- [第 N 位数字](https://leetcode.cn/problems/nth-digit/)
+
+**复杂的二分查找问题**
+
+- [爱吃香蕉的珂珂](https://leetcode.cn/problems/koko-eating-bananas/)
+- [分割数组的最大值](https://leetcode.cn/problems/split-array-largest-sum/)
+- [长度最小的子数组](https://leetcode.cn/problems/minimum-size-subarray-sum/)
+- [找到 K 个最接近的元素](https://leetcode.cn/problems/find-k-closest-elements/)
+- [最接近的二叉搜索树值](https://leetcode.cn/problems/closest-binary-search-tree-value/)
+- [搜索长度未知的有序数组](https://leetcode.cn/problems/search-in-a-sorted-array-of-unknown-size/)
+- [ 两个数组的交集](https://leetcode.cn/problems/intersection-of-two-arrays/)
+- [两个数组的交集 II](https://leetcode.cn/problems/intersection-of-two-arrays-ii/)
+- [寻找重复数](https://leetcode.cn/problems/find-the-duplicate-number/)
+- [找出第 K 小的数对距离](https://leetcode.cn/problems/find-k-th-smallest-pair-distance/)
+- [较小的三数之和](https://leetcode.cn/problems/3sum-smaller/)
+- [在 D 天内送达包裹的能力](https://leetcode.cn/problems/capacity-to-ship-packages-within-d-days/)
+- [制作 m 束花所需的最少天数](https://leetcode.cn/problems/minimum-number-of-days-to-make-m-bouquets/)
 
 # 数组
 
