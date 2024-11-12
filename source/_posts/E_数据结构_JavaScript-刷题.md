@@ -13,6 +13,8 @@ toc: true # 是否启用内容索引
 - [《代码随想录》](https://github.com/fuyunjinglong/leetcode-master)
 - [Hello 算法](https://www.hello-algo.com/chapter_sorting/selection_sort/)
 - [Leecode-CN](https://leetcode.cn/problemset/)
+- [基本算法题汇总](https://github.com/fuyunjinglong/leetcode-master/blob/master/problems/0001.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C.md)
+- [基本算法题汇总-video](https://www.bilibili.com/video/BV1aT41177mK/?vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 
 # 工具函数
 
@@ -43,6 +45,7 @@ function swap(arr,  i, j) {
 > - 这1趟完，最大泡泡就在最右侧。然后循环。[0-,j]
 
 ```
+// 测试链接 : https://leetcode.cn/problems/sort-an-array/
 function bubbleSort(arr){
     // 外循环：未排序区间为 [0, j]
     for(let j=arr.length-1;j>0;j--){
@@ -72,6 +75,7 @@ function bubbleSort(arr){
 > - 这一趟完，最小值出现在左区间最左侧。然后循环
 
 ```
+// 测试链接 : https://leetcode.cn/problems/sort-an-array/
 function selectionSort(arr) {
   // 外循环：未排序区间为 [0, n-1]
   for (let j = 0; j < arr.length - 1; j++) {
@@ -94,6 +98,7 @@ function selectionSort(arr) {
 > 一句话：将数组分为两个区间：左侧为有序区间，右侧为无序区间。每趟从无序区间取出一个元素，然后将其插入到有序区间的适当位置。类似打扑克牌
 
 ```
+// 测试链接 : https://leetcode.cn/problems/sort-an-array/
 function insertionSort(arr) {
   // 外层循环0 ~ i 做到有序
   for (let i = 1; i < arr.length; i++) {
@@ -110,9 +115,8 @@ function insertionSort(arr) {
 
 > 一句话：采用经典的分治策略，选择数组中某个元素作为基准数，通过一趟排序将数组分为独立的两个子数组，一个子数组中所有元素值都比基准数小，另一个子数组中所有元素值都比基准数大。然后再按照同样的方式递归的对两个子数组分别进行快速排序，以达到整个数组有序。
 
-测试链接：https://leetcode.cn/problems/sort-an-array/description/
-
 ```
+// 测试链接 : https://leetcode.cn/problems/sort-an-array/
 function quickSort(arr) {
   if (arr == null || arr.length < 2) {
     return;
@@ -168,9 +172,8 @@ function netherlandsFlag(arr, L, R) {
 
 > 一句话：采用经典的分治策略，先递归地将当前数组平均分成两半，然后将有序数组两两合并，最终合并成一个有序数组。
 
-测试链接：https://leetcode.cn/problems/sort-an-array/description/
-
 ```
+// 测试链接 : https://leetcode.cn/problems/sort-an-array/
 function mergeSort(arr) {
   if (arr == null || arr.length < 2) {
     return;
@@ -217,12 +220,11 @@ function merge(arr, L, M, R) {
 
 > 一句话：是一种基于「堆结构」实现的高效排序算法
 
-测试链接：https://leetcode.cn/problems/sort-an-array/description/
-
 ```
 // 从底到顶建立大根堆，O(n)
 // 依次弹出堆内最大值并排好序，O(n * logn)
 // 整体时间复杂度O(n * logn)
+// 测试链接 : https://leetcode.cn/problems/sort-an-array/
 function heapSort(arr) {
   let n = arr.length;
   for (let i = n - 1; i >= 0; i--) {
@@ -267,6 +269,7 @@ function heapify(arr, i, size) {
 > 2、步长减一，比较元素大小并交换
 
 ```
+// 测试链接 : https://leetcode.cn/problems/sort-an-array/
 function shellSort(arr) {
   //增量gap，并逐步缩小增量
   for (let gap = arr.length / 2; gap > 0; gap /= 2) {
@@ -331,6 +334,7 @@ function bucketSort(arr) {
 > 3、依次把0-M号桶中的元素倒出
 
 ```
+// 测试链接 : https://leetcode.cn/problems/sort-an-array/
 function countSort(arr) {
   if (arr == null || arr.length < 2) {
     return;
@@ -360,6 +364,7 @@ function countSort(arr) {
 > 注：计数排序和基数排序都属于桶排序的实现，桶排序是一种排序思想。计数排序必须是非负数组，不是则需要提前转换。
 
 ```
+// 测试链接 : https://leetcode.cn/problems/sort-an-array/
 function radixSort(arr) {
   if (arr == null || arr.length < 2) {
     return;
@@ -455,8 +460,8 @@ function exist(sortedArr, num) {
   let R = sortedArr.length - 1;
   let mid = 0;
   // L..R
-  while (L < R) {
-    // L..R 至少两个数的时候
+  while (L <= R) {
+    // 防止溢出 等同于(left + right)/2
     mid = L + ((R - L) >> 1);
     if (sortedArr[mid] == num) {
       return mid;
@@ -468,7 +473,7 @@ function exist(sortedArr, num) {
       L = mid + 1;
     }
   }
-  return sortedArr[L] === num ? L : -1;
+  return -1;
 }
 // 题目2:在一个有序数组中，找>=某个数最左侧的位置
 public static int nearestIndex(int[] arr, int value) {
@@ -585,6 +590,86 @@ public static int getLessIndex(int[] arr) {
 - [制作 m 束花所需的最少天数](https://leetcode.cn/problems/minimum-number-of-days-to-make-m-bouquets/)
 
 # 数组
+
+```
+// 二分查找
+// 测试链接：https://leetcode.cn/problems/binary-search/submissions/580111267/
+function exist(sortedArr, num) {
+  // 默认sortedArr是升序的
+  if (sortedArr == null || sortedArr.length == 0) {
+    return -1;
+  }
+  let L = 0;
+  let R = sortedArr.length - 1;
+  let mid = 0;
+  // L..R
+  while (L <= R) {
+    // 防止溢出 等同于(left + right)/2
+    mid = L + ((R - L) >> 1);
+    if (sortedArr[mid] == num) {
+      return mid;
+    } else if (sortedArr[mid] > num) {
+      // 因为数组是升序的，中间>num,去左半边查询
+      R = mid - 1;
+    } else {
+      // 去右半边查询
+      L = mid + 1;
+    }
+  }
+  // 最终没找到
+  return -1;
+}
+
+// 测试链接：https://leetcode.cn/problems/find-peak-element/
+// 题目4:局部最小值问题
+function getLessIndex(arr) {
+  if (arr == null || arr.length == 0) {
+    return -1;
+  }
+  // 情况1：先看先0位置。如果一个数组(0~1)(0 1)是升序排列，则局部最小值是 0 位置
+  if (arr.length == 1 || arr[0] < arr[1]) {
+    return 0;
+  }
+  // 情况2：再看下n-1位置。如果一个数组(n-2, n-1)(n−2,n−1)是降序排列，则局部最小值是 n - 1n−1 位置
+  if (arr[arr.length - 1] < arr[arr.length - 2]) {
+    return arr.length - 1;
+  }
+  let left = 1;
+  let right = arr.length - 2;
+  let mid = 0;
+  // 情况3：数组开头向下，结尾向上，那这个局部最小位置一定在中间
+  while (left <= right) {
+    mid = left + ((right - left) >> 1);
+    if (arr[mid] > arr[mid - 1]) {
+      right = mid - 1;
+    } else if (arr[mid] > arr[mid + 1]) {
+      left = mid + 1;
+    } else {
+      return mid;
+    }
+  }
+  // 这里不需要判断，因为一定有局部最小值或局部最大值
+  // return -1;
+}
+```
+
+**数组操作题目**
+
+- [二分查找](https://leetcode.cn/problems/binary-search/submissions/)
+- [轮转数组](https://leetcode.cn/problems/rotate-array/)
+- [加一](https://leetcode.cn/problems/plus-one/)
+- [寻找数组的中心下标](https://leetcode.cn/problems/find-pivot-index/)
+- [最大连续 1 的个数](https://leetcode.cn/problems/max-consecutive-ones/)
+- [除自身以外数组的乘积](https://leetcode.cn/problems/product-of-array-except-self/)
+
+**二维数组题目**
+
+- [对角线遍历](https://leetcode.cn/problems/diagonal-traverse/)
+- [旋转图像](https://leetcode.cn/problems/rotate-image/)
+- [矩阵置零](https://leetcode.cn/problems/set-matrix-zeroes/)
+- [螺旋矩阵](https://leetcode.cn/problems/spiral-matrix/)
+- [螺旋矩阵 II](https://leetcode.cn/problems/spiral-matrix-ii/)
+- [生命游戏](https://leetcode.cn/problems/game-of-life/)
 
 # 字符串
 
