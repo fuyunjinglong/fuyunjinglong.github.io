@@ -448,6 +448,7 @@ function getDigit(x, d) {
 - 题目3:在一个有序数组中，找<=某个数最右侧的位置
 - 题目4:局部最小值问题，无序数组，任意两个相邻的数不相等，返回一个局部最小值。注意：这个局部最小值可能有多个，只要找到一个就可以。
 - 题目5：局部最大值问题即寻找峰值。
+- 题目6：在一个有峰值的山脉数组中，找到目标值最小的索引值
 
 ```
 // 题目1
@@ -510,6 +511,7 @@ function getLessIndex(arr) {
 }
 
 // 测试链接：https://leetcode.cn/problems/find-peak-element/
+// 测试链接：https://leetcode.cn/problems/peak-index-in-a-mountain-array/description/
 // 题目5：局部最大值即寻找峰值
 function getMoreIndex(arr) {
      if (arr == null || arr.length == 0) {
@@ -537,6 +539,44 @@ function getMoreIndex(arr) {
       return mid;
     }
   }
+}
+
+// 测试链接：https://leetcode.cn/problems/find-in-mountain-array/description/
+// 题目6：在一个有峰值的山脉数组中，找到目标值最小的索引值
+function findInMountainArray(arr) {
+  let peek = -1,
+    n = mountainArr.length();
+  let l = 1,
+    r = n - 1;
+  //寻找峰值
+  while (l < r) {
+    let mid = (l + r) >> 1;
+    if (mountainArr.get(mid) > mountainArr.get(mid + 1)) r = mid;
+    else l = mid + 1;
+  }
+
+  r = peek = l;
+  l = 0;
+
+  //左区间寻找
+  while (l < r) {
+    let mid = (l + r) >> 1;
+    if (mountainArr.get(mid) >= target) r = mid;
+    else l = mid + 1;
+  }
+  if (mountainArr.get(l) == target) return l;
+
+  //右区间寻找
+  l = peek;
+  r = n - 1;
+  while (l < r) {
+    let mid = (l + r) >> 1;
+    if (mountainArr.get(mid) <= target) r = mid;
+    else l = mid + 1;
+  }
+
+  if (mountainArr.get(l) == target) return l;
+  else return -1;
 }
 ```
 
