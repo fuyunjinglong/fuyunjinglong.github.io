@@ -437,7 +437,7 @@ function getDigit(x, d) {
 }
 ```
 
-# 查找算法
+# 数组
 
 ## 二分查找
 
@@ -447,9 +447,10 @@ function getDigit(x, d) {
 - 题目2:在一个有序数组中，找>=某个数最左侧的位置
 - 题目3:在一个有序数组中，找<=某个数最右侧的位置
 - 题目4:局部最小值问题，无序数组，任意两个相邻的数不相等，返回一个局部最小值。注意：这个局部最小值可能有多个，只要找到一个就可以。
+- 题目5：局部最大值问题即寻找峰值。
 
 ```
-// 题目1:在一个有序数组中，找某个数是否存在。
+// 题目1
 // 测试链接：https://leetcode.cn/problems/binary-search/submissions/580111267/
 function exist(sortedArr, num) {
   // 默认sortedArr是升序的
@@ -473,74 +474,69 @@ function exist(sortedArr, num) {
       L = mid + 1;
     }
   }
+  // 最终没找到
   return -1;
 }
-// 题目2:在一个有序数组中，找>=某个数最左侧的位置
-public static int nearestIndex(int[] arr, int value) {
- int L = 0;
- int R = arr.length - 1;
- int index = -1; // 记录最左的对号
- // 相当于，在大于等于value区域，一直往左收缩，直到index左边没有数为止
- while (L <= R) { // 至少一个数的时候
-  int mid = L + ((R - L) >> 1);
-  if (arr[mid] >= value) {
-   // 记录mid,往左收缩
-   index = mid;
-   R = mid - 1;
-  } else {
-   // 往右收缩
-   L = mid + 1;
-  }
- }
- return index;
-}
-// 题目3:在一个有序数组中，找<=某个数最右侧的位置
-public static int nearestIndex(int[] arr, int value) {
- int L = 0;
- int R = arr.length - 1;
- int index = -1; // 记录最右的对号
- // 相当于，在小于等于value区域，一直往右收缩，直到index右边没有数为止
- while (L <= R) {
-  int mid = L + ((R - L) >> 1);
-  if (arr[mid] <= value) {
-   // 记录mid,往右收缩
-   index = mid;
-   L = mid + 1;
-  } else {
-   // 往左收缩
-   R = mid - 1;
-  }
- }
- return index;
-}
+
 // 题目4:局部最小值问题
-public static int getLessIndex(int[] arr) {
- if (arr == null || arr.length == 0) {
-  return -1;
- }
- // 情况1：如果一个数组(0~1)(0 1)是升序排列，则局部最小值是 0 位置
- if (arr.length == 1 || arr[0] < arr[1]) {
-  return 0;
- }
- // 情况2：如果一个数组(n-2, n-1)(n−2,n−1)是降序排列，则局部最小值是 n - 1n−1 位置
- if (arr[arr.length - 1] < arr[arr.length - 2]) {
-  return arr.length - 1;
- }
- int left = 1;
- int right = arr.length - 2;
- int mid = 0;
- // 情况3：数组开头向下，结尾向上，那这个局部最小位置一定在中间
- while (left < right) {
-  mid = (left + right) / 2;
-  if (arr[mid] > arr[mid - 1]) {
-   right = mid - 1;
-  } else if (arr[mid] > arr[mid + 1]) {
-   left = mid + 1;
-  } else {
-   return mid;
+function getLessIndex(arr) {
+  if (arr == null || arr.length == 0) {
+    return -1;
   }
- }
- return left;
+  // 情况1：先看先0位置。如果一个数组(0~1)(0 1)是升序排列，则局部最小值是 0 位置
+  if (arr.length == 1 || arr[0] < arr[1]) {
+    return 0;
+  }
+  // 情况2：再看下n-1位置。如果一个数组(n-2, n-1)(n−2,n−1)是降序排列，则局部最小值是 n - 1n−1 位置
+  if (arr[arr.length - 1] < arr[arr.length - 2]) {
+    return arr.length - 1;
+  }
+  let left = 1;
+  let right = arr.length - 2;
+  let mid = 0;
+  // 情况3：数组开头向下，结尾向上，那这个局部最小位置一定在中间
+  while (left <= right) {
+    mid = left + ((right - left) >> 1);
+    if (arr[mid] > arr[mid - 1]) {
+      left = mid - 1;
+    } else if (arr[mid] > arr[mid + 1]) {
+      right = mid + 1;
+    } else {
+      return mid;
+    }
+  }
+  // 这里不需要判断，因为一定有局部最小值或局部最大值
+  // return -1;
+}
+
+// 测试链接：https://leetcode.cn/problems/find-peak-element/
+// 题目5：局部最大值即寻找峰值
+function getMoreIndex(arr) {
+     if (arr == null || arr.length == 0) {
+    return -1;
+  }
+  // 情况1：先看先0位置。如果一个数组(0~1)(0 1)是升序排列，则局部最大值是 0 位置
+  if (arr.length == 1 || arr[0] > arr[1]) {
+    return 0;
+  }
+  // 情况2：再看下n-1位置。如果一个数组(n-2, n-1)(n−2,n−1)是降序排列，则局部最大值是 n - 1n−1 位置
+  if (arr[arr.length - 1] > arr[arr.length - 2]) {
+    return arr.length - 1;
+  }
+  let left = 1;
+  let right = arr.length - 2;
+  let mid = 0;
+  // 情况3：数组开头向下，结尾向上，那这个局部最大位置一定在中间
+  while (left <= right) {
+    mid = left + ((right - left) >> 1);
+    if ( arr[mid - 1]>arr[mid]) {
+      right = mid -1
+    } else if (arr[mid] < arr[mid + 1]) {
+      left = mid+1
+    } else {
+      return mid;
+    }
+  }
 }
 ```
 
@@ -589,71 +585,7 @@ public static int getLessIndex(int[] arr) {
 - [在 D 天内送达包裹的能力](https://leetcode.cn/problems/capacity-to-ship-packages-within-d-days/)
 - [制作 m 束花所需的最少天数](https://leetcode.cn/problems/minimum-number-of-days-to-make-m-bouquets/)
 
-# 数组
-
-```
-// 二分查找
-// 测试链接：https://leetcode.cn/problems/binary-search/submissions/580111267/
-function exist(sortedArr, num) {
-  // 默认sortedArr是升序的
-  if (sortedArr == null || sortedArr.length == 0) {
-    return -1;
-  }
-  let L = 0;
-  let R = sortedArr.length - 1;
-  let mid = 0;
-  // L..R
-  while (L <= R) {
-    // 防止溢出 等同于(left + right)/2
-    mid = L + ((R - L) >> 1);
-    if (sortedArr[mid] == num) {
-      return mid;
-    } else if (sortedArr[mid] > num) {
-      // 因为数组是升序的，中间>num,去左半边查询
-      R = mid - 1;
-    } else {
-      // 去右半边查询
-      L = mid + 1;
-    }
-  }
-  // 最终没找到
-  return -1;
-}
-
-// 测试链接：https://leetcode.cn/problems/find-peak-element/
-// 题目4:局部最小值问题
-function getLessIndex(arr) {
-  if (arr == null || arr.length == 0) {
-    return -1;
-  }
-  // 情况1：先看先0位置。如果一个数组(0~1)(0 1)是升序排列，则局部最小值是 0 位置
-  if (arr.length == 1 || arr[0] < arr[1]) {
-    return 0;
-  }
-  // 情况2：再看下n-1位置。如果一个数组(n-2, n-1)(n−2,n−1)是降序排列，则局部最小值是 n - 1n−1 位置
-  if (arr[arr.length - 1] < arr[arr.length - 2]) {
-    return arr.length - 1;
-  }
-  let left = 1;
-  let right = arr.length - 2;
-  let mid = 0;
-  // 情况3：数组开头向下，结尾向上，那这个局部最小位置一定在中间
-  while (left <= right) {
-    mid = left + ((right - left) >> 1);
-    if (arr[mid] > arr[mid - 1]) {
-      right = mid - 1;
-    } else if (arr[mid] > arr[mid + 1]) {
-      left = mid + 1;
-    } else {
-      return mid;
-    }
-  }
-  // 这里不需要判断，因为一定有局部最小值或局部最大值
-  // return -1;
-}
-```
-
-**数组操作题目**
+## **数组操作题目**
 
 - [二分查找](https://leetcode.cn/problems/binary-search/submissions/)
 - [轮转数组](https://leetcode.cn/problems/rotate-array/)
@@ -662,7 +594,7 @@ function getLessIndex(arr) {
 - [最大连续 1 的个数](https://leetcode.cn/problems/max-consecutive-ones/)
 - [除自身以外数组的乘积](https://leetcode.cn/problems/product-of-array-except-self/)
 
-**二维数组题目**
+## **二维数组题目**
 
 - [对角线遍历](https://leetcode.cn/problems/diagonal-traverse/)
 - [旋转图像](https://leetcode.cn/problems/rotate-image/)
