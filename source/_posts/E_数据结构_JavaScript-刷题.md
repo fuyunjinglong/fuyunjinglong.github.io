@@ -441,14 +441,14 @@ function getDigit(x, d) {
 
 ## 二分查找
 
-经常看到在有序数组上，开展二分搜索。但有序是所有问题使用二分的必要条件吗？不是，只要能正确构建左右两侧的淘汰逻辑，就可以用二分。
+经常看到在有序数组上，开展二分搜索。但有序是所有问题使用二分的必要条件吗？不是，只要能**正确构建左右两侧的淘汰逻辑**，就可以用二分。
 
-- 题目1:在一个有序数组中，找某个数是否存在。
-- 题目2:在一个有序数组中，找>=某个数最左侧的位置
-- 题目3:在一个有序数组中，找<=某个数最右侧的位置
-- 题目4:局部最小值问题，无序数组，任意两个相邻的数不相等，返回一个局部最小值。注意：这个局部最小值可能有多个，只要找到一个就可以。
-- 题目5：局部最大值问题即寻找峰值。
-- 题目6：在一个有峰值的山脉数组中，找到目标值最小的索引值
+- 题目1：在一个有序数组中，找某个数是否存在。
+- 题目2：在一个有序数组中，找>=某个数最左侧的位置
+- 题目3：在一个有序数组中，找<=某个数最右侧的位置
+- 题目4：局部最小值问题即寻找局部波谷值。无序数组，任意两个相邻的数不相等，返回一个局部最小值。注意：这个局部最小值可能有多个，只要找到一个就可以。
+- 题目5：局部最大值问题即寻找局部波峰值。同局部最小值
+- 题目6：在特殊数组为山脉数组中，找到匹配目标值对应的下标索引值中的最小的那个返回。
 
 ```
 // 题目1
@@ -479,7 +479,30 @@ function exist(sortedArr, num) {
   return -1;
 }
 
-// 题目4:局部最小值问题
+// 题目2和题目3：在一个有序数组中，找>=某个数最左/右侧的位置，flag为true表示最左，false表示最右
+// 测试链接：类似https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/
+function nearFarIndex(arr, value, flag = true) {
+  let L = 0;
+  let R = arr.length - 1;
+  let index = -1; // 记录最左的对号
+  // 相当于，在大于等于value区域，一直往左收缩，直到index左边没有数为止
+  while (L <= R) {
+    // 至少一个数的时候
+    let mid = L + ((R - L) >> 1);
+    const a = flag ? arr[mid] >= value : arr[mid] <= value;
+    if (a) {
+      // 记录mid,往左收缩，或往右收缩
+      index = mid;
+      flag ? (R = mid - 1) : (L = mid + 1);
+    } else {
+      // 往右收缩
+      flag ? (L = mid + 1) : (R = mid - 1);
+    }
+  }
+  return index;
+}
+
+// 题目4:局部最小值问题即寻找局部波谷值
 function getLessIndex(arr) {
   if (arr == null || arr.length == 0) {
     return -1;
@@ -510,9 +533,9 @@ function getLessIndex(arr) {
   // return -1;
 }
 
+// 题目5：局部最大值问题即寻找局部波峰值
 // 测试链接：https://leetcode.cn/problems/find-peak-element/
 // 测试链接：https://leetcode.cn/problems/peak-index-in-a-mountain-array/description/
-// 题目5：局部最大值即寻找峰值
 function getMoreIndex(arr) {
      if (arr == null || arr.length == 0) {
     return -1;
@@ -541,9 +564,9 @@ function getMoreIndex(arr) {
   }
 }
 
+// 题目6：在特殊数组为山脉数组中，找到匹配目标值对应的下标索引值中的最小的那个返回。
 // 测试链接：https://leetcode.cn/problems/find-in-mountain-array/description/
-// 题目6：在一个有峰值的山脉数组中，找到目标值最小的索引值
-function findInMountainArray(arr) {
+function findInMountainArray(arr,target) {
   let peek = -1,
     n = mountainArr.length();
   let l = 1,
@@ -580,19 +603,57 @@ function findInMountainArray(arr) {
 }
 ```
 
+题目：在排序数组中查找元素的第一个和最后一个位置
+
+```
+// 题目:在排序数组中查找元素的第一个和最后一个位置
+// 测试链接：https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/
+function searchRange(arr, target) {
+  let left = nearFarIndex(arr, target);
+  let right = nearFarIndex(arr, target, false);
+  if (arr[left] !== target) {
+    left = -1;
+  }
+  if (arr[right] !== target) {
+    right = -1;
+  }
+  return [left, right];
+}
+
+// 在一个有序数组中，找>=某个数最左/右侧的位置，flag为true表示最左，false表示最右
+function nearFarIndex(arr, value, flag = true) {
+  let L = 0;
+  let R = arr.length - 1;
+  let index = -1; // 记录最左的对号
+  // 相当于，在大于等于value区域，一直往左收缩，直到index左边没有数为止
+  while (L <= R) {
+    // 至少一个数的时候
+    let mid = L + ((R - L) >> 1);
+    const a = flag ? arr[mid] >= value : arr[mid] <= value;
+    if (a) {
+      // 记录mid,往左收缩，或往右收缩
+      index = mid;
+      flag ? (R = mid - 1) : (L = mid + 1);
+    } else {
+      // 往右收缩
+      flag ? (L = mid + 1) : (R = mid - 1);
+    }
+  }
+  return index;
+}
+```
+
+## 二分查找题目
+
 **二分下标题目**
 
-- [ 二分查找](https://leetcode.cn/problems/binary-search/)
 - [猜数字大小](https://leetcode.cn/problems/guess-number-higher-or-lower/)
 - [搜索插入位置](https://leetcode.cn/problems/search-insert-position/)
-- [在排序数组中查找元素的第一个和最后一个位置](https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/)
-- [两数之和 II - 输入有序数组](https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/)
 - [寻找旋转排序数组中的最小值](https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array/)
 - [寻找旋转排序数组中的最小值 II](https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array-ii/)
 - [搜索旋转排序数组](https://leetcode.cn/problems/search-in-rotated-sorted-array/)
 - [搜索旋转排序数组 II](https://leetcode.cn/problems/search-in-rotated-sorted-array-ii/)
 - [第一个错误的版本](https://leetcode.cn/problems/first-bad-version/)
-- [寻找峰值](https://leetcode.cn/problems/find-peak-element/)
 - [ 山脉数组的峰顶索引](https://leetcode.cn/problems/peak-index-in-a-mountain-array/)
 - [山脉数组中查找目标值](https://leetcode.cn/problems/find-in-mountain-array/)
 - [寻找比目标字母大的最小字母](https://leetcode.cn/problems/find-smallest-letter-greater-than-target/)
@@ -625,16 +686,15 @@ function findInMountainArray(arr) {
 - [在 D 天内送达包裹的能力](https://leetcode.cn/problems/capacity-to-ship-packages-within-d-days/)
 - [制作 m 束花所需的最少天数](https://leetcode.cn/problems/minimum-number-of-days-to-make-m-bouquets/)
 
-## **数组操作题目**
+**数组操作题目**
 
-- [二分查找](https://leetcode.cn/problems/binary-search/submissions/)
 - [轮转数组](https://leetcode.cn/problems/rotate-array/)
 - [加一](https://leetcode.cn/problems/plus-one/)
 - [寻找数组的中心下标](https://leetcode.cn/problems/find-pivot-index/)
 - [最大连续 1 的个数](https://leetcode.cn/problems/max-consecutive-ones/)
 - [除自身以外数组的乘积](https://leetcode.cn/problems/product-of-array-except-self/)
 
-## **二维数组题目**
+**二维数组题目**
 
 - [对角线遍历](https://leetcode.cn/problems/diagonal-traverse/)
 - [旋转图像](https://leetcode.cn/problems/rotate-image/)
@@ -642,6 +702,120 @@ function findInMountainArray(arr) {
 - [螺旋矩阵](https://leetcode.cn/problems/spiral-matrix/)
 - [螺旋矩阵 II](https://leetcode.cn/problems/spiral-matrix-ii/)
 - [生命游戏](https://leetcode.cn/problems/game-of-life/)
+
+## 双指针
+
+题目：两数之和。在一个非降序数组(升序数组）中，找出满足相加之和等于目标数 target 的两个数
+
+```
+// 题目：两数之和。在一个非降序数组(升序数组）中，找出满足相加之和等于目标数 target 的两个数
+// 测试链接：https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/description/
+// 解法一：通过二分法
+function twoSum(numbers, target) {
+  for (let i = 0; i < numbers.length; ++i) {
+    let low = i + 1;
+    let high = numbers.length - 1;
+    while (low <= high) {
+      let mid = low + ((high - low) >> 1);
+      if (numbers[i]+numbers[mid] == target  ) {
+        return [i + 1, mid + 1];
+      } else if (numbers[i]+numbers[mid] > target) {
+        high = mid - 1;
+      } else {
+        low = mid + 1;
+      }
+    }
+  }
+  return [-1, -1];
+}
+
+// 解法二：双指针法
+function twoSum(numbers, target) {
+  let low = 0,
+    high = numbers.length - 1;
+  while (low < high) {
+    let sum = numbers[low] + numbers[high];
+    if (sum == target) {
+      return [low + 1, high + 1];
+    } else if (sum < target) {
+      ++low;
+    } else {
+      --high;
+    }
+  }
+  return [-1, -1];
+}
+
+// 解法三：二分结合双指针
+function twoSum(numbers, target) {
+  let i = 0;
+  let j = numbers.length - 1;
+  while (i < j) {
+    let m = (i + j) >>> 1;
+    if (numbers[i] + numbers[m] > target) {
+      j = m - 1;
+    } else if (numbers[m] + numbers[j] < target) {
+      i = m + 1;
+    } else if (numbers[i] + numbers[j] > target) {
+      j--;
+    } else if (numbers[i] + numbers[j] < target) {
+      i++;
+    } else {
+      return [i + 1, j + 1];
+    }
+  }
+  return [0, 0];
+}
+```
+
+题目：三数之和。
+
+
+
+## 双指针题目
+
+**对撞指针**
+
+- [ 两数之和 II - 输入有序数组](https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/)
+- [三数之和](https://leetcode.cn/problems/3sum/)
+- [反转字符串](https://leetcode.cn/problems/reverse-string/)
+- [反转字符串中的元音字母](https://leetcode.cn/problems/reverse-vowels-of-a-string/)
+- [验证回文串](https://leetcode.cn/problems/valid-palindrome/)
+- [盛最多水的容器](https://leetcode.cn/problems/container-with-most-water/)
+- [有效三角形的个数](https://leetcode.cn/problems/valid-triangle-number/)
+- [最接近的三数之和](https://leetcode.cn/problems/3sum-closest/)
+- [四数之和](https://leetcode.cn/problems/4sum/)
+- [较小的三数之和](https://leetcode.cn/problems/3sum-smaller/)
+- [找到 K 个最接近的元素](https://leetcode.cn/problems/find-k-closest-elements/)
+- [小于 K 的两数之和](https://leetcode.cn/problems/two-sum-less-than-k/)
+- [颜色分类](https://leetcode.cn/problems/sort-colors/)
+- [有序转化数组](https://leetcode.cn/problems/sort-transformed-array/)
+- [有序数组的平方](https://leetcode.cn/problems/squares-of-a-sorted-array/)
+- [救生艇](https://leetcode.cn/problems/boats-to-save-people/)
+- [接雨水](https://leetcode.cn/problems/trapping-rain-water/)
+- [压缩字符串](https://leetcode.cn/problems/string-compression/)
+
+**快慢指针**
+
+- [删除有序数组中的重复项](https://leetcode.cn/problems/remove-duplicates-from-sorted-array/)
+- [删除有序数组中的重复项 II](https://leetcode.cn/problems/remove-duplicates-from-sorted-array-ii/)
+- [移除元素](https://leetcode.cn/problems/remove-element/)
+- [移动零](https://leetcode.cn/problems/move-zeroes/)
+- [数组中的最长山脉](https://leetcode.cn/problems/longest-mountain-in-array/)
+- [合并两个有序数组](https://leetcode.cn/problems/merge-sorted-array/)
+- [找出第 K 小的数对距离](https://leetcode.cn/problems/find-k-th-smallest-pair-distance/)
+- [递增的三元子序列](https://leetcode.cn/problems/increasing-triplet-subsequence/)
+- [最长湍流子数组](https://leetcode.cn/problems/longest-turbulent-subarray/)
+- [调整数组顺序使奇数位于偶数前面](https://leetcode.cn/problems/diao-zheng-shu-zu-shun-xu-shi-qi-shu-wei-yu-ou-shu-qian-mian-lcof/)
+
+**分离双指针**
+
+- [两个数组的交集 II](https://leetcode.cn/problems/intersection-of-two-arrays-ii/)
+- [长按键入](https://leetcode.cn/problems/long-pressed-name/)
+- [比较含退格的字符串](https://leetcode.cn/problems/backspace-string-compare/)
+- [安排会议日程](https://leetcode.cn/problems/meeting-scheduler/)
+- [字符串相加](https://leetcode.cn/problems/add-strings/)
+- [判断子序列](https://leetcode.cn/problems/is-subsequence/)
 
 # 字符串
 
