@@ -768,7 +768,64 @@ function twoSum(numbers, target) {
 }
 ```
 
-题目：三数之和。
+题目：三数之和。给你一个整数数组 `nums` ，判断是否存在三元组 `[nums[i], nums[j], nums[k]]` 满足 `i != j`、`i != k` 且 `j != k` ，同时还满足 `nums[i] + nums[j] + nums[k] == 0` 。请你返回所有和为 `0` 且不重复的三元组。
+
+```
+// 排序+双指针
+算法流程：
+1.特判，对于数组长度 n，如果数组为 null 或者数组长度小于 3，返回 []。
+2.对数组进行排序。
+3.遍历排序后数组：
+3.1若 nums[i]>0：因为已经排序好，所以后面不可能有三个数加和等于 0，直接返回结果。
+3.2对于重复元素：跳过，避免出现重复解
+3.3令左指针 L=i+1，右指针 R=n−1，当 L<R 时，执行循环：
+ a.当 nums[i]+nums[L]+nums[R]==0，执行循环，判断左界和右界是否和下一位置重复，去除重复解。并同时将 L,R 移到下一位置，寻找新的解
+ b.若和大于 0，说明 nums[R] 太大，R 左移
+ c.若和小于 0，说明 nums[L] 太小，L 右移
+
+function threeSum  (nums) {
+    // 题目提到数组的 length 至少为3, 就不做边界处理了
+    let result = [];
+    // 原数组先原地排序
+    nums.sort((a, b) => a - b);
+
+    for (let i = 0; i < nums.length - 2; i++) {
+        let first = nums[i]; // 第一个元素
+        if (first > 0) break; // 第一个元素大于0了, 剩余的元素之和肯定也大于0
+        if (i > 0 && first === nums[i - 1]) continue;
+        let L = i + 1 //第二个元素下标
+        let R = nums.length - 1; // 第三个元素下标
+
+        while (L < R) {
+            const sum = first + nums[L] + nums[R]
+            if (sum === 0) {
+                result.push([first, nums[L], nums[R]])
+                // 继续看L 的右边和 R 的左边, 是不是重复
+                while (L < R && nums[L] === nums[L + 1]) {
+                    L = L + 1
+                }
+                while (L < R && nums[R] === nums[R - 1]) {
+                    R = R - 1
+                }
+                // 移动 L 和 R
+                L = L + 1
+                R = R - 1
+            } else if (sum > 0) {
+                // 大于0, 说明第三个元素太大了
+                R = R - 1
+            } else {
+                // 小于0, 说明第二个元素太小了
+                L = L + 1
+            }
+        }
+    }
+
+    return result;
+};
+
+```
+
+
 
 ## 双指针题目
 
@@ -816,6 +873,57 @@ function twoSum(numbers, target) {
 - [判断子序列](https://leetcode.cn/problems/is-subsequence/)
 
 # 字符串
+
+## 模式匹配
+
+**1.单模式串匹配问题**
+
+> **单模式匹配问题（Single Pattern Matching）**：给定一个文本串 T=t1t2...tn，再给定一个特定模式串 p=p1p2...pn。要求从文本串 T 找出特定模式串 p 的所有出现位置。
+
+有很多算法可以解决单模式匹配问题。而根据在文本中搜索模式串方式的不同，我们可以将单模式匹配算法分为以下几种：
+
+- **基于前缀搜索方法**：在搜索窗口内从前向后（沿着文本的正向）逐个读入文本字符，搜索窗口中文本和模式串的最长公共前缀。
+  - 著名的「Knuth-Morris-Pratt (KMP) 算法」和更快的「Shift-Or 算法」使用的就是这种方法。
+- **基于后缀搜索方法**：在搜索窗口内从后向前（沿着文本的反向）逐个读入文本字符，搜索窗口中文本和模式串的最长公共后缀。使用这种搜索算法可以跳过一些文本字符，从而具有亚线性的平均时间复杂度。
+  - 最著名的「Boyer-Moore 算法」，以及「Horspool 算法」、「Sunday（Boyer-Moore 算法的简化）算法」都使用了这种方法。
+- **基于子串搜索方法**：在搜索窗口内从后向前（沿着文本的反向）逐个读入文本字符，搜索满足「既是窗口中文本的后缀，也是模式串的子串」的最长字符串。与后缀搜索方法一样，使用这种搜索方法也具有亚线性的平均时间复杂度。这种方法的主要缺点在于需要识别模式串的所有子串，这是一个非常复杂的问题。
+  - 「Rabin-Karp 算法」、「Backward Dawg Matching（BDM）算法」、「Backward Nondeterministtic Dawg Matching（BNDM）算法」和 「Backward Oracle Matching（BOM）算法」 使用的就是这种思想。其中，「Rabin-Karp 算法」使用了基于散列的子串搜索算法。
+
+**2.多模式串匹配问题**
+
+> **多模式匹配问题（Multi Pattern Matching）**：给定一个文本串 T=t1t2...tn，再给定一组模式串 P=p1,p2,...,pr，其中每个模式串 pi 是定义在有限字母表上的字符串 pi=p1ip2i...pni。要求从文本串 T 中找到模式串集合 P 中所有模式串 pi 的所有出现位置。
+
+模式串集合 P 中的一些字符串可能是集合中其他字符串的子串、前缀、后缀，或者完全相等。解决多模式串匹配问题最简单的方法是利用「单模式串匹配算法」搜索 r 遍。这将导致预处理阶段的最坏时间复杂度为 O(|P|)，搜索阶段的最坏时间复杂度为 O(r×n)。
+
+如果使用「单模式串匹配算法」解决多模式匹配问题，那么根据在文本中搜索模式串方式的不同，我们也可以将多模式串匹配算法分为以下三种：
+
+- **基于前缀搜索方法**：搜索从前向后（沿着文本的正向）进行，逐个读入文本字符，使用在P上构建的自动机进行识别。对于每个文本位置，计算既是已读入文本的后缀，同时也是P中某个模式串的前缀的最长字符串。
+  - 著名的 「Aho-Corasick Automaton（AC 自动机）算法」、「Multiple Shift-And 算法」使用的这种方法。
+- **基于后缀搜索方法**：搜索从后向前（沿着文本的反向）进行，搜索模式串的后缀。根据后缀的下一次出现位置来移动当前文本位置。这种方法可以避免读入所有的文本字符。
+  - 「Commentz-Walter（Boyer-Moore 算法的扩展算法）算法」 、「Set Horspool（Commentz-Walter 算法的简化算法）算法」、「Wu-Manber 算法」都使用了这种方法。
+- **基于子串搜索方法**：搜索从后向前（沿着文本的反向）进行，在模式串的长度为min(len(pi))的前缀中搜索子串，以此决定当前文本位置的移动。这种方法也可以避免读入所有的文本字符。
+  - 「Multiple BNDM 算法」、「Set Backward Dawg Matching（SBDM）算法」、「Set Backwrad Oracle Matching（SBOM）算法」都使用了这种方法。
+
+需要注意的是，以上所介绍的多模式串匹配算法大多使用了一种基本的数据结构：**「字典树（Trie Tree）」**。著名的 **「Aho-Corasick Automaton (AC 自动机) 算法」** 就是在「KMP 算法」的基础上，与「字典树」结构相结合而诞生的。而「AC 自动机算法」也是多模式串匹配算法中最有效的算法之一。
+
+所以学习多模式匹配算法，重点是要掌握 **「字典树」** 和 **「AC 自动机算法」** 。
+
+## KMP算法
+
+
+
+## 题目
+
+- [验证回文串](https://leetcode.cn/problems/valid-palindrome/)
+- [最长公共前缀](https://leetcode.cn/problems/longest-common-prefix/)
+- [最长回文子串](https://leetcode.cn/problems/longest-palindromic-substring/)
+- [无重复字符的最长子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/)
+- [反转字符串](https://leetcode.cn/problems/reverse-string/)
+- [反转字符串中的单词 III](https://leetcode.cn/problems/reverse-words-in-a-string-iii/)
+- [字母异位词分组](https://leetcode.cn/problems/group-anagrams/)
+- [字符串相加](https://leetcode.cn/problems/add-strings/)
+- [反转字符串中的单词](https://leetcode.cn/problems/reverse-words-in-a-string/)
+- [字符串相乘](https://leetcode.cn/problems/multiply-strings/)
 
 # 链表
 
