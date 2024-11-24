@@ -994,6 +994,29 @@ function getNextArray(str2) {
 }
 ```
 
+题目：最长公共前缀
+
+```
+// 题目：最长公共前缀
+// 测试链接：https://leetcode.cn/problems/longest-common-prefix/
+function longestCommonPrefix(strs) {
+  var re = "";
+  if (!strs.length) return re;
+  for (var j = 0; j < strs[0].length; j++) {
+    //第j位
+    for (var i = 1; i < strs.length; i++) {
+      //第i个
+      // 如果中间发现有字符不相等，则直接跳出双层循环，返回最长公共前缀
+      if (strs[i][j] != strs[0][j]) return re;
+    }
+    // 只要还相等，则继续累计下去
+    re += strs[0][j];
+  }
+  // 假如第一个就是最长公共前缀，则直接返回
+  return re;
+}
+```
+
 
 
 ## 题目
