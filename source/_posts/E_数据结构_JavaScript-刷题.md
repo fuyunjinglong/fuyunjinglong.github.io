@@ -115,7 +115,7 @@ function insertionSort(arr) {
 
 > 一句话：采用经典的分治策略，选择数组中某个元素作为基准数，通过一趟排序将数组分为独立的两个子数组，一个子数组中所有元素值都比基准数小，另一个子数组中所有元素值都比基准数大。然后再按照同样的方式递归的对两个子数组分别进行快速排序，以达到整个数组有序。
 
-```
+```js
 // 测试链接 : https://leetcode.cn/problems/sort-an-array/
 function quickSort(arr) {
   if (arr == null || arr.length < 2) {
@@ -167,6 +167,68 @@ function netherlandsFlag(arr, L, R) {
   return [less + 1, more];
 }
 ```
+
+### 荷兰国旗问题
+
+题目1：给定一个包含红色、白色和蓝色、共 `n` 个元素的数组 `nums` ，原地对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。
+
+我们使用整数 `0`、 `1` 和 `2` 分别表示红色、白色和蓝色。输入：nums = [2,0,2,1,1,0]输出：[0,0,1,1,2,2]
+
+```
+题目1：荷兰国旗问题(颜色分类)
+测试链接：https://leetcode.cn/problems/sort-colors/description/
+// 解法1：利用快排的子函数partition实现
+function sortColors (nums) {
+  return  partition(nums, 0, nums.length - 1, 1)
+};
+
+function partition(arr, l, r, x) {
+// 将小于x的放左边，大于x的放右边
+  let first = l;
+  let last = r;
+  let i = l;
+  while (i <= last) {
+    if (arr[i] == x) {
+      i++;
+    } else if (arr[i] < x) {
+      swap(arr, first++, i++);
+    } else {
+      swap(arr, i, last--);
+    }
+  }
+  return arr;
+}
+
+// 解法2：刷腻子
+function sortColors(nums) {
+  let n0 = 0,
+    n1 = 0;
+  for (let i = 0; i < nums.length; i++) {
+    let num = nums[i];
+    // 先刷22222222222 先全变成2
+    nums[i] = 2;
+    // 再刷11111122222 再变成1
+    if (num < 2) {
+      nums[n1++] = 1;
+    }
+    // 再刷00011122222 再变成0
+    if (num < 1) {
+      nums[n0++] = 0;
+    }
+  }
+  return nums;
+}
+```
+
+题目2：数组中的第K个最大元素
+
+```
+题目2：数组中的第K个最大元素
+测试链接：https://leetcode.cn/problems/kth-largest-element-in-an-array/description/
+
+```
+
+
 
 ## 归并排序-O(N*logN)
 

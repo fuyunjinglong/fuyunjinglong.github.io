@@ -14,6 +14,7 @@ toc: true # 是否启用内容索引
 - [01-左神-算法与数据结构基础班【完结】](https://www.bilibili.com/video/BV1Ef4y1T7Qi?p=2&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - [左神笔记1](https://dairongpeng.github.io/algorithm-note/)
 - [左神笔记2](https://dingdingdang.online/%E7%AE%97%E6%B3%95/%E5%B7%A6%E7%A8%8B%E4%BA%91%E7%AE%97%E6%B3%95%E8%AF%BE%E3%80%90%E5%88%9D%E7%BA%A7%E7%8F%AD%E3%80%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B7%A6%E7%A8%8B%E4%BA%91%E7%AE%97%E6%B3%95%E8%AF%BE%E3%80%90%E5%88%9D%E7%BA%A7%E7%8F%AD%E3%80%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.html)
+- [左神github地址](https://github.com/algorithmzuo?tab=repositories)
 - [数据结构-浙江大学(opens new window)-video](https://www.bilibili.com/video/av18586085?from=search&seid=15275956372728133584)
 - [清华大学-邓俊辉MOOC数据结构与算法全套-video](https://www.bilibili.com/video/av49361421?from=search&seid=2756779141930403558)
 - [算法通关手册](https://algo.itcharge.cn/)
