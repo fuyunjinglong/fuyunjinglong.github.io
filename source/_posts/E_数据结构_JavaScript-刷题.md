@@ -220,16 +220,6 @@ function sortColors(nums) {
 }
 ```
 
-题目2：数组中的第K个最大元素
-
-```
-题目2：数组中的第K个最大元素
-测试链接：https://leetcode.cn/problems/kth-largest-element-in-an-array/description/
-
-```
-
-
-
 ## 归并排序-O(N*logN)
 
 > 一句话：采用经典的分治策略，先递归地将当前数组平均分成两半，然后将有序数组两两合并，最终合并成一个有序数组。
@@ -705,6 +695,8 @@ function nearFarIndex(arr, value, flag = true) {
 }
 ```
 
+
+
 ## 二分查找题目
 
 **二分下标题目**
@@ -885,6 +877,55 @@ function threeSum  (nums) {
     return result;
 };
 
+```
+
+题目2：数组中的第K个最大元素
+
+```
+题目2：数组中的第K个最大元素
+测试链接：https://leetcode.cn/problems/kth-largest-element-in-an-array/description/
+// 利用荷兰国旗问题求解
+function findKthLargest(nums, k) {
+  return randomizedSelect(nums, nums.length - k);
+}
+
+let first, last;
+// 如果arr排序的话，在i位置的数字是什么
+function randomizedSelect(arr, i) {
+  let ans = 0;
+  for (let l = 0, r = arr.length - 1; l <= r; ) {
+    // 随机这一下，常数时间比较大
+    // 但只有这一下随机，才能在概率上把时间复杂度收敛到O(n)
+    partition(arr, l, r, arr[l + parseInt(Math.random() * (r - l + 1))]);
+    // 因为左右两侧只需要走一侧
+    // 所以不需要临时变量记录全局的first、last
+    // 直接用即可
+    if (i < first) {
+      r = first - 1;
+    } else if (i > last) {
+      l = last + 1;
+    } else {
+      ans = arr[i];
+      break;
+    }
+  }
+  return ans;
+}
+
+function partition(arr, l, r, x) {
+  first = l;
+  last = r;
+  let i = l;
+  while (i <= last) {
+    if (arr[i] == x) {
+      i++;
+    } else if (arr[i] < x) {
+      swap(arr, first++, i++);
+    } else {
+      swap(arr, i, last--);
+    }
+  }
+}
 ```
 
 
