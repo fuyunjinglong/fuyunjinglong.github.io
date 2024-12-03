@@ -9,8 +9,8 @@ toc: true # 是否启用内容索引
 
 # 大纲
 
-- [《算法通关手册》](https://github.com/fuyunjinglong/LeetCode-Py)
 - [《代码随想录》](https://github.com/fuyunjinglong/leetcode-master)
+- [《算法通关手册》](https://github.com/fuyunjinglong/LeetCode-Py)
 - [Hello 算法](https://www.hello-algo.com/chapter_sorting/selection_sort/)
 - [Leecode-CN](https://leetcode.cn/problemset/)
 - [基本算法题汇总](https://github.com/fuyunjinglong/leetcode-master/blob/master/problems/0001.%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C.md)
@@ -1013,6 +1013,8 @@ function partition(arr, l, r, x) {
 
 ## KMP算法
 
+>  KMP的主要思想是**当出现字符串不匹配时，可以知道一部分之前已经匹配的文本内容，可以利用这些信息避免从头再去做匹配了。**
+>
 >  KMP算法核心：分2步走，s为主串，m为模板串。其中核心是**getNextArray**求解的过程
 >
 >  第一步：求解数组中模板串的最长公共前后缀的长度值(数组的值表示索引前的字符串存在的最长前缀与最长后缀相等的长度)
@@ -1120,6 +1122,23 @@ function longestCommonPrefix(strs) {
 }
 ```
 
+题目：验证回文串
+
+```
+// 题目：验证回文串
+// 测试链接：https://leetcode.cn/problems/valid-palindrome/description/
+// 第一步：使用正则替换掉所有非字母、数字还有空格，用toLowerCase()将字符串转换成小写
+// 第二步：将字符串转化成数组，用reverse()颠倒元素顺序，再用join()将其转换成字符串于原字符串进行对比
+function isPalindrome(s) {
+    //先替换掉所有非字母和数字
+    //再替换掉所有的空格
+    //然后后reverse()方法颠倒顺序
+    //最后两者进行对比
+     s=s.replace(/[^a-zA-Z0-9]/g,"").replace(/\s/g,"").toLowerCase();
+     return s===[...s].reverse().join("")
+}
+```
+
 
 
 ## 题目
@@ -1136,6 +1155,21 @@ function longestCommonPrefix(strs) {
 - [字符串相乘](https://leetcode.cn/problems/multiply-strings/)
 
 # 链表
+
+## 题目
+
+- [回文链表](https://leetcode.cn/problems/palindrome-linked-list/)
+- [设计链表](https://leetcode.cn/problems/design-linked-list/)
+- [删除排序链表中的重复元素](https://leetcode.cn/problems/remove-duplicates-from-sorted-list/)
+- [删除排序链表中的重复元素 II](https://leetcode.cn/problems/remove-duplicates-from-sorted-list-ii/)
+- [反转链表](https://leetcode.cn/problems/reverse-linked-list/)
+- [ 反转链表 II](https://leetcode.cn/problems/reverse-linked-list-ii/)
+- [K 个一组翻转链表](https://leetcode.cn/problems/reverse-nodes-in-k-group/)
+- [移除链表元素](https://leetcode.cn/problems/remove-linked-list-elements/)
+- [奇偶链表](https://leetcode.cn/problems/odd-even-linked-list/)
+- [扁平化多级双向链表](https://leetcode.cn/problems/flatten-a-multilevel-doubly-linked-list/)
+- [复制带随机指针的链表](https://leetcode.cn/problems/copy-list-with-random-pointer/)
+- [旋转链表](https://leetcode.cn/problems/rotate-list/)
 
 # 哈希表
 
