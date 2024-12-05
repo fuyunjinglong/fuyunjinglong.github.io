@@ -1156,6 +1156,8 @@ function isPalindrome(s) {
 
 # 链表
 
+题目：判断回文链表
+
 ## 题目
 
 - [回文链表](https://leetcode.cn/problems/palindrome-linked-list/)
