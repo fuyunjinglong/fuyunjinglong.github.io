@@ -881,7 +881,7 @@ function threeSum  (nums) {
 
 题目2：数组中的第K个最大元素
 
-```
+```js
 题目2：数组中的第K个最大元素
 测试链接：https://leetcode.cn/problems/kth-largest-element-in-an-array/description/
 // 利用荷兰国旗问题求解
@@ -1101,7 +1101,7 @@ function getNextArray(str2) {
 
 题目：最长公共前缀
 
-```
+```js
 // 题目：最长公共前缀
 // 测试链接：https://leetcode.cn/problems/longest-common-prefix/
 function longestCommonPrefix(strs) {
