@@ -609,7 +609,7 @@ $ git config  –global user.email
 创建SSH密钥，输入如下命令，根据提示输入三次回车（`email`为GitHub邮箱）：
 
 ```
-ssh-keygen -t rsa -C email地址
+ssh-keygen -t rsa -C 806435328@qq.com
 ```
 
 完成后会生成一幅圈圈星星图，这个时候就已经生成了`.ssh`的文件夹，文件一般位于用户文件夹下，即`C:\Users\<Administrator>\.ssh`，其中`<Administrator>`为Windows用户名。文件夹内容如下：
@@ -629,6 +629,16 @@ $ ssh -T git@github.com
 # 最后一行输出如下信息即为成功
 # Hi hwame! You've successfully authenticated...
 ```
+
+**注意**
+
+问题1：执行ssh -T git@github.com报错ssh: connect to host github.com port 22: Connection timed out fatal。
+
+> 原因：可能是github官网更新了公钥
+>
+> 解决：更新公钥  ssh-keygen -R github.com
+>
+> 
 
 # GitHub Pages免费站点
 
