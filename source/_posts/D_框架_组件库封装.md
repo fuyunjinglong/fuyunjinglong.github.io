@@ -55,6 +55,175 @@ homePage // 存放当前页面的文件夹
 - 方式三：参考大崔哥的新写法(直接赋值引用)--强烈推荐
 - 方式四：参考大崔哥的新写法(返回值引用)
 
+## 在华为开发组件库(Vue3+vite)
+
+**提供方**
+
+src\components\exportCom\test\Test.vue
+
+```
+<template>
+  <div class="Test">
+    <div>{{ list }}</div>
+  </div>
+</template>
+<script setup>
+import { ref, onMounted } from 'vue';
+const props = defineProps(['comParams']);
+const list = ref([]);
+onMounted(() => {
+  init();
+});
+async function init() {
+  list.value = props.comParams;
+}
+</script>
+
+
+```
+
+src\components\exportCom\index.js
+
+```
+import Test from '@/components/exportCom/test/Test.vue';
+export const comps = {
+  Test,
+};
+
+const compAbility = {
+  ...comps,
+};
+
+window.compAbility = compAbility;
+export default compAbility;
+```
+
+vite.comp.js
+
+```
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import { fileURLToPath, URL } from 'node:url';
+import basicSsl from '@vitejs/plugin-basic-ssl';
+import path from 'path';
+import AutoImport from 'unplugin-auto-import/vite';
+import Components from 'unplugin-vue-components/vite';
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+const resolveFile = function (filePath) {
+  return path.join(__dirname, filePath);
+};
+
+export default defineConfig(({ command, mode, ssrBuild }) => {
+  return {
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+      },
+    },
+    plugins: [
+      basicSsl(),
+      vue(),
+      AutoImport({
+        resolvers: [ElementPlusResolver()],
+      }),
+      Components({
+        resolvers: [ElementPlusResolver()],
+      }),
+    ],
+    build: {
+      sourcemap: true,
+      rollupOptions: {
+        input: resolveFile('./src/components/exportCom/index.js'),
+        external: ['vue', 'vue-router', 'pinia', 'element-plus'],
+        output: {
+          dir: 'dist',
+          name: 'compAbility',
+          entryFileNames: 'compAbility.js',
+          globals: {
+            vue: 'Vue',
+            'vue-router': 'VueRouter',
+            pinia: 'pinia',
+            'element-plus': 'ElementPlus',
+          },
+          format: 'iife',
+        },
+      },
+    },
+  };
+});
+```
+
+package.json
+
+```
+"build": "vite build --config vite.comp.js",
+```
+
+**调用方**
+
+src\hooks\useRemoteAsynCom.ts
+
+```
+import { defineAsyncComponent } from 'vue';
+
+function getMSJsUrl() {
+  return 'xx/compAbility.js';
+}
+
+export const loadJs = (url: string) => {
+  return new Promise((resolve, reject) => {
+    const headerJs = document.createElement('script');
+    headerJs.src = url;
+    document.body.append(headerJs);
+    headerJs.onload = function () {
+      resolve(null);
+    };
+    headerJs.onerror = function () {
+      reject();
+    };
+  });
+};
+
+export const resolveComp = (compPromise, comp, compName) => {
+  // 加载js完成后，异步导出组件，compPromise是组件的jsPromise,comp是组件js定义的全局变量，compName是最终的组件名称
+  return window[compPromise].then(() => {
+    const res = window[comp][compName];
+    res.name = compName;
+    return res;
+  });
+};
+export const useComps = () => {
+  const Test = defineAsyncComponent(() => resolveComp('marketSharePromise', 'compAbility', 'Test'));
+  return { Test };
+};
+
+// 加载js组件
+if (!window.marketSharePromise) {
+  window.marketSharePromise = loadJs(getMSJsUrl());
+}
+```
+
+src\view\home\Home.vue
+
+```
+<template>
+  <div class="home">
+    <div>首页</div>
+    <Test :comParams="comParams"></Test>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, reactive, toRefs, computed, onMounted } from 'vue';
+// import Test from '@/components/exportCom/test/Test.vue';
+import { useComps } from '@/hooks/useRemoteAsynCom.ts';
+
+const { Test } = useComps();
+const a = ref('这是测试');
+const comParams = reactive({ name: 'xxx' });
+</script>
+```
+
 # 前端组件设计原则
 
 > 原文地址：[Front end component design principles](https://engineering.carsguide.com.au/front-end-component-design-principles-55c5963998c9)

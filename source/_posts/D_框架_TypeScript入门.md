@@ -15,6 +15,66 @@ toc: true # 是否启用内容索引入门
 - TypeScript 类型体操通关秘籍-video
 - [ts类型体操](https://github.com/type-challenges/type-challenges/blob/main/README.zh-CN.md)
 
+# 初识TS
+
+TS最核心功能是类型检查和代码提示，只增加一点学习成本，Vue3本身就是用TS重构的,Vue3有较好的TS支持，越是大型复杂的项目，越是有必要。
+
+## Typescript 简介
+
+- ECMAScript 的超集 (stage 3)
+- 编译期的类型检查
+- 不引入额外开销（零依赖，不扩展 js 语法，不侵入运行时）
+- 编译出通用的、易读的 js 代码
+
+## 为什么使用 Typescript
+
+- 增加了代码的可读性和可维护性
+- 减少运行时错误，写出的代码更加安全，减少 BUG
+- 享受到代码提示带来的好处
+- 重构神器
+
+## 基础类型
+
+- boolean
+- number
+- string
+- array
+- tuple
+- enum
+- void
+- null & undefined
+- any & unknown
+- never
+
+### `any` 和 `unknown` 的区别
+
+- `any`: 任意类型
+- `unknown`: 未知的类型
+
+任何类型都能分配给 `unknown`，但 `unknown` 不能分配给其他基本类型，而 `any` 啥都能分配和被分配。
+
+## 函数类型
+
+```
+function fn(): number {
+  return 1
+}
+
+const fn = function (): number {
+  return 1
+}
+
+const fn = (): number => {
+  return 1
+}
+
+const obj = {
+  fn (): number {
+    return 1
+  }
+}
+```
+
 # 为什么你非常不适应 TypeScript
 
 ## 前言

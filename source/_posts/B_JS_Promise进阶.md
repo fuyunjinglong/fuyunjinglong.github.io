@@ -22,10 +22,9 @@ Promise解决了上述问题：
 
 # Promise是什么
 
-> - Promise 是异步编程的一种解决方案。将回调函数的异步编程方法转成用relsove和reject触发事件， 用then和catch捕获成功失败的状态执行相应代码
-> - Promise 对象代表一个异步操作，有三种状态：pending（进行中）、fulfilled（已成功）和rejected（已失败）。
-> - Promise 对象的状态改变，只有两种可能：从 pending 变为 fulfilled 和从 pending 变为
->   rejected。只要这两种情况发生，状态就凝固了，不会再变了，会一直保持这个结果，这时就称为 resolved（已定型）
+> - Promise是一种用于处理异步操作的编程模式，它可以表示一个未来可能完成或失败的事件。
+> - Promise有三种状态：pending（等待）、fulfilled（成功）和rejected（失败）。
+> - Promise对象可以通过then方法或async/await语法来获取异步操作的结果或处理错误。Promise还可以通过all、race、resolve和reject等静态方法来创建或组合多个Promise。
 
 **原理**
 

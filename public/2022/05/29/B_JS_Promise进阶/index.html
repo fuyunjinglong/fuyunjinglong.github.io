@@ -26,7 +26,7 @@
 <meta property="og:description" content="背景在Promise出现前，处理多个异步请求时，使用多层嵌套和同步处理。 带来两个问题：   嵌套调用，第一个函数的输出往往是第二个函数的输入； 处理多个异步请求并发，开发时往往需要同步请求最终的结果。   Promise解决了上述问题：   消灭嵌套调用：通过 Promise 的链式调用可以解决； 合并多个任务的请求结果：使用 Promise.all 获取合并多个任务的错误处理。   Promi">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-28T23:33:16.000Z">
-<meta property="article:modified_time" content="2023-03-20T14:20:04.187Z">
+<meta property="article:modified_time" content="2025-02-18T23:11:58.878Z">
 <meta property="article:author" content="Elven">
 <meta name="twitter:card" content="summary">
   <!-- Canonical links -->
@@ -390,9 +390,9 @@
 </blockquote>
 <h1 id="Promise是什么"><a href="#Promise是什么" class="headerlink" title="Promise是什么"></a>Promise是什么</h1><blockquote>
 <ul>
-<li>Promise 是异步编程的一种解决方案。将回调函数的异步编程方法转成用relsove和reject触发事件， 用then和catch捕获成功失败的状态执行相应代码</li>
-<li>Promise 对象代表一个异步操作，有三种状态：pending（进行中）、fulfilled（已成功）和rejected（已失败）。</li>
-<li>Promise 对象的状态改变，只有两种可能：从 pending 变为 fulfilled 和从 pending 变为<br>rejected。只要这两种情况发生，状态就凝固了，不会再变了，会一直保持这个结果，这时就称为 resolved（已定型）</li>
+<li>Promise是一种用于处理异步操作的编程模式，它可以表示一个未来可能完成或失败的事件。</li>
+<li>Promise有三种状态：pending（等待）、fulfilled（成功）和rejected（失败）。</li>
+<li>Promise对象可以通过then方法或async/await语法来获取异步操作的结果或处理错误。Promise还可以通过all、race、resolve和reject等静态方法来创建或组合多个Promise。</li>
 </ul>
 </blockquote>
 <p><strong>原理</strong></p>
@@ -632,12 +632,12 @@
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/2022/05/29/B_JS_%E5%8E%9F%E5%BD%A2%E5%8E%9F%E5%9E%8B%E9%93%BE%E7%BB%A7%E6%89%BF%E9%97%AD%E5%8C%85/" title="原形原型链继承闭包"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+      <a href="/2022/06/26/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_%E5%B0%A4%E9%9B%A8%E6%BA%AA/" title="尤雨溪"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
     </li>
     
     
     <li class="next">
-      <a href="/2022/05/22/B_JS_%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-%E6%8B%96%E6%8B%BD/" title="文件上传-拖拽"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/2022/05/29/B_JS_%E5%8E%9F%E5%BD%A2%E5%8E%9F%E5%9E%8B%E9%93%BE%E7%BB%A7%E6%89%BF%E9%97%AD%E5%8C%85/" title="原形原型链继承闭包"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     

@@ -259,219 +259,103 @@ CSS Modules 特性：
 
 [CSS 深入理解之 float 浮动](https://juejin.cn/post/6844903616155746312#heading-1)
 
-## 三栏布局（圣杯、双飞翼等6种）
-
-**float浮动**
-
-```
-<div id="left">left</div>
-<div id="right">right</div>
-<div id="middle">middle</div>
-
-      #left,
-      #right {
-        width: 200px;
-        height: 200px;
-        background: red;
-      }
-      #middle {
-        height: 200px;
-        background: green;
-      }
-      #left {
-        float: left;
-      }
-      #right {
-        float: right;
-      }
-```
-
-**position定位**
-
-```
-<div id="left">left</div>
-<div id="right">right</div>
-<div id="middle">middle</div>     
-     
-     #left,
-      #right {
-        width: 200px;
-        height: 100%;
-        background: red;
-      }
-      #left {
-        position: absolute;
-        left: 0;
-        top: 0;
-      }
-      #right {
-        position: absolute;
-        right: 0;
-        top: 0;
-      }
-      #middle {
-        margin: 0 200px;
-      }
-```
-
-**圣杯布局**
-
-> 原理：将基本布局之后使用向左浮动，middle栏用padding留出两边位置，然后使用相对定位将左右两栏通过margin-left,margin-right到相应位置。
-
-```
-    <div class="wrapper">
-      <div class="middle">middle</div>
-      <div class="left">left</div>
-      <div class="right">right</div>
-    </div>
-    
-          .wrapper {
-        /* 触发BFC,撑起mid，left,right高度*/
-        overflow: hidden;
-        /* 预留左右空间，等待left，right插入*/
-        padding-left: 100px;
-        padding-right: 100px;
-      }
-      .middle {
-        float: left;
-        width: 100%;
-        background: #d9d9d9;
-      }
-      .left {
-        float: left;
-        width: 100px;
-        background: #d5d60f;
-        /*向左偏移100%，并且再偏移一个100px*/
-        position: relative;
-        margin-left: -100%;
-        right: 100px;
-      }
-      .right {
-        float: left;
-        width: 100px;
-        background: #8cc94c;
-        /*右移100px*/
-        margin-right: -100px;
-      }
-```
-
-**双飞翼布局**
-
-> 原理：将基本布局之后使用向左浮动，middle栏用margin留出两边位置，然后不使用相对定位，将左右两栏通过margin-left到相应位置。
-
-```
-    <div class="middle">
-      <div id="middle-wrapper">middle</div>
-    </div>
-    <div class="left">left</div>
-    <div class="right">right</div>
-    
-          .middle {
-        float: left;
-        width: 100%;
-        background: #d9d9d9;
-      }
-      #middle-wrapper {
-        margin-left: 100px;
-        margin-right: 100px;
-      }
-      .left {
-        float: left;
-        width: 100px;
-        background: #d5d60f;
-        margin-left: -100%;
-      }
-      .right {
-        float: left;
-        width: 100px;
-        background: #8cc94c;
-        margin-left: -100px;
-      }
-```
+## 圣杯布局和双飞翼布局（经典三分栏布局）
 
 |        | 优点                               | 缺点                     |
 | ------ | ---------------------------------- | ------------------------ |
 | 圣杯   | 使用padding，dom简单               | 中间宽度过小，会布局混乱 |
 | 双飞翼 | 使用margin，支持各种宽高，通用型强 | dom复杂                  |
 
-**Flex布局**
+圣杯布局和双飞翼布局的目的：
+
+- 三栏布局，中间一栏最先加载和渲染（**内容最重要，这就是为什么还需要了解这种布局的原因**）。
+- 两侧内容固定，中间内容随着宽度自适应。
+- 一般用于 PC 网页。
+
+圣杯布局和双飞翼布局的技术总结：
+
+- 使用 `float` 布局。
+- 两侧使用 `margin` 负值，以便和中间内容横向重叠。
+- 防止中间内容被两侧覆盖，圣杯布局用 `padding` ，双飞翼布局用 `margin` 。
+
+**圣杯布局**
 
 ```
-    <div class="main">
-      <div class="left">left</div>
-      <div class="middle">middle</div>
-      <div class="right">right</div>
-  </div>
-  
-    .main{
-        display: flex;
-        align-items: center;
-    }
-    .left{
-        background: red;
-        width: 200px;
-        height: 300px;
-    }    
-    .right{
-        background: blue;
-        width: 200px;
-        height: 300px;
-    }
-    .middle{
-        background: green;
-        height: 300px;
-        width: 100%;
-    }
+<div id="container" class="clearfix">
+  <p class="center">我是中间</p>
+  <p class="left">我是左边</p>
+  <p class="right">我是右边</p>
+</div>
+
+#container {
+  padding-left: 200px;
+  padding-right: 150px;
+  overflow: auto;
+}
+#container p {
+  float: left;
+}
+.center {
+  width: 100%;
+  background-color: lightcoral;
+}
+.left {
+  width: 200px;
+  position: relative;
+  left: -200px;
+  margin-left: -100%;
+  background-color: lightcyan;
+}
+.right {
+  width: 150px;
+  margin-right: -150px;
+  background-color: lightgreen;
+}
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 ```
 
-**Grid布局**
+**双飞翼布局**
 
 ```
-    <div class="main">
-      <div class="left">left</div>
-      <div class="middle">middle</div>
-      <div class="right">right</div>
-  </div>
-  
-    .main{
-        display: grid;
-        height: 300px;
-    }
-    .left{
-        background: red;
-        grid-row:1;
-        grid-column:1/2;
-    }    
-    .right{
-        background: blue;
-        grid-row:1;
-        grid-column:4/5;
-    }
-    .middle{
-        background: green;
-        grid-row:1;
-        grid-column:2/4;
-    }
+<div id="main" class="float">
+  <div id="main-wrap">main</div>
+</div>
+<div id="left" class="float">left</div>
+<div id="right" class="float">right</div>
+
+.float {
+  float: left;
+}
+#main {
+  width: 100%;
+  height: 200px;
+  background-color: lightpink;
+}
+#main-wrap {
+  margin: 0 190px 0 190px;
+}
+#left {
+  width: 190px;
+  height: 200px;
+  background-color: lightsalmon;
+  margin-left: -100%;
+}
+#right {
+  width: 190px;
+  height: 200px;
+  background-color: lightskyblue;
+  margin-left: -190px;
+}
 ```
 
 ## CSS盒子模型
 
-盒子由四个属性组成，从内到外分别是：**content 内容**、**padding 内填充**、**border 边框**、**外边距 margin**
-
-**盒子分类：**
-
-- **W3C 盒子模型(标准盒模型)**
-- **IE 盒子模型(怪异盒模型)**
-
-**宽度和高度的计算方式:**
-
-- 标准盒模型：width = content
-- 怪异盒模型:  width = content+ padding+ border
-
-**CSS 设置这两个模型:**
-
-- 标准盒模型  box-sizing：content-box,如果加了padding，高度会变化。
-- 怪异盒模型 box-sizing: border-box,比较方便，常用，大量第三方库默认使用此模型。
+- `标准盒模型(box-sizing:content-box)`，width 指 content 的宽度，总宽度 = width + border+ padding+ margin；随着边距撑开
+- `怪异盒模型/IE盒模型(box-sizing:border-box)`，width 指 content + border+ padding，总宽度 = width + margin；宽度固定，推荐且浏览器默认
 
 **外边距合并**
 
@@ -479,146 +363,29 @@ CSS Modules 特性：
 
 [CSS 的两种盒模型](https://zhuanlan.zhihu.com/p/110617108)
 
-## 如何保持水平垂直居中 ？
-
-一、水平居中 
-
-（1）行内元素解决方案
-
-只需要把行内元素包裹在一个属性 display 为 block 的父层元素中，并且把父层元素添加如下属性即可。
-
-```
-.parent {
-    text-align: center;
-}
-```
-
-（2）块状元素解决方案  
-
-```
-.item {
-    /* 这里可以设置顶端外边距 */
-    margin: 10px auto;
-}
-```
-
-（3）多个块状元素解决方案将元素的 display 属性设置为 inline-block，并且把父元素的 text-align 属性设置为 center 即可:
-
-```
-.parent {
-    text-align:center;
-}
-```
-
-（4）多个块状元素解决方案
-
-使用 flexbox 布局，只需要把待处理的块状元素的父元素添加属性 display: flex 及 justify-content: center 即可。
-
-```
-.parent {
-    display: flex;
-    justify-content: center;
-}
-```
-
-二、垂直居中
-
-（1）单行的行内元素解决方案
-
-```
-.parent {
-    background: #222;
-    height: 200px;
-}
-
-/* 以下代码中，将 a 元素的 height 和 line-height 设置的和父元素一样高度即可实现垂直居中 */
-a {
-    height: 200px;
-    line-height:200px; 
-    color: #FFF;
-}
-```
-
-（2）多行的行内元素解决方案组合
-
-使用 display: table-cell 和 vertical-align: middle 属性来定义需要居中的元素的父容器元素生成效果，如下：
-
-```
-.parent {
-    background: #222;
-    width: 300px;
-    height: 300px;
-    /* 以下属性垂直居中 */
-    display: table-cell;
-    vertical-align: middle;
-}
-```
-
-（3）已知高度的块状元素解决方案
-
-```
-.item{
-    position: absolute;
-    top: 50%;
-    margin-top: -50px;  /* margin-top值为自身高度的一半 */
-    padding:0;
-}
-```
-
-三、水平垂直居中
-
-（1）已知高度和宽度的元素解决方案 1
-
-这是一种不常见的居中方法，可自适应，比方案 2 更智能，如下：
-
-```
-.item{
-    position: absolute;
-    margin:auto;
-    left:0;
-    top:0;
-    right:0;
-    bottom:0;
-}
-```
-
-（2）已知高度和宽度的元素解决方案 2
-
-```
-.item{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -75px;  /* 设置margin-left / margin-top 为自身高度的一半 */
-    margin-left: -75px;
-}
-```
-
-（3）未知高度和宽度元素解决方案
-
-```
-.item{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);  /* 使用 css3 的 transform 来实现 */
-}
-```
-
-（4）使用 flex 布局实现
-
-```
-.parent{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* 注意这里需要设置高度来查看垂直居中效果 */
-    background: #AAA;
-    height: 300px;
-}
-```
-
 ------
+
+## 元素水平/垂直居中
+
+1. 水平居中
+
+- 行内元素：`text-align: center;`
+- 对于确定宽度的块级元素
+  - width 和 margin 实现： `mragin: 0 auto;`
+  - 绝对定位和 margin-left 实现： `margin-left: (父width - 子 width)/2；`(前提是父元素相对定位)
+- 对于宽度未知的块级元素
+  - table 标签配合 margin 左右 auto 实现
+  - inline-block 实现：`display: inline-block; text-align: center;`
+  - 绝对定位和 transform 实现， translateX 可以移动本身元素的50%
+  - flex 布局 `justify-content: center`
+
+1. 垂直居中
+
+- 纯文字类，设置 line-height 等于 height
+- 子绝父相，子元素通过 margin 实现自适应居中
+- 子绝父相，通过位移 transform 实现
+- flex 布局，`align-items: center;`
+- table 布局，父级通过转换为表格形式，子级设置 vertical-align 实现
 
 ## position、float和display的取值意思
 
@@ -680,65 +447,106 @@ display
 </style>
 ```
 
-## **CSS Sprite雪碧图精灵图** 
+## CSS Sprites （雪碧图/精灵图）
 
-将一个页面涉及到的所有图片都包含到一张大图中去，然后利用 CSS 的 background-image，background-repeat，background-position 的组合进行背景定位。
+css sprites 就是把网页中一些小图片整合到一张图片文件中，再利用 css 的 background-image、background-repeat、background-position 的组合进行背景定位。
 
-- 能很好地减少了网页的 http 请求，从而大大的提高了页面的性能，
-- CSS Sprites 能减少图片的字节，曾经比较过多次 3 张图片合并成 1 张图片的字节总是小于这 3 张图片的和。
-- 解决了网页设计师在图片命名上的困扰
-- 更换风格方便，只需要在一张图片上修改样式，整个网页的风格就可以改变。维护起方便。
+优点： 减少图片体积；减少 http 请求次数
 
-也存在一些不可忽视的缺点，如下：
+缺点：维护比较麻烦；不能随便改变大小，会失真模糊
 
-- 在图片合并的时候，你要把多张图片有序的合理的合并成一张图片，还要留好足够的空间，防止板块内不不必要的背景；这些还好，最痛苦的是在宽屏，高分辨率的屏幕下的自适应页面，你的图片如果不够宽，很容背景断裂；
-- CSS Sprites 在开发的时候比较麻烦，你要通过 photoshop 或其他工具测量计算每一个背景单元的精确位是针线活，没什么难度，但是很繁琐；
-- CSS Sprites 在维护的时候比较麻烦，如果页面背景有少许改动，一般就要改这张合并的图片，无需改的好不要动，这样避免改动更多的 css，如果在原来的地方放不下，又只能（最好）往下加图片，这样图片的字加了，还要改动 css。
+## CSS选择器及优先级
 
-## CSS选择符有哪些？哪些属性可以继承？优先级？
+1. 选择器
+   - id选择器(#myid)
+   - 类选择器(.myclass)
+   - 属性选择器(a[rel="external"])
+   - 伪类选择器(a:hover, li:nth-child)
+   - 标签选择器(div, h1, p)
+   - 伪元素选择器(p::first-line)
+   - 相邻选择器（h1 + p）
+   - 子选择器(ul > li)
+   - 后代选择器(li a)
+   - 通配符选择器(*)
+2. 优先级
+   - `!important`
+   - 内联样式（1000）
+   - ID选择器（0100）
+   - 类选择器 / 属性选择器 / 伪类选择器（0010）
+   - 标签选择器 / 伪元素选择器（0001）
+   - 关系选择器 / 通配符选择器（0000）
 
-CSS 选择符
+带 !important 标记的样式属性优先级最高；样式表的来源相同时：`!important > 行内样式> ID选择器 > 类选择器 > 标签 > 通配符 > 继承 > 浏览器默认属性`
 
-1. id选择器（ # myid）
-2. 类选择器（.myclassname）
-3. 标签选择器（div, h1, p）
-4. 相邻选择器（h1 + p）
-5. 子选择器（ul > li）
-6. 后代选择器（li a）
-7. 通配符选择器（ * ）
-8. 属性选择器（a[rel = "external"]）
-9. 伪类选择器（a: hover, li: nth - child）
+3.继承性
 
-可继承的样式
+- 可继承的样式：font-size，font-family，color，ul，li，dl，dd，dt；
+- 不可继承的样式：border padding margin width height 事实上，宽度也不是继承的，而是如果你不指定宽度，那么它就是 100%。由于你子 DIV 并没有指定宽度，那它就是 100%，也就是与父 DIV 同宽，但这与继承无关，高度自然也没有继承一说。
 
-font-size，font-family，color，ul，li，dl，dd，dt；
+## rgba() 和 opacity 设置透明度的区别是什么？
 
-不可继承的样式
+rgba() 和 opacity 都能实现透明效果
 
-border padding margin width height 事实上，宽度也不是继承的，而是如果你不指定宽度，那么它就是 100%。由于你子 DIV 并没有指定宽度，那它就是 100%，也就是与父 DIV 同宽，但这与继承无关，高度自然也没有继承一说。
+-  opacity 作用于元素，以及元素内的所有内容的透明度
+-  rgba() 只作用于元素的颜色或其背景色，设置 rgba() 透明的元素的子元素不会继承透明效果。
 
-**CSS选择器优先级**
+## 浏览器是如何解析 css 选择器的？
 
-> 第一优先级：`!important`会覆盖页面内任何位置的元素样式
->
-> 1.内联样式，如`style="color: green"`，权值为`1000`
->
-> 2.ID选择器，如`#app`，权值为`0100`
->
-> 3.类、伪类、属性选择器，如`.foo, :first-child, div[class="foo"]`，权值为`0010`
->
-> 4.标签、伪元素选择器，如`div::first-line`，权值为`0001`
->
-> 5.通配符、子类选择器、兄弟选择器，如`*, >, +`，权值为`0000`
->
-> 6.继承的样式没有权值
+`从右向左解析的。`若从左向右匹配，发现不符合规则，需要回溯，会损失很多性能。若从右向左匹配，先找到所有的最后节点，对于每一个节点，向上寻找其父节点直到查找至根元素或满足条件的匹配规则，则结束这个分支的遍历。
 
+## display: none 和 visibility: hidden 两者的区别
 
+1. display: none 隐藏后不占用文档流；而 visibility: hidden 会占用文档流。
+2. visibility 具有继承性，给父元素设置 "visibility: hidden"，子元素也会继承该属性，但如果重新给子元素设置 "visibility: visible"，则子元素又会显示出来。
+3. visibility: hidden 不会影响计数器的计数，虽然隐藏了，但计数器依然运行着。
+4. 在 css3 中 transition 支持 visibility 属性，但不支持 display。因为 transition 可以延迟执行，因此配合 visibility 使用纯 css 延时显示效果可以提高用户体验。
+5. display: none 会引起回流（重排）和重绘；visibility: hidden 会引起重绘。
+
+## 简述 transform，transition，animation 的作用
+
+1. `transform`：描述了元素的静态样式，本身不会呈现动画效果，可以对元素进行旋转 rotate、扭曲 skew、缩放 scale 和移动 translate 以及矩阵变形 matrix。`transition` 和 `animation` 两者都能实现动画效果。`transform` 常配合`transition` 和 `animation` 使用。
+2. `transition`：样式过渡，从一种效果逐渐改变为另一种效果，它是一个合写属性。transition: transition-property  transition-duration  transition-timing-function  transition-delay 从左到右，依次是：过渡效果的css属性名称、过渡效果花费时间、速度曲线、过渡开始的延迟时间  `transition` 通常和 hover 等事件配合使用，需要由事件来触发过渡。
+3. `animation`：动画，有 `@keyframes` 来描述每一帧的样式。
+
+区别：
+
+- `transform` 仅描述元素的静态样式，常配合`transition` 和 `animation` 使用。
+- `transition` 通常和 hover 等事件配合使用；`animation` 是自发的，立即播放。
+- `animation` 可以设置循环次数。
+- `animation` 可以设置每一帧的样式和时间，`transition` 只能设置头尾。
+- `transition` 可以与 js 配合使用， js 设定要变化的样式，`transition` 负责动画效果。
+
+## position 属性的值有哪些？
+
+- `static`: 默认位置; 元素将会像通常那样流入页面。 `top`, `right`, `bottom`, `left` 和 `z-index` 属性不生效。
+- `relative`：元素的位置相对于它自己进行调整，而不改变布局（从而在元素没有被定位的情况下为它留下一个缺口）。
+- `absolute`：该元素从页面流中移除，并相对于其最近的祖先（如果有的话）或相对于初始包含块的指定位置定位。 绝对位置的方框可以有边距，而且它们不会与任何其他外边距一起折叠。 这些元素不影响其他元素的位置。
+- `fixed`：该元素被从页面流中移除，并被定位在相对于视口的指定位置，滚动时不会移动。
+- `sticky`：粘性定位是相对定位和固定定位的一种混合。 该元素被视为 `relative` 定位，直到它越过一个指定的阈值，超过这一阈值它将被视为 `fixed` 定位。
 
 ## 清除浮动
 
-1.父级div定义 overflow: auto（注意：是父级div也就是这里的 div.outer），最常用。
-2.添加新的子元素 、应用 clear：both；
+1.直接把 `<div style="clear: both;"></div>`作为最后一个子标签
+
+- 优点：通俗易懂，容易掌握；
+- 缺点：会添加较多无意义的空标签，有违结构与表现的分离，在后期维护中将是噩梦
+
+2.clearfix { overflow: hidden; zoom: 1; }
+
+- 优点：不存在结构和语义化问题，代码量极少
+- 缺点：内容增多时容易造成不自动换行，导致内容被隐藏掉，无法显示需要溢出的元素
+
+3.建立伪类选择器
+
+```
+.fix:after{
+content:'';/*设置添加子元素的内容为空*/
+display:block;
+height:0;
+visibility:hidden;
+clear:both;
+}
+```
 
 ## [css modules和scoped区别](https://segmentfault.com/a/1190000021670036)
 
@@ -834,81 +642,6 @@ flex: 1等价于`flex: 1 1 0`，也就是
 **flex-basis（默认值 auto）**
 
 `flex-basis`指定项目占据主轴的空间，如果不设置，则等于内容本身的空间
-
-## 对reflow和repaint的理解
-
-**回流比重绘的代价要更高。**
-
-![image-20220301072618199](/img/image-20220301072618199.png)
-
-**1.回流**(对应排列)
-
-当`Render Tree`中部分或全部元素的尺寸、结构、或某些属性发生改变时，浏览器重新渲染部分或全部文档的过程称为回流。
-
-```
-会导致回流的操作：
-页面首次渲染
-浏览器窗口大小发生改变
-元素尺寸或位置发生改变
-元素内容变化（文字数量或图片大小等等）
-元素字体大小变化
-添加或者删除可见的DOM元素
-激活CSS伪类（例如：:hover）
-查询某些属性或调用某些方法
-
-导致回流的属性和方法：
-clientWidth、clientHeight、clientTop、clientLeft
-offsetWidth、offsetHeight、offsetTop、offsetLeft
-scrollWidth、scrollHeight、scrollTop、scrollLeft
-scrollIntoView()、scrollIntoViewIfNeeded()
-getComputedStyle()
-getBoundingClientRect()
-scrollTo()
-```
-
-**2.重绘**(对应绘制)
-
-当页面中元素样式的改变并不影响它在文档流中的位置时（例如：`color`、`background-color`、`visibility`等），浏览器会将新样式赋予给元素并重新绘制它。
-
-**3.为什么要优化？**
-
-浏览器会维护一个队列，把所有引起回流和重绘的操作放入队列中，如果队列中的任务数量或者时间间隔达到一个阈值的，浏览器就会将队列清空，进行一次批处理，这样可以把多次回流和重绘变成一次。
-
-重排和重绘不只是对单个的dom元素进行操作，而是对整个【图层】进行操作，需要花费时间，如果频率高，非常的影响性能。所以有时候有必要开启另一个图层操作。
-
-```
-那么什么情况可以开启图层？
-1、css 3D变化的图形 ---- transform: translateX(0)
-2、html5中的<video>标签
-3、canvas绘图中的节点
-4、css 动画的节点 --- keyframes animation
-5、拥有css加速属性 --- will-change: transform
-```
-
-**优化手段：**
-
-(1)CSS
-
-```
-使用 transform 替代 top
-使用 visibility 替换 display: none ，因为前者只会引起重绘，后者会引发回流（改变了布局
-避免使用table布局，可能很小的一个小改动会造成整个 table 的重新布局。
-尽可能在DOM树的最末端改变class，回流是不可避免的，但可以减少其影响。尽可能在DOM树的最末端改变class，可以限制了回流的范围，使其影响尽可能少的节点。
-避免设置多层内联样式，CSS 选择符从右往左匹配查找，避免节点层级过多。
-将动画效果应用到position属性为absolute或fixed的元素上，避免影响其他元素的布局，这样只是一个重绘，而不是回流，同时，控制动画速度可以选择 requestAnimationFrame，详见探讨 requestAnimationFrame。
-避免使用CSS表达式，可能会引发回流。
-将频繁重绘或者回流的节点设置为图层，图层能够阻止该节点的渲染行为影响别的节点，例如will-change、video、iframe等标签，浏览器会自动将该节点变为图层。
-CSS3 硬件加速（GPU加速），使用css3硬件加速，可以让transform、opacity、filters这些动画不会引起回流重绘 。但是对于动画的其它属性，比如background-color这些，还是会引起回流重绘的，不过它还是可以提升这些动画的性能。
-```
-
-(2)JS
-
-```
-避免频繁操作样式，最好一次性重写style属性，或者将样式列表定义为class并一次性更改class属性。
-避免频繁操作DOM，创建一个documentFragment，在它上面应用所有DOM操作，最后再把它添加到文档中。
-避免频繁读取会引发回流/重绘的属性，如果确实需要多次使用，就用一个变量缓存起来。
-对具有复杂动画的元素使用绝对定位，使它脱离文档流，否则会引起父元素及后续元素频繁回流。
-```
 
 ## **first-child与:first-of-type的区别**
 
@@ -1297,9 +1030,26 @@ grid-area其实是grid-row-start, grid-column-start, grid-row-end 以及 grid-co
 
 ## Flex弹性布局
 
+小技巧：剩余填充可以使用width:0;flex:1;
+
 [flex实战原文](https://tsejx.github.io/css-guidebook/layout/basic/flexible-box-layout#flex-order)
 
 ### 容器属性
+
+flex 布局，是一种弹性盒布局模型，给子元素提供了空间分布和对齐能力，由`container`（容器）及`item`（项目）组成。该布局模型提供了一种更加高效的方式来对容器中的项目进行布局、对齐和分配空间。适用于在不同尺寸的屏幕中创建可自动扩展和收缩布局，通常可用于`水平/垂直居中`，`两栏`、`三栏布局`等的场景里。
+
+其中`flex`属性是`flex-grow`，`flex-shrink`和`flex-basis`的简写，默认值为`0 1 auto`。**该属性有两个快捷值：`auto (1 1 auto)` 和 `none (0 0 auto)`。**
+
+- `flex-grow`：定义项目的放大比例，默认值为 0，即如果存在剩余空间，也不放大。如果所有项目的`flex-grow`属性都为 1，则它们将等分剩余空间（如果有的话）。如果一个项目的`flex-grow`属性为 2，其他项目都为 1，则前者占据的剩余空间将比其他项多一倍。
+- `flex-shrink`：项目的缩小比例，默认为 1，即如果空间不足，项目将缩小。如果所有项目的`flex-shrink`属性都为 1，当空间不足时，都将等比例缩小。如果一个项目的`flex-shrink`属性为 0，其他项目都为 1，则空间不足时，前者不缩小。
+- `flex-basis`：定义了在分配多余空间之前，项目占据的主轴空间。浏览器会根据该属性，计算主轴是否有多余空间。它的默认值为 auto，即项目的本来大小。当设置为 0 的是，会根据内容撑开。也可以设为跟`width`或`height`属性一样的值（比如 350px），则项目将占据固定空间。
+
+`flex`常用的属性值：
+
+- flex: 1 --> flex: 1 1 0%
+- flex: 2 --> flex: 2 1 0%
+- flex: auto --> flex: 1 1 auto
+- flex: none --> flex: 0 0 auto【常用于固定尺寸不伸缩】
 
 **flex-direction**
 

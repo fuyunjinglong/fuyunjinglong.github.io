@@ -672,38 +672,24 @@ const response = fetch(url, {
 
 ## axios取消请求
 
-**方式1：AbortController**
-
-从 `v0.22.0` 开始，Axios 支持以 fetch API 方式—— [`AbortController`](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) 取消请求：
-
-```js
-const controller = new AbortController();
-// 取消重复请求
-controller.signal && controller.abort();
-axios.get('/foo/bar', {
-   signal: controller.signal
-}).then(function(response) {
-   //...
-});
 ```
+const requestIdMap = new Map(); // 存放请求映射关系
 
-**方式2：CancelToken** 
-
-通过传递一个 executor 函数到 `CancelToken` 的构造函数来创建一个 cancel token：。
-
-此 API 从 `v0.22.0` 开始已被弃用，不应在新项目中使用。
-
-```js
-const CancelToken = axios.CancelToken;
-let cancel;
-// 取消重复请求
-cancel && cancel();
-axios.get('/user/12345', {
-  cancelToken: new CancelToken(function executor(c) {
-    // executor 函数接收一个 cancel 函数作为参数
-    cancel = c;
-  })
-});
+// 注意cancelId必须全局唯一
+  const cancelId = config.cancelId;
+  if (cancelId) {
+    // 取消重复网络请求
+    const controll = requestIdMap.get(cancelId);
+    if (controll) {
+      controll.abort();
+      requestIdMap.delete(cancelId);
+    }
+    requestIdMap.set(cancelId, new AbortController());
+    config = {
+      ...config,
+      signal: requestIdMap.get(cancelId)?.signal,
+    };
+  }
 ```
 
 ## 其他xhr、ajax、axios

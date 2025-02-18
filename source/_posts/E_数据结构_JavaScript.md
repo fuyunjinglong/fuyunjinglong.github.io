@@ -15,6 +15,7 @@ toc: true # 是否启用内容索引
 - 数据结构与算法专题课-珠峰-video
 - [JavaScript数据结构工具](https://www.javaguides.net/2019/06/javascript-queue-implementation.html)
 - [JavaScript 数据结构与算法之美 - 十大经典排序算法](https://juejin.cn/post/6844903902484103182#heading-0)
+- [30-seconds-of-code- 代码片段](https://www.30secondsofcode.org/js/interviews/p/1/)
 
 # 类的封装
 

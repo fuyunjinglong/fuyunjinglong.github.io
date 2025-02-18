@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20230614064728863.png">
 <meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211212174443165.png">
 <meta property="article:published_time" content="2023-09-11T23:33:16.000Z">
-<meta property="article:modified_time" content="2023-07-16T03:26:18.811Z">
+<meta property="article:modified_time" content="2025-02-18T23:14:42.204Z">
 <meta property="article:author" content="Elven">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fuyunjinglong.github.io/img/vue2%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png">
@@ -612,8 +612,9 @@
 
 
 
-<h2 id="Virtual-DOM"><a href="#Virtual-DOM" class="headerlink" title="Virtual DOM"></a>Virtual DOM</h2><p>Virtual DOM 本质上就是在 JS 和 DOM 之间做了一个缓存。</p>
-<p>虚拟DOM就是一个普通的JavaScript对象，包含了<code>tag</code>、<code>props</code>、<code>children</code>三个属性。</p>
+<h2 id="Virtual-DOM"><a href="#Virtual-DOM" class="headerlink" title="Virtual DOM"></a>Virtual DOM</h2><p>虚拟DOM是一种编程技术，它使用JavaScript对象来表示真实的DOM元素。</p>
+<p>虚拟DOM本质：在 JS 和 DOM 之间做了一个缓存，是一个普通的JavaScript对象，包含了<code>tag</code>、<code>props</code>、<code>children</code>三个属性。</p>
+<p>虚拟DOM的原理是，当数据或状态发生变化时，不直接操作真实的DOM，而是创建一个新的虚拟DOM树，然后与旧的虚拟DOM树进行比较，找出差异，最后只更新真实DOM中有变化的部分。</p>
 <p>Virtual DOM做了两件事:</p>
 <blockquote>
 <ul>
@@ -622,10 +623,7 @@
 <li>3、把两棵树差异应用到真实DOM上</li>
 </ul>
 </blockquote>
-<p>属性key的作用：</p>
-<blockquote>
-<p>key的作用是尽可能的复用 DOM 元素</p>
-</blockquote>
+<p>虚拟DOM的优势是，它可以提高页面渲染的性能，避免不必要的DOM操作，减少浏览器的重绘和回流，同时也可以实现跨平台的渲染，例如在服务器端或移动端。</p>
 <h2 id="Virtual-DOM-diff算法"><a href="#Virtual-DOM-diff算法" class="headerlink" title="Virtual DOM-diff算法"></a>Virtual DOM-diff算法</h2><p>算法实现的三个核心函数：element,diff,patch。</p>
 <p>算法大致流程:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// 1. 构建虚拟 DOM</span><br><span class="line">var tree = el(&#x27;div&#x27;, &#123;&#x27;id&#x27;: &#x27;container&#x27;&#125;, [</span><br><span class="line">    el(&#x27;h1&#x27;, &#123;style: &#x27;color: blue&#x27;&#125;, [&#x27;simple virtal dom&#x27;]),</span><br><span class="line">    el(&#x27;p&#x27;, [&#x27;Hello, virtual-dom&#x27;]),</span><br><span class="line">    el(&#x27;ul&#x27;, [el(&#x27;li&#x27;)])</span><br><span class="line">])</span><br><span class="line">// 2. 通过虚拟 DOM 构建真正的 DOM</span><br><span class="line">var root = tree.render()</span><br><span class="line">document.body.appendChild(root)</span><br><span class="line">// 3. 生成新的虚拟 DOM</span><br><span class="line">var newTree = el(&#x27;div&#x27;, &#123;&#x27;id&#x27;: &#x27;container&#x27;&#125;, [</span><br><span class="line">    el(&#x27;h1&#x27;, &#123;style: &#x27;color: red&#x27;&#125;, [&#x27;simple virtal dom&#x27;]),</span><br><span class="line">    el(&#x27;p&#x27;, [&#x27;Hello, virtual-dom&#x27;]),</span><br><span class="line">    el(&#x27;ul&#x27;, [el(&#x27;li&#x27;), el(&#x27;li&#x27;)])</span><br><span class="line">])</span><br><span class="line">// 4. 比较两棵虚拟 DOM 树的不同</span><br><span class="line">var patches = diff(tree, newTree)</span><br><span class="line">// 5. 在真正的 DOM 元素上应用变更</span><br><span class="line">patch(root, patches)</span><br></pre></td></tr></table></figure>
@@ -681,9 +679,9 @@
 <p>编译核心流程：</p>
 <blockquote>
 <ul>
-<li>parse解析器：将模板解析成 AST抽象语法树</li>
-<li>optimize优化器：标记静态节点</li>
-<li>generate代码生成器：将 AST 转换成“代码字符串”</li>
+<li>parse解析器：将template模板中的节点和数据解析成 AST抽象语法树</li>
+<li>optimize优化器：标记静态节点，提升渲染性能</li>
+<li>generate代码生成器：将 AST 转换成“代码字符串”，然后将 render 字符串通过 new Function 的方式转换成渲染函数</li>
 </ul>
 </blockquote>
 <img src="/img/image-20230614064728863.png" alt="image-20230614064728863" style="zoom:80%;" />
@@ -1030,7 +1028,7 @@
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/2023/09/12/D_%E6%A1%86%E6%9E%B6_Vue2%E5%92%8CVue3%E6%AF%94%E8%BE%83/" title="Vue2和Vue3比较"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+      <a href="/2024/01/15/Test%20copy/" title="(no title)"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
     </li>
     
     

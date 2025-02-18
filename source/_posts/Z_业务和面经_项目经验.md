@@ -102,6 +102,42 @@ import en from 'element-plus/es/locale/lang/en';
 </el-config-provider>
 ```
 
+**el-table插槽+递归**
+
+父组件
+
+```vue
+<el-table
+<TableCol v-for="(tTitle, tIndex) in showColumns"
+          :key="tIndex + tTitle.colId + isUpdate"
+          v-bind="{ tTitle, ...colProps() }"
+></TableCol>
+</el-table>
+```
+
+子组件-TableCol
+
+```vue
+<template>
+  <el-table-column :prop="tTitle.colId" :label="tTitle[colNameCnEn]">
+    <!--一级表头-->
+    <template #header="{ row, column, $index }">
+      <div>表头</div>
+    </template>
+    <template v-if="!tTitle.isDirector" #default="{ row, column, $index }">
+      <div>表内容</div>
+    </template>
+     <!--表头递归-->
+    <TableCol v-for="(tTitleChild, tIndexChild) in tTitle.children" :key="tIndexChild + tTitleChild.colId" v-bind="{ ...props, tTitle: tTitleChild }"></TableCol>
+  </el-table-column>
+</template>
+<script setup name="TableCol">
+const props = defineProps([
+  'tTitle'
+]);
+</script>
+```
+
 # 项目难点
 
 ## Vue2的CSP安全策略-202301

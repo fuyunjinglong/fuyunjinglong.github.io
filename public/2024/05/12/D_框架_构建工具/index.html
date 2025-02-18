@@ -18,16 +18,16 @@
   
   
   <title>构建工具 | Hexo</title>
-  <meta name="description" content="Rollup 使用Rollup打包JavaScript  手写Vue2-珠峰-待续 手写Vue2-珠峰-video  Rollup搭建环境Rollup是什么 Rollup是一个JS模块打包器，可以将小块代码编译成大块复杂代码，rollup.js更专注JS类库打包(开发应用使用webpack，开发库使用Rollup) 环境搭建 1.初始化package.json 1npm init -y  2.安装">
+  <meta name="description" content="前言过去：前端构建工具简史为什么需要前端构建工具？  •性能优化：通过减少HTTP请求数量和优化文件大小（如tree-shaking）来减少加载时间。 •兼容性：确保用现代 JavaScript 或其他语言编写的代码与所有浏览器兼容。 •开发效率：提供 HMR 和资产管理等功能，简化开发工作流程。  ~2009 无模块化时期  •早期的Web开发比较简单，甚至由后端人员编写（JSP） •2009">
 <meta property="og:type" content="article">
 <meta property="og:title" content="构建工具">
 <meta property="og:url" content="https://fuyunjinglong.github.io/2024/05/12/D_%E6%A1%86%E6%9E%B6_%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Rollup 使用Rollup打包JavaScript  手写Vue2-珠峰-待续 手写Vue2-珠峰-video  Rollup搭建环境Rollup是什么 Rollup是一个JS模块打包器，可以将小块代码编译成大块复杂代码，rollup.js更专注JS类库打包(开发应用使用webpack，开发库使用Rollup) 环境搭建 1.初始化package.json 1npm init -y  2.安装">
+<meta property="og:description" content="前言过去：前端构建工具简史为什么需要前端构建工具？  •性能优化：通过减少HTTP请求数量和优化文件大小（如tree-shaking）来减少加载时间。 •兼容性：确保用现代 JavaScript 或其他语言编写的代码与所有浏览器兼容。 •开发效率：提供 HMR 和资产管理等功能，简化开发工作流程。  ~2009 无模块化时期  •早期的Web开发比较简单，甚至由后端人员编写（JSP） •2009">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://fuyunjinglong.github.io/img/2024-06-02_09-21-43.png">
 <meta property="article:published_time" content="2024-05-11T23:33:16.000Z">
-<meta property="article:modified_time" content="2024-06-02T01:41:13.272Z">
+<meta property="article:modified_time" content="2025-02-18T22:49:36.238Z">
 <meta property="article:author" content="Elven">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fuyunjinglong.github.io/img/2024-06-02_09-21-43.png">
@@ -333,7 +333,7 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Rollup"><span class="toc-number">1.</span> <span class="toc-text">Rollup</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%8B%E5%86%99Vue2-%E7%8F%A0%E5%B3%B0-%E5%BE%85%E7%BB%AD"><span class="toc-number">1.1.</span> <span class="toc-text">手写Vue2-珠峰-待续</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Rollup%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83"><span class="toc-number">1.1.1.</span> <span class="toc-text">Rollup搭建环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%93%8D%E5%BA%94%E5%BC%8F%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.1.2.</span> <span class="toc-text">响应式实现</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Monorepo-vs-Multirepo"><span class="toc-number">2.</span> <span class="toc-text">Monorepo vs Multirepo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-number">2.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lerna"><span class="toc-number">2.2.</span> <span class="toc-text">Lerna</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E5%8E%BB%EF%BC%9A%E5%89%8D%E7%AB%AF%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E7%AE%80%E5%8F%B2"><span class="toc-number">1.1.</span> <span class="toc-text">过去：前端构建工具简史</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%B0%E5%9C%A8%EF%BC%9A%E4%B8%BB%E6%B5%81%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7%E5%AF%B9%E6%AF%94"><span class="toc-number">1.2.</span> <span class="toc-text">现在：主流构建工具对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AA%E6%9D%A5%EF%BC%9A%E5%89%8D%E7%AB%AF%E6%9E%84%E5%BB%BA%E7%9A%84%E6%9C%AA%E6%9D%A5%E8%B6%8B%E5%8A%BF"><span class="toc-number">1.3.</span> <span class="toc-text">未来：前端构建的未来趋势</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Rollup"><span class="toc-number">2.</span> <span class="toc-text">Rollup</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%8B%E5%86%99Vue2-%E7%8F%A0%E5%B3%B0-%E5%BE%85%E7%BB%AD"><span class="toc-number">2.1.</span> <span class="toc-text">手写Vue2-珠峰-待续</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Rollup%E6%90%AD%E5%BB%BA%E7%8E%AF%E5%A2%83"><span class="toc-number">2.1.1.</span> <span class="toc-text">Rollup搭建环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%93%8D%E5%BA%94%E5%BC%8F%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.1.2.</span> <span class="toc-text">响应式实现</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Monorepo-vs-Multirepo"><span class="toc-number">3.</span> <span class="toc-text">Monorepo vs Multirepo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-number">3.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lerna"><span class="toc-number">3.2.</span> <span class="toc-text">Lerna</span></a></li></ol></li></ol>
     </nav>
   </div>
 </aside>
@@ -375,7 +375,96 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h1 id="Rollup"><a href="#Rollup" class="headerlink" title="Rollup"></a>Rollup</h1><ul>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><h2 id="过去：前端构建工具简史"><a href="#过去：前端构建工具简史" class="headerlink" title="过去：前端构建工具简史"></a>过去：前端构建工具简史</h2><p><strong>为什么需要前端构建工具？</strong></p>
+<blockquote>
+<p>•<strong>性能优化：</strong>通过减少HTTP请求数量和优化文件大小（如tree-shaking）来减少加载时间。</p>
+<p>•<strong>兼容性：</strong>确保用现代 JavaScript 或其他语言编写的代码与所有浏览器兼容。</p>
+<p>•<strong>开发效率：</strong>提供 HMR 和资产管理等功能，简化开发工作流程。</p>
+</blockquote>
+<p><strong>~2009</strong> <strong>无模块化时期</strong></p>
+<blockquote>
+<p>•早期的Web开发比较简单，甚至由后端人员编写（JSP）</p>
+<p>•2009 年，Node.js 发布初始版本，CommonJS 模块定义规范被提出</p>
+<p>•2010 年，npm包管理发布</p>
+</blockquote>
+<p><strong>2011~2015</strong> <strong>社区模块化</strong></p>
+<blockquote>
+<p>•为了解决浏览器端JS异步模块化问题，出现了AMD/CMD规范</p>
+<p>•Browserify：实现浏览器中使用CommonJS模块</p>
+<p>•Grunt：将处理过程定义为多个不同的任务，每个任务执行一个函数或插件</p>
+<p>•Gulp：引入代码和文件流的概念</p>
+<p>•Webpack：模块依赖间关系</p>
+</blockquote>
+<p><strong>2016~2019</strong> <strong>打包一切</strong></p>
+<blockquote>
+<p>•Webpack：一切皆可打包，支持AMD\CommonJS\ESM、css/less/sass/stylus、babel、TypeScript、JSX、Angular、Vue</p>
+<p>•Rollup：基于ES Module 主打工具库的打包，率先提出Tree-Shaking的概念</p>
+</blockquote>
+<p><strong>2020~</strong> <strong>性能优化</strong></p>
+<blockquote>
+<p>•Webpack5：多进程编译、缓存机制</p>
+<p>•Vite：开发态Bundleless、ESM</p>
+<p>•esbuild：go语言实现</p>
+<p>•SWC: rust语言实现</p>
+</blockquote>
+<h2 id="现在：主流构建工具对比"><a href="#现在：主流构建工具对比" class="headerlink" title="现在：主流构建工具对比"></a>现在：主流构建工具对比</h2><table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Webpack</strong></th>
+<th><strong>Rollup</strong></th>
+<th><strong>Vite</strong></th>
+<th><strong>Esbuild</strong></th>
+<th><strong>Turbopack</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>使用场景</strong></td>
+<td>应用构建</td>
+<td>库构建</td>
+<td>应用构建</td>
+<td>代码转译</td>
+<td>应用构建</td>
+</tr>
+<tr>
+<td><strong>优点</strong></td>
+<td>•功能全面  •生态丰富  •高度可配置</td>
+<td>•输出产物精简  •优先ESM标准</td>
+<td>•配置简单  •启动服务快</td>
+<td>•速度快</td>
+<td>•速度快  •兼容webpack</td>
+</tr>
+<tr>
+<td><strong>缺点</strong></td>
+<td>•配置复杂  •输出产物复杂  •构建速度慢</td>
+<td>•CJS兼容依赖插件  •有限的HMR支持</td>
+<td>/</td>
+<td>•成熟度不够，一直没发1.0版  •code splitting开发中  •HMR不支持</td>
+<td>•主要支持Next.js  •Beta状态</td>
+</tr>
+</tbody></table>
+<p>•新项目建议优先使用Vite</p>
+<p>•已有的Webpack项目，可利用swc替换babel提升构建性能</p>
+<p>•新兴构建工具可以尝鲜,如等待rolldown</p>
+<h2 id="未来：前端构建的未来趋势"><a href="#未来：前端构建的未来趋势" class="headerlink" title="未来：前端构建的未来趋势"></a>未来：前端构建的未来趋势</h2><p><strong>Rust</strong>语言是前端基建的未来。</p>
+<p>JavaScript与Rust比较：</p>
+<table>
+<thead>
+<tr>
+<th>JavaScript</th>
+<th>Rust</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>编译器宽松<br/>入门快，体验好<br/>性能一般</td>
+<td>编译器严格<br/>学习曲线陡峭<br/>性能高</td>
+</tr>
+<tr>
+<td>偏应用</td>
+<td>偏系统</td>
+</tr>
+</tbody></table>
+<h1 id="Rollup"><a href="#Rollup" class="headerlink" title="Rollup"></a>Rollup</h1><ul>
 <li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903570974703629#heading-1">使用Rollup打包JavaScript</a></li>
 </ul>
 <h2 id="手写Vue2-珠峰-待续"><a href="#手写Vue2-珠峰-待续" class="headerlink" title="手写Vue2-珠峰-待续"></a>手写Vue2-珠峰-待续</h2><ul>

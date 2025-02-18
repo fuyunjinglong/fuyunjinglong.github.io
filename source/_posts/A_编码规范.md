@@ -5,6 +5,18 @@ categories:
 - A_编码规范
 toc: true # 是否启用内容索引
 ---
+参考：
+
+- [腾讯前端代码规范](http://tgideas.qq.com/doc/index.html)
+- [百度前端代码规范文档](https://github.com/ecomfe/spec/blob/master/javascript-style-guide.md)
+- [JavaScript Standard Style](https://github.com/standard/standard)
+- [Vue 官方特有的代码风格指南](https://cn.vuejs.org/v2/style-guide/index.html)
+- [玩一峰的 ES6 编程风格](https://es6.ruanyifeng.com/#docs/style)
+- [ESLint 代码规范检测工具](https://eslint.bootcss.com/)
+- [Airbnb](https://github.com/airbnb/javascript)
+- [前端团队规范总结](https://lq782655835.github.io/blogs/team-standard/0.standard-ai-summary.html)
+- [前端协作规范](https://juejin.cn/post/6844903897610321934#heading-49)
+
 # 通用命名规范
 
 ## 命名规则1
@@ -211,8 +223,179 @@ v-for设置键值避免 v-if 和 v-for 同时使用
 和父组件紧密耦合的子组件应该以父组件名作为前缀命名
 ```
 
-# 团队规范
+# 屎山代码
 
-[前端团队规范总结](https://lq782655835.github.io/blogs/team-standard/0.standard-ai-summary.html)
+## 一号屎山--目录杂乱
 
-[前端协作规范](https://juejin.cn/post/6844903897610321934#heading-49)
+## 二号屎山--奇葩命名法
+
+奇葩命名法有以下几种情况：
+
+- 全拼音命名法
+- 拼音首字母命名法
+- 中西合璧命名法
+- 英文首字母命名法
+
+## 三号屎山--组件不拆分
+
+每一个.vue文件的行数会非常多，难以维护，Vue2中一个最明显的屎山就是`几千行、甚至上万行的代码`，用专业的术语来讲就是`不符合单一职责原则`，一个组件应该只干一件事情，一个函数应该只处理一个逻辑，剩下的逻辑交给其他函数或者组件来做。时刻牢记“SOLID”原则是远离屎山的第一心法；
+
+## 四号屎山--复杂的表达式
+
+```
+:class="{ disabled: !isAllowRead && hasNotPassed && aaa && (bbb || ccc) }"
+```
+
+为了判断一个禁用状态，使用了大量的运算符，导致逻辑不清晰
+
+## 五号屎山--大量重复节点
+
+```
+<template>
+  <div>
+    <span>姓名:{{ name }}</span>
+    <span>年龄:{{ age }}</span>
+    <span>性别:{{ gender }}</span>
+  </div>
+</template>
+```
+
+## 六号屎山--if else switch
+
+```
+if(!values.username){
+    this.$message.error("用户名不能为空")
+} else if(!values.password){
+    this.$message.error("密码不能为空")
+} else if(!values.phoneNumber){
+    this.$message.error("手机号不能为空")
+} else {
+    this.submit();
+}
+```
+
+可以使用对象校验
+
+```
+const validators = [
+  { message: "用户名不能为空", key: "username" },
+  { message: "密码不能为空", key: "password" },
+  { message: "手机号不能为空", key: "phoneNumber" }
+];
+const result = validators.some(el => {
+        if (!values[el.key]) {
+          this.$message.error(el.message);
+          return true;
+        }
+});
+```
+
+## 七号屎山--后端参数处理
+
+```
+handleParams() {
+      const params = {};
+      params.id = this.formItem.id;
+      params.startDate = this.formItem.startDate.format("YYYY-MM-DD");
+      params.endDate = this.formItem.endDate.format("YYYY-MM-DD");
+      params.price = this.formItem.price.toString();
+      params.type = this.formItem.type;
+      params.total = this.formItem.total;
+      params.name = this.formItem.name;
+      params.comment = this.formItem.comment;
+      // ... 此处省略一万行代码
+    }
+
+  handleParams() {
+      const { startDate, endDate, price, ...params } = this.formItem;
+      params.startDate = startDate.format("YYYY-MM-DD");
+      params.endDate = endDate.format("YYYY-MM-DD");
+      params.price = price.toString();
+      // ... 此处省掉一万行代码
+    }
+```
+
+## 八号屎山--硬编码
+
+```
+computed: {
+    isGood() {
+      return this.type === 1;
+    },
+    isBad() {
+      return this.type === 0;
+    }
+  }
+```
+
+好的做法就是写成常量配置文件，单独写一个文件config.js，然后组件去引用这个常量:
+
+```
+isGood() {
+      return this.type === GOODS_TYPE.good
+    },
+
+// 货物的品质枚举值
+export const GOODS_TYPE = {
+  good: 1, // 质量好
+  bad: 0   // 质量差
+};
+```
+
+## 九号屎山--Mixins屎山
+
+## 十号屎山--无用代码不删除
+
+## 十一号屎山--类名无规范
+
+```
+<template>
+  <div class="test">
+    <div class="test-left">
+      <div class="test-left-nav">
+        <ul class="test-ul">
+          <li class="test-ul-li">
+            <span class="title"></span>
+          </li>
+        </ul>
+      </div>
+      <div class="oprate">
+        <div class="oprate-btn">
+          <div class="cancel"></div>
+        </div>
+      </div>
+    </div>
+    <div class="test-main"></div>
+  </div>
+</template>
+<style scoped lang="scss">
+// css层次始终保持不超过3层
+.test {
+  &-left {
+    &-nav {
+      height: 100%;
+    }
+  }
+  &-ul {
+    &-li {
+      height: 100%;
+    }
+    .title {
+      height: 100%;
+    }
+  }
+  .oprate {
+    &-btn {
+      height: 100%;
+    }
+    .cancel {
+      height: 100%;
+    }
+  }
+}
+</style>
+```
+
+## 十二号屎山--样式大量重复
+
+# 

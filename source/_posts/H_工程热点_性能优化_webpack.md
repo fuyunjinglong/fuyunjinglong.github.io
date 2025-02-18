@@ -26,33 +26,31 @@ toc: true # 是否启用内容索引
 
 ## webpack是什么
 
-**定义**
+Webpack是一种前端资源打包工具，它可以将多个文件或模块合并成一个或多个优化的文件，从而提高网页的性能和用户体验。Webpack的作用主要有以下几点：
 
-> webpack 是一个模块打包机，将根据文件间的依赖关系对其进行静态分析，然后按指定规则递归地构建一个依赖关系图，最终打包成一个或多个 bundle。
+代码转换：Webpack可以使用Loader来处理各种类型的文件，例如将ES6转换成ES5，将Sass转换成CSS，将图片转换成Base64等。
 
-**核心模块**
+代码分割：Webpack可以使用SplitChunksPlugin或Dynamic Imports来实现代码分割，将不同功能或页面的代码分割成不同的文件，实现按需加载，减少首屏加载时间。
 
-> - entry: 入口
-> - output: 输出
-> - loader: 模块转换器，用于把模块原内容按照需求转换成新内容
-> - 插件(plugins): 扩展插件，在webpack构建流程中的特定时机注入扩展逻辑来改变构建结果或做你想要做的事情
+代码优化：Webpack可以使用Plugin来实现代码优化，例如压缩代码，删除无用代码，提取公共代码等。
 
-**特点**
+其他功能：Webpack还可以实现热更新，模块替换，模块注入，资源管理等功能。
 
-> - 支持多种模块化标准方案，包括ES Module,CommonJS,UMD
-> - 支持code splitting代码分割和文件分块
-> - 支持loader静态文件串联处理，强大的plugin插件扩展功能
+Webpack的配置方法主要是通过创建一个webpack.config.js文件来进行。该文件是一个Node.js模块，它导出一个对象，该对象包含了Webpack的配置选项。Webpack的配置选项主要有以下几类：
 
-**打包工具**
+entry：指定入口文件，可以是一个或多个。
 
-gulp/grunt是自动化任务构建工具。
+output：指定输出文件，可以设置文件名，路径，格式等。
 
-> - gulp/grunt：是一种能够优化前端开发的工作流程的工具，比如css/js的压缩混淆，预处理语言的编译、图片体积优化等等。与webpack有部分重合，比如打包、压缩混淆、图片转 base64 等等。但它们的目的跟要解决的问题是不一样的。
+module：指定模块处理规则，可以使用Loader来处理不同类型的文件。
 
-webapck/browserify/seajs/requirejs是模块化解决方案，强调模块化开发，而那些文件压缩合并、预处理等功能，不过是附带的功能。
+plugins：指定插件列表，可以使用Plugin来实现各种功能。
 
-> - seajs/requirejs： 是一种在线"编译" 模块的方案，相当于在页面上加载一个 CMD/AMD 解释器。这样浏览器就认识了 define、exports、module 这些东西。也就实现了模块化。
-> - webpack/browserify： 是一个预编译模块的方案，相比于上面 ，这个方案更加智能。以webpack为例。首先，它是预编译的，不需要在浏览器中加载解释器。另外，你在本地直接写JS，不管是 AMD / CMD / ES6 风格的模块化，它都能认识，并且编译成浏览器认识的JS。
+devServer：指定开发服务器的配置，可以设置端口，代理，热更新等。
+
+optimization：指定优化选项，可以设置代码分割，压缩等。
+
+mode：指定模式，可以是development或production。
 
 ## webpack打包原理
 
@@ -233,6 +231,21 @@ module.exports = {
 
 loader是文件加载器，能够加载资源文件，并对这些文件进行一些处理，如编译、压缩等、语法分析及转换，然后交由下一环节进行处理，所有载入的模块最终都会经过moduleFactory处理，转成javascript可以识别和运行的代码，从而完成模块的集成。
 
+同步和异步loader：
+
+1.同步Loader通过return或者this.callback来返回结果，交给下一个Loader来处理（后者可以传递更多参数）。
+
+2.异步Loader，使用this.async来获取callback函数，等后端操作完成后，再调用callback函数
+
+**常见Loader**
+
+> file-loader：将打包过程中遇到的文件，复制到对应输出目录，并返回文件的路径
+> url-loader：将打包过程中用到的文件转换为 base64 格式字符串
+> raw-loader：提取文件的内容，转换为字符串形式进行返回
+> style-loader：将 css 代码注入到 js 中，运行时，通过创建 style 标签，将样式插入到 head 中
+> postcss-loader：将 css 代码转换为兼容性更好的 css 代码
+> Html-loader、babel-loader、ts-loader、vue-loader……
+
 **Loader本质**
 
 Loader 本质上是导出为函数的 JavaScript 模块。`它接收资源文件或者上一个 Loader 产生的结果作为入参，也可以用多个 Loader 函数组成 loader chain（链），最终输出转换后的结果`。
@@ -286,14 +299,59 @@ Loader 本质上是导出为函数的 JavaScript 模块。`它接收资源文件
 
 ## webpack-plugin机制
 
-**原理**
+**1.原理**
 
 plugin` 是一个扩展器，它丰富了 webpack 本身，针对是 `loader` 结束后，webpack 打包的整个过程，它并不直接操作文件，而是基于事件机制工作，会监听webpack 打包过程中的某些节点，执行广泛的任务。
 
-**Plugin 的作用**：
+**2.Plugin 的作用**：
 
 - 能够 hook 到在每个编译(compilation)中触发的所有关键事件。
 - 在插件实例的 apply 方法中，可以通过 compiler.options 获取 Webpack 配置，并进行修改。
+
+插件的应用场景：
+
+> **性能优化：** 包括对资源（如 JavaScript、CSS、图片）的压缩、代码分离以及资源的按需加载，旨在减少体积和提升加载速度。
+>
+> **开发和构建体验**： 提供开发时的便利功能，如热模块替换（HMR）、友好的错误提示、定义全局变量，以及自动化生成和管理构建输出文件。
+>
+> **多页面和自动化支持：** 处理多页面应用的构建需求，以及集成自动化任务和持续集成流程，如测试、部署、生成 Service Worker 等。
+>
+> **兼容性和安全性：** 确保代码能够兼容不同的浏览器和环境，同时增强应用的安全性，通过编译、添加前缀和生成安全策略。
+
+Plugin与Loader的区别:
+
+> loader 用于对模块的源代码进行转换，如将 ES6 转换为 ES5 或将 SCSS 转换为 CSS
+>
+> plugin用于自定义功能扩展，使用plugin丰富的自定义API及生命周期事件，控制webpack编译流程的每个环节
+
+**3.常用的Webpack Plugin**
+
+> HtmlWebpackPlugin： 可以根据模板自动生成 HTML 文件，并将打包好的资源自动注入到该文件中。
+> CleanWebpackPlugin： 用于在每次构建之前自动清理输出目录，确保输出目录中没有旧的或不再需要的文件。
+> MiniCssExtractPlugin： 用于将 CSS 从 JavaScript 文件中分离出来，生成单独的 CSS 文件。
+
+**4.插件中重要的两个对象compiler 和 compilation**
+
+compiler是Webpack的主要控制对象，它在构建过程的起始阶段被创建，并负责整个构建过程的管理
+
+> 初始化构建: compiler 读取和解析 Webpack 配置文件，设置插件和加载器，并准备开始构建。
+> 管理生命周期: 从构建的启动到完成，compiler 负责协调所有的构建步骤。
+> 全局协调: compiler 包含了所有的构建钩子（hooks），允许插件在构建的各个阶段插入自定义逻辑。
+
+compilation是Webpack每次构建过程中的具体实例
+
+> 模块处理: 在 compilation 中，Webpack 解析和处理所有模块，生成依赖图，并执行模块的加载和转换。
+> 生成和优化: compilation 负责优化代码，生成最终的输出文件，如 JavaScript 和 CSS。
+> 局部处理: 每次构建会创建一个新的 compilation 实例，compilation 处理特定构建过程中的所有细节。
+
+**5.Webpack生命周期钩子**
+
+> run：与构建启动相关的钩子，控制Webpack的启动和初始化。
+> compile：与编译相关的钩子，控制Compilation对象的创建和准备。
+> optimize：与优化相关的钩子，控制代码的优化过程。
+> seal：与封装相关的钩子，控制模块解析完成后到生成输出文件之前的步骤。
+> emit：与文件生成和输出相关的钩子，控制资源的生成和写入文件系统。
+> done：与构建结束相关的钩子，控制构建完成后的操作。
 
 ## webpack-vueloader机制
 

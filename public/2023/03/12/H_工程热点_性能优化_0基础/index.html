@@ -18,15 +18,14 @@
   
   
   <title>性能优化_0基础 | Hexo</title>
-  <meta name="description" content="性能优化总策略总策略由两大策略层面和三大优化指标构成  使用浏览器DevTools分析性能 使用Chrome Performance进行性能调优  两大层面策略 网络层面 渲染层面  网络层面(4大策略)   构建策略：基于构建工具(Webpack&#x2F;Rollup&#x2F;Parcel&#x2F;Esbuild&#x2F;Vite&#x2F;Gulp)   图像策略：基于图像类型(JPG&#x2F;PNG&#x2F;SVG&#x2F;WebP&#x2F;Base64)   分">
+  <meta name="description" content="参考：  Web Vitals 工作中如何进行前端性能优化(23 种优化+10 种定位方式 前端性能优化 24 条建议（2020） 写在 2021 的前端性能优化指南 前端性能优化实践  性能优化总策略总策略由两大策略层面和三大优化指标构成  使用浏览器DevTools分析性能 使用Chrome Performance进行性能调优  两大层面策略 网络层面 渲染层面  网络层面(4大策略)   构">
 <meta property="og:type" content="article">
 <meta property="og:title" content="性能优化_0基础">
 <meta property="og:url" content="https://fuyunjinglong.github.io/2023/03/12/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96_0%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="性能优化总策略总策略由两大策略层面和三大优化指标构成  使用浏览器DevTools分析性能 使用Chrome Performance进行性能调优  两大层面策略 网络层面 渲染层面  网络层面(4大策略)   构建策略：基于构建工具(Webpack&#x2F;Rollup&#x2F;Parcel&#x2F;Esbuild&#x2F;Vite&#x2F;Gulp)   图像策略：基于图像类型(JPG&#x2F;PNG&#x2F;SVG&#x2F;WebP&#x2F;Base64)   分">
+<meta property="og:description" content="参考：  Web Vitals 工作中如何进行前端性能优化(23 种优化+10 种定位方式 前端性能优化 24 条建议（2020） 写在 2021 的前端性能优化指南 前端性能优化实践  性能优化总策略总策略由两大策略层面和三大优化指标构成  使用浏览器DevTools分析性能 使用Chrome Performance进行性能调优  两大层面策略 网络层面 渲染层面  网络层面(4大策略)   构">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220524191242711.png">
-<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220605155502770.png">
 <meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220605154916096.png">
 <meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211111191739887.png">
 <meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220605154916096.png">
@@ -42,7 +41,7 @@
 <meta property="og:image" content="https://fuyunjinglong.github.io/img/20240322_1.png">
 <meta property="og:image" content="https://fuyunjinglong.github.io/img/20240322_2.png">
 <meta property="article:published_time" content="2023-03-12T08:33:16.000Z">
-<meta property="article:modified_time" content="2024-03-30T03:53:35.179Z">
+<meta property="article:modified_time" content="2025-02-18T22:44:50.087Z">
 <meta property="article:author" content="Elven">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fuyunjinglong.github.io/img/image-20220524191242711.png">
@@ -348,7 +347,7 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%BB%E7%AD%96%E7%95%A5"><span class="toc-number">1.</span> <span class="toc-text">性能优化总策略</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E5%A4%A7%E5%B1%82%E9%9D%A2%E7%AD%96%E7%95%A5"><span class="toc-number">1.1.</span> <span class="toc-text">两大层面策略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82%E9%9D%A2-4%E5%A4%A7%E7%AD%96%E7%95%A5"><span class="toc-number">1.1.1.</span> <span class="toc-text">网络层面(4大策略)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E5%B1%82%E9%9D%A2-4%E5%A4%A7%E7%AD%96%E7%95%A5"><span class="toc-number">1.1.2.</span> <span class="toc-text">渲染层面(4大策略)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E5%A4%A7%E4%BC%98%E5%8C%96%E6%8C%87%E6%A0%87"><span class="toc-number">1.2.</span> <span class="toc-text">三大优化指标</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8E%E8%BE%93%E5%85%A5url%E5%88%B0%E6%B8%B2%E6%9F%93%E5%AE%8C%E6%88%90%E6%95%B4%E4%B8%AA%E8%BF%87%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">从输入url到渲染完成整个过程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E8%BE%93%E5%85%A5url"><span class="toc-number">2.1.</span> <span class="toc-text">浏览器输入url</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#html%E6%B8%B2%E6%9F%93%E6%B5%81%E7%A8%8B"><span class="toc-number">2.2.</span> <span class="toc-text">html渲染流程</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7"><span class="toc-number">3.</span> <span class="toc-text">性能监控</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%94%9FPerformance-API"><span class="toc-number">3.1.</span> <span class="toc-text">原生Performance API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E5%89%8D%E9%A2%84%E8%AD%A6-%E5%9F%8B%E7%82%B9%E4%B8%8A%E6%8A%A5"><span class="toc-number">3.2.</span> <span class="toc-text">事前预警-埋点上报</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E5%90%8E%E5%88%86%E6%9E%90"><span class="toc-number">3.3.</span> <span class="toc-text">事后分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ChromeDevTools"><span class="toc-number">3.3.1.</span> <span class="toc-text">ChromeDevTools</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Performance"><span class="toc-number">3.3.1.1.</span> <span class="toc-text">Performance</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Memory"><span class="toc-number">3.3.1.2.</span> <span class="toc-text">Memory</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Lighthouse"><span class="toc-number">3.3.1.3.</span> <span class="toc-text">Lighthouse</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web-vitals-%E5%BA%93"><span class="toc-number">3.3.2.</span> <span class="toc-text">web-vitals 库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web-report-sdk"><span class="toc-number">3.3.3.</span> <span class="toc-text">web-report-sdk</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web-monitoring"><span class="toc-number">3.3.4.</span> <span class="toc-text">web-monitoring</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-number">4.</span> <span class="toc-text">性能优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93-HTML"><span class="toc-number">4.1.</span> <span class="toc-text">渲染-HTML</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93-CSS"><span class="toc-number">4.2.</span> <span class="toc-text">渲染-CSS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93-%E5%9B%BE%E5%83%8F"><span class="toc-number">4.3.</span> <span class="toc-text">渲染-图像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93-JS"><span class="toc-number">4.4.</span> <span class="toc-text">渲染-JS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C-%E6%9E%84%E5%BB%BAWebpack"><span class="toc-number">4.5.</span> <span class="toc-text">网络-构建Webpack</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C-%E6%9E%84%E5%BB%BAVue"><span class="toc-number">4.6.</span> <span class="toc-text">网络-构建Vue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C-%E5%88%86%E5%8F%91"><span class="toc-number">4.7.</span> <span class="toc-text">网络-分发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C-%E7%BC%93%E5%AD%98"><span class="toc-number">4.8.</span> <span class="toc-text">网络-缓存</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%80%BB%E7%AD%96%E7%95%A5"><span class="toc-number">1.</span> <span class="toc-text">性能优化总策略</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E5%A4%A7%E5%B1%82%E9%9D%A2%E7%AD%96%E7%95%A5"><span class="toc-number">1.1.</span> <span class="toc-text">两大层面策略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%B1%82%E9%9D%A2-4%E5%A4%A7%E7%AD%96%E7%95%A5"><span class="toc-number">1.1.1.</span> <span class="toc-text">网络层面(4大策略)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E5%B1%82%E9%9D%A2-4%E5%A4%A7%E7%AD%96%E7%95%A5"><span class="toc-number">1.1.2.</span> <span class="toc-text">渲染层面(4大策略)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E5%A4%A7%E6%A0%B8%E5%BF%83%E6%8C%87%E6%A0%87"><span class="toc-number">1.2.</span> <span class="toc-text">三大核心指标</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8E%E8%BE%93%E5%85%A5url%E5%88%B0%E6%B8%B2%E6%9F%93%E5%AE%8C%E6%88%90%E6%95%B4%E4%B8%AA%E8%BF%87%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">从输入url到渲染完成整个过程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E8%BE%93%E5%85%A5url"><span class="toc-number">2.1.</span> <span class="toc-text">浏览器输入url</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84%E6%B8%B2%E6%9F%93%E5%8E%9F%E7%90%86"><span class="toc-number">2.2.</span> <span class="toc-text">浏览器的渲染原理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E6%B5%8B%E9%87%8F%E5%B7%A5%E5%85%B7"><span class="toc-number">3.</span> <span class="toc-text">性能测量工具</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E7%9B%91%E6%8E%A7"><span class="toc-number">4.</span> <span class="toc-text">性能监控</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%94%9FPerformance-API"><span class="toc-number">4.1.</span> <span class="toc-text">原生Performance API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E5%89%8D%E9%A2%84%E8%AD%A6-%E5%9F%8B%E7%82%B9%E4%B8%8A%E6%8A%A5"><span class="toc-number">4.2.</span> <span class="toc-text">事前预警-埋点上报</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E5%90%8E%E5%88%86%E6%9E%90"><span class="toc-number">4.3.</span> <span class="toc-text">事后分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ChromeDevTools"><span class="toc-number">4.3.1.</span> <span class="toc-text">ChromeDevTools</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Performance"><span class="toc-number">4.3.1.1.</span> <span class="toc-text">Performance</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Memory"><span class="toc-number">4.3.1.2.</span> <span class="toc-text">Memory</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Lighthouse"><span class="toc-number">4.3.1.3.</span> <span class="toc-text">Lighthouse</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web-vitals-%E5%BA%93"><span class="toc-number">4.3.2.</span> <span class="toc-text">web-vitals 库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web-report-sdk"><span class="toc-number">4.3.3.</span> <span class="toc-text">web-report-sdk</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web-monitoring"><span class="toc-number">4.3.4.</span> <span class="toc-text">web-monitoring</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-number">5.</span> <span class="toc-text">性能优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93-HTML"><span class="toc-number">5.1.</span> <span class="toc-text">渲染-HTML</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93-CSS"><span class="toc-number">5.2.</span> <span class="toc-text">渲染-CSS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93-%E5%9B%BE%E5%83%8F"><span class="toc-number">5.3.</span> <span class="toc-text">渲染-图像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93-JS"><span class="toc-number">5.4.</span> <span class="toc-text">渲染-JS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C-%E6%9E%84%E5%BB%BAWebpack"><span class="toc-number">5.5.</span> <span class="toc-text">网络-构建Webpack</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C-%E6%9E%84%E5%BB%BAVue"><span class="toc-number">5.6.</span> <span class="toc-text">网络-构建Vue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C-%E5%88%86%E5%8F%91"><span class="toc-number">5.7.</span> <span class="toc-text">网络-分发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C-%E7%BC%93%E5%AD%98"><span class="toc-number">5.8.</span> <span class="toc-text">网络-缓存</span></a></li></ol></li></ol>
     </nav>
   </div>
 </aside>
@@ -390,7 +389,15 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h1 id="性能优化总策略"><a href="#性能优化总策略" class="headerlink" title="性能优化总策略"></a>性能优化总策略</h1><p><strong>总策略由两大策略层面和三大优化指标构成</strong></p>
+        <p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://web.dev/learn-web-vitals/">Web Vitals</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6904517485349830670">工作中如何进行前端性能优化(23 种优化+10 种定位方式</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6892994632968306702">前端性能优化 24 条建议（2020）</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7020212914020302856">写在 2021 的前端性能优化指南</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000041753539">前端性能优化实践</a></li>
+</ul>
+<h1 id="性能优化总策略"><a href="#性能优化总策略" class="headerlink" title="性能优化总策略"></a>性能优化总策略</h1><p><strong>总策略由两大策略层面和三大优化指标构成</strong></p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1C8411V7y2/?p=13&spm_id_from=pageDriver">使用浏览器DevTools分析性能</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Pr4y1N7QZ/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247">使用Chrome Performance进行性能调优</a></li>
@@ -614,111 +621,128 @@
 <ul>
 <li>在<code>异步任务</code>中修改<code>DOM</code>时把其包装成<code>微任务</code></li>
 </ul>
-<h2 id="三大优化指标"><a href="#三大优化指标" class="headerlink" title="三大优化指标"></a>三大优化指标</h2><p><img src="/img/image-20220524191242711.png" alt="image-20220524191242711"></p>
-<p><strong>三大指标</strong></p>
+<h2 id="三大核心指标"><a href="#三大核心指标" class="headerlink" title="三大核心指标"></a>三大核心指标</h2><p><img src="/img/image-20220524191242711.png" alt="image-20220524191242711"></p>
+<p>主要分为：三大核心指标与其它常见的性能指标。</p>
+<p>三大核心指标</p>
+<blockquote>
+<p>LCP最大内容绘制、FID首次输入延迟、CLS累计布局偏移</p>
+</blockquote>
+<p>其他指标</p>
+<blockquote>
+<p>FP首次绘制、FCP首次内容绘制、FMP首次有意义绘制、DCL DOM解析完成、L事件触发、SI速度指数、FSP首屏时间、TTI首次可交互时间、TTFB接收首字节时间、TBT阻塞总时间</p>
+</blockquote>
+<p><strong>三大核心指标</strong></p>
+<p>主要衡量<em>加载性能</em>、<em>交互性</em>和<em>视觉稳定性</em>。</p>
 <blockquote>
 <ul>
-<li>FCP(首次内容渲染)：是否在加载？用户请求url到页面出现第一个元素，页面首次绘制文本、图片、非空白 Canvas 或 SVG ，<strong>即白屏时间</strong>。</li>
-<li>FMP(首次有效渲染)：是否内容有用？用户请求url到主要有意义内容渲染,没有严格定义，目前采用LCP。<strong>即首屏时间</strong></li>
-<li>TTI(可交互时间):用户请求url到用户可输入交互吗?对应的用户关注点是 <strong>可以使用吗</strong></li>
+<li>LCP（<a target="_blank" rel="noopener" href="https://web.dev/articles/lcp">Largest Contentful Paint</a>）：最大内容绘制，测量<em>加载</em>性能。为了提供良好的用户体验，LCP 应在页面首次开始加载后的<strong>2.5 秒</strong>内发生。</li>
+<li>FID（<a target="_blank" rel="noopener" href="https://web.dev/articles/fid">First Input Delay</a>）(被替换为INP):首次输入延迟，测量<em>交互性</em>。为了提供良好的用户体验，页面的 FID 应为<strong>100 毫秒</strong>或更短。</li>
+<li>CLS（<a target="_blank" rel="noopener" href="https://web.dev/articles/cls">Cumulative Layout Shift</a>）:累积布局偏移，测量<em>视觉稳定性</em>。为了提供良好的用户体验，页面的 CLS 应保持在  <strong>0.1.</strong>  或更少。</li>
 </ul>
 </blockquote>
-<p>其他指标如，google三大指标LCP(加载),FID(交互),CLS(视觉稳定性)，或者雅虎35军规</p>
-<img src="/img/image-20220605155502770.png" alt="image-20220605155502770" style="zoom: 67%;" />
+<p><strong>1.LCP</strong></p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://web.dev/lcp/">Largest Contentful Paint 最大内容绘制 (LCP)</a> 代表代表着页面最大元素的渲染时间，通常来说页面中最大元素能快速渲染会让用户感觉页面性能还不错。该时间会随着页面渲染变化而变化，因为页面中的最大元素在渲染过程中可能会发生改变，另外该指标会在用户第一次交互后停止记录。</p>
+<p>最大内容绘制考量的元素类型为：</p>
+<ul>
+<li><code>&lt;img&gt;</code>元素</li>
+<li>内嵌在<code>&lt;svg&gt;</code>元素内的<code>&lt;image&gt;</code>元素</li>
+<li><code>&lt;video&gt;</code>元素（使用封面图像）</li>
+<li>通过<a target="_blank" rel="noopener" href="https://developer.mozilla.org/docs/Web/CSS/url()"><code>url()</code></a>函数（而非使用<a target="_blank" rel="noopener" href="https://developer.mozilla.org/docs/Web/CSS/CSS_Images/Using_CSS_gradients">CSS 渐变</a>）加载的带有背景图像的元素</li>
+<li>包含文本节点或其他行内级文本元素子元素的<a target="_blank" rel="noopener" href="https://developer.mozilla.org/docs/Web/HTML/Block-level_elements">块级元素</a></li>
+</ul>
+</blockquote>
+<p>使用 <a target="_blank" rel="noopener" href="https://wicg.github.io/event-timing">Event Timing API</a> 在 JavaScript 中衡量LCP</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">new PerformanceObserver((entryList) =&gt; &#123;</span><br><span class="line">  for (const entry of entryList.getEntries()) &#123;</span><br><span class="line">    console.log(&#x27;LCP candidate:&#x27;, entry.startTime, entry);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).observe(&#123;type: &#x27;largest-contentful-paint&#x27;, buffered: true&#125;);</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Largest Contentful Paint (LCP): 测量加载性能。为了能提供较好的用户体验，LCP指标建议页面首次加载要在2.5s内完成。</span><br><span class="line">First Input Delay (FID): 测量交互性能。为了提供较好用户体验，交互时间建议在100ms或以内。</span><br><span class="line">Cumulative Layout Shift (CLS): 测量视觉稳定性。为了提供较好用户体验，页面应该维持CLS在0.1或以内。</span><br></pre></td></tr></table></figure>
-
-<p><strong>优化标准</strong></p>
-<table>
-<thead>
-<tr>
-<th>单位(S)</th>
-<th>FCP</th>
-<th>FMP</th>
-<th>TTI</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>A类-极致</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-</tr>
-<tr>
-<td>B类-通用</td>
-<td>2</td>
-<td>3</td>
-<td>5</td>
-</tr>
-<tr>
-<td>C类-较差</td>
-<td>3</td>
-<td>5</td>
-<td>8</td>
-</tr>
-<tr>
-<td>D类-不可接受</td>
-<td>&gt;3</td>
-<td>&gt;5</td>
-<td>&gt;8</td>
-</tr>
-</tbody></table>
-<p><strong>优化结果</strong></p>
+<p>如何优化LCP</p>
 <blockquote>
 <ul>
-<li>FCP:从2降到1.2，性能提升40%</li>
-<li>FMP:从3降到2.2，性能提升26%</li>
-<li>TTI:从4降到3.2，性能提升20%</li>
+<li>服务端响应时间</li>
+<li>Javascript和CSS引起的渲染卡顿</li>
+<li>资源加载时间</li>
+<li>客户端渲染</li>
 </ul>
 </blockquote>
-<p><strong>指标详解</strong></p>
-<p><a target="_blank" rel="noopener" href="https://web.dev/fcp/">FCP</a></p>
+<p><strong>2.FID(被替换为INP)</strong></p>
 <blockquote>
-<p>首次内容绘制，标记的是浏览器渲染第一帧内容 <strong>DOM</strong> 的时间点，浏览器首次渲染任何文本，图像（包括背景图像），<code>SVG</code> 或者 <code>&lt;canvas&gt;</code> 等元素。</p>
+<p><a target="_blank" rel="noopener" href="https://web.dev/fid/">First Input Delay 首次输入延迟</a> 记录用户和页面首次交互操作所花费的时间，即是说用户与页面交互时（如点击链接或按钮），页面可以在多长时间内作出反馈。</p>
+<p>FID 指标会影响用户对页面交互性和响应性的第一印象。为了提供良好的用户体验，页面的 FID 应当小于 100 毫秒。</p>
+<p>还有一个性能指标 TTI（Time to Interactive）它反映的是用户什么时候可以开始和页面进行交互，但如果用户在 TTI 的时间内，没有与页面产生交互，TTI 是影响不到用户的；而如果想要知道 TTI 对用户的影响，需要 FID 这个指标，不同用户与网页发送交互的时间是不同的，所以对应的 FID 也不同</p>
 </blockquote>
-<p><a target="_blank" rel="noopener" href="https://web.dev/lcp/">FMP</a></p>
+<p>使用 <a target="_blank" rel="noopener" href="https://wicg.github.io/event-timing">Event Timing API</a> 在 JavaScript 中衡量 FID</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">new PerformanceObserver((entryList) =&gt; &#123;</span><br><span class="line">  for (const entry of entryList.getEntries()) &#123;</span><br><span class="line">    const delay = entry.processingStart - entry.startTime;</span><br><span class="line">    console.log(&#x27;FID candidate:&#x27;, delay, entry);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).observe(&#123;type: &#x27;first-input&#x27;, buffered: true&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><code>Interaction to Next Paint (INP)</code></p>
+<p>注意：实际上，从 2024 年 3 月开始，FID 将替换为 Interaction to Next Paint (INP)。用于通过观察用户在访问网页期间发生的所有符合条件的互动的延迟时间，评估网页对用户互动的总体响应情况。</p>
 <blockquote>
-<p>近似等于LCP，首次有效绘制，标记主角元素渲染完成的时间点，主角元素可以是视频网站的视频控件，内容网站的页面框架也可以是资源网站的头图等。</p>
+<p>INP 不仅会衡量首次互动，还会考虑所有互动，并报告网页整个生命周期内最慢的互动。此外，INP 不仅会测量延迟部分，还会测量从互动开始，一直到事件处理脚本，再到浏览器能够绘制下一帧的完整时长。因此是 Interaction to Next Paint。这些实现细节使得 INP 能够比 FID 更全面地衡量用户感知的响应能力。</p>
 </blockquote>
-<p><a target="_blank" rel="noopener" href="https://web.dev/tti/">TTI</a></p>
+<p>如何优化FID</p>
 <blockquote>
-<p>Time to Interactive (TTI)，从页面加载到可视化呈现、页面初始化脚本已经加载，并且可以可靠地快速响应用户的时间</p>
+<ul>
+<li>减少第三方代码的影响</li>
+<li>减少Javascript的执行时间</li>
+<li>最小化主线程工作</li>
+<li>减小请求数量和请求文件大小</li>
+</ul>
 </blockquote>
-<p>LCP</p>
+<p><strong>3.CLS</strong></p>
 <blockquote>
-<p>最大内容绘制，LCP（Largest Contentful Paint），用于记录视窗内最大的元素绘制的时间(页面开始加载到最大文本块内容或图片显示在页面中的时间)。表示<code>可视区“内容”最大的可见元素开始出现在屏幕上</code>的时间点</p>
+<p><a target="_blank" rel="noopener" href="https://web.dev/cls">Cumulative Layout Shift 累积布局偏移 (CLS)</a> 测量整个页面生命周期内发生的所有意外布局偏移中最大一连串的布局偏移分数，CLS 分数越低，代表页面的布局越稳定。在手机上这个指标更为重要。因为手机屏幕较小，CLS 值大的话会让用户觉得页面体验做的很差。</p>
+<p>比如在页面未加载完全时，想要点击页面某个未知，结果页面的广告刚刚加载完动态注入了页面，导致点击的地方被偏移，点到了广告，造成用户交互行为不期望的结果。</p>
+<p>CLS 较差的最常见原因为：</p>
+<ul>
+<li>无尺寸的图像</li>
+<li>无尺寸的广告、嵌入和 iframe</li>
+<li>动态注入的内容</li>
+<li>导致不可见文本闪烁/无样式文本闪烁的网络字体</li>
+<li>在更新 DOM 之前等待网络响应的操作</li>
+</ul>
+<p>关于如何优化 CLS，可以参考该文章：<a target="_blank" rel="noopener" href="https://web.dev/optimize-cls/#dynamic-content">优化 Cumulative Layout Shift 累积布局偏移</a></p>
 </blockquote>
-<p>FID</p>
+<p>使用 <a target="_blank" rel="noopener" href="https://wicg.github.io/event-timing">Event Timing API</a> 在 JavaScript 中衡量 CLS</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">addEventListener(&quot;load&quot;, () =&gt; &#123;</span><br><span class="line">    let DCLS = 0;</span><br><span class="line">    new PerformanceObserver((list) =&gt; &#123;</span><br><span class="line">        list.getEntries().forEach((entry) =&gt; &#123;</span><br><span class="line">            if (entry.hadRecentInput)</span><br><span class="line">                return;  // Ignore shifts after recent input.</span><br><span class="line">            DCLS += entry.value;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;).observe(&#123;type: &quot;layout-shift&quot;, buffered: true&#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>如何优化CLS</p>
 <blockquote>
-<p>首次输入延迟，FID（First Input Delay），记录由于主线程繁忙导致用户首次输入的延迟时间。 Google 推荐响应用户交互在 100ms 以内(用户首次与网站进行交互(例如点击一个链接、按钮、js自定义控件)到浏览器真正进行响应的时间)。</p>
+<ul>
+<li>图片或视屏元素有大小属性，或者给他们保留一个空间大小，设置width、height，或者使用 <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=beD5dOyPL6T/NhwU+N990w==.zdCxa1BbAm0h8J60KMd53LAphirRqxQoNkStyqRcal/Hs8eQG8Kg6rUez0ACPbWOcw1tl4iOluFL+1tawysWIgQF3acTjGd3vF8k7mxZQD+SnmPcnUGMUI72M1gsdcZU0PK38/ODPtAxEY2Z08L9gnxgibYNglgBVgMDRAFzPCDCSzqcKBI41FmY/1/lyHNN">unsized-media feature policy</a> 。</li>
+<li>不要在一个已存在的元素上面插入内容，除了相应用户输入。</li>
+<li>使用animation或transition而不是直接触发布局改变。</li>
+</ul>
 </blockquote>
-<p>CLS</p>
+<p><strong>其他指标</strong></p>
 <blockquote>
-<p>累计位移偏移，CLS（Cumulative Layout Shift），它能衡量页面是否排版稳定。记录了页面上非预期的位移波动(从页面开始加载到状态变为隐藏过程中，发生不可预期的layout shifts的累积分数)。页面移动会经常发生在资源异步加载、或者DOM元素动态添加到已存在的页面元素上面。这些元素有可能是图片、视频、第三方广告或小图标等。</p>
+<ul>
+<li><p>FP（First Paint）首次绘制：FP是页面首次绘制像素的时间（不包括默认背景绘制），即为页面在屏幕上首次发生视觉变化的时间。</p>
+</li>
+<li><p>FCP（First Contentful Paint）首次内容绘制：FCP 指浏览器在页面渲染第一帧内容 DOM（包括任何文本、图片、SVG、非空白 canvas 等）的时间点。</p>
+</li>
+<li><p>FMP（First Meaningful Paint）首次有意义绘制：首次有效绘制，标记主角元素渲染完成的时间点，主角元素可以是视频网站的视频控件，内容网站的页面框架也可以是资源网站的头图等。目前对FMP尚无标准化的定义，因为比较难以用通用的方式确定有效/有意义的渲染。对于博客网站来说，渲染出标题与首屏文字就是首要内容，对于商城/图片网站来说，渲染图片是首要内容，才是有意义的渲染时间。比如掘金文章详情页，如果头图的重要性大于标题的话，那它就是有效绘制。以前使用 Lighthouse 工具是有该指标评分，现 Lighthouse 6.0 已弃用，使用了 LCP 指标来替代。</p>
+</li>
+<li><p>DCL（DOMContentLoaded）DOM 解析完成：当DOMContentLoaded事件触发时，仅当DOM解析完成,不包括样式表，图片等。在文档中没有脚本时，HTML被完全加载以及解析时，DOMContentLoaded 事件会被触发，无需等待样式表、图片等；如果文档中包含脚本，则脚本会阻塞 HTML 文档的解析。</p>
+</li>
+<li><p>L（Onload Event）onload 事件触发：当  <code>onload</code> 事件触发时，代表页面上所有的 DOM、样式表、脚本、图片都已加载完成，即整个页面完全加载完成。</p>
+</li>
+<li><p>SI（Speed Index）速度指数：用来衡量页面可见内容填充快慢的指标。该指标涵盖了浏览器何时呈现所有元素，包括不可见的脚本和影响性能的元素；</p>
+</li>
+<li><p>TTI（Time To Interactive）首次可交互时间：可交互状态指的是页面上的 UI 组件是可以交互的（比如可以响应按钮的点击等）。通过 TTI 可以让我们了解我们的页面需要多久可以真正达到“可用”的状态，能够快速可靠响应用户操作所需的时间长短。</p>
+</li>
+<li><p>TTFB（Time To First Byte）接收首字节时间：浏览器从请求页面开始到接收第一字节的时间，这个时间段包括 DNS 查找、TCP 连接和 SSL 连接。</p>
+<p>TTFB 是由三个主要过程组成的：</p>
+<ol>
+<li>浏览器发送 HTTP 请求所花费的时间</li>
+<li>服务器处理该请求所花费的时间</li>
+<li>服务器将响应的第一个字节发送回浏览器所花费的时间</li>
+</ol>
+</li>
+<li><p>TBT（Total Blocking Time）阻塞总时间：TBT 测量页面被阻止响应用户输入（例如鼠标点击、屏幕点击或按下键盘）的总时间。总和是 FCP 和 TTI 之间所有长任务的<em>阻塞部分</em>之和。任何执行时间超过 50 毫秒的任务都是长任务。50 毫秒后的时间量是阻塞部分。例如，如果 Lighthouse 检测到一个 70 毫秒长的任务，则阻塞部分将为 20 毫秒。</p>
+</li>
+<li><p>FSP（First Screen Paint）首屏时间：该指标灵活性较大，表示页面从开始加载到首屏内容全部绘制完成的时间，即用户可以看到首屏的全部内容</p>
+</li>
+</ul>
 </blockquote>
-<p>FP</p>
-<blockquote>
-<p>页面第一次绘制像素的时间(页面开始加载到某一块内容显示在页面上的时间)</p>
-</blockquote>
-<p>TBT</p>
-<blockquote>
-<p>阻塞总时间，TBT（Total Blocking Time），记录在 FCP 到 TTI 之间所有长任务的阻塞时间总和。</p>
-</blockquote>
-<p>秒开率</p>
-<blockquote>
-<p>低于1s内的数据占比即是秒开率，例如手淘的页面秒开率基本都达到80%以上。</p>
-</blockquote>
-<p>TTFB</p>
-<blockquote>
-<p>浏览器从请求页面开始到接收第一字节的时间，这个时间段包括 DNS 查找、TCP 连接和 SSL 连接</p>
-</blockquote>
-<p>DCL</p>
-<blockquote>
-<p>当 <code>DOMContentLoaded</code> 事件触发时，仅当 <code>DOM</code> 加载完成，不包括样式表，图片（譬如如果有 async 加载的脚本就不一定完成）。</p>
-</blockquote>
-<p><strong>参考</strong></p>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6981673766178783262#heading-2">写给中高级前端关于性能优化的9大策略和6大指标 | 网易四年实践</a></p>
-<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6892994632968306702">前端性能优化 24 条建议（2020）</a></p>
 <h1 id="从输入url到渲染完成整个过程"><a href="#从输入url到渲染完成整个过程" class="headerlink" title="从输入url到渲染完成整个过程"></a>从输入url到渲染完成整个过程</h1><h2 id="浏览器输入url"><a href="#浏览器输入url" class="headerlink" title="浏览器输入url"></a>浏览器输入url</h2><p>pc-&gt;正向代理(电信、VPN)-&gt;CDN(100%使用到)-反向代理(阿里云，源站的代理人)-&gt;源站</p>
 <img src="/img/image-20220605154916096.png" alt="image-20220605154916096" style="zoom:80%;" />
 
@@ -757,7 +781,8 @@
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Access-Control-Allow-Headers: 服务器端允许的请求Headers</span><br><span class="line">Access-Control-Allow-Methods: 服务器端允许的请求方法</span><br><span class="line">Access-Control-Allow-Origin: 服务器端允许的请求Origin头部（譬如为*）</span><br><span class="line">Content-<span class="built_in">Type</span>：服务端返回的实体内容的类型</span><br><span class="line">Date：数据从服务器发送的时间</span><br><span class="line">Cache-Control：告诉浏览器或其他客户，什么环境可以安全的缓存文档</span><br><span class="line">Last-Modified：请求资源的最后修改时间</span><br><span class="line">Expires：应该在什么时候认为文档已经过期,从而不再缓存它</span><br><span class="line">Max-age：客户端的本地资源应该缓存多少秒，开启了Cache-Control后有效</span><br><span class="line">ETag：请求变量的实体标签的当前值</span><br><span class="line"><span class="built_in">Set</span>-Cookie：设置和页面关联的cookie，服务器通过这个头部把cookie传给客户端</span><br><span class="line">Keep-Alive：如果客户端有keep-alive，服务端也会有响应（如timeout=<span class="number">38</span>）</span><br><span class="line">Server：服务器的一些相关信息</span><br></pre></td></tr></table></figure>
 
 <p><img src="/img/image-20211111191739887.png" alt="image-20211111191739887"></p>
-<h2 id="html渲染流程"><a href="#html渲染流程" class="headerlink" title="html渲染流程"></a>html渲染流程</h2><blockquote>
+<h2 id="浏览器的渲染原理"><a href="#浏览器的渲染原理" class="headerlink" title="浏览器的渲染原理"></a>浏览器的渲染原理</h2><p>简记： 生成DOM树 –&gt; 生成CSS规则树 –&gt; 构建渲染树 –&gt; 布局 –&gt; 绘制</p>
+<blockquote>
 <ul>
 <li>解析HTML标签，构建DOM树</li>
 <li>解析CSS标签，并构建CSSOM样式规则树</li>
@@ -774,6 +799,63 @@
 <p><strong>名词解释</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Parse Stylesheet：解析样式表，构建出 CSSOM</span><br><span class="line">Recalculate Style：重新计算样式，确定样式规则</span><br><span class="line">Layout：根据计算结果进行布局，确定元素的大小和位置</span><br><span class="line">Update Layer Tree：更新渲染层树</span><br><span class="line">Paint：根据 Layer Tree 绘制页面（位置、大小、颜色、边框、阴影等）</span><br><span class="line">Composite Layers：组合层，浏览器将图层合并后输出到屏幕</span><br></pre></td></tr></table></figure>
 
+<h1 id="性能测量工具"><a href="#性能测量工具" class="headerlink" title="性能测量工具"></a>性能测量工具</h1><p><strong>实验室工具</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=8DBlObu5IKLVCa/T/uLtXw==.Mpk0rDRf3mnYKQ9/HoNaqFF7w6GJDSxCwf/9XoTyarnUGltBGQ+vi1Nz4Hgae2FJny/pkyEma5GQmt3XaG2EMoHwJIHEGtvdstnNoaoF8VM9wIYvOB7dhxhJADzsxnSZeWDdoqAD6DgzKfKVQJGKug==">Chrome DevTools</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=HwUf+fUgir80mlHPnk8Feg==.R6iQFHvyTBXP2qIJ2kACHWcfFMGoNKoTaSAtBqMxU2TFQbprYHrYoIvili7Kr80KAwxC3N48w/AaEbrQGq1GEzcW10AuJLxldmM+loMWvxRub7AmoFISpiikWknJZPeQ/FsGPQc4Pltx2k+vJssHww==">Lighthouse</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=Kk7uewuTW1XcUB9VN50faQ==.cGl4p3u0mMCThVGYSVblRh+heZ/oVfIrJBBEVTeBG5hggHi4H+7NyzduJ9i9OTwjCGKf+EKoMLy0ZRLrVHGvBg==">WebPageTest</a></li>
+</ul>
+<p><strong>线上测量工具</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=jp9fcpfCs2iaWjZV3NqwbA==.pwSJD+b9F/G9XCCvDMCbcjcBeIhPZIc/XH7WtDhMzNSppygMpPaZPIkpqw+N6QsW9xciN+5DhoJ231zPLUcgxsQhkupI4u3PB26WmWgbS05wQlehzyUOBg/WZclwKhhGnVKK3yaZz2xtM0v9no5357x19CYAdmorC6GoMKn7pxQ=">Chrome User Experience Report</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=ooamxIP42PIfZlOKbKW4gg==.PVWioBHGcHCccQ0XLqLzvZ8iv79izMGvkKzpHZntNQIzlQVsBlzNx27MkZe5PUPpYqWNKyTZKyygeD24wpPj/RgE0C19qkApf/+u/jTGtRN7UShlpIiB+IEQK6YXf2egWvTqd5t6zhpGIYdvd3FU4g==">PageSpeed Insights</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=yY/qQKEkRIZJT7nlyV3e3w==.S0SqhprFiqgcfz82kDzlKtuhD8aei0lMJPnlX5acZm2UA789vG+KKzKlrfkv3ku9SnfZk7CdqSa24tSuCP8FWcfgD7aRoB0a0HlYsz9kvo3t2zndY75h2nJNIRHVa9ce">Search Console (Core Web Vitals report)</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=ov4SVHhOvJL9r3gk3l3Iyw==.ZkILm2NC9uUY0VnxCWiC5IRRvaMtYNKGBPVFis5+IChp6B2p4wjsCBtneCmHM3n0sl7BdPSSaf3VP5vqm8g5jHpQBmelid2PA3Jd07nxeNFkUfWDBYSGQiDYlAwQcdiR">web-vitals JavaScript library</a></li>
+</ul>
+<p><strong>其他工具</strong></p>
+<p>Google开发的 <a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=Ec26FI8dVVeX5pQAJaWbUQ==.D44hFt9hrHRzm0kvMGXtNrv7d6Hi1TKaI+eOt93EX61yl8uIvmxS+IA393xKGnVMYi9PzdnVsZIc5pHJip8YEuw/zLy49vPEGmmdeJIhFBg=">所有工具</a> 都支持Core Web Vitals的测量。工具如下：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=Dga5qzDdl+aptHvPcb+0WQ==.K5rm5CezayNwIjw6wMcdg3riLG54mLKm1KpkVtihb8n+oMRr303Q4UYoKGsLPPkqIv3Ic5aaelE/Y0GuTq39Y0V1/NfB5uD+VjfYBS1AUc0vt6SLWR69p//sSWHf6CxB">Lighthouse</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=SU2D/x7oCWvspDdnRYiISg==.nByAkvHpryemTGOGGhpwT1ZZsPtGrE0aRR79Tsz3yWYFW2ZolUlvZqgPaDnhOWfyTsaXGnEfWsn2dz52U+76FZZ+eD8qUXN8umVTAyuVsQhUMzs+H/cDX3+kjFYVNiav8qRSgxTQZSV4lw8psXBUEQ==">PageSpeed Insights</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=OTrgiTkQQ5zO95vW2FTKRA==.C4o8OdtOp0IdAC6JtJhxT/n6VgQXdK4ZD2HY8j2rj9075hty2h521a05HjpIMfAkph1pcmc/4M+fuqvuMyRhWC3c3zbpqsTc31puLsWm73vRa0JF6B7/Tg1JSA+VqDvqxTU8K8N21IjoTzDRbEh7fg==">Chrome DevTools</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=rxEA7USPJUDBB60Ige0qnA==.Vgz52+rA38eSrI+VMnlIv1PQsBv2LkdMonDEuOEz+FclOu2LGjfm/hVKFTr2N8w1e2yqTGokvxO4LACbyOupFo9Wi7onrq3Qg1/TtvpkzJ+eArLNcQxecfrAGBSUpgfL">Search Console</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=+qTn7DYUKIRWXtqxVmEpVg==.Ge/hCzYT8aTsT5gIp3s3bUgkNGxeYozvM/bFoLW7dK31QV3RRg3BVk88pF+aJ1aK+jujsxKdRt9SuZKH6ljY1zqb0pL8ow8pB7UNJ7dkN8c=">web.dev’s提供的测量工具</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=9on8lUeDxW7RZg+LDfF98w==.UJo5foZ6gMm00jFatqaotEAzoMil611Nd0sQR3M4ff7SrnaKCuiwTSEMJSo9yhaz8wLOwND9WZZ0m3yu21kYr2JoVcdc6JB9LElwDI76QrzoFSQdfJm9XeYgRVTBd3laP00Nw+uISPxXcnih7ICspWp96akGFxFnUHqHsrathwWR5l30ru8LHEoT0EK3tajt">Web Vitals扩展</a></li>
+<li><a target="_blank" rel="noopener" href="https://link.segmentfault.com/?enc=EpAFRizemhNj5uCU1m8nhw==.3P8Jg+nwcWGvrtTVhiv2NkADmLxE2wFCpZtFnBGeyQ9m0HocBF1hcLuUw0Wl38tVHDKYX2YGkmuORocxlPEYcGeRg/mPkmhnatLjh9qE4HxVesjq5E+vSdTiG4Bg6EiIlwR9AWIWDc1CDhPgNE3zu4u/5txg/Ehaf9zaXN7OcEc=">Chrome UX Report</a> API</li>
+</ul>
+<p><strong>1.1Chrome DevTools</strong></p>
+<p>一般关注Network 和 Performance 面板。</p>
+<p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7067332850927796238">浅析 Chrome Devtools 的 Performance 面板</a></li>
+</ul>
+<p><strong>1.2Lighthouse</strong></p>
+<p>Lighthouse 用来生成网页的性能评测报告，该工具是性能评分工具中使用频率较高的，安装<a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/lighthouse/blipmdconlkpinefehnmjammfjpmpbjk">Lighthouse</a>插件，生成报告查看各指标评分。</p>
+<p>建议在无痕浏览器下进行测试，排除其它干扰因素测量出来较为准确。</p>
+<p><strong>1.3WebPageTest</strong><br>WebPageTest 用来进行整体的网站质量评估、一站式性能评估。</p>
+<p>使用步骤：</p>
+<ol>
+<li>输入要测试的网页网址</li>
+<li>选择高级配置</li>
+<li>选择地理位置，从接近你位置最近的测试机器进行测试，并选择 Chrome 浏览器</li>
+<li>点击 Start Test</li>
+</ol>
+<p><strong>2.1web-vitals</strong></p>
+<p>上述是通过工具来测量的，假设我们想在 JS 代码中来获取，最简单的方式就是使用集成 <a target="_blank" rel="noopener" href="https://github.com/GoogleChrome/web-vitals">Web Vitals</a> 的 JS 库，该项目是由 Chrome 发起的，可获取 CLS、FID、FCP、LCP、TTFB 指标。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import &#123; getCLS, getFID, getLCP &#125; from &#x27;web-vitals&#x27;</span><br><span class="line"></span><br><span class="line">getCLS(console.log)</span><br><span class="line">getFID(console.log)</span><br><span class="line">getLCP(console.log)</span><br></pre></td></tr></table></figure>
+
+<p>此话，还有对应的 Chrome 扩展工具：<a target="_blank" rel="noopener" href="https://github.com/GoogleChrome/web-vitals-extension">web-vitals-extension</a></p>
+<p><strong>工具实战</strong></p>
+<blockquote>
+<ul>
+<li>首先我们可以使用Lighthouse，在本地进行测量，根据报告给出的一些建议进行优化；</li>
+<li>发布之后，我们可以使用PageSpeed Insights去看下线上的性能情况；</li>
+<li>接着，我们可以使用Chrome User Experience Report API去捞取线上过去28天的数据；</li>
+<li>发现数据有异常，我们可以使用DevTools工具进行具体代码定位分析；</li>
+<li>使用Search Console’s Core Web Vitals report查看网站功能整体情况；</li>
+<li>使用Web Vitals扩展方便的看页面核心指标情况；</li>
+</ul>
+</blockquote>
 <h1 id="性能监控"><a href="#性能监控" class="headerlink" title="性能监控"></a>性能监控</h1><h2 id="原生Performance-API"><a href="#原生Performance-API" class="headerlink" title="原生Performance API"></a>原生Performance API</h2><img src="/img/image-20220605154916096.png" alt="image-20220605154916096" style="zoom:80%;" />
 
 <p>左边部分代表的是网络传输层面的过程，右边部分代表了服务器传输回字节后浏览器的各种事件状态，这个阶段包含了浏览器对文档的解析、DOM 树构建、布局、绘制等。</p>

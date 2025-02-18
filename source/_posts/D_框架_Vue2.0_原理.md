@@ -911,9 +911,11 @@ export default class Watcher {
 
 ## Virtual DOM 
 
-Virtual DOM 本质上就是在 JS 和 DOM 之间做了一个缓存。
+虚拟DOM是一种编程技术，它使用JavaScript对象来表示真实的DOM元素。
 
-虚拟DOM就是一个普通的JavaScript对象，包含了`tag`、`props`、`children`三个属性。
+虚拟DOM本质：在 JS 和 DOM 之间做了一个缓存，是一个普通的JavaScript对象，包含了`tag`、`props`、`children`三个属性。
+
+虚拟DOM的原理是，当数据或状态发生变化时，不直接操作真实的DOM，而是创建一个新的虚拟DOM树，然后与旧的虚拟DOM树进行比较，找出差异，最后只更新真实DOM中有变化的部分。
 
 Virtual DOM做了两件事:
 
@@ -921,9 +923,7 @@ Virtual DOM做了两件事:
 > - 2、当状态变更的时候，重新构造一棵新的对象树，然后用新的树和旧的树进行比较，记录两棵树差异；
 > - 3、把两棵树差异应用到真实DOM上
 
-属性key的作用：
-
-> key的作用是尽可能的复用 DOM 元素
+虚拟DOM的优势是，它可以提高页面渲染的性能，避免不必要的DOM操作，减少浏览器的重绘和回流，同时也可以实现跨平台的渲染，例如在服务器端或移动端。
 
 ## Virtual DOM-diff算法
 
@@ -1079,9 +1079,9 @@ Vue提供两个不同构建版本：
 
 编译核心流程：
 
-> - parse解析器：将模板解析成 AST抽象语法树
-> - optimize优化器：标记静态节点
-> - generate代码生成器：将 AST 转换成“代码字符串”
+> - parse解析器：将template模板中的节点和数据解析成 AST抽象语法树
+> - optimize优化器：标记静态节点，提升渲染性能
+> - generate代码生成器：将 AST 转换成“代码字符串”，然后将 render 字符串通过 new Function 的方式转换成渲染函数
 
 <img src="/img/image-20230614064728863.png" alt="image-20230614064728863" style="zoom:80%;" />
 

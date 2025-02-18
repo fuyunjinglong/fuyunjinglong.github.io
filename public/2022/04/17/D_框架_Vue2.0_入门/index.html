@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220529183039739.png">
 <meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220529183414437.png">
 <meta property="article:published_time" content="2022-04-16T22:33:16.000Z">
-<meta property="article:modified_time" content="2024-03-05T23:25:58.335Z">
+<meta property="article:modified_time" content="2025-02-18T22:53:49.254Z">
 <meta property="article:author" content="Elven">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fuyunjinglong.github.io/img/image-20220608072943567.png">
@@ -448,27 +448,44 @@
 <p>子组件：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">// Son.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;input type=&quot;text&quot; v-model=&quot;sonAge&quot; @input=&quot;changeInput&quot;&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  props: &#123;</span><br><span class="line">    value: &#123;</span><br><span class="line">      typeof: String</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      sonAge: &#x27;&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  // 超级牛</span><br><span class="line">  model: &#123;</span><br><span class="line">    prop: &#x27;value&#x27;,</span><br><span class="line">    event: &#x27;change&#x27;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    changeInput() &#123;</span><br><span class="line">      this.$emit(&#x27;change&#x27;, this.sonAge)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  watch: &#123;</span><br><span class="line">    value: &#123;</span><br><span class="line">      immediate: true, // 立即执行 :当刷新页面时会立即执行一次handler函数</span><br><span class="line">      handler(val) &#123;</span><br><span class="line">        this.sonAge = val</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
 
-<h2 id="修饰符与指令"><a href="#修饰符与指令" class="headerlink" title="修饰符与指令"></a>修饰符与指令</h2><p><strong>修饰符</strong></p>
+<h2 id="修饰符与指令"><a href="#修饰符与指令" class="headerlink" title="修饰符与指令"></a>修饰符与指令</h2><p>在 <em>vue</em> 中修饰符可以分为 <em>3</em> 类：</p>
 <ul>
-<li>lazy：改变输入框的值时value不会改变，当光标离开输入框时，v-model绑定的value才会改变</li>
-<li>trim：给v-model绑定值的首尾空格过滤掉</li>
-<li>number：将值转成数字。对于先输入数字，只取前面数字部分。对于先输入字母，则无效</li>
-<li>stop：阻止冒泡</li>
-<li>capture：事件默认是往外冒泡，capture表示反过来，由外往内捕获</li>
-<li>self：只有点击事件绑定的本身才会触发事件</li>
-<li>once：事件只执行一次</li>
-<li>prevent：阻止默认事件，如a标签的跳转</li>
-<li>native：加在自定义组件上，保证事件能执行</li>
-<li>sync：父子传值，子组件想更新值</li>
+<li>事件修饰符</li>
+<li>按键修饰符</li>
+<li>表单修饰符</li>
 </ul>
-<p><strong>指令</strong></p>
+<p>事件修饰符</p>
+<blockquote>
 <ul>
-<li>v-html：更新innerHtml</li>
-<li>v-text：更新textContent</li>
-<li>v-bind：绑定变量属性</li>
-<li>v-once：只渲染一次</li>
-<li>v-if/v-for/v-show等</li>
+<li><em>.stop</em>：阻止冒泡。</li>
+<li><em>.prevent</em>：阻止默认事件。</li>
+<li><em>.capture</em>：使用事件捕获模式。</li>
+<li><em>.self</em>：只在当前元素本身触发。</li>
+<li><em>.once</em>：只触发一次。</li>
+<li><em>.passive</em>：默认行为将会立即触发。</li>
 </ul>
+</blockquote>
+<p>按键修饰符</p>
+<blockquote>
+<ul>
+<li>.<em>left</em>：左键</li>
+<li>.<em>right</em>：右键</li>
+<li>.<em>middle</em>：滚轮</li>
+<li>.<em>enter</em>：回车</li>
+<li>.<em>tab</em>：制表键</li>
+<li>.<em>delete</em>：捕获 “删除” 和 “退格” 键</li>
+<li>.<em>esc</em>：返回</li>
+<li>.<em>space</em>：空格</li>
+</ul>
+</blockquote>
+<p>表单修饰符</p>
+<blockquote>
+<ul>
+<li>.<em>lazy</em>：在文本框失去焦点时才会渲染</li>
+<li>.<em>number</em>：将文本框中所输入的内容转换为number类型</li>
+<li>.<em>trim</em>：可以自动过滤输入首尾的空格</li>
+</ul>
+</blockquote>
 <p><strong>自定义指令</strong></p>
 <p>局部指令</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;input  v-focuslw /&gt;</span><br><span class="line">data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      userName: &#x27;&#x27;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  directives: &#123;</span><br><span class="line">    focuslw: &#123;</span><br><span class="line">      // 指令的定义</span><br><span class="line">      inserted: function (el,binding,vnode,oldVnode) &#123;</span><br><span class="line">        el.focus();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">指令钩子函数会被传入以下参数:</span><br><span class="line">el：指令所绑定的元素，可以用来直接操作 DOM。</span><br><span class="line">binding：一个对象，包含以下 property：</span><br><span class="line">    name：指令名，不包括 v- 前缀。</span><br><span class="line">    value：指令的绑定值，例如：v-my-directive=&quot;1 + 1&quot; 中，绑定值为 2。</span><br><span class="line">    oldValue：指令绑定的前一个值，仅在 update 和 componentUpdated 钩子中可用。无论值是否改变都可用。</span><br><span class="line">    expression：字符串形式的指令表达式。例如 v-my-directive=&quot;1 + 1&quot; 中，表达式为 &quot;1 + 1&quot;。</span><br><span class="line">    arg：传给指令的参数，可选。例如 v-my-directive:foo 中，参数为 &quot;foo&quot;。</span><br><span class="line">    modifiers：一个包含修饰符的对象。例如：v-my-directive.foo.bar 中，修饰符对象为 &#123; foo: true, bar: true &#125;。</span><br><span class="line">vnode：Vue 编译生成的虚拟节点。移步 VNode API 来了解更多详情。</span><br><span class="line">oldVnode：上一个虚拟节点，仅在 update 和 componentUpdated 钩子中可用。</span><br></pre></td></tr></table></figure>

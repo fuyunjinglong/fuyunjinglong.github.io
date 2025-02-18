@@ -2212,3 +2212,45 @@ export default defineComponent({
 })
 </script>
 ```
+
+## 使用Ref还是Reactive？
+
+- [使用Ref还是Reactive？](https://www.cnblogs.com/chuckQu/p/17350975.html)
+- [`reactive`和 `ref` 对比](https://zhuanlan.zhihu.com/p/656470876)
+
+> 一句话总结：默认情况下使用`ref`，当你需要对变量分组时使用`reactive`。(在一个`reactive`对象中对`ref`分组)
+
+| reactive                                | ref                                                       |
+| --------------------------------------- | --------------------------------------------------------- |
+| ❌只支持对象和数组(引用数据类型)         | ✅支持基本数据类型+引用数据类型                            |
+| ✅在 <script> 和 <template> 中无差别使用 | ❌在 <script> 和 <template> 使用方式不同(script中要.value) |
+| ❌重新分配一个新对象会丢失响应性         | ✅重新分配一个新对象不会失去响应                           |
+| 能直接访问属性                          | 需要使用 .value 访问属性                                  |
+| ❌将对象传入函数时,失去响应              | ✅传入函数时,不会失去响应                                  |
+| ❌解构时会丢失响应性,需使用toRefs        | ❌解构对象时会丢失响应性,需使用toRefs                      |
+
+- ref 用于将**基本类型的数据（如字符串、数字，布尔值等）和引用数据类型(对象)** 转换为响应式数据。使用 ref 定义的数据可以通过 **`.value`** 属性访问和修改。
+- reactive 用于将**对象**转换为响应式数据，包括复杂的嵌套对象和数组。使用 reactive 定义的数据可以**直接**访问和修改属性。
+
+一种推荐使用的模式是在 `reactive` 对象中嵌套 refs,如果你不需要响应式的 `state` object，则可以将 refs 放入普通的 JavaScript object 。
+
+```
+const loading = ref(true)
+const error = ref(null)
+
+const state = reactive({
+  loading,
+  error,
+})
+
+// 可以 watch 响应式 object
+watchEffect(() => console.log(state.loading))
+
+// ...和 ref
+watch(loading, () => console.log('loading has changed'))
+
+setTimeout(() => {
+  loading.value = false
+  // 触发所有的 watchers
+}, 500)
+```

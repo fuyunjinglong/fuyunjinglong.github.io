@@ -690,6 +690,35 @@ console.log(array1.push.apply(array1, array2)); // [1, 2, 3, 4, 5, 6]
 
 ![image](/img/2024-05-14_06-55-38.png)
 
+## 理解回流和重绘？
+
+1.概念：
+
+- `回流(Reflow)`：当 DOM 的变化影响了元素的几何信息，浏览器需要重新计算元素的几何属性，将其安放在界面中的正确位置，这个过程叫做回流（也可以叫做重排）。表现为重新生成布局，重新排列元素。
+- `重绘(Repaint)`：当一个元素的外观发生改变，重新把元素外观绘制出来的过程，叫做重绘。表现为某些元素的外观被改变。
+
+2.常见引起回流和重绘的属性和方法：
+
+任何会改变元素几何信息（元素的位置和尺寸大小）的操作都会触发回流。
+
+- 添加或删除可见的 DOM 元素
+- 元素尺寸改变--边距、填充、宽度、高度
+- 浏览器尺寸改变-- resize 事件发生时
+- 计算 offsetWidth 和 offsetHeight 属性
+- 设置 style 属性的值
+- 修改网页默认字体
+
+**回流必定会发生重绘，重绘不一定会引发回流。回流所需的成本比重绘高得多**
+
+3.如何减少回流？
+
+- 使用 transform 代替 top
+- 不要把节点的属性值放在一个循环里，当成循环里的变量
+- 不要使用 table 布局，可能很小的一个改动会造成整个 table 的重新布局
+- 把 DOM 离线后修改。如：使用 documentFragment 对象在内存里操作 DOM
+- 不要一条一条的修改样式，可以预先定义好 class，然后修改 DOM 的 className
+- 使用 absolute 或 fixed 使元素脱离文档流
+
 # 三大山-原型和原型链
 
 ## 彻底搞懂this
@@ -4311,4 +4340,45 @@ export function paintWaterMark(msg='仅测试用途', className='water', transpa
   ctxr.fillStyle = pat;
   ctxr.fillRect(0, 0, crw.width, crw.height);
 }
+```
+
+## splice新增-删除-替换
+
+```
+const arr = [1, 2, 3];
+// 新增，在索引1处新增,删除个数为0
+arr.splice(1, 0, ...[7, 8]); // 1,7,8,2,3
+// 删除，在索引1处删除,删除个数为1
+arr.splice(1, 1); // 1,3
+// 替换，在索引1处替换,替换个数为1
+arr.splice(1, 1, ...[7, 8]); // 1,7,8,3
+```
+
+## JS复制粘贴
+
+```
+function addEventListenerCopyPaste() {
+  // 支持复制粘贴
+  const target = document.getElementById(uniId.value);
+  target.addEventListener('copy', (event) => {
+    // 复制,使用ClipboardApi来设置剪贴板里的内容,参考张鑫旭的博客
+    const clipboardData = event.clipboardData || window.clipboardData;
+    if (!clipboardData) {
+      return;
+    }
+    let text = window.getSelection().toString();
+    if (text) {
+      event.preventDefault();
+      text = text.replace(/\n\n/g, ',');
+      text = text.replace(/\n/g, ' ');
+      clipboardData.setData('text/plain', text);
+    }
+  });
+  target.addEventListener('paste', (event) => {
+    // 粘贴
+    event.preventDefault();
+    let paste = (event.clipboardData || window.clipboardData).getData('text');
+    paste = paste.toUpperCase();
+    pasteHandle(paste);
+  });
 ```

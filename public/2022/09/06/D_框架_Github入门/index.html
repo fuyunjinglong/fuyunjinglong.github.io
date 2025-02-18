@@ -689,7 +689,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br><span class="line"># 最后一行输出如下信息即为成功</span><br><span class="line"># Hi hwame! You&#x27;ve successfully authenticated...</span><br></pre></td></tr></table></figure>
 
 <p><strong>注意</strong></p>
-<p>问题1：执行ssh -T <a href="mailto:&#103;&#x69;&#116;&#64;&#103;&#105;&#116;&#104;&#x75;&#x62;&#46;&#99;&#x6f;&#x6d;">&#103;&#x69;&#116;&#64;&#103;&#105;&#116;&#104;&#x75;&#x62;&#46;&#99;&#x6f;&#x6d;</a>报错ssh: connect to host github.com port 22: Connection timed out fatal。</p>
+<p>问题1：执行ssh -T <a href="mailto:&#103;&#x69;&#116;&#64;&#103;&#x69;&#x74;&#104;&#117;&#x62;&#46;&#99;&#x6f;&#x6d;">&#103;&#x69;&#116;&#64;&#103;&#x69;&#x74;&#104;&#117;&#x62;&#46;&#99;&#x6f;&#x6d;</a>报错ssh: connect to host github.com port 22: Connection timed out fatal。</p>
 <blockquote>
 <p>原因：可能是github官网更新了公钥</p>
 <p>解决：更新公钥  ssh-keygen -R github.com</p>

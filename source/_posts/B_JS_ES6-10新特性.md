@@ -438,14 +438,14 @@ Map 转为数组
 ```js
 let map = new Map()
 let arr = [...map]
-复制代码
 ```
 
 数组转为 Map
 
 ```js
-Map: map = new Map(arr)
-复制代码
+const arr = [[a,'aa'],[b,'bb']]
+const map = new Map(arr)
+// {a:'aa',b:'bb'}
 ```
 
 Map 转为对象
@@ -455,7 +455,6 @@ let obj = {}
 for (let [k, v] of map) {
   obj[k] = v
 }
-复制代码
 ```
 
 对象转为 Map
