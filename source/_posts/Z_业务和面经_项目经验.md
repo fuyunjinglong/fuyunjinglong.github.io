@@ -32,6 +32,14 @@ toc: true # 是否启用内容索引
 6.有良好的编码习惯，对前端技术有持续的热情，个性乐观开朗,逻辑性强，善于和各种背景的人合作。
 7.具有TS/移动设备上前端开发/NodeJS/服务端开发等经验者优先。
 
+## [阿崔cxr](https://space.bilibili.com/175301983)-打飞机
+
+采用 Functional Core, Imperative Shell 模式实现逻辑分层，pnpm实现monorepo包管理
+
+> pnpm create vite 创建vue-ts项目
+>
+> pnpm i 进入项目根目录，安装依赖
+
 # 项目问题
 
 ## Echarts

@@ -21,32 +21,6 @@ toc: true # 是否启用内容索引
 - [ ] 小程序(Taro3+Mysql+Express开发企业级出行全栈项目 -video)
 - [ ] nodejs(Node.js+Express+Koa2 开发Web Server博客-video-慕课网mk)
 
-**1.项目经历**
-
-**1.1企业格局之策略制定**
-
-项目亮点：打飞机-UI和业务逻辑分离大崔哥
-
-[video](https://www.bilibili.com/video/BV143411M79D/?spm_id_from=333.999.0.0)
-
-**1.2需求力竞争PMT**
-
-项目亮点：手写vue3源码之pnpm实现monorepo包管理
-
-[video](https://www.bilibili.com/video/BV1WP4y1u7qi/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
-
-项目亮点：手写vue2源码之rollup打包
-
-[video](https://www.bilibili.com/video/BV1DQ4y1z7TK/?spm_id_from=333.788.recommend_more_video.-1&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
-
-**1.3客户关注**
-
-项目亮点：定制化修改elementui源码适配场景
-
-2.**环境搭建-vue3+vite+ts(大崔哥)**
-
-[video](https://www.bilibili.com/video/BV1xr4y1A7H9/?spm_id_from=333.999.0.0)
-
 # web前端导航
 
 - [印记中文](https://docschina.org/)
