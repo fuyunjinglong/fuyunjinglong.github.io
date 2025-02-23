@@ -32,9 +32,29 @@ toc: true # 是否启用内容索引
 6.有良好的编码习惯，对前端技术有持续的热情，个性乐观开朗,逻辑性强，善于和各种背景的人合作。
 7.具有TS/移动设备上前端开发/NodeJS/服务端开发等经验者优先。
 
-## [阿崔cxr](https://space.bilibili.com/175301983)-打飞机
+# 开源项目
 
-采用 Functional Core, Imperative Shell 模式实现逻辑分层，pnpm实现monorepo包管理
+## view-model-explore探索(阿崔cxr-打飞机) 
+
+参考
+
+> - [打飞机-video](https://www.bilibili.com/video/BV1jF411g7hq?spm_id_from=333.788.videopod.sections&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+
+项目地址
+
+> https://github.com/fuyunjinglong/view-model-explore
+
+项目简介
+
+> 项目介绍：通过打飞机小游戏，实现UI层和业务逻辑分离层架构分离
+>
+> 负责内容：整体架构搭建，搭建vue3自定义canvas模型，飞机发射子弹，子弹碰撞敌机逻辑等
+>
+> 项目难点：采用 Functional Core, Imperative Shell 模式实现逻辑分层，pnpm实现monorepo包管理
+>
+> 项目成果：UI和业务逻辑分离，方便高效快速单元测试
+
+安装项目
 
 > pnpm create vite 创建vue-ts项目
 >

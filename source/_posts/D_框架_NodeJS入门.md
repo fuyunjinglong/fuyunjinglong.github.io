@@ -150,6 +150,8 @@ cnpm安装依赖包的方式和npm是一样，只是npm的命令变成cnpm
 
 ## 卸载nodejs重装
 
+0. npm cache clean --force 清除npm缓存
+
 1.卸载程序卸载nodejs应用程序
 
 2.删除以下文件夹下npm文件
@@ -182,7 +184,7 @@ npm config set strict-ssl false
 ## yarn安装
 
 ```
-npm install -g yarn --registry=https://registry.npm.taobao.org
+npm install -g yarn --registry=https://registry.npmmirror.com
 yarn config get registry // 查看淘宝源是否正确
 ```
 
@@ -292,7 +294,7 @@ npm install pnpm -g
 //查看源
 pnpm config get registry 
 //切换淘宝源
-pnpm config set registry http://registry.npm.taobao.org 
+pnpm config set registry https://registry.npmmirror.com
 ```
 
 查看

@@ -581,6 +581,8 @@ git pull origin main
 git checkout -b vue2-zhufeng
 git checkout  vue2-zhufeng
 git push origin vue2-zhufeng
+
+如果已经建立好链接的，直接git clone xxxxssh项目地址
 ```
 
 ## 建立github远程仓库和本地仓库连接
