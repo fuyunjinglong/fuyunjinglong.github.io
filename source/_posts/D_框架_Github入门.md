@@ -630,7 +630,7 @@ $ ssh -T git@github.com
 # Hi hwame! You've successfully authenticated...
 ```
 
-**注意**
+## 问题汇总
 
 问题1：执行ssh -T git@github.com报错ssh: connect to host github.com port 22: Connection timed out fatal。
 
