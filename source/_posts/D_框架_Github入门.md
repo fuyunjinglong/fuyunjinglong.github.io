@@ -634,11 +634,13 @@ $ ssh -T git@github.com
 
 问题1：执行ssh -T git@github.com报错ssh: connect to host github.com port 22: Connection timed out fatal。
 
-> 原因：可能是github官网更新了公钥
+> 原因：存在某些应用占用了22端口
 >
-> 解决：更新公钥  ssh-keygen -R github.com
+> 解决：找到应用，关闭它。
 >
-> 
+> netstat -aon|findstr "20"  查看端口被占用的PID
+>
+> tasklist|findstr "10120" 查看PID对应的应用，最后手动关闭应用
 
 # GitHub Pages免费站点
 
@@ -651,4 +653,3 @@ $ ssh -T git@github.com
 在对应fuyunjinglong.github.io仓库里，打开setting->pages->branch，指定分支和目录层级。
 
 保存后，访问https://fuyunjinglong.github.io/即可访问该仓库的指定分支的指定目录层级的index.html
-
