@@ -39,6 +39,7 @@ toc: true # 是否启用内容索引
 参考
 
 > - [打飞机-video](https://www.bilibili.com/video/BV1jF411g7hq?spm_id_from=333.788.videopod.sections&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+> - [pixi.js官网](https://pixijs.com/)
 
 项目地址
 
@@ -54,11 +55,39 @@ toc: true # 是否启用内容索引
 >
 > 项目成果：UI和业务逻辑分离，方便高效快速单元测试
 
-安装项目
+验证vitest是否安装成果
 
-> pnpm create vite 创建vue-ts项目
+> 创建文件 app.spec.ts
 >
-> pnpm i 进入项目根目录，安装依赖
+> import { expect, test } from "vitest";
+>
+> test("", () *=>* {
+>
+>  expect(true).toBe(true);
+>
+> });
+>
+> 在package.json增加*"test"*: "vitest"
+>
+> 执行pnpm test看是否成功
+
+**准备工作**
+
+> - 创建vue-ts项目   pnpm create vite 
+> - 进入根目录安装依赖 pnpm i 
+> - 引入vitest  pnpm add -D vitest
+
+**核心流程**
+
+> 1.基于 custom render api 实现把视图渲染到 canvas
+>
+> 1.1 引入 init pixi.js
+>
+> 1.2 重写 renderer{({}) 渲染接口
+
+1.引入pixi.js
+
+> pnpm i pixi.js
 
 # 项目问题
 
