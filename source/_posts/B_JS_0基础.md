@@ -173,21 +173,17 @@ console.log(haoxl instanceof Person);// true
 手写instanceof
 
 ```
-const self_instanceof = function (instance, constructor) {
-    let instance_proto = instance.__proto__;
-    let constructor_proto = constructor.prototype;
-
-    while(true) {
-        // 找到终点返回false
-       if (instance_proto === null) {return false};
-       // 找到返回true
-       if (instance_proto === constructor_proto) {return true};
-        // 当实例与构造函数原型不相同, 沿着原型链继续向上查找
-        instance_proto = instance_proto.__proto__;
+function myInstanceof(left, right) {
+    // 这里先用typeof来判断基础数据类型，如果是，直接返回false
+    if(typeof left !== 'object' || left === null) return false;
+    // getProtypeOf是Object对象自带的API，能够拿到参数的原型对象
+    let proto = Object.getPrototypeOf(left);// 等价于left.__proto__;
+    while(true) {                  
+        if(proto === null) return false;
+        if(proto === right.prototype) return true;//找到相同原型对象，返回true
+        proto = Object.getPrototypeof(proto);
     }
 }
-console.log([] instanceof Array)   // true
-console.log(self_instanceof([], Array))  // true
 ```
 
 **constructor**
@@ -447,57 +443,6 @@ splice(index,howmany,item1...itemX)只返回被删除的数据,类型为数组(*
 var heroes=["0",'1','2','3','4'];
 console.log(heroes.splice(1,2))//  [ "1", "2"]开始索引为1 删除2个元素
 console.log(heroes)// 不改变原数组  ["0",'3','4']
-```
-
-## typeof 与 instanceof 区别
-
-6种基本数据类型：string,Number,boolean,undefined,null,symbol,其他类型如object,function,Array等
-
-- `typeof`会返回一个变量的基本类型，typeof '1' // 'string'
-- `instanceof` 可以准确地判断复杂引用数据类型，[1] instanceof Array //true
-
-其中instance原理参考：
-
-```
-function myInstanceof(left, right) {
-    // 这里先用typeof来判断基础数据类型，如果是，直接返回false
-    if(typeof left !== 'object' || left === null) return false;
-    // getProtypeOf是Object对象自带的API，能够拿到参数的原型对象
-    let proto = Object.getPrototypeOf(left);
-    while(true) {                  
-        if(proto === null) return false;
-        if(proto === right.prototype) return true;//找到相同原型对象，返回true
-        proto = Object.getPrototypeof(proto);
-    }
-}
-```
-
-终极检查数据类型工具
-
-```
-Object.prototype.toString({})       // "[object Object]"
-Object.prototype.toString.call({})  // 同上结果，加上call也ok
-Object.prototype.toString.call(1)    // "[object Number]"
-Object.prototype.toString.call('1')  // "[object String]"
-Object.prototype.toString.call(true)  // "[object Boolean]"
-Object.prototype.toString.call(function(){})  // "[object Function]"
-Object.prototype.toString.call(null)   //"[object Null]"
-Object.prototype.toString.call(undefined) //"[object Undefined]"
-Object.prototype.toString.call(/123/g)    //"[object RegExp]"
-Object.prototype.toString.call(new Date()) //"[object Date]"
-Object.prototype.toString.call([])       //"[object Array]"
-Object.prototype.toString.call(document)  //"[object HTMLDocument]"
-Object.prototype.toString.call(window)   //"[object Window]"
-
-function getType(obj){
-  let type  = typeof obj;
-  if (type !== "object") {    // 先进行typeof判断，如果是基础数据类型，直接返回
-    return type;
-  }
-  // 对于typeof返回结果是object的，再进行如下的判断，正则返回结果
-  return Object.prototype.toString.call(obj).replace(/^\[object (\S+)\]$/, '$1'); 
-}
-getType('123')  // "string"
 ```
 
 ## JS对象的两类属性

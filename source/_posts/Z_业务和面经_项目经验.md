@@ -81,13 +81,19 @@ toc: true # 是否启用内容索引
 
 > 1.基于 custom render api 实现把视图渲染到 canvas
 >
-> 1.1 引入 init pixi.js
+> - 1.1 引入 init pixi.js
+> - 1.2 重写 renderer{({}) 渲染接口
 >
-> 1.2 重写 renderer{({}) 渲染接口
+> 2.核心游戏逻辑
+>
+> - 我方飞机
+> - 发射子弹
+> - 敌军
+> - 碰撞检测(子弹和敌军)
 
 1.引入pixi.js
 
-> pnpm i pixi.js
+> pnpm i pixi.js  注意6.3.0，高版本可能api有更新
 
 # 项目问题
 

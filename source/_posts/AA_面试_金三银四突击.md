@@ -68,7 +68,7 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#垃圾回收">垃圾回收</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#内存溢出和内存泄漏">内存泄露</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS-类型判断-对象-数组">JS 判断变量是对象还是数组</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS类型判断-typeof-instanceof-constructor-toString">JS类型判断---typeof, constructor, instanceof, toString</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS类型判断-完整">JS类型判断---typeof,  instanceof,constructor, toString</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#常见六大Web安全攻防解析">常见六大Web安全攻防解析</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#async和defer的作用是什么？有什么区别">async和defer的作用是什么？有什么区别</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#模块化规范">模块化规范</a>

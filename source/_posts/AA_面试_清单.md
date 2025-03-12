@@ -117,8 +117,7 @@ toc: true # 是否启用内容索引
 
 1.JavaScript
 
-- 讲讲js数据类型？基本和引用的区别？symbol和bigint讲一讲应用场景？
-- 判断数据类型的方法？instanceof原理?判断空对象？ typeof null？typeof NaN？
+- 
 - var/let/const 区别？暂时性死区？块级作用域？const a = {}; a.x = 1 能不能修改？
 - 说说你对函数式编程的理解？函数柯里化的理解？平时的使用场景？
 - 防抖、节流的含义，使用场景？手写一下？
