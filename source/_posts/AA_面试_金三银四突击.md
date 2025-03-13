@@ -25,6 +25,10 @@ toc: true # 是否启用内容索引
 
 - [前端导航](https://nav.poetries.top/)
 - [程序员盒子](https://www.coderutil.com/)
+- [前端技术学园](https://ife.baidu.com/encyclopedia/readme1.html)
+- [小呆导航](https://webjike.com/web.html#row-1)
+- [Web前端导航](http://www.alloyteam.com/nav/)
+- [前端小社区](https://lee.js.org/My-Nav/FrontEnd/#/Index)
 - [印记中文](https://docschina.org/)
 
 # 前端工程化
