@@ -10,8 +10,8 @@ toc: true # 是否启用内容索引
 
 **10套教程**
 
-- [Node基础-尚硅谷-video](https://www.bilibili.com/video/BV1gM411W7ex/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)/[千峰前端Node.JS基础](https://www.bilibili.com/video/BV1rA4y1Z7fd/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - Node.js+Express+Koa2 开发Web Server博客-video-慕课网mk
+- [Node基础-尚硅谷-video](https://www.bilibili.com/video/BV1gM411W7ex/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)/[千峰前端Node.JS基础](https://www.bilibili.com/video/BV1rA4y1Z7fd/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - Vue Element＋Node.js开发企业通用管理后台系统-video-mk
 - Node.js-Koa2框架生态实战－从零模拟新浪微博-video-mk
 - Node.js+Koa2+MySQL 打造前后端分离精品项目《旧岛》-小程序服务端-video-mk
@@ -150,7 +150,7 @@ cnpm安装依赖包的方式和npm是一样，只是npm的命令变成cnpm
 
 ## 卸载nodejs重装
 
-0. npm cache clean --force 清除npm缓存
+0.npm cache clean --force 清除npm缓存
 
 1.卸载程序卸载nodejs应用程序
 
