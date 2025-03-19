@@ -12,7 +12,10 @@ toc: true # 是否启用内容索引
 
 主要以vue3+vant为主
 
-- 
+- [3天吃透Vue3+Vite+Vant移动开发的新特性-video](https://www.bilibili.com/video/BV1TU4y177UG?vd_source=bd4c7d99d71adf64d6e88c65370e0247&spm_id_from=333.788.videopod.episodes)
+- [vue3.2+vite+vant企业实战项目 仿马蜂窝 旅游H5-video](https://www.bilibili.com/video/BV1LV4y1z7zY?vd_source=bd4c7d99d71adf64d6e88c65370e0247&spm_id_from=333.788.videopod.episodes)
+- Vue3+Vite+Vant-UI 开发双端招聘APP-video
+- 基于Vue3.2+TypeScript 《医疗问诊》项目课程-video
 
 ## 跨端APP
 
