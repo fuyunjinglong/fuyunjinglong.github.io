@@ -6,6 +6,11 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
+# 大纲
+
+- [Vue3+TS+monorepo，搭建自己的组件库-珠峰](https://www.bilibili.com/video/BV1LTB4YqE43/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [高仿ElementPlus-从0到1打造企业级UI组件库](https://www.bilibili.com/video/BV1SnBKYTEx1?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247&p=39)
+
 # 组件库开发的难点
 
 1. 数据通信：Vue 组件之间的数据通信可以使用 props、emit、provide/inject 等方式实现。但是，对于复杂的组件结构和组件之间的数据交互，数据通信可能会比较困难。

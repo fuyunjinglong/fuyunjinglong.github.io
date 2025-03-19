@@ -133,6 +133,10 @@ toc: true # 是否启用内容索引
 
 - <a target="_blank" href="{% post_path 'D_框架_TypeScript入门' %}#大纲">大纲</a>
 
+## 组件库开发
+
+- 大纲
+
 # 第五阶段：**移动及服务端开发**
 
 学习前要求：PC端的前端开发技能已经炉火纯青。
@@ -154,6 +158,12 @@ vue3、Vant
 ## 跨端APP
 
 Flutter、React Native、UniApp
+
+- <a target="_blank" href="{% post_path 'I_移动端框架' %}#大纲">大纲</a>
+
+## 桌面端
+
+electron
 
 - <a target="_blank" href="{% post_path 'I_移动端框架' %}#大纲">大纲</a>
 

@@ -27,6 +27,13 @@ toc: true # 是否启用内容索引
 - React Native从入门到实战 打造高质量上线App-video-mk
 - React Native+TypeScript仿喜马拉雅开发App-video-mk
 
+## 桌面端
+
+Electron
+
+- [禹神：一小时快速上手Electron](https://www.bilibili.com/video/BV1sE421N7M5/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [Electron入门到精通](https://www.bilibili.com/video/BV1xd4y1J7dB/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+
 ## **小程序**
 
 WXML原生、UniApp、taro支持vue
