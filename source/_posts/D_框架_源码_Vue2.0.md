@@ -267,6 +267,7 @@ _update 主要实现 vnode 转化为实际的dom， 注入到页面的同时并�
 
 # Vue.js源码全方位深入解析-黄轶
 
+- [vue2源码分析仓库](https://github.com/fuyunjinglong/web-sourceCode-vue2)
 - [2.x版本笔记](https://ustbhuangyi.github.io/vue-analysis/v2/prepare/)
 
 ## 准备工作

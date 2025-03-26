@@ -26,11 +26,23 @@ toc: true # 是否启用内容索引
 
 **3.添加打包源码**
 
+注意最新版本的dev.js默认已开启源码调试，所以无需额外参数
+
 > *"dev"*: "node scripts/dev.js --sourcemap",
 
 **4.调试源码**
 
-> 在目录下可以断点调试，如\core-main\packages\runtime-dom\src\index.ts
+> 在目录下可以断点调试debugger，如\core-main\packages\runtime-dom\src\index.ts。
+>
+> 执行pnpm run dev,使用Live Server开始源码调试
+
+**注意事项**
+
+> 1.移除tsconfig.json中的puppeteer，否则提交代码报错
+>
+> 2.移除package.json中simple-git-hooks和lint-staged的校验，否则提交代码报错
+>
+> 3.注释eslint.config.js中*no-console*，否则提交代码报错
 
 ```
 <!DOCTYPE html>
@@ -42,7 +54,7 @@ toc: true # 是否启用内容索引
         text-align: center;
       }
     </style>
-    <script src="./packages/vue//dist/vue.global.js"></script>
+    <script src="./packages/vue/dist/vue.global.js"></script>
   </head>
   <body>
     <div id="demo">
@@ -74,6 +86,8 @@ toc: true # 是否启用内容索引
 > 打开链接
 > http://localhost:5000/packages/vue/examples/composition/todomvc
 > 打断点
+
+
 
 # Vue源码目录
 
@@ -759,4 +773,8 @@ Rollup是一款小巧的 Javascript 模块打包工具，更适合于**库应用
 lerna 是一个管理多个 npm 模块的工具，是 Babel 自己用来维护自己的 Monorepo 并开源出的一个项目。优化维护多包的工作流，解决多个包互相依赖，且发布需要手动维护多个包的问题。
 
 lerna 现在已经被很多著名的项目组织使用，如：Babel, React, Vue, Angular, Ember, Meteor, Jest 。
+
+# 催学社-Vue3 源码实战课
+
+- [vue3源码分析仓库](https://github.com/fuyunjinglong/web-sourceCode-vue3)
 
