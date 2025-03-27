@@ -60,7 +60,16 @@ homePage // 存放当前页面的文件夹
 - 方式三：参考大崔哥的新写法(直接赋值引用)--强烈推荐
 - 方式四：参考大崔哥的新写法(返回值引用)
 
-## 在华为开发组件库(Vue3+vite)
+## vite pnpm monorepo开发组件库
+
+参考
+
+> - [前端组件库开发-video](https://www.bilibili.com/video/BV1NyfhYnEPu?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+> - [前端组件库开发-文档](https://songyipan.github.io/song-blog/componentDocs/)
+
+
+
+## 在公司开发组件库(Vue3+vite)
 
 **提供方**
 
