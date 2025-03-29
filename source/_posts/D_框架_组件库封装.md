@@ -8,8 +8,19 @@ toc: true # 是否启用内容索引
 
 # 大纲
 
-- [Vue3+TS+monorepo，搭建自己的组件库-珠峰](https://www.bilibili.com/video/BV1LTB4YqE43/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
-- [高仿ElementPlus-从0到1打造企业级UI组件库](https://www.bilibili.com/video/BV1SnBKYTEx1?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247&p=39)
+思考
+
+> • 【初中级】你的过往项目中,项目和工程化架构有没有做过,有没有了解过 monorepo 架构方案?
+>
+> • 【中高级】组件库、脚手架、业务系统工程化基于 monorepo 架构设计有什么实践经验,请详细说明
+>
+> • 【专家级】有没有了解过字节、阿里等中大厂前端基于 monorepo 工程架构最佳实践,举例说明
+
+
+
+- [Vue3+TS+monorepo，搭建自己的组件库-珠峰-video](https://www.bilibili.com/video/BV1LTB4YqE43/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [高仿ElementPlus-从0到1打造企业级UI组件库-video](https://www.bilibili.com/video/BV1SnBKYTEx1?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247&p=39)
+- [前端组件库开发-video](https://www.bilibili.com/video/BV1NyfhYnEPu?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 
 # 组件库开发的难点
 
@@ -17,6 +28,544 @@ toc: true # 是否启用内容索引
 2. 组件复杂度和扩展性：当组件的结构和逻辑变得复杂时，开发和维护组件就变得更加困难。需要通过合理的组件拆分、代码抽象和模块化等方式来降低组件的复杂度，提高可读性和可维护性。如拆分子组件，slot插槽扩展
 3. 生命周期和钩子函数：Vue 组件有很多生命周期函数和钩子函数，需要熟悉它们的执行顺序和作用，以便在组件开发过程中能够正确地处理组件的状态和行为。
 4. 性能优化：当组件的渲染次数过多、数据量过大时，会影响应用的性能。需要通过组件懒加载、异步渲染、缓存数据等方式来优化组件的性能，提高应用的响应速度。
+
+# 大厂基本用pnpm + monorepo 做项目工程化架构
+
+## 传统架构与monorepo架构比较
+
+传统架构
+
+> - 独立项目结构,所有项目都是分开的 github 仓库（）
+>
+> - 技术栈独立
+>
+> - 规范化、自动化相关处理是项目间割裂
+>
+> - 依赖管理,版本很难统一管理
+>
+> - 部署,docker、docker compose,自动化脚本很难形成统一
+
+monorepo架构
+
+> - 混合项目结构,所有相关的工程形成子包进行管理
+>
+> - 技术栈高度统一,(团队基建项目、业务项目、子服务,技术栈)
+>
+> - 规范化、自动化、流程化项目间共享
+>
+> - 依赖管理,版本统一管理
+>
+> - 部署,docker、docker compose,自动化脚本统一部署流程
+
+# vite pnpm monorepo开发组件库
+
+参考
+
+> - [前端组件库开发-video](https://www.bilibili.com/video/BV1NyfhYnEPu?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+> - [前端组件库开发-文档](https://songyipan.github.io/song-blog/componentDocs/)
+> - [个人组件库地址-github](https://github.com/fuyunjinglong/web-pnpm-monorepo-component)
+
+## 安装pnpm
+
+> pnpm i
+
+## **初始化项目**
+
+新建项目名称web-pnpm-monorepo-component
+
+>    - docs // 文档
+>    - components // 组件
+>    - examples// 样例
+
+## **建立工作区**
+
+根目录下新建pnpm-workspace.yaml,内容是
+
+```
+packages:
+  - "examples"
+  - "packages/*"
+  - "docs"
+```
+
+## **建立UI组件库包**
+
+在 packages 目录里面新建三个文件夹：
+
+- components ：存放组件的包
+- utils：工具包
+- hooks：钩子函数包
+
+分别进入以上三个包中执行`pnpm init`命令初始化，并修改packages.json中name为*"name"*: "@lw-ui/components",以此类推
+
+## **修改组件库调用方**
+
+在根目录下packages.json，新增以下内容，然后执行pnpm i。安装完成后就可以在项目中使用这些包了
+
+```
+"devDependencies": {
+    "@lw-ui/hooks": "workspace:*",
+    "@lw-ui/components": "workspace:*",
+    "@lw-ui/utils": "workspace:*"
+  }
+```
+
+## **构建核心组件目录**
+
+在 components 中创建一个 button，目录为
+
+```
+packages:
+  - components:
+      - button:
+         -src:
+           - style
+           - index.vue
+         - index.js
+```
+
+button/index.vue
+
+```
+<script setup>
+defineOptions({
+  name: "LWButton",
+});
+</script>
+
+<template>
+  <button>
+    <span>
+      <slot>button-lw</slot>
+    </span>
+  </button>
+</template>
+```
+
+## **按需加载并导出组件**
+
+在 utils 下新建 install.js
+
+```
+export const componentsInstall = (components) => {
+  components.install = (app) => {
+    app.component(components.name, components);
+  };
+
+  return components;
+};
+```
+
+在 utils 下新建 index.js
+
+```
+export * from "./install";
+```
+
+这个函数其实就是接受一个组件，给组件添加 install 函数，这个 install 函数接收 app 对象，app 对象会调用 component 函数注册全局组件。
+
+在 button/index.js 中增加如下代码：
+
+```
+import { componentsInstall } from "@lw-ui/utils";
+import Button from "./src/index.vue";
+
+// 提供按需加载的方式
+export const LWButton = componentsInstall(Button);
+// 将组件导出
+export default LWButton;
+```
+
+在 components 文件里面新增一个 index.js ,作为组件库的入口文件
+
+```
+export * from "./button/index";
+```
+
+## 全局注册导出组件
+
+在 packages 下面新建一个文件 components.js
+
+```
+import { LWButton } from "./components/button/index";
+export default [LWButton];
+```
+
+在 packages 下面新建 index.js，代码如下：
+
+```
+// 按需 引入组件
+export * from "./components/index";
+
+import components from "./components";
+
+export const install = (app) => {
+  if (install.installed) return;
+  console.log("install", components);
+  components.forEach((component) => app.use(component));
+};
+
+export default install;
+```
+
+## **初始化演示库(example)**
+
+在根目录下执行`npm create vite examples`，采用vue+js,执行npm i,npm run dev启动项目
+
+在 examples 中的 main.js 中引入，测试一下全局注册
+
+```
+import { createApp } from "vue";
+import "./style.css";
+import App from "./App.vue";
+import LWUI from "../../packages";
+
+const app = createApp(App);
+app.use(LWUI);
+app.mount("#app");
+```
+
+在App.vue代码：
+
+```
+<template>
+  <LWButton></LWButton>
+</template>
+```
+
+## 组件开发阶段二-BEM
+
+**什么是BEM规范**
+
+BEM（Block、Element、Modifier）是 CSS 命名规范。Bem 是块（block）、元素（element）、修饰符（modifier）的简写。其实真是使用起来不只是这三个词，而是还有其他的，比如：块（block）、元素（element）、修饰符（modifier）、状态（state）、主题（theme）、主题元素（theme element）、主题修饰符（theme modifier）、主题状态（theme state）等。这里我来举一个例子。比如有如下卡片结构：
+
+```
+<div class="sb-card-v2 sb-card-v2--theme_dark">
+  <h2 class="sb-card-v2__title">卡片标题</h2>
+  <p class="sb-card-v2__content">卡片内容</p>
+</div>
+
+<div class="sb-card-v2 sb-card-v2--theme_light">
+  <h2 class="sb-card-v2__title">卡片标题</h2>
+  <p class="sb-card-v2__content">卡片内容</p>
+</div>
+```
+
+以上代码中 sb-card-v2 是块，其中 v2 是 blockSuffix，这个 blockSuffix 是为了解决 block 重复的问题，比如有另一个 block 也是 sb-card-v2，那么就会有冲突，所以需要添加后缀。`sb-card-v2__title` 和 `sb-card-v2__content` 是块 `sb-card-v2` 的元素，这里的 title 和 content 是 element。`sb-card-v2--theme_dark` 和 `sb-card-v2--theme_light` 是块 `sb-card-v2` 的修饰符,这里的 dark 和 light 是 modifier，后面的 light 和 dark 就是 modifier 的值。
+
+**创建生成 BEM 命名的工具**
+
+创建 hooks/index.js 用来导出所有的 hooks，然后创建 hooks/useNamespace/useNamespace.js 用来导出 useNamespace useNamespace 函数用来创建 BEM 命名。具体代码如下:
+
+```
+export const defaultNamespace = "LW";
+
+export const useNamespace = (blocks) => {
+  const namespace = defaultNamespace;
+
+  const block = (blockSuffix) => {
+    return _bem(namespace, blocks, blockSuffix, "", "", "");
+  };
+
+  const element = (element) =>
+    element ? _bem(namespace, blocks, "", element, "", "") : "";
+
+  const modifier = (modifier, value) =>
+    modifier ? _bem(namespace, blocks, "", "", modifier, value) : "";
+
+  const is = (activeName, active) =>
+    activeName && active ? `is-${activeName}` : "";
+
+  return {
+    namespace,
+    block,
+    element,
+    modifier,
+    is,
+  };
+};
+
+const _bem = (
+  namespace,
+  block,
+  blockSuffix,
+  element,
+  modifier,
+  modifierValue
+) => {
+  let cls = `${namespace}-${block}`;
+  blockSuffix && (cls += `-${blockSuffix}`);
+  element && (cls += `__${element}`);
+  modifier && (cls += `--${modifier}`);
+  modifierValue && (cls += `_${modifierValue}`);
+
+  return cls;
+};
+```
+
+以上代码看上去很复杂其实一点也不简单（一点也不难），我带大家分解一下。
+
+- `export const defaultNamespace = "x";`: 这段代码其实就是创建了一个默认的组件名前缀，比如 elementUI 组件库的前缀是 el，里面的每一个组件都是 el-xxx 的形式，比如 el-button，el-input，el-card 等等。
+- `_bem`:这个函数就是用来创建 bem 命名的，它接收 6 个参数，第一个参数是组件名前缀，第二个参数是块名，第三个参数是块的后缀，第四个参数是元素名，第五个参数是修饰符名，第六个参数是修饰符的值，这个函数是不暴露的。
+- `useNamespace`: 这个函数就是用来创建 bem 命名的，它接收一个参数，这个参数就是块名，这个函数返回一个对象，对象中有四个方法，分别是 block，element，modifier，is。
+- `block`: 这个函数就是用来创建块的，它接收一个参数，这个参数就是块的后缀，这个函数返回一个 bem 命名。
+- `element`: 这个函数就是用来创建元素的，它接收一个参数，这个参数就是元素的名字，这个函数返回一个 bem 命名。
+- `modifier`: 这个函数就是用来创建修饰符的，它接收两个参数，第一个参数就是修饰符的名字，第二个参数就是修饰符的值，这个函数返回一个 bem 命名。
+- `is`: 这个函数就是用来创建状态的，它接收两个参数，第一个参数就是状态的名字，第二个参数就是状态的值，这个函数返回一个 bem 命名。这个函数后面会用到这里先不做演示。
+
+最后在 hooks/index.js 中导出 useNamespace
+
+```js
+export * from "./useNamespace/useNamespace";
+```
+
+**使用 BEM 规范**
+
+在 button/index.vue 引入hook。代码如下：
+
+```
+<script setup>
+import { computed } from "vue";
+import { useNamespace } from "@lw-ui/hooks";
+defineOptions({
+  name: "LWButton",
+});
+// 调用一下userNamespace
+const ns = useNamespace("button");
+
+console.log(ns.block()); // x-button
+console.log(ns.element("content")); // x-button__content
+console.log(ns.modifier("size", "small")); // x-button--size_small
+console.log(ns.is("disabled", true)); // is-disabled
+const butonClass = computed(() => [ns.block(), ns.modifier("size", "small")]);
+</script>
+
+<template>
+  <button :class="butonClass">
+    <span>
+      <slot>buttonxx</slot>
+    </span>
+  </button>
+</template>
+```
+
+通过以上在`butonClass="[ns.block(),ns.modifier("size", "small")]"` 来使用 BEM 规范,这时候 button 这个按钮就会加上 class，值比如 `LW-button--size_small`。
+
+## 组件开发阶段二-button开发
+
+**创建基础样式**
+
+创建文件，theme/src/index.scss，接着创建 theme/src/LW-button.scss。在 LW-button.scss 中写一下基础样式:
+
+```
+.lw-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  min-width: 80px;
+  padding: 0 16px;
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid #e6e6e6;
+
+  box-sizing: border-box;
+  line-height: 1;
+  color: #4e5159;
+  text-align: center;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: 0.3s;
+
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+
+  //   去掉按钮点击的默认样式和边框线
+  &:focus {
+    outline: none;
+    border: none;
+  }
+  span {
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+  }
+}
+```
+
+在 index.scss,引入
+
+```
+@use "./lw-button.scss";
+```
+
+在 example 中的 main.js引入,注意要先在theme执行pnpm init并修改name的名称
+
+```
+import "@lw-ui/theme/src/index.scss";
+```
+
+**添加按钮类型**
+
+在lw-button.scss引入
+
+```
+.lw-button {
+  // 省略其他样式
+  //   添加不同类型样式
+  &-- {
+    &default {
+      border-color: #e3e5f1;
+
+      &:hover {
+        background-color: #6e96ff;
+        color: white;
+        border-color: #6e96ff;
+      }
+    }
+    &success {
+      background-color: #67c23a;
+      color: white;
+      border-color: #67c23a;
+
+      &:hover {
+        background-color: #a2d380;
+        color: white;
+        border-color: #a2d380;
+      }
+    }
+
+    &danger {
+      background-color: #f56c6c;
+      color: white;
+      border-color: #f56c6c;
+      &:hover {
+        background-color: #f78989;
+        color: white;
+        border-color: #f78989;
+      }
+    }
+
+    &warning {
+      background-color: #e6a23c;
+      color: white;
+      border-color: #e6a23c;
+      &:hover {
+        background-color: #ebb563;
+        color: white;
+        border-color: #ebb563;
+      }
+    }
+
+    &primary {
+      background-color: #409eff;
+      color: white;
+      border-color: #409eff;
+      &:hover {
+        background-color: #66b1ff;
+        color: white;
+        border-color: #66b1ff;
+      }
+    }
+  }
+}
+
+```
+
+在button/index.vue引入
+
+```
+const props = defineProps({
+  type: {
+    type: String,
+    default: "default",
+  },
+});
+
+const butonClass = computed(() => [
+  ns.block(),
+  ns.modifier("size", "small"),
+  ns.modifier(props.type),
+]);
+<button :class="butonClass"></button>
+```
+
+最后
+
+- `ns.block()`：这个就是我们之前在 x-button.scss 中定义的 .x-button 这个类名，就是我们最终要渲染的按钮。
+- `ns.modifier(type)`：这个最终生成的是 .x-button-default 这个类名，就是我们根据不同的 type 来设置不同的样式。如果传递的 type 是 danger，那么最终生成的就是 .x-button-danger 这个类名。
+
+**圆角按钮**
+
+```
+ ns.is('round', round)
+```
+
+```
+.lw-button {
+  // 省略其他样式
+  &.is-round {
+    border-radius: 100px;
+  }
+}
+```
+
+**禁用按钮**
+
+```
+ns.is('disabled', disabled)
+```
+
+```
+.lw-button {
+  // 省略其他样式
+
+  // 添加禁用样式
+  &.is-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    &,
+    &:hover,
+    &:active,
+    &:focus {
+      border-color: #e3e5f1;
+    }
+  }
+}
+```
+
+**尺寸按钮**
+
+```
+ns.modifier('size', size)
+```
+
+```
+.lw-button {
+  // 省略其他代码....
+  &-- {
+    // 省略其他代码....
+    &size {
+      &_ {
+        &small {
+          padding: 0 10px;
+          font-size: 12px;
+          height: 24px;
+          border-radius: 10px;
+        }
+
+        &large {
+          height: 40px;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}
+```
+
+
 
 # 组件-个人实践
 
@@ -59,15 +608,6 @@ homePage // 存放当前页面的文件夹
 
 - 方式三：参考大崔哥的新写法(直接赋值引用)--强烈推荐
 - 方式四：参考大崔哥的新写法(返回值引用)
-
-## vite pnpm monorepo开发组件库
-
-参考
-
-> - [前端组件库开发-video](https://www.bilibili.com/video/BV1NyfhYnEPu?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
-> - [前端组件库开发-文档](https://songyipan.github.io/song-blog/componentDocs/)
-
-
 
 ## 在公司开发组件库(Vue3+vite)
 
