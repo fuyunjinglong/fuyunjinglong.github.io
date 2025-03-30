@@ -2,7 +2,7 @@
 title: 移动端框架
 date: 2022-05-12 06:33:16
 categories:
-- I_移动端
+  - I_移动端
 toc: true # 是否启用内容索引
 ---
 
@@ -10,37 +10,37 @@ toc: true # 是否启用内容索引
 
 ## 移动端
 
-主要以vue3+vant为主
+主要以 vue3+vant 为主
 
-- [3天吃透Vue3+Vite+Vant移动开发的新特性-video](https://www.bilibili.com/video/BV1TU4y177UG?vd_source=bd4c7d99d71adf64d6e88c65370e0247&spm_id_from=333.788.videopod.episodes)
-- [vue3.2+vite+vant企业实战项目 仿马蜂窝 旅游H5-video](https://www.bilibili.com/video/BV1LV4y1z7zY?vd_source=bd4c7d99d71adf64d6e88c65370e0247&spm_id_from=333.788.videopod.episodes)
-- Vue3+Vite+Vant-UI 开发双端招聘APP-video
-- 基于Vue3.2+TypeScript 《医疗问诊》项目课程-video
+- [3 天吃透 Vue3+Vite+Vant 移动开发的新特性-video](https://www.bilibili.com/video/BV1TU4y177UG?vd_source=bd4c7d99d71adf64d6e88c65370e0247&spm_id_from=333.788.videopod.episodes)
+- [vue3.2+vite+vant 企业实战项目 仿马蜂窝 旅游 H5-video](https://www.bilibili.com/video/BV1LV4y1z7zY?vd_source=bd4c7d99d71adf64d6e88c65370e0247&spm_id_from=333.788.videopod.episodes)
+- Vue3+Vite+Vant-UI 开发双端招聘 APP-video
+- 基于 Vue3.2+TypeScript 《医疗问诊》项目课程-video
 
-## 跨端APP
+## 跨端 APP
 
-跨端APP：Flutter、React Native、UniApp
+跨端 APP：Flutter、React Native、UniApp
 
-- Flutter从入门到进阶 实战携程网App-video-mk
-- Dart Flutter入门实战基础视频教程-video
-- SpringBoot+Uniapp实战开发全新仿抖音短视频App-video-mk
-- React Native从入门到实战 打造高质量上线App-video-mk
-- React Native+TypeScript仿喜马拉雅开发App-video-mk
+- Flutter 从入门到进阶 实战携程网 App-video-mk
+- Dart Flutter 入门实战基础视频教程-video
+- SpringBoot+Uniapp 实战开发全新仿抖音短视频 App-video-mk
+- React Native 从入门到实战 打造高质量上线 App-video-mk
+- React Native+TypeScript 仿喜马拉雅开发 App-video-mk
 
 ## 桌面端
 
 Electron
 
-- [禹神：一小时快速上手Electron](https://www.bilibili.com/video/BV1sE421N7M5/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
-- [Electron入门到精通](https://www.bilibili.com/video/BV1xd4y1J7dB/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [禹神：一小时快速上手 Electron](https://www.bilibili.com/video/BV1sE421N7M5/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [Electron 入门到精通](https://www.bilibili.com/video/BV1xd4y1J7dB/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 
 ## **小程序**
 
-WXML原生、UniApp、taro支持vue
+WXML 原生、UniApp、taro 支持 vue
 
-- Taro3+Mysql+Express开发企业级出行全栈项目 -video
-- 掌握Taro多端框架 快速上手小程序/H5开发-video
-- 扫码点餐微信小程序云开发，uniapp，vue，nodejs带后台管理-video
+- Taro3+Mysql+Express 开发企业级出行全栈项目 -video
+- 掌握 Taro 多端框架 快速上手小程序/H5 开发-video
+- 扫码点餐微信小程序云开发，uniapp，vue，nodejs 带后台管理-video
 - SpringBoot2.X + Vue + UniAPP，全栈开发医疗小程序-video-mk
 
 ## 微信公众号
@@ -50,8 +50,6 @@ WeRoBot、Flask-WeChat、Tornado-WeRoBot、django-weixin
 - 微信公众号开发课程-video
 
 **一个完整 HTML5 页面的展示要经历浏览器控件的加载、解析和渲染三大过程，性能消耗要比原生开发增加 N 个数量级**。
-
-
 
 > **一、移动端框架分类**
 >
@@ -135,8 +133,6 @@ WeRoBot、Flask-WeChat、Tornado-WeRoBot、django-weixin
 > - 成熟框架：**React Native**、**Bootstrap**。
 > - 新兴技术：**Flutter**（增长迅速）、**Vant**（国内活跃社区）。
 
-
-
 # 前言
 
 - [移动开发的最佳 React Native 替代方案](https://juejin.cn/post/7036615302007750692?searchId=20240306153831FE860597322AFA0BF4F4#heading-111)
@@ -145,34 +141,34 @@ WeRoBot、Flask-WeChat、Tornado-WeRoBot、django-weixin
 **跨平台、跨端**
 
 - 跨平台：指跨操作系统
-- 跨端：指跨web,ios,android,iot设备
+- 跨端：指跨 web,ios,android,iot 设备
 
 ## 移动开发细分领域
 
 - 混合开发和跨平台框架
-- Framework和Kernel
+- Framework 和 Kernel
 - 逆向安全
 - 音视频
-- 移动Web
+- 移动 Web
 - 嵌入式
 
 **个人的一些思考**
 
 > 1.AIGC+移动端
 >
-> 2023年的AIGC的火热空前绝后，它带来的影响是非常深远的，甚至能够变革整个互联网行业，很多产品可能将会以新的思路去重构和延伸，这里面就会产生相应的在移动端和AIGC结合相关产品和业务，公司层面也会有相应的投入意愿，这也许会给我们带来新的机会。
+> 2023 年的 AIGC 的火热空前绝后，它带来的影响是非常深远的，甚至能够变革整个互联网行业，很多产品可能将会以新的思路去重构和延伸，这里面就会产生相应的在移动端和 AIGC 结合相关产品和业务，公司层面也会有相应的投入意愿，这也许会给我们带来新的机会。
 >
 > 2.元宇宙：VR/AR/XR
 >
 > 元宇宙虽然被炒概念，一直不温不火的，但这里面涉及的技术是比较前沿的，在游戏领域跟元宇宙的结合，如果能找到愿意投入企业，未尝不是一个不错的方向。
 >
-> 3.IoT物联网
+> 3.IoT 物联网
 >
-> 万物互联方向，比如智能家居，智能创新硬件产品，类似小米IoT相关的产品，智能手环、扫地机器人等等。这里面也有庞大的市场需求，另外软硬件结合对开发人员要求更高，更接近底层。
+> 万物互联方向，比如智能家居，智能创新硬件产品，类似小米 IoT 相关的产品，智能手环、扫地机器人等等。这里面也有庞大的市场需求，另外软硬件结合对开发人员要求更高，更接近底层。
 >
 > 4.新能源车载系统
 >
-> 新能源车的其中一个核心就是**智能中控**，比如特斯拉的中控系统是Linux，比亚迪还有蔚小理和大多数造车新势力用的是Android系统，这里面也有很多车载系统应用的需求，也是很多人都求职热门方向。
+> 新能源车的其中一个核心就是**智能中控**，比如特斯拉的中控系统是 Linux，比亚迪还有蔚小理和大多数造车新势力用的是 Android 系统，这里面也有很多车载系统应用的需求，也是很多人都求职热门方向。
 >
 > 5.音视频技术领域
 >
@@ -180,17 +176,17 @@ WeRoBot、Flask-WeChat、Tornado-WeRoBot、django-weixin
 >
 > 6.跨平台技术
 >
-> 从企业降本的角度，未来可能会更倾向招聘懂跨平台开发的，希望能统一技术栈能够实现多端发布的能力。比如Flutter、React Native、UniApp等。
+> 从企业降本的角度，未来可能会更倾向招聘懂跨平台开发的，希望能统一技术栈能够实现多端发布的能力。比如 Flutter、React Native、UniApp 等。
 >
-> 7.鸿蒙OS应用开发
+> 7.鸿蒙 OS 应用开发
 >
-> 国产替代是个很深远的话题，卡脖子问题现在越演越烈，从软件产业我们跟漂亮国还存在很多差距，我们能够正视这些差距并且迎头突围是一个非常值得敬佩和骄傲的事情。鸿蒙OS有望成为第一个完全去Android化的操作系统，Mate60系列手机产品我认为是一个标志性里程碑，我们不谈什么遥遥领先，我相信华为一定会越来越好，鸿蒙OS应用开发也是我觉得有较好前景的方向。
+> 国产替代是个很深远的话题，卡脖子问题现在越演越烈，从软件产业我们跟漂亮国还存在很多差距，我们能够正视这些差距并且迎头突围是一个非常值得敬佩和骄傲的事情。鸿蒙 OS 有望成为第一个完全去 Android 化的操作系统，Mate60 系列手机产品我认为是一个标志性里程碑，我们不谈什么遥遥领先，我相信 Z 国一定会越来越好，鸿蒙 OS 应用开发也是我觉得有较好前景的方向。
 
 ## 移动跨平台
 
 跨平台方案可以分为三个时代：
 
-> - Web 容器时代：包括 Cordova、Ionic 和[微信小程序](https://cloud.tencent.com/product/tcb?from_column=20065&from=20065)。主要采用的是原生应用内嵌浏览器控件 WebView的方式进行 HTML5 页面渲染，并定义 HTML5 与原生代码交互协议，将部分原生系统能力暴露给 HTML5，从而扩展 HTML5 的边界。这类交互协议，就是我们通常说的 JS Bridge。
+> - Web 容器时代：包括 Cordova、Ionic 和[微信小程序](https://cloud.tencent.com/product/tcb?from_column=20065&from=20065)。主要采用的是原生应用内嵌浏览器控件 WebView 的方式进行 HTML5 页面渲染，并定义 HTML5 与原生代码交互协议，将部分原生系统能力暴露给 HTML5，从而扩展 HTML5 的边界。这类交互协议，就是我们通常说的 JS Bridge。
 > - 泛 Web 容器时代：采用类 Web 标准进行开发，但在运行时把绘制和渲染交由原生系统接管的技术，代表框架有 React Native、Weex 和快应用等。
 > - 自绘引擎时代：自带渲染引擎，客户端仅提供一块画布即可获得从业务逻辑到功能呈现的多端高度一致的渲染体验。Flutter，是为数不多的代表。
 
@@ -228,7 +224,7 @@ Web App 是指基于 Web 的应用，运行于网络和标准浏览器上，相�
 - 依赖于网络，网速慢时体验很差，并且没有离线功能，优化不好的话会消耗流量
 - 只能做为一个临时的入口，用户留存率低
 
-**PWA**是web App的进化型，`PWA（Progressive Web App，渐进式增强 Web 应用）`。它不是一门技术，而是一个概念，他的意思就是使用多种技术来增强 Web App 的功能
+**PWA**是 web App 的进化型，`PWA（Progressive Web App，渐进式增强 Web 应用）`。它不是一门技术，而是一个概念，他的意思就是使用多种技术来增强 Web App 的功能
 
 PWA 的主要的能力就是离线、推送、桌面访问，可以说 PWA 赋予 Web App 原生的体验，但是 PWA 一直不温不火的原因主要有以下几点：
 
@@ -246,16 +242,16 @@ HTML5 + 原生来进行混合开发，这就是 Hybrid。
 
 **Cordova**
 
-| 优点                                                       | 缺点                                                         |
-| ---------------------------------------------------------- | ------------------------------------------------------------ |
-| 跨平台，开发简单，学习成本低                               | WebView性能低下时，用户体验差，反应慢                        |
-| 框架多，插件多，可自定义插件                               | 国外的框架，中文文档资源少                                   |
-| 发展最早，社区资源丰富                                     | 调试不方便，既不像原生那种调试，也不像纯web那种热重载式的调试 |
-| 相同代码通过编译就能跑在各平台，大大提高了多平台开发的效率 | App store相关政策存在风险？                                  |
+| 优点                                                       | 缺点                                                            |
+| ---------------------------------------------------------- | --------------------------------------------------------------- |
+| 跨平台，开发简单，学习成本低                               | WebView 性能低下时，用户体验差，反应慢                          |
+| 框架多，插件多，可自定义插件                               | 国外的框架，中文文档资源少                                      |
+| 发展最早，社区资源丰富                                     | 调试不方便，既不像原生那种调试，也不像纯 web 那种热重载式的调试 |
+| 相同代码通过编译就能跑在各平台，大大提高了多平台开发的效率 | App store 相关政策存在风险？                                    |
 
 **Ionic**
 
-Ionic是一个开源的移动应用程序开发框架，它可以轻松地使用web技术构建高质量的跨平台的移动应用。
+Ionic 是一个开源的移动应用程序开发框架，它可以轻松地使用 web 技术构建高质量的跨平台的移动应用。
 
 **VasSonic**
 
@@ -269,49 +265,49 @@ Xamarin 是一个开放源代码平台，用于通过 .NET 构建适用于 iOS�
 
 **React Native**
 
-React Native (简称RN)是Facebook于2015年4月开源的跨平台移动应用开发框架,支持iOS和安卓.
+React Native (简称 RN)是 Facebook 于 2015 年 4 月开源的跨平台移动应用开发框架,支持 iOS 和安卓.
 
-| 优点                                                         | 缺点                                                         |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 复用了 React 的思想，有利于前端开发者涉足移动端。            | 做不到 Write once, Run everywhere                            |
-| 能够利用 JavaScript 动态更新的特性，快速迭代。               | 不能做到完全屏蔽 iOS 端或 Android 的细节                     |
+| 优点                                                         | 缺点                                                                            |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| 复用了 React 的思想，有利于前端开发者涉足移动端。            | 做不到 Write once, Run everywhere                                               |
+| 能够利用 JavaScript 动态更新的特性，快速迭代。               | 不能做到完全屏蔽 iOS 端或 Android 的细节                                        |
 | 相比于原生平台，开发速度更快，相比于 Hybrid 框架，性能更好。 | 由于 Objective-C 与 JavaScript 之间切换存在固定的时间开销，所以性能必定不及原生 |
 
 **Weex**
 
-Weex是alibaba于2015年推出的一款跨平台开发框架,支持Android、iOS 和 Web。目前支持Vue.js 和 Rax框架的完善开发。
+Weex 是 alibaba 于 2015 年推出的一款跨平台开发框架,支持 Android、iOS 和 Web。目前支持 Vue.js 和 Rax 框架的完善开发。
 
-| 优点                            | 缺点                                            |
-| ------------------------------- | ----------------------------------------------- |
-| 国内团队开发，中文文档齐全      | 动画实现、API丰富程度及事件机制上略逊于RN       |
-| Vue作为前端开发语言，学习成本低 | 不支持横竖屏切换                                |
-| 与RN不同，Weex的框架较轻        | 阿里将其捐赠给Apache，后续维护频率低（KPI产品） |
+| 优点                             | 缺点                                              |
+| -------------------------------- | ------------------------------------------------- |
+| 国内团队开发，中文文档齐全       | 动画实现、API 丰富程度及事件机制上略逊于 RN       |
+| Vue 作为前端开发语言，学习成本低 | 不支持横竖屏切换                                  |
+| 与 RN 不同，Weex 的框架较轻      | 阿里将其捐赠给 Apache，后续维护频率低（KPI 产品） |
 
 **Dcloud（uni-app）**
 
-uni-app 是一个使用 Vue.js 开发所有前端应用的框架，开发者编写一套代码，可发布到iOS、Android、Web（响应式）、以及各种小程序（微信/支付宝/百度/头条/QQ/钉钉/淘宝）、快应用等多个平台。
+uni-app 是一个使用 Vue.js 开发所有前端应用的框架，开发者编写一套代码，可发布到 iOS、Android、Web（响应式）、以及各种小程序（微信/支付宝/百度/头条/QQ/钉钉/淘宝）、快应用等多个平台。
 
-uni-app是双渲染引擎，在 App端内置了一个webview和一个基于 weex 改进的原生渲染引擎，提供了原生渲染能力。
+uni-app 是双渲染引擎，在 App 端内置了一个 webview 和一个基于 weex 改进的原生渲染引擎，提供了原生渲染能力。
 
-在App端：
+在 App 端：
 
-- 如果使用vue页面，则使用webview渲染
-- 如果使用nvue页面(native vue的缩写)，则使用原生渲染
+- 如果使用 vue 页面，则使用 webview 渲染
+- 如果使用 nvue 页面(native vue 的缩写)，则使用原生渲染
 
 ## **自渲染：Flutter**
 
 Flutter 是 Google 开源的 UI 工具包，帮助开发者通过一套代码库高效构建多平台精美应用，支持移动、Web、桌面和嵌入式平台。
 
-| 类型           | Cordova               | Xamarin               | React Native           | Weex                     | Uniapp                | Flutter                       |
-| -------------- | --------------------- | --------------------- | ---------------------- | ------------------------ | --------------------- | ----------------------------- |
-| 性能           | 低                    | 高                    | 较高                   | 中                       | 高                    | 高                            |
-| 上手难度       | 容易                  | 较高                  | 较高                   | 容易                     | 容易                  | 中                            |
-| 核心           | JavaScript            | .NET                  | React                  | Weex                     | vue                   | Dart                          |
-| 框架轻重       | 轻                    | 较重                  | 较重                   | 较轻                     | 轻                    | 重                            |
-| 特点           | 适合单页面            | 适合开发整体App       | 适合开发整体App        | 适合单页面               | 适合开发整体App       | 适合开发整体App               |
-| 社区           | 活跃度较低            | 活跃度低              | 活跃度高，Facebook维护 | 活跃度中，目前托管apache | 活跃度高，Dcloud维护  | 活跃度高，Google维护          |
-| 支持平平台实现 | JS 引擎解释执行JS代码 | JS 引擎解释执行JS代码 | JS 引擎解释执行JS代码  | JS 引擎解释执行JS代码    | JS 引擎解释执行JS代码 | Dart 代码编译成目标机器码     |
-| 适应性         | Web开发学习成本低     | .NET C#工程师开发     | Web开发学习成本低      | Web开发学习成本低        | Web开发学习成本低     | Java、C++、C#、开发学习成本低 |
+| 类型           | Cordova                 | Xamarin                 | React Native            | Weex                      | Uniapp                  | Flutter                       |
+| -------------- | ----------------------- | ----------------------- | ----------------------- | ------------------------- | ----------------------- | ----------------------------- |
+| 性能           | 低                      | 高                      | 较高                    | 中                        | 高                      | 高                            |
+| 上手难度       | 容易                    | 较高                    | 较高                    | 容易                      | 容易                    | 中                            |
+| 核心           | JavaScript              | .NET                    | React                   | Weex                      | vue                     | Dart                          |
+| 框架轻重       | 轻                      | 较重                    | 较重                    | 较轻                      | 轻                      | 重                            |
+| 特点           | 适合单页面              | 适合开发整体 App        | 适合开发整体 App        | 适合单页面                | 适合开发整体 App        | 适合开发整体 App              |
+| 社区           | 活跃度较低              | 活跃度低                | 活跃度高，Facebook 维护 | 活跃度中，目前托管 apache | 活跃度高，Dcloud 维护   | 活跃度高，Google 维护         |
+| 支持平平台实现 | JS 引擎解释执行 JS 代码 | JS 引擎解释执行 JS 代码 | JS 引擎解释执行 JS 代码 | JS 引擎解释执行 JS 代码   | JS 引擎解释执行 JS 代码 | Dart 代码编译成目标机器码     |
+| 适应性         | Web 开发学习成本低      | .NET C#工程师开发       | Web 开发学习成本低      | Web 开发学习成本低        | Web 开发学习成本低      | Java、C++、C#、开发学习成本低 |
 
 ## **其他**
 
@@ -329,8 +325,3 @@ Flutter 是 Google 开源的 UI 工具包，帮助开发者通过一套代码库
 
 - 解释型 - 需要解释器提供“实时翻译”。如 python、JavaScript、Dart
 - 编译型 - 需要预编译，执行效率高，但跨平台能力差。如 C/C++、Java、Dart
-
-
-
-
-

@@ -8,16 +8,6 @@ toc: true # 是否启用内容索引
 
 # 大纲
 
-思考
-
-> • 【初中级】你的过往项目中,项目和工程化架构有没有做过,有没有了解过 monorepo 架构方案?
->
-> • 【中高级】组件库、脚手架、业务系统工程化基于 monorepo 架构设计有什么实践经验,请详细说明
->
-> • 【专家级】有没有了解过字节、阿里等中大厂前端基于 monorepo 工程架构最佳实践,举例说明
-
-
-
 - [Vue3+TS+monorepo，搭建自己的组件库-珠峰-video](https://www.bilibili.com/video/BV1LTB4YqE43/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - [高仿ElementPlus-从0到1打造企业级UI组件库-video](https://www.bilibili.com/video/BV1SnBKYTEx1?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247&p=39)
 - [前端组件库开发-video](https://www.bilibili.com/video/BV1NyfhYnEPu?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
@@ -31,11 +21,19 @@ toc: true # 是否启用内容索引
 
 # 大厂基本用pnpm + monorepo 做项目工程化架构
 
-## 传统架构与monorepo架构比较
+思考
+
+> • 【初中级】你的过往项目中,项目和工程化架构有没有做过,有没有了解过 monorepo 架构方案?
+>
+> • 【中高级】组件库、脚手架、业务系统工程化基于 monorepo 架构设计有什么实践经验,请详细说明
+>
+> • 【专家级】有没有了解过字节、阿里等中大厂前端基于 monorepo 工程架构最佳实践,举例说明
+
+## 传统架构与monorepo架构比较-初级
 
 传统架构
 
-> - 独立项目结构,所有项目都是分开的 github 仓库（）
+> - 独立项目结构,所有项目都是分开的 github 仓
 >
 > - 技术栈独立
 >
@@ -56,6 +54,65 @@ monorepo架构
 > - 依赖管理,版本统一管理
 >
 > - 部署,docker、docker compose,自动化脚本统一部署流程
+
+monoremo的架构方案
+
+> - 包管理,**pnpm workspace**、yarn workspace、lerna
+>
+> - 构建缓存
+>
+> - 增量构建：nx、**turbo**
+
+pnpm优势
+
+一句话:通过中心化思想解决依赖复用问题。
+
+> - 链接机制：通过软链接方式引用依赖
+>
+> - 缓存机制,寻址
+>
+> - 原生支持 workspace
+>
+> - 磁盘占用少
+
+## 从传统架构到Monorepo架构的演进-初级
+
+> 阶段1:传统架构基础痛点(主要矛盾)
+>
+> - 代码先集中化,将多个关联项目统一到一个 github 仓库
+>
+> - 工具引入,pnpm workspace
+>
+> - CI/CD 重构
+>
+> 阶段2:具体 monorepo 架构
+>
+> - 公共模块抽离
+> - pnpm、turbo 解决子包与主包关系
+>
+> 阶段3:自动化构建流程优化
+>
+> - 打包方案,**vite**、webpack, rollup、parcel、**tsup**、esbuild、swc、rolldown
+>
+> - 构建流程优化,依赖关系(循环依赖引用)、哪些包需要前置构建
+>
+> - 发布,npm publish（基建包发布基建子包）、docker 镜像(业务包发布业务系统)
+>
+> - 监控和测试
+
+总结
+
+> 主导了工程化架构的重构工作,基于 pnpm workspace 统一化工程组织,统一自动化、流程、规范化相关内容,子包管理更清晰。基于 tsup构建团队基建包、vite 构建业务包,业务架构我主导通过微前端机制来实现,统一化主应用与子应用状态管理细节
+
+## 实际项目中的代码实践-中级
+
+> - 组件库,工具库、图表库,脚手架,基建类形态的基建项目
+> - 业务系统一类的业务项目
+> - 服务端架构
+
+## 大厂中优秀代码实践-高级
+
+如vue3,ant-design,element-plus等
 
 # vite pnpm monorepo开发组件库
 
