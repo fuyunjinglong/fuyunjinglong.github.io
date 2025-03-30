@@ -10,6 +10,8 @@ toc: true # 是否启用内容索引
 
 - [Vue3+TS+monorepo，搭建自己的组件库-珠峰-video](https://www.bilibili.com/video/BV1LTB4YqE43/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - [高仿ElementPlus-从0到1打造企业级UI组件库-video](https://www.bilibili.com/video/BV1SnBKYTEx1?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247&p=39)
+- [Vue3+TS，搭建自己的组件库](https://www.bilibili.com/video/BV1LTB4YqE43/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [【手把手带你手搓组件库】从零实现 ElementPlus (项目搭建)-vdieo](https://www.bilibili.com/video/BV1dw4m1y7m5/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - [前端组件库开发-video](https://www.bilibili.com/video/BV1NyfhYnEPu?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 
 # 组件库开发的难点
@@ -28,6 +30,8 @@ toc: true # 是否启用内容索引
 > • 【中高级】组件库、脚手架、业务系统工程化基于 monorepo 架构设计有什么实践经验,请详细说明
 >
 > • 【专家级】有没有了解过字节、阿里等中大厂前端基于 monorepo 工程架构最佳实践,举例说明
+
+**一句话:通过中心化思想解决依赖复用问题。**
 
 ## 传统架构与monorepo架构比较-初级
 
@@ -64,8 +68,6 @@ monoremo的架构方案
 > - 增量构建：nx、**turbo**
 
 pnpm优势
-
-一句话:通过中心化思想解决依赖复用问题。
 
 > - 链接机制：通过软链接方式引用依赖
 >
