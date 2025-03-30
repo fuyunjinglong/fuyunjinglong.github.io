@@ -10,7 +10,6 @@ toc: true # 是否启用内容索引
 
 - [Vue3+TS+monorepo，搭建自己的组件库-珠峰-video](https://www.bilibili.com/video/BV1LTB4YqE43/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - [高仿ElementPlus-从0到1打造企业级UI组件库-video](https://www.bilibili.com/video/BV1SnBKYTEx1?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247&p=39)
-- [Vue3+TS，搭建自己的组件库](https://www.bilibili.com/video/BV1LTB4YqE43/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - [【手把手带你手搓组件库】从零实现 ElementPlus (项目搭建)-vdieo](https://www.bilibili.com/video/BV1dw4m1y7m5/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - [前端组件库开发-video](https://www.bilibili.com/video/BV1NyfhYnEPu?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 
