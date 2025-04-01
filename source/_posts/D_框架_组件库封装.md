@@ -115,7 +115,7 @@ pnpm优势
 
 如vue3,ant-design,element-plus等
 
-# vite pnpm monorepo开发组件库
+# vite pnpm monorepo-基建库-缺打包
 
 参考
 
@@ -125,6 +125,8 @@ pnpm优势
 
 ## 安装pnpm
 
+> npm install pnpm-g #全局安装pnpm
+>
 > pnpm i
 
 ## **初始化项目**
@@ -623,7 +625,88 @@ ns.modifier('size', size)
 }
 ```
 
+# vite pnpm monorepo基建库-珠峰
 
+参考
+
+> - [vue3+TS 搭建自己的组件库-video](https://www.bilibili.com/video/BV1LTB4YqE43/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+> - [前端组件库开发-文档](https://juejin.cn/post/7288597387798904866#heading-5)
+> - 个人组件库地址-github
+
+## 搭建monorepo环境
+
+> pnpm init 
+>
+> pnpm install vue typescript -D 
+
+使用 pnpm必须要建立.npmrc文件,`shamefully-hoist = true`，否则安装的模块无法放置到node_modules 目录下
+
+> pnpm tsc --init // 初始化ts配置文件tsconfig.json
+
+```json
+{
+  "compilerOptions": {
+    "module": "ESNext", // 打包模块类型ESNext
+    "declaration": true, // 默认不要声明文件
+    "noImplicitThis": true, // 支持类型不标注可以默认any
+    "removeComments": true, //删除注释
+    "moduleResolution": "node10", // 按照node模块来解析
+    "esModuleInterop": true, // 支持es6,commonjs模块
+    "jsx": "preserve", // jsx 不转
+    "noLib": false, //不处理类库
+    "target": "es6", // 遵循es6版本
+    "sourceMap": true,
+    "lib": [
+      //编译时用的库
+      "ESNext",
+      "DOM"
+    ],
+    "allowSyntheticDefaultImports": true, //允许没有导出的模块中导入
+    "experimentalDecorators": true, // 装饰器语法
+    "forceConsistentCasingInFileNames": true, // 强制区分大小写
+    "resolveJsonModule": true, // 解析json模块
+    "strict": true, //是否启动严格模式
+    "skipLibCheck": true, // 跳过类库检测
+    "exclude": [
+      //排除掉哪些类库
+      "node_modules",
+      "**/__test__",
+      "dist/**"
+    ]
+  }
+}
+```
+
+## **建立工作区**
+
+根目录下新建pnpm-workspace.yaml,内容是
+
+```
+packages:
+  - "examples"
+  - "packages/*"
+  - "docs"
+```
+
+## 修改组件调用方
+
+在根目录下packages.json，新增以下内容，然后执行pnpm i。
+
+>  *"devDependencies"*: {
+>
+>   *"@lw-ui/components"*: "workspace:*",
+>
+>   *"@lw-ui/theme-chalk"*: "workspace:*",
+>
+>   *"@lw-ui/utils"*: "workspace:*"
+>
+>  }
+
+## 初始化演示库(play)
+
+> 根目录执行
+>
+> pnpm create vite play --template vue-ts 
 
 # 组件-个人实践
 
