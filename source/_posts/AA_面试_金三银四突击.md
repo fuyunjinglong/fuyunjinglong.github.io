@@ -10,16 +10,16 @@ toc: true # 是否启用内容索引
 
 - [ ] 2024年前端简历（node.js，ts,react，Flutter、Rn，微前端，低代码，小程序，移动端，ssr）
 - [ ] [JavaScript专项](https://www.bilibili.com/video/BV1rq4y1U7gh/?spm_id_from=333.788&vd_source=bd4c7d99d71adf64d6e88c65370e0247)-还在头疼
-- [ ] Vue3+Vite+Vant-UI 开发双端招聘APP-video(4-3)
+- [ ] 移动端-Vue3+Vite+Vant-UI 开发双端招聘APP-video(4-3)
+- [ ] [移动端-3天吃透Vue3+Vite+Vant移动开发的新特性-video](https://www.bilibili.com/video/BV1TU4y177UG?vd_source=bd4c7d99d71adf64d6e88c65370e0247&spm_id_from=333.788.videopod.episodes)
 - [ ]  vue2源码:PC本地-Vue2.js源码全方位深入解析-黄轶-第1章 准备工作(2-6)
-- [ ]  vue3源码:PC本地-催学社-Vue3源码实战课
-- [ ]  [JS数据结构与算法(函数式)-coderwhy-video](https://www.bilibili.com/video/BV1yD4y127vy/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)-p38_19
-- [ ]  [Java数据结构与算法-video或PC本地-03-算法数据结构体系学习班](https://www.bilibili.com/video/BV1Ef4y1T7Qi/?p=2&vd_source=bd4c7d99d71adf64d6e88c65370e0247)-p0
-- [ ]  移动端([3天吃透Vue3+Vite+Vant移动开发的新特性-video](https://www.bilibili.com/video/BV1TU4y177UG?vd_source=bd4c7d99d71adf64d6e88c65370e0247&spm_id_from=333.788.videopod.episodes))
-- [ ]  react入门(React18+TS 通用后台管理系统解决方案落地实战-video-mk)
-- [ ]  跨端APP(Flutter从入门到进阶 实战携程网App-video-mk)
-- [ ] 小程序(Taro3+Mysql+Express开发企业级出行全栈项目 -video)
-- [ ] nodejs(Node.js+Express+Koa2 开发Web Server博客-video-慕课网mk)
+- [ ]  vue3源码:PC本地-催学社-Vue3源码实战课(02)
+- [ ]  [JS数据结构与算法(函数式)-coderwhy-video](https://www.bilibili.com/video/BV1yD4y127vy/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)(p38_19)
+- [ ]  [Java数据结构与算法-video或PC本地-03-算法数据结构体系学习班](https://www.bilibili.com/video/BV1Ef4y1T7Qi/?p=2&vd_source=bd4c7d99d71adf64d6e88c65370e0247)(p0)
+- [ ]  react入门-React18+TS 通用后台管理系统解决方案落地实战-video-mk
+- [ ]  跨端APP-Flutter从入门到进阶 实战携程网App-video-mk
+- [ ] 小程序-Taro3+Mysql+Express开发企业级出行全栈项目-video
+- [ ] nodejs-Node.js+Express+Koa2 开发Web Server博客-video-慕课网mk
 
 # web前端导航
 

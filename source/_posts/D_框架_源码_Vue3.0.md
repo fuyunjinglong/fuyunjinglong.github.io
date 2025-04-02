@@ -776,5 +776,18 @@ lerna 现在已经被很多著名的项目组织使用，如：Babel, React, Vue
 
 # 催学社-Vue3 源码实战课
 
-- [vue3源码分析仓库](https://github.com/fuyunjinglong/web-sourceCode-vue3)
+- [个人vue3源码分析仓库](https://github.com/fuyunjinglong/web-sourceCode-vue3)
+
+## Vue3核心模块
+
+![image](/img/2025-04-03_06-48-27.png)
+
+> - compiler编译期
+>   - compiler-sfc：主要把vue单文件组件编译为js文件，其中底层依赖调用了compiler-dom和compiler-core
+>     - compiler-dom：主要把template代码片段转换为render函数
+>     - compiler-core：dom转换render函数时用到的核心函数
+> - runtime运行时
+>   - runtime-dom：运行时dom。源码中vue/src/index.js实际是全量导出runtime-dom。源码中runtime-dom/src/index.js实际是全量导出runtime-core，所以又依赖runtime-core
+>   - runtime-core：运行时核心函数。源码中runtime-core/src/index.js实际是大量导出reactivity，所以又依赖reactivity
+>   - reactivity：运行时响应式系统。
 
