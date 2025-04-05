@@ -4409,3 +4409,49 @@ function addEventListenerCopyPaste() {
     pasteHandle(paste);
   });
 ```
+
+## 原生textarea模拟el-input，实现自动换行，超过行数滚动，最大输入限制
+
+```
+<textarea
+   v-model="content"
+    :disabled="true"
+   class="textareaMe"
+    rows="10"
+   maxlength="1500"
+  @input="handleAutoResize($event)"
+></textarea>
+
+const content = ref()
+function handleAutoResize(e,column){
+  // textarea输入触发自动调整高度
+  const maxleng= e.target.maxLength
+  // 限制文字个数
+  if(e.target.value.length>maxleng){
+    content.value=e.value.substr(0,maxleng)
+  }
+  adjustTextareaHeight(e.target)
+}
+async function adjustTextareaHeight(textarea) {
+  // textarea自动调整高度
+  textarea.style.height = '0';
+  // 超过xx行高度滚动：20是行高
+  const rowScroll = Number(textarea.rows)
+  const heightNow = Math.min(textarea.scrollHeight, 22*rowScroll)
+  textarea.style.height = heightNow + 'px';
+  textarea.style.overflow = heightNow ===textarea.scrollHeight?'hidden':''
+}
+
+.textareaMe {
+  width: 100%;
+  height: 32px;
+  line-height: 1.5;
+  padding: 5px 15px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  resize: none;
+  outline: none;
+  font-size:14px;
+  font-family: 微软雅黑;
+}
+```

@@ -192,6 +192,8 @@ bue.runtime.esm-bundler.js
 > - [珠峰公开课-vue3源码视频-video](https://www.bilibili.com/video/BV1WP4y1u7qi/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 > - [vue 源码 全宇宙](https://github.com/vue3/vue3-News/issues/16?content_source_url=https://github.com/vue3/vue3-News)
 > - [vue3js源码](https://vue3js.cn/start/)
+> - 《Vue.js 设计与实现》
+> - 《vue.js 技术内幕》，作者是黄轶
 
 **Vue核心四大模块**
 

@@ -6,6 +6,8 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
+# 个人项目经验
+
 # 面经
 
 ## 任职要求
@@ -142,7 +144,7 @@ toc: true # 是否启用内容索引
 
 [程序员找工作黑名单](https://github.com/shengxinjing/programmer-job-blacklist)
 
-# Resume
+# 面试完整流程
 
 ## 准备阶段
 

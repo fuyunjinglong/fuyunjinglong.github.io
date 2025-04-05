@@ -8,7 +8,7 @@ toc: true # 是否启用内容索引
 
 # 大纲
 
-## 移动端
+## 移动端H5
 
 主要以 vue3+vant 为主
 
@@ -325,3 +325,114 @@ Flutter 是 Google 开源的 UI 工具包，帮助开发者通过一套代码库
 
 - 解释型 - 需要解释器提供“实时翻译”。如 python、JavaScript、Dart
 - 编译型 - 需要预编译，执行效率高，但跨平台能力差。如 C/C++、Java、Dart
+
+# 移动端H5-vant
+
+主要针对移动端H5和微信小程序
+
+## 招投标手机版
+
+**参考**
+
+> - [个人github仓库](https://github.com/fuyunjinglong/web-mobile/tree/web-mobile-vant)
+
+**前言**
+
+> 按照750设计稿，flexible的1rem是75px，如果是vw，100vw是750px，那么1px就是0.1333333vw，75px就是10vw。
+
+**项目介绍**
+
+基于Vite+Vue3+TS+Pinia+VueUse框架，实现招中标业务流程分发，企业数据咨询，机会点跟踪，帮助企业快速识别业务需求落地。
+
+**负责内容**
+
+> - 首页(发现、企业、进展、订阅、我的)，其中发现包括顶部搜索和过滤数据，企业包括查询企业信息，机会包括机会空间跟踪和招标审核，订阅包括企业订阅，我的包括收藏和待处理已处理电子流。
+> - 项目信息详情
+> - 机会点分发电子流审批：分发-确认-复核-结束
+
+**项目难点**
+
+> - 性能优化瓶颈：复杂组件渲染压力，在低端设备dom节点过多导致卡顿，引入van-pull-refresh实现下列刷新
+> - 兼容性适配：需处理Android 4.4以下旧版本WebView的CSS/JS兼容问题，常需引入polyfill或牺牲部分特性
+> - 打包策略调整：若未正确配置按需加载，可能造成冗余代码，需依赖babel-plugin-import插件优化
+> - 使用router-view插槽，结合keepAlive实现组件缓存
+> - 使用router.beforeEach路由守卫，实现路由权限拦截
+> - 使用Transition过度标签实现左右滑动动态效果
+> - 大量使用vant内置组件，如：van-tabs，van-tabbar,van-list，van-back-top，van-dialog，van-dropdown-menu，van-loading，van-action-sheet，van-search
+
+> - 在使用van-search时发现，顶部的筛选展开时，手滑顶部会左右滚动，通过这个禁用手触摸事件，所以顶部div增加headTabCont.vue-@touchstart.stop="()=>{return;}"
+> - Clamp.vue：超过两行中间显示省略号
+> - 缓存home页面即home页面的底部公共组件，但不缓存home的子路由页面。:key="route.fullPath.includes('home') ? '/home' : route.fullPath"
+
+**项目亮点**
+
+> - Vant作为一款轻量级、高性能的移动端Vue组件库,平均体积小于1KB
+> - 组件生态完善，遵循移动端交互规范，支持响应式布局
+> - 支持高度定制化主题和暗黑模式可配置
+> - 跨平台与多框架支持，支持Vue 2、Vue 3、React、微信小程序、支付宝小程序等
+
+**搭建Vite+Vue3+TS+Pinia+VueUse**
+
+安装vite脚手架工具，选择ts,pnina,vue-router
+
+> npm create vue@latest 
+
+引入vant,sass,vue-use
+
+> npm i vant sass @vueuse/core 
+
+组件按需引入
+
+> npm i @vant/auto-import-resolver unplugin-vue-components unplugin-auto-import -D
+
+引入vant.css
+
+> /main.js
+> import "vant/lib/index.css";
+
+采用Viewport 布局，通过 postcss-px-to-viewport-8-plugin插件将px自动转为vh和vw视窗单位
+
+[vite4项目中，vant兼容750适配](https://blog.csdn.net/qq_29484537/article/details/135429954)
+
+> npm install postcss-px-to-viewport-8-plugin -D
+
+```
+/vite.config.js
+import AutoImport from "unplugin-auto-import/vite";
+import Components from "unplugin-vue-components/vite";
+import { VantResolver } from "@vant/auto-import-resolver";
+import postcsspxtoviewport8plugin from "postcss-px-to-viewport-8-plugin";
+  plugins: [
+    AutoImport({
+      resolvers: [VantResolver()],
+    }),
+    Components({
+      resolvers: [VantResolver()],
+    }),
+  ],
+  css: {
+    postcss: {
+      plugins: [
+        postcsspxtoviewport8plugin({
+          unitToConvert: "px",
+          viewportWidth: (file) =>
+            (file && file.includes("node_modules/vant")) > 0 ? 375 : 1240,
+          unitPrecision: 5, // 单位转换后保留的精度
+          propList: ["*"], // 能转化为vw的属性列表
+          viewportUnit: "vw", // 希望使用的视口单位
+          fontViewportUnit: "vw", // 字体使用的视口单位
+          selectorBlackList: ["ignore-"], // 需要忽略的CSS选择器，不会转为视口单位，使用原有的px等单位。
+          minPixelValue: 1, // 设置最小的转换数值，如果为1的话，只有大于1的值会被转换
+          mediaQuery: true, // 媒体查询里的单位是否需要转换单位
+          replace: true, //  是否直接更换属性值，而不添加备用属性
+          exclude: [], // 忽略某些文件夹下的文件或特定文件，例如 'node_modules' 下的文件
+          include: [], // 如果设置了include，那将只有匹配到的文件才会被转换
+          landscape: false, // 是否添加根据 landscapeWidth 生成的媒体查询条件 @media (orientation: landscape)
+          landscapeUnit: "vw", // 横屏时使用的单位
+          landscapeWidth: 1628, // 横屏时使用的视口宽度
+        }),
+      ],
+    },
+  },
+```
+

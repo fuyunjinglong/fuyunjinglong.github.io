@@ -706,7 +706,98 @@ packages:
 
 > 根目录执行
 >
-> pnpm create vite play --template vue-ts 
+> pnpm create vite play --template vue-ts ，然后pnpm i,pnpm run dev
+
+创建vue文件类型声明（可能最新版vite不再需要声明）
+
+> 根目录下typings\vue-shim.d.ts
+>
+> *// 用于标记识别后缀vue文件*
+>
+> declare *module* "*.vue" {
+>
+>  import type { DefineComponent } from "vue";
+>
+>  *// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types*
+>
+>  *const* component: DefineComponent<{}, {}, *any*>;
+>
+>  export default component;
+>
+> }
+
+为了在根目录也能将play演示库跑起来，设置package.json
+
+>  *"dev:play"*: "pnpm -C play dev" // 执行根目录下的play目录中package.json中dev脚本命令
+
+## 组件开发阶段二-BEM（同上）
+
+## 组件开发阶段二-button开发
+
+
+
+# vite pnpm monorepo业务库
+
+**初始化**
+
+> 根目录初始化：pnpm init
+
+> 创建packages目录，目录下执行：npm init vite vue-demo1(创建多个项目vue-demo2，vue-demo3)
+
+> 根目录修改package.json文件，把子目录的依赖复制过来
+
+```
+{
+  "name": "web-vue3-pnpm-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev:vue-demo1": "vite packages/vue-demo1",// 修改启动命令
+    "dev:vue-demo2": "vite packages/vue-demo2",
+    "dev:vue-demo3": "vite packages/vue-demo3"
+  },
+  "dependencies": {
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/tsconfig": "^0.7.0",
+    "typescript": "~5.7.2",
+    "vite": "^6.2.0",
+    "vue-tsc": "^2.2.4"
+  },
+  "license": "ISC"
+}
+```
+
+> 子目录项目修改package.json
+
+```
+{
+  "name": "vue-demo1",
+  "private": true,
+  "version": "1.0.0"
+}
+```
+
+> 创建pnpm-workspace.yaml 文件，用来声明对应的工作区
+
+```
+packages:
+  - "packages/*"
+```
+
+> 启动项目：pnpm run dev:vue-demo1
+
+**安装全局依赖**
+
+>  pnpm i lodash -D -w  // D是开发环境依赖 -w是全局
+
+**安装局部依赖**
+
+> pnpm i element-plus --filter vue-demo1 // 只在项目vue-demo1安装依赖，--filter 或者 -F
+>
+> 也可以在vue-demo1目录下安装：pnpm i unplugin-vue-components unplugin-auto-import -D -w
 
 # 组件-个人实践
 
