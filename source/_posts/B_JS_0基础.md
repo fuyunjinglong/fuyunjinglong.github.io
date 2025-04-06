@@ -2422,13 +2422,78 @@ async function async1() {
 
   电梯第一个人进来后，等待15秒。如果过程中又有人进来，15秒等待重新计时，直到15秒后开始运送，这是**防抖**
 
-  **节流**
+  
 
-  完整节流可以使用**定时器与时间戳**的写法
+  **防抖**
 
-  使用定时器写法，`delay`毫秒后第一次执行，第二次事件停止触发后依然会再一次执行
+  核心逻辑
+  
+  > - 延迟执行：通过`setTimeout`设置延迟，每次触发事件时重置计时器。
+  > - 取消前序触发：若事件在延迟时间内重复触发，用`clearTimeout`清除前一次的计时器。
+  
+  使用场景
+  
+  > - 搜索框输入联想（停止输入后再触发搜索）
+  > -  窗口大小调整（调整结束后再计算布局） 
+  > - 文本编辑器自动保存（停止编辑后保存）
   
     简单版本
+  
+  ```html
+  <html>
+  <body>
+      <input/>
+  </body>
+  </html>
+  <script >
+     let tInput = document.querySelector('input')
+     tInput.addEventListener('input',debounce(demo,2000));
+  // 支持立即执行与非立即执行
+  function debounce(func, delay, immediate = false) {
+      let timer = null;
+      return function (...args) {
+          const context = this;
+          if (timer) clearTimeout(timer);
+          if (immediate) {
+              const callNow = !timer;
+              timer = setTimeout(() => {
+                  timer = null;
+              }, delay);
+              if (callNow) func.apply(context, args);
+          } else {
+              // 简单版本
+              timer = setTimeout(() => {
+                  func.apply(context, args);
+              }, delay);
+          }
+      };
+  }
+  
+     function demo(){
+      console.log('发起请求')
+     }
+  </script>
+  ```
+  
+   
+  
+  **节流**
+  
+  核心逻辑
+  
+  > - 时间戳版：比较当前时间与上次执行时间差。
+  > - 定时器版：通过setTimeout标记可执行状态。
+  
+  使用场景
+  
+  > - 滚动事件加载更多内容（滚动时每隔一段时间触发） 
+  > - 按钮频繁点击提交（防止重复提交） 
+  > - 鼠标移动事件（如拖拽元素时）
+  
+  完整节流可以使用**定时器与时间戳**的写法
+  
+  使用定时器写法，`delay`毫秒后第一次执行，第二次事件停止触发后依然会再一次执行
+  
 
 ```html
 <html>
@@ -2448,7 +2513,7 @@ async function async1() {
 <script >
    let tBox = document.querySelector('.box')
    tBox.addEventListener('touchmove',demo);
-
+	// 简单版本
    function throttled1(fn, delay = 500) {
     let timer = null
     return function (...args) {
@@ -2500,60 +2565,6 @@ function throttled(fn, delay) {
               timer = setTimeout(fn, remaining);
         }
       }
-  }
-  ```
-
-**防抖**
-
-  简单版本
-
-```html
-<html>
-<body>
-    <input/>
-</body>
-</html>
-<script >
-   let tInput = document.querySelector('input')
-   tInput.addEventListener('input',debounce(demo,2000));
-
-   function  debounce(fn,wait){
-    let timeOut = null;
-    return args=>{
-        if(timeOut) clearTimeout(timeOut);
-        timeOut = setTimeout(fn,wait);
-    }
-   }
-   function demo(){
-    console.log('发起请求')
-   }
-</script>
-```
-
-  防抖如果需要立即执行，可加入第三个参数用于判断，实现如下：
-
-  ```js
-  function debounce(func, wait, immediate) {
-  let timeout;
-  return function () {
-      let context = this;
-      let args = arguments;
-      if (timeout) clearTimeout(timeout); // timeout 不为null
-      if (immediate) {
-          let callNow = !timeout; // 第一次会立即执行，以后只有事件执行后才会再次触发
-          timeout = setTimeout(function () {
-              timeout = null;
-          }, wait)
-          if (callNow) {
-              func.apply(context, args)
-          }
-      }
-      else {
-        timeout = setTimeout(function () {
-              func.apply(context, args)
-        }, wait);
-      }
-}
   }
   ```
 

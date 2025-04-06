@@ -113,13 +113,10 @@ toc: true # 是否启用内容索引
 + [写给初中级前端的高级进阶指南](https://juejin.cn/post/6844904103504527374)
 + [我是如何零基础入门前端开发的（2021 版）](https://chinese.freecodecamp.org/news/how-do-i-learn-front-end-development-in-2021/)
 
-
+# 其他
 
 1.JavaScript
 
-- 说说你对函数式编程的理解？函数柯里化的理解？平时的使用场景？
-- 防抖、节流的含义，使用场景？手写一下？
-- call、apply、bind区别？bind实现？bind之后还能修改this指向吗？为什么？
 - 闭包概念，最主要的还是问闭包的场景？
 - 用es5实现es6类的继承？各种继承问的挺多的
 - 深拷贝与浅拷贝？常用方法？手写一个深拷贝函数？
