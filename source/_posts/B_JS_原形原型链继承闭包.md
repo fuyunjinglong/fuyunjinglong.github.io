@@ -309,7 +309,9 @@ let obj = myNew(person)('chen', 18) // {name: "chen", age: 18}
 
 ## **定义**
 
-闭包是指有权访问另外一个函数作用域中的变量的函数。当内部函数被保存到外部时会产生闭包。
+闭包是指有权访问另外一个函数作用域中的变量的函数。当内部函数被保存到外部时会产生闭包。**本质是函数与其词法作用域的绑定组合。**
+
+JavaScript引擎通过将闭包所需变量存储在堆内存（而非栈）中，避免函数调用后作用域被销毁。
 
 **两个核心**
 
@@ -321,6 +323,21 @@ let obj = myNew(person)('chen', 18) // {name: "chen", age: 18}
 - 闭包一定具有嵌套函数
 - 内层函数一定操作了外层函数的局部变量
 - 外层函数,将内层函数返回到外部(即使外部函数已经返回，闭包仍能访问外部函数定义的变量)
+
+```
+function outer() {
+  let count = 0;
+  return function inner() {
+    count++; // 访问外层作用域的变量
+    return count;
+  };
+}
+const counter = outer();
+console.log(counter()); // 1
+console.log(counter()); // 2
+```
+
+
 
 ```js
 // 内层函数一定操作了外层函数的局部变量
@@ -362,7 +379,7 @@ today('明天不是：');   //"明天不是：815"
 
 缺点：滥用闭包导致内存泄漏，能不用尽量不用，及时释放内存。（闭包会加深作用域链，加长变量查找时间）
 
-## **闭包的9个使用场景**
+## **闭包的5个使用场景**
 
 **常用场景**
 
@@ -371,269 +388,95 @@ today('明天不是：');   //"明天不是：815"
 - 可以实现封装,属性私有化
 - 模块化开发,防止污染全局变量
 
-**9个场景**
+**5个场景**
 
-1. 返回值（最常用）
-2. 函数赋值
-3. 函数参数
-4. IIFE（自执行函数）
-5. 循环赋值
-6. getter和setter
-7. 迭代器（执行一次函数往下取一个值）
-8. 首次区分（相同的参数，函数不会重复执行）
-9. 缓存
+> 1. 模块化与封装私有变量
+> 2. 高阶函数与状态管理
+> 3. 函数柯里化（Currying）
+> 4. 迭代器与生成器模式
+> 5. 单例模式与缓存优化
 
-**1.返回值（最常用）**
+**1.模块化与封装私有变量**
+
+通过立即执行函数（IIFE）创建独立作用域，避免全局污染：
 
 ```
-//1.返回值 最常用的
-    function fn(){
-        var name="hello";
-        return function(){
-            return name;
-        }
-    }
-    var fnc = fn();
-    console.log(fnc())//hello
+const module = (function() {
+  let privateVar = 0;
+  return {
+    increment: () => privateVar++,
+    getValue: () => privateVar
+  };
+})();
+module.increment();
+console.log(module.getValue()); // 1
 ```
 
-**2.函数赋值**
+此时，privateVar对外不可见，仅通过闭包暴露操作方法。
+
+**2.高阶函数与状态管理**
+
+闭包允许函数携带状态，例如实现防抖（Debounce）和节流（Throttle）：
 
 ```
-var fn2;
-function fn(){
-    var name="hello";
-    //将函数赋值给fn2
-    fn2 = function(){
-        return name;
-    }
+function debounce(fn, delay) {
+  let timer = null;
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), delay);
+  };
 }
-fn()//要先执行进行赋值，
-console.log(fn2())//执行输出fn2
+const searchInput = debounce(() => console.log("Search triggered"), 300);
 ```
 
-在闭包里面给fn2函数设置值，闭包的形式把name属性记忆下来，执行会输出 hello。
+每次调用searchInput时，闭包中的timer变量被复用。
 
-**3.函数参数**
+**3.函数柯里化（Currying）**
+
+将多参数函数转换为单参数链式调用，增强灵活性：
 
 ```
-function fn(){
-    var name="hello";
-    return function callback(){
-        return name;
-    }
+function add(x) {
+  return function(y) {
+    return x + y;
+  };
 }
-var fn1 = fn()//执行函数将返回值（callback函数）赋值给fn1，
- 
-function fn2(f){
-    //将函数作为参数传入
-    console.log(f());//执行函数，并输出
+const add5 = add(5);
+console.log(add5(3)); // 8
+```
+
+柯里化通过闭包缓存部分参数，便于复用
+
+**4.迭代器与生成器模式**
+
+闭包可保存迭代状态，实现自定义迭代逻辑：
+
+```
+function createIterator(arr) {
+  let index = 0;
+  return {
+    next: () => (index < arr.length ? arr[index++] : null)
+  };
 }
-fn2(fn1)//执行输出fn2
+const iterator = createIterator([1, 2, 3]);
+console.log(iterator.next()); // 1
 ```
 
-用闭包返回一个函数，把此函数作为另一个函数的参数，在另一个函数里面执行这个函数，最终输出 hello
+**5.单例模式与缓存优化**
 
-**4.IIFE（自执行函数）**
-
-```
-(function(){
-        var name="hello";
-        var fn1= function(){
-            return name;
-        }
-        //直接在自执行函数里面调用fn2，将fn1作为参数传入
-        fn2(fn1);
-    })()
-    function fn2(f){
-        //将函数作为参数传入
-        console.log(f());//执行函数，并输出
-    }
-```
-
-直接在自执行函数里面将封装的函数fn1传给fn2，作为参数调用同样可以获得结果 hello
-
-**5.循环赋值**
+通过闭包缓存计算结果，避免重复计算：
 
 ```
-//每秒执行1次，分别输出1-10
-for(var i=1;i<=10;i++){
-    (function(j){
-        //j来接收
-        setTimeout(function(){
-            console.log(j);
-        },j*1000);
-    })(i)//i作为实参传入
+function memoize(fn) {
+  const cache = new Map();
+  return function(arg) {
+    if (cache.has(arg)) return cache.get(arg);
+    const result = fn(arg);
+    cache.set(arg, result);
+    return result;
+  };
 }
 ```
-
-如果不采用闭包的话，会有不一样的情况，可以看我自己 闭包 的文章。
-
-**6.getter和setter**
-
-```
-function fn(){
-        var name='hello'
-        setName=function(n){
-            name = n;
-        }
-        getName=function(){
-            return name;
-        }
-         
-        //将setName，getName作为对象的属性返回
-        return {
-            setName:setName,
-            getName:getName
-        }
-    }
-    var fn1 = fn();//返回对象，属性setName和getName是两个函数
-    console.log(fn1.getName());//getter
-        fn1.setName('world');//setter修改闭包里面的name
-    console.log(fn1.getName());//getter
-```
-
-第一次输出 hello 用setter以后再输出 world ，这样做可以封装成公共方法，防止不想暴露的属性和函数暴露在外部。
-
-**7.迭代器（执行一次函数往下取一个值）**
-
-```
-var arr =['aa','bb','cc'];
-function incre(arr){
-    var i=0;
-    return function(){
-        //这个函数每次被执行都返回数组arr中 i下标对应的元素
-         return arr[i++] || '数组值已经遍历完';
-    }
-}
-var next = incre(arr);
-console.log(next());//aa
-console.log(next());//bb
-console.log(next());//cc
-console.log(next());//数组值已经遍历完
-```
-
-**8.首次区分（相同的参数，函数不会重复执行）**
-
-```
-var fn = (function(){
-               var arr=[];//用来缓存的数组
-                   return function(val){
-                       if(arr.indexOf(val)==-1){//缓存中没有则表示需要执行
-                           arr.push(val);//将参数push到缓存数组中
-                           console.log('函数被执行了',arr);
-                           //这里写想要执行的函数
-                       }else{
-                           console.log('此次函数不需要执行');
-                       }
-                       console.log('函数调用完打印一下，方便查看已缓存的数组：',arr);
-                   }
-               })();
-        
-       fn(10);
-       fn(10);
-       fn(1000);
-       fn(200);
-       fn(1000);
-```
-
-可以明显的看到首次执行的会被存起来，再次执行直接取。
-
-**9.缓存**
-
-```
-//比如求和操作，如果没有缓存，每次调用都要重复计算，采用缓存已经执行过的去查找，查找到了就直接返回，不需要重新计算
-      
-     var fn=(function(){
-        var cache={};//缓存对象
-        var calc=function(arr){//计算函数
-            var sum=0;
-            //求和
-            for(var i=0;i<arr.length;i++){
-                sum+=arr[i];
-            }
-            return sum;
-        }
-         
-        return function(){
-            var args = Array.prototype.slice.call(arguments,0);//arguments转换成数组
-            var key=args.join(",");//将args用逗号连接成字符串
-            var result , tSum = cache[key];
-            if(tSum){//如果缓存有   
-                console.log('从缓存中取：',cache)//打印方便查看
-                result = tSum;
-            }else{
-                //重新计算，并存入缓存同时赋值给result
-                result = cache[key]=calc(args);
-                console.log('存入缓存：',cache)//打印方便查看
-            }
-            return result;
-        }
-     })();
-    fn(1,2,3,4,5);
-    fn(1,2,3,4,5);
-    fn(1,2,3,4,5,6);
-    fn(1,2,3,4,5,8);
-    fn(1,2,3,4,5,6);
-```
-
-
-
-
-
-**1.闭包结合匿名函数使用，如setTimeout**
-
-```js
-//原生的setTimeout传递的第一个函数不能带参数
- //通过闭包可以实现传参效果
-    function func(param){
-        return function(){
-            alert(param)
-        }
-    }
-    var f1 = func(1);
-    setTimeout(f1,1000);
-```
-
-**2.参数回调**
-
-```js
-function changeSize(size){
-        return function(){
-            document.body.style.fontSize = size + 'px';
-        };
-    }
-
-    var size12 = changeSize(12);
-    ocument.getElementById('size-12').onclick = size12;
-```
-
-**3.封装变量**
-
-```js
-//用闭包定义能访问私有函数和私有变量的公有函数。
-    var counter = (function(){
-        var privateCounter = 0; //私有变量
-        function change(val){
-            privateCounter += val;
-        }
-        return {
-            increment:function(){   //三个闭包共享一个词法环境
-                change(1);
-            },
-            decrement:function(){
-                change(-1);
-            },
-            value:function(){
-                return privateCounter;
-            }
-        };
-    })();
-counter.increment();
-counter.increment();//2
-```
-
-闭包相关例子
 
 [闭包例子1](https://cnodejs.org/topic/5d39c5259969a529571d73a8)
 
