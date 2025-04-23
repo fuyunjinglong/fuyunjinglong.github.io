@@ -282,3 +282,15 @@ Karma 不能单独使用。你至少需要一个测试框架（例如 Mocha）�
 *简而言之，如果你想立刻着手在多个运行环境下尝试下功能测试，想要一个 all-in-one 的工具，试试 **TestCafe**。
 如果你希望测试流程完整，还有强大的社区支持。**WebdriverIO** 是个不错的选择。* *如果不需要测试跨浏览器的支持性，推荐使用 **Puppeteer**。
 如果你的应用没有复杂的界面和交互逻辑，比如一个全是表单和导航的系统。换言之，是相对较容易测试de的场景。可以使用 headless 浏览器工具，比如 **Casper**，高效完成测试。*
+
+# Vitest
+
+## 问题汇总
+
+**vue3源码-Vitest单元debug报错解决**
+
+参考：
+
+> - [debug报错方案](https://vitest.dev/config/#environmentmatchglobs)
+> - [vitest与单元测试](https://www.cnblogs.com/keatkeat/p/17593475.html)
+

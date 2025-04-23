@@ -256,6 +256,29 @@ git rebase
 
 [开源指北-科普](https://oschina.gitee.io/opensource-guide/guide/%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%EF%BC%9A%E5%88%9D%E8%AF%86%E5%BC%80%E6%BA%90/%E7%AC%AC%201%20%E5%B0%8F%E8%8A%82%EF%BC%9A%E4%BB%80%E4%B9%88%E6%98%AF%E5%BC%80%E6%BA%90/#%E5%BC%80%E6%BA%90%E7%9A%84%E6%A6%82%E5%BF%B5)
 
+# git提交规范
+
+> feat: 新功能（feature）
+> fix: 修补bug
+> docs: 文档（documentation）
+> style: 格式（不影响代码运行的变动）
+> refactor: 重构（即不是新增功能，也不是修改bug的代码变动）
+> chore: 构建过程或辅助工具的变动
+> revert: 撤销，版本回退
+> perf: 性能优化
+> test：测试
+> improvement: 改进
+> build: 打包
+> ci: 持续集成
+
+# 常见问题
+
+## rebase变基
+
+参考
+
+> - [直接使用git pull拉取代码，被同事狠狠地diss了！](https://juejin.cn/post/7389650358539255845#heading-7)
+
 # 常用命令
 
 [git命令详解](https://www.itqaq.com/index/cate/37.html)

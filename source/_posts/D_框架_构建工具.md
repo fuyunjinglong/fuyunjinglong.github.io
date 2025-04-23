@@ -79,6 +79,8 @@ JavaScript与Rust比较：
 | 编译器宽松<br/>入门快，体验好<br/>性能一般 | 编译器严格<br/>学习曲线陡峭<br/>性能高 |
 | 偏应用                                     | 偏系统                                 |
 
+# Vite
+
 # Rollup
 
 - [使用Rollup打包JavaScript](https://juejin.cn/post/6844903570974703629#heading-1)
