@@ -47,7 +47,7 @@ npm i
 解决方案：npm install phantomjs-prebuilt@2.1.14 --ignore-scripts
 ```
 
-安装依赖报错-(plugin Rollup Core) Error: Could not load
+安装依赖报错-(plugin Rollup Core) Error: Could not load或者提示 no such file or directory, src\core\config
 
 ```
 手动下载依赖包https://github.com/ideayuye/rollup-plugin-alias，并覆盖掉本地文件夹 \node_modules\rollup-plugin-alias。进入rollup-plugin-alias文件夹，依次执行npm i
