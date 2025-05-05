@@ -2047,6 +2047,38 @@ Mixin/Class的局限性：
 - 没有命名冲突的问题：Hooks本质是闭包函数，内部所导出的变量、方法支持重命名，因而同一个Hook在同一个组件中可以N次使用而不冲突
 - 精简逻辑：一个Hook开发完成后，在使用Hook时不需要关心其内部逻辑，只需知道有什么效果、如何使用即可，专注于其他核心业务逻辑，可以节省大量重复代码
 
+## 新用法
+
+### defineOptions 宏
+
+用于自定义组件的 `name`、 `inheritAttrs` 或其他自定义的属性。仅在3.3+版本支持
+
+```
+<script setup>
+defineOptions({
+  name: 'Foo',
+  inhritAttrs: false,
+  // ... 更多自定义属性
+})
+</script>
+
+```
+
+低版本可用插件vite-plugin-vue-setup-expend支持name属性
+
+### defineModel 宏
+
+用于双向绑定，当然也可以借助vuesuse库useVModel实现，但开发者需要手动分别调用 `defineProps` 和 `defineEmits`
+
+```
+<script setup>
+const modelValue = defineModel()
+modelValue.value++
+</script>
+```
+
+
+
 ## pinia入门
 
 推荐使用使用composition API模式定义store

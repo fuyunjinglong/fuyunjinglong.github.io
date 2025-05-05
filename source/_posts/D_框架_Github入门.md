@@ -242,6 +242,11 @@ git rebase
 
 # 给开源项目贡献代码
 
+参考
+
+> - [三咲智子的开源之路-2022年](https://xlog.sxzz.moe/2022)
+> - [Element-plus提交pr有感](https://juejin.cn/post/7113606000967417863#heading-9)
+
 **pr问题**
 
 > 对有些项目是可以的，但是对有些项目不行，因为你如果merge了已经fork的仓库，会产生merge commit，你再pull request的时候，源仓库的管理人员会退回你的request，因为他们想要保持git history干净整洁，你应该用git rebase自己的分支，这样你提交上去后人家才愿意合并（前提是你的改动是已经被接纳）。可以看看github的help页面有详细解释。
