@@ -20,8 +20,8 @@ single-spa、qiankun、Piral、Mosaic、
 
 **参考**
 
-- [解放双手！推荐一款阿里开源的低代码工具，YYDS！](https://juejin.cn/post/7088121411981541390)
-- [推荐 20 个开源的前端低代码项目](https://juejin.cn/post/7164694758588153863)
+> - [解放双手！推荐一款阿里开源的低代码工具，YYDS！](https://juejin.cn/post/7088121411981541390)
+> - [推荐 20 个开源的前端低代码项目](https://juejin.cn/post/7164694758588153863)
 
 # 微前端
 
