@@ -10,6 +10,36 @@ toc: true # 是否启用内容索引
 
 - [吕阿华的AIGC学习手册](https://www.zhihu.com/column/c_1722279897676951552)
 
+# 大模型简单比较
+
+●[DeepSeekV3/R1](https://zhida.zhihu.com/search?content_id=266254386&content_type=Article&match_order=1&q=DeepSeekV3%2FR1&zhida_source=entity)**：采用**多头潜在注意力（MLA）**替代分组查询注意力（GQA），结合混合专家（MoE）架构，6710亿总参数仅激活370亿进行推理，提升效率与性能。
+
+●**OLMo2**：注重透明度，采用**Post-Norm归一化层位置设计和QK-Norm（对查询和键应用RMSNorm）**，有助于训练稳定，仍使用传统多头注意力（MHA）。
+
+●**Gemma3**：通过**滑动窗口注意力**减少KV缓存内存需求，调整全局与局部注意力比例为5:1，归一化层同时采用Pre-Norm和Post-Norm。
+
+●[MistralSmall3.1](https://zhida.zhihu.com/search?content_id=266254386&content_type=Article&match_order=1&q=MistralSmall3.1&zhida_source=entity)：240亿参数模型在多个基准测试中优于Gemma327B且速度更快，使用常规分组查询注意力以降低推理延迟。
+
+●**Llama4**：采用MoE架构，与DeepSeek-V3类似但专家数量更少、规模更小，**交替使用MoE和密集模块**。
+
+●**Qwen3**：包含密集和MoE版本，密集模型中0.6B参数模型体积小、性能佳；MoE模型无共享专家，适合不同场景。**2507更新了三个模型，发布了专注软件开发的Qwen3-Coder-480B-A35B-Instruct。**
+
+●**SmolLM3**：30亿参数模型性能良好，每4层省略RoPE（采用**NoPE理念**），利于长序列泛化。
+
+●**Kimi2**：1万亿参数，使用**Muon优化器**，基于**DeepSeek-V3架构扩大规模**，性能媲美顶级专有模型。
+
+●**GLM-4.5**：采用**深度优化**的MoE架构（3550亿总参数仅激活320亿），原生融合智能体、推理与编程三大能力，通过三阶段训练和混合推理模式实现高性能与高效率的平衡。
+
+●GPT5：路由架构。利用多个模型来自动路由和组合完成任务。2025年8月开始开源，GPT-OSS 系列模型，此模型是由 OpenAI 所 Fine-Tuning，並且開源出來的 LLM 模型。
+
+●Claude：Claude系列通过扩展上下文窗口（Sonnet4达100万token）、提升编程基准分数（Opus4.1在SWE-bench达74.5%）和强化安全策略，成为当前闭源模型中代码能力领先的AI。2025年9月29日发布，发布旗舰模型——Claude[Sonnet4.5](https://zhida.zhihu.com/search?content_id=266254386&content_type=Article&match_order=1&q=Sonnet4.5&zhida_source=entity)，定位为“世界最佳编程模型”和构建复杂智能体的最强工具。[ClaudeHaiku4.5](https://zhida.zhihu.com/search?content_id=266254386&content_type=Article&match_order=1&q=ClaudeHaiku4.5&zhida_source=entity)是后发的轻量级模型，定位为高性价比、低延迟的实时任务解决方案。
+
+**算法、数学、推理**：首选o3-min-heigh
+
+**应用、软件、游戏**：首选Claude3.7，其次o3-min-heigh
+
+# ----- **国外部分** -----
+
 **本周更新（11月17日~11月21日）**
 
 - **Google Deepmind：**模型与应用更新推理模型 **Gemini 3 Pro ；**新增编程IDE **Google Antigravity**；公司简介新增**公司三季报**相关内容。
@@ -35,7 +65,7 @@ toc: true # 是否启用内容索引
 
 由于训练大模型毕竟是既费钱又费高精尖人才的领域，还没上桌的想临时入席基本已经不太可能，而在座宾客因不胜酒力中途离席仍然随时可能发生。所以在这个时候会需要一个从公司维度来分析模型市场的列表，从多种不同的视角来观察并思考市场，可以更好地判断市场趋势。
 
-## ----- **国外部分** -----
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 尽管国内大模型行业在[DeepSeek](https://zhida.zhihu.com/search?content_id=255630396&content_type=Article&match_order=1&q=DeepSeek&zhida_source=entity)的带领下经过去年的奋起直追，目前和国外的差距已经越来越小，甚至在一些细分领域还能取得几个身位的领先。但不可否认，综合实力、行业趋势仍然是国外几大AI巨头在引领。对它们进行重点观察、分析和研究也仍然是近几年国内AI行业必须要坚持做的工作。
 
@@ -408,9 +438,7 @@ Mistral在2025年2月推出了C端ChatBot“**Le Chat**”，其中包含月费$
 | Le Chat       | ChatBot         |
 | La Plateforme | API开发开放平台 |
 
-
-
-## ----- **国内部分** -----
+# ----- **国内部分** -----
 
 国内的AI大模型行业紧跟GPT-3的发令枪。百度文心一言2023年3月作为国内首款大模型应用上线后之后，有实力有想法的机构和组织纷纷下海，于2023年下半年掀起了轰轰烈烈的“百模大战”。
 
