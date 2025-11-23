@@ -317,3 +317,10 @@ list_number: false
 删除av-min.js无效cdn
 ```
 
+**魔改**
+
+> 1.取消右侧目录下的序号
+>
+> ./node_modules/hexo/lib/plugins/helper/toc.js
+>
+> list_number: true  // 自行修改，true/false
