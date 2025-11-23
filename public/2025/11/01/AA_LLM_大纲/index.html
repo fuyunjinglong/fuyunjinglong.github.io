@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>LLM_大纲 | Hexo</title>
+  <meta name="description" content="大纲 LLM 训练与微调应用 RAG 检索增强生成应用 Agent 智能体应用  大模型发展史 按照里程碑 Transformer（2017年）：Transformer架构的引入，为构建大规模、高效的模型奠定了基础，这些模型能够以前所未有的精度和灵活性处理复杂任务。 GPT-3（2020年）：该模型展示了规模在人工智能领域的变革力量，证明了在大量数据集上训练的大规模模型可以在广泛的应用中实现接近人">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LLM_大纲">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2025/11/01/AA_LLM_%E5%A4%A7%E7%BA%B2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="大纲 LLM 训练与微调应用 RAG 检索增强生成应用 Agent 智能体应用  大模型发展史 按照里程碑 Transformer（2017年）：Transformer架构的引入，为构建大规模、高效的模型奠定了基础，这些模型能够以前所未有的精度和灵活性处理复杂任务。 GPT-3（2020年）：该模型展示了规模在人工智能领域的变革力量，证明了在大量数据集上训练的大规模模型可以在广泛的应用中实现接近人">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/LLM_Time.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-11-13_20-06-37.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-11-13_20-09-37.png">
+<meta property="article:published_time" content="2025-10-31T22:33:16.000Z">
+<meta property="article:modified_time" content="2025-11-23T03:32:28.311Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/LLM_Time.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2025/11/01/AA_LLM_%E5%A4%A7%E7%BA%B2/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://fuyunjinglong.github.io/" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">Elven</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-LLM/">B_LLM</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">21</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/09/">九月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/06/">六月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/11/">十一月 2025</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">三月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">二月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/">十月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/06/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_0%E5%9F%BA%E7%A1%80/" class="title">0基础_工程热点</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-05T22:33:16.000Z" itemprop="datePublished">2099-11-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/05/I_%E7%A7%BB%E5%8A%A8%E7%AB%AF_0%E5%9F%BA%E7%A1%80/" class="title">0基础_移动端</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-04T22:33:16.000Z" itemprop="datePublished">2099-11-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/" class="title">0基础_计算机网络</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-03T22:33:16.000Z" itemprop="datePublished">2099-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_0%E5%9F%BA%E7%A1%80/" class="title">0基础_数据结构</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_%E5%9F%BA%E7%A1%80/" class="title">0基础_设计模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%A7%E7%BA%B2"><span class="toc-text">大纲</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%8F%91%E5%B1%95%E5%8F%B2"><span class="toc-text">大模型发展史</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%89%E7%85%A7%E9%87%8C%E7%A8%8B%E7%A2%91"><span class="toc-text">按照里程碑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%89%E7%85%A7%E6%97%B6%E9%97%B4%E7%BA%BF"><span class="toc-text">按照时间线</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E6%BA%90%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%AE%80%E5%8D%95%E6%AF%94%E8%BE%83"><span class="toc-text">开源大模型简单比较</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A2%86%E5%9F%9F%E6%A8%A1%E5%9E%8B%E5%BE%AE%E8%B0%83"><span class="toc-text">领域模型微调</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-AA_LLM_大纲" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      LLM_大纲
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2025/11/01/AA_LLM_%E5%A4%A7%E7%BA%B2/" class="article-date">
+	  <time datetime="2025-10-31T22:33:16.000Z" itemprop="datePublished">2025-11-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/B-LLM/">B_LLM</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2025/11/01/AA_LLM_%E5%A4%A7%E7%BA%B2/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h1><ul>
+<li>LLM 训练与微调应用</li>
+<li>RAG 检索增强生成应用</li>
+<li>Agent 智能体应用</li>
+</ul>
+<h1 id="大模型发展史"><a href="#大模型发展史" class="headerlink" title="大模型发展史"></a>大模型发展史</h1><p><img src="/img/LLM_Time.png" alt="image"></p>
+<h2 id="按照里程碑"><a href="#按照里程碑" class="headerlink" title="按照里程碑"></a>按照里程碑</h2><ol>
+<li><strong>Transformer（2017年）</strong>：Transformer架构的引入，为构建大规模、高效的模型奠定了基础，这些模型能够以前所未有的精度和灵活性处理复杂任务。</li>
+<li><strong>GPT-3（2020年）</strong>：该模型展示了规模在人工智能领域的变革力量，证明了在大量数据集上训练的大规模模型可以在广泛的应用中实现接近人类的性能，为人工智能的发展树立了新的标杆。</li>
+<li><strong>ChatGPT（2022年）</strong>：ChatGPT将对话式人工智能带入主流，使先进的人工智能对普通用户来说更易获取、交互性更强。它还引发了关于广泛采用人工智能所带来的伦理和社会影响的重要讨论。</li>
+<li><strong>DeepSeek-R1（2025年）</strong>：DeepSeek-R1在成本效益方面取得了巨大飞跃，它采用混合专家架构和优化算法，与许多美国的模型相比，运营成本降低了多达50倍。其开源特性使前沿人工智能技术得以更广泛应用，赋能各行业的创新者，凸显了在塑造人工智能未来的过程中，可扩展性、校准性和可及性的重要性。</li>
+</ol>
+<h2 id="按照时间线"><a href="#按照时间线" class="headerlink" title="按照时间线"></a>按照时间线</h2><p><strong>一、技术奠基期（2017年之前）</strong></p>
+<ol>
+<li><strong>早期神经网络与深度学习基础</strong><ul>
+<li><strong>1950-1980年代</strong>：感知机、反向传播算法等基础理论奠定神经网络框架。</li>
+<li><strong>2012年</strong>：AlexNet在ImageNet竞赛中夺冠，深度学习进入爆发期。</li>
+<li><strong>2014年</strong>：Seq2Seq模型（用于机器翻译）和注意力机制（Attention）提出，为后续模型设计铺路。</li>
+</ul>
+</li>
+<li><strong>预训练思想的萌芽</strong><ul>
+<li><strong>2015年</strong>：Word2Vec、GloVe等词嵌入技术普及，通过预训练词向量提升下游任务效果。</li>
+<li><strong>2017年</strong>：<strong>Transformer架构诞生（Google《Attention Is All You Need》）</strong>，彻底改变了序列建模方式，成为大模型的核心技术基础。</li>
+</ul>
+</li>
+</ol>
+<p><strong>二、预训练模型兴起（2017-2018年）</strong></p>
+<p><strong>第一代预训练模型</strong></p>
+<ul>
+<li>2018年：<ul>
+<li><strong>BERT</strong>（Google）：基于Transformer编码器，通过掩码语言建模（MLM）实现双向语义理解。</li>
+<li><strong>GPT-1</strong>（OpenAI）：基于Transformer解码器，采用自回归生成式预训练，参数规模1.17亿。</li>
+</ul>
+</li>
+<li><strong>核心突破</strong>：通过海量无标注数据预训练+任务微调（Fine-tuning），模型泛化能力显著提升。</li>
+</ul>
+<p><strong>三、参数规模跃升（2018-2020年）</strong></p>
+<p><strong>模型参数突破十亿级</strong></p>
+<ul>
+<li>2019年：<ul>
+<li><strong>GPT-2</strong>（OpenAI）：参数15亿，首次展示Few-Shot Learning能力（无需微调即可完成多任务）。</li>
+<li><strong>T5</strong>（Google）：将自然语言任务统一为“文本到文本”框架，参数达110亿。</li>
+</ul>
+</li>
+<li>2020年：<ul>
+<li><strong>GPT-3</strong>（OpenAI）：参数1750亿，Few-Shot/Zero-Shot能力颠覆传统AI开发范式，引发行业震动。</li>
+<li><strong>Turing-NLG</strong>（微软）：参数170亿，推动大模型落地应用。</li>
+</ul>
+</li>
+</ul>
+<p><strong>四、多模态与通用智能探索（2020-2022年）</strong></p>
+<ol>
+<li><strong>从单一模态到多模态融合</strong><ul>
+<li>2021年：<ul>
+<li><strong>CLIP</strong>（OpenAI）：图文跨模态对比学习，实现零样本图像分类。</li>
+<li><strong>DALL·E</strong>（OpenAI）：文本生成图像，开启多模态生成时代。</li>
+</ul>
+</li>
+<li>2022年：<ul>
+<li><strong>Stable Diffusion</strong>：开源文生图模型，推动AIGC普及。</li>
+<li><strong>Florence</strong>（微软）、<strong>BEiT-3</strong>（微软）：多模态统一建模。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>大模型生态爆发</strong><ul>
+<li><strong>开源社区活跃</strong>：Hugging Face平台推动模型共享，Meta发布LLaMA系列开源模型。</li>
+<li><strong>垂直领域应用</strong>：医疗、法律、编程等场景涌现专用模型（如Codex、Galactica）。</li>
+</ul>
+</li>
+</ol>
+<p><strong>五、通用人工智能（AGI）的探索与争议（2023年至今）</strong></p>
+<ol>
+<li><strong>技术突破与产品化</strong><ul>
+<li>2023年：<ul>
+<li><strong>GPT-4</strong>（OpenAI）：支持多模态输入，逻辑推理能力显著提升，参数规模未公开。</li>
+<li><strong>PaLM 2</strong>（Google）、<strong>LLaMA 2</strong>（Meta）：优化训练效率与安全性。</li>
+<li><strong>Claude 2</strong>（Anthropic）、<strong>Bard</strong>（Google）：对话模型竞争白热化。</li>
+</ul>
+</li>
+<li><strong>国内进展</strong>：百度“文心一言”、阿里“通义千问”、华为“盘古”、智谱AI“GLM”、“DeepSeek”等。</li>
+</ul>
+</li>
+<li><strong>技术争议与挑战</strong><ul>
+<li><strong>算力与成本</strong>：千亿级模型训练需数百万美元投入，中小企业难以参与。</li>
+<li><strong>伦理与安全</strong>：生成内容偏见、虚假信息、版权问题引发监管关注。</li>
+<li><strong>环境成本</strong>：大模型训练碳排放高，可持续发展受质疑。</li>
+</ul>
+</li>
+</ol>
+<p><strong>六、未来趋势</strong></p>
+<ol>
+<li><strong>模型高效化</strong>：降低训练成本（如MoE架构、模型压缩技术）。</li>
+<li><strong>多模态融合</strong>：视频、3D等多维度数据建模。</li>
+<li><strong>具身智能</strong>：结合机器人、传感器实现物理世界交互。</li>
+<li><strong>可信AI</strong>：提升可解释性、安全性和伦理对齐。</li>
+</ol>
+<h1 id="开源大模型简单比较"><a href="#开源大模型简单比较" class="headerlink" title="开源大模型简单比较"></a>开源大模型简单比较</h1><p>●<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=266254386&content_type=Article&match_order=1&q=DeepSeekV3/R1&zhida_source=entity">DeepSeekV3/R1</a><strong>：采用</strong>多头潜在注意力（MLA）**替代分组查询注意力（GQA），结合混合专家（MoE）架构，6710亿总参数仅激活370亿进行推理，提升效率与性能。</p>
+<p>●<strong>OLMo2</strong>：注重透明度，采用<strong>Post-Norm归一化层位置设计和QK-Norm（对查询和键应用RMSNorm）</strong>，有助于训练稳定，仍使用传统多头注意力（MHA）。</p>
+<p>●<strong>Gemma3</strong>：通过<strong>滑动窗口注意力</strong>减少KV缓存内存需求，调整全局与局部注意力比例为5:1，归一化层同时采用Pre-Norm和Post-Norm。</p>
+<p>●<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=266254386&content_type=Article&match_order=1&q=MistralSmall3.1&zhida_source=entity">MistralSmall3.1</a>：240亿参数模型在多个基准测试中优于Gemma327B且速度更快，使用常规分组查询注意力以降低推理延迟。</p>
+<p>●<strong>Llama4</strong>：采用MoE架构，与DeepSeek-V3类似但专家数量更少、规模更小，<strong>交替使用MoE和密集模块</strong>。</p>
+<p>●<strong>Qwen3</strong>：包含密集和MoE版本，密集模型中0.6B参数模型体积小、性能佳；MoE模型无共享专家，适合不同场景。<strong>2507更新了三个模型，发布了专注软件开发的Qwen3-Coder-480B-A35B-Instruct。</strong></p>
+<p>●<strong>SmolLM3</strong>：30亿参数模型性能良好，每4层省略RoPE（采用<strong>NoPE理念</strong>），利于长序列泛化。</p>
+<p>●<strong>Kimi2</strong>：1万亿参数，使用<strong>Muon优化器</strong>，基于<strong>DeepSeek-V3架构扩大规模</strong>，性能媲美顶级专有模型。</p>
+<p>●<strong>GLM-4.5</strong>：采用<strong>深度优化</strong>的MoE架构（3550亿总参数仅激活320亿），原生融合智能体、推理与编程三大能力，通过三阶段训练和混合推理模式实现高性能与高效率的平衡。</p>
+<p>●GPT5：路由架构。利用多个模型来自动路由和组合完成任务。2025年8月开始开源，GPT-OSS 系列模型，此模型是由 OpenAI 所 Fine-Tuning，並且開源出來的 LLM 模型。</p>
+<p>●Claude：Claude系列通过扩展上下文窗口（Sonnet4达100万token）、提升编程基准分数（Opus4.1在SWE-bench达74.5%）和强化安全策略，成为当前闭源模型中代码能力领先的AI。2025年9月29日发布，发布旗舰模型——Claude<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=266254386&content_type=Article&match_order=1&q=Sonnet4.5&zhida_source=entity">Sonnet4.5</a>，定位为“世界最佳编程模型”和构建复杂智能体的最强工具。<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=266254386&content_type=Article&match_order=1&q=ClaudeHaiku4.5&zhida_source=entity">ClaudeHaiku4.5</a>是后发的轻量级模型，定位为高性价比、低延迟的实时任务解决方案。</p>
+<h1 id="领域模型微调"><a href="#领域模型微调" class="headerlink" title="领域模型微调"></a>领域模型微调</h1><p><strong>ChatGPT训练三步走</strong></p>
+<p><img src="/img/2025-11-13_20-06-37.png" alt="image"></p>
+<p><strong>训练领域模型的一般范式</strong></p>
+<p><img src="/img/2025-11-13_20-09-37.png" alt="image"></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2025/11/01/AA_LLM_%E5%A4%A7%E7%BA%B2/" title="LLM_大纲" target="_blank" rel="external">https://fuyunjinglong.github.io/2025/11/01/AA_LLM_大纲/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://fuyunjinglong.github.io/" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://fuyunjinglong.github.io/" target="_blank"><span class="text-dark">Elven</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2025/11/01/AA_LLM_RAG/" title="LLM_RAG"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2025/03/12/D_%E6%A1%86%E6%9E%B6_%E6%BA%90%E7%A0%81_element-plus/" title="源码_element-plus"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://fuyunjinglong.github.io/" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
