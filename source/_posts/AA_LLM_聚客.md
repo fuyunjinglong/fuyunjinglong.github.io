@@ -109,9 +109,7 @@ print(response.json())
 
 *注意：模型可先离线下载模型，也可以在线下载模型*
 
-基本用法
-
-在线下载模型，使用GPT2
+基本用法-在线下载模型，使用GPT2
 
 ```python
 #将模型下载到本地调用，AutoModelForCausalLM模块是请求模型头用的， AutoTokenizer是分词器即将文本转为模型可识别的数据
