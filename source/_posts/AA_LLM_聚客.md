@@ -98,8 +98,8 @@ import requests
 #使用Token访问在线模型
 
 API_URL = "https://api-inference.huggingface.co/models/uer/gpt2-chinese-cluecorpussmall"
-API_TOKEN = "xxxx"
-headers = {"Authorization": f"Bearer {API_TOKEN}"}
+API_TOKENLW = "xxxx"
+headers = {"Authorization": f"Bearer {API_TOKENLW}"}
 
 response = requests.post(API_URL,headers=headers,json={"inputs":"你好，Hugging facexxxx"})
 print(response.json())
@@ -217,7 +217,7 @@ print(model)
 from transformers import BertTokenizer
 
 #第一步：加载字典和分词器
-token = BertTokenizer.from_pretrained(r"D:\PycharmProjects\demo_02\model\bert-base-chinese\models--bert-base-chinese\snapshots\c30a6ed22ab4564dc1e3b2ecbf6e766b0611a33f")
+token = BertTokenizer.from_pretrained(r"D:\PycharmProjects\demo_02\model\bert-base-chinese\models--bert-base-chinese\snapshots\xxxx")
 # print(token) python中万物皆对象，都可以print
 
 #准备要编码的文本数据
