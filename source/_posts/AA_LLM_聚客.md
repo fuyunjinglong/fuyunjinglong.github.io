@@ -217,9 +217,7 @@ print(model)
 ![image](/img/2025-11-28_20-46-51.png)
 
 ```python
-"""
-本节小结核心介绍AI模型是如何处理字符数据的
-"""
+#本节小结核心介绍AI模型是如何处理字符数据的
 from transformers import BertTokenizer
 
 #第一步：加载字典和分词器
