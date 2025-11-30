@@ -166,6 +166,10 @@ print(output)
 
 **4.Hugging Face核心组件Transformers、 datasets介绍**
 
+下载后的模型文件如下图：
+
+![image](/img/2025-11-28_20-07-08.png)
+
 *Transformers核心有两部分：Bert(分类)和GPT(生成)*
 
 在线下载模型，使用Transform的Bert分类模型
@@ -186,7 +190,109 @@ classifier = pipeline("text-classification",model=model,tokenizer=tokenizer,devi
 
 #进行文本分类
 result = classifier("你好，我是一款语言模型")
-print(result)
+print(result)// {'label':'Label1','score':'0.75002'}
 print(model)
+```
+
+后续如何将应用开发与分类模型落地?
+
+基于Bert分类模型，可以做电商的好评差评的分类等。
+
+## 基于Bert的中文评价情感分析
+
+> 1.使用Tokenizer实现字符编码、 vocab字典操作
+>
+> 2.模型微调的基本概念
+>
+> 3.下游任务模型设计
+>
+> 4.自定义模型训练
+>
+> 案例： 自定义下游任务实现中文评价分析模型的本地化训练
+
+**1.AI模型是如何处理字符数据的**
+
+![image](/img/2025-11-28_21-06-31.png)
+
+![image](/img/2025-11-28_20-46-51.png)
+
+```python
+"""
+本节小结核心介绍AI模型是如何处理字符数据的
+"""
+from transformers import BertTokenizer
+
+#第一步：加载字典和分词器
+token = BertTokenizer.from_pretrained(r"D:\PycharmProjects\demo_02\model\bert-base-chinese\models--bert-base-chinese\snapshots\c30a6ed22ab4564dc1e3b2ecbf6e766b0611a33f")
+# print(token) python中万物皆对象，都可以print
+
+#准备要编码的文本数据
+sents = ["白日依山尽，",
+         "价格在这个地段属于适中, 附近有早餐店,小饭店, 比较方便,无早也无所"]
+
+#第二步：批量语句编码
+out = token.batch_encode_plus(
+    # 需要的编码的词
+    batch_text_or_text_pairs=[sents[0],sents[1]],
+    # 是否需要添加特殊字符，一般选是
+    add_special_tokens=True,
+    #当句子长度大于max_length(上限是model_max_length)时，截断
+    truncation=True,
+    max_length=15,
+    #一律补0到max_length，注意是往后补齐0
+    padding="max_length",
+    #设置编码后的返回值类型，可取值为tf,pt,np,默认为None表示list
+    return_tensors=None,
+    return_attention_mask=True,
+    return_token_type_ids=True,
+    return_special_tokens_mask=True,
+    #返回序列长度
+    return_length=True
+)
+#input_ids 就是编码后的词即文字在字典中对应的数字编码
+#token_type_ids上下文编码(本例子用的批量语句编码，已淘汰)，第一个句子和特殊符号的位置是0，第二个句子的位置1。
+#special_tokens_mask 特殊符号的位置是1，其他位置是0
+#length 编码之后的序列长度
+# 打印编码后的数据
+for k,v in out.items():
+    print(k,":",v)
+
+# 打印解码后的数据 再转回为文本数据
+print(token.decode(out["input_ids"][0]),token.decode(out["input_ids"][1]))
+```
+
+**2.下载hugging face数据集**
+
+hs上的数据集的格式是专有的，都是xxx.arrow文件
+
+打印切分后的数据集如下图：
+
+![image](/img/2025-11-28_21-24-46.png)
+
+打印数据集的最终内容，如测试数据集部分
+
+![image](/img/2025-11-28_21-29-01.png)
+
+```python
+from datasets import load_dataset,load_from_disk
+
+#在线加载数据，如果未指定下载目录，则默认到c:\用户\.cache\hugging face\
+# dataset = load_dataset(path="lansinuote/ChnSentiCorp",cache_dir="data/")
+# print(dataset)
+#arrow文件可以转为csv格式
+# dataset.to_csv(path_or_buf=r"D:\PycharmProjects\demo_02\data\ChnSentiCorp.csv")
+
+#加载缓存数据
+datasets = load_from_disk(r"D:\PycharmProjects\demo_02\data\ChnSentiCorp")
+# 打印切分后的数据集(有3部分：train训练数据集，validation验证数据集，test测试数据集)
+print(datasets)
+# 打印数据集的最终内容，如测试数据集部分
+train_data = datasets["test"]
+for data in train_data:
+    print(data)
+
+#一般我们数据是csv,hs平台加载CSV格式数据
+# dataset = load_dataset(path="csv",data_files=r"D:\PycharmProjects\demo_02\data\hermes-function-calling-v1.csv")
+# print(dataset)
 ```
 
