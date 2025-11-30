@@ -57,6 +57,21 @@ AI大模型如何分类？
 > - 自然语义大模型(大模型的核心技术)
 > - 多模块大模型(图片、音视频等)
 
+AI项目开发流程(对应下面Bert情感分析中的流程)
+
+> - 1.需求数据准备
+>   - 1.1获取数据
+>   - 1.2制作数据集，转换数据格式
+> - 2.模型选型/设计
+>   - 2.1增量微调(增加模型并对增加的模型微调)
+> - 3.模型训练
+>   - 3.1加载模型和数据，开始训练
+>   - 3.2观察状态
+> - 4.效果评估(模型交付标准)
+>   - 4.1客观评估：固定指标、客观数据如acc,注意评估时使用test训练集
+>   - 4.2主观评估：人为挑选部分代表性数据，观察模型的输出结果
+> - 5.部署
+
 # 主-LLM 训练与微调应用
 
 ## Hugging Face / ModelScope 核心组件使用
@@ -194,23 +209,38 @@ print(model)
 
 基于Bert分类模型，可以做电商的好评差评的分类等。
 
-## 基于Bert的中文评价情感分析
+## 基于Bert的中文评价情感分析(AI开发流程)
+
+如淘宝的评价，归一到0和1,0表示差评，1表示好评。
+
+**总结**
+
+这里的是模型开发的手写流程，后面一般都是使用框架实现，框架基本内部都集成了这些功能。但是这些手写代码涉及原理，并且有助于后续模型开发扩展。
 
 > 1.使用Tokenizer实现字符编码、 vocab字典操作
 >
-> 2.模型微调的基本概念
+> 2.下载和加载数据集
 >
-> 3.下游任务模型设计
+> 3.模型微调的基本概念
 >
-> 4.自定义模型训练
+> 4.下游任务模型设计
+>
+> 5.自定义模型训练
 >
 > 案例： 自定义下游任务实现中文评价分析模型的本地化训练
 
-**1.AI模型是如何处理字符数据的**
+**AI模型是如何处理字符数据的**
+
+- [CLS] 标志放在第一个句子的首位，经过 BERT 得到的的表征向量 C 可以用于后续的分类任务。
+- [SEP] 标志用于分开两个输入句子，例如输入句子 A 和 B，要在句子 A，B 后面增加 [SEP] 标志。
+- [UNK]标志指的是未知字符
+- [MASK] 标志用于遮盖句子中的一些单词，将单词用 [MASK] 遮盖之后，再利用 BERT 输出的 [MASK] 向量预测单词是什么。
 
 ![image](/img/2025-11-28_21-06-31.png)
 
 ![image](/img/2025-11-28_20-46-51.png)
+
+token_test.py
 
 ```python
 #本节小结核心介绍AI模型是如何处理字符数据的
@@ -255,7 +285,7 @@ for k,v in out.items():
 print(token.decode(out["input_ids"][0]),token.decode(out["input_ids"][1]))
 ```
 
-**2.下载hugging face数据集**
+**下载和加载hugging face数据集**
 
 hs上的数据集的格式是专有的，都是xxx.arrow文件
 
@@ -263,9 +293,13 @@ hs上的数据集的格式是专有的，都是xxx.arrow文件
 
 ![image](/img/2025-11-28_21-24-46.png)
 
-打印数据集的最终内容，如测试数据集部分
+打印数据集的最终内容如下图：如测试数据集部分。text是文本，label是0或1,0表示差评，1表示好评   
 
 ![image](/img/2025-11-28_21-29-01.png)
+
+### 1.1需求数据准备-获取数据(下载数据集到本地)
+
+data_test.py
 
 ```python
 from datasets import load_dataset,load_from_disk
@@ -278,9 +312,9 @@ from datasets import load_dataset,load_from_disk
 
 #加载缓存数据
 datasets = load_from_disk(r"D:\PycharmProjects\demo_02\data\ChnSentiCorp")
-# 打印切分后的数据集(有3部分：train训练数据集，validation验证数据集，test测试数据集)
+# 打印切分后的数据集如下图：(有3部分：train训练数据集，validation验证数据集，test测试数据集)
 print(datasets)
-# 打印数据集的最终内容，如测试数据集部分
+# 打印数据集的最终内容如下图：如测试数据集部分
 train_data = datasets["test"]
 for data in train_data:
     print(data)
@@ -290,3 +324,246 @@ for data in train_data:
 # print(dataset)
 ```
 
+### 1.2需求数据准备-制作数据集，转换数据格式(数据集转化为模型初始数据)
+
+> 基本都要重载3个方法
+
+MyData.py-准备好的数据集
+
+```python
+# 将数据集转化为模型初始数据，目前大模型框架已经做好了
+from torch.utils.data import Dataset
+# 加载缓存的数据
+from datasets import load_from_disk
+
+class MyDataset(Dataset):
+    # 重载3个方法
+    #重载-初始化数据集
+    def __init__(self,split):
+        #从磁盘加载数据，动态初始化数据集，需要哪个用哪个
+        self.dataset = load_from_disk(r"D:\PycharmProjects\demo_02\data\ChnSentiCorp")
+        if split == "train":# 训练数据集
+            self.dataset = self.dataset["train"]
+        elif split == "test":# 测试数据集
+            self.dataset = self.dataset["test"]
+        elif split == "validation":# 验证数据集
+            self.dataset = self.dataset["validation"]
+        else:
+            print("数据名错误！")
+
+    #重载-返回数据集长度
+    def __len__(self):
+        return len(self.dataset)
+
+    #重载-对每条数据单独做处理
+    def __getitem__(self, item):
+        text = self.dataset[item]["text"]
+        label = self.dataset[item]["label"]
+    # 最后返回数据：text是文本，label是0或1,0表示差评，1表示好评    
+        return text,label
+# 主函数-测试代码
+if __name__ == '__main__':
+    dataset = MyDataset("train")
+    for data in dataset:
+        print(data)
+```
+
+### 2.1模型选型/设计-增量微调(增加模型并对增加的模型微调)
+
+Transform本质是Mlp全连接+Att注意力机制。它是不具备位置模型，不能处理顺序问题。
+
+一般我们AI开发是增加模型微调，核心是在原有的大模型基础上，增加业务模型，并对业务模型微调，叫增量微调。
+
+> 内部涉及3个模块处理，如下图：
+>
+> #1.embeddings(BertEmbeddings模型)
+> #1.1word_embeddings，将词转换成向量的模型。输出768维向量
+> #1.2position_embeddings,记录词的前后位置顺序，也是768维向量
+> #2.encoder(BertEncoder)
+> #即特征学习，特征提取
+> #3.pooler(BertPoller)
+> #即池化层，池化数据，也是输出768维向量
+
+![image](/img/2025-11-30_14-56-32.png)
+
+net.py-自定义的增量模型
+
+```python
+import torch
+from transformers import BertModel
+
+#定义设备信息
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(DEVICE)
+
+#加载预训练模型，指定到具体设备，并输出768维向量
+pretrained = BertModel.from_pretrained(r"D:\PycharmProjects\demo_02\model\bert-base-chinese\models--bert-base-chinese\snapshots\c30a6ed22ab4564dc1e3b2ecbf6e766b0611a33f").to(DEVICE)
+# 内部涉及3个模块处理
+#1.embeddings(BertEmbeddings模型)
+#1.1word_embeddings，将词转换成向量的模型。输出768维向量
+#1.2position_embeddings,记录词的前后位置顺序，也是768维向量
+#2.encoder(BertEncoder)
+#即特征学习，特征提取
+#3.pooler(BertPoller)
+#即池化层，池化数据，也是输出768维向量
+print(pretrained)
+
+#定义下游任务（增量模型）
+class Model(torch.nn.Module):
+    def __init__(self):
+        super().__init__()
+        #设计全连接网络，实现二分类任务即调用全连接神经网络包
+        # 768就是BertModel模型输出的768维向量；2是指二分，比如0是差评，1是好评。
+        self.fc = torch.nn.Linear(768,2)
+    #使用模型处理数据（执行前向计算）
+    def forward(self,input_ids,attention_mask,token_type_ids):
+        #冻结Bert模型的参数，让其不参与训练
+        with torch.no_grad():
+            out = pretrained(input_ids=input_ids,attention_mask=attention_mask,token_type_ids=token_type_ids)
+        #增量模型参与训练，取的最后一段的序列特征(目前的transfer模型是沿用RNN那套模式，对数据是NSV格式要求。N是批次，S序列长度，V是数据特征)
+        # 最后一段序列特征是包含完整信息的
+        out = self.fc(out.last_hidden_state[:,0])
+        return out
+```
+
+### 3.1模型训练-加载模型和数据，开始训练
+
+train.py
+
+```python
+#模型训练
+import torch
+from MyData import MyDataset#准备好的数据集
+from torch.utils.data import DataLoader
+from net import Model#自定义的增量模型
+from transformers import BertTokenizer,AdamW# 分词器和优化器
+
+#定义设备信息
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+#定义训练的轮次(将整个数据集训练完一次为一轮)
+EPOCH = 30000
+
+#加载字典和分词器
+token = BertTokenizer.from_pretrained(r"D:\PycharmProjects\demo_02\model\bert-base-chinese\models--bert-base-chinese\snapshots\c30a6ed22ab4564dc1e3b2ecbf6e766b0611a33f")
+
+#第一步：先定义将传入的字符串进行编码
+def collate_fn(data):
+    sents = [i[0]for i in data]
+    label = [i[1] for i in data]
+    #编码
+    data = token.batch_encode_plus(
+        batch_text_or_text_pairs=sents,
+        # 当句子长度大于max_length(上限是model_max_length)时，截断
+        truncation=True,
+        max_length=512,
+        # 一律补0到max_length
+        padding="max_length",
+        # 可取值为tf,pt,np,默认为list。pt表示torch格式数据
+        return_tensors="pt",
+        # 返回序列长度
+        return_length=True
+    )
+    input_ids = data["input_ids"]
+    attention_mask = data["attention_mask"]
+    token_type_ids = data["token_type_ids"]
+    # 所有的数据都要转化为pyTorch的张量数据类型(如0和1转换为00101)
+    label = torch.LongTensor(label)
+#input_ids 就是编码后的词即文字在字典中对应的数字编码
+#token_type_ids上下文编码(本例子用的批量语句编码，已淘汰)，第一个句子和特殊符号的位置是0，第二个句子的位置1。
+#special_tokens_mask 特殊符号的位置是1，其他位置是0
+#length 编码之后的序列长度
+    return input_ids,attention_mask,token_type_ids,label
+
+#第二步：创建数据集
+train_dataset = MyDataset("train")
+train_loader = DataLoader(
+    dataset=train_dataset,
+    #训练批次(每次取几条数据来训练模型，要尝试。批次太大可能装不下)
+    batch_size=90,
+    #打乱数据集
+    shuffle=True,
+    #舍弃最后一个批次的数据，防止形状出错(比如103条数据集，训练10轮次，批次10，则可能取到最后只剩下3条数据，就会出错)
+    drop_last=True,
+    #对加载的数据进行编码
+    collate_fn=collate_fn
+)
+if __name__ == '__main__':
+    #开始训练
+    print(DEVICE)
+    # 模型实例化：将模型放到设备上
+    model = Model().to(DEVICE)
+    #定义优化器
+    optimizer = AdamW(model.parameters())
+    #定义损失函数，多分类交叉熵损失函数
+    loss_func = torch.nn.CrossEntropyLoss()
+
+    for epoch in range(EPOCH):# 遍历轮次
+        for i,(input_ids,attention_mask,token_type_ids,label) in enumerate(train_loader):#遍历批次数据
+            #将数据放到DVEVICE上面
+            input_ids, attention_mask, token_type_ids, label = input_ids.to(DEVICE),attention_mask.to(DEVICE),token_type_ids.to(DEVICE),label.to(DEVICE)
+            #前向计算（将数据输入模型得到输出）
+            out = model(input_ids,attention_mask,token_type_ids)
+            #根据输出计算损失
+            loss = loss_func(out,label)
+            #根据误差优化参数(模型在学习)
+            optimizer.zero_grad()#清空梯度
+            loss.backward()#自动求导
+            optimizer.step()#更新参数
+
+            #每隔5个批次输出训练信息即每处理5条数据输出
+            if i%5 ==0:
+                #取出输出的结果
+                out = out.argmax(dim=1)
+                # label是hs上的二分类数据集，out是我们增量模型输出的值，两者进行比对正确率
+                #计算训练精度(比如label 00101,out 01100。相同的为1并求和的3，结果是3/5)
+                acc = (out==label).sum().item()/len(label)
+                # 观察状态：输出轮次，批次，损失loss,acc精度，如下图。如果增量模型好的话，loss要降低，acc精度要增加
+                print(f"epoch:{epoch},i:{i},loss:{loss.item()},acc:{acc}")
+        #每训练完一轮，保存一次参数。保存文件到本地params目录下
+        torch.save(model.state_dict(),f"params/{epoch}_bert.pth")
+        print(epoch,"参数保存成功！")
+```
+
+### 3.2观察状态
+
+输出轮次，批次，损失loss,acc精度，如下图:
+
+如果增量模型好的话，loss整体趋势下降，acc精度要增加。核心是loss。一般指标越多，可观察的效果值也越多。
+
+![image](/img/2025-11-30_16-04-19.png)
+
+### 4.效果评估
+
+**基于Bert的中文评价情感分析-实现篇**
+
+训练时需要观察的指标：loss训练损失。大模型框架一般都提供了观察功能。
+
+二分类的文本数据集(x,y):x是文本，y是评价值0或1.
+
+> [negative,positive]
+>
+> negative[1,0],positive[0,1]
+>
+> 实际数据集是有标签的[negative,positive]即消极和积极，一般是将标签编码化即one-hot,转为negative[1,0],positive[0,1]。1表示对应标签的索引位置，因为是2分值的标签，标签消极是在第一个位置，其他等于0。
+
+预训练模型
+
+> 指加增加了增量模型后的模型。
+>
+> x经过预训练模型，输出h(0.5,0.5)。然后与y值比较，如y(1,0)即消极标签值，得到loss值
+>
+> 1.前向计算：将数据输入得到输出的过程也叫模型的推理过程
+>
+> 2.根据输出和标签label计算损失，模型的输出和标签之间的差距loss=mena(h-y)^2
+>
+> 3.模型根据loss进行求导，然后根据导数更新模型参数。
+>
+> 每更新一次参数，loss都会整理下降，梯度下降法。模型反向传播算法：根据损失求导更新参数的过程。
+
+总结
+
+> 一般我们需要根据前几次loss输出值判断模型是否正确，如果损失整体下降，即模型正确。如果不是，则数据集错误或模型有问题。马上停止训练，进行调整。一般模型很少出错，大概率是数据集出错，因为是数据集一般是我们自己做的。
+
+什么时候停止模型训练
+
+> 以甲方的要求为准，如acc达到0.95。一般模型发布的时候都有场景的准确率，我们AI开发就是为了实现效果接近这个准确率，准确率一定不是100%。即使是DeepSeek.
