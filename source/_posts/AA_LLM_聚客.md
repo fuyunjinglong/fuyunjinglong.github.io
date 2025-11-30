@@ -101,7 +101,7 @@ API_URL = "https://api-inference.huggingface.co/models/uer/gpt2-chinese-cluecorp
 API_TOKEN = "xxxx"
 headers = {"Authorization": f"Bearer {API_TOKEN}"}
 
-response = requests.post(API_URL,headers=headers,json={"inputs":"你好，Hugging face"})
+response = requests.post(API_URL,headers=headers,json={"inputs":"你好，Hugging facexxxx"})
 print(response.json())
 ```
 
