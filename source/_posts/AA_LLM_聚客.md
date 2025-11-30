@@ -8,7 +8,7 @@ toc: true # 是否启用内容索引
 
 # 大纲
 
-推荐学习第3期，每期都一样，只是迭代升级。
+推荐学习第3期，每期都一样，只是迭代升级。注意跟代码就完了，主要是注释的思路和逻辑。
 
 目前AI大模型开发主要集中在1.LLM 训练与微调应用，2.RAG 检索增强生成应用，3.Agent 智能体应用。多模态目前真实落地情况还有待解决。
 
@@ -68,9 +68,29 @@ AI项目开发流程(对应下面Bert情感分析中的流程)
 >   - 3.1加载模型和数据，开始训练
 >   - 3.2观察状态
 > - 4.效果评估(模型交付标准)
->   - 4.1客观评估：固定指标、客观数据如acc,注意评估时使用test训练集
->   - 4.2主观评估：人为挑选部分代表性数据，观察模型的输出结果
+>   - 4.1客观评估：固定指标、客观数据如acc,注意评估时使用test训练集-对分类模型有效，如淘宝评论
+>   - 4.2主观评估：人为挑选部分代表性数据，观察模型的输出结果-对生成式模型有效
 > - 5.部署
+
+模型评估的三大指标
+
+> - 精度：即准确率，模型越大精度越高
+>
+> - 性能：处理模型时的速度，模型越小性能越快
+>
+> - 泛化性：指预训练模型(下面冻结的BertEncoder模型)的能力，主要与人为有一定关系。主要指AI训练时的3个指标
+>
+>   - 欠拟合：模型分布弱于真实数据分布(训练时间不够；模型过于简单)。loss过大，就是欠拟合，加大训练量即可。
+>
+>   - 拟合：模型分布恰好能够表达真实数据分布(训练的理想状态)
+>
+>   - 过拟合：模型分布过度拟合真实数据分布，使得模型结果依赖数据中的噪声信息，一旦数据变化，可能结果错误。如：识别猫狗。猫的背景是红色，狗的背景是蓝色。如果测试数据换成猫的背景蓝色，可能就出错，因为依赖了背景色判断猫狗。
+>
+>     validation验证数据集主要用来验证模型是否存在过拟合。
+
+泛化性如下图：
+
+![image](/img/2025-12-01_07-25-07.png)
 
 # 主-LLM 训练与微调应用
 
@@ -379,7 +399,7 @@ Transform本质是Mlp全连接+Att注意力机制。它是不具备位置模型�
 > #1.embeddings(BertEmbeddings模型)
 > #1.1word_embeddings，将词转换成向量的模型。输出768维向量
 > #1.2position_embeddings,记录词的前后位置顺序，也是768维向量
-> #2.encoder(BertEncoder)
+> #2.encoder(BertEncoder)-预训练模型
 > #即特征学习，特征提取
 > #3.pooler(BertPoller)
 > #即池化层，池化数据，也是输出768维向量
@@ -534,7 +554,11 @@ if __name__ == '__main__':
 
 ### 4.效果评估
 
-**基于Bert的中文评价情感分析-实现篇**
+> 目标是跑测试集得到的结果，与测试集的label越接近，则评估效果越好。至于结论是否正确，不是我们问题。
+>
+> 模型训练采用的是训练集得到的结果，效果评估的输入是要用到测试集的得到的结果。
+>
+> 所以要先将训练接换成测试集，跑下模型训练得到本地文件
 
 训练时需要观察的指标：loss训练损失。大模型框架一般都提供了观察功能。
 
@@ -546,11 +570,11 @@ if __name__ == '__main__':
 >
 > 实际数据集是有标签的[negative,positive]即消极和积极，一般是将标签编码化即one-hot,转为negative[1,0],positive[0,1]。1表示对应标签的索引位置，因为是2分值的标签，标签消极是在第一个位置，其他等于0。
 
-预训练模型
+预训练模型-如BertEncoder模型
 
-> 指加增加了增量模型后的模型。
+> 我们的训练模型都是增加了增量模型后的模型。
 >
-> x经过预训练模型，输出h(0.5,0.5)。然后与y值比较，如y(1,0)即消极标签值，得到loss值
+> x经过训练模型，输出h(0.5,0.5)。然后与y值比较，如y(1,0)即消极标签值，得到loss值
 >
 > 1.前向计算：将数据输入得到输出的过程也叫模型的推理过程
 >
@@ -567,3 +591,172 @@ if __name__ == '__main__':
 什么时候停止模型训练
 
 > 以甲方的要求为准，如acc达到0.95。一般模型发布的时候都有场景的准确率，我们AI开发就是为了实现效果接近这个准确率，准确率一定不是100%。即使是DeepSeek.
+
+**4.1客观评估**
+
+> 固定指标、客观数据如acc,注意评估时使用test训练集-对分类模型有效，如淘宝评论。
+>
+> 打印客观评估指标：如平均精度值，如下图。如果想了解完整的分类指标，可参照混淆矩阵。
+
+![image](/img/2025-12-01_06-26-49.png)
+
+evaluate0.py-客观评价(类似训练，训练集换成测试集)
+
+```python
+#模型评估(与模型训练有些细微差别，不需要训练，优化，只需要一个轮次即可)
+import torch
+from MyData import MyDataset
+from torch.utils.data import DataLoader
+from net import Model
+from transformers import BertTokenizer,AdamW
+
+#定义设备信息
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+#加载字典和分词器
+token = BertTokenizer.from_pretrained(r"D:\PycharmProjects\demo_02\model\bert-base-chinese\models--bert-base-chinese\snapshots\c30a6ed22ab4564dc1e3b2ecbf6e766b0611a33f")
+
+#将传入的字符串进行编码
+def collate_fn(data):
+    sents = [i[0]for i in data]
+    label = [i[1] for i in data]
+    #编码
+    data = token.batch_encode_plus(
+        batch_text_or_text_pairs=sents,
+        # 当句子长度大于max_length(上限是model_max_length)时，截断
+        truncation=True,
+        max_length=512,
+        # 一律补0到max_length
+        padding="max_length",
+        # 可取值为tf,pt,np,默认为list
+        return_tensors="pt",
+        # 返回序列长度
+        return_length=True
+    )
+    input_ids = data["input_ids"]
+    attention_mask = data["attention_mask"]
+    token_type_ids = data["token_type_ids"]
+    label = torch.LongTensor(label)
+    return input_ids,attention_mask,token_type_ids,label
+
+#创建数据集
+test_dataset = MyDataset("test")
+test_loader = DataLoader(
+    dataset=test_dataset,
+    #训练批次
+    batch_size=100,
+    #打乱数据集
+    shuffle=True,
+    #舍弃最后一个批次的数据，防止形状出错
+    drop_last=True,
+    #对加载的数据进行编码
+    collate_fn=collate_fn
+)
+
+if __name__ == '__main__':
+    acc = 0.0
+    total = 0
+
+    #开始测试
+    print(DEVICE)
+    # 模型实例化：将模型放到设备上
+    model = Model().to(DEVICE)
+    #加载模型训练参数(模型训练后的输出文件)
+    model.load_state_dict(torch.load("params/16_bert.pth"))
+    #开启测试模式
+    model.eval()
+
+    for i,(input_ids,attention_mask,token_type_ids,label) in enumerate(test_loader):
+        #将数据放到DVEVICE上面
+        input_ids, attention_mask, token_type_ids, label = input_ids.to(DEVICE),attention_mask.to(DEVICE),token_type_ids.to(DEVICE),label.to(DEVICE)
+        #前向计算（将数据输入模型得到输出）这里输出h(0.5，0.5)
+        out = model(input_ids,attention_mask,token_type_ids)
+        # 将out提取为可与label比较的值，如0或1
+        out = out.argmax(dim=1)
+        # label是数据集中的0或1，item表示获取标量，精度累加
+        acc += (out==label).sum().item()
+        print(i,(out==label).sum().item())
+        total+=len(label)
+        # 打印客观评估指标：如平均精度值，如下图
+    print(f"test acc:{acc/total}")
+```
+
+**4.2主观评估**
+
+> 人为挑选部分代表性数据，观察模型的输出结果-对生成式模型有效。
+>
+> 打印生成式用户实时输入的评价的好评还是差评，如下图。注意如果输出值与测试集不对，则要溯源测试集，这个label是谁打上去的，理由是什么。
+
+![image](/img/2025-12-01_06-57-25.png)
+
+evaluate1.py-主观评价(类似训练，训练集换成测试集)
+
+```python
+#模型使用接口（主观评估）
+#模型训练
+import torch
+from net import Model
+from transformers import BertTokenizer
+
+#定义设备信息
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+#加载字典和分词器
+token = BertTokenizer.from_pretrained(r"D:\PycharmProjects\demo_02\model\bert-base-chinese\models--bert-base-chinese\snapshots\c30a6ed22ab4564dc1e3b2ecbf6e766b0611a33f")
+# 模型实例化：将模型放到设备上
+model = Model().to(DEVICE)
+# 定义输出的枚举值，和前面的negative[1,0],positive[0,1]对应起来
+names = ["负向评价","正向评价"]
+
+#将传入的字符串进行编码
+def collate_fn(data):
+    # 与客观评价不同：这里就没有label值了，因为只有生成式的用户输入值
+    sents = []
+    sents.append(data)
+    #编码
+    data = token.batch_encode_plus(
+        batch_text_or_text_pairs=sents,
+        # 当句子长度大于max_length(上限是model_max_length)时，截断
+        truncation=True,
+        max_length=512,
+        # 一律补0到max_length
+        padding="max_length",
+        # 可取值为tf,pt,np,默认为list
+        return_tensors="pt",
+        # 返回序列长度
+        return_length=True
+    )
+    input_ids = data["input_ids"]
+    attention_mask = data["attention_mask"]
+    token_type_ids = data["token_type_ids"]
+    return input_ids,attention_mask,token_type_ids
+
+def test():
+    #加载参数-模型训练后保存到本地的文件
+    model.load_state_dict(torch.load("params/16_bert.pth"))
+    #开启测试模型
+    model.eval()
+
+    while True:
+        data = input("请输入测试数据（输入‘q’退出）：")
+        if data=='q':
+            print("测试结束")
+            break
+        # 先编码
+        input_ids,attention_mask,token_type_ids = collate_fn(data)
+        # 数据放到设备
+        input_ids, attention_mask, token_type_ids = input_ids.to(DEVICE),attention_mask.to(DEVICE),token_type_ids.to(DEVICE)
+
+        #将数据输入到模型，得到输出
+        with torch.no_grad():# 冻结，不训练
+            out = model(input_ids,attention_mask,token_type_ids)
+            out = out.argmax(dim=1)
+            # 打印生成式用户实时输入的评价的好评还是差评，如下图
+            print("模型判定：",names[out],"\n")
+
+if __name__ == '__main__':
+    test()
+```
+
+过拟合
+
