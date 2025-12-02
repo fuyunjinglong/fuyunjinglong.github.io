@@ -80,13 +80,13 @@ AI项目开发流程(对应下面Bert情感分析中的流程)
 >
 > - 泛化性：指预训练模型(下面冻结的BertEncoder模型)的能力，主要与人为有一定关系。主要指AI训练时的3个指标
 >
->   - 欠拟合：模型分布弱于真实数据分布(训练时间不够；模型过于简单)。loss过大，就是欠拟合，加大训练量即可。
+>   - 欠拟合：模型分布弱于真实数据分布(训练时间不够；模型过于简单)。loss过大，就是欠拟合，加大训练量即可。一般项目交付时都是欠拟合的。
 >
 >   - 拟合：模型分布恰好能够表达真实数据分布(训练的理想状态)
 >
 >   - 过拟合：模型分布过度拟合真实数据分布，使得模型结果依赖数据中的噪声信息，一旦数据变化，可能结果错误。如：识别猫狗。猫的背景是红色，狗的背景是蓝色。如果测试数据换成猫的背景蓝色，可能就出错，因为依赖了背景色判断猫狗。
 >
->     validation验证数据集主要用来验证模型是否存在过拟合。
+>     validation验证数据集主要用来验证模型是否存在过拟合。一般以目前的模型和设备是不会达到过拟合，因为需要大量时间。
 
 泛化性如下图：
 
@@ -229,7 +229,7 @@ print(model)
 
 基于Bert分类模型，可以做电商的好评差评的分类等。
 
-## 基于Bert的中文评价情感分析(AI开发流程)
+## 基于Bert的中文评价情感分析(AI开发流程实践,注释比代码重要)
 
 如淘宝的评价，归一到0和1,0表示差评，1表示好评。
 
@@ -321,6 +321,10 @@ hs上的数据集的格式是专有的，都是xxx.arrow文件
 
 data_test.py
 
+> - train训练数据集:用于训练模型，防止欠拟合
+> - test测试数据集：用户效果评估-客观评估
+> - validation验证数据集：用于验证是否过拟合
+
 ```python
 from datasets import load_dataset,load_from_disk
 
@@ -394,15 +398,13 @@ Transform本质是Mlp全连接+Att注意力机制。它是不具备位置模型�
 
 一般我们AI开发是增加模型微调，核心是在原有的大模型基础上，增加业务模型，并对业务模型微调，叫增量微调。
 
-> 内部涉及3个模块处理，如下图：
->
-> #1.embeddings(BertEmbeddings模型)
-> #1.1word_embeddings，将词转换成向量的模型。输出768维向量
-> #1.2position_embeddings,记录词的前后位置顺序，也是768维向量
-> #2.encoder(BertEncoder)-预训练模型
-> #即特征学习，特征提取
-> #3.pooler(BertPoller)
-> #即池化层，池化数据，也是输出768维向量
+BertEmbeddings模型结构
+
+> - 1.embeddings()
+>   - 1.1word_embeddings，将词转换成向量的模型。输出768维向量
+>   - 1.2position_embeddings,记录词的前后位置顺序，也是768维向量
+> - 2.encoder(BertEncoder)-预训练模型，即特征学习，特征提取
+> - 3.pooler(BertPoller)，即池化层，池化数据，也是输出768维向量
 
 ![image](/img/2025-11-30_14-56-32.png)
 
@@ -691,6 +693,8 @@ if __name__ == '__main__':
 
 evaluate1.py-主观评价(类似训练，训练集换成测试集)
 
+> 与客观评价不同：这里就没有label值了，因为只有生成式的用户输入值
+
 ```python
 #模型使用接口（主观评估）
 #模型训练
@@ -760,3 +764,167 @@ if __name__ == '__main__':
 
 过拟合
 
+> 将训练集loss与验证集loss对比，两者比较接近且都逐渐下降，即正常。如果验证集loss到一定时候突然升高，可能存在过拟合，这时我们不要保存这些脏数据。
+>
+> 这种方法主要适用于分类模型，不适用生成式模型。
+
+train_val.py
+
+```python
+#模型训练
+import torch
+from MyData import MyDataset
+from torch.utils.data import DataLoader
+from net import Model
+from transformers import BertTokenizer,AdamW
+
+#定义设备信息
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+#定义训练的轮次(将整个数据集训练完一次为一轮)
+EPOCH = 30000
+
+#加载字典和分词器
+token = BertTokenizer.from_pretrained(r"D:\PycharmProjects\demo_02\model\bert-base-chinese\models--bert-base-chinese\snapshots\c30a6ed22ab4564dc1e3b2ecbf6e766b0611a33f")
+
+#将传入的字符串进行编码
+def collate_fn(data):
+    sents = [i[0]for i in data]
+    label = [i[1] for i in data]
+    #编码
+    data = token.batch_encode_plus(
+        batch_text_or_text_pairs=sents,
+        # 当句子长度大于max_length(上限是model_max_length)时，截断
+        truncation=True,
+        max_length=512,
+        # 一律补0到max_length
+        padding="max_length",
+        # 可取值为tf,pt,np,默认为list
+        return_tensors="pt",
+        # 返回序列长度
+        return_length=True
+    )
+    input_ids = data["input_ids"]
+    attention_mask = data["attention_mask"]
+    token_type_ids = data["token_type_ids"]
+    label = torch.LongTensor(label)
+    return input_ids,attention_mask,token_type_ids,label
+
+#创建数据集-训练集
+train_dataset = MyDataset("train")
+train_loader = DataLoader(
+    dataset=train_dataset,
+    #训练批次
+    batch_size=50,
+    #打乱数据集
+    shuffle=True,
+    #舍弃最后一个批次的数据，防止形状出错
+    drop_last=True,
+    #对加载的数据进行编码
+    collate_fn=collate_fn
+)
+#创建验证数据集-验证集
+val_dataset = MyDataset("validation")
+val_loader = DataLoader(
+    dataset=val_dataset,
+    #训练批次
+    batch_size=50,
+    #打乱数据集
+    shuffle=True,
+    #舍弃最后一个批次的数据，防止形状出错
+    drop_last=True,
+    #对加载的数据进行编码
+    collate_fn=collate_fn
+)
+if __name__ == '__main__':
+    #开始训练
+    print(DEVICE)
+    model = Model().to(DEVICE)
+    #定义优化器
+    optimizer = AdamW(model.parameters())
+    #定义损失函数
+    loss_func = torch.nn.CrossEntropyLoss()
+
+    #初始化验证最佳准确率
+    best_val_acc = 0.0
+
+    for epoch in range(EPOCH):
+        for i,(input_ids,attention_mask,token_type_ids,label) in enumerate(train_loader):
+            #将数据放到DVEVICE上面
+            input_ids, attention_mask, token_type_ids, label = input_ids.to(DEVICE),attention_mask.to(DEVICE),token_type_ids.to(DEVICE),label.to(DEVICE)
+            #前向计算（将数据输入模型得到输出）
+            out = model(input_ids,attention_mask,token_type_ids)
+            #根据输出计算损失
+            loss = loss_func(out,label)
+            #根据误差优化参数
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+            #每隔5个批次输出训练信息
+            if i%5 ==0:
+                out = out.argmax(dim=1)
+                #计算训练精度
+                acc = (out==label).sum().item()/len(label)
+                print(f"epoch:{epoch},i:{i},loss:{loss.item()},acc:{acc}")
+        #验证模型（判断模型是否过拟合）
+        #设置为评估模型即数据集选择validation数据集
+        model.eval()
+        #不需要模型参与训练
+        with torch.no_grad():
+            val_acc = 0.0
+            val_loss = 0.0
+            for i, (input_ids, attention_mask, token_type_ids, label) in enumerate(val_loader):
+                # 将数据放到DVEVICE上面
+                input_ids, attention_mask, token_type_ids, label = input_ids.to(DEVICE), attention_mask.to(
+                    DEVICE), token_type_ids.to(DEVICE), label.to(DEVICE)
+                # 前向计算（将数据输入模型得到输出）
+                out = model(input_ids, attention_mask, token_type_ids)
+                # 根据输出计算损失
+                val_loss += loss_func(out, label)
+                #根据数据，计算验证精度
+                out = out.argmax(dim=1)
+                val_acc+=(out==label).sum().item()
+            val_loss/=len(val_loader)
+            val_acc/=len(val_loader)
+            print(f"验证集：loss:{val_loss},acc:{val_acc}")
+            #根据验证准确率保存最优参数，如果验证集过拟合，则不保存过拟合数据，best_bert文件防止了过拟合
+            if val_acc > best_val_acc:
+                best_val_acc = val_acc
+                torch.save(model.state_dict(),"params1/best_bert.pth")
+                print(f"EPOCH:{epoch}:保存最优参数：acc{best_val_acc}")
+        #保存最后一轮参数
+        torch.save(model.state_dict(), "params1/last_bert.pth")
+        print(f"EPOCH:{epoch}:最后一轮参数保存成功！")
+```
+
+## GPT2-中文生成模型定制化
+
+中文白话文续写，如下图
+
+![image](/img/2025-12-02_08-18-11.png)
+
+```python
+#中文白话文续写
+from transformers import GPT2LMHeadModel,BertTokenizer,TextGenerationPipeline
+
+# 加载模型和分词器
+model = GPT2LMHeadModel.from_pretrained(r"D:\BaiduNetdiskDownload\gpt2-chinese模型\models--uer--gpt2-chinese-cluecorpussmall\snapshots\c2c0249d8a2731f269414cc3b22dff021f8e07a3")
+tokenizer = BertTokenizer.from_pretrained(r"D:\BaiduNetdiskDownload\gpt2-chinese模型\models--uer--gpt2-chinese-cluecorpussmall\snapshots\c2c0249d8a2731f269414cc3b22dff021f8e07a3")
+print(model)
+
+#使用Pipeline调用模型
+text_generator = TextGenerationPipeline(model,tokenizer,device="cuda")
+
+#使用text_generator生成文本
+#do_sample是否进行随机采样。为True时，每次生成的结果都不一样；为False时，每次生成的结果都是相同的。
+for i in range(3):
+    print(text_generator("这是很久之前的事情了,", max_length=100, do_sample=False))
+```
+
+GPT2LMHeadModel模型结果，如下图
+
+![image](/img/2025-12-02_08-27-14.png)
+
+> - 1.embedding模型(gpt2Model),负责分词、词向量化
+> - 2.h-ModuleList模型，负责特征提取
+> - 3.lm_head，输出头即生成头，负责输出内容的，是核心
