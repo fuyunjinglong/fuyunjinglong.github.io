@@ -959,6 +959,8 @@ GPT2LMHeadModel模型结果，如下图
 
 ### 本地训练GPT2中文模型 -全量微调 
 
+**全量微调**
+
 先准备数据集，然后全量微调,因为白话文模型参数小，方便做全量微调。
 
 打印一行行诗，如下图
@@ -1082,7 +1084,7 @@ def train():
                 print(f"epoch:{epoch},batch:{i},loss:{loss.item()},lr:{lr},acc:{acc}")
 
         # 保存最后一轮模型参数
-        torch.save(model.state_dict(), "params/net.pt")  # 保存模型参数到指定路径
+        torch.save(model.state_dict(), "params/net.pt")  # 保存训练权重输出到文件保存
         print("权重保存成功！")  # 打印成功信息
 
 # 当该脚本作为主程序运行时，调用训练函数
@@ -1090,3 +1092,178 @@ if __name__ == '__main__':
     train()  # 开始训练过程
 ```
 
+**模型学习训练权重**
+
+不加载训练权重，如下图
+
+![image](/img/2025-12-03_20-24-15.png)
+
+加载训练权重即模型训练的结果net.pt，如下图
+
+![image](/img/2025-12-03_20-24-54.png)
+
+```python
+# 模型学习训练权重
+from transformers import AutoModelForCausalLM,AutoTokenizer,TextGenerationPipeline
+import torch
+
+tokenizer = AutoTokenizer.from_pretrained(r"D:\BaiduNetdiskDownload\gpt2-chinese模型\models--uer--gpt2-chinese-cluecorpussmall\snapshots\c2c0249d8a2731f269414cc3b22dff021f8e07a3")
+model = AutoModelForCausalLM.from_pretrained(r"D:\BaiduNetdiskDownload\gpt2-chinese模型\models--uer--gpt2-chinese-cluecorpussmall\snapshots\c2c0249d8a2731f269414cc3b22dff021f8e07a3")
+
+#加载我们自己训练的权重（中文古诗词）-也可以不加载训练权重，注释即可
+model.load_state_dict(torch.load("params/net.pt"))
+
+#使用系统自带的pipeline工具生成内容
+pipeline = TextGenerationPipeline(model,tokenizer,device=0)
+
+print(pipeline("天高",max_length =24))
+```
+
+定制化的控制内容和格式输出，需要人为强制干预，如下图
+
+![image](/img/2025-12-03_20-28-11.png)
+
+```python
+#定制化的控制内容和格式输出
+import torch
+from transformers import AutoTokenizer,AutoModelForCausalLM
+
+tokenizer = AutoTokenizer.from_pretrained(r"D:\BaiduNetdiskDownload\gpt2-chinese模型\models--uer--gpt2-chinese-cluecorpussmall\snapshots\c2c0249d8a2731f269414cc3b22dff021f8e07a3")
+model = AutoModelForCausalLM.from_pretrained(r"D:\BaiduNetdiskDownload\gpt2-chinese模型\models--uer--gpt2-chinese-cluecorpussmall\snapshots\c2c0249d8a2731f269414cc3b22dff021f8e07a3")
+
+#加载我们自己训练的权重（中文古诗词）
+model.load_state_dict(torch.load("params/net.pt",map_location="cpu"))
+
+#定义函数，用于生成5言绝句 text是提示词，row是生成文本的行数，col是每行的字符数。
+def generate(text,row,col):
+
+    #定义一个内部递归函数，用于生成文本，因为不知道循环的次数
+    def generate_loop(data):
+        #禁用梯度计算
+        with torch.no_grad():
+            #使用data字典中的数据作为模型输入，并获取输出
+            out = model(**data)
+        #获取最后一个字(logits未归一化的概率输出)
+        out = out["logits"]
+        #选择每个序列的最后一个logits，对应于下一个词的预测
+        out = out[:,-1]
+
+        #找到概率排名前50的值，以此为分界线，小于该值的全部舍去
+        topk_value = torch.topk(out,50).values
+        #获取每个输出序列中前50个最大的logits（为保持原维度不变，需要对结果增加一个维度，因为索引操作会降维）。设置前50个大概率
+        topk_value = topk_value[:,-1].unsqueeze(dim=1)
+        #将所有小于第50大的值的logits设置为负无穷，减少低概率词的选择。设置50个以后的极低概率，可以认为是0
+        out = out.masked_fill(out < topk_value,-float("inf"))
+
+        #将特殊符号的logits值设置为负无穷，防止模型生成这些符号。排除特殊字符
+        for i in ",.()《》[]「」{}，。":
+            out[:,tokenizer.get_vocab()[i]] = -float('inf')
+        #去特殊符号
+        out[:, tokenizer.get_vocab()["[UNK]"]] = -float('inf')
+        #根据概率采样，无放回，避免生成重复的内容
+        out = out.softmax(dim=1)
+        #从概率分布中进行采样，选择下一个词的ID
+        out = out.multinomial(num_samples=1)
+
+        #强制添加标点符号
+        #计算当前生成的文本长度于预期的长度的比例
+        c = data["input_ids"].shape[1] / (col+1)
+        #如果当前的长度是预期长度的整数倍，则添加标点符号
+        if c % 1 ==0:
+            if c % 2 ==0:
+                #在偶数位添加句号
+                out[:,0] = tokenizer.get_vocab()["."]
+            else:
+                #在奇数位添加逗号
+                out[:,0] = tokenizer.get_vocab()[","]
+        #将生成的新词ID添加到输入序列的末尾
+        data["input_ids"] = torch.cat([data["input_ids"],out],dim=1)
+        #更新注意力掩码，标记所有有效位置
+        data["attention_mask"] = torch.ones_like(data["input_ids"])
+        #更新token的ID类型，通常在BERTm模型中使用，但是在GPT模型中是不用的
+        data["token_type_ids"] = torch.ones_like(data["input_ids"])
+        #更新标签，这里将输入ID复制到标签中，在语言生成模型中通常用与预测下一个词
+        data["labels"] = data["input_ids"].clone()
+
+        #检查生成的文本长度是否达到或超过指定的行数和列数
+        if data["input_ids"].shape[1] >= row*col + row+1:
+            #如果达到长度要求，则返回最终的data字典
+            return data
+        #如果长度未达到要求，递归调用generate_loop函数继续生成文本
+        return generate_loop(data)
+
+    #生成3首诗词
+    #使用tokenizer对输入文本进行编码，并重复3次生成3个样本。
+    data = tokenizer.batch_encode_plus([text] * 3,return_tensors="pt")
+    #移除编码后的序列中的最后一个token(结束符号)
+    data["input_ids"] = data["input_ids"][:,:-1]
+    #创建一个与input_ids形状相同的全1张量，用于注意力掩码
+    data["attention_mask"] = torch.ones_like(data["input_ids"])
+    # 创建一个与input_ids形状相同的全0张量，用于token类型ID
+    data["token_type_ids"] = torch.zeros_like(data["input_ids"])
+    #复制input_ids到labels，用于模型的目标
+    data['labels'] = data["input_ids"].clone()
+
+    #调用generate_loop函数开始生成文本
+    data = generate_loop(data)
+
+    #遍历生成的3个样本
+    for i in range(3):
+        #打印输出样本索引和对应的解码后的文本
+        print(i,tokenizer.decode(data["input_ids"][i]))
+
+if __name__ == '__main__':
+    generate("白",row=4,col=5)
+```
+
+
+
+### 服务器训练GPT2中文模型
+
+**使用[AutoDL官网](https://autodl.com/market/list)租借服务器算力**
+
+选择一个GPU16GB以上的服务器,GPU最好是RTX型号，方便后续环境使用
+
+![image](/img/2025-12-03_18-41-00.png)
+
+选择基础镜像下，Pytorch最新的版本即可，系统必须是ubuntu
+
+![image](/img/2025-12-03_18-46-19.png)
+
+最后租借成果
+
+![image](/img/2025-12-03_18-49-50.png)
+
+**安装vscode插件-Remote - SSH**
+
+安装好后，添加远程服务器
+
+![image](/img/2025-12-03_18-53-55.png)
+
+然后依次输入租借服务器的账号密码
+
+![image](/img/2025-12-03_18-55-57.png)
+
+验证环境是否ok，执行nvidia-smi
+
+![image](/img/2025-12-03_19-20-35.png)
+
+注意后续把代码和模型都放在数据盘 root/autodl-tmp，防止每次开关机服务器实例数据丢失。
+
+![image](/img/2025-12-03_19-21-20.png)
+
+**上传模型和代码**
+
+注意要复制服务器上的模型的绝对地址，放到代码中，同时可以适时修改训练批次，开始训练
+
+![image](/img/2025-12-03_19-29-16.png)
+
+如果需要实时查看设备GPU使用率，先安装工具pip install nvitop,执行nvitop即可
+
+![image](/img/2025-12-03_19-34-04.png)
+
+执行python train.py开始同步训练，注意第一次批次设置小点。vscdoe关了，训练就停止了。
+
+建议在后台异步训练，执行nohub python -u  train.py & ,即使vscode关了，服务器上仍在训练，并输出结果到nohub.out文件中。
+
+如何停止后台训练，top命令查看python占用多的那条pid，执行kill -9 对应pid
