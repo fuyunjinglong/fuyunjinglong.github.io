@@ -957,7 +957,7 @@ GPT2LMHeadModel模型结果，如下图
 > - 2.h-ModuleList模型，负责特征提取
 > - 3.lm_head，输出头即生成头，负责输出内容的，是核心
 
-### 本地训练GPT2中文模型 -全量微调 
+### 本地训练GPT2中文模型 -全量微调+训练权重
 
 **全量微调**
 
@@ -1094,11 +1094,11 @@ if __name__ == '__main__':
 
 **模型学习训练权重**
 
-不加载训练权重，如下图
+不加载训练权重，如下图，乱七八糟
 
 ![image](/img/2025-12-03_20-24-15.png)
 
-加载训练权重即模型训练的结果net.pt，如下图
+加载训练权重即模型训练的结果net.pt，如下图，有一定关联
 
 ![image](/img/2025-12-03_20-24-54.png)
 
@@ -1119,7 +1119,7 @@ pipeline = TextGenerationPipeline(model,tokenizer,device=0)
 print(pipeline("天高",max_length =24))
 ```
 
-定制化的控制内容和格式输出，需要人为强制干预，如下图
+定制化的控制内容和格式输出，需要人为强制干预，如下图，五言诗诗句的感觉
 
 ![image](/img/2025-12-03_20-28-11.png)
 
@@ -1131,7 +1131,7 @@ from transformers import AutoTokenizer,AutoModelForCausalLM
 tokenizer = AutoTokenizer.from_pretrained(r"D:\BaiduNetdiskDownload\gpt2-chinese模型\models--uer--gpt2-chinese-cluecorpussmall\snapshots\c2c0249d8a2731f269414cc3b22dff021f8e07a3")
 model = AutoModelForCausalLM.from_pretrained(r"D:\BaiduNetdiskDownload\gpt2-chinese模型\models--uer--gpt2-chinese-cluecorpussmall\snapshots\c2c0249d8a2731f269414cc3b22dff021f8e07a3")
 
-#加载我们自己训练的权重（中文古诗词）
+#加载我们自己训练的权重（中文古诗词），如果训练权重是CPU设备训练出来的就选cpu,如果是GPU设备的cuda训练出来的就选gpu
 model.load_state_dict(torch.load("params/net.pt",map_location="cpu"))
 
 #定义函数，用于生成5言绝句 text是提示词，row是生成文本的行数，col是每行的字符数。
@@ -1216,9 +1216,7 @@ if __name__ == '__main__':
     generate("白",row=4,col=5)
 ```
 
-
-
-### 服务器训练GPT2中文模型
+### 服务器训练GPT2中文模型-全量微调
 
 **使用[AutoDL官网](https://autodl.com/market/list)租借服务器算力**
 
@@ -1267,3 +1265,57 @@ if __name__ == '__main__':
 建议在后台异步训练，执行nohub python -u  train.py & ,即使vscode关了，服务器上仍在训练，并输出结果到nohub.out文件中。
 
 如何停止后台训练，top命令查看python占用多的那条pid，执行kill -9 对应pid
+
+## 本地私有化部署大模型
+
+### 魔塔社区平台ModelScope 
+
+国内下载模型使用阿里的[魔塔社区](https://www.modelscope.cn/my/mynotebook/preset)，在我的mynotebook中有免费的33h的GPU实例使用。
+
+启动免费的阿里云实例
+
+![image](/img/2025-12-04_19-44-11.png)
+
+训练一般采用0.5B-7B之间的模型，太大的话GPU的24g就不够用了。我们采用[千问的0.6B模型](https://www.modelscope.cn/models/Qwen/Qwen3-0.6B/files)，如果是其他服务器，需要先安装pip install modelscope，阿里云是天然集成的。一定要选SDK下载，git下载模型可能报错。
+
+![image](/img/2025-12-04_19-48-07.png)
+
+验证环境是否ok，执行nvidia-smi
+
+SDK下载模型脚本文件download.py
+
+> cache_dir是服务器上的绝对路径，使用pwd查看就能看到
+
+```python
+#模型下载
+from modelscope import snapshot_download
+model_dir = snapshot_download('Qwen/Qwen3-0.6B',cache_dir='/mnt/workspace/')
+```
+
+执行python download.py，模型就会下载到服务器上。
+
+config.json
+
+> - torch_dtype: "bfloat16",//数据的精度，一般大模型都是32位 单精度。16位相当于精度减半，也叫量化后的模型。好处：模型体积降低，计算速度更快。量化的意义在于加速模型推理，降低硬件依赖。模型体积=0.5BX16
+> - vocab_size: 151936//。字典数有15w个字符，包括中英文等特殊字符。
+
+generation_config.json
+
+> - temperature: 0.6,//输出的文本质量通过这3个参数控制
+>
+>   top_k: 20,
+>
+>   top_p: 0.95,
+
+tokenizer.json
+
+> - content:"<|im_start|>",//图像的开头 所有的大模型都有这种开头和结尾特殊字符，用来判断文本开始和结束。后面可用于多模态对接。
+> - content:"<|im_end|>",//图像的结尾
+> - model_max_lenth:131072//支持最大的输入长度即131072个token，token是由分词器决定的。大模型收费也是按照token收费的。
+> - tokenizer_class:"QwenTokenizer"// 千问的分词工具
+
+### Ollama部署大模型
+
+### vLLM部署大模型
+
+### LMDeploy部署大模型  
