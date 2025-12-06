@@ -1266,11 +1266,15 @@ if __name__ == '__main__':
 
 如何停止后台训练，top命令查看python占用多的那条pid，执行kill -9 对应pid
 
-## 本地私有化部署大模型
+## 服务器私有化部署大模型
 
-### 魔塔社区平台ModelScope 
+### 魔塔社区ModelScope-了解原理 
+
+> 优点：模型完整，适合高度定制。缺点：开发难度大
 
 国内下载模型使用阿里的[魔塔社区](https://www.modelscope.cn/my/mynotebook/preset)，在我的mynotebook中有免费的33h的GPU实例使用。
+
+注意后续把代码和模型都放在数据盘 mnt/workspace，防止每次开关机服务器实例数据丢失。
 
 启动免费的阿里云实例
 
@@ -1289,10 +1293,18 @@ SDK下载模型脚本文件download.py
 ```python
 #模型下载
 from modelscope import snapshot_download
-model_dir = snapshot_download('Qwen/Qwen3-0.6B',cache_dir='/mnt/workspace/')
+model_dir = snapshot_download('Qwen/Qwen3-0.6B',cache_dir='/mnt/workspace/llm')
 ```
 
 执行python download.py，模型就会下载到服务器上。
+
+注意有的时候可能会下载两分一模一样的模型，删除一个保留一个都行，
+
+![image](/img/2025-12-06_09-20-54.png)
+
+模型目录
+
+![image](/img/2025-12-06_09-21-54.png)
 
 config.json
 
@@ -1314,8 +1326,146 @@ tokenizer.json
 > - model_max_lenth:131072//支持最大的输入长度即131072个token，token是由分词器决定的。大模型收费也是按照token收费的。
 > - tokenizer_class:"QwenTokenizer"// 千问的分词工具
 
-### Ollama部署大模型
+vacab.json
 
-### vLLM部署大模型
+> 字典库，有些模型是内置的，不对外开放，防止用户修改，导致模型错误。
+
+**使用transformer加载qwen模型**
+
+> 这种属于手写加载大模型，基本不常用，主要了解原理
+
+test01_ModelScope.py
+
+```python
+#使用transformer加载qwen模型
+from transformers import AutoModelForCausalLM,AutoTokenizer
+
+DEVICE = "cuda"
+
+#加载本地模型路径为该模型配置文件所在的根目录
+model_dir = "/mnt/workspace/llm/Qwen/Qwen3-0.6B"
+
+#使用transformer加载模型
+model = AutoModelForCausalLM.from_pretrained(model_dir,torch_dtype="auto",device_map="auto")
+tokenizer = AutoTokenizer.from_pretrained(model_dir)
+
+#调用模型
+#定义提示词
+prompt = "你好，请介绍下你自己。"
+#将提示词封装为message
+message = [{"role":"system","content":"You are a helpful assistant system"},{"role":"user","content":prompt}]
+#使用分词器的apply_chat_template()方法将上面定义的消息列表进行转换;tokenize=False表示此时不进行令牌化
+# 令牌化：将文本转为input_ids数据
+text = tokenizer.apply_chat_template(message,tokenize=False,add_generation_prompt=True)
+
+#将处理后的文本令牌化并转换为模型的输入张量，是数组的text,并输出到本地DEVICE设备上
+model_inputs = tokenizer([text],return_tensors="pt").to(DEVICE)
+
+#将数据输入模型得到输出,结果是字典中对应的索引值，如下图
+response = model.generate(model_inputs.input_ids,max_new_tokens=512)
+print(response)
+
+#对输出的内容进行解码还原，将索引值还原为文本，如下图
+response = tokenizer.batch_decode(response,skip_special_tokens=True)
+print(response)
+```
+
+将数据输入模型得到输出,结果是字典中对应的索引值，如下图。对输出的内容进行解码还原，将索引值还原为文本，如下图
+
+![image](/img/2025-12-06_09-51-42.png)
+
+### Ollama部署大模型-个人用户
+
+> 优点：适合个人用户，模型小，速度快。缺点：效果不好。
+
+安装conda的环境,自行百度，类似虚拟机环境，方便后续安装其他软件。注意所有命令都要先激活进入环境ollamaEnv。
+
+> 查看conda下的所有环境列表，执行conda info --envs
+
+> 创建一个虚拟环境,执行conda create -n ollamaEnv，然后激活进入环境ollamaEnv，执行conda activate ollamaEnv。ollamaEnv只是随便一个环境名称，不是真正的ollama
+
+> 注意先激活进入环境ollamaEnv，然后到[ollama官网](https://ollama.com/download/linux)下载ollama，执行curl -fsSL https://ollama.com/install.sh | sh ，下载完后启动ollama,先激活进入环境ollamaEnv，执行ollama serve，注意后续这个控制台窗口不要关闭。
+
+激活进入环境ollamaEnv，查看本地ollama的模型列表，执行ollama list,，初始是空的，如下图
+
+![image](/img/2025-12-06_10-15-28.png)
+
+> 拉取Qwen模型并启动模型，执行ollama run qwen3:0.6b。后面可以使用Api调用大模型服务。
+
+ModelScope和ollama下载的模型差异：
+
+![image](/img/2025-12-06_11-17-52.png)
+
+> - ModelScope常用的模型是safetensors格式，如1.5G
+> - ollama的模型都是GGUF格式，所以两者不互通用,如500M。这是因为它是阉割版，也叫量化版，是被缩小量化过的。如果ollama平台要使用ModelScope上的模型，要么搜索[qwen GGUF](https://modelscope.cn/models/Qwen/Qwen3-0.6B-GGUF/files)的模型，要么将safetensors转换为GGUF格式。优点：适合个人用户，模型小，速度快。缺点：效果不好。
+
+**API的方式加载qwen模型**
+
+test02_ollama_one.py
+
+```python
+#使用openai的API风格调用ollama平台的模型
+from openai import OpenAI
+
+# api_key是公开的，可以随便写
+client = OpenAI(base_url="http://localhost:11434/v1/",api_key="suibianxie")
+# model一定是命令ollama list下存在的模型名称
+chat_completion = client.chat.completions.create(
+    messages=[{"role":"user","content":"你好，请介绍下你自己。"}],model="Qwen3-0.6B"
+)
+print(chat_completion.choices[0])
+```
+
+test03_ollama_multipy.py
+
+```python
+#使用openai的API风格调用ollama平台的模型，并进行多轮对话
+from openai import OpenAI
+
+#定义多轮对话方法
+def run_chat_session():
+    #初始化客户端
+    client = OpenAI(base_url="http://localhost:11434/v1/",api_key="suibianxie")
+    #初始化对话历史
+    chat_history = []
+    #启动对话循环
+    while True:
+        #获取用户输入
+        user_input = input("用户：")
+        if user_input.lower() == "exit":
+            print("退出对话。")
+            break
+        #更新对话历史(添加用户输入)，注意角色是用户
+        chat_history.append({"role":"user","content":user_input})
+        #调用模型回答
+        try:
+            chat_complition = client.chat.completions.create(messages=chat_history,model="Qwen3-0.6B")
+            #获取最新回答
+            model_response = chat_complition.choices[0]
+            print("AI:",model_response.message.content)
+            #更新对话历史（添加AI模型的回复）,注意角色是助手
+            chat_history.append({"role":"assistant","content":model_response.message.content})
+        except Exception as e:
+            print("发生错误：",e)
+            break
+if __name__ == '__main__':
+    run_chat_session()
+```
+
+### vLLM部署大模型-商业客户
+
+> 优点：适合商业用途，支持ModelScope的safetensors格式文件。缺点：。
+
+vLLM 包含预编译的 C++ 和 CUDA (12.1) 二进制库，注意只支持cuda12.1.
+
+> 创建一个虚拟环境,执行conda create -n vLLMEnv python=3.12 -y，然后激活进入环境vLLMEnv ，执行conda activate vLLMEnv 。vLLMEnv 只是随便一个环境名称，不是真正的vLLM
+
+> 注意先激活进入环境vLLMEnv ，然后执行pip install vllm ,安装vllm。
+
+> 启动本地大模型服务，这里采用之前下载的本地绝对路径模型，执行vllm serve /mnt/workspace/llm/Qwen/Qwen3-0.6B --dType=half 。其中--dType=half表示平台支持的是半精度，看启动过程中是否有报错提示而添加。注意后续这个控制台窗口不要关闭。
+
+**API的方式加载qwen模型**
+
+> 同ollama一样代码，只需修改*base_url*端口为8000，*model*为/mnt/workspace/llm/Qwen/Qwen3-0.6B
 
 ### LMDeploy部署大模型  
