@@ -57,7 +57,18 @@ cuda是用来加速训练和推理。cuda只能在N卡才有，mac电脑只能�
 > - 自然语义大模型(大模型的核心技术)
 > - 多模块大模型(图片、音视频等)
 
+**CPU和GPU的差别？**
+
+> - cpu:串行能力强(计算频率高，核心数少)
+> - gpu:并行能力强(计算频率低，核心数多)。支持cuda,cuda多就是核心数多。
+
 **AI项目开发流程(对应下面Bert情感分析中的流程)**
+
+AI开发完整流程：数据集-预训练-微调-部署-评测-应用
+
+预训练：从头开始训练一个全新的模型，参数完全随机，不能处理任何问题。相当复杂，大公司才有实力研发。
+
+微调训练(迁移学习)：基于之前训练好的模型，学习新的或特定的任务。
 
 > - 1.需求数据准备
 >   - 1.1获取数据
@@ -105,7 +116,7 @@ Transformers是从sep2seq自然语义模型改进来的，
 >   - 对所有参数进行微调
 >   - 对算力和显存要求高
 >   - 效果最佳，也可能效果不如以前
-> - 局部微调-生成式模型采用这种模式
+> - 局部微调-生成式模型采用这种模式，如LORA
 >   - 只调整某些某部分参数， 例如输出层， 输入层或某些特殊层
 >   - 对算力和显存要求一般
 >   - 一定是有效果的
@@ -1270,7 +1281,7 @@ if __name__ == '__main__':
 
 ### 魔塔社区ModelScope-了解原理 
 
-> 优点：模型完整，适合高度定制。缺点：开发难度大
+> 优点：模型完整，适合高度定制。缺点：开发难度大。用于下载模型到本地。
 
 国内下载模型使用阿里的[魔塔社区](https://www.modelscope.cn/my/mynotebook/preset)，在我的mynotebook中有免费的33h的GPU实例使用。
 
@@ -1288,11 +1299,10 @@ if __name__ == '__main__':
 
 SDK下载模型脚本文件download.py
 
-> cache_dir是服务器上的绝对路径，使用pwd查看就能看到
-
 ```python
 #模型下载
 from modelscope import snapshot_download
+# cache_dir是服务器上的绝对路径，使用pwd查看就能看到
 model_dir = snapshot_download('Qwen/Qwen3-0.6B',cache_dir='/mnt/workspace/llm')
 ```
 
@@ -1381,6 +1391,8 @@ print(response)
 安装conda的环境,自行百度，类似虚拟机环境，方便后续安装其他软件。注意所有命令都要先激活进入环境ollamaEnv。
 
 > 查看conda下的所有环境列表，执行conda info --envs
+>
+> 如果电脑空间不够，可删除虚拟任意环境，conda remove -n ollamaEnv --all
 
 > 创建一个虚拟环境,执行conda create -n ollamaEnv，然后激活进入环境ollamaEnv，执行conda activate ollamaEnv。ollamaEnv只是随便一个环境名称，不是真正的ollama
 
@@ -1454,9 +1466,9 @@ if __name__ == '__main__':
 
 ### vLLM部署大模型-商业客户
 
-> 优点：适合商业用途，支持ModelScope的safetensors格式文件。缺点：。
+> 优点：适合商业用途，支持ModelScope的safetensors格式文件。缺点：限制比较多。
 
-vLLM 包含预编译的 C++ 和 CUDA (12.1) 二进制库，注意只支持cuda12.1.
+vLLM 包含预编译的 C++ 和 CUDA (12.1) 二进制库，注意只支持linux系统和cuda12.1,
 
 > 创建一个虚拟环境,执行conda create -n vLLMEnv python=3.12 -y，然后激活进入环境vLLMEnv ，执行conda activate vLLMEnv 。vLLMEnv 只是随便一个环境名称，不是真正的vLLM
 
@@ -1466,6 +1478,81 @@ vLLM 包含预编译的 C++ 和 CUDA (12.1) 二进制库，注意只支持cuda12
 
 **API的方式加载qwen模型**
 
-> 同ollama一样代码，只需修改*base_url*端口为8000，*model*为/mnt/workspace/llm/Qwen/Qwen3-0.6B
+> 同ollama一样代码，只需修改*base_url*端口为8000，*model*为本地绝对路径 /mnt/workspace/llm/Qwen/Qwen3-0.6B
 
-### LMDeploy部署大模型  
+### LMDeploy部署大模型-推荐  
+
+> 优点：适合大多数场景，支持ModelScope的safetensors格式文件，显存优化明显。缺点：。
+
+[母公司书生](https://internlm.intern-ai.org.cn/)，它的大模型开源工具链体系比较厉害，尤其是Xtuner,LMDeploy,OpenCompass工具。
+
+[LMDeploy官网](https://lmdeploy.readthedocs.io/zh-cn/latest/)，支持在 Linux 和 Windows 平台上部署 LLMs 和 VLMs，最低要求 CUDA 版本为 11.3。
+
+> 同前面一样，创建一个虚拟环境
+>
+> conda create -n lmdeployEnv python=3.10 -y
+> conda activate lmdeployEnv
+> pip install lmdeploy
+
+> 使用ModelScope拉取Qwen模型并启动模型，执行lmdeploy serve api_server /mnt/workspace/llm/Qwen/Qwen3-0.6B。后面可以使用Api调用大模型服务。
+
+**API的方式加载qwen模型**
+
+> 同ollama一样代码，只需修改*base_url*端口为23333，*model*为本地绝对路径 /mnt/workspace/llm/Qwen/Qwen3-0.6B
+
+## 大模型微调
+
+### LORA微调
+
+属于局部微调的一种，设计思路很巧妙。
+
+**原理**
+
+> - 训练时， 输入分别与原始权重和两个低秩矩阵进行计算， 共同得到最终结果， 优化则仅优化A和B
+> - 训练完成后， 可以将两个低秩矩阵与原始模型中的权重进行合并，合并后的模型与原始模型无异
+
+![image](/img/2025-12-08_22-09-58.png)
+
+**基于LORA微调的平台**
+
+- 基于LLaMA-Factory可视化界面
+- 基于书生公司的Xtuner命令行
+
+**LLaMA-Factory**
+
+[官网](https://github.com/hiyouga/LLaMA-Factory/blob/main/README_zh.md)
+
+> - **多种模型**：LLaMA、LLaVA、Mistral、Mixtral-MoE、Qwen、Qwen2-VL、DeepSeek、Yi、Gemma、ChatGLM、Phi 等等。
+> - **集成方法**：（增量）预训练、（多模态）指令监督微调、奖励模型训练、PPO 训练、DPO 训练、KTO 训练、ORPO 训练等等。
+> - **多种精度**：16 比特全参数微调、冻结微调、LoRA 微调和基于 AQLM/AWQ/GPTQ/LLM.int8/HQQ/EETQ 的 2/3/4/5/6/8 比特 QLoRA 微调。
+> - **先进算法**：[GaLore](https://github.com/jiaweizzhao/GaLore)、[BAdam](https://github.com/Ledzy/BAdam)、[APOLLO](https://github.com/zhuhanqing/APOLLO)、[Adam-mini](https://github.com/zyushun/Adam-mini)、[Muon](https://github.com/KellerJordan/Muon)、[OFT](https://github.com/huggingface/peft/tree/main/src/peft/tuners/oft)、DoRA、LongLoRA、LLaMA Pro、Mixture-of-Depths、LoRA+、LoftQ 和 PiSSA。
+> - **实用技巧**：[FlashAttention-2](https://github.com/Dao-AILab/flash-attention)、[Unsloth](https://github.com/unslothai/unsloth)、[Liger Kernel](https://github.com/linkedin/Liger-Kernel)、[KTransformers](https://github.com/kvcache-ai/ktransformers/)、RoPE scaling、NEFTune 和 rsLoRA。
+> - **广泛任务**：多轮对话、工具调用、图像理解、视觉定位、视频识别和语音理解等等。
+> - **实验监控**：LlamaBoard、TensorBoard、Wandb、MLflow、[SwanLab](https://github.com/SwanHubX/SwanLab) 等等。
+> - **极速推理**：基于 [vLLM](https://github.com/vllm-project/vllm) 或 [SGLang](https://github.com/sgl-project/sglang) 的 OpenAI 风格 API、浏览器界面和命令行接口。
+
+安装
+
+> 新建一个虚拟环境:conda create -n llamaFactoryEnv python=3.10 -y j激活 conda activate llamaFactoryEnv 
+>
+> git clone --depth 1 https://github.com/hiyouga/LLaMA-Factory.git
+> 进入目录，cd LLaMA-Factory
+> 安装基础依赖，pip install -e .
+
+启动可视化界面
+
+> llamafactory-cli webui // 需要有vscode的ssh插件，能自动打开可视化窗口
+
+开始微调训练
+
+> 修改默认的数据集identity.json的内容
+
+![image](/img/2025-12-08_22-55-40.png)
+
+> 可视化窗口设置参数
+
+![image](/img/2025-12-08_23-01-44.png)
+
+![image](/img/2025-12-08_23-04-14.png)
+
+![image](/img/2025-12-08_23-06-01.png)

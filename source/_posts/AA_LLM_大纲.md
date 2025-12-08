@@ -90,6 +90,26 @@ toc: true # 是否启用内容索引
 
 # MCP
 
+全称Model Context Protocol模型上下文协议。MCP就是客户端调用MCP服务的胶水。
+
+**MCP Host**
+
+表示支持MCP协议的软件，如Claude Desktop,Cursor,Cline,Cherry Studio。其中Cline是vscode的插件
+
+**MCP Server**
+
+MCP服务商，有些基本要自己去实现代码，调用服务的api。
+
+MCP的工作流程如下图
+
+![image](/img/2025-12-07_20-33-21.png)
+
+# Function Calling
+
+函数调用，就是模型调用函数的过程。如下图
+
+![image](/img/2025-12-07_20-55-43.png)
+
 # 领域模型微调
 
 **ChatGPT训练三步走**
