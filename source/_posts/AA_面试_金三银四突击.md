@@ -10,7 +10,7 @@ toc: true # 是否启用内容索引
 
 - [ ] 2024年前端简历（node.js，ts,react，Flutter、Rn，微前端，低代码，小程序，移动端，ssr）
 - [ ] [JavaScript专项](https://www.bilibili.com/video/BV1rq4y1U7gh/?spm_id_from=333.788&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
-- [ ] 2025年聚客大模型第四期(推荐)(本地-07-大模型微调（使用LLama Factory微调Qwen）)
+- [ ] 2025年聚客大模型第四期(推荐)09-大模型微调（QLora微调&GGUF模型转换）
 - [ ] [LLM_RAG](https://www.bilibili.com/video/BV1JLN2z4EZQ/?spm_id_from=333.788.top_right_bar_window_default_collection.content.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - [ ] [Vue3+TS+monorepo，搭建自己的组件库-珠峰-video](https://www.bilibili.com/video/BV1LTB4YqE43/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)（5-05）
 - [ ]  vue2源码:Vue2.js源码全方位深入解析-黄轶-第1章 准备工作(本地2-6)

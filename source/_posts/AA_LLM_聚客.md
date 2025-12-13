@@ -29,7 +29,7 @@ AI大模型算法工程师
 > - 模型压缩技术-量化、蒸馏
 > - 推理优化
 
-![image](/img/聚客LLM大模型.png)
+<img src="/img/聚客LLM大模型.png" style="zoom:80%;" />
 
 # 开发环境
 
@@ -43,6 +43,10 @@ cuda是用来加速训练和推理。cuda只能在N卡才有，mac电脑只能�
 - 一定是**window10专业版**(不能是家庭版)，安装所有东西前一定要**重装系统**，否则环境无法正常搭建
 
 # 主-前置知识
+
+[神经网络模型训练](https://playground.tensorflow.org/)
+
+<img src="/img/2025-12-13_09-47-25.png" style="zoom:50%;" />
 
 **大模型是什么？**
 
@@ -101,7 +105,7 @@ AI开发完整流程：数据集-预训练-微调-部署-评测-应用
 
 泛化性如下图：
 
-![image](/img/2025-12-01_07-25-07.png)
+<img src="/img/2025-12-01_07-25-07.png" style="zoom:50%;" />
 
 **Transformers核心**
 
@@ -633,7 +637,7 @@ if __name__ == '__main__':
 >
 > 打印客观评估指标：如平均精度值，如下图。如果想了解完整的分类指标，可参照混淆矩阵。
 
-![image](/img/2025-12-01_06-26-49.png)
+<img src="/img/2025-12-01_06-26-49.png" style="zoom:50%;" />
 
 evaluate0.py-客观评价(类似训练，训练集换成测试集)
 
@@ -1466,7 +1470,7 @@ if __name__ == '__main__':
 
 ### vLLM部署大模型-商业客户
 
-> 优点：适合商业用途，支持ModelScope的safetensors格式文件。缺点：限制比较多。
+> 优点：适合商业用途，支持ModelScope的safetensors格式文件。缺点：限制比较多，注意下显卡要求。
 
 vLLM 包含预编译的 C++ 和 CUDA (12.1) 二进制库，注意只支持linux系统和cuda12.1,
 
@@ -1482,7 +1486,7 @@ vLLM 包含预编译的 C++ 和 CUDA (12.1) 二进制库，注意只支持linux�
 
 ### LMDeploy部署大模型-推荐  
 
-> 优点：适合大多数场景，支持ModelScope的safetensors格式文件，显存优化明显。缺点：。
+> 优点：适合大多数场景，支持ModelScope的safetensors格式文件，显存优化明显。缺点：注意下显卡要求。
 
 [母公司书生](https://internlm.intern-ai.org.cn/)，它的大模型开源工具链体系比较厉害，尤其是Xtuner,LMDeploy,OpenCompass工具。
 
@@ -1518,7 +1522,7 @@ vLLM 包含预编译的 C++ 和 CUDA (12.1) 二进制库，注意只支持linux�
 - 基于LLaMA-Factory可视化界面
 - 基于书生公司的Xtuner命令行
 
-**LLaMA-Factory**
+**LLaMA-Factory使用**
 
 [官网](https://github.com/hiyouga/LLaMA-Factory/blob/main/README_zh.md)
 
@@ -1541,7 +1545,7 @@ vLLM 包含预编译的 C++ 和 CUDA (12.1) 二进制库，注意只支持linux�
 
 启动可视化界面
 
-> llamafactory-cli webui // 需要有vscode的ssh插件，能自动打开可视化窗口
+> llamafactory-cli webui // 需要有vscode的ssh插件，能自动打开可视化窗口,要进入到根目录下执行
 
 开始微调训练
 
@@ -1549,10 +1553,164 @@ vLLM 包含预编译的 C++ 和 CUDA (12.1) 二进制库，注意只支持linux�
 
 ![image](/img/2025-12-08_22-55-40.png)
 
-> 可视化窗口设置参数
+> 可视化窗口设置参数，点击开始训练
 
 ![image](/img/2025-12-08_23-01-44.png)
 
 ![image](/img/2025-12-08_23-04-14.png)
 
 ![image](/img/2025-12-08_23-06-01.png)
+
+> 训练完成过程中，每隔100个轮次，在根目录下的save文件夹中，生成检查点文件及权重文件，checkpoint100、checkpoint200等
+
+![image](/img/2025-12-10_19-16-06.png)
+
+当loss不再明显下降或水平平滑，可停止训练。
+
+![image](/img/2025-12-11_19-54-21.png)
+
+手工验证训练后的模型效果，配置最后一个训练点的权重文件，点击加载模型
+
+![image](/img/2025-12-10_19-20-12.png)
+
+底部可以开始对话
+
+![image](/img/2025-12-10_19-22-50.png)
+
+**LLaMA-Factory自定义数据集**
+
+[LLaMA-Factory中文文档](https://llamafactory.readthedocs.io/zh-cn/latest/getting_started/data_preparation.html#id4)，要求单轮和多轮对话支持的数据结构如下：
+
+```
+// 单轮对话
+{
+    "instruction": "问题（必填）",
+    "input": "问题相关的（选填）",
+    "output": "回答（必填）",
+  }
+// 多轮对话
+  {
+    "instruction": "问题（必填）",// 这是当前的第三轮-问题
+    "input": "问题相关的（选填）",
+    "output": "回答（必填）",// 这是当前的第三轮-回答
+    "system": "系统提示词（选填）",
+    "history": [
+      ["第一轮指令（选填）", "第一轮回答（选填）"],
+      ["第二轮指令（选填）", "第二轮回答（选填）"]
+    ]
+  }
+```
+
+原始数据集选取modelscope上弱智吧的[数据集](https://modelscope.cn/datasets/w10442005/ruozhiba_qa/dataPeview)，数据格式如下：
+
+```
+    {
+        "system": "00000",
+        "query": "只剩一个心脏了还能活吗？",
+        "response": "能，人本来就只有一个心脏。"
+    },
+```
+
+*重要重要重要：学会让大模型工具帮我们生成代码*
+
+1.手动点击下载原始数据ruozhiba_qaswift.json，将原始数据转为llmaFactory支持的数据结构
+
+![image](/img/2025-12-11_19-24-00.png)
+
+```python
+# 原始数据转为llmaFactory支持的数据结构
+import json
+
+# 读取原始JSON文件
+input_file = "data/ruozhiba_qaswift.json"  # 你的JSON文件名
+output_file = "data/ruozhiba_qaswift_train.json"  # 输出的JSON文件名
+
+with open(input_file, "r", encoding="utf-8") as f:
+    data = json.load(f)
+
+# 转换后的数据
+converted_data = []
+
+for item in data:
+    converted_item = {
+        "instruction": item["query"],
+        "input": "",
+        "output": item["response"]
+    }
+    converted_data.append(converted_item)
+
+# 保存为JSON文件（最外层是列表）
+with open(output_file, "w", encoding="utf-8") as f:
+    json.dump(converted_data, f, ensure_ascii=False, indent=4)
+
+print(f"转换完成，数据已保存为 {output_file}")
+```
+
+2.本地转换好数据集后，放入大data目录下，并配置
+
+![image](/img/2025-12-11_19-30-30.png)
+
+3.启动llmaFactory,选择对应数据集开始训练
+
+> 根目录执行llamafactory-cli webui
+
+![image](/img/2025-12-11_19-32-18.png)
+
+4.客观评估和主观评估
+
+![image](/img/2025-12-11_20-00-52.png)
+
+客观评估结果如下图：
+
+![image](/img/2025-12-11_20-09-31.png)
+
+主观评估如下图：
+
+![image](/img/2025-12-13_08-30-12.png)
+
+**Lora模型合并与量化导出**  
+
+训练后的目录
+
+![image](/img/2025-12-11_19-51-36.png)
+
+配置合并导出
+
+![image](/img/2025-12-13_08-37-37.png)
+
+看下合并后的模型效果，不错
+
+![image](/img/2025-12-13_08-40-27.png)
+
+基于合并的模型，我们也可以继续做量化即阉割量化模型。
+
+量化模型：原模型是数据格式是Float16位对硬件要求高，我们降低到8位或4位(如q8或q4)，适配低配置低算力硬件(如ollama)。如果再低，模型效果就不好了。
+
+配置量化并导出
+
+![image](/img/2025-12-13_08-58-11.png)
+
+看下量化后的模型效果，效果很差。原因：最初的原始模型是qwen-0.5B，太小了，一般模型5B以上，量化效果才能维持原模型效果。
+
+![image](/img/2025-12-13_08-59-57.png)
+
+**使用 open-webui部署模型**
+
+linux上安装open-webui
+
+> 同前面一样，创建一个虚拟环境
+>
+> conda create -n openWebUIEnv python=3.11 -y
+> conda activate openWebUIEnv 
+> pip install open-webui
+
+配置open-webui
+
+![image](/img/2025-12-13_09-26-13.png)
+
+启动open-webui，执行open-webui serve。
+
+访问localhost:3000
+
+### QLORA微调
+
