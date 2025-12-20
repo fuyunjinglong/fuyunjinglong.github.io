@@ -1718,4 +1718,87 @@ linux上安装open-webui
 
 与LORA不同的是，它采用降低模型参数精度来节约训练的显存，使模型训练更快。因为模型的参数已经固定，降低精度一定会影响结果。在量化微调中，量化只发生在内部训练过程，并不影响模型的最终的数据类型(模型原有的参数类型是f16,在量化微调训练中会量化为8位，参数保存时又还原为f16,量化微调不影响模型本身的参数类型)  
 
+> 加速方式：falshatten2，只支持显卡SM70以上
+
 <img src="/img/2025-12-15_19-52-33.png" style="zoom:100%;" />
+
+注意一般loss前面几轮会先升高再降低，升高是因为模型比较大数据集比较小，后面会逐渐降低。
+
+<img src="/img/2025-12-16_08-18-13.png" style="zoom:100%;" />
+
+然后同前面LoRA一样，合并导出。
+
+### GGUF
+
+> 定义：GGUF 格式的全名为（GPT-Generated Unified Format） ， 提到GGUF 就不得不提到它的前身 GGML（GPT-Generated Model Language） 。 GGML 是专门为了机器学习设计的张量库， 最早可以追溯到 2022/10。 其目的是为了有一个单文件共享的格式， 并且易于在不同架构的 GPU 和 CPU 上进行推理。 但在后续的开发中， 遇到了灵活性不足、 相容性及难以维护的问题。  
+
+> 与safetensors相比，GGUF格式的优势：
+>
+> 1） 可扩展性： 轻松为 GGML 架构下的工具添加新功能， 或者向 GGUF 模型添加新 Feature， 不会破坏与现有模型的兼容性。
+>
+> 2） 对 mmap（内存映射） 的兼容性： 该模型可以使用 mmap 进行加载（原理解析可见参考） ， 实现快速载入和存储。 （从 GGJT 开始导入， 可参考 GitHub）
+>
+> 3） 易于使用： 模型可以使用少量代码轻松加载和存储， 无需依赖的 Library， 同时对于不同编程语言支持程度也高。
+>
+> 4） 模型信息完整： 加载模型所需的所有信息都包含在模型文件中， 不需要额外编写设置文件。
+>
+> 5） 有利于模型量化： GGUF 支持模型量化（4 位、 8 位、 F16） ， 在 GPU 变得越来越昂贵的情况下， 节省 vRAM 成本也非常重要。
+
+**将safetensors转化为GGUF**
+
+1.需要用llama.cpp仓库的convert_hf_to_gguf.py脚本来转换  
+
+```python
+git clone https://github.com/ggerganov/llama.cpp.git
+pip install -r llama.cpp/requirements.txt
+```
+
+2.执行转换  
+
+```python
+# 如果不量化，保留模型的效果
+python llama.cpp/convert_hf_to_gguf.py /mnt/workspace/llm/Qwen/Qwen3-0.6B --outtype f16
+--verbose --outfile /mnt/workspace/llm/Qwen/Qwen3-0.6B-gguf.gguf
+# 如果需要量化（加速并有损效果），直接执行下面脚本就可以
+python llama.cpp/convert_hf_to_gguf.py 绝对路径 --outtype
+q8_0 --verbose --outfile 绝对路径-gguf_q8_0.gguf
+```
+
+> 这里--outtype是输出类型，代表含义：
+> q2_k：特定张量（Tensor）采用较高的精度设置，而其他的则保持基础级别。
+> q3_k_l、q3_k_m、q3_k_s：这些变体在不同张量上使用不同级别的精度，从而达到性能和效率的平衡。
+> q4_0：这是最初的量化方案，使用 4 位精度。
+> q4_1 和 q4_k_m、q4_k_s：这些提供了不同程度的准确性和推理速度，适合需要平衡资源使用的场景。
+> q5_0、q5_1、q5_k_m、q5_k_s：这些版本在保证更高准确度的同时，会使用更多的资源并且推理速度较
+> 慢。
+> q6_k 和 q8_0：这些提供了最高的精度，但是因为高资源消耗和慢速度，可能不适合所有用户。
+> fp16 和 f32: 不量化，保留原始精度。
+
+3.使用ollama运行gguf  
+
+```
+安装并启动ollama
+curl -fsSL https://ollama.com/install.sh | sh
+ollama serve
+```
+
+创建ModelFile文件
+
+```
+#GGUF文件路径
+FROM /mnt/workspace/llm/Qwen/Qwen3-0.6B-gguf.gguf
+```
+
+创建自定义模型  
+
+```
+ollama create Qwen3-0.6B-gguf --file ./ModeFile
+```
+
+查看并运行模型
+
+```
+ollama list
+ollama run Qwen3-0.6B-gguf
+```
+

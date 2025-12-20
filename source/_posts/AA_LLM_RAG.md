@@ -6,10 +6,6 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# 大纲
-
-- 一句话理解RAG
-
 # 一句话理解RAG
 
 参考：
@@ -216,4 +212,14 @@ GEMINI_API_KEY=xxx
 ```
 
 其中 xxx 为你的 Google Gemini API 密钥。没有密钥的用户可以在 https://aistudio.google.com/apikey 上申请。
+
+# OpenAI的无向量化RAG
+
+<img src="/img/2025-12-20_11-13-32.png" style="zoom:50%;" />
+
+| 环节     | 模型         | 理由                 |
+| -------- | ------------ | -------------------- |
+| 内容挑选 | GPT-4.1-mini | 上下文窗口大、成本低 |
+| 生成答案 | GPT-4.1      | 保证答案的准确性     |
+| 答案验证 | o4-mini      | 推理强               |
 
