@@ -1802,3 +1802,73 @@ ollama list
 ollama run Qwen3-0.6B-gguf
 ```
 
+### LLamaFactory微调效果与vllm部署效果不一致  
+
+**1.生成式语言模型的对话模板**  
+
+不同模型框架采用的模板是不一样的
+
+1.1QWen大模型的对话模板
+
+即使是同系列的同产商，不同版本的模型的对话模板也不相同。
+
+<img src="/img/2026-01-18_18-09-01.png" style="zoom:50%;" />
+
+**2.Lora微调后单独部署大模型输出结果 不一致**
+
+训练时用的模板如下图
+
+<img src="/img/2026-01-18_18-14-14.png" style="zoom:50%;" />
+
+这些训练时用的模板在LLamaFactory源码目录中，如下图
+
+<img src="/img/2026-01-18_18-21-42.png" style="zoom:50%;" />
+
+因为训练时用的对话模板与推理时用的大模型的对话模板不一致
+
+**3.使用XTuner微调大模型**
+
+主要以主观评价为准，而LLamaFactory主要以客观评价为主。[XTuner](https://xtuner.readthedocs.io/zh-cn/stable/training/custom_sft_dataset.html)是高度自定义的代码处理指定对话模板，难度更大，但更灵活。
+
+**4.vllm推理模型时自定义对话模板** 
+
+案例： 使用vllm有效部署Lora微调后的Qwen模型  
+
+1.将训练时用的llamaFactory的模板转换为[vllm部署](https://docs.vllm.com.cn/en/latest/serving/openai_compatible_server/#chat-template)时所用的模板(jinjia格式)
+
+转换脚本myTest.py
+
+```py
+# mytest.py
+import sys
+import os
+
+# 将项目根目录添加到 Python 路径
+root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+sys.path.append(root_dir)
+
+from llamafactory.data.template import TEMPLATES
+from transformers import AutoTokenizer
+
+# 1. 初始化分词器（任意支持的分词器均可）
+tokenizer = AutoTokenizer.from_pretrained("/root/autodl-tmp/llm/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B")
+
+# 2. 获取模板对象
+template_name = "qwen"  # 替换为你需要查看的模板名称
+template = TEMPLATES[template_name]
+
+# 3. 修复分词器的 Jinja 模板
+template.fix_jinja_template(tokenizer)
+
+# 4. 直接输出模板的 Jinja 格式
+print("=" * 40)
+print(f"Template [{template_name}] 的 Jinja 格式:")
+print("=" * 40)
+print(tokenizer.chat_template)
+```
+
+2.将输出的代码复制保存为template.jinja文件
+
+3.在vllm部署模型时，指定对话模板chat-template，执行vllm server xx --chat-template ./path-to-chat-template.jinja
+
+LMDeploy(采用的是json格式数据)或ollama部署也是类似，要参考对应官方文档。
