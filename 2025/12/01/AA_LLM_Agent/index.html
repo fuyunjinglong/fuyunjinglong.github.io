@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>LLM_Agent | Hexo</title>
+  <meta name="description" content="Agent定义Agent（智能体，AI Agent） 是一种能够自主感知环境、做出决策并执行动作以实现特定目标的人工智能系统。它超越了传统AI“被动回答”的局限，能够像人类一样主动规划、行动、协作，在数字或物理世界完成复杂任务。  简单比喻：如果说大语言模型（LLM）是“超级大脑”，那么 Agent 就是给大脑装上了“手脚”和“工具”，让AI能主动行动、完成实际任务。  工作原理ReAct模式Re">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LLM_Agent">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2025/12/01/AA_LLM_Agent/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Agent定义Agent（智能体，AI Agent） 是一种能够自主感知环境、做出决策并执行动作以实现特定目标的人工智能系统。它超越了传统AI“被动回答”的局限，能够像人类一样主动规划、行动、协作，在数字或物理世界完成复杂任务。  简单比喻：如果说大语言模型（LLM）是“超级大脑”，那么 Agent 就是给大脑装上了“手脚”和“工具”，让AI能主动行动、完成实际任务。  工作原理ReAct模式Re">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-20_12-36-56.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-20_12-45-16.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-20_12-54-48.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-20_11-56-31.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-20_11-57-47.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-20_12-09-58.png">
+<meta property="article:published_time" content="2025-11-30T22:33:16.000Z">
+<meta property="article:modified_time" content="2026-03-10T14:02:53.326Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/2025-12-20_12-36-56.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2025/12/01/AA_LLM_Agent/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-LLM/">B_LLM</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">21</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/09/">九月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/06/">六月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">三月 2026</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/12/">十二月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/11/">十一月 2025</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">三月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">二月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/06/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_0%E5%9F%BA%E7%A1%80/" class="title">0基础_工程热点</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-05T22:33:16.000Z" itemprop="datePublished">2099-11-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/05/I_%E7%A7%BB%E5%8A%A8%E7%AB%AF_0%E5%9F%BA%E7%A1%80/" class="title">0基础_移动端</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-04T22:33:16.000Z" itemprop="datePublished">2099-11-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/" class="title">0基础_计算机网络</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-03T22:33:16.000Z" itemprop="datePublished">2099-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_0%E5%9F%BA%E7%A1%80/" class="title">0基础_数据结构</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_%E5%9F%BA%E7%A1%80/" class="title">0基础_设计模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Agent"><span class="toc-number">1.</span> <span class="toc-text">Agent</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-number">1.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">1.2.</span> <span class="toc-text">工作原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ReAct%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.2.1.</span> <span class="toc-text">ReAct模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.2.2.</span> <span class="toc-text">其他模式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#A2A%E5%8D%8F%E8%AE%AE"><span class="toc-number">2.</span> <span class="toc-text">A2A协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-1"><span class="toc-number">2.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8EMCP%E7%AD%89%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="toc-number">2.2.</span> <span class="toc-text">与MCP等协议的对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#A2A%E7%9A%84%E6%A0%B8%E5%BF%83%E9%93%BE%E8%B7%AF"><span class="toc-number">2.3.</span> <span class="toc-text">A2A的核心链路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#A2A%E7%9A%84%E6%B5%81%E5%BC%8F%E8%BF%94%E5%9B%9E"><span class="toc-number">2.4.</span> <span class="toc-text">A2A的流式返回</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#A2A%E7%9A%84%E5%A4%9AAgent%E5%8D%8F%E4%BD%9C"><span class="toc-number">2.5.</span> <span class="toc-text">A2A的多Agent协作</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%89%8B%E5%86%99-Agent"><span class="toc-number">3.</span> <span class="toc-text">手写-Agent</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-AA_LLM_Agent" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      LLM_Agent
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2025/12/01/AA_LLM_Agent/" class="article-date">
+	  <time datetime="2025-11-30T22:33:16.000Z" itemprop="datePublished">2025-12-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/B-LLM/">B_LLM</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2025/12/01/AA_LLM_Agent/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="Agent"><a href="#Agent" class="headerlink" title="Agent"></a>Agent</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p><strong>Agent（智能体，AI Agent）</strong> 是一种能够自主感知环境、做出决策并执行动作以实现特定目标的人工智能系统。它超越了传统AI“被动回答”的局限，能够像人类一样主动规划、行动、协作，在数字或物理世界完成复杂任务。</p>
+<blockquote>
+<p>简单比喻：如果说大语言模型（LLM）是“超级大脑”，那么 Agent 就是给大脑装上了“手脚”和“工具”，让AI能主动行动、完成实际任务。</p>
+</blockquote>
+<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><h3 id="ReAct模式"><a href="#ReAct模式" class="headerlink" title="ReAct模式"></a>ReAct模式</h3><p>Reasoning and Acting即推理和行动。是目前比较主流的模式。</p>
+<ol>
+<li>思考（Thought）<ul>
+<li>分析当前状态和任务目标，规划下一步行动。</li>
+</ul>
+</li>
+<li>行动（Action）<ul>
+<li>调用外部工具、API、数据库等，执行实际操作。</li>
+</ul>
+</li>
+<li>观察（Observation）<ul>
+<li>收集行动结果，评估是否符合预期。</li>
+</ul>
+</li>
+<li>循环（Loop）<ul>
+<li>若未完成，返回思考阶段，根据结果调整策略；若达成目标，输出最终答案。</li>
+</ul>
+</li>
+<li>最终答案(Final Answer)</li>
+</ol>
+<blockquote>
+<p>示例：查询天气</p>
+<ul>
+<li>Thought：用户问今天某城市天气，需实时数据。</li>
+<li>Action：调用天气API。</li>
+<li>Observation：返回晴天，25°C。</li>
+<li>Thought：结果准确，可输出答案。</li>
+<li>Final Answer：今天某城市晴天，温度25°C，适合外出。</li>
+</ul>
+</blockquote>
+<p>Agent内部工作流程如下图：</p>
+<img src="/img/2025-12-20_12-36-56.png" style="zoom:50%;" />
+
+<p>完整的Agent的问答流程如下图：</p>
+<img src="/img/2025-12-20_12-45-16.png" style="zoom:50%;" />
+
+<h3 id="其他模式"><a href="#其他模式" class="headerlink" title="其他模式"></a>其他模式</h3><p>如先规划-再执行，比如Manus。其中最著名的又langchain提出的plan-and-execute模式，只是其中引入了动态规划，动态修改规划。</p>
+<p><strong>Plan-and-Execute模式</strong>（先规划后执行模式）是一种用于AI智能体（Agent）的架构范式，其核心思想是：先对复杂任务进行全局分解，制定多步骤计划，然后逐一执行这些子任务，并在执行过程中根据实际情况动态调整计划。</p>
+<ol>
+<li>规划阶段（Planning）</li>
+</ol>
+<ul>
+<li><strong>任务分析</strong>：理解用户目标、上下文、约束条件。</li>
+<li><strong>任务分解</strong>：将复杂任务拆解为有序的、原子性的子任务（Subtasks）。</li>
+<li><strong>生成计划</strong>：输出一个可执行的计划清单（如JSON或自然语言列表）。</li>
+</ul>
+<ol start="2">
+<li>执行阶段（Execution）</li>
+</ol>
+<ul>
+<li><strong>逐项执行</strong>：按顺序调用Agent或工具，完成每个子任务。</li>
+<li><strong>动态调整</strong>：根据执行结果或环境变化，可触发“重新规划（Replan）”机制，更新后续计划。</li>
+<li><strong>汇总结果</strong>：所有子任务完成后，整合输出最终结果。</li>
+</ul>
+<blockquote>
+<p>示例：视频转音频任务</p>
+<ol>
+<li>规划：分解为“读取视频→提取音频→保存文件”。</li>
+<li>执行：按顺序调用相关工具，若某步失败则重新规划后续步骤。</li>
+</ol>
+</blockquote>
+<img src="/img/2025-12-20_12-54-48.png" style="zoom:50%;" />
+
+<h1 id="A2A协议"><a href="#A2A协议" class="headerlink" title="A2A协议"></a>A2A协议</h1><h2 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a><strong>定义</strong></h2><p>是由Google于2025年4月开源发布的首个标准化智能体交互协议，旨在让不同框架和供应商构建的AI智能体（Agent）能够安全、高效地互相通信、协作与任务委派。A2A协议解决了AI智能体生态中的“巴别塔困境”——即不同智能体之间缺乏统一通信标准、难以互通协作的问题</p>
+<h2 id="与MCP等协议的对比"><a href="#与MCP等协议的对比" class="headerlink" title="与MCP等协议的对比"></a><strong>与MCP等协议的对比</strong></h2><p>A2A与MCP并非替代关系，而是互补：MCP解决智能体与工具的连接，A2A解决智能体与智能体的协作，两者共同构成AI智能体的完整技术栈。</p>
+<table>
+<thead>
+<tr>
+<th align="left">对比维度</th>
+<th align="left">A2A协议</th>
+<th align="left">MCP协议（Model Context Protocol）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>核心目标</strong></td>
+<td align="left">智能体之间的任务协作与通信</td>
+<td align="left">智能体与外部工具/数据源的连接（Model→Tool）</td>
+</tr>
+<tr>
+<td align="left"><strong>交互模式</strong></td>
+<td align="left">多智能体间协作、任务委派</td>
+<td align="left">单智能体调用外部工具、获取数据</td>
+</tr>
+<tr>
+<td align="left"><strong>协议层次</strong></td>
+<td align="left">高层协作框架</td>
+<td align="left">底层资源接口</td>
+</tr>
+<tr>
+<td align="left"><strong>标准化程度</strong></td>
+<td align="left">基于HTTP/JSON-RPC，开放标准</td>
+<td align="left">基于JSON-RPC 2.0，标准化</td>
+</tr>
+<tr>
+<td align="left"><strong>安全机制</strong></td>
+<td align="left">内置企业级认证、加密、审计</td>
+<td align="left">依赖开发者实现</td>
+</tr>
+<tr>
+<td align="left"><strong>适用场景</strong></td>
+<td align="left">跨系统、跨智能体协作</td>
+<td align="left">单智能体工具调用、数据获取</td>
+</tr>
+<tr>
+<td align="left"><strong>生态支持</strong></td>
+<td align="left">Google、Salesforce、SAP等50+企业</td>
+<td align="left">Anthropic、OpenAI、微软等</td>
+</tr>
+</tbody></table>
+<h2 id="A2A的核心链路"><a href="#A2A的核心链路" class="headerlink" title="A2A的核心链路"></a><strong>A2A的核心链路</strong></h2><p>举例1个Agent,也支持多个Agent</p>
+<ul>
+<li>Agent注册阶段</li>
+<li>用户问答阶段</li>
+</ul>
+<img src="/img/2025-12-20_11-56-31.png" style="zoom:50%;" />
+
+<img src="/img/2025-12-20_11-57-47.png" style="zoom:50%;" />
+
+<h2 id="A2A的流式返回"><a href="#A2A的流式返回" class="headerlink" title="A2A的流式返回"></a>A2A的流式返回</h2><img src="/img/2025-12-20_12-09-58.png" style="zoom:50%;" />
+
+<h2 id="A2A的多Agent协作"><a href="#A2A的多Agent协作" class="headerlink" title="A2A的多Agent协作"></a>A2A的多Agent协作</h2><h1 id="手写-Agent"><a href="#手写-Agent" class="headerlink" title="手写-Agent"></a>手写-Agent</h1><p>agent.py:核心流程</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ast</span><br><span class="line"><span class="keyword">import</span> inspect</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">from</span> string <span class="keyword">import</span> Template</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">List</span>, <span class="type">Callable</span>, <span class="type">Tuple</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> click</span><br><span class="line"><span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv</span><br><span class="line"><span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI</span><br><span class="line"><span class="keyword">import</span> platform</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> prompt_template <span class="keyword">import</span> react_system_prompt_template</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ReActAgent</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, tools: <span class="type">List</span>[<span class="type">Callable</span>], model: <span class="built_in">str</span>, project_directory: <span class="built_in">str</span></span>):</span><br><span class="line">        self.tools = &#123; func.__name__: func <span class="keyword">for</span> func <span class="keyword">in</span> tools &#125;</span><br><span class="line">        self.model = model</span><br><span class="line">        self.project_directory = project_directory</span><br><span class="line">        self.client = OpenAI(</span><br><span class="line">            base_url=<span class="string">&quot;https://openrouter.ai/api/v1&quot;</span>,</span><br><span class="line">            api_key=ReActAgent.get_api_key(),</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self, user_input: <span class="built_in">str</span></span>):</span><br><span class="line">        messages = [</span><br><span class="line">            &#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;system&quot;</span>, <span class="string">&quot;content&quot;</span>: self.render_system_prompt(react_system_prompt_template)&#125;,</span><br><span class="line">            &#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">f&quot;&lt;question&gt;<span class="subst">&#123;user_input&#125;</span>&lt;/question&gt;&quot;</span>&#125;</span><br><span class="line">        ]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 请求模型</span></span><br><span class="line">            content = self.call_model(messages)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 检测 Thought</span></span><br><span class="line">            thought_match = re.search(<span class="string">r&quot;&lt;thought&gt;(.*?)&lt;/thought&gt;&quot;</span>, content, re.DOTALL)</span><br><span class="line">            <span class="keyword">if</span> thought_match:</span><br><span class="line">                thought = thought_match.group(<span class="number">1</span>)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;\n\n💭 Thought: <span class="subst">&#123;thought&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 检测模型是否输出 Final Answer，如果是的话，直接返回</span></span><br><span class="line">            <span class="keyword">if</span> <span class="string">&quot;&lt;final_answer&gt;&quot;</span> <span class="keyword">in</span> content:</span><br><span class="line">                final_answer = re.search(<span class="string">r&quot;&lt;final_answer&gt;(.*?)&lt;/final_answer&gt;&quot;</span>, content, re.DOTALL)</span><br><span class="line">                <span class="keyword">return</span> final_answer.group(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 检测 Action</span></span><br><span class="line">            action_match = re.search(<span class="string">r&quot;&lt;action&gt;(.*?)&lt;/action&gt;&quot;</span>, content, re.DOTALL)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> action_match:</span><br><span class="line">                <span class="keyword">raise</span> RuntimeError(<span class="string">&quot;模型未输出 &lt;action&gt;&quot;</span>)</span><br><span class="line">            action = action_match.group(<span class="number">1</span>)</span><br><span class="line">            tool_name, args = self.parse_action(action)</span><br><span class="line"></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;\n\n🔧 Action: <span class="subst">&#123;tool_name&#125;</span>(<span class="subst">&#123;<span class="string">&#x27;, &#x27;</span>.join(args)&#125;</span>)&quot;</span>)</span><br><span class="line">            <span class="comment"># 只有终端命令才需要询问用户，其他的工具直接执行</span></span><br><span class="line">            should_continue = <span class="built_in">input</span>(<span class="string">f&quot;\n\n是否继续？（Y/N）&quot;</span>) <span class="keyword">if</span> tool_name == <span class="string">&quot;run_terminal_command&quot;</span> <span class="keyword">else</span> <span class="string">&quot;y&quot;</span></span><br><span class="line">            <span class="keyword">if</span> should_continue.lower() != <span class="string">&#x27;y&#x27;</span>:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;\n\n操作已取消。&quot;</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;操作被用户取消&quot;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                observation = self.tools[tool_name](*args)</span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">                observation = <span class="string">f&quot;工具执行错误：<span class="subst">&#123;<span class="built_in">str</span>(e)&#125;</span>&quot;</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;\n\n🔍 Observation：<span class="subst">&#123;observation&#125;</span>&quot;</span>)</span><br><span class="line">            obs_msg = <span class="string">f&quot;&lt;observation&gt;<span class="subst">&#123;observation&#125;</span>&lt;/observation&gt;&quot;</span></span><br><span class="line">            messages.append(&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: obs_msg&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_tool_list</span>(<span class="params">self</span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;生成工具列表字符串，包含函数签名和简要说明&quot;&quot;&quot;</span></span><br><span class="line">        tool_descriptions = []</span><br><span class="line">        <span class="keyword">for</span> func <span class="keyword">in</span> self.tools.values():</span><br><span class="line">            name = func.__name__</span><br><span class="line">            signature = <span class="built_in">str</span>(inspect.signature(func))</span><br><span class="line">            doc = inspect.getdoc(func)</span><br><span class="line">            tool_descriptions.append(<span class="string">f&quot;- <span class="subst">&#123;name&#125;</span><span class="subst">&#123;signature&#125;</span>: <span class="subst">&#123;doc&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;\n&quot;</span>.join(tool_descriptions)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">render_system_prompt</span>(<span class="params">self, system_prompt_template: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;渲染系统提示模板，替换变量&quot;&quot;&quot;</span></span><br><span class="line">        tool_list = self.get_tool_list()</span><br><span class="line">        file_list = <span class="string">&quot;, &quot;</span>.join(</span><br><span class="line">            os.path.abspath(os.path.join(self.project_directory, f))</span><br><span class="line">            <span class="keyword">for</span> f <span class="keyword">in</span> os.listdir(self.project_directory)</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span> Template(system_prompt_template).substitute(</span><br><span class="line">            operating_system=self.get_operating_system_name(),</span><br><span class="line">            tool_list=tool_list,</span><br><span class="line">            file_list=file_list</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_api_key</span>() -&gt; <span class="built_in">str</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Load the API key from an environment variable.&quot;&quot;&quot;</span></span><br><span class="line">        load_dotenv()</span><br><span class="line">        api_key = os.getenv(<span class="string">&quot;OPENROUTER_API_KEY&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> api_key:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&quot;未找到 OPENROUTER_API_KEY 环境变量，请在 .env 文件中设置。&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> api_key</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call_model</span>(<span class="params">self, messages</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;\n\n正在请求模型，请稍等...&quot;</span>)</span><br><span class="line">        response = self.client.chat.completions.create(</span><br><span class="line">            model=self.model,</span><br><span class="line">            messages=messages,</span><br><span class="line">        )</span><br><span class="line">        content = response.choices[<span class="number">0</span>].message.content</span><br><span class="line">        messages.append(&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;assistant&quot;</span>, <span class="string">&quot;content&quot;</span>: content&#125;)</span><br><span class="line">        <span class="keyword">return</span> content</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">parse_action</span>(<span class="params">self, code_str: <span class="built_in">str</span></span>) -&gt; <span class="type">Tuple</span>[<span class="built_in">str</span>, <span class="type">List</span>[<span class="built_in">str</span>]]:</span><br><span class="line">        <span class="keyword">match</span> = re.<span class="keyword">match</span>(<span class="string">r&#x27;(\w+)\((.*)\)&#x27;</span>, code_str, re.DOTALL)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">match</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&quot;Invalid function call syntax&quot;</span>)</span><br><span class="line"></span><br><span class="line">        func_name = <span class="keyword">match</span>.group(<span class="number">1</span>)</span><br><span class="line">        args_str = <span class="keyword">match</span>.group(<span class="number">2</span>).strip()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 手动解析参数，特别处理包含多行内容的字符串</span></span><br><span class="line">        args = []</span><br><span class="line">        current_arg = <span class="string">&quot;&quot;</span></span><br><span class="line">        in_string = <span class="literal">False</span></span><br><span class="line">        string_char = <span class="literal">None</span></span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        paren_depth = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> i &lt; <span class="built_in">len</span>(args_str):</span><br><span class="line">            char = args_str[i]</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> in_string:</span><br><span class="line">                <span class="keyword">if</span> char <span class="keyword">in</span> [<span class="string">&#x27;&quot;&#x27;</span>, <span class="string">&quot;&#x27;&quot;</span>]:</span><br><span class="line">                    in_string = <span class="literal">True</span></span><br><span class="line">                    string_char = char</span><br><span class="line">                    current_arg += char</span><br><span class="line">                <span class="keyword">elif</span> char == <span class="string">&#x27;(&#x27;</span>:</span><br><span class="line">                    paren_depth += <span class="number">1</span></span><br><span class="line">                    current_arg += char</span><br><span class="line">                <span class="keyword">elif</span> char == <span class="string">&#x27;)&#x27;</span>:</span><br><span class="line">                    paren_depth -= <span class="number">1</span></span><br><span class="line">                    current_arg += char</span><br><span class="line">                <span class="keyword">elif</span> char == <span class="string">&#x27;,&#x27;</span> <span class="keyword">and</span> paren_depth == <span class="number">0</span>:</span><br><span class="line">                    <span class="comment"># 遇到顶层逗号，结束当前参数</span></span><br><span class="line">                    args.append(self._parse_single_arg(current_arg.strip()))</span><br><span class="line">                    current_arg = <span class="string">&quot;&quot;</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    current_arg += char</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                current_arg += char</span><br><span class="line">                <span class="keyword">if</span> char == string_char <span class="keyword">and</span> (i == <span class="number">0</span> <span class="keyword">or</span> args_str[i-<span class="number">1</span>] != <span class="string">&#x27;\\&#x27;</span>):</span><br><span class="line">                    in_string = <span class="literal">False</span></span><br><span class="line">                    string_char = <span class="literal">None</span></span><br><span class="line">            </span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 添加最后一个参数</span></span><br><span class="line">        <span class="keyword">if</span> current_arg.strip():</span><br><span class="line">            args.append(self._parse_single_arg(current_arg.strip()))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> func_name, args</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_parse_single_arg</span>(<span class="params">self, arg_str: <span class="built_in">str</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;解析单个参数&quot;&quot;&quot;</span></span><br><span class="line">        arg_str = arg_str.strip()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 如果是字符串字面量</span></span><br><span class="line">        <span class="keyword">if</span> (arg_str.startswith(<span class="string">&#x27;&quot;&#x27;</span>) <span class="keyword">and</span> arg_str.endswith(<span class="string">&#x27;&quot;&#x27;</span>)) <span class="keyword">or</span> \</span><br><span class="line">           (arg_str.startswith(<span class="string">&quot;&#x27;&quot;</span>) <span class="keyword">and</span> arg_str.endswith(<span class="string">&quot;&#x27;&quot;</span>)):</span><br><span class="line">            <span class="comment"># 移除外层引号并处理转义字符</span></span><br><span class="line">            inner_str = arg_str[<span class="number">1</span>:-<span class="number">1</span>]</span><br><span class="line">            <span class="comment"># 处理常见的转义字符</span></span><br><span class="line">            inner_str = inner_str.replace(<span class="string">&#x27;\\&quot;&#x27;</span>, <span class="string">&#x27;&quot;&#x27;</span>).replace(<span class="string">&quot;\\&#x27;&quot;</span>, <span class="string">&quot;&#x27;&quot;</span>)</span><br><span class="line">            inner_str = inner_str.replace(<span class="string">&#x27;\\n&#x27;</span>, <span class="string">&#x27;\n&#x27;</span>).replace(<span class="string">&#x27;\\t&#x27;</span>, <span class="string">&#x27;\t&#x27;</span>)</span><br><span class="line">            inner_str = inner_str.replace(<span class="string">&#x27;\\r&#x27;</span>, <span class="string">&#x27;\r&#x27;</span>).replace(<span class="string">&#x27;\\\\&#x27;</span>, <span class="string">&#x27;\\&#x27;</span>)</span><br><span class="line">            <span class="keyword">return</span> inner_str</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 尝试使用 ast.literal_eval 解析其他类型</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">return</span> ast.literal_eval(arg_str)</span><br><span class="line">        <span class="keyword">except</span> (SyntaxError, ValueError):</span><br><span class="line">            <span class="comment"># 如果解析失败，返回原始字符串</span></span><br><span class="line">            <span class="keyword">return</span> arg_str</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_operating_system_name</span>(<span class="params">self</span>):</span><br><span class="line">        os_map = &#123;</span><br><span class="line">            <span class="string">&quot;Darwin&quot;</span>: <span class="string">&quot;macOS&quot;</span>,</span><br><span class="line">            <span class="string">&quot;Windows&quot;</span>: <span class="string">&quot;Windows&quot;</span>,</span><br><span class="line">            <span class="string">&quot;Linux&quot;</span>: <span class="string">&quot;Linux&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> os_map.get(platform.system(), <span class="string">&quot;Unknown&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read_file</span>(<span class="params">file_path</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;用于读取文件内容&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">return</span> f.read()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">write_to_file</span>(<span class="params">file_path, content</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;将指定内容写入指定文件&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&quot;w&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(content.replace(<span class="string">&quot;\\n&quot;</span>, <span class="string">&quot;\n&quot;</span>))</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;写入成功&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run_terminal_command</span>(<span class="params">command</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;用于执行终端命令&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">import</span> subprocess</span><br><span class="line">    run_result = subprocess.run(command, shell=<span class="literal">True</span>, capture_output=<span class="literal">True</span>, text=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;执行成功&quot;</span> <span class="keyword">if</span> run_result.returncode == <span class="number">0</span> <span class="keyword">else</span> run_result.stderr</span><br><span class="line"></span><br><span class="line"><span class="meta">@click.command()</span></span><br><span class="line"><span class="meta">@click.argument(<span class="params"><span class="string">&#x27;project_directory&#x27;</span>,</span></span></span><br><span class="line"><span class="params"><span class="meta">                <span class="built_in">type</span>=click.Path(<span class="params">exists=<span class="literal">True</span>, file_okay=<span class="literal">False</span>, dir_okay=<span class="literal">True</span></span>)</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>(<span class="params">project_directory</span>):</span><br><span class="line">    project_dir = os.path.abspath(project_directory)</span><br><span class="line"></span><br><span class="line">    tools = [read_file, write_to_file, run_terminal_command]</span><br><span class="line">    agent = ReActAgent(tools=tools, model=<span class="string">&quot;openai/gpt-4o&quot;</span>, project_directory=project_dir)</span><br><span class="line"></span><br><span class="line">    task = <span class="built_in">input</span>(<span class="string">&quot;请输入任务：&quot;</span>)</span><br><span class="line"></span><br><span class="line">    final_answer = agent.run(task)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;\n\n✅ Final Answer：<span class="subst">&#123;final_answer&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>prompt_template.py：系统提示词，规范输入和输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">react_system_prompt_template = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">你需要解决一个问题。为此，你需要将问题分解为多个步骤。对于每个步骤，首先使用 &lt;thought&gt; 思考要做什么，然后使用可用工具之一决定一个 &lt;action&gt;。接着，你将根据你的行动从环境/工具中收到一个 &lt;observation&gt;。持续这个思考和行动的过程，直到你有足够的信息来提供 &lt;final_answer&gt;。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">所有步骤请严格使用以下 XML 标签格式输出：</span></span><br><span class="line"><span class="string">- &lt;question&gt; 用户问题</span></span><br><span class="line"><span class="string">- &lt;thought&gt; 思考</span></span><br><span class="line"><span class="string">- &lt;action&gt; 采取的工具操作</span></span><br><span class="line"><span class="string">- &lt;observation&gt; 工具或环境返回的结果</span></span><br><span class="line"><span class="string">- &lt;final_answer&gt; 最终答案</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">⸻</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">例子 1:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&lt;question&gt;埃菲尔铁塔有多高？&lt;/question&gt;</span></span><br><span class="line"><span class="string">&lt;thought&gt;我需要找到埃菲尔铁塔的高度。可以使用搜索工具。&lt;/thought&gt;</span></span><br><span class="line"><span class="string">&lt;action&gt;get_height(&quot;埃菲尔铁塔&quot;)&lt;/action&gt;</span></span><br><span class="line"><span class="string">&lt;observation&gt;埃菲尔铁塔的高度约为330米（包含天线）。&lt;/observation&gt;</span></span><br><span class="line"><span class="string">&lt;thought&gt;搜索结果显示了高度。我已经得到答案了。&lt;/thought&gt;</span></span><br><span class="line"><span class="string">&lt;final_answer&gt;埃菲尔铁塔的高度约为330米。&lt;/final_answer&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">⸻</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">例子 2:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&lt;question&gt;帮我找一个简单的番茄炒蛋食谱，并看看家里的冰箱里有没有西红柿。&lt;/question&gt;</span></span><br><span class="line"><span class="string">&lt;thought&gt;这个任务分两步。第一步，找到番茄炒蛋的食谱。第二步，检查冰箱里是否有西红柿。我先用 find_recipe 工具找食谱。&lt;/thought&gt;</span></span><br><span class="line"><span class="string">&lt;action&gt;find_recipe(dish=&quot;番茄炒蛋&quot;)&lt;/action&gt;</span></span><br><span class="line"><span class="string">&lt;observation&gt;简单的番茄炒蛋食谱：将2个鸡蛋打散，2个番茄切块。热油，先炒鸡蛋，盛出。再热油，炒番茄至软烂，加入鸡蛋，放盐调味即可。&lt;/observation&gt;</span></span><br><span class="line"><span class="string">&lt;thought&gt;好的，我已经有食谱了。食谱需要西红柿。现在我需要用 check_fridge 工具看看冰箱里有没有西红柿。&lt;/thought&gt;</span></span><br><span class="line"><span class="string">&lt;action&gt;check_fridge(item=&quot;西红柿&quot;)&lt;/action&gt;</span></span><br><span class="line"><span class="string">&lt;observation&gt;冰箱检查结果：有3个西红柿。&lt;/observation&gt;</span></span><br><span class="line"><span class="string">&lt;thought&gt;我找到了食谱，并且确认了冰箱里有西红柿。可以回答问题了。&lt;/thought&gt;</span></span><br><span class="line"><span class="string">&lt;final_answer&gt;简单的番茄炒蛋食谱是：鸡蛋打散，番茄切块。先炒鸡蛋，再炒番茄，混合后加盐调味。冰箱里有3个西红柿。&lt;/final_answer&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">⸻</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">请严格遵守：</span></span><br><span class="line"><span class="string">- 你每次回答都必须包括两个标签，第一个是 &lt;thought&gt;，第二个是 &lt;action&gt; 或 &lt;final_answer&gt;</span></span><br><span class="line"><span class="string">- 输出 &lt;action&gt; 后立即停止生成，等待真实的 &lt;observation&gt;，擅自生成 &lt;observation&gt; 将导致错误</span></span><br><span class="line"><span class="string">- 如果 &lt;action&gt; 中的某个工具参数有多行的话，请使用 \n 来表示，如：&lt;action&gt;write_to_file(&quot;/tmp/test.txt&quot;, &quot;a\nb\nc&quot;)&lt;/action&gt;</span></span><br><span class="line"><span class="string">- 工具参数中的文件路径请使用绝对路径，不要只给出一个文件名。比如要写 write_to_file(&quot;/tmp/test.txt&quot;, &quot;内容&quot;)，而不是 write_to_file(&quot;test.txt&quot;, &quot;内容&quot;)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">⸻</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">本次任务可用工具：</span></span><br><span class="line"><span class="string">$&#123;tool_list&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">⸻</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">环境信息：</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">操作系统：$&#123;operating_system&#125;</span></span><br><span class="line"><span class="string">当前目录下文件列表：$&#123;file_list&#125;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2025/12/01/AA_LLM_Agent/" title="LLM_Agent" target="_blank" rel="external">https://fuyunjinglong.github.io/2025/12/01/AA_LLM_Agent/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2026/03/10/Test%20copy/" title="(no title)"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2025/11/24/AA_LLM_windows%E5%AE%89%E8%A3%85%E5%A4%A7%E6%A8%A1%E5%9E%8B/" title="LLM_windows安装大模型"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

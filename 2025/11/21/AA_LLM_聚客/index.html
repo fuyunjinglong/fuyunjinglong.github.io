@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>LLM_聚客第3期推荐 | Hexo</title>
+  <meta name="description" content="大纲推荐学习第3期，每期都一样，只是迭代升级。注意跟代码就完了，主要是注释的思路和逻辑。 目前AI大模型开发主要集中在1.LLM 训练与微调应用，2.RAG 检索增强生成应用，3.Agent 智能体应用。多模态目前真实落地情况还有待解决。 推荐书籍：《大规模语言模型：从理论到实践》 AI团队布局AI产品经理 AI大模型应用开发   NL大模型 跨模态，以图片为主 模型平常   AI大模型算法工程师">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LLM_聚客第3期推荐">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2025/11/21/AA_LLM_%E8%81%9A%E5%AE%A2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="大纲推荐学习第3期，每期都一样，只是迭代升级。注意跟代码就完了，主要是注释的思路和逻辑。 目前AI大模型开发主要集中在1.LLM 训练与微调应用，2.RAG 检索增强生成应用，3.Agent 智能体应用。多模态目前真实落地情况还有待解决。 推荐书籍：《大规模语言模型：从理论到实践》 AI团队布局AI产品经理 AI大模型应用开发   NL大模型 跨模态，以图片为主 模型平常   AI大模型算法工程师">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/聚客LLM大模型.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-13_09-47-25.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-01_07-25-07.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-11-28_20-07-08.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-11-28_21-06-31.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-11-28_20-46-51.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-11-28_21-24-46.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-11-28_21-29-01.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-11-30_14-56-32.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-11-30_16-04-19.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-01_06-26-49.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-01_06-57-25.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-02_08-18-11.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-02_08-27-14.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-02_19-44-13.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-02_19-41-51.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-03_20-24-15.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-03_20-24-54.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-03_20-28-11.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-03_18-41-00.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-03_18-46-19.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-03_18-49-50.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-03_18-53-55.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-03_18-55-57.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-03_19-20-35.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-03_19-21-20.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-03_19-29-16.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-03_19-34-04.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-04_19-44-11.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-04_19-48-07.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-06_09-20-54.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-06_09-21-54.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-06_09-51-42.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-06_10-15-28.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-06_11-17-52.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-08_22-09-58.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-08_22-55-40.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-08_23-01-44.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-08_23-04-14.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-08_23-06-01.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-10_19-16-06.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-11_19-54-21.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-10_19-20-12.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-10_19-22-50.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-11_19-24-00.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-11_19-30-30.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-11_19-32-18.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-11_20-00-52.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-11_20-09-31.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-13_08-30-12.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-11_19-51-36.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-13_08-37-37.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-13_08-40-27.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-13_08-58-11.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-13_08-59-57.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-13_09-26-13.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-15_19-52-33.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-16_08-18-13.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2026-01-18_18-09-01.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2026-01-18_18-14-14.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2026-01-18_18-21-42.png">
+<meta property="article:published_time" content="2025-11-20T22:33:16.000Z">
+<meta property="article:modified_time" content="2026-03-10T14:02:53.328Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/聚客LLM大模型.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2025/11/21/AA_LLM_%E8%81%9A%E5%AE%A2/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-LLM/">B_LLM</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">21</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/09/">九月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/06/">六月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">三月 2026</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/12/">十二月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/11/">十一月 2025</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">三月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">二月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/06/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_0%E5%9F%BA%E7%A1%80/" class="title">0基础_工程热点</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-05T22:33:16.000Z" itemprop="datePublished">2099-11-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/I-%E7%A7%BB%E5%8A%A8%E7%AB%AF/">I_移动端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/05/I_%E7%A7%BB%E5%8A%A8%E7%AB%AF_0%E5%9F%BA%E7%A1%80/" class="title">0基础_移动端</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-04T22:33:16.000Z" itemprop="datePublished">2099-11-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/" class="title">0基础_计算机网络</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-03T22:33:16.000Z" itemprop="datePublished">2099-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_0%E5%9F%BA%E7%A1%80/" class="title">0基础_数据结构</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_%E5%9F%BA%E7%A1%80/" class="title">0基础_设计模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%A7%E7%BA%B2"><span class="toc-number">1.</span> <span class="toc-text">大纲</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AI%E5%9B%A2%E9%98%9F%E5%B8%83%E5%B1%80"><span class="toc-number">2.</span> <span class="toc-text">AI团队布局</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="toc-number">3.</span> <span class="toc-text">开发环境</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BB-%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">4.</span> <span class="toc-text">主-前置知识</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BB-LLM-%E8%AE%AD%E7%BB%83%E4%B8%8E%E5%BE%AE%E8%B0%83%E5%BA%94%E7%94%A8"><span class="toc-number">5.</span> <span class="toc-text">主-LLM 训练与微调应用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hugging-Face-ModelScope-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E4%BD%BF%E7%94%A8"><span class="toc-number">5.1.</span> <span class="toc-text">Hugging Face &#x2F; ModelScope 核心组件使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8EBert%E7%9A%84%E4%B8%AD%E6%96%87%E8%AF%84%E4%BB%B7%E6%83%85%E6%84%9F%E5%88%86%E6%9E%90-AI%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B%E5%AE%9E%E8%B7%B5-%E6%B3%A8%E9%87%8A%E6%AF%94%E4%BB%A3%E7%A0%81%E9%87%8D%E8%A6%81"><span class="toc-number">5.2.</span> <span class="toc-text">基于Bert的中文评价情感分析(AI开发流程实践,注释比代码重要)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1%E9%9C%80%E6%B1%82%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87-%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE-%E4%B8%8B%E8%BD%BD%E6%95%B0%E6%8D%AE%E9%9B%86%E5%88%B0%E6%9C%AC%E5%9C%B0"><span class="toc-number">5.2.1.</span> <span class="toc-text">1.1需求数据准备-获取数据(下载数据集到本地)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2%E9%9C%80%E6%B1%82%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87-%E5%88%B6%E4%BD%9C%E6%95%B0%E6%8D%AE%E9%9B%86%EF%BC%8C%E8%BD%AC%E6%8D%A2%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F-%E6%95%B0%E6%8D%AE%E9%9B%86%E8%BD%AC%E5%8C%96%E4%B8%BA%E6%A8%A1%E5%9E%8B%E5%88%9D%E5%A7%8B%E6%95%B0%E6%8D%AE"><span class="toc-number">5.2.2.</span> <span class="toc-text">1.2需求数据准备-制作数据集，转换数据格式(数据集转化为模型初始数据)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1%E6%A8%A1%E5%9E%8B%E9%80%89%E5%9E%8B-%E8%AE%BE%E8%AE%A1-%E5%A2%9E%E9%87%8F%E5%BE%AE%E8%B0%83"><span class="toc-number">5.2.3.</span> <span class="toc-text">2.1模型选型&#x2F;设计-增量微调</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83-%E5%8A%A0%E8%BD%BD%E6%A8%A1%E5%9E%8B%E5%92%8C%E6%95%B0%E6%8D%AE%EF%BC%8C%E5%BC%80%E5%A7%8B%E8%AE%AD%E7%BB%83"><span class="toc-number">5.2.4.</span> <span class="toc-text">3.1模型训练-加载模型和数据，开始训练</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2%E8%A7%82%E5%AF%9F%E7%8A%B6%E6%80%81"><span class="toc-number">5.2.5.</span> <span class="toc-text">3.2观察状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%95%88%E6%9E%9C%E8%AF%84%E4%BC%B0"><span class="toc-number">5.2.6.</span> <span class="toc-text">4.效果评估</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GPT2-%E4%B8%AD%E6%96%87%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E5%AE%9A%E5%88%B6%E5%8C%96"><span class="toc-number">5.3.</span> <span class="toc-text">GPT2-中文生成模型定制化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E6%96%87%E7%99%BD%E8%AF%9D%E6%96%87%E7%BB%AD%E5%86%99"><span class="toc-number">5.3.1.</span> <span class="toc-text">中文白话文续写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E8%AE%AD%E7%BB%83GPT2%E4%B8%AD%E6%96%87%E6%A8%A1%E5%9E%8B-%E5%85%A8%E9%87%8F%E5%BE%AE%E8%B0%83-%E8%AE%AD%E7%BB%83%E6%9D%83%E9%87%8D"><span class="toc-number">5.3.2.</span> <span class="toc-text">本地训练GPT2中文模型 -全量微调+训练权重</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AE%AD%E7%BB%83GPT2%E4%B8%AD%E6%96%87%E6%A8%A1%E5%9E%8B-%E5%85%A8%E9%87%8F%E5%BE%AE%E8%B0%83"><span class="toc-number">5.3.3.</span> <span class="toc-text">服务器训练GPT2中文模型-全量微调</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A7%81%E6%9C%89%E5%8C%96%E9%83%A8%E7%BD%B2%E5%A4%A7%E6%A8%A1%E5%9E%8B"><span class="toc-number">5.4.</span> <span class="toc-text">服务器私有化部署大模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AD%94%E5%A1%94%E7%A4%BE%E5%8C%BAModelScope-%E4%BA%86%E8%A7%A3%E5%8E%9F%E7%90%86"><span class="toc-number">5.4.1.</span> <span class="toc-text">魔塔社区ModelScope-了解原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ollama%E9%83%A8%E7%BD%B2%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E4%B8%AA%E4%BA%BA%E7%94%A8%E6%88%B7"><span class="toc-number">5.4.2.</span> <span class="toc-text">Ollama部署大模型-个人用户</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vLLM%E9%83%A8%E7%BD%B2%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E5%95%86%E4%B8%9A%E5%AE%A2%E6%88%B7"><span class="toc-number">5.4.3.</span> <span class="toc-text">vLLM部署大模型-商业客户</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LMDeploy%E9%83%A8%E7%BD%B2%E5%A4%A7%E6%A8%A1%E5%9E%8B-%E6%8E%A8%E8%8D%90"><span class="toc-number">5.4.4.</span> <span class="toc-text">LMDeploy部署大模型-推荐</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BE%AE%E8%B0%83"><span class="toc-number">5.5.</span> <span class="toc-text">大模型微调</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#LORA%E5%BE%AE%E8%B0%83"><span class="toc-number">5.5.1.</span> <span class="toc-text">LORA微调</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#QLORA%E5%BE%AE%E8%B0%83"><span class="toc-number">5.5.2.</span> <span class="toc-text">QLORA微调</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GGUF"><span class="toc-number">5.5.3.</span> <span class="toc-text">GGUF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LLamaFactory%E5%BE%AE%E8%B0%83%E6%95%88%E6%9E%9C%E4%B8%8Evllm%E9%83%A8%E7%BD%B2%E6%95%88%E6%9E%9C%E4%B8%8D%E4%B8%80%E8%87%B4"><span class="toc-number">5.5.4.</span> <span class="toc-text">LLamaFactory微调效果与vllm部署效果不一致</span></a></li></ol></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-AA_LLM_聚客" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      LLM_聚客第3期推荐
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2025/11/21/AA_LLM_%E8%81%9A%E5%AE%A2/" class="article-date">
+	  <time datetime="2025-11-20T22:33:16.000Z" itemprop="datePublished">2025-11-21</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/B-LLM/">B_LLM</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2025/11/21/AA_LLM_%E8%81%9A%E5%AE%A2/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h1><p>推荐学习第3期，每期都一样，只是迭代升级。注意跟代码就完了，主要是注释的思路和逻辑。</p>
+<p>目前AI大模型开发主要集中在1.LLM 训练与微调应用，2.RAG 检索增强生成应用，3.Agent 智能体应用。多模态目前真实落地情况还有待解决。</p>
+<p>推荐书籍：《大规模语言模型：从理论到实践》</p>
+<h1 id="AI团队布局"><a href="#AI团队布局" class="headerlink" title="AI团队布局"></a>AI团队布局</h1><p>AI产品经理</p>
+<p>AI大模型应用开发</p>
+<blockquote>
+<ul>
+<li>NL大模型</li>
+<li>跨模态，以图片为主</li>
+<li>模型平常</li>
+</ul>
+</blockquote>
+<p>AI大模型算法工程师</p>
+<blockquote>
+<ul>
+<li>模型压缩技术-量化、蒸馏</li>
+<li>推理优化</li>
+</ul>
+</blockquote>
+<img src="/img/聚客LLM大模型.png" style="zoom:80%;" />
+
+<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><p>cuda是用来加速训练和推理。cuda只能在N卡才有，mac电脑只能去算力平台租赁，如算力租赁网站：<a target="_blank" rel="noopener" href="https://autodl.com/home%E3%80%82">https://autodl.com/home。</a></p>
+<ul>
+<li>科学上网</li>
+<li>anaconda-下载对应版本，是python的集成环境。(傻瓜式安装，注意安装时要选当前用户，然后下一步选中自动配置环境变量)</li>
+<li>cuda驱动-去英伟达官网下载驱动,建议12.4版本，对应PyTorch2.5.1版本。查看window环境cuda最高支持的版本命令：nvidia-smi。查看当前cuda版本：nvcc -V。(网上大量安装教程，需要英伟达的独立显卡，建议显存16GB以上)</li>
+<li>创建一个cuda新环境-去<a target="_blank" rel="noopener" href="http://pytorch.org/">官网</a>获取命令安装cuda对应的pytorch版本(使用pip命令)</li>
+<li>下载安装pucharm的社区版本(专业版收费)，它是用来python编程的</li>
+<li>一定是<strong>window10专业版</strong>(不能是家庭版)，安装所有东西前一定要<strong>重装系统</strong>，否则环境无法正常搭建</li>
+</ul>
+<h1 id="主-前置知识"><a href="#主-前置知识" class="headerlink" title="主-前置知识"></a>主-前置知识</h1><p><a target="_blank" rel="noopener" href="https://playground.tensorflow.org/">神经网络模型训练</a></p>
+<img src="/img/2025-12-13_09-47-25.png" style="zoom:50%;" />
+
+<p><strong>大模型是什么？</strong></p>
+<blockquote>
+<p>参数量在10亿(1b)以上的才叫大模型。以前有个叫深度学习，当深度学习参数超过10亿后，出现了智能化。</p>
+</blockquote>
+<p><strong>AI大模型是什么？</strong></p>
+<blockquote>
+<p>和写代码关系不大，核心是数学模型，也称为人工神经网络，本质是做矩阵运算的。</p>
+</blockquote>
+<p><strong>AI大模型如何分类？</strong></p>
+<blockquote>
+<ul>
+<li>自然语义大模型(大模型的核心技术)</li>
+<li>多模块大模型(图片、音视频等)</li>
+</ul>
+</blockquote>
+<p><strong>CPU和GPU的差别？</strong></p>
+<blockquote>
+<ul>
+<li>cpu:串行能力强(计算频率高，核心数少)</li>
+<li>gpu:并行能力强(计算频率低，核心数多)。支持cuda,cuda多就是核心数多。</li>
+</ul>
+</blockquote>
+<p><strong>AI项目开发流程(对应下面Bert情感分析中的流程)</strong></p>
+<p>AI开发完整流程：数据集-预训练-微调-部署-评测-应用</p>
+<p>预训练：从头开始训练一个全新的模型，参数完全随机，不能处理任何问题。相当复杂，大公司才有实力研发。</p>
+<p>微调训练(迁移学习)：基于之前训练好的模型，学习新的或特定的任务。</p>
+<blockquote>
+<ul>
+<li>1.需求数据准备<ul>
+<li>1.1获取数据</li>
+<li>1.2制作数据集，转换数据格式</li>
+</ul>
+</li>
+<li>2.模型选型/设计<ul>
+<li>2.1增量微调(增加模型并对增加的模型微调)</li>
+</ul>
+</li>
+<li>3.模型训练<ul>
+<li>3.1加载模型和数据，开始训练</li>
+<li>3.2观察状态</li>
+</ul>
+</li>
+<li>4.效果评估(模型交付标准)<ul>
+<li>4.1客观评估：固定指标、客观数据如acc,注意评估时使用test训练集-对分类模型有效，如淘宝评论</li>
+<li>4.2主观评估：人为挑选部分代表性数据，观察模型的输出结果-对生成式模型有效</li>
+</ul>
+</li>
+<li>5.部署</li>
+</ul>
+</blockquote>
+<p>模型评估的三大指标</p>
+<blockquote>
+<ul>
+<li><p>精度：即准确率，模型越大精度越高</p>
+</li>
+<li><p>性能：处理模型时的速度，模型越小性能越快</p>
+</li>
+<li><p>泛化性：指预训练模型(下面冻结的BertEncoder模型)的能力，主要与人为有一定关系。主要指AI训练时的3个指标</p>
+<ul>
+<li><p>欠拟合：模型分布弱于真实数据分布(训练时间不够；模型过于简单)。loss过大，就是欠拟合，加大训练量即可。一般项目交付时都是欠拟合的。</p>
+</li>
+<li><p>拟合：模型分布恰好能够表达真实数据分布(训练的理想状态)</p>
+</li>
+<li><p>过拟合：模型分布过度拟合真实数据分布，使得模型结果依赖数据中的噪声信息，一旦数据变化，可能结果错误。如：识别猫狗。猫的背景是红色，狗的背景是蓝色。如果测试数据换成猫的背景蓝色，可能就出错，因为依赖了背景色判断猫狗。</p>
+<p>validation验证数据集主要用来验证模型是否存在过拟合。一般以目前的模型和设备是不会达到过拟合，因为需要大量时间。</p>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>泛化性如下图：</p>
+<img src="/img/2025-12-01_07-25-07.png" style="zoom:50%;" />
+
+<p><strong>Transformers核心</strong></p>
+<p>Transformers是从sep2seq自然语义模型改进来的，</p>
+<blockquote>
+<ul>
+<li>Bert(分类)-编码器，独立可做分类模型。提取特征向量，输入到解码器。</li>
+<li>GPT(生成)-解码器，独立可做生成模型。</li>
+</ul>
+</blockquote>
+<p><strong>微调方式</strong></p>
+<blockquote>
+<ul>
+<li>全量微调<ul>
+<li>对所有参数进行微调</li>
+<li>对算力和显存要求高</li>
+<li>效果最佳，也可能效果不如以前</li>
+</ul>
+</li>
+<li>局部微调-生成式模型采用这种模式，如LORA<ul>
+<li>只调整某些某部分参数， 例如输出层， 输入层或某些特殊层</li>
+<li>对算力和显存要求一般</li>
+<li>一定是有效果的</li>
+</ul>
+</li>
+<li>增量微调-如Bert增加的全连接模型<ul>
+<li>通过新增参数的方式进行微调， 新的知识存储在新的参数中。</li>
+<li>对显存和算力要求低</li>
+<li>效果不如全量微调</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h1 id="主-LLM-训练与微调应用"><a href="#主-LLM-训练与微调应用" class="headerlink" title="主-LLM 训练与微调应用"></a>主-LLM 训练与微调应用</h1><h2 id="Hugging-Face-ModelScope-核心组件使用"><a href="#Hugging-Face-ModelScope-核心组件使用" class="headerlink" title="Hugging Face / ModelScope 核心组件使用"></a>Hugging Face / ModelScope 核心组件使用</h2><blockquote>
+<p>1.Hugging Face模型探索与下载</p>
+<p>2.使用Hugging Face API调用模型(不推荐，实用性差，因为需要科学上网。大模型核心都是私有化部署)</p>
+<p>3.Hugging Face本地模型调用(推荐)</p>
+<p>4.Hugging Face核心组件Transformers、 datasets介绍</p>
+</blockquote>
+<p>目前要获取市面上所有的模型，只有2个途径，国外Hugging Face和国内阿里的ModelScope。阿里的可能不是那么及时和完整。hf相当于AI界的github。</p>
+<p>去<a target="_blank" rel="noopener" href="https://huggingface.co/">官网</a>邮箱注册，注意点击ascess key，生成自己的key,一定要本地保存好。后续会使用。</p>
+<p>安装基本依赖库</p>
+<blockquote>
+<p>pip install transformers datasets tokenizers  </p>
+</blockquote>
+<p>打开pucharm开发软件</p>
+<blockquote>
+<p>创建本地环境previously configured interpreter,并选择anaconda下的python，没有则右侧添加一个。弹窗中选择system interpreter,选中本地anaconda安装目录下的python.exe即可。</p>
+</blockquote>
+<p><strong>1.Hugging Face模型探索与下载</strong></p>
+<p>提供了一个庞大的模型库，你可以通过以下步骤来查找所需的模型：</p>
+<ol>
+<li><p>访问 模型库页面。</p>
+</li>
+<li><p>在搜索栏中输入关键字，如 “GPT-2” 或 “BERT”，然后点击搜索。</p>
+</li>
+<li><p>你可以使用左侧的过滤器按任务、框架、语言等条件筛选模型</p>
+</li>
+</ol>
+<p><strong>2.使用Hugging Face API调用模型(不推荐，实用性差，因为需要科学上网。大模型核心都是私有化部署)</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="comment">#使用Token访问在线模型</span></span><br><span class="line"></span><br><span class="line">API_URL = <span class="string">&quot;https://api-inference.huggingface.co/models/uer/gpt2-chinese-cluecorpussmall&quot;</span></span><br><span class="line">API_TOKEN = <span class="string">&quot;xxxx&quot;</span></span><br><span class="line">headers = &#123;<span class="string">&quot;Authorization&quot;</span>: <span class="string">f&quot;Bearer <span class="subst">&#123;API_TOKEN&#125;</span>&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">response = requests.post(API_URL,headers=headers,json=&#123;<span class="string">&quot;inputs&quot;</span>:<span class="string">&quot;你好，Hugging face&quot;</span>&#125;)</span><br><span class="line"><span class="built_in">print</span>(response.json())</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.Hugging Face本地模型调用(推荐)</strong></p>
+<p><em>注意：模型可先离线下载模型，也可以在线下载模型</em></p>
+<p>基本用法-在线下载模型，使用GPT2</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#将模型下载到本地调用，AutoModelForCausalLM模块是请求模型头用的， AutoTokenizer是分词器即将文本转为模型可识别的数据</span></span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoModelForCausalLM,AutoTokenizer</span><br><span class="line"></span><br><span class="line"><span class="comment">#将模型和分词器下载到本地，并指定保存路径</span></span><br><span class="line"><span class="comment"># hf官方复制模型名称</span></span><br><span class="line">model_name = <span class="string">&quot;uer/gpt2-chinese-cluecorpussmall&quot;</span></span><br><span class="line"><span class="comment"># 本地相对路径</span></span><br><span class="line">cache_dir = <span class="string">&quot;model/uer/gpt2-chinese-cluecorpussmall&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#下载模型</span></span><br><span class="line">AutoModelForCausalLM.from_pretrained(model_name,cache_dir=cache_dir)</span><br><span class="line"><span class="comment">#下载分词工具</span></span><br><span class="line">AutoTokenizer.from_pretrained(model_name,cache_dir=cache_dir)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;模型分词器已下载到：<span class="subst">&#123;cache_dir&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>离线下载模型，使用GPT2，pipeline优化参数(3个核心参数)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#本地离线调用GPT2</span></span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoModelForCausalLM,AutoTokenizer,pipeline</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置具体包含config.json的目录，只支持绝对路径</span></span><br><span class="line">model_dir = <span class="string">r&quot;D:\PycharmProjects\demo_1\trsanformers_test\model\uer\gpt2-chinese-cluecorpussmall\models--uer--gpt2-chinese-cluecorpussmall\snapshots\c2c0249d8a2731f269414cc3b22dff021f8e07a3&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#加载模型和分词器</span></span><br><span class="line">model = AutoModelForCausalLM.from_pretrained(model_dir)</span><br><span class="line">tokenizer = AutoTokenizer.from_pretrained(model_dir)</span><br><span class="line"></span><br><span class="line"><span class="comment">#使用加载的模型和分词器创建生成文本的pipeline，device可选cpu或cuda(显存跑模型)</span></span><br><span class="line">generator = pipeline(<span class="string">&quot;text-generation&quot;</span>,model=model,tokenizer=tokenizer,device=<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#生成文本</span></span><br><span class="line"><span class="comment"># output = generator(&quot;你好，我是一款语言模型，&quot;,max_length=50,num_return_sequences=1)</span></span><br><span class="line">output = generator(</span><br><span class="line">    <span class="string">&quot;你好，我是一款语言模型，&quot;</span>,<span class="comment">#生成文本的输入种子文本（prompt）。模型会根据这个初始文本，生成后续的文本</span></span><br><span class="line">    max_length=<span class="number">50</span>,<span class="comment">#指定生成文本的最大长度。这里的 50 表示生成的文本最多包含 50 个标记（tokens）</span></span><br><span class="line">    num_return_sequences=<span class="number">1</span>,<span class="comment">#参数指定返回多少个独立生成的文本序列。值为 1 表示只生成并返回一段文本。</span></span><br><span class="line">    truncation=<span class="literal">True</span>,<span class="comment">#该参数决定是否截断输入文本以适应模型的最大输入长度。如果 True，超出模型最大输入长度的部分将被截断；如果 False，模型可能无法处理过长的输入，可能会报错。</span></span><br><span class="line">    temperature=<span class="number">0.7</span>,<span class="comment">#重要-该参数控制生成文本的随机性。值越低，生成的文本越保守（倾向于选择概率较高的词）；值越高，生成的文本越多样（倾向于选择更多不同的词）。0.7 是一个较为常见的设置，既保留了部分随机性，又不至于太混乱。</span></span><br><span class="line">    top_k=<span class="number">50</span>,<span class="comment">#重要-该参数限制模型在每一步生成时仅从概率最高的 k 个词中选择下一个词。这里 top_k=50 表示模型在生成每个词时只考虑概率最高的前 50 个候选词，从而减少生成不太可能的词的概率。</span></span><br><span class="line">    top_p=<span class="number">0.9</span>,<span class="comment">#重要-该参数（又称为核采样）进一步限制模型生成时的词汇选择范围。它会选择一组累积概率达到 p 的词汇，模型只会从这个概率集合中采样。top_p=0.9 意味着模型会在可能性最强的 90% 的词中选择下一个词，进一步增加生成的质量。</span></span><br><span class="line">    clean_up_tokenization_spaces=<span class="literal">True</span><span class="comment">#该参数控制生成的文本中是否清理分词时引入的空格。如果设置为 True，生成的文本会清除多余的空格；如果为 False，则保留原样。默认值即将改变为 False，因为它能更好地保留原始文本的格式。</span></span><br><span class="line">)</span><br><span class="line"><span class="built_in">print</span>(output)</span><br></pre></td></tr></table></figure>
+
+<p><strong>4.Hugging Face核心组件Transformers、 datasets介绍</strong></p>
+<p>下载后的模型文件如下图：</p>
+<p><img src="/img/2025-11-28_20-07-08.png" alt="image"></p>
+<p><em>Transformers核心有两部分：Bert(分类)和GPT(生成)</em></p>
+<p>在线下载模型，使用Transform的Bert分类模型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># 在线下载模型，使用Transform的Bert</span><br><span class="line">from transformers import BertTokenizer,BertForSequenceClassification,pipeline</span><br><span class="line"></span><br><span class="line">#设置具体包含config.json的目录，只支持绝对路径(在线下载模型，使用相对路径)</span><br><span class="line">model_dir = r&quot;model\bert-base-chinese&quot;</span><br><span class="line"></span><br><span class="line">#加载模型和分词器(在线下载模型，声明模型名称)</span><br><span class="line">model = BertForSequenceClassification.from_pretrained(&quot;bert-base-chinese&quot;,cache_dir=model_dir)</span><br><span class="line">tokenizer = BertTokenizer.from_pretrained(&quot;bert-base-chinese&quot;,cache_dir=model_dir)</span><br><span class="line"></span><br><span class="line">#创建分类pipleine</span><br><span class="line">classifier = pipeline(&quot;text-classification&quot;,model=model,tokenizer=tokenizer,device=&quot;cuda&quot;)</span><br><span class="line"></span><br><span class="line">#进行文本分类</span><br><span class="line">result = classifier(&quot;你好，我是一款语言模型&quot;)</span><br><span class="line">print(result)// &#123;&#x27;label&#x27;:&#x27;Label1&#x27;,&#x27;score&#x27;:&#x27;0.75002&#x27;&#125;</span><br><span class="line">print(model)</span><br></pre></td></tr></table></figure>
+
+<p>后续如何将应用开发与分类模型落地?</p>
+<p>基于Bert分类模型，可以做电商的好评差评的分类等。</p>
+<h2 id="基于Bert的中文评价情感分析-AI开发流程实践-注释比代码重要"><a href="#基于Bert的中文评价情感分析-AI开发流程实践-注释比代码重要" class="headerlink" title="基于Bert的中文评价情感分析(AI开发流程实践,注释比代码重要)"></a>基于Bert的中文评价情感分析(AI开发流程实践,注释比代码重要)</h2><p>如淘宝的评价，归一到0和1,0表示差评，1表示好评。</p>
+<p><strong>总结</strong></p>
+<p>这里的是模型开发的手写流程，后面一般都是使用框架实现，框架基本内部都集成了这些功能。但是这些手写代码涉及原理，并且有助于后续模型开发扩展。</p>
+<blockquote>
+<p>1.使用Tokenizer实现字符编码、 vocab字典操作</p>
+<p>2.下载和加载数据集</p>
+<p>3.模型微调的基本概念</p>
+<p>4.下游任务模型设计</p>
+<p>5.自定义模型训练</p>
+<p>案例： 自定义下游任务实现中文评价分析模型的本地化训练</p>
+</blockquote>
+<p><strong>AI模型是如何处理字符数据的</strong></p>
+<ul>
+<li>[CLS] 标志放在第一个句子的首位，经过 BERT 得到的的表征向量 C 可以用于后续的分类任务。</li>
+<li>[SEP] 标志用于分开两个输入句子，例如输入句子 A 和 B，要在句子 A，B 后面增加 [SEP] 标志。</li>
+<li>[UNK]标志指的是未知字符</li>
+<li>[MASK] 标志用于遮盖句子中的一些单词，将单词用 [MASK] 遮盖之后，再利用 BERT 输出的 [MASK] 向量预测单词是什么。</li>
+</ul>
+<p><img src="/img/2025-11-28_21-06-31.png" alt="image"></p>
+<p><img src="/img/2025-11-28_20-46-51.png" alt="image"></p>
+<p>token_test.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#本节小结核心介绍AI模型是如何处理字符数据的</span></span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> BertTokenizer</span><br><span class="line"></span><br><span class="line"><span class="comment">#第一步：加载字典和分词器</span></span><br><span class="line">token = BertTokenizer.from_pretrained(<span class="string">r&quot;D:\PycharmProjects\demo_02\model\bert-base-chinese\models--bert-base-chinese\snapshots\xxxx&quot;</span>)</span><br><span class="line"><span class="comment"># print(token) python中万物皆对象，都可以print</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#准备要编码的文本数据</span></span><br><span class="line">sents = [<span class="string">&quot;白日依山尽，&quot;</span>,</span><br><span class="line">         <span class="string">&quot;价格在这个地段属于适中, 附近有早餐店,小饭店, 比较方便,无早也无所&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#第二步：批量语句编码</span></span><br><span class="line">out = token.batch_encode_plus(</span><br><span class="line">    <span class="comment"># 需要的编码的词</span></span><br><span class="line">    batch_text_or_text_pairs=[sents[<span class="number">0</span>],sents[<span class="number">1</span>]],</span><br><span class="line">    <span class="comment"># 是否需要添加特殊字符，一般选是</span></span><br><span class="line">    add_special_tokens=<span class="literal">True</span>,</span><br><span class="line">    <span class="comment">#当句子长度大于max_length(上限是model_max_length)时，截断</span></span><br><span class="line">    truncation=<span class="literal">True</span>,</span><br><span class="line">    max_length=<span class="number">15</span>,</span><br><span class="line">    <span class="comment">#一律补0到max_length，注意是往后补齐0</span></span><br><span class="line">    padding=<span class="string">&quot;max_length&quot;</span>,</span><br><span class="line">    <span class="comment">#设置编码后的返回值类型，可取值为tf,pt,np,默认为None表示list</span></span><br><span class="line">    return_tensors=<span class="literal">None</span>,</span><br><span class="line">    return_attention_mask=<span class="literal">True</span>,</span><br><span class="line">    return_token_type_ids=<span class="literal">True</span>,</span><br><span class="line">    return_special_tokens_mask=<span class="literal">True</span>,</span><br><span class="line">    <span class="comment">#返回序列长度</span></span><br><span class="line">    return_length=<span class="literal">True</span></span><br><span class="line">)</span><br><span class="line"><span class="comment">#input_ids 就是编码后的词即文字在字典中对应的数字编码</span></span><br><span class="line"><span class="comment">#token_type_ids上下文编码(本例子用的批量语句编码，已淘汰)，第一个句子和特殊符号的位置是0，第二个句子的位置1。</span></span><br><span class="line"><span class="comment">#special_tokens_mask 特殊符号的位置是1，其他位置是0</span></span><br><span class="line"><span class="comment">#length 编码之后的序列长度</span></span><br><span class="line"><span class="comment"># 打印编码后的数据</span></span><br><span class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> out.items():</span><br><span class="line">    <span class="built_in">print</span>(k,<span class="string">&quot;:&quot;</span>,v)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印解码后的数据 再转回为文本数据</span></span><br><span class="line"><span class="built_in">print</span>(token.decode(out[<span class="string">&quot;input_ids&quot;</span>][<span class="number">0</span>]),token.decode(out[<span class="string">&quot;input_ids&quot;</span>][<span class="number">1</span>]))</span><br></pre></td></tr></table></figure>
+
+<p><strong>下载和加载hugging face数据集</strong></p>
+<p>hs上的数据集的格式是专有的，都是xxx.arrow文件</p>
+<p>打印切分后的数据集如下图：</p>
+<p><img src="/img/2025-11-28_21-24-46.png" alt="image"></p>
+<p>打印数据集的最终内容如下图：如测试数据集部分。text是文本，label是0或1,0表示差评，1表示好评   </p>
+<p><img src="/img/2025-11-28_21-29-01.png" alt="image"></p>
+<h3 id="1-1需求数据准备-获取数据-下载数据集到本地"><a href="#1-1需求数据准备-获取数据-下载数据集到本地" class="headerlink" title="1.1需求数据准备-获取数据(下载数据集到本地)"></a>1.1需求数据准备-获取数据(下载数据集到本地)</h3><p>data_test.py</p>
+<blockquote>
+<ul>
+<li>train训练数据集:用于训练模型，防止欠拟合</li>
+<li>test测试数据集：用户效果评估-客观评估</li>
+<li>validation验证数据集：用于验证是否过拟合</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datasets <span class="keyword">import</span> load_dataset,load_from_disk</span><br><span class="line"></span><br><span class="line"><span class="comment">#在线加载数据，如果未指定下载目录，则默认到c:\用户\.cache\hugging face\</span></span><br><span class="line"><span class="comment"># dataset = load_dataset(path=&quot;lansinuote/ChnSentiCorp&quot;,cache_dir=&quot;data/&quot;)</span></span><br><span class="line"><span class="comment"># print(dataset)</span></span><br><span class="line"><span class="comment">#arrow文件可以转为csv格式</span></span><br><span class="line"><span class="comment"># dataset.to_csv(path_or_buf=r&quot;D:\PycharmProjects\demo_02\data\ChnSentiCorp.csv&quot;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#加载缓存数据</span></span><br><span class="line">datasets = load_from_disk(<span class="string">r&quot;D:\PycharmProjects\demo_02\data\ChnSentiCorp&quot;</span>)</span><br><span class="line"><span class="comment"># 打印切分后的数据集如下图：(有3部分：train训练数据集，validation验证数据集，test测试数据集)</span></span><br><span class="line"><span class="built_in">print</span>(datasets)</span><br><span class="line"><span class="comment"># 打印数据集的最终内容如下图：如测试数据集部分</span></span><br><span class="line">train_data = datasets[<span class="string">&quot;test&quot;</span>]</span><br><span class="line"><span class="keyword">for</span> data <span class="keyword">in</span> train_data:</span><br><span class="line">    <span class="built_in">print</span>(data)</span><br><span class="line"></span><br><span class="line"><span class="comment">#一般我们数据是csv,hs平台加载CSV格式数据</span></span><br><span class="line"><span class="comment"># dataset = load_dataset(path=&quot;csv&quot;,data_files=r&quot;D:\PycharmProjects\demo_02\data\hermes-function-calling-v1.csv&quot;)</span></span><br><span class="line"><span class="comment"># print(dataset)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2需求数据准备-制作数据集，转换数据格式-数据集转化为模型初始数据"><a href="#1-2需求数据准备-制作数据集，转换数据格式-数据集转化为模型初始数据" class="headerlink" title="1.2需求数据准备-制作数据集，转换数据格式(数据集转化为模型初始数据)"></a>1.2需求数据准备-制作数据集，转换数据格式(数据集转化为模型初始数据)</h3><blockquote>
+<p>基本都要重载3个方法</p>
+</blockquote>
+<p>MyData.py-准备好的数据集</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将数据集转化为模型初始数据，目前大模型框架已经做好了</span></span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> Dataset</span><br><span class="line"><span class="comment"># 加载缓存的数据</span></span><br><span class="line"><span class="keyword">from</span> datasets <span class="keyword">import</span> load_from_disk</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyDataset</span>(<span class="title class_ inherited__">Dataset</span>):</span><br><span class="line">    <span class="comment"># 重载3个方法</span></span><br><span class="line">    <span class="comment">#重载-初始化数据集</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,split</span>):</span><br><span class="line">        <span class="comment">#从磁盘加载数据，动态初始化数据集，需要哪个用哪个</span></span><br><span class="line">        self.dataset = load_from_disk(<span class="string">r&quot;D:\PycharmProjects\demo_02\data\ChnSentiCorp&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> split == <span class="string">&quot;train&quot;</span>:<span class="comment"># 训练数据集</span></span><br><span class="line">            self.dataset = self.dataset[<span class="string">&quot;train&quot;</span>]</span><br><span class="line">        <span class="keyword">elif</span> split == <span class="string">&quot;test&quot;</span>:<span class="comment"># 测试数据集</span></span><br><span class="line">            self.dataset = self.dataset[<span class="string">&quot;test&quot;</span>]</span><br><span class="line">        <span class="keyword">elif</span> split == <span class="string">&quot;validation&quot;</span>:<span class="comment"># 验证数据集</span></span><br><span class="line">            self.dataset = self.dataset[<span class="string">&quot;validation&quot;</span>]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;数据名错误！&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#重载-返回数据集长度</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(self.dataset)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#重载-对每条数据单独做处理</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, item</span>):</span><br><span class="line">        text = self.dataset[item][<span class="string">&quot;text&quot;</span>]</span><br><span class="line">        label = self.dataset[item][<span class="string">&quot;label&quot;</span>]</span><br><span class="line">    <span class="comment"># 最后返回数据：text是文本，label是0或1,0表示差评，1表示好评    </span></span><br><span class="line">        <span class="keyword">return</span> text,label</span><br><span class="line"><span class="comment"># 主函数-测试代码</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    dataset = MyDataset(<span class="string">&quot;train&quot;</span>)</span><br><span class="line">    <span class="keyword">for</span> data <span class="keyword">in</span> dataset:</span><br><span class="line">        <span class="built_in">print</span>(data)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1模型选型-设计-增量微调"><a href="#2-1模型选型-设计-增量微调" class="headerlink" title="2.1模型选型/设计-增量微调"></a>2.1模型选型/设计-增量微调</h3><p>Transform本质是Mlp全连接+Att注意力机制。它是不具备位置模型，不能处理顺序问题。</p>
+<p>一般我们AI开发是增加模型微调，核心是在原有的大模型基础上，增加业务模型，并对业务模型微调，叫增量微调。</p>
+<p>BertEmbeddings模型结构</p>
+<blockquote>
+<ul>
+<li>1.embeddings()<ul>
+<li>1.1word_embeddings，将词转换成向量的模型。输出768维向量</li>
+<li>1.2position_embeddings,记录词的前后位置顺序，也是768维向量</li>
+</ul>
+</li>
+<li>2.encoder(BertEncoder)-预训练模型，即特征学习，特征提取</li>
+<li>3.pooler(BertPoller)，即池化层，池化数据，也是输出768维向量</li>
+</ul>
+</blockquote>
+<p><img src="/img/2025-11-30_14-56-32.png" alt="image"></p>
+<p>net.py-自定义的增量模型</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> BertModel</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义设备信息</span></span><br><span class="line">DEVICE = torch.device(<span class="string">&quot;cuda&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(DEVICE)</span><br><span class="line"></span><br><span class="line"><span class="comment">#加载预训练模型，指定到具体设备，并输出768维向量</span></span><br><span class="line">pretrained = BertModel.from_pretrained(<span class="string">r&quot;D:\PycharmProjects\demo_02\model\bert-base-chinese\models--bert-base-chinese\snapshots\c30a6ed22ab4564dc1e3b2ecbf6e766b0611a33f&quot;</span>).to(DEVICE)</span><br><span class="line"><span class="comment"># 内部涉及3个模块处理</span></span><br><span class="line"><span class="comment">#1.embeddings(BertEmbeddings模型)</span></span><br><span class="line"><span class="comment">#1.1word_embeddings，将词转换成向量的模型。输出768维向量</span></span><br><span class="line"><span class="comment">#1.2position_embeddings,记录词的前后位置顺序，也是768维向量</span></span><br><span class="line"><span class="comment">#2.encoder(BertEncoder)</span></span><br><span class="line"><span class="comment">#即特征学习，特征提取</span></span><br><span class="line"><span class="comment">#3.pooler(BertPoller)</span></span><br><span class="line"><span class="comment">#即池化层，池化数据，也是输出768维向量</span></span><br><span class="line"><span class="built_in">print</span>(pretrained)</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义下游任务（增量模型）</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Model</span>(torch.nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        <span class="comment">#设计全连接网络，实现二分类任务即调用全连接神经网络包</span></span><br><span class="line">        <span class="comment"># 768就是BertModel模型输出的768维向量；2是指二分，比如0是差评，1是好评。</span></span><br><span class="line">        self.fc = torch.nn.Linear(<span class="number">768</span>,<span class="number">2</span>)</span><br><span class="line">    <span class="comment">#使用模型处理数据（执行前向计算）</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self,input_ids,attention_mask,token_type_ids</span>):</span><br><span class="line">        <span class="comment">#冻结Bert模型的参数，让其不参与训练</span></span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            out = pretrained(input_ids=input_ids,attention_mask=attention_mask,token_type_ids=token_type_ids)</span><br><span class="line">        <span class="comment">#增量模型参与训练，取的最后一段的序列特征(目前的transfer模型是沿用RNN那套模式，对数据是NSV格式要求。N是批次，S序列长度，V是数据特征)</span></span><br><span class="line">        <span class="comment"># 最后一段序列特征是包含完整信息的</span></span><br><span class="line">        out = self.fc(out.last_hidden_state[:,<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-1模型训练-加载模型和数据，开始训练"><a href="#3-1模型训练-加载模型和数据，开始训练" class="headerlink" title="3.1模型训练-加载模型和数据，开始训练"></a>3.1模型训练-加载模型和数据，开始训练</h3><p>train.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#模型训练</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> MyData <span class="keyword">import</span> MyDataset<span class="comment">#准备好的数据集</span></span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader</span><br><span class="line"><span class="keyword">from</span> net <span class="keyword">import</span> Model<span class="comment">#自定义的增量模型</span></span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> BertTokenizer,AdamW<span class="comment"># 分词器和优化器</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#定义设备信息</span></span><br><span class="line">DEVICE = torch.device(<span class="string">&quot;cuda&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line"><span class="comment">#定义训练的轮次(将整个数据集训练完一次为一轮)</span></span><br><span class="line">EPOCH = <span class="number">30000</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#加载字典和分词器</span></span><br><span class="line">token = BertTokenizer.from_pretrained(<span class="string">r&quot;D:\PycharmProjects\demo_02\model\bert-base-chinese\models--bert-base-chinese\snapshots\c30a6ed22ab4564dc1e3b2ecbf6e766b0611a33f&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#第一步：先定义将传入的字符串进行编码</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">collate_fn</span>(<span class="params">data</span>):</span><br><span class="line">    sents = [i[<span class="number">0</span>]<span class="keyword">for</span> i <span class="keyword">in</span> data]</span><br><span class="line">    label = [i[<span class="number">1</span>] <span class="keyword">for</span> i <span class="keyword">in</span> data]</span><br><span class="line">    <span class="comment">#编码</span></span><br><span class="line">    data = token.batch_encode_plus(</span><br><span class="line">        batch_text_or_text_pairs=sents,</span><br><span class="line">        <span class="comment"># 当句子长度大于max_length(上限是model_max_length)时，截断</span></span><br><span class="line">        truncation=<span class="literal">True</span>,</span><br><span class="line">        max_length=<span class="number">512</span>,</span><br><span class="line">        <span class="comment"># 一律补0到max_length</span></span><br><span class="line">        padding=<span class="string">&quot;max_length&quot;</span>,</span><br><span class="line">        <span class="comment"># 可取值为tf,pt,np,默认为list。pt表示torch格式数据</span></span><br><span class="line">        return_tensors=<span class="string">&quot;pt&quot;</span>,</span><br><span class="line">        <span class="comment"># 返回序列长度</span></span><br><span class="line">        return_length=<span class="literal">True</span></span><br><span class="line">    )</span><br><span class="line">    input_ids = data[<span class="string">&quot;input_ids&quot;</span>]</span><br><span class="line">    attention_mask = data[<span class="string">&quot;attention_mask&quot;</span>]</span><br><span class="line">    token_type_ids = data[<span class="string">&quot;token_type_ids&quot;</span>]</span><br><span class="line">    <span class="comment"># 所有的数据都要转化为pyTorch的张量数据类型(如0和1转换为00101)</span></span><br><span class="line">    label = torch.LongTensor(label)</span><br><span class="line"><span class="comment">#input_ids 就是编码后的词即文字在字典中对应的数字编码</span></span><br><span class="line"><span class="comment">#token_type_ids上下文编码(本例子用的批量语句编码，已淘汰)，第一个句子和特殊符号的位置是0，第二个句子的位置1。</span></span><br><span class="line"><span class="comment">#special_tokens_mask 特殊符号的位置是1，其他位置是0</span></span><br><span class="line"><span class="comment">#length 编码之后的序列长度</span></span><br><span class="line">    <span class="keyword">return</span> input_ids,attention_mask,token_type_ids,label</span><br><span class="line"></span><br><span class="line"><span class="comment">#第二步：创建数据集</span></span><br><span class="line">train_dataset = MyDataset(<span class="string">&quot;train&quot;</span>)</span><br><span class="line">train_loader = DataLoader(</span><br><span class="line">    dataset=train_dataset,</span><br><span class="line">    <span class="comment">#训练批次(每次取几条数据来训练模型，要尝试。批次太大可能装不下)</span></span><br><span class="line">    batch_size=<span class="number">90</span>,</span><br><span class="line">    <span class="comment">#打乱数据集</span></span><br><span class="line">    shuffle=<span class="literal">True</span>,</span><br><span class="line">    <span class="comment">#舍弃最后一个批次的数据，防止形状出错(比如103条数据集，训练10轮次，批次10，则可能取到最后只剩下3条数据，就会出错)</span></span><br><span class="line">    drop_last=<span class="literal">True</span>,</span><br><span class="line">    <span class="comment">#对加载的数据进行编码</span></span><br><span class="line">    collate_fn=collate_fn</span><br><span class="line">)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment">#开始训练</span></span><br><span class="line">    <span class="built_in">print</span>(DEVICE)</span><br><span class="line">    <span class="comment"># 模型实例化：将模型放到设备上</span></span><br><span class="line">    model = Model().to(DEVICE)</span><br><span class="line">    <span class="comment">#定义优化器</span></span><br><span class="line">    optimizer = AdamW(model.parameters())</span><br><span class="line">    <span class="comment">#定义损失函数，多分类交叉熵损失函数</span></span><br><span class="line">    loss_func = torch.nn.CrossEntropyLoss()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(EPOCH):<span class="comment"># 遍历轮次</span></span><br><span class="line">        <span class="keyword">for</span> i,(input_ids,attention_mask,token_type_ids,label) <span class="keyword">in</span> <span class="built_in">enumerate</span>(train_loader):<span class="comment">#遍历批次数据</span></span><br><span class="line">            <span class="comment">#将数据放到DVEVICE上面</span></span><br><span class="line">            input_ids, attention_mask, token_type_ids, label = input_ids.to(DEVICE),attention_mask.to(DEVICE),token_type_ids.to(DEVICE),label.to(DEVICE)</span><br><span class="line">            <span class="comment">#前向计算（将数据输入模型得到输出）</span></span><br><span class="line">            out = model(input_ids,attention_mask,token_type_ids)</span><br><span class="line">            <span class="comment">#根据输出计算损失</span></span><br><span class="line">            loss = loss_func(out,label)</span><br><span class="line">            <span class="comment">#根据误差优化参数(模型在学习)</span></span><br><span class="line">            optimizer.zero_grad()<span class="comment">#清空梯度</span></span><br><span class="line">            loss.backward()<span class="comment">#自动求导</span></span><br><span class="line">            optimizer.step()<span class="comment">#更新参数</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">#每隔5个批次输出训练信息即每处理5条数据输出</span></span><br><span class="line">            <span class="keyword">if</span> i%<span class="number">5</span> ==<span class="number">0</span>:</span><br><span class="line">                <span class="comment">#取出输出的结果</span></span><br><span class="line">                out = out.argmax(dim=<span class="number">1</span>)</span><br><span class="line">                <span class="comment"># label是hs上的二分类数据集，out是我们增量模型输出的值，两者进行比对正确率</span></span><br><span class="line">                <span class="comment">#计算训练精度(比如label 00101,out 01100。相同的为1并求和的3，结果是3/5)</span></span><br><span class="line">                acc = (out==label).<span class="built_in">sum</span>().item()/<span class="built_in">len</span>(label)</span><br><span class="line">                <span class="comment"># 观察状态：输出轮次，批次，损失loss,acc精度，如下图。如果增量模型好的话，loss要降低，acc精度要增加</span></span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;epoch:<span class="subst">&#123;epoch&#125;</span>,i:<span class="subst">&#123;i&#125;</span>,loss:<span class="subst">&#123;loss.item()&#125;</span>,acc:<span class="subst">&#123;acc&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="comment">#每训练完一轮，保存一次参数。保存文件到本地params目录下</span></span><br><span class="line">        torch.save(model.state_dict(),<span class="string">f&quot;params/<span class="subst">&#123;epoch&#125;</span>_bert.pth&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(epoch,<span class="string">&quot;参数保存成功！&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2观察状态"><a href="#3-2观察状态" class="headerlink" title="3.2观察状态"></a>3.2观察状态</h3><p>输出轮次，批次，损失loss,acc精度，如下图:</p>
+<p>如果增量模型好的话，loss整体趋势下降，acc精度要增加。核心是loss。一般指标越多，可观察的效果值也越多。</p>
+<p><img src="/img/2025-11-30_16-04-19.png" alt="image"></p>
+<h3 id="4-效果评估"><a href="#4-效果评估" class="headerlink" title="4.效果评估"></a>4.效果评估</h3><blockquote>
+<p>目标是跑测试集得到的结果，与测试集的label越接近，则评估效果越好。至于结论是否正确，不是我们问题。</p>
+<p>模型训练采用的是训练集得到的结果，效果评估的输入是要用到测试集的得到的结果。</p>
+<p>所以要先将训练接换成测试集，跑下模型训练得到本地文件</p>
+</blockquote>
+<p>训练时需要观察的指标：loss训练损失。大模型框架一般都提供了观察功能。</p>
+<p>二分类的文本数据集(x,y):x是文本，y是评价值0或1.</p>
+<blockquote>
+<p>[negative,positive]</p>
+<p>negative[1,0],positive[0,1]</p>
+<p>实际数据集是有标签的[negative,positive]即消极和积极，一般是将标签编码化即one-hot,转为negative[1,0],positive[0,1]。1表示对应标签的索引位置，因为是2分值的标签，标签消极是在第一个位置，其他等于0。</p>
+</blockquote>
+<p>预训练模型-如BertEncoder模型</p>
+<blockquote>
+<p>我们的训练模型都是增加了增量模型后的模型。</p>
+<p>x经过训练模型，输出h(0.5,0.5)。然后与y值比较，如y(1,0)即消极标签值，得到loss值</p>
+<p>1.前向计算：将数据输入得到输出的过程也叫模型的推理过程</p>
+<p>2.根据输出和标签label计算损失，模型的输出和标签之间的差距loss=mena(h-y)^2</p>
+<p>3.模型根据loss进行求导，然后根据导数更新模型参数。</p>
+<p>每更新一次参数，loss都会整理下降，梯度下降法。模型反向传播算法：根据损失求导更新参数的过程。</p>
+</blockquote>
+<p>总结</p>
+<blockquote>
+<p>一般我们需要根据前几次loss输出值判断模型是否正确，如果损失整体下降，即模型正确。如果不是，则数据集错误或模型有问题。马上停止训练，进行调整。一般模型很少出错，大概率是数据集出错，因为是数据集一般是我们自己做的。</p>
+</blockquote>
+<p>什么时候停止模型训练</p>
+<blockquote>
+<p>以甲方的要求为准，如acc达到0.95。一般模型发布的时候都有场景的准确率，我们AI开发就是为了实现效果接近这个准确率，准确率一定不是100%。即使是DeepSeek.</p>
+</blockquote>
+<p><strong>4.1客观评估</strong></p>
+<blockquote>
+<p>固定指标、客观数据如acc,注意评估时使用test训练集-对分类模型有效，如淘宝评论。</p>
+<p>打印客观评估指标：如平均精度值，如下图。如果想了解完整的分类指标，可参照混淆矩阵。</p>
+</blockquote>
+<img src="/img/2025-12-01_06-26-49.png" style="zoom:50%;" />
+
+<p>evaluate0.py-客观评价(类似训练，训练集换成测试集)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#模型评估(与模型训练有些细微差别，不需要训练，优化，只需要一个轮次即可)</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> MyData <span class="keyword">import</span> MyDataset</span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader</span><br><span class="line"><span class="keyword">from</span> net <span class="keyword">import</span> Model</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> BertTokenizer,AdamW</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义设备信息</span></span><br><span class="line">DEVICE = torch.device(<span class="string">&quot;cuda&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#加载字典和分词器</span></span><br><span class="line">token = BertTokenizer.from_pretrained(<span class="string">r&quot;D:\PycharmProjects\demo_02\model\bert-base-chinese\models--bert-base-chinese\snapshots\c30a6ed22ab4564dc1e3b2ecbf6e766b0611a33f&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#将传入的字符串进行编码</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">collate_fn</span>(<span class="params">data</span>):</span><br><span class="line">    sents = [i[<span class="number">0</span>]<span class="keyword">for</span> i <span class="keyword">in</span> data]</span><br><span class="line">    label = [i[<span class="number">1</span>] <span class="keyword">for</span> i <span class="keyword">in</span> data]</span><br><span class="line">    <span class="comment">#编码</span></span><br><span class="line">    data = token.batch_encode_plus(</span><br><span class="line">        batch_text_or_text_pairs=sents,</span><br><span class="line">        <span class="comment"># 当句子长度大于max_length(上限是model_max_length)时，截断</span></span><br><span class="line">        truncation=<span class="literal">True</span>,</span><br><span class="line">        max_length=<span class="number">512</span>,</span><br><span class="line">        <span class="comment"># 一律补0到max_length</span></span><br><span class="line">        padding=<span class="string">&quot;max_length&quot;</span>,</span><br><span class="line">        <span class="comment"># 可取值为tf,pt,np,默认为list</span></span><br><span class="line">        return_tensors=<span class="string">&quot;pt&quot;</span>,</span><br><span class="line">        <span class="comment"># 返回序列长度</span></span><br><span class="line">        return_length=<span class="literal">True</span></span><br><span class="line">    )</span><br><span class="line">    input_ids = data[<span class="string">&quot;input_ids&quot;</span>]</span><br><span class="line">    attention_mask = data[<span class="string">&quot;attention_mask&quot;</span>]</span><br><span class="line">    token_type_ids = data[<span class="string">&quot;token_type_ids&quot;</span>]</span><br><span class="line">    label = torch.LongTensor(label)</span><br><span class="line">    <span class="keyword">return</span> input_ids,attention_mask,token_type_ids,label</span><br><span class="line"></span><br><span class="line"><span class="comment">#创建数据集</span></span><br><span class="line">test_dataset = MyDataset(<span class="string">&quot;test&quot;</span>)</span><br><span class="line">test_loader = DataLoader(</span><br><span class="line">    dataset=test_dataset,</span><br><span class="line">    <span class="comment">#训练批次</span></span><br><span class="line">    batch_size=<span class="number">100</span>,</span><br><span class="line">    <span class="comment">#打乱数据集</span></span><br><span class="line">    shuffle=<span class="literal">True</span>,</span><br><span class="line">    <span class="comment">#舍弃最后一个批次的数据，防止形状出错</span></span><br><span class="line">    drop_last=<span class="literal">True</span>,</span><br><span class="line">    <span class="comment">#对加载的数据进行编码</span></span><br><span class="line">    collate_fn=collate_fn</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    acc = <span class="number">0.0</span></span><br><span class="line">    total = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#开始测试</span></span><br><span class="line">    <span class="built_in">print</span>(DEVICE)</span><br><span class="line">    <span class="comment"># 模型实例化：将模型放到设备上</span></span><br><span class="line">    model = Model().to(DEVICE)</span><br><span class="line">    <span class="comment">#加载模型训练参数(模型训练后的输出文件)</span></span><br><span class="line">    model.load_state_dict(torch.load(<span class="string">&quot;params/16_bert.pth&quot;</span>))</span><br><span class="line">    <span class="comment">#开启测试模式</span></span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i,(input_ids,attention_mask,token_type_ids,label) <span class="keyword">in</span> <span class="built_in">enumerate</span>(test_loader):</span><br><span class="line">        <span class="comment">#将数据放到DVEVICE上面</span></span><br><span class="line">        input_ids, attention_mask, token_type_ids, label = input_ids.to(DEVICE),attention_mask.to(DEVICE),token_type_ids.to(DEVICE),label.to(DEVICE)</span><br><span class="line">        <span class="comment">#前向计算（将数据输入模型得到输出）这里输出h(0.5，0.5)</span></span><br><span class="line">        out = model(input_ids,attention_mask,token_type_ids)</span><br><span class="line">        <span class="comment"># 将out提取为可与label比较的值，如0或1</span></span><br><span class="line">        out = out.argmax(dim=<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># label是数据集中的0或1，item表示获取标量，精度累加</span></span><br><span class="line">        acc += (out==label).<span class="built_in">sum</span>().item()</span><br><span class="line">        <span class="built_in">print</span>(i,(out==label).<span class="built_in">sum</span>().item())</span><br><span class="line">        total+=<span class="built_in">len</span>(label)</span><br><span class="line">        <span class="comment"># 打印客观评估指标：如平均精度值，如下图</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;test acc:<span class="subst">&#123;acc/total&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>4.2主观评估</strong></p>
+<blockquote>
+<p>人为挑选部分代表性数据，观察模型的输出结果-对生成式模型有效。</p>
+<p>打印生成式用户实时输入的评价的好评还是差评，如下图。注意如果输出值与测试集不对，则要溯源测试集，这个label是谁打上去的，理由是什么。</p>
+</blockquote>
+<p><img src="/img/2025-12-01_06-57-25.png" alt="image"></p>
+<p>evaluate1.py-主观评价(类似训练，训练集换成测试集)</p>
+<blockquote>
+<p>与客观评价不同：这里就没有label值了，因为只有生成式的用户输入值</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#模型使用接口（主观评估）</span></span><br><span class="line"><span class="comment">#模型训练</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> net <span class="keyword">import</span> Model</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> BertTokenizer</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义设备信息</span></span><br><span class="line">DEVICE = torch.device(<span class="string">&quot;cuda&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#加载字典和分词器</span></span><br><span class="line">token = BertTokenizer.from_pretrained(<span class="string">r&quot;D:\PycharmProjects\demo_02\model\bert-base-chinese\models--bert-base-chinese\snapshots\c30a6ed22ab4564dc1e3b2ecbf6e766b0611a33f&quot;</span>)</span><br><span class="line"><span class="comment"># 模型实例化：将模型放到设备上</span></span><br><span class="line">model = Model().to(DEVICE)</span><br><span class="line"><span class="comment"># 定义输出的枚举值，和前面的negative[1,0],positive[0,1]对应起来</span></span><br><span class="line">names = [<span class="string">&quot;负向评价&quot;</span>,<span class="string">&quot;正向评价&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#将传入的字符串进行编码</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">collate_fn</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 与客观评价不同：这里就没有label值了，因为只有生成式的用户输入值</span></span><br><span class="line">    sents = []</span><br><span class="line">    sents.append(data)</span><br><span class="line">    <span class="comment">#编码</span></span><br><span class="line">    data = token.batch_encode_plus(</span><br><span class="line">        batch_text_or_text_pairs=sents,</span><br><span class="line">        <span class="comment"># 当句子长度大于max_length(上限是model_max_length)时，截断</span></span><br><span class="line">        truncation=<span class="literal">True</span>,</span><br><span class="line">        max_length=<span class="number">512</span>,</span><br><span class="line">        <span class="comment"># 一律补0到max_length</span></span><br><span class="line">        padding=<span class="string">&quot;max_length&quot;</span>,</span><br><span class="line">        <span class="comment"># 可取值为tf,pt,np,默认为list</span></span><br><span class="line">        return_tensors=<span class="string">&quot;pt&quot;</span>,</span><br><span class="line">        <span class="comment"># 返回序列长度</span></span><br><span class="line">        return_length=<span class="literal">True</span></span><br><span class="line">    )</span><br><span class="line">    input_ids = data[<span class="string">&quot;input_ids&quot;</span>]</span><br><span class="line">    attention_mask = data[<span class="string">&quot;attention_mask&quot;</span>]</span><br><span class="line">    token_type_ids = data[<span class="string">&quot;token_type_ids&quot;</span>]</span><br><span class="line">    <span class="keyword">return</span> input_ids,attention_mask,token_type_ids</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>():</span><br><span class="line">    <span class="comment">#加载参数-模型训练后保存到本地的文件</span></span><br><span class="line">    model.load_state_dict(torch.load(<span class="string">&quot;params/16_bert.pth&quot;</span>))</span><br><span class="line">    <span class="comment">#开启测试模型</span></span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        data = <span class="built_in">input</span>(<span class="string">&quot;请输入测试数据（输入‘q’退出）：&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> data==<span class="string">&#x27;q&#x27;</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;测试结束&quot;</span>)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="comment"># 先编码</span></span><br><span class="line">        input_ids,attention_mask,token_type_ids = collate_fn(data)</span><br><span class="line">        <span class="comment"># 数据放到设备</span></span><br><span class="line">        input_ids, attention_mask, token_type_ids = input_ids.to(DEVICE),attention_mask.to(DEVICE),token_type_ids.to(DEVICE)</span><br><span class="line"></span><br><span class="line">        <span class="comment">#将数据输入到模型，得到输出</span></span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():<span class="comment"># 冻结，不训练</span></span><br><span class="line">            out = model(input_ids,attention_mask,token_type_ids)</span><br><span class="line">            out = out.argmax(dim=<span class="number">1</span>)</span><br><span class="line">            <span class="comment"># 打印生成式用户实时输入的评价的好评还是差评，如下图</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;模型判定：&quot;</span>,names[out],<span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    test()</span><br></pre></td></tr></table></figure>
+
+<p>过拟合</p>
+<blockquote>
+<p>将训练集loss与验证集loss对比，两者比较接近且都逐渐下降，即正常。如果验证集loss到一定时候突然升高，可能存在过拟合，这时我们不要保存这些脏数据。</p>
+<p>这种方法主要适用于分类模型，不适用生成式模型。</p>
+</blockquote>
+<p>train_val.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#模型训练</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> MyData <span class="keyword">import</span> MyDataset</span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader</span><br><span class="line"><span class="keyword">from</span> net <span class="keyword">import</span> Model</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> BertTokenizer,AdamW</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义设备信息</span></span><br><span class="line">DEVICE = torch.device(<span class="string">&quot;cuda&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>)</span><br><span class="line"><span class="comment">#定义训练的轮次(将整个数据集训练完一次为一轮)</span></span><br><span class="line">EPOCH = <span class="number">30000</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#加载字典和分词器</span></span><br><span class="line">token = BertTokenizer.from_pretrained(<span class="string">r&quot;D:\PycharmProjects\demo_02\model\bert-base-chinese\models--bert-base-chinese\snapshots\c30a6ed22ab4564dc1e3b2ecbf6e766b0611a33f&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#将传入的字符串进行编码</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">collate_fn</span>(<span class="params">data</span>):</span><br><span class="line">    sents = [i[<span class="number">0</span>]<span class="keyword">for</span> i <span class="keyword">in</span> data]</span><br><span class="line">    label = [i[<span class="number">1</span>] <span class="keyword">for</span> i <span class="keyword">in</span> data]</span><br><span class="line">    <span class="comment">#编码</span></span><br><span class="line">    data = token.batch_encode_plus(</span><br><span class="line">        batch_text_or_text_pairs=sents,</span><br><span class="line">        <span class="comment"># 当句子长度大于max_length(上限是model_max_length)时，截断</span></span><br><span class="line">        truncation=<span class="literal">True</span>,</span><br><span class="line">        max_length=<span class="number">512</span>,</span><br><span class="line">        <span class="comment"># 一律补0到max_length</span></span><br><span class="line">        padding=<span class="string">&quot;max_length&quot;</span>,</span><br><span class="line">        <span class="comment"># 可取值为tf,pt,np,默认为list</span></span><br><span class="line">        return_tensors=<span class="string">&quot;pt&quot;</span>,</span><br><span class="line">        <span class="comment"># 返回序列长度</span></span><br><span class="line">        return_length=<span class="literal">True</span></span><br><span class="line">    )</span><br><span class="line">    input_ids = data[<span class="string">&quot;input_ids&quot;</span>]</span><br><span class="line">    attention_mask = data[<span class="string">&quot;attention_mask&quot;</span>]</span><br><span class="line">    token_type_ids = data[<span class="string">&quot;token_type_ids&quot;</span>]</span><br><span class="line">    label = torch.LongTensor(label)</span><br><span class="line">    <span class="keyword">return</span> input_ids,attention_mask,token_type_ids,label</span><br><span class="line"></span><br><span class="line"><span class="comment">#创建数据集-训练集</span></span><br><span class="line">train_dataset = MyDataset(<span class="string">&quot;train&quot;</span>)</span><br><span class="line">train_loader = DataLoader(</span><br><span class="line">    dataset=train_dataset,</span><br><span class="line">    <span class="comment">#训练批次</span></span><br><span class="line">    batch_size=<span class="number">50</span>,</span><br><span class="line">    <span class="comment">#打乱数据集</span></span><br><span class="line">    shuffle=<span class="literal">True</span>,</span><br><span class="line">    <span class="comment">#舍弃最后一个批次的数据，防止形状出错</span></span><br><span class="line">    drop_last=<span class="literal">True</span>,</span><br><span class="line">    <span class="comment">#对加载的数据进行编码</span></span><br><span class="line">    collate_fn=collate_fn</span><br><span class="line">)</span><br><span class="line"><span class="comment">#创建验证数据集-验证集</span></span><br><span class="line">val_dataset = MyDataset(<span class="string">&quot;validation&quot;</span>)</span><br><span class="line">val_loader = DataLoader(</span><br><span class="line">    dataset=val_dataset,</span><br><span class="line">    <span class="comment">#训练批次</span></span><br><span class="line">    batch_size=<span class="number">50</span>,</span><br><span class="line">    <span class="comment">#打乱数据集</span></span><br><span class="line">    shuffle=<span class="literal">True</span>,</span><br><span class="line">    <span class="comment">#舍弃最后一个批次的数据，防止形状出错</span></span><br><span class="line">    drop_last=<span class="literal">True</span>,</span><br><span class="line">    <span class="comment">#对加载的数据进行编码</span></span><br><span class="line">    collate_fn=collate_fn</span><br><span class="line">)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment">#开始训练</span></span><br><span class="line">    <span class="built_in">print</span>(DEVICE)</span><br><span class="line">    model = Model().to(DEVICE)</span><br><span class="line">    <span class="comment">#定义优化器</span></span><br><span class="line">    optimizer = AdamW(model.parameters())</span><br><span class="line">    <span class="comment">#定义损失函数</span></span><br><span class="line">    loss_func = torch.nn.CrossEntropyLoss()</span><br><span class="line"></span><br><span class="line">    <span class="comment">#初始化验证最佳准确率</span></span><br><span class="line">    best_val_acc = <span class="number">0.0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(EPOCH):</span><br><span class="line">        <span class="keyword">for</span> i,(input_ids,attention_mask,token_type_ids,label) <span class="keyword">in</span> <span class="built_in">enumerate</span>(train_loader):</span><br><span class="line">            <span class="comment">#将数据放到DVEVICE上面</span></span><br><span class="line">            input_ids, attention_mask, token_type_ids, label = input_ids.to(DEVICE),attention_mask.to(DEVICE),token_type_ids.to(DEVICE),label.to(DEVICE)</span><br><span class="line">            <span class="comment">#前向计算（将数据输入模型得到输出）</span></span><br><span class="line">            out = model(input_ids,attention_mask,token_type_ids)</span><br><span class="line">            <span class="comment">#根据输出计算损失</span></span><br><span class="line">            loss = loss_func(out,label)</span><br><span class="line">            <span class="comment">#根据误差优化参数</span></span><br><span class="line">            optimizer.zero_grad()</span><br><span class="line">            loss.backward()</span><br><span class="line">            optimizer.step()</span><br><span class="line"></span><br><span class="line">            <span class="comment">#每隔5个批次输出训练信息</span></span><br><span class="line">            <span class="keyword">if</span> i%<span class="number">5</span> ==<span class="number">0</span>:</span><br><span class="line">                out = out.argmax(dim=<span class="number">1</span>)</span><br><span class="line">                <span class="comment">#计算训练精度</span></span><br><span class="line">                acc = (out==label).<span class="built_in">sum</span>().item()/<span class="built_in">len</span>(label)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;epoch:<span class="subst">&#123;epoch&#125;</span>,i:<span class="subst">&#123;i&#125;</span>,loss:<span class="subst">&#123;loss.item()&#125;</span>,acc:<span class="subst">&#123;acc&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="comment">#验证模型（判断模型是否过拟合）</span></span><br><span class="line">        <span class="comment">#设置为评估模型即数据集选择validation数据集</span></span><br><span class="line">        model.<span class="built_in">eval</span>()</span><br><span class="line">        <span class="comment">#不需要模型参与训练</span></span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            val_acc = <span class="number">0.0</span></span><br><span class="line">            val_loss = <span class="number">0.0</span></span><br><span class="line">            <span class="keyword">for</span> i, (input_ids, attention_mask, token_type_ids, label) <span class="keyword">in</span> <span class="built_in">enumerate</span>(val_loader):</span><br><span class="line">                <span class="comment"># 将数据放到DVEVICE上面</span></span><br><span class="line">                input_ids, attention_mask, token_type_ids, label = input_ids.to(DEVICE), attention_mask.to(</span><br><span class="line">                    DEVICE), token_type_ids.to(DEVICE), label.to(DEVICE)</span><br><span class="line">                <span class="comment"># 前向计算（将数据输入模型得到输出）</span></span><br><span class="line">                out = model(input_ids, attention_mask, token_type_ids)</span><br><span class="line">                <span class="comment"># 根据输出计算损失</span></span><br><span class="line">                val_loss += loss_func(out, label)</span><br><span class="line">                <span class="comment">#根据数据，计算验证精度</span></span><br><span class="line">                out = out.argmax(dim=<span class="number">1</span>)</span><br><span class="line">                val_acc+=(out==label).<span class="built_in">sum</span>().item()</span><br><span class="line">            val_loss/=<span class="built_in">len</span>(val_loader)</span><br><span class="line">            val_acc/=<span class="built_in">len</span>(val_loader)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;验证集：loss:<span class="subst">&#123;val_loss&#125;</span>,acc:<span class="subst">&#123;val_acc&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="comment">#根据验证准确率保存最优参数，如果验证集过拟合，则不保存过拟合数据，best_bert文件防止了过拟合</span></span><br><span class="line">            <span class="keyword">if</span> val_acc &gt; best_val_acc:</span><br><span class="line">                best_val_acc = val_acc</span><br><span class="line">                torch.save(model.state_dict(),<span class="string">&quot;params1/best_bert.pth&quot;</span>)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;EPOCH:<span class="subst">&#123;epoch&#125;</span>:保存最优参数：acc<span class="subst">&#123;best_val_acc&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="comment">#保存最后一轮参数</span></span><br><span class="line">        torch.save(model.state_dict(), <span class="string">&quot;params1/last_bert.pth&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;EPOCH:<span class="subst">&#123;epoch&#125;</span>:最后一轮参数保存成功！&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="GPT2-中文生成模型定制化"><a href="#GPT2-中文生成模型定制化" class="headerlink" title="GPT2-中文生成模型定制化"></a>GPT2-中文生成模型定制化</h2><h3 id="中文白话文续写"><a href="#中文白话文续写" class="headerlink" title="中文白话文续写"></a>中文白话文续写</h3><p>中文白话文续写，如下图，生成式模型的原理核心：上一次的整体输出作为下一次的输入，传给大模型，依次递归处理。</p>
+<p><img src="/img/2025-12-02_08-18-11.png" alt="image"></p>
+<p>生成模型的后处理即对话模板</p>
+<blockquote>
+<p>模型的回答一般是有长有短，这就用到对话模板，即遇到结束符CLS则停止文本生成。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#中文白话文续写</span></span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> GPT2LMHeadModel,BertTokenizer,TextGenerationPipeline</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载模型和分词器</span></span><br><span class="line">model = GPT2LMHeadModel.from_pretrained(<span class="string">r&quot;D:\BaiduNetdiskDownload\gpt2-chinese模型\models--uer--gpt2-chinese-cluecorpussmall\snapshots\c2c0249d8a2731f269414cc3b22dff021f8e07a3&quot;</span>)</span><br><span class="line">tokenizer = BertTokenizer.from_pretrained(<span class="string">r&quot;D:\BaiduNetdiskDownload\gpt2-chinese模型\models--uer--gpt2-chinese-cluecorpussmall\snapshots\c2c0249d8a2731f269414cc3b22dff021f8e07a3&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(model)</span><br><span class="line"></span><br><span class="line"><span class="comment">#使用Pipeline调用模型</span></span><br><span class="line">text_generator = TextGenerationPipeline(model,tokenizer,device=<span class="string">&quot;cuda&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#使用text_generator生成文本</span></span><br><span class="line"><span class="comment">#do_sample是否进行随机采样。为True时，每次生成的结果都不一样；为False时，每次生成的结果都是相同的。</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">    <span class="built_in">print</span>(text_generator(<span class="string">&quot;这是很久之前的事情了,&quot;</span>, max_length=<span class="number">100</span>, do_sample=<span class="literal">False</span>))</span><br></pre></td></tr></table></figure>
+
+<p>GPT2LMHeadModel模型结果，如下图</p>
+<p><img src="/img/2025-12-02_08-27-14.png" alt="image"></p>
+<blockquote>
+<ul>
+<li>1.embedding模型(gpt2Model),负责分词、词向量化</li>
+<li>2.h-ModuleList模型，负责特征提取</li>
+<li>3.lm_head，输出头即生成头，负责输出内容的，是核心</li>
+</ul>
+</blockquote>
+<h3 id="本地训练GPT2中文模型-全量微调-训练权重"><a href="#本地训练GPT2中文模型-全量微调-训练权重" class="headerlink" title="本地训练GPT2中文模型 -全量微调+训练权重"></a>本地训练GPT2中文模型 -全量微调+训练权重</h3><p><strong>全量微调</strong></p>
+<p>先准备数据集，然后全量微调,因为白话文模型参数小，方便做全量微调。</p>
+<p>打印一行行诗，如下图</p>
+<p><img src="/img/2025-12-02_19-44-13.png" alt="image"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> Dataset</span><br><span class="line"><span class="comment"># 数据集准备</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyDataset</span>(<span class="title class_ inherited__">Dataset</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># 读取本地古诗文本</span></span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;data/chinese_poems.txt&quot;</span>,encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            <span class="comment"># 一行诗一行读取数据</span></span><br><span class="line">            lines = f.readlines()</span><br><span class="line">        lines = [i.strip() <span class="keyword">for</span> i <span class="keyword">in</span> lines]</span><br><span class="line">        self.lines = lines</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__len__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(self.lines)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, item</span>):</span><br><span class="line">        <span class="keyword">return</span> self.lines[item]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    dataset = MyDataset()</span><br><span class="line">    <span class="keyword">for</span> data <span class="keyword">in</span> dataset:</span><br><span class="line">        <span class="comment"># 打印一行行诗，如下图</span></span><br><span class="line">        <span class="built_in">print</span>(data)</span><br></pre></td></tr></table></figure>
+
+<p>打印训练信息，如下图</p>
+<p><img src="/img/2025-12-02_19-41-51.png" alt="image"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AdamW</span><br><span class="line"><span class="keyword">from</span> transformers.optimization <span class="keyword">import</span> get_scheduler</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> data <span class="keyword">import</span> MyDataset  <span class="comment"># 导入自定义的数据集类</span></span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoModelForCausalLM, AutoTokenizer  <span class="comment"># 导入transformers的模型和分词器类</span></span><br><span class="line"><span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader  <span class="comment"># 导入PyTorch的数据加载器类</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将古诗文本喂个白话文模型，训练让它学习作古诗</span></span><br><span class="line"><span class="comment"># 实例化自定义数据集</span></span><br><span class="line">dataset = MyDataset()  <span class="comment"># 创建数据集对象</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载预训练的分词器，用于文本编码</span></span><br><span class="line">tokenizer = AutoTokenizer.from_pretrained(<span class="string">r&quot;D:\BaiduNetdiskDownload\gpt2-chinese模型\models--uer--gpt2-chinese-cluecorpussmall\snapshots\c2c0249d8a2731f269414cc3b22dff021f8e07a3&quot;</span>)</span><br><span class="line"><span class="comment"># 加载预训练的模型，用于语言模型任务</span></span><br><span class="line">model = AutoModelForCausalLM.from_pretrained(<span class="string">r&quot;D:\BaiduNetdiskDownload\gpt2-chinese模型\models--uer--gpt2-chinese-cluecorpussmall\snapshots\c2c0249d8a2731f269414cc3b22dff021f8e07a3&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用于将文本数据转换为模型所需的格式</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">collate_fn</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 使用分词器对数据进行编码，并填充或截断到固定长度</span></span><br><span class="line">    data = tokenizer.batch_encode_plus(data,</span><br><span class="line">                                       padding=<span class="literal">True</span>,  <span class="comment"># 填充序列</span></span><br><span class="line">                                       truncation=<span class="literal">True</span>,  <span class="comment"># 截断序列</span></span><br><span class="line">                                       max_length=<span class="number">512</span>,  <span class="comment"># 最大长度</span></span><br><span class="line">                                       return_tensors=<span class="string">&#x27;pt&#x27;</span>)  <span class="comment"># 返回PyTorch张量</span></span><br><span class="line">    <span class="comment"># 复制输入ID作为标签，用于语言模型训练。输出赋值给输入的数据集的labels</span></span><br><span class="line">    data[<span class="string">&#x27;labels&#x27;</span>] = data[<span class="string">&#x27;input_ids&#x27;</span>].clone()</span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用DataLoader创建数据加载器，用于批量加载数据</span></span><br><span class="line">loader = DataLoader(</span><br><span class="line">    dataset=dataset,  <span class="comment"># 指定数据集</span></span><br><span class="line">    batch_size=<span class="number">2</span>,  <span class="comment"># 指定批量大小</span></span><br><span class="line">    shuffle=<span class="literal">True</span>,  <span class="comment"># 打乱数据</span></span><br><span class="line">    drop_last=<span class="literal">True</span>,  <span class="comment"># 如果最后一个批次的数据量小于batch_size，则丢弃</span></span><br><span class="line">    collate_fn=collate_fn  <span class="comment"># 指定如何从数据集中收集样本到批次中</span></span><br><span class="line">)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;数据的长度：<span class="subst">&#123;<span class="built_in">len</span>(loader)&#125;</span>&quot;</span>)  <span class="comment"># 打印数据加载器中的批次数量</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义训练函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">train</span>():</span><br><span class="line">    <span class="comment"># 定义训练参数</span></span><br><span class="line">    EPOCH = <span class="number">3000</span>  <span class="comment"># 训练轮数</span></span><br><span class="line">    <span class="keyword">global</span> model  <span class="comment"># 使用全局模型变量</span></span><br><span class="line">    DEVICE = <span class="string">&quot;cuda&quot;</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">&quot;cpu&quot;</span>  <span class="comment"># 检测是否有GPU，如果有则使用，否则使用CPU</span></span><br><span class="line">    <span class="comment"># 区别前面的Bert的增量微调，这里使用全量微调，</span></span><br><span class="line">    model = model.to(DEVICE)  <span class="comment"># 将模型移动到指定设备</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 定义优化器</span></span><br><span class="line">    optimizer = AdamW(model.parameters(), lr=<span class="number">2e-5</span>)  <span class="comment"># 使用AdamW优化器，并设置学习率</span></span><br><span class="line">    <span class="comment"># 定义学习率调度器</span></span><br><span class="line">    scheduler = get_scheduler(name=<span class="string">&quot;linear&quot;</span>,  <span class="comment"># 线性调度器</span></span><br><span class="line">                              num_warmup_steps=<span class="number">0</span>,  <span class="comment"># 预热步数</span></span><br><span class="line">                              num_training_steps=<span class="built_in">len</span>(loader),  <span class="comment"># 总训练步数</span></span><br><span class="line">                              optimizer=optimizer)</span><br><span class="line">    model.train()  <span class="comment"># 将模型设置为训练模式</span></span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(EPOCH):  <span class="comment"># 循环每一轮训练</span></span><br><span class="line">        <span class="keyword">for</span> i, data <span class="keyword">in</span> <span class="built_in">enumerate</span>(loader):  <span class="comment"># 遍历数据加载器中的批次</span></span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> data.keys():  <span class="comment"># 将数据移动到指定设备</span></span><br><span class="line">                data[k] = data[k].to(DEVICE)</span><br><span class="line">            <span class="comment"># 将data解包</span></span><br><span class="line">            out = model(**data)  <span class="comment"># 前向传播</span></span><br><span class="line">            loss = out[<span class="string">&#x27;loss&#x27;</span>]  <span class="comment"># 获取损失</span></span><br><span class="line"></span><br><span class="line">            loss.backward()  <span class="comment"># 反向传播</span></span><br><span class="line">            torch.nn.utils.clip_grad_norm_(model.parameters(), <span class="number">1.0</span>)  <span class="comment"># 梯度裁剪，防止梯度爆炸</span></span><br><span class="line">            optimizer.step()  <span class="comment"># 更新模型参数</span></span><br><span class="line">            scheduler.step()  <span class="comment"># 更新学习率</span></span><br><span class="line"></span><br><span class="line">            optimizer.zero_grad()  <span class="comment"># 清空优化器的梯度</span></span><br><span class="line">            model.zero_grad()  <span class="comment"># 清空模型的梯度</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> i % <span class="number">50</span> == <span class="number">0</span>:  <span class="comment"># 每隔50个批次打印一次信息</span></span><br><span class="line">                labels = data[<span class="string">&quot;labels&quot;</span>][:, <span class="number">1</span>:]  <span class="comment"># 获取真实标签，忽略&lt;bos&gt;标记</span></span><br><span class="line">                out = out[<span class="string">&quot;logits&quot;</span>].argmax(dim=<span class="number">2</span>)[:,:-<span class="number">1</span>]  <span class="comment"># 获取预测结果，忽略&lt;eos&gt;标记</span></span><br><span class="line"></span><br><span class="line">                select = labels != <span class="number">0</span>  <span class="comment"># 选择非填充的标签</span></span><br><span class="line">                labels = labels[select]  <span class="comment"># 应用选择</span></span><br><span class="line">                out = out[select]  <span class="comment"># 应用选择</span></span><br><span class="line">                <span class="keyword">del</span> select  <span class="comment"># 删除不再使用的select</span></span><br><span class="line">                <span class="comment"># 计算准确率</span></span><br><span class="line">                acc = (labels == out).<span class="built_in">sum</span>().item() / labels.numel()  <span class="comment"># 计算准确率的公式</span></span><br><span class="line">                lr = optimizer.state_dict()[<span class="string">&quot;param_groups&quot;</span>][<span class="number">0</span>][<span class="string">&#x27;lr&#x27;</span>]  <span class="comment"># 获取当前学习率</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># 打印训练信息，如下图</span></span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;epoch:<span class="subst">&#123;epoch&#125;</span>,batch:<span class="subst">&#123;i&#125;</span>,loss:<span class="subst">&#123;loss.item()&#125;</span>,lr:<span class="subst">&#123;lr&#125;</span>,acc:<span class="subst">&#123;acc&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 保存最后一轮模型参数</span></span><br><span class="line">        torch.save(model.state_dict(), <span class="string">&quot;params/net.pt&quot;</span>)  <span class="comment"># 保存训练权重输出到文件保存</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;权重保存成功！&quot;</span>)  <span class="comment"># 打印成功信息</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 当该脚本作为主程序运行时，调用训练函数</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    train()  <span class="comment"># 开始训练过程</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>模型学习训练权重</strong></p>
+<p>不加载训练权重，如下图，乱七八糟</p>
+<p><img src="/img/2025-12-03_20-24-15.png" alt="image"></p>
+<p>加载训练权重即模型训练的结果net.pt，如下图，有一定关联</p>
+<p><img src="/img/2025-12-03_20-24-54.png" alt="image"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 模型学习训练权重</span></span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoModelForCausalLM,AutoTokenizer,TextGenerationPipeline</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">tokenizer = AutoTokenizer.from_pretrained(<span class="string">r&quot;D:\BaiduNetdiskDownload\gpt2-chinese模型\models--uer--gpt2-chinese-cluecorpussmall\snapshots\c2c0249d8a2731f269414cc3b22dff021f8e07a3&quot;</span>)</span><br><span class="line">model = AutoModelForCausalLM.from_pretrained(<span class="string">r&quot;D:\BaiduNetdiskDownload\gpt2-chinese模型\models--uer--gpt2-chinese-cluecorpussmall\snapshots\c2c0249d8a2731f269414cc3b22dff021f8e07a3&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#加载我们自己训练的权重（中文古诗词）-也可以不加载训练权重，注释即可</span></span><br><span class="line">model.load_state_dict(torch.load(<span class="string">&quot;params/net.pt&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#使用系统自带的pipeline工具生成内容</span></span><br><span class="line">pipeline = TextGenerationPipeline(model,tokenizer,device=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(pipeline(<span class="string">&quot;天高&quot;</span>,max_length =<span class="number">24</span>))</span><br></pre></td></tr></table></figure>
+
+<p>定制化的控制内容和格式输出，需要人为强制干预，如下图，五言诗诗句的感觉</p>
+<p><img src="/img/2025-12-03_20-28-11.png" alt="image"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#定制化的控制内容和格式输出</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoTokenizer,AutoModelForCausalLM</span><br><span class="line"></span><br><span class="line">tokenizer = AutoTokenizer.from_pretrained(<span class="string">r&quot;D:\BaiduNetdiskDownload\gpt2-chinese模型\models--uer--gpt2-chinese-cluecorpussmall\snapshots\c2c0249d8a2731f269414cc3b22dff021f8e07a3&quot;</span>)</span><br><span class="line">model = AutoModelForCausalLM.from_pretrained(<span class="string">r&quot;D:\BaiduNetdiskDownload\gpt2-chinese模型\models--uer--gpt2-chinese-cluecorpussmall\snapshots\c2c0249d8a2731f269414cc3b22dff021f8e07a3&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#加载我们自己训练的权重（中文古诗词），如果训练权重是CPU设备训练出来的就选cpu,如果是GPU设备的cuda训练出来的就选gpu</span></span><br><span class="line">model.load_state_dict(torch.load(<span class="string">&quot;params/net.pt&quot;</span>,map_location=<span class="string">&quot;cpu&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义函数，用于生成5言绝句 text是提示词，row是生成文本的行数，col是每行的字符数。</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">generate</span>(<span class="params">text,row,col</span>):</span><br><span class="line"></span><br><span class="line">    <span class="comment">#定义一个内部递归函数，用于生成文本，因为不知道循环的次数</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">generate_loop</span>(<span class="params">data</span>):</span><br><span class="line">        <span class="comment">#禁用梯度计算</span></span><br><span class="line">        <span class="keyword">with</span> torch.no_grad():</span><br><span class="line">            <span class="comment">#使用data字典中的数据作为模型输入，并获取输出</span></span><br><span class="line">            out = model(**data)</span><br><span class="line">        <span class="comment">#获取最后一个字(logits未归一化的概率输出)</span></span><br><span class="line">        out = out[<span class="string">&quot;logits&quot;</span>]</span><br><span class="line">        <span class="comment">#选择每个序列的最后一个logits，对应于下一个词的预测</span></span><br><span class="line">        out = out[:,-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment">#找到概率排名前50的值，以此为分界线，小于该值的全部舍去</span></span><br><span class="line">        topk_value = torch.topk(out,<span class="number">50</span>).values</span><br><span class="line">        <span class="comment">#获取每个输出序列中前50个最大的logits（为保持原维度不变，需要对结果增加一个维度，因为索引操作会降维）。设置前50个大概率</span></span><br><span class="line">        topk_value = topk_value[:,-<span class="number">1</span>].unsqueeze(dim=<span class="number">1</span>)</span><br><span class="line">        <span class="comment">#将所有小于第50大的值的logits设置为负无穷，减少低概率词的选择。设置50个以后的极低概率，可以认为是0</span></span><br><span class="line">        out = out.masked_fill(out &lt; topk_value,-<span class="built_in">float</span>(<span class="string">&quot;inf&quot;</span>))</span><br><span class="line"></span><br><span class="line">        <span class="comment">#将特殊符号的logits值设置为负无穷，防止模型生成这些符号。排除特殊字符</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="string">&quot;,.()《》[]「」&#123;&#125;，。&quot;</span>:</span><br><span class="line">            out[:,tokenizer.get_vocab()[i]] = -<span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line">        <span class="comment">#去特殊符号</span></span><br><span class="line">        out[:, tokenizer.get_vocab()[<span class="string">&quot;[UNK]&quot;</span>]] = -<span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line">        <span class="comment">#根据概率采样，无放回，避免生成重复的内容</span></span><br><span class="line">        out = out.softmax(dim=<span class="number">1</span>)</span><br><span class="line">        <span class="comment">#从概率分布中进行采样，选择下一个词的ID</span></span><br><span class="line">        out = out.multinomial(num_samples=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment">#强制添加标点符号</span></span><br><span class="line">        <span class="comment">#计算当前生成的文本长度于预期的长度的比例</span></span><br><span class="line">        c = data[<span class="string">&quot;input_ids&quot;</span>].shape[<span class="number">1</span>] / (col+<span class="number">1</span>)</span><br><span class="line">        <span class="comment">#如果当前的长度是预期长度的整数倍，则添加标点符号</span></span><br><span class="line">        <span class="keyword">if</span> c % <span class="number">1</span> ==<span class="number">0</span>:</span><br><span class="line">            <span class="keyword">if</span> c % <span class="number">2</span> ==<span class="number">0</span>:</span><br><span class="line">                <span class="comment">#在偶数位添加句号</span></span><br><span class="line">                out[:,<span class="number">0</span>] = tokenizer.get_vocab()[<span class="string">&quot;.&quot;</span>]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment">#在奇数位添加逗号</span></span><br><span class="line">                out[:,<span class="number">0</span>] = tokenizer.get_vocab()[<span class="string">&quot;,&quot;</span>]</span><br><span class="line">        <span class="comment">#将生成的新词ID添加到输入序列的末尾</span></span><br><span class="line">        data[<span class="string">&quot;input_ids&quot;</span>] = torch.cat([data[<span class="string">&quot;input_ids&quot;</span>],out],dim=<span class="number">1</span>)</span><br><span class="line">        <span class="comment">#更新注意力掩码，标记所有有效位置</span></span><br><span class="line">        data[<span class="string">&quot;attention_mask&quot;</span>] = torch.ones_like(data[<span class="string">&quot;input_ids&quot;</span>])</span><br><span class="line">        <span class="comment">#更新token的ID类型，通常在BERTm模型中使用，但是在GPT模型中是不用的</span></span><br><span class="line">        data[<span class="string">&quot;token_type_ids&quot;</span>] = torch.ones_like(data[<span class="string">&quot;input_ids&quot;</span>])</span><br><span class="line">        <span class="comment">#更新标签，这里将输入ID复制到标签中，在语言生成模型中通常用与预测下一个词</span></span><br><span class="line">        data[<span class="string">&quot;labels&quot;</span>] = data[<span class="string">&quot;input_ids&quot;</span>].clone()</span><br><span class="line"></span><br><span class="line">        <span class="comment">#检查生成的文本长度是否达到或超过指定的行数和列数</span></span><br><span class="line">        <span class="keyword">if</span> data[<span class="string">&quot;input_ids&quot;</span>].shape[<span class="number">1</span>] &gt;= row*col + row+<span class="number">1</span>:</span><br><span class="line">            <span class="comment">#如果达到长度要求，则返回最终的data字典</span></span><br><span class="line">            <span class="keyword">return</span> data</span><br><span class="line">        <span class="comment">#如果长度未达到要求，递归调用generate_loop函数继续生成文本</span></span><br><span class="line">        <span class="keyword">return</span> generate_loop(data)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#生成3首诗词</span></span><br><span class="line">    <span class="comment">#使用tokenizer对输入文本进行编码，并重复3次生成3个样本。</span></span><br><span class="line">    data = tokenizer.batch_encode_plus([text] * <span class="number">3</span>,return_tensors=<span class="string">&quot;pt&quot;</span>)</span><br><span class="line">    <span class="comment">#移除编码后的序列中的最后一个token(结束符号)</span></span><br><span class="line">    data[<span class="string">&quot;input_ids&quot;</span>] = data[<span class="string">&quot;input_ids&quot;</span>][:,:-<span class="number">1</span>]</span><br><span class="line">    <span class="comment">#创建一个与input_ids形状相同的全1张量，用于注意力掩码</span></span><br><span class="line">    data[<span class="string">&quot;attention_mask&quot;</span>] = torch.ones_like(data[<span class="string">&quot;input_ids&quot;</span>])</span><br><span class="line">    <span class="comment"># 创建一个与input_ids形状相同的全0张量，用于token类型ID</span></span><br><span class="line">    data[<span class="string">&quot;token_type_ids&quot;</span>] = torch.zeros_like(data[<span class="string">&quot;input_ids&quot;</span>])</span><br><span class="line">    <span class="comment">#复制input_ids到labels，用于模型的目标</span></span><br><span class="line">    data[<span class="string">&#x27;labels&#x27;</span>] = data[<span class="string">&quot;input_ids&quot;</span>].clone()</span><br><span class="line"></span><br><span class="line">    <span class="comment">#调用generate_loop函数开始生成文本</span></span><br><span class="line">    data = generate_loop(data)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#遍历生成的3个样本</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">        <span class="comment">#打印输出样本索引和对应的解码后的文本</span></span><br><span class="line">        <span class="built_in">print</span>(i,tokenizer.decode(data[<span class="string">&quot;input_ids&quot;</span>][i]))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    generate(<span class="string">&quot;白&quot;</span>,row=<span class="number">4</span>,col=<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="服务器训练GPT2中文模型-全量微调"><a href="#服务器训练GPT2中文模型-全量微调" class="headerlink" title="服务器训练GPT2中文模型-全量微调"></a>服务器训练GPT2中文模型-全量微调</h3><p><strong>使用<a target="_blank" rel="noopener" href="https://autodl.com/market/list">AutoDL官网</a>租借服务器算力</strong></p>
+<p>选择一个GPU16GB以上的服务器,GPU最好是RTX型号，方便后续环境使用</p>
+<p><img src="/img/2025-12-03_18-41-00.png" alt="image"></p>
+<p>选择基础镜像下，Pytorch最新的版本即可，系统必须是ubuntu</p>
+<p><img src="/img/2025-12-03_18-46-19.png" alt="image"></p>
+<p>最后租借成果</p>
+<p><img src="/img/2025-12-03_18-49-50.png" alt="image"></p>
+<p><strong>安装vscode插件-Remote - SSH</strong></p>
+<p>安装好后，添加远程服务器</p>
+<p><img src="/img/2025-12-03_18-53-55.png" alt="image"></p>
+<p>然后依次输入租借服务器的账号密码</p>
+<p><img src="/img/2025-12-03_18-55-57.png" alt="image"></p>
+<p>验证环境是否ok，执行nvidia-smi</p>
+<p><img src="/img/2025-12-03_19-20-35.png" alt="image"></p>
+<p>注意后续把代码和模型都放在数据盘 root/autodl-tmp，防止每次开关机服务器实例数据丢失。</p>
+<p><img src="/img/2025-12-03_19-21-20.png" alt="image"></p>
+<p><strong>上传模型和代码</strong></p>
+<p>注意要复制服务器上的模型的绝对地址，放到代码中，同时可以适时修改训练批次，开始训练</p>
+<p><img src="/img/2025-12-03_19-29-16.png" alt="image"></p>
+<p>如果需要实时查看设备GPU使用率，先安装工具pip install nvitop,执行nvitop即可</p>
+<p><img src="/img/2025-12-03_19-34-04.png" alt="image"></p>
+<p>执行python train.py开始同步训练，注意第一次批次设置小点。vscdoe关了，训练就停止了。</p>
+<p>建议在后台异步训练，执行nohub python -u  train.py &amp; ,即使vscode关了，服务器上仍在训练，并输出结果到nohub.out文件中。</p>
+<p>如何停止后台训练，top命令查看python占用多的那条pid，执行kill -9 对应pid</p>
+<h2 id="服务器私有化部署大模型"><a href="#服务器私有化部署大模型" class="headerlink" title="服务器私有化部署大模型"></a>服务器私有化部署大模型</h2><h3 id="魔塔社区ModelScope-了解原理"><a href="#魔塔社区ModelScope-了解原理" class="headerlink" title="魔塔社区ModelScope-了解原理"></a>魔塔社区ModelScope-了解原理</h3><blockquote>
+<p>优点：模型完整，适合高度定制。缺点：开发难度大。用于下载模型到本地。</p>
+</blockquote>
+<p>国内下载模型使用阿里的<a target="_blank" rel="noopener" href="https://www.modelscope.cn/my/mynotebook/preset">魔塔社区</a>，在我的mynotebook中有免费的33h的GPU实例使用。</p>
+<p>注意后续把代码和模型都放在数据盘 mnt/workspace，防止每次开关机服务器实例数据丢失。</p>
+<p>启动免费的阿里云实例</p>
+<p><img src="/img/2025-12-04_19-44-11.png" alt="image"></p>
+<p>训练一般采用0.5B-7B之间的模型，太大的话GPU的24g就不够用了。我们采用<a target="_blank" rel="noopener" href="https://www.modelscope.cn/models/Qwen/Qwen3-0.6B/files">千问的0.6B模型</a>，如果是其他服务器，需要先安装pip install modelscope，阿里云是天然集成的。一定要选SDK下载，git下载模型可能报错。</p>
+<p><img src="/img/2025-12-04_19-48-07.png" alt="image"></p>
+<p>验证环境是否ok，执行nvidia-smi</p>
+<p>SDK下载模型脚本文件download.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#模型下载</span></span><br><span class="line"><span class="keyword">from</span> modelscope <span class="keyword">import</span> snapshot_download</span><br><span class="line"><span class="comment"># cache_dir是服务器上的绝对路径，使用pwd查看就能看到</span></span><br><span class="line">model_dir = snapshot_download(<span class="string">&#x27;Qwen/Qwen3-0.6B&#x27;</span>,cache_dir=<span class="string">&#x27;/mnt/workspace/llm&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>执行python download.py，模型就会下载到服务器上。</p>
+<p>注意有的时候可能会下载两分一模一样的模型，删除一个保留一个都行，</p>
+<p><img src="/img/2025-12-06_09-20-54.png" alt="image"></p>
+<p>模型目录</p>
+<p><img src="/img/2025-12-06_09-21-54.png" alt="image"></p>
+<p>config.json</p>
+<blockquote>
+<ul>
+<li>torch_dtype: “bfloat16”,//数据的精度，一般大模型都是32位 单精度。16位相当于精度减半，也叫量化后的模型。好处：模型体积降低，计算速度更快。量化的意义在于加速模型推理，降低硬件依赖。模型体积=0.5BX16</li>
+<li>vocab_size: 151936//。字典数有15w个字符，包括中英文等特殊字符。</li>
+</ul>
+</blockquote>
+<p>generation_config.json</p>
+<blockquote>
+<ul>
+<li><p>temperature: 0.6,//输出的文本质量通过这3个参数控制</p>
+<p>top_k: 20,</p>
+<p>top_p: 0.95,</p>
+</li>
+</ul>
+</blockquote>
+<p>tokenizer.json</p>
+<blockquote>
+<ul>
+<li>content:”&lt;|im_start|&gt;”,//图像的开头 所有的大模型都有这种开头和结尾特殊字符，用来判断文本开始和结束。后面可用于多模态对接。</li>
+<li>content:”&lt;|im_end|&gt;”,//图像的结尾</li>
+<li>model_max_lenth:131072//支持最大的输入长度即131072个token，token是由分词器决定的。大模型收费也是按照token收费的。</li>
+<li>tokenizer_class:”QwenTokenizer”// 千问的分词工具</li>
+</ul>
+</blockquote>
+<p>vacab.json</p>
+<blockquote>
+<p>字典库，有些模型是内置的，不对外开放，防止用户修改，导致模型错误。</p>
+</blockquote>
+<p><strong>使用transformer加载qwen模型</strong></p>
+<blockquote>
+<p>这种属于手写加载大模型，基本不常用，主要了解原理</p>
+</blockquote>
+<p>test01_ModelScope.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#使用transformer加载qwen模型</span></span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoModelForCausalLM,AutoTokenizer</span><br><span class="line"></span><br><span class="line">DEVICE = <span class="string">&quot;cuda&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#加载本地模型路径为该模型配置文件所在的根目录</span></span><br><span class="line">model_dir = <span class="string">&quot;/mnt/workspace/llm/Qwen/Qwen3-0.6B&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#使用transformer加载模型</span></span><br><span class="line">model = AutoModelForCausalLM.from_pretrained(model_dir,torch_dtype=<span class="string">&quot;auto&quot;</span>,device_map=<span class="string">&quot;auto&quot;</span>)</span><br><span class="line">tokenizer = AutoTokenizer.from_pretrained(model_dir)</span><br><span class="line"></span><br><span class="line"><span class="comment">#调用模型</span></span><br><span class="line"><span class="comment">#定义提示词</span></span><br><span class="line">prompt = <span class="string">&quot;你好，请介绍下你自己。&quot;</span></span><br><span class="line"><span class="comment">#将提示词封装为message</span></span><br><span class="line">message = [&#123;<span class="string">&quot;role&quot;</span>:<span class="string">&quot;system&quot;</span>,<span class="string">&quot;content&quot;</span>:<span class="string">&quot;You are a helpful assistant system&quot;</span>&#125;,&#123;<span class="string">&quot;role&quot;</span>:<span class="string">&quot;user&quot;</span>,<span class="string">&quot;content&quot;</span>:prompt&#125;]</span><br><span class="line"><span class="comment">#使用分词器的apply_chat_template()方法将上面定义的消息列表进行转换;tokenize=False表示此时不进行令牌化</span></span><br><span class="line"><span class="comment"># 令牌化：将文本转为input_ids数据</span></span><br><span class="line">text = tokenizer.apply_chat_template(message,tokenize=<span class="literal">False</span>,add_generation_prompt=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#将处理后的文本令牌化并转换为模型的输入张量，是数组的text,并输出到本地DEVICE设备上</span></span><br><span class="line">model_inputs = tokenizer([text],return_tensors=<span class="string">&quot;pt&quot;</span>).to(DEVICE)</span><br><span class="line"></span><br><span class="line"><span class="comment">#将数据输入模型得到输出,结果是字典中对应的索引值，如下图</span></span><br><span class="line">response = model.generate(model_inputs.input_ids,max_new_tokens=<span class="number">512</span>)</span><br><span class="line"><span class="built_in">print</span>(response)</span><br><span class="line"></span><br><span class="line"><span class="comment">#对输出的内容进行解码还原，将索引值还原为文本，如下图</span></span><br><span class="line">response = tokenizer.batch_decode(response,skip_special_tokens=<span class="literal">True</span>)</span><br><span class="line"><span class="built_in">print</span>(response)</span><br></pre></td></tr></table></figure>
+
+<p>将数据输入模型得到输出,结果是字典中对应的索引值，如下图。对输出的内容进行解码还原，将索引值还原为文本，如下图</p>
+<p><img src="/img/2025-12-06_09-51-42.png" alt="image"></p>
+<h3 id="Ollama部署大模型-个人用户"><a href="#Ollama部署大模型-个人用户" class="headerlink" title="Ollama部署大模型-个人用户"></a>Ollama部署大模型-个人用户</h3><blockquote>
+<p>优点：适合个人用户，模型小，速度快。缺点：效果不好。</p>
+</blockquote>
+<p>安装conda的环境,自行百度，类似虚拟机环境，方便后续安装其他软件。注意所有命令都要先激活进入环境ollamaEnv。</p>
+<blockquote>
+<p>查看conda下的所有环境列表，执行conda info –envs</p>
+<p>如果电脑空间不够，可删除虚拟任意环境，conda remove -n ollamaEnv –all</p>
+</blockquote>
+<blockquote>
+<p>创建一个虚拟环境,执行conda create -n ollamaEnv，然后激活进入环境ollamaEnv，执行conda activate ollamaEnv。ollamaEnv只是随便一个环境名称，不是真正的ollama</p>
+</blockquote>
+<blockquote>
+<p>注意先激活进入环境ollamaEnv，然后到<a target="_blank" rel="noopener" href="https://ollama.com/download/linux">ollama官网</a>下载ollama，执行curl -fsSL <a target="_blank" rel="noopener" href="https://ollama.com/install.sh">https://ollama.com/install.sh</a> | sh ，下载完后启动ollama,先激活进入环境ollamaEnv，执行ollama serve，注意后续这个控制台窗口不要关闭。</p>
+</blockquote>
+<p>激活进入环境ollamaEnv，查看本地ollama的模型列表，执行ollama list,，初始是空的，如下图</p>
+<p><img src="/img/2025-12-06_10-15-28.png" alt="image"></p>
+<blockquote>
+<p>拉取Qwen模型并启动模型，执行ollama run qwen3:0.6b。后面可以使用Api调用大模型服务。</p>
+</blockquote>
+<p>ModelScope和ollama下载的模型差异：</p>
+<p><img src="/img/2025-12-06_11-17-52.png" alt="image"></p>
+<blockquote>
+<ul>
+<li>ModelScope常用的模型是safetensors格式，如1.5G</li>
+<li>ollama的模型都是GGUF格式，所以两者不互通用,如500M。这是因为它是阉割版，也叫量化版，是被缩小量化过的。如果ollama平台要使用ModelScope上的模型，要么搜索<a target="_blank" rel="noopener" href="https://modelscope.cn/models/Qwen/Qwen3-0.6B-GGUF/files">qwen GGUF</a>的模型，要么将safetensors转换为GGUF格式。优点：适合个人用户，模型小，速度快。缺点：效果不好。</li>
+</ul>
+</blockquote>
+<p><strong>API的方式加载qwen模型</strong></p>
+<p>test02_ollama_one.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#使用openai的API风格调用ollama平台的模型</span></span><br><span class="line"><span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI</span><br><span class="line"></span><br><span class="line"><span class="comment"># api_key是公开的，可以随便写</span></span><br><span class="line">client = OpenAI(base_url=<span class="string">&quot;http://localhost:11434/v1/&quot;</span>,api_key=<span class="string">&quot;suibianxie&quot;</span>)</span><br><span class="line"><span class="comment"># model一定是命令ollama list下存在的模型名称</span></span><br><span class="line">chat_completion = client.chat.completions.create(</span><br><span class="line">    messages=[&#123;<span class="string">&quot;role&quot;</span>:<span class="string">&quot;user&quot;</span>,<span class="string">&quot;content&quot;</span>:<span class="string">&quot;你好，请介绍下你自己。&quot;</span>&#125;],model=<span class="string">&quot;Qwen3-0.6B&quot;</span></span><br><span class="line">)</span><br><span class="line"><span class="built_in">print</span>(chat_completion.choices[<span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+
+<p>test03_ollama_multipy.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#使用openai的API风格调用ollama平台的模型，并进行多轮对话</span></span><br><span class="line"><span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI</span><br><span class="line"></span><br><span class="line"><span class="comment">#定义多轮对话方法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run_chat_session</span>():</span><br><span class="line">    <span class="comment">#初始化客户端</span></span><br><span class="line">    client = OpenAI(base_url=<span class="string">&quot;http://localhost:11434/v1/&quot;</span>,api_key=<span class="string">&quot;suibianxie&quot;</span>)</span><br><span class="line">    <span class="comment">#初始化对话历史</span></span><br><span class="line">    chat_history = []</span><br><span class="line">    <span class="comment">#启动对话循环</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="comment">#获取用户输入</span></span><br><span class="line">        user_input = <span class="built_in">input</span>(<span class="string">&quot;用户：&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> user_input.lower() == <span class="string">&quot;exit&quot;</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;退出对话。&quot;</span>)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="comment">#更新对话历史(添加用户输入)，注意角色是用户</span></span><br><span class="line">        chat_history.append(&#123;<span class="string">&quot;role&quot;</span>:<span class="string">&quot;user&quot;</span>,<span class="string">&quot;content&quot;</span>:user_input&#125;)</span><br><span class="line">        <span class="comment">#调用模型回答</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            chat_complition = client.chat.completions.create(messages=chat_history,model=<span class="string">&quot;Qwen3-0.6B&quot;</span>)</span><br><span class="line">            <span class="comment">#获取最新回答</span></span><br><span class="line">            model_response = chat_complition.choices[<span class="number">0</span>]</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;AI:&quot;</span>,model_response.message.content)</span><br><span class="line">            <span class="comment">#更新对话历史（添加AI模型的回复）,注意角色是助手</span></span><br><span class="line">            chat_history.append(&#123;<span class="string">&quot;role&quot;</span>:<span class="string">&quot;assistant&quot;</span>,<span class="string">&quot;content&quot;</span>:model_response.message.content&#125;)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;发生错误：&quot;</span>,e)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    run_chat_session()</span><br></pre></td></tr></table></figure>
+
+<h3 id="vLLM部署大模型-商业客户"><a href="#vLLM部署大模型-商业客户" class="headerlink" title="vLLM部署大模型-商业客户"></a>vLLM部署大模型-商业客户</h3><blockquote>
+<p>优点：适合商业用途，支持ModelScope的safetensors格式文件。缺点：限制比较多，注意下显卡要求。</p>
+</blockquote>
+<p>vLLM 包含预编译的 C++ 和 CUDA (12.1) 二进制库，注意只支持linux系统和cuda12.1,</p>
+<blockquote>
+<p>创建一个虚拟环境,执行conda create -n vLLMEnv python=3.12 -y，然后激活进入环境vLLMEnv ，执行conda activate vLLMEnv 。vLLMEnv 只是随便一个环境名称，不是真正的vLLM</p>
+</blockquote>
+<blockquote>
+<p>注意先激活进入环境vLLMEnv ，然后执行pip install vllm ,安装vllm。</p>
+</blockquote>
+<blockquote>
+<p>启动本地大模型服务，这里采用之前下载的本地绝对路径模型，执行vllm serve /mnt/workspace/llm/Qwen/Qwen3-0.6B –dType=half 。其中–dType=half表示平台支持的是半精度，看启动过程中是否有报错提示而添加。注意后续这个控制台窗口不要关闭。</p>
+</blockquote>
+<p><strong>API的方式加载qwen模型</strong></p>
+<blockquote>
+<p>同ollama一样代码，只需修改<em>base_url</em>端口为8000，<em>model</em>为本地绝对路径 /mnt/workspace/llm/Qwen/Qwen3-0.6B</p>
+</blockquote>
+<h3 id="LMDeploy部署大模型-推荐"><a href="#LMDeploy部署大模型-推荐" class="headerlink" title="LMDeploy部署大模型-推荐"></a>LMDeploy部署大模型-推荐</h3><blockquote>
+<p>优点：适合大多数场景，支持ModelScope的safetensors格式文件，显存优化明显。缺点：注意下显卡要求。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://internlm.intern-ai.org.cn/">母公司书生</a>，它的大模型开源工具链体系比较厉害，尤其是Xtuner,LMDeploy,OpenCompass工具。</p>
+<p><a target="_blank" rel="noopener" href="https://lmdeploy.readthedocs.io/zh-cn/latest/">LMDeploy官网</a>，支持在 Linux 和 Windows 平台上部署 LLMs 和 VLMs，最低要求 CUDA 版本为 11.3。</p>
+<blockquote>
+<p>同前面一样，创建一个虚拟环境</p>
+<p>conda create -n lmdeployEnv python=3.10 -y<br>conda activate lmdeployEnv<br>pip install lmdeploy</p>
+</blockquote>
+<blockquote>
+<p>使用ModelScope拉取Qwen模型并启动模型，执行lmdeploy serve api_server /mnt/workspace/llm/Qwen/Qwen3-0.6B。后面可以使用Api调用大模型服务。</p>
+</blockquote>
+<p><strong>API的方式加载qwen模型</strong></p>
+<blockquote>
+<p>同ollama一样代码，只需修改<em>base_url</em>端口为23333，<em>model</em>为本地绝对路径 /mnt/workspace/llm/Qwen/Qwen3-0.6B</p>
+</blockquote>
+<h2 id="大模型微调"><a href="#大模型微调" class="headerlink" title="大模型微调"></a>大模型微调</h2><h3 id="LORA微调"><a href="#LORA微调" class="headerlink" title="LORA微调"></a>LORA微调</h3><p>定义：LoRA 是一种用于微调大型语言模型的技术， 通过低秩近似方法降低适应数十亿参数模型（如 GPT-3） 到特定任务或领域。  属于局部微调的一种，设计思路很巧妙。</p>
+<p><strong>原理</strong></p>
+<blockquote>
+<ul>
+<li>训练时， 输入分别与原始权重和两个低秩矩阵进行计算， 共同得到最终结果， 优化则仅优化A和B</li>
+<li>训练完成后， 可以将两个低秩矩阵与原始模型中的权重进行合并，合并后的模型与原始模型无异</li>
+</ul>
+</blockquote>
+<p><img src="/img/2025-12-08_22-09-58.png" alt="image"></p>
+<p><strong>基于LORA微调的平台</strong></p>
+<ul>
+<li>基于LLaMA-Factory可视化界面</li>
+<li>基于书生公司的Xtuner命令行</li>
+</ul>
+<p><strong>LLaMA-Factory使用</strong></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/hiyouga/LLaMA-Factory/blob/main/README_zh.md">官网</a></p>
+<blockquote>
+<ul>
+<li><strong>多种模型</strong>：LLaMA、LLaVA、Mistral、Mixtral-MoE、Qwen、Qwen2-VL、DeepSeek、Yi、Gemma、ChatGLM、Phi 等等。</li>
+<li><strong>集成方法</strong>：（增量）预训练、（多模态）指令监督微调、奖励模型训练、PPO 训练、DPO 训练、KTO 训练、ORPO 训练等等。</li>
+<li><strong>多种精度</strong>：16 比特全参数微调、冻结微调、LoRA 微调和基于 AQLM/AWQ/GPTQ/LLM.int8/HQQ/EETQ 的 2/3/4/5/6/8 比特 QLoRA 微调。</li>
+<li><strong>先进算法</strong>：<a target="_blank" rel="noopener" href="https://github.com/jiaweizzhao/GaLore">GaLore</a>、<a target="_blank" rel="noopener" href="https://github.com/Ledzy/BAdam">BAdam</a>、<a target="_blank" rel="noopener" href="https://github.com/zhuhanqing/APOLLO">APOLLO</a>、<a target="_blank" rel="noopener" href="https://github.com/zyushun/Adam-mini">Adam-mini</a>、<a target="_blank" rel="noopener" href="https://github.com/KellerJordan/Muon">Muon</a>、<a target="_blank" rel="noopener" href="https://github.com/huggingface/peft/tree/main/src/peft/tuners/oft">OFT</a>、DoRA、LongLoRA、LLaMA Pro、Mixture-of-Depths、LoRA+、LoftQ 和 PiSSA。</li>
+<li><strong>实用技巧</strong>：<a target="_blank" rel="noopener" href="https://github.com/Dao-AILab/flash-attention">FlashAttention-2</a>、<a target="_blank" rel="noopener" href="https://github.com/unslothai/unsloth">Unsloth</a>、<a target="_blank" rel="noopener" href="https://github.com/linkedin/Liger-Kernel">Liger Kernel</a>、<a target="_blank" rel="noopener" href="https://github.com/kvcache-ai/ktransformers/">KTransformers</a>、RoPE scaling、NEFTune 和 rsLoRA。</li>
+<li><strong>广泛任务</strong>：多轮对话、工具调用、图像理解、视觉定位、视频识别和语音理解等等。</li>
+<li><strong>实验监控</strong>：LlamaBoard、TensorBoard、Wandb、MLflow、<a target="_blank" rel="noopener" href="https://github.com/SwanHubX/SwanLab">SwanLab</a> 等等。</li>
+<li><strong>极速推理</strong>：基于 <a target="_blank" rel="noopener" href="https://github.com/vllm-project/vllm">vLLM</a> 或 <a target="_blank" rel="noopener" href="https://github.com/sgl-project/sglang">SGLang</a> 的 OpenAI 风格 API、浏览器界面和命令行接口。</li>
+</ul>
+</blockquote>
+<p>安装</p>
+<blockquote>
+<p>新建一个虚拟环境:conda create -n llamaFactoryEnv python=3.10 -y j激活 conda activate llamaFactoryEnv </p>
+<p>git clone –depth 1 <a target="_blank" rel="noopener" href="https://github.com/hiyouga/LLaMA-Factory.git">https://github.com/hiyouga/LLaMA-Factory.git</a><br>进入目录，cd LLaMA-Factory<br>安装基础依赖，pip install -e .</p>
+</blockquote>
+<p>启动可视化界面</p>
+<blockquote>
+<p>llamafactory-cli webui // 需要有vscode的ssh插件，能自动打开可视化窗口,要进入到根目录下执行</p>
+</blockquote>
+<p>开始微调训练</p>
+<blockquote>
+<p>修改默认的数据集identity.json的内容</p>
+</blockquote>
+<p><img src="/img/2025-12-08_22-55-40.png" alt="image"></p>
+<blockquote>
+<p>可视化窗口设置参数，点击开始训练</p>
+</blockquote>
+<p><img src="/img/2025-12-08_23-01-44.png" alt="image"></p>
+<p><img src="/img/2025-12-08_23-04-14.png" alt="image"></p>
+<p><img src="/img/2025-12-08_23-06-01.png" alt="image"></p>
+<blockquote>
+<p>训练完成过程中，每隔100个轮次，在根目录下的save文件夹中，生成检查点文件及权重文件，checkpoint100、checkpoint200等</p>
+</blockquote>
+<p><img src="/img/2025-12-10_19-16-06.png" alt="image"></p>
+<p>当loss不再明显下降或水平平滑，可停止训练。</p>
+<p><img src="/img/2025-12-11_19-54-21.png" alt="image"></p>
+<p>手工验证训练后的模型效果，配置最后一个训练点的权重文件，点击加载模型</p>
+<p><img src="/img/2025-12-10_19-20-12.png" alt="image"></p>
+<p>底部可以开始对话</p>
+<p><img src="/img/2025-12-10_19-22-50.png" alt="image"></p>
+<p><strong>LLaMA-Factory自定义数据集</strong></p>
+<p><a target="_blank" rel="noopener" href="https://llamafactory.readthedocs.io/zh-cn/latest/getting_started/data_preparation.html#id4">LLaMA-Factory中文文档</a>，要求单轮和多轮对话支持的数据结构如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 单轮对话</span><br><span class="line">&#123;</span><br><span class="line">    &quot;instruction&quot;: &quot;问题（必填）&quot;,</span><br><span class="line">    &quot;input&quot;: &quot;问题相关的（选填）&quot;,</span><br><span class="line">    &quot;output&quot;: &quot;回答（必填）&quot;,</span><br><span class="line">  &#125;</span><br><span class="line">// 多轮对话</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;instruction&quot;: &quot;问题（必填）&quot;,// 这是当前的第三轮-问题</span><br><span class="line">    &quot;input&quot;: &quot;问题相关的（选填）&quot;,</span><br><span class="line">    &quot;output&quot;: &quot;回答（必填）&quot;,// 这是当前的第三轮-回答</span><br><span class="line">    &quot;system&quot;: &quot;系统提示词（选填）&quot;,</span><br><span class="line">    &quot;history&quot;: [</span><br><span class="line">      [&quot;第一轮指令（选填）&quot;, &quot;第一轮回答（选填）&quot;],</span><br><span class="line">      [&quot;第二轮指令（选填）&quot;, &quot;第二轮回答（选填）&quot;]</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>原始数据集选取modelscope上弱智吧的<a target="_blank" rel="noopener" href="https://modelscope.cn/datasets/w10442005/ruozhiba_qa/dataPeview">数据集</a>，数据格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;system&quot;: &quot;00000&quot;,</span><br><span class="line">    &quot;query&quot;: &quot;只剩一个心脏了还能活吗？&quot;,</span><br><span class="line">    &quot;response&quot;: &quot;能，人本来就只有一个心脏。&quot;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p><em>重要重要重要：学会让大模型工具帮我们生成代码</em></p>
+<p>1.手动点击下载原始数据ruozhiba_qaswift.json，将原始数据转为llmaFactory支持的数据结构</p>
+<p><img src="/img/2025-12-11_19-24-00.png" alt="image"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 原始数据转为llmaFactory支持的数据结构</span></span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取原始JSON文件</span></span><br><span class="line">input_file = <span class="string">&quot;data/ruozhiba_qaswift.json&quot;</span>  <span class="comment"># 你的JSON文件名</span></span><br><span class="line">output_file = <span class="string">&quot;data/ruozhiba_qaswift_train.json&quot;</span>  <span class="comment"># 输出的JSON文件名</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(input_file, <span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = json.load(f)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转换后的数据</span></span><br><span class="line">converted_data = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> data:</span><br><span class="line">    converted_item = &#123;</span><br><span class="line">        <span class="string">&quot;instruction&quot;</span>: item[<span class="string">&quot;query&quot;</span>],</span><br><span class="line">        <span class="string">&quot;input&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">        <span class="string">&quot;output&quot;</span>: item[<span class="string">&quot;response&quot;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    converted_data.append(converted_item)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存为JSON文件（最外层是列表）</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(output_file, <span class="string">&quot;w&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    json.dump(converted_data, f, ensure_ascii=<span class="literal">False</span>, indent=<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;转换完成，数据已保存为 <span class="subst">&#123;output_file&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>2.本地转换好数据集后，放入大data目录下，并配置</p>
+<p><img src="/img/2025-12-11_19-30-30.png" alt="image"></p>
+<p>3.启动llmaFactory,选择对应数据集开始训练</p>
+<blockquote>
+<p>根目录执行llamafactory-cli webui</p>
+</blockquote>
+<p><img src="/img/2025-12-11_19-32-18.png" alt="image"></p>
+<p>4.客观评估和主观评估</p>
+<p><img src="/img/2025-12-11_20-00-52.png" alt="image"></p>
+<p>客观评估结果如下图：</p>
+<p><img src="/img/2025-12-11_20-09-31.png" alt="image"></p>
+<p>主观评估如下图：</p>
+<p><img src="/img/2025-12-13_08-30-12.png" alt="image"></p>
+<p><strong>Lora模型合并与量化导出</strong>  </p>
+<p>训练后的目录</p>
+<p><img src="/img/2025-12-11_19-51-36.png" alt="image"></p>
+<p>配置合并导出</p>
+<p><img src="/img/2025-12-13_08-37-37.png" alt="image"></p>
+<p>看下合并后的模型效果，不错</p>
+<p><img src="/img/2025-12-13_08-40-27.png" alt="image"></p>
+<p>基于合并的模型，我们也可以继续做量化即阉割量化模型。</p>
+<p>量化模型：原模型是数据格式是Float16位对硬件要求高，我们降低到8位或4位(如q8或q4)，适配低配置低算力硬件(如ollama)。如果再低，模型效果就不好了。</p>
+<p>配置量化并导出</p>
+<p><img src="/img/2025-12-13_08-58-11.png" alt="image"></p>
+<p>看下量化后的模型效果，效果很差。原因：最初的原始模型是qwen-0.5B，太小了，一般模型5B以上，量化效果才能维持原模型效果。</p>
+<p><img src="/img/2025-12-13_08-59-57.png" alt="image"></p>
+<p><strong>使用 open-webui部署模型</strong></p>
+<p>linux上安装open-webui</p>
+<blockquote>
+<p>同前面一样，创建一个虚拟环境</p>
+<p>conda create -n openWebUIEnv python=3.11 -y<br>conda activate openWebUIEnv<br>pip install open-webui</p>
+</blockquote>
+<p>配置open-webui</p>
+<p><img src="/img/2025-12-13_09-26-13.png" alt="image"></p>
+<p>启动open-webui，执行open-webui serve。</p>
+<p>访问localhost:3000</p>
+<h3 id="QLORA微调"><a href="#QLORA微调" class="headerlink" title="QLORA微调"></a>QLORA微调</h3><p>定义：QLoRA 是一种高效的大型语言模型微调方法， 它显著降低了内存使用量， 同时保持了全 16 位微调的性能。 它通过在一个固定的、 4 位量化的预训练语言模型中反向传播梯度到低秩适配器来实现这一目标。</p>
+<p>与LORA不同的是，它采用降低模型参数精度来节约训练的显存，使模型训练更快。因为模型的参数已经固定，降低精度一定会影响结果。在量化微调中，量化只发生在内部训练过程，并不影响模型的最终的数据类型(模型原有的参数类型是f16,在量化微调训练中会量化为8位，参数保存时又还原为f16,量化微调不影响模型本身的参数类型)  </p>
+<blockquote>
+<p>加速方式：falshatten2，只支持显卡SM70以上</p>
+</blockquote>
+<img src="/img/2025-12-15_19-52-33.png" style="zoom:100%;" />
+
+<p>注意一般loss前面几轮会先升高再降低，升高是因为模型比较大数据集比较小，后面会逐渐降低。</p>
+<img src="/img/2025-12-16_08-18-13.png" style="zoom:100%;" />
+
+<p>然后同前面LoRA一样，合并导出。</p>
+<h3 id="GGUF"><a href="#GGUF" class="headerlink" title="GGUF"></a>GGUF</h3><blockquote>
+<p>定义：GGUF 格式的全名为（GPT-Generated Unified Format） ， 提到GGUF 就不得不提到它的前身 GGML（GPT-Generated Model Language） 。 GGML 是专门为了机器学习设计的张量库， 最早可以追溯到 2022/10。 其目的是为了有一个单文件共享的格式， 并且易于在不同架构的 GPU 和 CPU 上进行推理。 但在后续的开发中， 遇到了灵活性不足、 相容性及难以维护的问题。  </p>
+</blockquote>
+<blockquote>
+<p>与safetensors相比，GGUF格式的优势：</p>
+<p>1） 可扩展性： 轻松为 GGML 架构下的工具添加新功能， 或者向 GGUF 模型添加新 Feature， 不会破坏与现有模型的兼容性。</p>
+<p>2） 对 mmap（内存映射） 的兼容性： 该模型可以使用 mmap 进行加载（原理解析可见参考） ， 实现快速载入和存储。 （从 GGJT 开始导入， 可参考 GitHub）</p>
+<p>3） 易于使用： 模型可以使用少量代码轻松加载和存储， 无需依赖的 Library， 同时对于不同编程语言支持程度也高。</p>
+<p>4） 模型信息完整： 加载模型所需的所有信息都包含在模型文件中， 不需要额外编写设置文件。</p>
+<p>5） 有利于模型量化： GGUF 支持模型量化（4 位、 8 位、 F16） ， 在 GPU 变得越来越昂贵的情况下， 节省 vRAM 成本也非常重要。</p>
+</blockquote>
+<p><strong>将safetensors转化为GGUF</strong></p>
+<p>1.需要用llama.cpp仓库的convert_hf_to_gguf.py脚本来转换  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/ggerganov/llama.cpp.git</span><br><span class="line">pip install -r llama.cpp/requirements.txt</span><br></pre></td></tr></table></figure>
+
+<p>2.执行转换  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如果不量化，保留模型的效果</span></span><br><span class="line">python llama.cpp/convert_hf_to_gguf.py /mnt/workspace/llm/Qwen/Qwen3-<span class="number">0.6</span>B --outtype f16</span><br><span class="line">--verbose --outfile /mnt/workspace/llm/Qwen/Qwen3-<span class="number">0.6</span>B-gguf.gguf</span><br><span class="line"><span class="comment"># 如果需要量化（加速并有损效果），直接执行下面脚本就可以</span></span><br><span class="line">python llama.cpp/convert_hf_to_gguf.py 绝对路径 --outtype</span><br><span class="line">q8_0 --verbose --outfile 绝对路径-gguf_q8_0.gguf</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这里–outtype是输出类型，代表含义：<br>q2_k：特定张量（Tensor）采用较高的精度设置，而其他的则保持基础级别。<br>q3_k_l、q3_k_m、q3_k_s：这些变体在不同张量上使用不同级别的精度，从而达到性能和效率的平衡。<br>q4_0：这是最初的量化方案，使用 4 位精度。<br>q4_1 和 q4_k_m、q4_k_s：这些提供了不同程度的准确性和推理速度，适合需要平衡资源使用的场景。<br>q5_0、q5_1、q5_k_m、q5_k_s：这些版本在保证更高准确度的同时，会使用更多的资源并且推理速度较<br>慢。<br>q6_k 和 q8_0：这些提供了最高的精度，但是因为高资源消耗和慢速度，可能不适合所有用户。<br>fp16 和 f32: 不量化，保留原始精度。</p>
+</blockquote>
+<p>3.使用ollama运行gguf  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">安装并启动ollama</span><br><span class="line">curl -fsSL https://ollama.com/install.sh | sh</span><br><span class="line">ollama serve</span><br></pre></td></tr></table></figure>
+
+<p>创建ModelFile文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#GGUF文件路径</span><br><span class="line">FROM /mnt/workspace/llm/Qwen/Qwen3-0.6B-gguf.gguf</span><br></pre></td></tr></table></figure>
+
+<p>创建自定义模型  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ollama create Qwen3-0.6B-gguf --file ./ModeFile</span><br></pre></td></tr></table></figure>
+
+<p>查看并运行模型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ollama list</span><br><span class="line">ollama run Qwen3-0.6B-gguf</span><br></pre></td></tr></table></figure>
+
+<h3 id="LLamaFactory微调效果与vllm部署效果不一致"><a href="#LLamaFactory微调效果与vllm部署效果不一致" class="headerlink" title="LLamaFactory微调效果与vllm部署效果不一致"></a>LLamaFactory微调效果与vllm部署效果不一致</h3><p><strong>1.生成式语言模型的对话模板</strong>  </p>
+<p>不同模型框架采用的模板是不一样的</p>
+<p>1.1QWen大模型的对话模板</p>
+<p>即使是同系列的同产商，不同版本的模型的对话模板也不相同。</p>
+<img src="/img/2026-01-18_18-09-01.png" style="zoom:50%;" />
+
+<p><strong>2.Lora微调后单独部署大模型输出结果 不一致</strong></p>
+<p>训练时用的模板如下图</p>
+<img src="/img/2026-01-18_18-14-14.png" style="zoom:50%;" />
+
+<p>这些训练时用的模板在LLamaFactory源码目录中，如下图</p>
+<img src="/img/2026-01-18_18-21-42.png" style="zoom:50%;" />
+
+<p>因为训练时用的对话模板与推理时用的大模型的对话模板不一致</p>
+<p><strong>3.使用XTuner微调大模型</strong></p>
+<p>主要以主观评价为准，而LLamaFactory主要以客观评价为主。<a target="_blank" rel="noopener" href="https://xtuner.readthedocs.io/zh-cn/stable/training/custom_sft_dataset.html">XTuner</a>是高度自定义的代码处理指定对话模板，难度更大，但更灵活。</p>
+<p><strong>4.vllm推理模型时自定义对话模板</strong> </p>
+<p>案例： 使用vllm有效部署Lora微调后的Qwen模型  </p>
+<p>1.将训练时用的llamaFactory的模板转换为<a target="_blank" rel="noopener" href="https://docs.vllm.com.cn/en/latest/serving/openai_compatible_server/#chat-template">vllm部署</a>时所用的模板(jinjia格式)</p>
+<p>转换脚本myTest.py</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mytest.py</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将项目根目录添加到 Python 路径</span></span><br><span class="line">root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))</span><br><span class="line">sys.path.append(root_dir)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> llamafactory.data.template <span class="keyword">import</span> TEMPLATES</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoTokenizer</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 初始化分词器（任意支持的分词器均可）</span></span><br><span class="line">tokenizer = AutoTokenizer.from_pretrained(<span class="string">&quot;/root/autodl-tmp/llm/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 获取模板对象</span></span><br><span class="line">template_name = <span class="string">&quot;qwen&quot;</span>  <span class="comment"># 替换为你需要查看的模板名称</span></span><br><span class="line">template = TEMPLATES[template_name]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 修复分词器的 Jinja 模板</span></span><br><span class="line">template.fix_jinja_template(tokenizer)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4. 直接输出模板的 Jinja 格式</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;=&quot;</span> * <span class="number">40</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;Template [<span class="subst">&#123;template_name&#125;</span>] 的 Jinja 格式:&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;=&quot;</span> * <span class="number">40</span>)</span><br><span class="line"><span class="built_in">print</span>(tokenizer.chat_template)</span><br></pre></td></tr></table></figure>
+
+<p>2.将输出的代码复制保存为template.jinja文件</p>
+<p>3.在vllm部署模型时，指定对话模板chat-template，执行vllm server xx –chat-template ./path-to-chat-template.jinja</p>
+<p>LMDeploy(采用的是json格式数据)或ollama部署也是类似，要参考对应官方文档。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2025/11/21/AA_LLM_%E8%81%9A%E5%AE%A2/" title="LLM_聚客第3期推荐" target="_blank" rel="external">https://fuyunjinglong.github.io/2025/11/21/AA_LLM_聚客/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2025/11/23/AA_LLM_%E5%9B%BD%E5%86%85%E5%A4%96%E5%A4%A7%E6%A8%A1%E5%9E%8B1/" title="LLM_国内外大模型1"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2025/11/01/AA_LLM_RAG/" title="LLM_RAG"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
