@@ -1,5 +1,5 @@
 ---
-title: LLM_聚客第3期推荐
+title: LLM_聚客第4期推荐
 date: 2025-11-21 06:33:16
 categories:
 - B_LLM
@@ -1872,3 +1872,40 @@ print(tokenizer.chat_template)
 3.在vllm部署模型时，指定对话模板chat-template，执行vllm server xx --chat-template ./path-to-chat-template.jinja
 
 LMDeploy(采用的是json格式数据)或ollama部署也是类似，要参考对应官方文档。
+
+## 大模型分布式微调
+
+### 简介
+
+**为什么需要分布式训练？**
+
+> 模型规模爆炸：现代大模型（如GPT-3、LLaMA等）参数量达千亿级别，单卡GPU无法存储完整模型。
+> 计算资源需求：训练大模型需要海量计算（如GPT-3需数万GPU小时），分布式训练可加速训练过程。
+> 内存瓶颈：单卡显存不足以容纳大模型参数、梯度及优化器状态。
+
+**分布式训练的核心技术**
+
+数据并行（Data Parallelism）
+
+原理： 将数据划分为多个批次， 分发到不同设备， 每个设备拥有完整的模型副本。
+
+同步方式： 通过All-Reduce操作同步梯度（如PyTorch的DistributedDataParallel） 。
+
+挑战： 通信开销大， 显存占用高（需存储完整模型参数和优化器状态） 。
+
+模型并行（Model Parallelism）
+
+原理： 将模型切分到不同设备（如按层或张量分片） 。
+
+类型：横向并行（层拆分） ： 将模型的层分配到不同设备。
+
+纵向并行（张量拆分） ： 如Megatron-LM将矩阵乘法分片。
+
+挑战： 设备间通信频繁， 负载均衡需精细设计。
+
+### deepspeed框架
+
+### XTuner微调大模型
+
+### LLamaFactory与Xtuner多卡微调大模型
+
