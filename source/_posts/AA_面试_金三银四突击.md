@@ -38,21 +38,20 @@ toc: true # 是否启用内容索引
 
 # H5
 
-- <a target="_blank" href="{% post_path 'C_H5_0基础' %}#为什么多个域名来存储网站资源会更有效">为什么利用多个域名来存储网站资源会更有效 ？</a>
-- <a target="_blank" href="{% post_path 'C_H5_0基础' %}#iframe内嵌框架缺点">iframe 内嵌框架缺点</a>
+- <a target="_blank" href="{% post_path 'C_H5_0基础' %}#iframe有哪些优缺点？">iframe 内嵌框架缺点</a>
 - <a target="_blank" href="{% post_path 'C_H5_0基础' %}#Html语义化">html语义化是什么</a>
 
 # CSS
 
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#对reflow和repaint的理解">对 reflow 和 repaint 的理解</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#理解回流和重绘？">理解回流和重绘？</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS盒子模型">盒子模型</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#页面样式导入link和-import区别">页面样式导入link 和 @import 区别</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#常见兼容性问题？">常见兼容性问题？</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#清除浮动">清除浮动</a>
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#如何保持水平垂直居中-？">如何保持水平垂直居中 ？</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#元素水平-垂直居中">元素水平-垂直居中</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#position、float和display的取值意思">position 、float 和 display 的取值意思</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS常用3种引入方式">CSS 常用3种引入方式</a>
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS选择符有哪些？哪些属性可以继承？优先级？">CSS 选择符有哪些 ？哪些属性可以继承 ？优先级？</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS选择器及优先级">CSS选择器及优先级</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS3有哪些新特性？">CSS3 有哪些新特性 ?</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#BFC">对BFC规范的理解</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#canvas与svg的区别？">canvas 与 svg 的区别 ？</a>
@@ -69,26 +68,24 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'C_H5_0基础' %}#浏览器内核的理解">浏览器内核的理解</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#8种数据类型">null 和 undefined</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包' %}#JS的8种继承方案">JS的8种继承方案</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#柯里化-实现add-1-2-3-6">实现 add(1)(2)(3) = 6</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#柯里化">柯里化</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#垃圾回收">垃圾回收</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#内存溢出和内存泄漏">内存泄露</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS-类型判断-对象-数组">JS 判断变量是对象还是数组</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS类型判断-完整">JS类型判断---typeof,  instanceof,constructor, toString</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS类型判断-完整">JS类型判断-完整</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#常见六大Web安全攻防解析">常见六大Web安全攻防解析</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#async和defer的作用是什么？有什么区别">async和defer的作用是什么？有什么区别</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#模块化规范">模块化规范</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS事件冒泡和事件捕获">事件冒泡和事件捕获</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS事件冒泡和事件捕获-事件委托">事件冒泡和事件捕获</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS异步编程六大方案">JS异步编程六大方案</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#函数式编程">函数式编程</a>
-- <a target="_blank" href="{% post_path 'D_框架_Vue2和Vue3比较' %}#Object-defineProperty与Proxy">必会20道JS-手写数据双向绑定</a>
+- <a target="_blank" href="{% post_path 'D_框架_Vue2和Vue3比较' %}#Object-defineProperty和Porxy">必会20道JS-手写数据双向绑定</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#call-apply-bind">必会20道JS-手写call/apply/bind</a>
-- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包承' %}#instanceof操作符">必会20道JS-手写instanceof</a>
-- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包承' %}#Object-create">必会20道JS-手写Object.create</a>
-- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包承' %}#new操作符">必会20道JS-手写new操作符</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS类型判断-完整">必会20道JS-手写instanceof</a>
 - <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#手写Promise-核心流程">必会20道JS-手写Promise</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#深浅拷贝">必会20道JS-手写深浅拷贝</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#实现setTimeout和实现setInterval">必会20道JS-手写setTimeout模拟setInterval</a>
-- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包承' %}#原型式继承">必会20道JS-手写一种原型式继承和构造函数继承</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写setTimeout实现setInterval">必会20道JS-手写setTimeout模拟setInterval</a>
+- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包' %}#JS的8种继承方案">必会20道JS-手写一种原型式继承和构造函数继承</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-EventBus">必会20道JS-手写-EventBus发布订阅</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-简单路由">必会20道JS-手写简单路由</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-rem实现原理">必会20道JS-手写rem实现原理</a>
@@ -103,7 +100,7 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#Promise是什么">Promise是什么</a>
 - Generator函数是什么
 - async函数是什么
-- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#axios取消请求">axios取消请求</a>
+- <a target="_blank" href="{% post_path 'D_框架_axios技巧' %}#axios取消请求">axios取消请求</a>
 - <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#for-in、for-of、forEach的比较">for in、for of、forEach的比较</a>
 
 # 框架-基础
@@ -116,7 +113,7 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#双向绑定">如何理解双向绑定</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#数据响应式">如何理解数据响应式</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#methods和watch、computed">computed和watch区别</a>
-- <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#父子组件生命周期顺序">父子组件生命周期钩子函数执行顺序</a>
+- <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#父子组件生命周期更新顺序">父子组件生命周期钩子函数执行顺序</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#在哪个生命周期内调用异步请求？">在哪个生命周期内调用异步请求？</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#keep-alive原理">谈谈对keep-alive的理解</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_入门' %}#vuex">谈谈对vuex的理解</a>
