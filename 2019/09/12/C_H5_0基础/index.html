@@ -18,21 +18,21 @@
   
   
   <title>H5_0基础 | Hexo</title>
-  <meta name="description" content="浏览器内核的理解内核分为2部分：渲染引擎(layout engineer 或 Rendering Engine) 和 JS 引擎 渲染引擎 负责取得网页的内容（HTML、XML、图像等等）、整理讯息（例如加入 CSS 等），以及计算网页的显示方式，然后会输出至显示器或打印机。 浏览器的内核的不同对于网页的语法解释会有不同，所以渲染的效果也不相同。 所有网页浏览器、电子邮件客户端以及其它需要编辑、显">
+  <meta name="description" content="iframe有哪些优缺点？优点：   iframe 能原封不动的把嵌入的网页展现出来。 如果有多个网页引用 iframe，只需修改 iframe 的内容，就可以实现调用每一个页面的更改，方便快捷。   缺点：   iframe 会阻塞主页面的 onload 事件。 iframe 和主页面共享链接池，而浏览器对相同域的链接有限制，所以会影响页面的并行加载。 不利于 SEO，代码复杂，无法一下被搜索引">
 <meta property="og:type" content="article">
 <meta property="og:title" content="H5_0基础">
-<meta property="og:url" content="https://fuyunjinglong.github.io/2099/09/12/C_H5_0%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2019/09/12/C_H5_0%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="浏览器内核的理解内核分为2部分：渲染引擎(layout engineer 或 Rendering Engine) 和 JS 引擎 渲染引擎 负责取得网页的内容（HTML、XML、图像等等）、整理讯息（例如加入 CSS 等），以及计算网页的显示方式，然后会输出至显示器或打印机。 浏览器的内核的不同对于网页的语法解释会有不同，所以渲染的效果也不相同。 所有网页浏览器、电子邮件客户端以及其它需要编辑、显">
+<meta property="og:description" content="iframe有哪些优缺点？优点：   iframe 能原封不动的把嵌入的网页展现出来。 如果有多个网页引用 iframe，只需修改 iframe 的内容，就可以实现调用每一个页面的更改，方便快捷。   缺点：   iframe 会阻塞主页面的 onload 事件。 iframe 和主页面共享链接池，而浏览器对相同域的链接有限制，所以会影响页面的并行加载。 不利于 SEO，代码复杂，无法一下被搜索引">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211107230640963.png">
-<meta property="article:published_time" content="2099-09-11T23:33:16.000Z">
-<meta property="article:modified_time" content="2026-03-10T14:02:53.345Z">
+<meta property="article:published_time" content="2019-09-11T23:33:16.000Z">
+<meta property="article:modified_time" content="2026-03-25T12:20:12.990Z">
 <meta property="article:author" content="Elven">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://fuyunjinglong.github.io/img/image-20211107230640963.png">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://fuyunjinglong.github.io/2099/09/12/C_H5_0%E5%9F%BA%E7%A1%80/index.html">
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2019/09/12/C_H5_0%E5%9F%BA%E7%A1%80/index.html">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -235,7 +235,7 @@
   <div class="widget">
     <h3 class="widget-title">归档</h3>
     <div class="widget-body">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/09/">九月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/06/">六月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">三月 2026</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/12/">十二月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/11/">十一月 2025</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">三月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">二月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">三月 2026</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/12/">十二月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/11/">十一月 2025</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">三月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">二月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -337,7 +337,7 @@
   <div class="slimContent">
     <nav id="toc" class="article-toc">
       <h3 class="toc-title">文章目录</h3>
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%86%85%E6%A0%B8%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-number">1.</span> <span class="toc-text">浏览器内核的理解</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web%E5%9F%BA%E7%A1%80%E5%8F%8A%E6%BC%94%E8%BF%9B%E5%8F%B2"><span class="toc-number">2.</span> <span class="toc-text">web基础及演进史</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Html%E8%AF%AD%E4%B9%89%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">Html语义化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%AF%AD%E4%B9%89%E5%8C%96"><span class="toc-number">3.1.</span> <span class="toc-text">什么是语义化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%AF%AD%E4%B9%89%E5%8C%96"><span class="toc-number">3.2.</span> <span class="toc-text">为什么要语义化?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%93%E6%B7%B7%E6%B7%86%E7%9A%84HTML%E6%A0%87%E7%AD%BE"><span class="toc-number">3.3.</span> <span class="toc-text">易混淆的HTML标签</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E8%A1%8C-%E5%9D%97%E7%BA%A7%E5%85%83%E7%B4%A0"><span class="toc-number">3.4.</span> <span class="toc-text">常见的行&#x2F;块级元素</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99-HTML-%E4%BB%A3%E7%A0%81%E6%B3%A8%E6%84%8F%E4%BB%80%E4%B9%88"><span class="toc-number">3.5.</span> <span class="toc-text">写 HTML 代码注意什么</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DOCTYPE-%E7%9A%84%E4%BD%9C%E7%94%A8%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">4.</span> <span class="toc-text">DOCTYPE 的作用是什么？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SGML%E3%80%81HTML%E3%80%81XML-%E5%92%8C-XHTML%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">5.</span> <span class="toc-text">SGML、HTML、XML 和 XHTML的区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HTML5-%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B0%E7%89%B9%E6%80%A7%E3%80%81%E7%A7%BB%E9%99%A4%E4%BA%86%E5%93%AA%E4%BA%9B%E5%85%83%E7%B4%A0%EF%BC%9F"><span class="toc-number">6.</span> <span class="toc-text">HTML5 有哪些新特性、移除了哪些元素？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XML%E4%B8%8EJSON"><span class="toc-number">7.</span> <span class="toc-text">XML与JSON</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#BOM%E5%92%8CDOM%E5%AF%B9%E8%B1%A1"><span class="toc-number">8.</span> <span class="toc-text">BOM和DOM对象</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%A4%9A%E4%B8%AA%E5%9F%9F%E5%90%8D%E6%9D%A5%E5%AD%98%E5%82%A8%E7%BD%91%E7%AB%99%E8%B5%84%E6%BA%90%E4%BC%9A%E6%9B%B4%E6%9C%89%E6%95%88"><span class="toc-number">9.</span> <span class="toc-text">为什么多个域名来存储网站资源会更有效</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%8C%E5%86%85%E3%80%81%E5%9D%97%E7%BA%A7%E3%80%81%E7%A9%BA%E5%85%83%E7%B4%A0"><span class="toc-number">10.</span> <span class="toc-text">行内、块级、空元素</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AF%B9%E6%B5%8F%E8%A7%88%E5%99%A8%E5%86%85%E6%A0%B8%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-number">11.</span> <span class="toc-text">对浏览器内核的理解</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#iframe-%E6%9C%89%E5%93%AA%E4%BA%9B%E4%BC%98%E7%BC%BA%E7%82%B9%EF%BC%9F"><span class="toc-number">12.</span> <span class="toc-text">iframe 有哪些优缺点？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#style%E6%A0%87%E7%AD%BE%E5%92%8Cscript%E6%A0%87%E7%AD%BE%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="toc-number">13.</span> <span class="toc-text">style标签和script标签的位置</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#iframe%E6%9C%89%E5%93%AA%E4%BA%9B%E4%BC%98%E7%BC%BA%E7%82%B9%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">iframe有哪些优缺点？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%86%85%E6%A0%B8%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-number">2.</span> <span class="toc-text">浏览器内核的理解</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web%E5%9F%BA%E7%A1%80%E5%8F%8A%E6%BC%94%E8%BF%9B%E5%8F%B2"><span class="toc-number">3.</span> <span class="toc-text">web基础及演进史</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Html%E8%AF%AD%E4%B9%89%E5%8C%96"><span class="toc-number">4.</span> <span class="toc-text">Html语义化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%AF%AD%E4%B9%89%E5%8C%96"><span class="toc-number">4.1.</span> <span class="toc-text">什么是语义化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E8%AF%AD%E4%B9%89%E5%8C%96"><span class="toc-number">4.2.</span> <span class="toc-text">为什么要语义化?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%93%E6%B7%B7%E6%B7%86%E7%9A%84HTML%E6%A0%87%E7%AD%BE"><span class="toc-number">4.3.</span> <span class="toc-text">易混淆的HTML标签</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E8%A1%8C-%E5%9D%97%E7%BA%A7%E5%85%83%E7%B4%A0"><span class="toc-number">4.4.</span> <span class="toc-text">常见的行&#x2F;块级元素</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99-HTML-%E4%BB%A3%E7%A0%81%E6%B3%A8%E6%84%8F%E4%BB%80%E4%B9%88"><span class="toc-number">4.5.</span> <span class="toc-text">写 HTML 代码注意什么</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DOCTYPE-%E7%9A%84%E4%BD%9C%E7%94%A8%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">DOCTYPE 的作用是什么？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#SGML%E3%80%81HTML%E3%80%81XML-%E5%92%8C-XHTML%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">6.</span> <span class="toc-text">SGML、HTML、XML 和 XHTML的区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HTML5-%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B0%E7%89%B9%E6%80%A7%E3%80%81%E7%A7%BB%E9%99%A4%E4%BA%86%E5%93%AA%E4%BA%9B%E5%85%83%E7%B4%A0%EF%BC%9F"><span class="toc-number">7.</span> <span class="toc-text">HTML5 有哪些新特性、移除了哪些元素？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XML%E4%B8%8EJSON"><span class="toc-number">8.</span> <span class="toc-text">XML与JSON</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#BOM%E5%92%8CDOM%E5%AF%B9%E8%B1%A1"><span class="toc-number">9.</span> <span class="toc-text">BOM和DOM对象</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%A4%9A%E4%B8%AA%E5%9F%9F%E5%90%8D%E6%9D%A5%E5%AD%98%E5%82%A8%E7%BD%91%E7%AB%99%E8%B5%84%E6%BA%90%E4%BC%9A%E6%9B%B4%E6%9C%89%E6%95%88"><span class="toc-number">10.</span> <span class="toc-text">为什么多个域名来存储网站资源会更有效</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%8C%E5%86%85%E3%80%81%E5%9D%97%E7%BA%A7%E3%80%81%E7%A9%BA%E5%85%83%E7%B4%A0"><span class="toc-number">11.</span> <span class="toc-text">行内、块级、空元素</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AF%B9%E6%B5%8F%E8%A7%88%E5%99%A8%E5%86%85%E6%A0%B8%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-number">12.</span> <span class="toc-text">对浏览器内核的理解</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#style%E6%A0%87%E7%AD%BE%E5%92%8Cscript%E6%A0%87%E7%AD%BE%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="toc-number">13.</span> <span class="toc-text">style标签和script标签的位置</span></a></li></ol>
     </nav>
   </div>
 </aside>
@@ -359,8 +359,8 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/2099/09/12/C_H5_0%E5%9F%BA%E7%A1%80/" class="article-date">
-	  <time datetime="2099-09-11T23:33:16.000Z" itemprop="datePublished">2099-09-12</time>
+	<a href="/2019/09/12/C_H5_0%E5%9F%BA%E7%A1%80/" class="article-date">
+	  <time datetime="2019-09-11T23:33:16.000Z" itemprop="datePublished">2019-09-12</time>
 	</a>
 </span>
         
@@ -373,13 +373,31 @@
 
         
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2099/09/12/C_H5_0%E5%9F%BA%E7%A1%80/#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/09/12/C_H5_0%E5%9F%BA%E7%A1%80/#comments" class="article-comment-link">评论</a></span>
         
       </div>
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h1 id="浏览器内核的理解"><a href="#浏览器内核的理解" class="headerlink" title="浏览器内核的理解"></a>浏览器内核的理解</h1><p>内核分为2部分：渲染引擎(layout engineer 或 Rendering Engine) 和 JS 引擎</p>
+        <h1 id="iframe有哪些优缺点？"><a href="#iframe有哪些优缺点？" class="headerlink" title="iframe有哪些优缺点？"></a>iframe有哪些优缺点？</h1><p>优点：</p>
+<blockquote>
+<ol>
+<li>iframe 能原封不动的把嵌入的网页展现出来。</li>
+<li>如果有多个网页引用 iframe，只需修改 iframe 的内容，就可以实现调用每一个页面的更改，方便快捷。</li>
+</ol>
+</blockquote>
+<p>缺点：</p>
+<blockquote>
+<ol>
+<li>iframe 会阻塞主页面的 onload 事件。</li>
+<li>iframe 和主页面共享链接池，而浏览器对相同域的链接有限制，所以会影响页面的并行加载。</li>
+<li>不利于 SEO，代码复杂，无法一下被搜索引擎索引到。</li>
+<li>iframe 框架页面会增加服务器的 http 请求，对于大型网站不可取。</li>
+<li>很多移动设备无法完全显示框架，设备兼容性差。</li>
+</ol>
+</blockquote>
+<p>注意：通过动态给 iframe 添加 src 属性值，可解决前两个问题。</p>
+<h1 id="浏览器内核的理解"><a href="#浏览器内核的理解" class="headerlink" title="浏览器内核的理解"></a>浏览器内核的理解</h1><p>内核分为2部分：渲染引擎(layout engineer 或 Rendering Engine) 和 JS 引擎</p>
 <p>渲染引擎</p>
 <p>负责取得网页的内容（HTML、XML、图像等等）、整理讯息（例如加入 CSS 等），以及计算网页的显示方式，然后会输出至显示器或打印机。 浏览器的内核的不同对于网页的语法解释会有不同，所以渲染的效果也不相同。 所有网页浏览器、电子邮件客户端以及其它需要编辑、显示网络内容的应用程序都需要内核。</p>
 <p>JS 引擎</p>
@@ -609,20 +627,6 @@
 <li><code>JS引擎</code>：解析和执行 JavaScript 来实现网页的动态效果。</li>
 </ul>
 <p>最开始渲染引擎和JS引擎并没有区分的很明显，后来JS引擎越来越独立，内核就倾向于只指渲染引擎了。</p>
-<h1 id="iframe-有哪些优缺点？"><a href="#iframe-有哪些优缺点？" class="headerlink" title="iframe 有哪些优缺点？"></a>iframe 有哪些优缺点？</h1><p>优点：</p>
-<ol>
-<li>iframe 能原封不动的把嵌入的网页展现出来。</li>
-<li>如果有多个网页引用 iframe，只需修改 iframe 的内容，就可以实现调用每一个页面的更改，方便快捷。</li>
-</ol>
-<p>缺点：</p>
-<ol>
-<li>iframe 会阻塞主页面的 onload 事件。</li>
-<li>iframe 和主页面共享链接池，而浏览器对相同域的链接有限制，所以会影响页面的并行加载。</li>
-<li>不利于 SEO，代码复杂，无法一下被搜索引擎索引到。</li>
-<li>iframe 框架页面会增加服务器的 http 请求，对于大型网站不可取。</li>
-<li>很多移动设备无法完全显示框架，设备兼容性差。</li>
-</ol>
-<p>注意：通过动态给 iframe 添加 src 属性值，可解决前两个问题。</p>
 <h1 id="style标签和script标签的位置"><a href="#style标签和script标签的位置" class="headerlink" title="style标签和script标签的位置"></a>style标签和script标签的位置</h1><p><strong>style标签</strong></p>
 <ul>
 <li>推荐写在head标签里最底部即body标签前：有利于浏览器逐步渲染 resources downloading –&gt; cssDOM + DOM –&gt; Render Tree –&gt; layout –&gt; paint</li>
@@ -642,7 +646,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://fuyunjinglong.github.io/2099/09/12/C_H5_0%E5%9F%BA%E7%A1%80/" title="H5_0基础" target="_blank" rel="external">https://fuyunjinglong.github.io/2099/09/12/C_H5_0基础/</a>
+      <a href="https://fuyunjinglong.github.io/2019/09/12/C_H5_0%E5%9F%BA%E7%A1%80/" title="H5_0基础" target="_blank" rel="external">https://fuyunjinglong.github.io/2019/09/12/C_H5_0基础/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -689,12 +693,12 @@
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/2099/11/01/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_%E5%9F%BA%E7%A1%80/" title="0基础_设计模式"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+      <a href="/2021/11/01/AA_%E9%9D%A2%E8%AF%95_%E6%B8%85%E5%8D%95/" title="清单"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
     </li>
     
     
     <li class="next">
-      <a href="/2099/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/" title="CSS_0基础"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+      <a href="/2019/06/26/C_CSS_0%E5%9F%BA%E7%A1%80/" title="CSS_0基础"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
     </li>
     
     
@@ -836,8 +840,8 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 
    
     
-  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <!-- <script src="//cdn.jsdelivr.net/npm/valine"></script> -->
   <script type="text/javascript">
   var GUEST = ['nick', 'mail', 'link'];
   var meta = 'nick,mail,link';
