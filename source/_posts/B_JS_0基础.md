@@ -29,53 +29,63 @@ toc: true # 是否启用内容索引
 
 ## 8种数据类型
 
-- 基本类型：Number,String,Boolean,Null,undefined,symbol
-- 引用类型：Object,Array,function
+- 6基本类型：Number,String,Boolean,Null,undefined,symbol
+- 3引用类型：Object,Array,function
 
 **null和undefined**
 
-null 表示“定义了但是为空”,判空：if(a)。null是JS中的关键字，null会自动转为0。null 典型用法是： 
+> - **`undefined`**：表示 **“缺失”**（本来应该有值，但还没给）。
+> - **`null`**：表示 **“空”**（特意设定为没有值）。
 
-- 作为函数的参数，表示该函数的参数不是对象。 
-- 作为对象原型链的终点。
+1.类型不同
 
-undefined 表示未定义，它的类型只有一个值，就是 undefined，判空：if(a===undefined)，未定义的值和定义未赋值的为 undefined。undefined是JS中的全局变量。undefined会自动转为NaN。
+```js
+console.log(typeof undefined); // "undefined"
+console.log(typeof null);      // "object" (注意这是一个历史Bug，null并不是对象)
+```
 
-- 变量被声明了，但没有赋值时，就等于 undefined。 
-- 调用函数时，应该提供的参数没有提供，该参数等于 undefined。 
-- 对象没有赋值的属性，该属性的值为 undefined。 
-- 函数没有返回值时，默认返回 undefined。
+2.语义与出现场景不同
 
-**从内存来看 null 和 undefined 本质的区别是什么？**
+```js
+let a;
+console.log(a); // undefined (变量声明了但未赋值)
 
-> 给一个全局变量赋值为null，相当于将这个变量的指针对象以及值清空，如果是给对象的属性 赋值为null，或者局部变量赋值为null,相当于给这个属性分配了一块空的内存，然后值为null， JS会回收全局变量为null的对象。
->
-> 给一个全局变量赋值为undefined，相当于将这个对象的值清空，但是这个对象依旧存在,如果是给对象的属性赋值 为undefined，说明这个值为空值
+let b = null; // 主动赋值为 null
+console.log(b); // null
+```
+
+3.转换为数字时的结果不同
+
+```js
+// undefined 转数字是 NaN (Not a Number)
+console.log(Number(undefined)); // NaN
+console.log(5 + undefined);     // NaN
+
+// null 转数字是 0
+console.log(Number(null));      // 0
+console.log(5 + null);          // 5
+```
+
+4.相等性比较
+
+```js
+console.log(null == undefined);  // true  (因为双等号会进行类型转换，JS认为它们都是“假值”)
+console.log(null === undefined); // false (类型不同)
+```
 
 **isNaN和Number.isNaN**
 
-- isNaN是es5的语法特性,自动进行隐式转为数字类型，如果非数字则为true,数字则为false
-- Number.isNaN是es6的语法特性，除了Number.isNaN(NaN)返回true,其他任意值都是返回false
+- isNaN是es5的语法特性,这个值能被转成一个合法的数字吗？如果不能，我就返回 true。
+- Number.isNaN是es6的语法特性。先判断类型，如果不是 `number` 类型，直接返回 `false`。如果是 `number` 类型，再判断是不是 `NaN`。
 
-```
-<html>
-<script >
-console.log(isNaN(NaN));// true
-console.log(isNaN(12));// false
-console.log(isNaN('d'));// true
-console.log(isNaN('0xd'));// false,十六进制
-console.log(isNaN('123abc'));// true
-console.log(NaN === NaN);// false
-console.log(NaN === undefined);// false
-console.log(typeof NaN);// number
-console.log(Object.prototype.toString.call(NaN));// [object,Number]
-
-console.log(Number.isNaN(NaN));// true
-console.log(Number.isNaN(123));// false
-console.log(Number.isNaN('abc'));// false
- </script>
-</html>
-```
+| 参数值      | `isNaN(val)` (全局) | `Number.isNaN(val)` (ES6) | 解释                                       |
+| :---------- | :------------------ | :------------------------ | :----------------------------------------- |
+| `NaN`       | `true`              | `true`                    | 两者结果一致                               |
+| `'hello'`   | **`true`**          | **`false`**               | `isNaN` 转换失败变成 NaN；后者直接判断不是 |
+| `undefined` | **`true`**          | **`false`**               | 同上                                       |
+| `{}`        | **`true`**          | **`false`**               | 同上                                       |
+| `123`       | `false`             | `false`                   | 两者结果一致                               |
+| `'123'`     | `false`             | `false`                   | `isNaN` 转为 123；后者直接判断不是         |
 
 
 
@@ -609,31 +619,41 @@ console.log(array1.push.apply(array1, array2)); // [1, 2, 3, 4, 5, 6]
 
 ![image-20211201070616431](/img/image-20211201070616431.png)
 
-## 0.1+0.2!==0.3精度丢失
+## 0.1+0.2竟然不等于0.3
 
-**JS中数字的范围**
+核心原因：十进制转二进制的“死循环”
 
-- JS中所有数字都是64位，JS引擎会默认保留最多17位的有效小数，数据范围是(-2^53, 2^53)。[最大的安全的整数为什么是2的53次方减一？](https://www.zhihu.com/question/29010688/answer/42886646)
-- 
+> **十进制的 0.1**，转换成二进制是：`0.000110011001100110011...`（无限循环）。
+>
+> **十进制的 0.2**，转换成二进制是：`0.00110011001100110011...`（无限循环）。
+>
+> JavaScript（及其他语言）为了存储这些无限循环的小数，必须进行截断或舍入。
+>
+> `0.1` 在计算机里存的其实是：`0.10000000000000000555...`
+>
+> `0.2` 在计算机里存的其实是：`0.20000000000000001110...`
+>
+> 当这两个“近似值”相加时，误差累积了：
+> `0.1 + 0.2 ≈ 0.30000000000000004`
 
-![image](/img/2024-05-14_06-50-53.png)
+解决：设置误差范围或使用第三方库(decimal.js 或 bignumber.js底层用字符串或大整数模拟运算，永远不会丢失精度)
 
-说明：
+```
+// 设置误差范围
+function isEqual(n1, n2) {
+    return Math.abs(n1 - n2) < Number.EPSILON;
+}
+console.log(isEqual(0.1 + 0.2, 0.3)); // true
 
-- 第0位：符号位，0表示正数，1表示负数(s)
-- 第1位到第11位：储存指数部分（e）
-- 第12位到第63位：储存小数部分（即有效数字）f
+// 使用第三方库
+import Decimal from 'decimal.js';
+let a = new Decimal(0.1);
+let b = new Decimal(0.2);
+console.log(a.plus(b).toString()); // "0.3"
+console.log(a.plus(b).equals(0.3)); // true
+```
 
-**十进制转为二进制原理**
 
-![image](/img/2024-05-14_06-53-05.png)
-
-- 0.1：0.0 0011 0011 0011...(无限循环)
-- 0.2：0.0011 0011 0011...(无限循环)
-
-**小数取17位最后得到0.300...4**
-
-![image](/img/2024-05-14_06-55-38.png)
 
 ## 理解回流和重绘？
 

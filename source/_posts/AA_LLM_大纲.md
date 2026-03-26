@@ -12,6 +12,20 @@ toc: true # 是否启用内容索引
 - RAG 检索增强生成应用
 - Agent 智能体应用
 
+# AI全栈进阶体系
+
+## 妙码学院
+
+- TypeScript 100%-大多数大模型都是采用ts或python
+- Vue
+- Vite
+- Nust
+- 桌面端(electron)、web(小程序)，server(nextjs+nustjs+prisma+Postgresql+docker)
+
+
+
+
+
 # 大模型发展史
 
 ![image](/img/LLM_Time.png)

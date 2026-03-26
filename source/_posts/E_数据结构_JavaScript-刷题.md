@@ -977,6 +977,104 @@ function partition(arr, l, r, x) {
 
 # 字符串
 
+## 回文字符串
+
+回文字符串校验
+
+```js
+function isPalindromeAdvanced(str) {
+    // 1. 预处理：转小写并移除非字母数字字符 即忽略大小写、空格和标点符号
+    // \W 匹配非单词字符，等同于 [^a-zA-Z0-9_]
+    // 为了严谨（排除下划线），常用 /[^a-zA-Z0-9]/g 或 /[\W_]/g
+    const cleanStr = str.toLowerCase().replace(/[^a-z0-9]/g, '');
+    
+    // 2. 反转对比 (或者使用双指针)
+    return cleanStr === cleanStr.split('').reverse().join('');
+}
+
+// 测试
+console.log(isPalindromeAdvanced("A man, a plan, a canal: Panama")); // true
+console.log(isPalindromeAdvanced("race a car")); // false
+console.log(isPalindromeAdvanced("No 'x' in Nixon")); // true
+
+// 双指针
+function isPalindrome(str) {
+    let left = 0;
+    let right = str.length - 1;
+    
+    while (left < right) {
+        if (str[left] !== str[right]) {
+            return false; // 发现不匹配，立即返回
+        }
+        left++;
+        right--;
+    }
+    return true; // 循环结束，说明是回文
+}
+```
+
+## 去除重复的字符
+
+```js
+function removeDuplicateChars(str) {
+    // 1. 将字符串转为 Set (自动去重)
+    // 2. 使用扩展运算符 ... 转回数组
+    // 3. join 回字符串
+    return [...new Set(str)].join('');
+}
+
+// 测试
+console.log(removeDuplicateChars("aabbcc123")); // 输出: "abc123"
+console.log(removeDuplicateChars("书山有路勤为径")); // 输出: "书山有路勤为径" (无重复则不变)
+```
+
+## 出现次数最多的字符及出现的次数
+
+```js
+function findMostFrequentChar(str) {
+    if (!str) return { char: '', count: 0 };
+    const charMap = {};
+    let maxChar = '';
+    let maxCount = 0;
+
+    // 1. 统计每个字符出现的次数
+    for (let char of str) {
+        charMap[char] = (charMap[char] || 0) + 1;
+    }
+    // 2. 找出出现次数最多的字符
+    for (let char in charMap) {
+        if (charMap[char] > maxCount) {
+            maxCount = charMap[char];
+            maxChar = char;
+        }
+    }
+    return {
+        char: maxChar,
+        count: maxCount
+    };
+}
+// 测试
+const result = findMostFrequentChar("aabbbccdeffff");
+console.log(result); // 输出: { char: 'f', count: 4 }
+```
+
+## 逆序输出
+
+```js
+// 原生
+function reverseString(str) {
+    let newStr = "";
+    for (let char of str) {
+        newStr = char + newStr; // 将新字符拼接到最前面
+    }
+    return newStr;
+}
+// 借助数组reverse
+let result = [...str].reverse().join('');
+```
+
+
+
 ## 模式匹配
 
 **1.单模式串匹配问题**
