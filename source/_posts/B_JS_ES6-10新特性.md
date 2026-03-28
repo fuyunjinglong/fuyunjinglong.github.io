@@ -268,6 +268,30 @@ var foo2 = function () {
 - const 不能在 for 循环中定义，对于`for...in`和`for...of`循环是没问题的
 - var声明的变量会挂载到 window 全局对象上，let 和 const 不会
 
+# 判断空对象
+
+```js
+function isEmpty(obj) {
+  // 1. 判断 null 和 undefined
+  if (obj === null || obj === undefined) {
+    return true;
+  }
+  // 2. 判断构造函数是否为 Object (可选，视需求而定)
+  // 如果想排除数组、Date等对象，取消下面注释
+  // if (Object.prototype.toString.call(obj) !== '[object Object]') return false;
+
+  // 3. 判断键的数量
+  return Object.keys(obj).length === 0;
+}
+
+// 测试
+console.log(isEmpty(null));        // true
+console.log(isEmpty(undefined));   // true
+console.log(isEmpty({}));          // true
+console.log(isEmpty({name: 'xs'})); // false
+console.log(isEmpty([]));          // true (Object.keys([]).length === 0)
+```
+
 # for 循环中的 var 、let 与 const 区别
 
 > - var具有函数作用域，因此在for循环内定义的迭代变量会渗透到for循环外面。根据事件循环机制，先执行同步再异步，当5次循环结束后，i的值为5，i渗透到for循环外部
@@ -907,122 +931,57 @@ async/await 自动进行了 Generator 的流程控制。
 
 # for in、for of、forEach的比较
 
-**1.for…of与for…in的区别**
+- **`for...in`**：遍历对象的原型链上的**可枚举属性名（键名/索引）**，主要用于对象，也可数组(不推荐，如果数组挂载了自定义属性，也会遍历出来)，支持中断
+- **`for...of`**：遍历**可迭代对象的值**，主要用于数组、字符串、Map、Set 等，支持中断
+- **`forEach`**：数组原型上的方法，遍历数组的**值**，不支持中断
 
-- for…in遍历对象(当前对象及其原型上的)**属性名称**，遍历简单数组的**索引值**。主要用于遍历对象。
-- for…of只能用于**可迭代对象**，遍历对象(当前对象上的)**属性值**，遍历可迭代数组的**元素**。主要用于遍历迭代对象。
-
-**2.forEach**
-
-跳出当前循环：使用return
-
-```
-arr.forEach((a, i) => {
-    if (i === 2) {
-        return
+```js
+for (let key in obj) {
+    if(obj.hasOwnProperty(key)){
+      // 仅遍历自身key
+     console.log(key, obj[key]); // 输出: a 1, b 2   
     }
-})
+}
+
+for (let value of arr) {
+  console.log(value);
+  if (value === 20) break; // 支持中断
+}
+
+obj.forEach(...) 
 ```
 
-跳出全部循环：需要throw抛异常
+中断：for...in和for...of
 
-```
+> `break`：跳出整个循环，循环语句后面的代码还会执行。
+>
+> `continue`：跳过本次循环，进入下一次。
+>
+> `return`：跳出整个循环，循环语句后面的代码不再执行。
+
+中断：forEach
+
+> `break` / `continue`：会直接代码报错
+>
+> `return`：只会跳过本次循环，进入下一次
+>
+> `抛出异常`：跳出整个循环(不推荐，建议用some、find替代)
+
+```js
+const arr = [1, 2, 3, 4, 5];
 try {
-    arr.forEach((a, i) => {
-        if (i === 2) {
-            throw new Error()
+    arr.forEach((item) => {
+        if (item === 3) {
+            throw new Error('停止循环'); // 抛出异常强制停止
         }
-    })
+    });
 } catch (e) {
+    // 捕获异常，防止代码报错中断
+    if (e.message !== '停止循环') throw e;
 }
 ```
 
-**3.for…of**
 
-ES6提出的语句，在**可迭代对象**（Array，Map，Set，String，TypedArray，arguments）上创建一个迭代循环。
-
-```
-//遍历数组
-let array = [10,20];
-for(let val of array){
-    console.log(val);
-}
-// 10
-// 20
-
-//遍历字符串
-let str = "bo";
-for(let val of str){
-    console.log(val);
-}
-// "b"
-// "o"
-
-//遍历map
-let map = new Map([["a", 1], ["b", 2], ["c", 3]]);
-for(let entry of map){
-    console.log(entry);
-}
-// ["a", 1]
-// ["b", 2]
-// ["c", 3]
-
-for(let [key,value] of map){
-    console.log(value);
-}
-// 1
-// 2
-// 3
-
-//遍历set
-let set = new Set([1,1,2,2,3,3]);
-for(let value of set){
-    console.log(value);
-}
-// 1
-// 2
-// 3
-
-//遍历DOM
-let divs = document.querySelectorAll("div");
-for(let div of divs){
-    div.className = "red";
-}
-
-//遍历生成器
-function* fibonacci(){
-    let [prev,curr] = [0,1];
-    for(;;){
-        [prev,curr] = [curr,curr+prev];
-        yield curr;
-    }
-}
-
-for(let n of fibonacci()){
-    if(n>1000) break;
-    console.log(n);
-}
-```
-
-**4.for…in**
-
-for…in 语句以任意顺序遍历**一个对象的可枚举属性的属性名**。所有可枚举属性和从它原型继承而来的可枚举属性，因此如果想要仅迭代对象本身的属性，要结合hasOwnProperty（）来使用
-
-```
-var obj = {a:1, b:2, c:3};
-for(var prop in obj){
-    console.log(prop);
-}
-//a
-//b
-//c
-
-var obj= {
-a:1,
-[Symbol('level')]:2
-}
-Reflect.ownKeys(obj) // 遍历所有属性，包括Symbol
-```
 
 # ES5和ES6之默认值的区别 ？
 

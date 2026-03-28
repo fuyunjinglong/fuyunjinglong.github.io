@@ -9,7 +9,7 @@ toc: true # 是否启用内容索引
 # interview
 
 - [ ] 2024年前端简历（node.js，ts,react，Flutter、Rn，微前端，低代码，小程序，移动端，ssr）
-- [ ] [JavaScript专项](https://www.bilibili.com/video/BV1sf4y1E7xQ?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [ ] [JavaScript专项](https://www.bilibili.com/video/BV1mQ4y1X7S9?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - [ ] 2025年聚客大模型第四期(推荐)11-大模型微调分布式训练（LLama Factory与Xtuner分布式微调大模型）
 - [ ] [LLM_RAG](https://www.bilibili.com/video/BV1JLN2z4EZQ/?spm_id_from=333.788.top_right_bar_window_default_collection.content.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - [ ] [Vue3+TS+monorepo，搭建自己的组件库-珠峰-video](https://www.bilibili.com/video/BV1LTB4YqE43/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)（5-05）
@@ -95,6 +95,7 @@ toc: true # 是否启用内容索引
 # ES6
 
 - <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#for-循环中的-var-、let-与-const-区别">for 循环中的 var 、let 与 const 区别(看题给结果)</a>
+- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#判断空对象">判断空对象</a>
 - <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#ES5和ES6之默认值的区别-？">ES5和ES6之默认值的区别？</a>
 - <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#ES5和ES6之继承的区别-？">ES5和ES6之继承的区别？</a>
 - <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#Promise是什么">Promise是什么</a>

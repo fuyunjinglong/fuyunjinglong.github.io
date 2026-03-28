@@ -491,6 +491,100 @@ function getDigit(x, d) {
 
 # 数组
 
+## 扁平数组和json树结构转换
+
+扁平数组 → 树形结构
+
+```js
+const flatArr = [
+  { id: 1, name: '部门A', pid: null },
+  { id: 2, name: '部门B', pid: 1 },
+  { id: 3, name: '部门C', pid: 1 },
+  { id: 4, name: '部门D', pid: 2 },
+  { id: 5, name: '部门E', pid: null },
+];
+
+function arrayToTree(items) {
+  const result = []; // 存放结果集
+  const itemMap = {}; // 用于 id 和节点的映射
+
+  // 1. 先转成 map 存储，方便查找
+  for (const item of items) {
+    itemMap[item.id] = { ...item, children: [] };
+  }
+
+  // 2. 遍历构建树
+  for (const item of items) {
+    const id = item.id;
+    const pid = item.pid;
+    const treeItem = itemMap[id];
+    
+    if (pid === null) {
+      // 根节点
+      result.push(treeItem);
+    } else {
+      // 子节点：找到父节点，将自己 push 到父节点的 children 中
+      if (itemMap[pid]) {
+        itemMap[pid].children.push(treeItem);
+      }
+    }
+  }
+  return result;
+}
+console.log(JSON.stringify(arrayToTree(flatArr), null, 2));
+```
+
+树形结构 → 扁平数组
+
+```js
+const treeData = [
+  {
+    id: 1,
+    name: '部门A',
+    children: [
+      { id: 2, name: '部门B', children: [] },
+      { id: 3, name: '部门C', children: [] }
+    ]
+  },
+  {
+    id: 5,
+    name: '部门E',
+    children: []
+  }
+];
+
+function treeToArrayBFS(tree) {
+  const result = [];
+  // 改造点1: 初始化队列时，将根节点包装成对象，携带 pid (根节点 pid 为 null)
+  // 原代码: const queue = [...tree];
+  const queue = tree.map(node => ({ node, pid: null }));
+  while (queue.length) {
+    // 改造点2: 从队列取出时，解构出 node 和 pid
+    // 原代码: const node = queue.shift();
+    const { node, pid } = queue.shift();
+    const { children, ...rest } = node;
+    // 改造点3: 推入结果时，合并 pid 属性
+    // 原代码: result.push(rest);
+    result.push({ ...rest, pid });
+    // 如果有子节点，加入队列尾部
+    if (children && children.length) {
+      // 改造点4: 子节点入队时，将当前节点的 id 作为子节点的 pid 传递下去
+      // 原代码: queue.push(...children);
+      const childrenWithPid = children.map(child => ({
+        node: child,
+        pid: node.id // 核心：记录父ID
+      }));
+      queue.push(...childrenWithPid);
+    }
+  }
+
+  return result;
+}
+console.log(JSON.stringify(treeToArrayBFS(treeData)));
+```
+
+
+
 ## 二分查找
 
 经常看到在有序数组上，开展二分搜索。但有序是所有问题使用二分的必要条件吗？不是，只要能**正确构建左右两侧的淘汰逻辑**，就可以用二分。
