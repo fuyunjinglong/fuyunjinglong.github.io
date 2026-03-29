@@ -10,7 +10,9 @@ toc: true # 是否启用内容索引
 
 ## 主题
 
-注意要下载主题插件
+选择主题,执行命令
+
+> Ctrl k Ctrl T
 
 ```
   "workbench.colorTheme": "Monokai Dark Soda", //让函数(名)和后面的括号之间加个空格
@@ -56,3 +58,10 @@ Ctrl + Shift + P
 }
 ```
 
+## 关掉顶部固定的代码行
+
+> Sticky Scroll: Enabled  取消勾选
+
+## 顶部标签页自动换行
+
+> workbench.editor.wrapTabs 勾选

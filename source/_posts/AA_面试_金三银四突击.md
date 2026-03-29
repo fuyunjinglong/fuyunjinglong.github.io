@@ -9,18 +9,15 @@ toc: true # 是否启用内容索引
 # interview
 
 - [ ] 2024年前端简历（node.js，ts,react，Flutter、Rn，微前端，低代码，小程序，移动端，ssr）
-- [ ] [JavaScript专项](https://www.bilibili.com/video/BV1mQ4y1X7S9?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
-- [ ] 2025年聚客大模型第四期(推荐)11-大模型微调分布式训练（LLama Factory与Xtuner分布式微调大模型）
-- [ ] [LLM_RAG](https://www.bilibili.com/video/BV1JLN2z4EZQ/?spm_id_from=333.788.top_right_bar_window_default_collection.content.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
-- [ ] [Vue3+TS+monorepo，搭建自己的组件库-珠峰-video](https://www.bilibili.com/video/BV1LTB4YqE43/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)（5-05）
 - [ ]  vue2源码:Vue2.js源码全方位深入解析-黄轶-第1章 准备工作(本地2-6)
 - [ ]  vue3源码:催学社-Vue3源码实战课(本地02)
-- [ ]  [JS数据结构与算法(函数式)-coderwhy-video](https://www.bilibili.com/video/BV1yD4y127vy/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)(01集合)
-- [ ]  [Java数据结构与算法-video或03-算法数据结构体系学习班本地](https://www.bilibili.com/video/BV1Ef4y1T7Qi/?p=2&vd_source=bd4c7d99d71adf64d6e88c65370e0247)(p0可忽略)
 - [ ]  react入门-React18+TS 通用后台管理系统解决方案落地实战-video-mk
 - [ ]  跨端APP-Flutter从入门到进阶 实战携程网App-video-mk
 - [ ] 小程序-Taro3+Mysql+Express开发企业级出行全栈项目-video
 - [ ] nodejs-Node.js+Express+Koa2 开发Web Server博客-video-慕课网mk
+- [ ] 2025年聚客大模型第四期(推荐)11-大模型微调分布式训练（LLama Factory与Xtuner分布式微调大模型）
+- [ ] [JS数据结构与算法(函数式)-coderwhy-video](https://www.bilibili.com/video/BV1yD4y127vy/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)(01集合)
+- [ ] [Java数据结构与算法-video或03-算法数据结构体系学习班本地](https://www.bilibili.com/video/BV1Ef4y1T7Qi/?p=2&vd_source=bd4c7d99d71adf64d6e88c65370e0247)(p0可忽略)
 
 # web前端导航
 

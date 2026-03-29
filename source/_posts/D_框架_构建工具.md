@@ -270,6 +270,10 @@ export function observe(data){
 
 # Monorepo vs Multirepo
 
+参考
+
+> - [Vue3+TS+monorepo，搭建自己的组件库-珠峰-video](https://www.bilibili.com/video/BV1LTB4YqE43/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+
 ## 定义 
 
 Monorepo 的全称是 monolithic repository，即单体式仓库，与之对应的是 Multirepo(multiple repository)，这里的“单”和“多”是指每个仓库中所管理的模块数量。

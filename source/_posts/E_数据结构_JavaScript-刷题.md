@@ -491,6 +491,58 @@ function getDigit(x, d) {
 
 # 数组
 
+## reduce统计元素出现的次数
+
+```js
+const fruits = ['apple', 'banana', 'apple', 'orange', 'banana', 'apple'];
+
+const countMap = fruits.reduce((acc, cur) => {
+  // 如果 acc 中没有当前元素，初始化为 0，然后加 1；如果有，直接加 1
+  acc[cur] = (acc[cur] || 0) + 1;
+  return acc; // 必须返回累加器，供下一次迭代使用
+}, {}); // ⚠️ 重点：初始值必须是一个空对象 {}
+
+console.log(countMap); 
+// 输出: { apple: 3, banana: 2, orange: 1 }
+```
+
+
+
+## 巧妙找出数组的最大最小值
+
+```js
+// 优雅：reduce实现
+const arr = [3, 1, 4, 1, 5, 9, 2, 6];
+const { min, max } = arr.reduce(
+  (acc, cur) => ({
+    min: Math.min(acc.min, cur),
+    max: Math.max(acc.max, cur)
+  }),
+  { min: Infinity, max: -Infinity } // 初始值设为无穷大和无穷小
+);
+
+性能之王：for实现
+const arr = [3, 1, 4, 1, 5, 9, 2, 6];
+let min = arr[0], max = arr[0];
+for (let i = 1; i < arr.length; i++) {
+  const cur = arr[i];
+  if (cur < min) min = cur;
+  if (cur > max) max = cur;
+}
+```
+
+
+
+## 一行代码生成1-100的数组
+
+```
+Array.from({ length: 100 }, (_, i) => i + 1);// 推荐
+Array.from(Array(100), (i, index) => index + 1)// 不推荐
+```
+
+- `{ length: 100 }`这是一个普通的**对象**，被称为“类数组对象”。不占用内存空间。`Array(100)`额外开销，占用内存空间。
+- `_` 占位是业界惯例，表示“我知道这里有个参数，但我不用它”。语义和参数命名更清晰。
+
 ## 扁平数组和json树结构转换
 
 扁平数组 → 树形结构
