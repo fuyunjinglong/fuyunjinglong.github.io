@@ -8,12 +8,22 @@ toc: true # 是否启用内容索引入门
 
 # 大纲
 
-- [TS 学习指南1.8w字]()/[轻松学 TypeScript-Video](https://space.bilibili.com/406258607/channel/collectiondetail?sid=334301&ctype=0)/[20 道 TS 练习题](https://mp.weixin.qq.com/s?__biz=MzI2MjcxNTQ0Nw==&mid=2247495521&idx=1&sn=dd26b5b4f2cd2c78dcbcc9fd15b27df7&scene=21#wechat_redirect)--阿宝哥
-- TypeScript 全面进阶指南-video
-- 专为小白设计的TypeScript入门课-video-mk
-- TS从入门到深度掌握，晋级TypeScript高手-video
-- TypeScript 类型体操通关秘籍-video
+- [TS 学习指南1.8w字-阿宝哥](https://qingyewei.github.io/typeScript/guide#%E4%B8%80%E3%80%81typescript-%E6%98%AF%E4%BB%80%E4%B9%88)
+- [TypeScript5 极速进阶完全指南](https://www.bilibili.com/video/BV1VkPjzeEoW?spm_id_from=333.788.videopod.sections&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [三小时快速上手TypeScript](https://www.bilibili.com/video/BV1YS411w7Bf/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- TS从入门到深度掌握-video
+- 2022升级版typescript系统入门到项目实战-video
+- [轻松学 TypeScript-video-阿宝哥](https://www.bilibili.com/video/BV1sY4y1H7vk/?spm_id_from=333.1387.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [20 道 TS 练习题-阿宝哥](https://mp.weixin.qq.com/s?__biz=MzI2MjcxNTQ0Nw==&mid=2247495521&idx=1&sn=dd26b5b4f2cd2c78dcbcc9fd15b27df7&scene=21#wechat_redirect)
+- TypeScript 全面进阶指南
+- TypeScript 类型体操通关秘籍
 - [ts类型体操](https://github.com/type-challenges/type-challenges/blob/main/README.zh-CN.md)
+
+# 参考
+
+[TypeScript 入门教程](https://github.com/xcatliu/typescript-tutorial)
+
+[深入理解 TypeScript](https://github.com/jkchao/typescript-book-chinese)
 
 # 初识TS
 
@@ -46,7 +56,7 @@ TS最核心功能是类型检查和代码提示，只增加一点学习成本，
 - any & unknown
 - never
 
-### `any` 和 `unknown` 的区别
+**`any` 和 `unknown` 的区别**
 
 - `any`: 任意类型
 - `unknown`: 未知的类型
@@ -77,17 +87,17 @@ const obj = {
 
 # 为什么你非常不适应 TypeScript
 
-## 前言
+**前言**
 
 在群里看到一些问题和言论：为什么你们这么喜欢“类型体操”？为什么我根本学不下去 TypeScript？我最讨厌那些做类型体操的了；为什么我学了没过多久马上又忘了？
 
 有感于这些问题，我想从最简单的一个角度来切入介绍一下 TypeScript，并向大家介绍并不是只要是个类型运算就是体操。并在文中介绍一种基本思想作为你使用类型系统的基本指引。
 
-## 引子
+**引子**
 
 我将从一个相对简单的 API 的设计过程中阐述关于类型的故事。在这里我们可以假设我们现在是一个工具的开发者，然后我们需要设计一个 API 用于从对象中拿取指定的一些 key 作为一个新的对象返回给外面使用。
 
-### 垃圾 TypeScript
+*垃圾 TypeScript*
 
 一个人说：我才不用什么破类型，我写代码就是要没有类型，我就是要随心所欲的写。然后写下了这段代码。
 
@@ -107,7 +117,7 @@ pick(undefined, 'a', 1).b
 
 写完运行，发现问题大条了，控制台一堆报错，接口数据也提交不上去了，怎么办呢？
 
-### 刚学 TypeScript
+*刚学 TypeScript*
 
 一个人说：稍微检查一下传入类型就好了，别让人给我乱传参数就行。
 
@@ -127,7 +137,7 @@ pick({ abcdefghijkl: '123' }, 'abcdefghikjl')
 
 从肉眼角度上，我们很难发现这前后的不一致，所以我们为什么要让调用方的用户自己去 check 自己的字段有没有写对呢？
 
-### 不就 TypeScript
+*不就 TypeScript*
 
 一个人说：这还不简单，用个泛型加 keyof 不就行了。
 
@@ -153,7 +163,7 @@ pick({ abcdefghijkl: '123' }, 'abcdefghijkl').abcdefghikjl
 
   而这里是尝试去通过约定好的一种规则，通过 TypeScript 的隐式类型推断获得到传入的类型，再通过约定的规则转化出一种新的类型约束来对用户的输入进行限制。
 
-### 算算 TypeScript
+*算算 TypeScript*
 
 一个人说：好办，算出来一个新的类型就好了。
 
@@ -173,7 +183,7 @@ typescript// 输入了重复的 key
 pick({ a: '' }, 'a', 'a')
 ```
 
-### 完美 TypeScript
+*完美 TypeScript*
 
 到这里，我们便是初步开始了类型“体操”。但是在本篇里，我们不去分析它。
 
@@ -204,7 +214,7 @@ const x1 = pick({ a: '1', b: '2' }, 'a', 'a')
 
 一个相对来说比较完美的 pick 函数便完成了。
 
-## 总结
+**总结**
 
 我们再来回到我们的标题吧，从我对大多数人的观察来说，很多的人开始来使用 TypeScript 有几种原因：
 
@@ -535,11 +545,11 @@ yarn build
 
 ## TypeScript 常用语法 
 
-### 基础类型
+**基础类型**
 
 TypeScript 支持与 JavaScript 几乎相同的数据类型，此外还提供了实用的枚举类型方便我们使用。
 
-**布尔值**
+1.布尔值
 
 最基本的数据类型就是简单的 true/false 值，在 JavaScript 和 TypeScript 里叫做 `boolean`（其它语言中也一样）。
 
@@ -549,7 +559,7 @@ isDone = true
 // isDone = 2 // error
 ```
 
-**数字**
+2.数字
 
 和 JavaScript 一样，TypeScript 里的所有数字都是浮点数。 这些浮点数的类型是 number。 除了支持十进制和十六进制字面量，TypeScript 还支持 ECMAScript 2015 中引入的二进制和八进制字面量。
 
@@ -560,7 +570,7 @@ let a3: number = 0o12 // 八进制
 let a4: number = 0xa // 十六进制
 ```
 
-**字符串**
+3.字符串
 
 JavaScript 程序的另一项基本操作是处理网页或服务器端的文本数据。 像其它语言里一样，我们使用 `string` 表示文本数据类型。 和 JavaScript 一样，可以使用双引号（`"`）或单引号（`'`）表示字符串。
 
@@ -572,7 +582,7 @@ let age: number = 12
 const info = `My name is ${name}, I am ${age} years old!`
 ```
 
-**undefined 和 null**
+4.undefined 和 null
 
 TypeScript 里，`undefined` 和 `null` 两者各自有自己的类型分别叫做 `undefined` 和 `null`。 它们的本身的类型用处不是很大：
 
@@ -583,7 +593,7 @@ let n: null = null
 
 默认情况下 `null` 和 `undefined` 是所有类型的子类型。 就是说你可以把 `null` 和 `undefined` 赋值给 `number` 类型的变量。
 
-**数组**
+5.数组
 
 TypeScript 像 JavaScript 一样可以操作数组元素。 有两种方式可以定义数组。 第一种，可以在`元素类型后面接上[]`，表示由此类型元素组成的一个数组：
 
@@ -597,7 +607,7 @@ let list1: number[] = [1, 2, 3]
 let list2: Array<number> = [1, 2, 3]
 ```
 
-**元组 Tuple**
+6.元组 Tuple
 
 元组类型允许表示一个已知元素数量和类型的数组，`各元素的类型不必相同`。 比如，你可以定义一对值分别为 `string` 和 `number` 类型的元组。
 
@@ -614,7 +624,7 @@ console.log(t1[0].substring(1)) // OK
 console.log(t1[1].substring(1)) // Error, 'number' 不存在 'substring' 方法
 ```
 
-**枚举**
+7.枚举
 
 `enum` 类型是对 JavaScript 标准数据类型的一个补充。 使用枚举类型可以`为一组数值赋予友好的名字`。
 
@@ -666,7 +676,7 @@ let colorName: string = Color[2]
 console.log(colorName) // 'Green'
 ```
 
-**any**
+8.any
 
 有时候，我们会想要为那些在编程阶段还不清楚类型的变量指定一个类型。 这些值可能来自于动态的内容，比如来自用户输入或第三方代码库。 这种情况下，我们不希望类型检查器对这些值进行检查而是直接让它们通过编译阶段的检查。 那么我们可以使用 `any` 类型来标记这些变量：
 
@@ -684,7 +694,7 @@ let list: any[] = [1, true, 'free']
 list[1] = 100
 ```
 
-**void**
+9.void
 
 某种程度上来说，`void` 类型像是与 `any` 类型相反，它`表示没有任何类型`。 当一个函数没有返回值时，你通常会见到其返回值类型是 `void`：
 
@@ -704,7 +714,7 @@ function fn(): void {
 let unusable: void = undefined
 ```
 
-**object**
+10.object
 
 `object` 表示非原始类型，也就是除 `number`，`string`，`boolean`之外的类型。
 
@@ -722,7 +732,7 @@ console.log(fn2(new String('abc')))
 console.log(fn2(String))
 ```
 
-**联合类型**
+11.联合类型
 
 联合类型（Union Types）表示取值可以为多种类型中的一种
 需求 1: 定义一个一个函数得到一个数字或字符串值的字符串形式值
@@ -748,7 +758,7 @@ function getLength(x: number | string) {
 }
 ```
 
-**类型断言**
+12.类型断言
 
 通过类型断言这种方式可以告诉编译器，“相信我，我知道自己在干什么”。 类型断言好比其它语言里的类型转换，但是不进行特殊的数据检查和解构。 它没有运行时的影响，只是在编译阶段起作用。 TypeScript 会假设你，程序员，已经进行了必须的检查。
 
@@ -773,7 +783,7 @@ function getLength(x: number | string) {
 console.log(getLength('abcd'), getLength(1234))
 ```
 
-**类型推断**
+13.类型推断
 
 类型推断: TS 会在没有明确的指定类型的时候推测出一个类型
 有下面 2 种情况: 1. 定义变量时赋值了, 推断为对应的类型. 2. 定义变量时没有赋值, 推断为 any 类型
@@ -789,11 +799,11 @@ b10 = 123
 b10 = 'abc'
 ```
 
-### 接口
+**接口**
 
 TypeScript 的核心原则之一是对值所具有的结构进行类型检查。我们使用接口（Interfaces）来定义对象的类型。`接口是对象的状态(属性)和行为(方法)的抽象(描述)`
 
-**接口初探**
+1.接口初探
 
 需求: 创建人的对象, 需要对人的属性进行一定的约束
 
@@ -842,7 +852,7 @@ const person1: IPerson = {
 
 类型检查器会查看对象内部的属性是否与 IPerson 接口描述一致, 如果不一致就会提示类型错误。
 
-**可选属性**
+2.可选属性
 
 接口里的属性不全都是必需的。 有些是只在某些条件下存在，或者根本不存在。
 
@@ -868,7 +878,7 @@ const person2: IPerson = {
 }
 ```
 
-**只读属性**
+3.只读属性
 
 一些对象属性只能在对象刚刚创建的时候修改其值。 你可以在属性名前用 `readonly` 来指定只读属性:
 
@@ -898,7 +908,7 @@ person2.id = 2 // error
 
 最简单判断该用 `readonly` 还是 `const` 的方法是看要把它做为变量使用还是做为一个属性。 做为变量使用的话用 `const`，若做为属性则使用 `readonly`。
 
-**函数类型**
+4.函数类型
 
 接口能够描述 JavaScript 中对象拥有的各种各样的外形。 除了描述带有属性的普通对象外，接口也可以描述函数类型。
 
@@ -924,7 +934,7 @@ const mySearch: SearchFunc = function(source: string, sub: string): boolean {
 console.log(mySearch('abcd', 'bc'))
 ```
 
-**类类型**
+5.类类型
 
 *类实现接口*
 
@@ -953,7 +963,7 @@ class Car implements Alarm {
 }
 ```
 
-**一个类可以实现多个接口**
+6.一个类可以实现多个接口
 
 ```typescript
 class Car2 implements Alarm, Light {
@@ -969,7 +979,7 @@ class Car2 implements Alarm, Light {
 }
 ```
 
-**接口继承接口**
+7.接口继承接口
 
 和类一样，接口也可以相互继承。 这让我们能够从一个接口里复制成员到另一个接口里，可以更灵活地将接口分割到可重用的模块里。
 
@@ -977,7 +987,7 @@ class Car2 implements Alarm, Light {
 interface LightableAlarm extends Alarm, Light {}
 ```
 
-### 类
+**类**
 
 对于传统的 JavaScript 程序我们会使用`函数`和`基于原型的继承`来创建可重用的组件，但对于熟悉使用面向对象方式的程序员使用这些语法就有些棘手，因为他们用的是`基于类的继承`并且对象是由类构建出来的。 从 ECMAScript 2015，也就是 ES6 开始， JavaScript 程序员将能够使用基于类的面向对象的方式。 使用 TypeScript，我们允许开发者现在就使用这些特性，并且编译后的 JavaScript 可以在所有主流浏览器和平台上运行，而不需要等到下个 JavaScript 版本。
 
@@ -1130,17 +1140,17 @@ ho run 50m
 
 公共，私有与受保护的修饰符
 
-**默认为 public**
+1.默认为 public
 
 在上面的例子里，我们可以自由的访问程序里定义的成员。 如果你对其它语言中的类比较了解，就会注意到我们在之前的代码里并没有使用 `public` 来做修饰；例如，C# 要求必须明确地使用 `public` 指定成员是可见的。 在 TypeScript 里，成员都默认为 `public`。
 
 你也可以明确的将一个成员标记成 `public`。 我们可以用下面的方式来重写上面的 `Animal` 类：
 
-**理解 private**
+2.理解 private
 
 当成员被标记成 `private` 时，它就不能在声明它的类的外部访问。
 
-**理解 protected**
+3.理解 protected
 
 `protected` 修饰符与 `private` 修饰符的行为很相似，但有一点不同，`protected`成员在派生类中仍然可以访问。例如：
 
@@ -1190,7 +1200,7 @@ console.log(new Person('abc').name) // 公开的可见
 // console.log(new Person('abc').age) //  私有的不可见
 ```
 
-**readonly 修饰符**
+4.readonly 修饰符
 
 你可以使用 `readonly` 关键字将属性设置为只读的。 只读属性必须在声明时或构造函数里被初始化。
 
@@ -1206,7 +1216,7 @@ let john = new Person('John')
 // john.name = 'peter' // error
 ```
 
-**参数属性**
+5.参数属性
 
 在上面的例子中，我们必须在 `Person` 类里定义一个只读成员 `name` 和一个参数为 `name` 的构造函数，并且立刻将 `name` 的值赋给 `this.name`，这种情况经常会遇到。 参数属性可以方便地让我们在一个地方定义并初始化一个成员。 下面的例子是对之前 `Person` 类的修改版，使用了参数属性：
 
@@ -1223,7 +1233,7 @@ console.log(p.name)
 
 参数属性通过给构造函数参数前面添加一个访问限定符来声明。使用 `private` 限定一个参数属性会声明并初始化一个私有成员；对于 `public` 和 `protected` 来说也是一样。
 
-**存取器**
+6.存取器
 
 `TypeScript` 支持通过 `getters/setters` 来截取对对象成员的访问。 它能帮助你有效的控制对对象成员的访问。
 
@@ -1254,7 +1264,7 @@ p.fullName = 'E-F'
 console.log(p.firstName, p.lastName)
 ```
 
-**静态属性**
+7.静态属性
 
 到目前为止，我们只讨论了类的实例成员，那些仅当类被实例化的时候才会被初始化的属性。 我们也可以创建类的静态成员，这些属性存在于类本身上面而不是类的实例上。 在这个例子里，我们使用 `static` 定义 `origin`，因为它是所有网格都会用到的属性。 每个实例想要访问这个属性的时候，都要在 `origin` 前面加上类名。 如同在实例属性上使用 `this.xxx` 来访问属性一样，这里我们使用 `Grid.xxx` 来访问静态属性。
 
@@ -1273,7 +1283,7 @@ console.log(Person.name2)
 console.log(new Person().name1)
 ```
 
-**抽象类**
+8.抽象类
 
 抽象类做为其它派生类的基类使用。 它们不能被实例化。不同于接口，抽象类可以包含成员的实现细节。 `abstract` 关键字是用于定义抽象类和在抽象类内部定义抽象方法。
 
@@ -1303,11 +1313,11 @@ dog.cry()
 dog.run()
 ```
 
-### 函数
+**函数**
 
 函数是 JavaScript 应用程序的基础，它帮助你实现抽象层，模拟类，信息隐藏和模块。在 TypeScript 里，虽然已经支持类，命名空间和模块，但函数仍然是主要的定义行为的地方。TypeScript 为 JavaScript 函数添加了额外的功能，让我们可以更容易地使用。
 
-**基本示例**
+1.基本示例
 
 和 JavaScript 一样，TypeScript 函数可以创建有名字的函数和匿名函数。你可以随意选择适合应用程序的方式，不论是定义一系列 API 函数还是只使用一次的函数。
 
@@ -1325,7 +1335,7 @@ let myAdd = function(x, y) {
 }
 ```
 
-**函数类型**
+2.函数类型
 
 为函数定义类型
 
@@ -1353,7 +1363,7 @@ let myAdd2: (x: number, y: number) => number = function(x: number, y: number): n
 }
 ```
 
-**可选参数和默认参数**
+3.可选参数和默认参数
 
 TypeScript 里的每个函数参数都是必须的。 这不是指不能传递 `null` 或 `undefined` 作为参数，而是说编译器检查用户是否为每个参数都传入了值。编译器还会假设只有这些参数会被传递进函数。 简短地说，传递给一个函数的参数个数必须与函数期望的参数个数一致。
 
@@ -1389,7 +1399,7 @@ function info(x: string, ...args: string[]) {
 info('abc', 'c', 'b', 'a')
 ```
 
-**函数重载**
+4.函数重载
 
 函数重载: 函数名相同, 而形参不同的多个函数
 在 JS 中, 由于弱类型的特点和形参与实参可以不匹配, 是没有函数重载这一说的
@@ -1420,11 +1430,11 @@ console.log(add('a', 'b'))
 // console.log(add(1, 'a')) // error
 ```
 
-### 泛型
+**泛型**
 
 指在定义函数、接口或类的时候，不预先指定具体的类型，而在使用的时候再指定具体类型的一种特性。
 
-**引入**
+1.引入
 
 下面创建一个函数, 实现功能: 根据指定的数量 `count` 和数据 `value` , 创建一个包含 `count` 个 `value` 的数组
 不用泛型的话，这个函数可能是下面这样：
@@ -1443,7 +1453,7 @@ const arr2 = createArray('aa', 3)
 console.log(arr1[0].toFixed(), arr2[0].split(''))
 ```
 
-**使用函数泛型**
+2.使用函数泛型
 
 ```typescript
 function createArray2<T>(value: T, count: number) {
@@ -1461,7 +1471,7 @@ console.log(arr4[0].split(''))
 // console.log(arr4[0].toFixed()) // error
 ```
 
-**多个泛型参数的函数**
+3.多个泛型参数的函数
 
 一个函数可以定义多个泛型参数
 
@@ -1473,7 +1483,7 @@ const result = swap<string, number>('abc', 123)
 console.log(result[0].length, result[1].toFixed())
 ```
 
-**泛型接口**
+4.泛型接口
 
 在定义接口时, 为接口中的属性或方法定义泛型类型
 在使用接口时, 再指定具体的泛型类型
@@ -1516,7 +1526,7 @@ userCRUD.add(new User('tom2', 13))
 console.log(userCRUD.data)
 ```
 
-**泛型类**
+5.泛型类
 
 在定义类时, 为类中的属性或方法定义泛型类型
 在创建类的实例时, 再指定特定的泛型类型
@@ -1543,7 +1553,7 @@ console.log(myGenericString.add(myGenericString.zeroValue, 'test'))
 console.log(myGenericNumber.add(myGenericNumber.zeroValue, 12))
 ```
 
-**泛型约束**
+6.泛型约束
 
 如果我们直接对一个泛型参数取 `length` 属性, 会报错, 因为这个泛型根本就不知道它有这个属性
 
@@ -1574,9 +1584,9 @@ fn2('abc')
 // fn2(123) // error  number没有length属性
 ```
 
-### 其它
+**其它**
 
-**声明文件**
+1.声明文件
 
 当使用第三方库时，我们需要引用它的声明文件，才能获得对应的代码补全、接口提示等功能
 
@@ -1625,13 +1635,13 @@ declare var jQuery: (selector: string) => any
 
 有的第三库在下载时就会自动下载对应的声明文件库(比如: webpack),有的可能需要单独下载(比如 jQuery/react)
 
-**内置对象**
+2.内置对象
 
 JavaScript 中有很多内置对象，它们可以直接在 TypeScript 中当做定义好了的类型。
 
 内置对象是指根据标准在全局作用域（Global）上存在的对象。这里的标准是指 ECMAScript 和其他环境（比如 DOM）的标准。
 
-1. ECMAScript 的内置对象
+a.ECMAScript 的内置对象
 
 > Boolean
 > Number
@@ -1652,7 +1662,7 @@ b = true
 // let bb: boolean = new Boolean(2)  // error
 ```
 
-2. BOM 和 DOM 的内置对象
+b.BOM 和 DOM 的内置对象
 
 > Window
 > Document
@@ -1792,9 +1802,3 @@ User 接口为 {
 }
 */
 ```
-
-# 参考
-
-[TypeScript 入门教程](https://github.com/xcatliu/typescript-tutorial)
-
-[深入理解 TypeScript](https://github.com/jkchao/typescript-book-chinese)
