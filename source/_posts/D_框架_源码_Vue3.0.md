@@ -178,33 +178,7 @@ vue.esm-bundler.js
 bue.runtime.esm-bundler.js
 ```
 
-
-
-# Vue从实例化到渲染的完整流程
-
-# Vue源码深度解析
-
-**参考**
-
-> - [催学社-Vue3 源码实战课-video](https://www.1024zyz.com/4724.html)
-> - [Vue.js 3.0 核心源码-黄轶-video](https://www.1024zyz.com/3771.html)
-> - [Vue3源码解析，打造自己的Vue3框架-video](https://www.1024zyz.com/5016.html)
-> - [珠峰公开课-vue3源码视频-video](https://www.bilibili.com/video/BV1WP4y1u7qi/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
-> - [vue3生态](https://github.com/vue3/vue3-News/tree/master)
-> - [vue 源码汇总](https://github.com/vue3/vue3-News/issues/16?content_source_url=https://github.com/vue3/vue3-News)
-> - [vue源码分析结构参考](https://juejin.cn/post/6844904181094957069)
-> - [vue 3 源码设计方案](https://juejin.cn/column/7142426144204128269)
-> - 《Vue.js 设计与实现》-从高层的设计角度，探讨框架需要关注的问题
-> - 《vue.js 技术内幕》，作者黄轶-标准的 “源码分析” 书籍
-
-**Vue核心四大模块**
-
-- 生命周期过程
-- 变化监测原理
-- 模板编译原理
-- 虚拟DOM原理
-
-# 尤大手写mini-vue
+# mini-vue-尤大手写
 
 [链接](https://www.vue-js.com/topic/611b1ba4120d99003158db6f)
 
@@ -778,9 +752,34 @@ lerna 是一个管理多个 npm 模块的工具，是 Babel 自己用来维护�
 
 lerna 现在已经被很多著名的项目组织使用，如：Babel, React, Vue, Angular, Ember, Meteor, Jest 。
 
-# 催学社-Vue3 源码实战课
+# Vue源码深度解析
+
+**参考**
+
+> - [催学社-Vue3 源码实战课-video](https://www.1024zyz.com/4724.html)
+> - [Vue.js 3.0 核心源码-黄轶-video](https://www.1024zyz.com/3771.html)
+> - [Vue3源码解析，打造自己的Vue3框架-video](https://www.1024zyz.com/5016.html)
+> - [珠峰公开课-vue3源码视频-video](https://www.bilibili.com/video/BV1WP4y1u7qi/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+> - [vue3生态](https://github.com/vue3/vue3-News/tree/master)
+> - [vue 源码汇总](https://github.com/vue3/vue3-News/issues/16?content_source_url=https://github.com/vue3/vue3-News)
+> - [vue源码分析结构参考](https://juejin.cn/post/6844904181094957069)
+> - [vue 3 源码设计方案](https://juejin.cn/column/7142426144204128269)
+> - 《Vue.js 设计与实现》-从高层的设计角度，探讨框架需要关注的问题
+> - 《vue.js 技术内幕》，作者黄轶-标准的 “源码分析” 书籍
+
+**Vue核心四大模块**
+
+- 生命周期过程
+- 变化监测原理
+- 模板编译原理
+- 虚拟DOM原理
+
+# mini-vue-大催哥
+
+**参考**
 
 - [个人vue3源码分析仓库](https://github.com/fuyunjinglong/web-sourceCode-vue3)
+- [简单版mini-vue](https://www.bilibili.com/video/BV1Rt4y1B7sC/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 
 ## Vue3核心模块
 
@@ -795,7 +794,7 @@ lerna 现在已经被很多著名的项目组织使用，如：Babel, React, Vue
 >   - runtime-core：运行时核心函数。源码中runtime-core/src/index.js实际是大量导出reactivity，所以又依赖reactivity
 >   - reactivity：运行时响应式系统。
 
-# 《Vue.js 设计与实现》-笔记
+# Vue.js 设计与实现-笔记
 
 ## 大纲
 

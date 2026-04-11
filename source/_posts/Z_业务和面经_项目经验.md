@@ -8,7 +8,7 @@ toc: true # 是否启用内容索引
 
 # 开源项目
 
-## view-model-explore探索(阿崔cxr-打飞机) 
+## 202405-阿崔cxr-打飞机
 
 参考
 
@@ -181,7 +181,7 @@ const props = defineProps([
 
 # 项目难点
 
-## Vue2的CSP安全策略-202301
+## 202101-Vue2的CSP安全策略
 
 **总结**：因为看了Vue3的源码，基于Vue.js 3.0 的编译过程，发现它在离线编译的时候也会把结果编译成带前缀的，核心代码借过来，然后再做一些修改来支持自己特定的一些 feature，这个难题就被我解决了。
 
@@ -253,7 +253,7 @@ Vue.js 2.x 的编译会经过三个过程：template 解析生成 AST ——> AS
 
 > 我们平时经常会强调技术选型的能力，其实技术选型的一个标准，就是你选择的第三方依赖，你能不能 hold 住。首先是你知道它的职责边界，知道它能做什么不能做什么，怎么利用它帮助你开发需求；其次是出了错你能不能快速定位到原因，知道是依赖的问题还是自身使用的问题；最后就是当它不能满足你的需求，并且官方不愿意解决或者不维护的情况下，你能不能去 fork 这个库，自己开发解决并实现。那么显然拥有这些能力就需要你对它的源码实现非常了解，所以这也是一些高阶岗位为什么会在面试中考察你对技术原理掌握的一方面原因
 
-## 盈利测算轮询接口内存泄漏-20220506
+## 202205-盈利测算轮询接口内存泄漏
 
 盈利测算轮询接口，发现有些大数据量场景下，页面出现卡顿，使用chrome memory打印内存快照，发现发起测算后内存使用率比较高。
 
@@ -278,7 +278,7 @@ chrome的memory内存快照工具
 页面组件销毁时，要解绑事件监听，能解决90%的内存泄露
 (4.3)禁止使用console.log打印大量数据，setInterval启动定时器后必要时销毁，尽量避免使用iframe。
 
-## nginx安全组策略配置错误引起的性能问题-20220108
+## 202206-nginx安全组策略配置错误引起的性能问题
 
 问题：用户反馈系统时不时出现响应慢的问题，查询产品列表接口，经常出现一次5秒的转圈，影响用户体验
 **定位：**
@@ -300,7 +300,7 @@ chrome的memory内存快照工具
 
 (1)增加系统告警策略，当域名请求异常时，增加短信电话通知关系人(2)动员团队成员学习问题排除流程，加快问题定位。
 
-## RouterView 配合 KeepAilve 组件使用后create钩子函数执行两次-黄轶
+## 202207-RouterView 配合KeepAilve组件使用后create钩子函数执行两次黄轶
 
 参考
 
@@ -310,11 +310,11 @@ chrome的memory内存快照工具
 问题：当在三级菜单下，切换到另外的三级菜单。会出现setup执行两次的情况。
 操作步骤：进入基础表格，点击进入基础表单。再次点击进入基础表格，这个时候就会发现，基础表格下的setup就执行了两次，有两次打印输出。其实这个时候，任何一个三级菜单下的页面都会执行两次。
 
-## 前端渲染10w数据-20230604
+## 202306-前端渲染10w数据
 
-### 前置工作
+**前置工作**
 
-**后端模拟服务**
+*后端模拟服务*
 
 新建一个`server.js`文件，简单起个服务，并返回给前端`10w`条数据，并通过`nodemon server.js`开启服务
 
@@ -354,7 +354,7 @@ http.createServer(function (req, res) {
 })
 ```
 
-**前端页面**
+*前端页面*
 
 ```
 // index.html
@@ -410,7 +410,7 @@ const getList = () => {
 const container = document.getElementById('container')
 ```
 
-### 方案1:直接渲染
+**方案1:直接渲染**
 
 一次性渲染出`10w`个节点,耗时12s。
 
@@ -429,7 +429,7 @@ const renderList = async () => {
 renderList()
 ```
 
-### 方案2:setTimeout分页渲染
+**方案2:setTimeout分页渲染**
 
 把`10w`按照每页数量`limit`分成总共`Math.ceil(total / limit)`页，然后利用`setTimeout`，每次渲染1页数据，这样的话，渲染出首页数据的时间大大缩减了。
 
@@ -461,7 +461,7 @@ const renderList = async () => {
 }
 ```
 
-### 方案3:requestAnimationFrame
+**方案3:requestAnimationFrame**
 
 使用`requestAnimationFrame`代替`setTimeout`，减少了`重排`的次数，极大提高了性能，建议大家在渲染方面多使用`requestAnimationFrame`。
 
@@ -494,7 +494,7 @@ const renderList = async () => {
 }
 ```
 
-### 方案4:fragment文档碎片 + requestAnimationFrame
+**方案4:fragment文档碎片 + requestAnimationFrame**
 
 优点
 
@@ -535,7 +535,7 @@ const renderList = async () => {
 }
 ```
 
-### 方案5:懒加载
+**方案5:懒加载**
 
 原理
 
@@ -591,406 +591,236 @@ onMounted(async () => {
 </template>
 ```
 
-### 方案6:虚拟列表
+**方案6:虚拟滚动**
 
 参考
 
 - [「前端进阶」高性能渲染十万条数据(虚拟列表)](https://juejin.cn/post/6844903982742110216#heading-4)
 
-原理
+本质
 
-> 虚拟滚动，就是根据`容器可视区域`的`列表容积数量`，监听用户滑动或滚动事件，动态截取`长列表数据`中的`部分数据`渲染到页面上，动态使用空白站位填充容器`上下滚动区域内容`，模拟实现`原生滚动效果`。总结一句话：使用绝对定位和滚动监听实现。
+> **“只渲染视口里的少量 DOM，用一个‘假的大容器’把滚动条撑到真实尺寸，再用偏移量把真实内容移到该在的位置。”**
 
-<img src="/img/image-20230614065430330.png" alt="image-20230614065430330" style="zoom:80%;" />
+核心三步：
 
-> - 浏览器渲染===康熙选秀：一次性渲染10000个肯定会使浏览器压力大，造成用户体验差
-> - 容器可视区域===选秀大殿：10000个排队去渲染，比如一次渲染10个
-> - 上方下方区域===左右偏殿：轮不到你渲染，你就乖乖进空白区待着
+> 1. 算出当前“视口区间（startIndex～endIndex）”
+> 2. 只拿这段数据去渲染 DOM
+> 3. 用 totalHeight + offsetY（translateY/top）让滚动条与位置都看起来像全部都渲染了
 
-**基本实现过程**
+实现
 
-> - 步骤1:计算列表总高度listHeight和可视区域高度screenHeight
-> - 步骤2:根据可视区域高度计算可显示的列表项数visibleCount
-> - 步骤3:在滚动时，重新计算起始索引start和结束索引end，核心滚动偏移量startOffset。
-
-**固定高度代码**
-
-```vue
-<VirtualList :listData="d" :itemSize="100" />
-let d = ref([]);
-for (let i = 0; i < 1000; i++) {
-  d.value.push({ id: i, value: i });
-}
-                         
-// VirtualList.vue                       
-<template>
-  <div ref="list" class="infinite-list-container" @scroll="scrollEvent($event)">
-    <div class="infinite-list-phantom" :style="{ height: listHeight + 'px' }"></div>
-    <div class="infinite-list" :style="{ transform: getTransform }">
-      <div ref="items" class="infinite-list-item" v-for="item in visibleData" :key="item.id" :style="{ height: itemSize + 'px', lineHeight: itemSize + 'px' }">{{ item.value }}</div>
-    </div>
-  </div>
-</template>
-<script>
-export default {
-  name: 'VirtualList',
-  props: {
-    //所有列表数据
-    listData: {
-      type: Array,
-      default: () => [],
-    },
-    //每项高度
-    itemSize: {
-      type: Number,
-      default: 200,
-    },
-  },
-  data() {
-    return {
-      //可视区域高度
-      screenHeight: 0,
-      //核心滚动偏移量
-      startOffset: 0,
-      //起始索引
-      start: 0,
-      //结束索引
-      end: null,
-    };
-  },
-  computed: {
-    //列表总高度
-    listHeight() {
-      return this.listData.length * this.itemSize;
-    },
-    //可显示的列表项数
-    visibleCount() {
-      return Math.ceil(this.screenHeight / this.itemSize);
-    },
-    //偏移量对应的style
-    getTransform() {
-      return `translate3d(0,${this.startOffset}px,0)`;
-    },
-    //获取真实显示列表数据
-    visibleData() {
-      return this.listData.slice(this.start, Math.min(this.end, this.listData.length));
-    },
-  },
-  mounted() {
-    this.screenHeight = this.$el.clientHeight;
-    this.start = 0;
-    this.end = this.start + this.visibleCount;
-  },
-  methods: {
-    scrollEvent() {
-      //当前滚动位置
-      let scrollTop = this.$refs.list.scrollTop;
-      //此时的开始索引
-      this.start = Math.floor(scrollTop / this.itemSize);
-      //此时的结束索引
-      this.end = this.start + this.visibleCount;
-      //此时的偏移量
-      this.startOffset = scrollTop - (scrollTop % this.itemSize);
-    },
-  },
-};
-</script>
-<style scoped>
-.infinite-list-container {
-  height: 100%;
-  overflow: auto;
-  position: relative;
-  -webkit-overflow-scrolling: touch;
-}
-.infinite-list-phantom {
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  z-index: -1;
-}
-.infinite-list {
-  left: 0;
-  right: 0;
-  top: 0;
-  position: absolute;
-  text-align: center;
-}
-.infinite-list-item {
-  padding: 10px;
-  color: #555;
-  box-sizing: border-box;
-  border-bottom: 1px solid #999;
-}
-</style>
-```
-
-html元素
-
-- `infinite-list-container` 为`可视区域`的容器
-- `infinite-list-phantom` 为容器内的占位，高度为总列表高度，用于形成滚动条
-- `infinite-list` 为列表项的`渲染区域`
-
-参数
-
-- 假定`可视区域`高度固定，称之为`screenHeight`
-- 假定`列表每项`高度固定，称之为`itemSize`
-- 假定`列表数据`称之为`listData`
-- 假定`当前滚动位置`称之为`scrollTop`
-
-则可推算出：
-
-- 列表总高度`listHeight` = listData.length * itemSize
-- 可显示的列表项数`visibleCount` = Math.ceil(screenHeight / itemSize)
-- 数据的起始索引`startIndex` = Math.floor(scrollTop / itemSize)
-- 数据的结束索引`endIndex` = startIndex + visibleCount
-- 列表显示数据为`visibleData` = listData.slice(startIndex,endIndex)
-
-**重要参数**
-
-当滚动后，由于`渲染区域`相对于`可视区域`已经发生了偏移，此时我需要获取一个偏移量`startOffset`，通过样式控制将`渲染区域`偏移至`可视区域`中。
-
-> 滚动偏移量`startOffset` = scrollTop - (scrollTop % itemSize);
-
-为什么不写成this.startOffset = scrollTop？
-
-> 通俗理解：如果写成这个，数据都是固定跳变，没有滚动的动画变化效果。
+> - 外层：viewport有滚动条，固定高度（比如 500px）。
+> - 中间：phantom一个“假容器”，高度 = 行数 × 行高（或动态累计），只为了让滚动条正确。
+> - 内层：content真正放列表 DOM 的容器，只放“视口+缓冲区”的几条/几十条 DOM。
 >
-> 具体解释：
+> 1. *关键变量*
 >
-> 比如说，列表第0项，高度100px，你现在滚动条滚动了50px，期望的效果必然是第0项，一半在屏幕外，一半在屏幕内，此时是没有偏移量的，完全由滚动条来控制页面显示内容。此时又发生了滚动，滚动到了100px，此时我们期望的的：可视区域已经没有第0项了，变成第1项。由于我们是虚拟列表，所以第0项的dom发生了修改变成了第1项的dom，第一项的dom变成了第2项dom，如果没有偏移量，可视区域的第一条内容就变成了第2项，所以我们需要修改偏移量，让列表像下偏移100px，将第1项的dom显示出来。
+> - `viewportHeight`：外层可见高度（如 500px）
+> - `itemHeight`：固定行高（40px）
+> - `scrollTop`：当前滚动距离
+> - `totalHeight`：itemHeight × data.length（总高度）
+> - `startIndex`：当前视口第一行在原数组中的索引
+> - `endIndex`：当前视口最后一行索引
+> - `bufferCount`：上下缓冲条数（防止快速滚动时白屏）
+> - `offsetY`：内容容器相对视口的垂直偏移（用 `translateY` 实现）
 >
-> 没有达到换一个item的时候就设置没有偏移量 这个scrollTop - (scrollTop % this.itemSize)就是没达到一个itemSize的时候就是多余的减掉多余的变成o这个内容会被浏览器带着走 就会看到动画 如果你有设置等于scrollTop的话 你浏览器滚动了 那你偏移量和scrollTop一样的话 相当于没有动画 和浏览器同步走了 然后到了换数据item1变成item2的时候就会突然给你换掉 就没有动画了 这样写就让浏览器带着走有动画
+> 2. *计算流程（固定行高）*
+>
+> - `startIndex`：
+>   `startIndex = Math.floor(scrollTop / itemHeight)`
+> - `endIndex`（含缓冲）：
+>   `visibleCount = Math.ceil(viewportHeight / itemHeight)`
+>   `endIndex = Math.min(data.length - 1, startIndex + visibleCount + bufferCount)`
+> - `offsetY`（内容容器“往下推”多远）：
+>   `offsetY = startIndex * itemHeight`
+> - `totalHeight`（占位容器的高度）：
+>   `totalHeight = data.length * itemHeight`baidu.com
+> - 实际要渲染的数据：
+>   `visibleData = data.slice(startIndex, endIndex + 1)`
+>
+> 3. *滚动时发生什么？*
+>
+> - 监听滚动事件，拿到 `scrollTop`。
+> - 用上面的公式算出新的 `startIndex/endIndex/offsetY`。
+> - 切片数据：`data.slice(startIndex, endIndex + 1)`。
+> - 渲染少量 DOM，用 `translateY(offsetY)` 把内容“推”到正确位置
+>
+> 4.动态高度
+>
+> 现实场景中，每行高度不一样（树形表格、富文本、自适应行高）。这时“startIndex = scrollTop / itemHeight” 就不成立了。
+>
+> 增加positions位置索引 + 缓存高度：
+>
+> - 第 i 行的顶部位置：`positions[i]`
+> - 总高度：`totalHeight = positions[positions.length - 1]`
+> - 预估高度estimatedRowHeight：先占坑，后结算。(先按照预估高度50px&个数，等实际选然后，动态修正totalHeigh=预估高度+30即可，这样偏差就不大)
+> - startIndex或endIndex等于positions数组的二分查找值
+> - offsetY = positions[startIndex]
 
-**列表项动态高度代码**
+问题
 
-对于不是固定高度的列表，上述方案就不能解决这个问题。
+> 1.缓冲区与“白屏/闪烁”问题?
+>
+> 快速滚动时，纯“视口内那几行”还不够，滚动一帧就会露出空白区域，所以上下多渲染 `bufferCount` 行（比如各 5 行）
+>
+> 2.滚动条、滚动位置同步与“滚动跳跃”?
+>
+> - 滚动条忽长忽短；
+> - 拖动滚动条时，内容位置对不上。
+>
+> 关键totalHeight 要尽量稳定，动态高度时用 `estimatedRowHeight` 去预估未渲染行的高度，避免频繁改写 phantom 的高度。滚动事件要做节流（throttle），避免每一帧都做大量计算。
 
-目前虚拟列表动态高度的解决方案有3种：
 
-- 方案1:包含所有列表项高度的数据，如 [50, 20, 100, 80, ...]
-- 方案2:将列表项`渲染到屏幕外`，对其高度进行测量并缓存，然后再将其渲染至可视区域内。
-- 方案3:以`预估高度`先行渲染，然后获取真实高度并缓存。
 
-> - 方案1虽然灵活，但需要事先知道高度，无法解决列表项高度由内容撑开的情况
-> - 方案2:由于预先渲染至屏幕外，再渲染至屏幕内，这导致渲染成本增加一倍，这对于数百万用户在低端移动设备上使用的产品来说是不切实际的。
-> - 方案3:可以解决前面2种方案的缺陷
-
-实现过程
-
-- 定义组件属性`estimatedItemSize`,用于接收`预估高度`
-- 定义`positions`，用于列表项渲染后存储`每一项的高度以及位置`信息
-- `列表高度`实际就等于列表中最后一项的底部距离列表顶部的位置。
-
-完整代码
-
-```vue
-<VirtualList :listData="data" :estimatedItemSize="100" />
-  import faker from "faker";
-let data = [];
-for (let id = 0; id < 1000; id++) {
-  data.push({
-    id,
-    value: faker.lorem.sentences() // 长文本
-  });
-}
-                           
-// VirtualList.vue
-<template>
-  <div ref="list" :style="{ height }" class="infinite-list-container" @scroll="scrollEvent($event)">
-    <div ref="phantom" class="infinite-list-phantom"></div>
-    <div ref="content" class="infinite-list">
-      <div class="infinite-list-item" ref="items" :id="item._index" :key="item._index" v-for="item in visibleData">
-        <p>
-          <span style="color: red">{{ item.id }}</span>
-          {{ item.value }}
-        </p>
-      </div>
-    </div>
-  </div>
-</template>
-<script>
-export default {
-  props: {
-    //所有列表数据
-    listData: {
-      type: Array,
-      default: () => [],
-    },
-    //预估高度
-    estimatedItemSize: {
-      type: Number,
-      required: true,
-    },
-    //容器高度 100px or 50vh
-    height: {
-      type: String,
-      default: '100%',
-    },
-  },
-  data() {
-    return {
-      //可视区域高度
-      screenHeight: 0,
-      //起始索引
-      start: 0,
-      //结束索引
-      end: 0,
-    };
-  },
-  computed: {
-    _listData() {
-      return this.listData.map((item, index) => {
-        return {
-          _index: `_${index}`,
-          item,
-        };
-      });
-    },
-    visibleCount() {
-      return Math.ceil(this.screenHeight / this.estimatedItemSize);
-    },
-    visibleData() {
-      return this._listData.slice(this.start, this.end);
-    },
-  },
-  created() {
-    this.initPositions();
-  },
-  mounted() {
-    this.screenHeight = this.$el.clientHeight;
-    this.start = 0;
-    this.end = this.start + this.visibleCount;
-  },
-  updated() {
-    this.$nextTick(function () {
-      if (!this.$refs.items || !this.$refs.items.length) {
-        return;
-      }
-      //获取真实元素大小，修改对应的尺寸缓存
-      this.updateItemsSize();
-      //更新列表总高度
-      let height = this.positions[this.positions.length - 1].bottom;
-      this.$refs.phantom.style.height = height + 'px';
-      //更新真实偏移量
-      this.setStartOffset();
-    });
-  },
-  methods: {
-    initPositions() {
-      this.positions = this.listData.map((d, index) => ({
-        index,
-        height: this.estimatedItemSize,
-        top: index * this.estimatedItemSize,
-        bottom: (index + 1) * this.estimatedItemSize,
-      }));
-    },
-    //获取列表起始索引
-    getStartIndex(scrollTop = 0) {
-      //二分法查找
-      return this.binarySearch(this.positions, scrollTop);
-    },
-    //二分法查找
-    binarySearch(list, value) {
-      let start = 0;
-      let end = list.length - 1;
-      let tempIndex = null;
-      while (start <= end) {
-        let midIndex = parseInt((start + end) / 2);
-        let midValue = list[midIndex].bottom;
-        if (midValue === value) {
-          return midIndex + 1;
-        } else if (midValue < value) {
-          start = midIndex + 1;
-        } else if (midValue > value) {
-          if (tempIndex === null || tempIndex > midIndex) {
-            tempIndex = midIndex;
-          }
-          end = end - 1;
-        }
-      }
-      return tempIndex;
-    },
-    //获取列表项的当前尺寸
-    updateItemsSize() {
-      let nodes = this.$refs.items;
-      nodes.forEach((node) => {
-        let rect = node.getBoundingClientRect();
-        let height = rect.height;
-        let index = +node.id.slice(1);
-        let oldHeight = this.positions[index].height;
-        let dValue = oldHeight - height;
-        //存在差值
-        if (dValue) {
-          this.positions[index].bottom = this.positions[index].bottom - dValue;
-          this.positions[index].height = height;
-
-          for (let k = index + 1; k < this.positions.length; k++) {
-            this.positions[k].top = this.positions[k - 1].bottom;
-            this.positions[k].bottom = this.positions[k].bottom - dValue;
-          }
-        }
-      });
-    },
-    //获取当前的偏移量
-    setStartOffset() {
-      let startOffset = this.start >= 1 ? this.positions[this.start - 1].bottom : 0;
-      this.$refs.content.style.transform = `translate3d(0,${startOffset}px,0)`;
-    },
-    //滚动事件
-    scrollEvent() {
-      //当前滚动位置
-      let scrollTop = this.$refs.list.scrollTop;
-      //此时的开始索引
-      this.start = this.getStartIndex(scrollTop);
-      //此时的结束索引
-      this.end = this.start + this.visibleCount;
-      //此时的偏移量
-      this.setStartOffset();
-    },
-  },
-};
-</script>
-<style scoped>
-.infinite-list-container {
-  overflow: auto;
-  position: relative;
-  -webkit-overflow-scrolling: touch;
-}
-.infinite-list-phantom {
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  z-index: -1;
-}
-.infinite-list {
-  left: 0;
-  right: 0;
-  top: 0;
-  position: absolute;
-}
-.infinite-list-item {
-  padding: 5px;
-  color: #555;
-  box-sizing: border-box;
-  border-bottom: 1px solid #999;
-  /* height:200px; */
-}
-</style>
-```
-
-**不足与改进**
-
-- 监听scroll事件，会频繁触发，重复计算，性能上浪费，可使用[IntersectionObserver](https://link.juejin.cn/?target=https%3A%2F%2Fdeveloper.mozilla.org%2Fzh-CN%2Fdocs%2FWeb%2FAPI%2FIntersectionObserver)替换监听scroll事件
-- 动态高度下的虚拟列表，如果是图片，可能由于网络请求加载时机导致高度不准确，如果我们能监听列表项的大小变化就能获取其真正的高度了。我们可以使用[ResizeObserver](https://link.juejin.cn/?target=https%3A%2F%2Fdeveloper.mozilla.org%2Fzh-CN%2Fdocs%2FWeb%2FAPI%2FResizeObserver)来监听列表项内容区域的高度改变，从而实时获取每一列表项的高度。
-
-### 方案7:第三方库
+**方案7:第三方库**
 
 - [vue-virtual-scroller](https://link.juejin.cn?target=https%3A%2F%2Fgithub.com%2FAkryum%2Fvue-virtual-scroller): 这是一个基于 Vue 3 的虚拟滚动列表组件，可以用于大型数据集的渲染。它支持水平和垂直方向的滚动，并且具有无限滚动、缓存、动态高度等功能。
 - [vue3-virtual-scroll-list](https://link.juejin.cn?target=https%3A%2F%2Fgithub.com%2Fzuolei828%2Fvue3-virtual-scroll-list): 这是一个支持垂直方向的无限滚动列表组件，可以用于渲染大量数据。它支持异步加载、滚动到指定位置、动态高度等功能。
 - [vue3-infinite-scroll](https://link.juejin.cn?target=https%3A%2F%2Fgithub.com%2FDevTony101%2Fvue3-infinite-scroll): 这是一个支持无限滚动的 Vue 3 组件，可以用于渲染大量数据。它支持异步加载、滚动到指定位置、动态高度等功能。
 - [vue-lazy-render](https://link.juejin.cn?target=https%3A%2F%2Fgithub.com%2Fyeyan1996%2Fvue-lazy-render): 这是一个基于 Vue 3 的懒加载组件，可以用于渲染大量数据。它支持滚动监听、动态高度、动画效果等功能。
+
+
+
+# 项目亮点
+
+## 2026.2-NATA
+
+**FCIS分离模式**
+
+是Functional Core和Imperative Shell(Composables即组合式API也叫Hook)的缩写
+
+| 概念                 | 在 Vue 中的体现                              | 特点                                                 |
+| -------------------- | -------------------------------------------- | ---------------------------------------------------- |
+| **Functional Core**  | 纯 `.ts/.js` 文件，导出纯函数，有利于单测    | **不引入 Vue**，不用 `ref`, `reactive`, `computed`。 |
+| **Imperative Shell** | `<script setup>`、Composables、Pinia Actions | 管理 Vue 响应式状态、调接口、操作路由。挂了          |
+
+> 1. **入参解包，出参包装**：传入core 的数据一定是死物(非响应式)，如果是ref，则传.value。如果是reactive,则传toRaw()。core的返回值，如果是ref，则直接赋值。如果是reactive，则用Object.assign(errors, errorsRes)。如果一定要传入reactive，一定不能直接修改属性值，否则就不是纯函数。
+> 2. **Shell只管何时做，Core 只管怎么做**：`watch` 监听到变化、`onMounted` 挂载完毕、用户点击了按钮——这是**何时做**。数据该怎么过滤、规则该怎么算、状态该怎么流转——这是**怎么做**。
+> 3. **报错找 Core，挂了找 Shell**
+
+Functional Core (logic/login.core.ts) // 逻辑处理core
+
+```js
+export interface LoginFormState {
+  username: string
+  password: string
+  rememberMe: boolean
+}
+export interface FormErrors {
+  username?: string
+  password?: string
+  general?: string
+}
+
+// 纯函数：给定状态，返回错误。不需要知道 UI 长什么样
+export function validateLoginForm(form: LoginFormState): FormErrors {
+  const errors: FormErrors = {}
+  
+  if (!form.username.trim()) {
+    errors.username = '用户名不能为空'
+  } else if (form.username.length < 3) {
+    errors.username = '用户名至少3个字符'
+  }
+  
+  if (!form.password) {
+    errors.password = '密码不能为空'
+  } else if (form.password.length < 6) {
+    errors.password = '密码至少6个字符'
+  }
+  return errors
+}
+// 纯函数：准备提交给 API 的数据
+export function formatLoginPayload(form: LoginFormState) {
+  return {
+    user: form.username.trim().toLowerCase(),
+    pass: form.password,
+    keepSignedIn: form.rememberMe
+  }
+```
+
+Imperative Shell(useLogin.ts)// 响应式处理Shell(Composables即组合式API也叫Hook)
+
+```js
+import { ref, reactive,toRaw } from 'vue'
+import { validateLoginForm, formatLoginPayload, type LoginFormState } from './login.core.ts'
+import { authApi } from '@/api/auth'
+import { useRouter } from 'vue-router'
+
+export function useLogin() {
+  const router = useRouter()
+  // Shell 负责绑定 UI 的状态
+  const form = reactive<LoginFormState>({
+    username: '',
+    password: '',
+    rememberMe: false
+  })
+  
+  const errors = reactive<FormErrors>({})
+  const isSubmitting = ref(false)
+
+  // Shell 编排流程：收集状态 -> 调用核心 -> 处理副作用
+  async function handleSubmit() {
+    // 1. 调用核心做校验（把 reactive 对象当成普通对象传进去）
+    const errorsRes = validateLoginForm(toRaw(form))
+    Object.assign(errors, errorsRes)
+    if (Object.keys(validationErrors).length > 0) return
+    // 2. 调用核心做数据转换
+    const payload = formatLoginPayload(form)
+    // 3. Shell 处理副作用（网络请求、路由跳转）
+    isSubmitting.value = true
+    try {
+      await authApi.login(payload)
+      router.push('/dashboard')
+    } catch (err: any) {
+      errors.general = err.message // Shell 处理异常展示
+    } finally {
+      isSubmitting.value = false
+    }
+  }
+  return { form, errors, isSubmitting, handleSubmit }
+}
+```
+
+**基于pnpm workspaces的Monorepo架构**
+
+pnpm采用软连接引用以来，缓存寻址。Monorepo生态的任务调度Turborepo/NX+版本管理Changesets
+
+## 202506-PPS策略制定
+
+**组件卡顿严重**
+
+> 引入了**配置驱动+动态插槽**解决了复用问题。
+
+**万级数据渲染**
+
+> 加入了**虚拟滚动+数据冻结**
+
+**树形节点高度动态偏移适配**
+
+> 用 `Object.freeze` 冻结原始数据节省 Proxy 性能开销，同时在内存中单独维护一个 `expandedKeys` 的响应式集合。并在虚拟滚动和真实 DOM 之间加了一层**扁平化数据适配器**，每次展开时动态重算一维可见数组和高度缓存数组，最终在保持极高灵活性的前提下，让万级嵌套数据的滚动帧率稳定在 60fps。
+
+> 难点1：数据冻结 vs 交互状态维护
+>
+> - **冲突点**：数据被冻结了（不可变），那用户点击“展开/折叠”按钮时，状态存哪里？如果存回数据里，就打破了冻结；如果单独存，怎么和冻结的数据对应？
+> - **解法思路**：必须进行**数据与视图状态的分离**。维护一个平铺的、独立的响应式状态池（例如 `const expandedKeys = reactive(new Set(['row_1', 'row_1_2']))`）。渲染时，通过判断当前行的 id 是否在 `expandedKeys` 中来决定是否递归渲染子组件，而原始数据始终保持冷冻状态。
+
+> 难点 2：虚拟滚动 vs 多级递归（死敌对决）
+>
+> 虚拟滚动的基石是：每一行的高度必须是可预测的（固定高度，或者提前计算好缓存起来的高度）。
+>
+> - **冲突点**：树形表格在展开/折叠子节点时，会导致下方所有行的绝对位置发生剧烈变化。
+> - **具体表现**：你展开第 2 行，它下面突然多出 50 个子节点，虚拟滚动原本计算好的 `scrollTop` 和 `transform: translateY()` 全部错乱，导致白屏或行重叠。
+> - **解法思路**：不能简单地用固定行高乘以索引。必须实现**动态高度测量与缓存机制**（渲染过一次的行，将其真实 DOM 高度存入一个数组/Map 中，如 `[300, 40, 40, 120...]`，每次滚动时累加这个数组来计算偏移量）。
+
+> 难点3：动态插槽在递归中的上下文传递（作用域泄漏）
+>
+> - **冲突点**：第 1 层传入了一个自定义的操作插槽，到了第 3 层递归时，这个插槽需要读取第 3 层的行数据。如果直接透传，很容易导致闭包引用错误，或者插槽内部的变量作用域混乱。
+> - **解法思路**：在递归组件内部，需要严格规范作用域插槽的转发机制。每次递归调用子组件时，必须将**当前层级的行数据、层级深度**作为新的作用域参数，重新绑定到插槽上。
+
+> 难点 4：条件渲染与虚拟滚动的 DOM 回收冲突
+>
+> - **冲突点**：虚拟滚动本身有一套 DOM 节点池的复用逻辑（滚出视口的节点会被拿去渲染新进入视口的数据）。如果你在节点内部用了大量的 `v-if`，当 DOM 被虚拟滚动回收并复用时，`v-if` 的销毁和重建时机可能与虚拟滚动的更新周期产生冲突，导致闪屏或事件绑定失效。
+> - **解法思路**：尽量在虚拟滚动计算“哪些数据应该渲染”的阶段就做过滤（数据级条件渲染），而不是把数据交给组件后，在组件内部用 `v-if` 做拦截。
 
 # **接单项目**
 
