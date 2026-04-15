@@ -8,15 +8,15 @@ toc: true # 是否启用内容索引入门
 
 # 大纲
 
-- [TS 学习指南1.8w字-阿宝哥](https://qingyewei.github.io/typeScript/guide#%E4%B8%80%E3%80%81typescript-%E6%98%AF%E4%BB%80%E4%B9%88)
 - [TypeScript5 极速进阶完全指南](https://www.bilibili.com/video/BV1VkPjzeEoW?spm_id_from=333.788.videopod.sections&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
-- [三小时快速上手TypeScript](https://www.bilibili.com/video/BV1YS411w7Bf/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [TS 学习指南1.8w字-阿宝哥](https://qingyewei.github.io/typeScript/guide#%E4%B8%80%E3%80%81typescript-%E6%98%AF%E4%BB%80%E4%B9%88)
 - TS从入门到深度掌握-video
 - 2022升级版typescript系统入门到项目实战-video
+- TypeScript 全面进阶指南-video
+- TypeScript 类型体操通关秘籍-video
 - [轻松学 TypeScript-video-阿宝哥](https://www.bilibili.com/video/BV1sY4y1H7vk/?spm_id_from=333.1387.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - [20 道 TS 练习题-阿宝哥](https://mp.weixin.qq.com/s?__biz=MzI2MjcxNTQ0Nw==&mid=2247495521&idx=1&sn=dd26b5b4f2cd2c78dcbcc9fd15b27df7&scene=21#wechat_redirect)
-- TypeScript 全面进阶指南
-- TypeScript 类型体操通关秘籍
+- [三小时快速上手TypeScript](https://www.bilibili.com/video/BV1YS411w7Bf/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 - [ts类型体操](https://github.com/type-challenges/type-challenges/blob/main/README.zh-CN.md)
 
 # 参考
