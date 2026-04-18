@@ -1,12 +1,26 @@
 ---
-title: Flutter
+title: 多端_移动端
 date: 2022-05-10 06:33:16
 categories:
-- I_移动端
+- I_多端
 toc: true # 是否启用内容索引
 ---
 
-# 1.Flutter是什么?
+**参考**
+
+- [Flutter学习仓库](https://github.com/chinabrant/flutter_study)
+- [Github Flutter源码仓库](https://github.com/flutter/flutter)
+- [Flutter中文网](https://flutterchina.club/)
+
+# React Native
+
+**参考**
+
+- [react native入门到实战](https://www.bilibili.com/video/BV1Pt4y1n7bD/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+
+# Flutter
+
+## 1.Flutter是什么?
 
 - [Flutter官网](https://flutter.dev/)
 
@@ -18,7 +32,7 @@ Flutter诞生过程：
 - 2018年2月，Flutter发布了第一个Beta版本，同年五月， 在2018年Google I/O 大会上，Flutter 更新到了 beta 3 版本。
 - 2018年6月，Flutter发布了首个预览版本，这意味着 Flutter 进入了正式版（1.0）发布前的最后阶段。
 
-# 2.Flutter优势
+## 2.Flutter优势
 
 - 提高开发效率
   - 同一份代码开发iOS和Android
@@ -30,19 +44,19 @@ Flutter诞生过程：
   - 受益于使用Flutter框架提供的丰富的Material Design和Cupertino（iOS风格）的widget
   - 实现定制、美观、品牌驱动的设计，而不受原生控件的限制
 
-# 3.核心模块
+## 3.核心模块
 
 <img src="/img/image-20220510071129446.png" alt="image-20220510071129446" style="zoom:67%;" />
 
 Flutter包括一个现代的响应式框架、一个2D渲染引擎、现成的widget和开发工具。
 
-## 跨平台自绘引擎
+**跨平台自绘引擎**
 
 Flutter与其他用于构建App的大多数框架不同，因为Flutter既不使用WebView，也不使用平台（Android、iOS等）的原生控件。相反，Flutter使用自己的高性能渲染引擎来绘制Widget。这样不仅可以保证在Android和iOS平台上UI的一致性，而且也可以避免对原生控件依赖而带来的限制及高昂的维护成本。
 
 Flutter使用Skia作为其2D渲染引擎，Skia是Google的一个2D图形处理函数库，包含字型、坐标转换以及点阵图都有高效能且简洁的表现，Skia是跨平台的，并提供了非常友好的API，目前Google Chrome浏览器和Android均采用Skia作为其绘图引擎，值得一提的是，由于Android系统已经内置了Skia，所以Flutter在打包APK（Android应用安装包）时，不需要再将Skia打入APK中，但iOS系统并未内置Skia，所以构建iPA时，也必须将Skia一起打包，这也是为什么Flutter APP的Android应用安装包比iOS应用安装包小的主要原因。
 
-## 高性能
+**高性能**
 
 Flutter采用GPU渲染技术，Flutter编写的应用是可以达到120fps（每秒传输帧数），这也就是说，它完全可以胜任游戏的制作，而我们常说的RN的性能只能达到60fps，这也算是Flutter的一个超高竞争力，官方宣称Flutter甚至会超过原生性能。
 
@@ -51,7 +65,7 @@ Flutter高性能主要靠两点来保证：
 - 首先，Flutter App采用Dart语言开发，Dart在JIT（即时编译）模式下，速度与JavaScript基本持平；而且Dart还支持AOT（提前编译）模式，当以AOT模式运行时，JavaScript便远远追不上了。速度的提升对高帧率下的视图数据计算很有帮助。
 - 其次，Flutter使用自己的渲染引擎来绘制UI，布局数据等由Dart语言直接控制，所以在布局过程中不需要像RN那样通过JavaScriptCore在JavaScript和原生之间进行通信，这在一些滑动和拖动的场景下具有明显优势，因为在滑动和拖动过程中往往都会引起布局发生变化，所以JavaScript需要和原生之间不停的同步布局信息，这和在浏览器中要JavaScript频繁操作DOM所带来的问题是相同的，都会带来比较可观的性能开销。
 
-## 为什么Flutter采用Dart语言开发？
+**为什么Flutter采用Dart语言开发？**
 
 - [为什么 Flutter 选择了 Dart 语言](https://juejin.cn/post/6870286147541696525)
 
@@ -89,7 +103,7 @@ Dart和JavaScript比较：
 
 
 
-# 4.一切皆为widget
+## 4.一切皆为widget
 
 Widget是Flutter应用程序用户界面的基本构建块。每个Widget都是用户界面一部分的不可变声明。 与其他将视图、控制器、布局和其他属性分离的框架不同，Flutter具有一致的统一对象模型：widget。
 
@@ -100,30 +114,22 @@ Widget可以被定义为:
 - 布局的一个方面（如填充）
 - 等等…
 
-# 5.Flutter与React Native、Weex比较
+## 5.Flutter与React Native、Weex比较
 
 React Native、Weex等一直存在一个问题，就是性能跟原生App存在很大的差异
 
-## 原生app
+**原生app**
 
 苹果2008年发布iOS，Google 2009年发布Android，它们的SDK是基于两种不同的编程语言Objective-C 和 Jave.现在又有了Swift和Kotlin。
 
-## WebViews
+**WebViews**
 
 最早的跨平台方案是基于JaveScript 和 WebView的，像PhoneGap、Cordova、Ionic等。
 
-## React Native
+**React Native**
 
 RN不仅桥接系统服务，也将系统UI也桥接到了JaveScript中，这样写出来的UI最终也会渲染成原生的控件。
 
-## Flutter
+**Flutter**
 
 Flutter使用Dart语言开发，Dart可以被编译（AOT）成不同平台的本地代码，让Flutter可以直接和平台通讯而不需要一个中间的桥接过程，从而提高了性能。
-
-# 参考
-
-[Flutter学习仓库](https://github.com/chinabrant/flutter_study)
-
-[Github Flutter源码仓库](https://github.com/flutter/flutter)
-
-[Flutter中文网](https://flutterchina.club/)

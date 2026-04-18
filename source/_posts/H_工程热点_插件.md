@@ -8,6 +8,17 @@ toc: true # 是否启用内容索引
 
 # VSCode
 
+## 插件
+
+- Chinese（Simplified）界面汉化
+- Auto Rename Tag 标签修改自动同步，不用改两次
+- Path Intellisense 自动补全文件路径
+- Code Spell Checker 检查英文拼写错误
+- Prettier Code formatter 自动格式化代码
+- Live Server 本地服务器
+- ESLint 代码规范检查
+- Material Icon Theme文件树爽心悦目
+
 ## 主题
 
 选择主题,执行命令

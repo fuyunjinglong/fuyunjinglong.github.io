@@ -4,8 +4,15 @@ date: 2022-05-19 07:33:16
 categories:
 - D_框架和类库
 toc: true # 是否启用内容索引
-
 ---
+
+# 服务端渲染框架
+
+**参考**
+
+- Vue-Nuxtjs
+- React-Nextjs
+- [服务端渲染SSR与前后端同构技术](https://www.bilibili.com/video/BV12GwGegEcH/?spm_id_from=333.1387.search.video_card.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 
 # 渲染的客户端与服务端
 

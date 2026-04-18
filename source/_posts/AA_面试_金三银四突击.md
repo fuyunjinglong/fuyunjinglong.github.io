@@ -9,12 +9,14 @@ toc: true # 是否启用内容索引
 # interview
 
 - [ ] 2024年前端简历（node.js，ts,react，Flutter、Rn，微前端，低代码，小程序，移动端，ssr）
+- [ ] 面试突击-千峰
+- [ ] TypeScript入门
+- [ ] 多端-小程序-Taro
+- [ ] 多端-桌面端Electron
+- [ ] NodeJS入门
+- [ ] 服务端渲染
 - [ ]  vue2源码:Vue2.js源码全方位深入解析-黄轶-第1章 准备工作(本地2-6)
 - [ ]  vue3源码:催学社-Vue3源码实战课(本地02)
-- [ ]  react入门-React18+TS 通用后台管理系统解决方案落地实战-video-mk
-- [ ]  跨端APP-Flutter从入门到进阶 实战携程网App-video-mk
-- [ ] 小程序-Taro3+Mysql+Express开发企业级出行全栈项目-video
-- [ ] nodejs-Node.js+Express+Koa2 开发Web Server博客-video-慕课网mk
 - [ ] 2025年聚客大模型第四期(推荐)11-大模型微调分布式训练（LLama Factory与Xtuner分布式微调大模型）
 - [ ] [JS数据结构与算法(函数式)-coderwhy-video](https://www.bilibili.com/video/BV1yD4y127vy/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)(01集合)
 - [ ] [Java数据结构与算法-video或03-算法数据结构体系学习班本地](https://www.bilibili.com/video/BV1Ef4y1T7Qi/?p=2&vd_source=bd4c7d99d71adf64d6e88c65370e0247)(p0可忽略)
@@ -148,6 +150,16 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Cookies、SessionStorage和LocalStorage">cookies，sessionStorage 和 localStorage 的区别</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Cookie">Cookie的实现原理</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#应用缓存-manifest即HTML5的离线缓存">应用缓存-manifest即HTML5的离线缓存</a>
+
+# TypeScript入门
+
+# 多端-小程序-Taro
+
+# 多端-桌面端Electron
+
+# NodeJS入门
+
+# 服务端渲染
 
 # 工程热点
 
