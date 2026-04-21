@@ -17,7 +17,7 @@ toc: true # 是否启用内容索引
 - [ ] 服务端渲染
 - [ ]  vue2源码:Vue2.js源码全方位深入解析-黄轶-第1章 准备工作(本地2-6)
 - [ ]  vue3源码:催学社-Vue3源码实战课(本地02)
-- [ ] 2025年聚客大模型第四期(推荐)11-大模型微调分布式训练（LLama Factory与Xtuner分布式微调大模型）
+- [ ] 2025年聚客大模型第四期(推荐)12-大模型压缩训练（知识蒸馏）
 - [ ] [JS数据结构与算法(函数式)-coderwhy-video](https://www.bilibili.com/video/BV1yD4y127vy/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)(01集合)
 - [ ] [Java数据结构与算法-video或03-算法数据结构体系学习班本地](https://www.bilibili.com/video/BV1Ef4y1T7Qi/?p=2&vd_source=bd4c7d99d71adf64d6e88c65370e0247)(p0可忽略)
 

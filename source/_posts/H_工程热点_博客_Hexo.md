@@ -279,7 +279,7 @@ hexo s -p 端口号,也可不加端口
 {% codeblock %}
 {% endcodeblock %}
 2.图片
-![image](/img/2024-03-29_065127.png)
+<img src="/img/2026-01-18_18-09-01.png" style="zoom:50%;" />
 或
 C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\
 /img/

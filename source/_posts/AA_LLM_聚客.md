@@ -1887,7 +1887,7 @@ LMDeploy(采用的是json格式数据)或ollama部署也是类似，要参考对
 
 前提：必须要同型号显卡
 
-方式1：数据并行（Data Parallelism）
+方式1：数据并行即拆分数据（Data Parallelism）
 
 > 原理： 将数据划分为多个批次， 分发到不同设备， 每个设备拥有完整的模型副本。
 >
@@ -1895,7 +1895,7 @@ LMDeploy(采用的是json格式数据)或ollama部署也是类似，要参考对
 >
 > 挑战： 通信开销大， 显存占用高（需存储完整模型参数和优化器状态） 。
 
-方式2：模型并行（Model Parallelism）-推荐
+方式2：模型并行即拆分模型（Model Parallelism）-推荐
 
 > 原理： 将模型切分到不同设备（如按层或张量分片） 。
 >
@@ -1905,7 +1905,7 @@ LMDeploy(采用的是json格式数据)或ollama部署也是类似，要参考对
 >
 > 挑战： 设备间通信频繁， 负载均衡需精细设计。
 
-方式3：流水线并行（Pipeline Parallelism, PP）
+方式3：流水线并行即数据和模型都拆分（Pipeline Parallelism, PP）
 
 > 原理： 将模型按层划分为多个阶段（stage） ， 数据分块后按流水线执行。
 >
@@ -1913,9 +1913,10 @@ LMDeploy(采用的是json格式数据)或ollama部署也是类似，要参考对
 >
 > 挑战： 需平衡阶段划分， 避免资源闲置。
 >
-> 混合并行（3D并行）组合策略： 结合数据并行、 模型并行、 流水线并行， 典型应用如训练千亿级模型。案例： 微软Turing-NLG、 Meta的LLaMA-2
 
-### DeepSpeed框架
+其他方式，如混合并行（3D并行）组合策略： 结合数据并行、 模型并行、 流水线并行， 典型应用如训练千亿级模型。案例： 微软Turing-NLG、 Meta的LLaMA-2
+
+### DeepSpeed训练
 
 定位： 微软开源的分布式训练优化框架， 支持千亿参数模型训练。
 
@@ -1925,7 +1926,7 @@ LMDeploy(采用的是json格式数据)或ollama部署也是类似，要参考对
 
 **核心技术**
 
-ZeRO（Zero Redundancy Optimizer）
+ZeRO优化器（Zero Redundancy Optimizer）
 
 > 原理： 通过分片优化器状态、 梯度、 参数， 消除数据并行中的显存冗余。优势： 显存占用随设备数线性下降， 支持训练更大模型。
 >
@@ -1965,7 +1966,168 @@ ZeRO（Zero Redundancy Optimizer）
 
 > 训练百亿/千亿参数模型（如GPT-3、 Turing-NLG） 。资源受限环境： 单机多卡训练时通过Offloading扩展模型规模。快速实验： 通过ZeRO-2加速中等规模模型训练。
 
-### XTuner微调大模型
+### XTuner微调
 
-### LLamaFactory与Xtuner多卡微调大模型
+[xtuner中文文档](https://xtuner.readthedocs.io/zh-cn/latest/index.html)
+
+面向“超大规模 MoE 模型”的新一代 LLM 训练引擎（V1）。强调在大规模稀疏 MoE、长序列、分布式并行方面的深度优化。
+
+**创建环境**
+
+```
+conda create --name xtuner-env python=3.10 -y
+conda activate xtuner-env
+```
+
+拉取 XTuner 
+
+```
+git clone https://github.com/InternLM/xtuner.git// 不建议使用pip安装，因为下载下来没有源码。后续我们需要源码配置。
+```
+
+安装依赖  
+
+```
+cd xtuner
+pip install -e '.[all]'
+```
+
+**下载模型**
+
+```
+from modelscope import snapshot_download
+model_dir = snapshot_download('Shanghai_AI_Laboratory/internlm2-chat-
+1_8b',cache_dir='/root/llm/internlm2-1.8b-chat')
+```
+
+**微调配置**
+
+<img src="/img/2026-04-20_19-57-38.png" style="zoom:50%;" />
+
+在下载好的模型中，复制xxxqlora_alpaca_e3.py配置文件到XTuner根目录下，修改这个配置文件
+
+```py
+### PART 1中
+#预训练模型存放的位置
+pretrained_model_name_or_path = '/root/llm/internlm2-1.8b-chat
+#微调数据存放的位置
+data_files = '/root/public/data/target_data.json'#基座模型路径(ruozhiba的数据简单转换所需要的格式数据)
+# 训练中最大的文本长度
+max_length = 512
+# 每一批训练样本的大小
+batch_size = 2
+#最大训练轮数
+max_epochs = 3
+#验证数据
+evaluation_inputs = [
+'只剩一个心脏了还能活吗？', '爸爸再婚，我是不是就有了个新娘？',
+'樟脑丸是我吃过最难吃的硬糖有奇怪的味道怎么还有人买','马上要上游泳课了，昨天洗的泳裤还没
+干，怎么办',
+'我只出生了一次，为什么每年都要庆生'
+]
+
+### PART 3中
+dataset=dict(type=load_dataset, path="json",data_files=data_files)
+# 因为我的数据集格式不在他的范围内，所以要禁用
+dataset_map_fn=None
+```
+
+**微调训练**
+
+具体命令：
+
+```
+xtuner train internlm2_chat_1_8b_qlora_alpaca_e3.py
+```
+
+**模型转换**
+
+模型训练后会自动保存成 PTH 模型，如iter_2000.pth   (PyTorch格式)。如果是使用DeepSpeed，则将会是文件夹。需要利用 xtuner convert pth_to_hf 将其转换为 HuggingFace 模型，以便于后续使用。  
+
+具体命令：
+
+```
+xtuner convert pth_to_hf ${FINETUNE_CFG} ${PTH_PATH} ${SAVE_PATH}
+# FINETUNE_CFG是配置文件路径，PTH_PATH是PTH 模型路径，SAVE_PATH是要转换生成的模型路径
+# 例如：xtuner convert pth_to_hf internlm2_chat_7b_qlora_custom_sft_e1_copy.py
+./iter_2000.pth ./iter_2000_
+```
+
+**模型合并**
+
+具体命令：
+
+```
+# LLM是原始模型路径，LLM_ADAPTER是上面生成的模型路径，SAVE_PATH是合并后的模型路径
+xtuner convert merge ${LLM} ${LLM_ADAPTER} ${SAVE_PATH}
+```
+
+### LLamaFactory与XTuner多卡微调大模型
+
+- LLamaFactory：图形化操作，是客观评价，每个权重文件都会保存。
+- XTuner：指令化操作，是主观评价，只保存最后几个权重文件，更实用。
+
+| 维度          | LLaMA Factory                                                | XTuner（InternLM）                                           |
+| ------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 主要定位      | 多模型、多任务“微调工作台”：易用、多模态、全流程             | 超大规模 MoE/长序列“训练后端”：工业级并行与效率优化          |
+| 模型覆盖      | 主流 100+ 模型：LLaMA/Qwen/Yi/Gemma/Baichuan/ChatGLM/Mistral/Mixtral 等readthedocs.io | 以 InternLM 系列为主，同时面向 MoE 通用能力（官方示例多为 InternLM 家族）github.com |
+| 训练/微调任务 | PT、SFT、RLHF、DPO、KTO、ORPO、RM、多模态指令微调等readthedocs.io | PT、SFT、RLHF/PPO/DPO 等大模型训练阶段，强调 MoE 长序列readthedocs.io+1 |
+| 并行/分布式   | DDP、DeepSpeed、FSDP/FSDP2、Ray 等常见方案readthedocs.io     | 针对大规模 MoE 的并行设计（“Dropless Training”）、DeepSpeed Ulysses 序列并行、FSDP 等github.com |
+| 量化/低精度   | QLoRA（多后端）、多种 PTQ/QAT、bitsandbytes 等readthedocs.io | 以 BF16/FP8 等训练为主，强调整体并行与通信效率，对 MoE 训练更聚焦hiascend.com |
+| 加速/算子     | FlashAttention-2、Unsloth、Liger Kernel 等readthedocs.io     | MoE/序列维度的算子与并行调度优化，针对 MoE 负载均衡、长序列内存优化github.com+1 |
+| 硬件支持      | GPU；提供 NPU（Ascend）安装/训练/推理文档与 Docker 镜像readthedocs.io | GPU；与华为昇腾深度合作，有官方昇腾新闻与 A3 超节点性能数据hiascend.com |
+| 易用性        | 零代码 WebUI、CLI、丰富示例与教程、中文文档完善github.com+1  | 配置式/脚本式，面向大规模训练，文档偏“后端/系统”视角readthedocs.io |
+| 适用规模      | 7B～72B 为主；LoRA/QLoRA 下可在单卡或多卡完成；也支持 MoE 模型微调（但非其最核心优势）readthedocs.io | 从几十 B 到 200B/600B 甚至 T 级 MoE；针对超大规模 MoE 长序列训练做了深度优化github.com |
+
+## 大模型压缩
+
+**定义**
+
+通过减少或减小模型参数，在不显著损失精度的前提下，把“大、慢、耗显存”的模型变成“小、快、省资源”的模型。在一些场景和设备上限制了相应的模型部署， 需要借助模型压缩、 优化加速、 异构计算等方法突破瓶颈。
+
+主流压缩手段大致分为：剪枝、量化、知识蒸馏、低秩分解/结构变换等
+
+> - 剪枝：结构或非结构剪枝，deep compression, channel pruning 和 network slimming等，没有太大商业价值  
+> - 量化：线性或非线性量化， 1/2bits, int8 和 fp16等  
+> - 知识蒸馏：主要是方便快速训练大模型
+
+**剪枝**
+
+定义：删掉“不太重要”的权重/通道/层。具体分为非结构化剪枝和结构化剪枝。
+
+非结构化剪枝：通过连接级、 细粒度的剪枝 ，剪去可能不重要的分支
+
+<img src="/img/2026-04-20_21-21-04.png" style="zoom:30%;" />
+
+结构化剪枝：是filter级或layer级、 粗粒度的剪枝，剪去结构层
+
+<img src="/img/2026-04-20_21-25-21.png" style="zoom:30%;" />
+
+剪枝过程
+
+本质是一个盲剪的过程，没有太大的商业实用价值。
+
+<img src="/img/2026-04-20_21-36-29.png" style="zoom:50%;" />
+
+**量化**
+
+量化就是把高精度的数值按比例“四舍五入”成低比特的离散整数，用微小的精度损失换取巨大的存储和计算效率提升。
+
+常规精度一般使用 FP32，大模型量化采用低精度 FP16（ 半精度浮点）或INT8  。有些模型采用混合精度（ Mixed precision），使用 FP32 和 FP16。比如：核心参数(激活函数)采用32/16位，非核心参数采用16/8位。为了位数统一输入和输出，需要反复的量化和反量化操作。
+
+比如阉割的ollama框架，推理和训练中都涉及量化和反量化，如下图：
+
+<img src="/img/2026-04-21_18-07-52.png" style="zoom:50%;" />
+
+**知识蒸馏**
+
+<img src="/img/2026-04-21_18-24-45.png" style="zoom:50%;" />
+
+一句话：小模型通过两者比较的loss损失和自身的loss损失进行快速训练，得到大模型的能力。其中涉及温度T,开始时比较权重0.9，自身权重0.1。经过训练，依赖比较权重降低，自身权重增加，最后完全依赖自己。
+
+> DeepSeek为什么火？就是因为它蒸馏了openAI的大模型。
+
+<img src="/img/2026-04-21_18-35-35.png" style="zoom:50%;" />
+
+<img src="/img/2026-04-21_18-40-28.png" style="zoom:50%;" />
 
