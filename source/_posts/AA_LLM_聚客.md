@@ -2028,9 +2028,13 @@ evaluation_inputs = [
 
 ### PART 3中
 dataset=dict(type=load_dataset, path="json",data_files=data_files)
-# 因为我的数据集格式不在他的范围内，所以要禁用
+# 因为我的数据集格式不在他的范围内，所以要禁用。如果是使用XTurner支持的开源数据集格式，则指定对应格式即可，如alpaca_map_Fn
 dataset_map_fn=None
 ```
+
+XTurner支持的开源数据集格式，如下图：
+
+<img src="/img/2026-04-22_19-28-46.png" style="zoom:50%;" />
 
 **微调训练**
 
@@ -2130,4 +2134,318 @@ xtuner convert merge ${LLM} ${LLM_ADAPTER} ${SAVE_PATH}
 <img src="/img/2026-04-21_18-35-35.png" style="zoom:50%;" />
 
 <img src="/img/2026-04-21_18-40-28.png" style="zoom:50%;" />
+
+> 知识蒸馏在DeepSeek中的核心意义  
+>
+> - 降低算力与成本：DeepSeek通过蒸馏技术将模型训练成本压缩至OpenAI同类模型的1/20  
+> - 加速推理与边缘部署：蒸馏后的小模型（ 如32B/70B版本） 推理速度提升3倍以上， 延迟从850ms降至150ms， 显存占用从320GB减少至8GB。 这使得模型可在手机运行
+> - 推动行业应用落地：教育领域生成个性化学习内容 ，工业场景本地化部署的蒸馏模型减少对云端的依赖
+> - 技术自主可控：美国GPU芯片禁运， DeepSeek通过蒸馏技术降低对算力的依赖， 结合FP8混合精度训练和DualPipe流水线机制， 在国产芯片（ 如华为昇腾） 上实现高性能推理
+
+蒸馏训练过程的完整代码如下：
+
+```py
+import torch
+from transformers import AutoTokenizer, AutoModelForCausalLM, AdamW
+# 该代码是初始版本，真正的大模型很大，用transformers无法加载，需要用到分布式DeepSeed，但思路一样
+from torch.utils.data import Dataset, DataLoader
+import torch.nn.functional as F
+
+
+# ========== 配置参数 ==========
+class Config:
+    # 模型设置
+    teacher_model_name = "Qwen/Qwen-7B"
+    student_model_name = "Qwen/Qwen-1.8B"
+
+    # 训练参数
+    batch_size = 16 # 批次
+    num_epochs = 3 # 轮次
+    learning_rate = 2e-5 # 初始学习率
+    max_seq_length = 512 # 最大数据长度
+    temperature = 5.0 # 温度值
+    alpha = 0.7  # 蒸馏损失权重
+
+    # 设备设置
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    grad_accum_steps = 4  # 梯度累积步数
+
+
+config = Config()
+
+
+# ========== 数据加载 ==========
+class DistillationDataset(Dataset):
+    def __init__(self, tokenizer, sample_texts):
+        self.tokenizer = tokenizer
+        self.examples = []
+
+        # 示例数据（实际需替换为真实数据集）
+        sample_texts = [
+            "人工智能的核心理念是",
+            "大语言模型蒸馏的关键在于",
+            "深度学习模型的压缩方法包括"
+        ]
+
+        for text in sample_texts:
+            encoding = tokenizer(
+                text,
+                max_length=config.max_seq_length,
+                padding="max_length",
+                truncation=True,# 截断
+                return_tensors="pt"# 返回pt格式
+            )
+            self.examples.append(encoding)
+
+    def __len__(self):
+        return len(self.examples)# 返回样本长度
+
+    def __getitem__(self, idx):
+        return {
+            "input_ids": self.examples[idx]["input_ids"].squeeze(),
+            "attention_mask": self.examples[idx]["attention_mask"].squeeze()
+        }
+
+
+# ========== 模型初始化 ==========
+def load_models():
+    # 加载教师模型（冻结老师模型的参数）
+    teacher = AutoModelForCausalLM.from_pretrained(
+        config.teacher_model_name,
+        device_map="auto",
+        torch_dtype=torch.bfloat16
+    ).eval()
+
+    # 加载学生模型
+    student = AutoModelForCausalLM.from_pretrained(
+        config.student_model_name,
+        device_map="auto",
+        torch_dtype=torch.bfloat16
+    ).train()
+
+    return teacher, student
+
+
+# ========== 蒸馏损失函数 ==========
+class DistillationLoss:
+    @staticmethod
+    def calculate(
+            teacher_logits,  # 教师模型logits [batch, seq_len, vocab]批次 序列 词
+            student_logits,  # 学生模型logits [batch, seq_len, vocab]
+            temperature=config.temperature,# 温度值
+            alpha=config.alpha #损失权重值
+    ):
+        # 软目标蒸馏损失
+        soft_teacher = F.softmax(teacher_logits / temperature, dim=-1)
+        soft_student = F.log_softmax(student_logits / temperature, dim=-1)
+        # 损失差（相对熵）
+        # 拿老师和学生的输出计算loss
+        kl_loss = F.kl_div(
+            soft_student,
+            soft_teacher,
+            reduction="batchmean",
+            log_target=False
+        ) * (temperature ** 2)
+
+        # 学生自训练损失（交叉熵）
+        shift_logits = student_logits[..., :-1, :].contiguous()
+        shift_labels = teacher_logits.argmax(-1)[..., 1:].contiguous()
+        # 拿模型自己的输出和标签的label计算loss
+        ce_loss = F.cross_entropy(
+            shift_logits.view(-1, shift_logits.size(-1)),
+            shift_labels.view(-1)
+        )
+        # 利用损失权重和两个loss,计算最终的loss
+        return alpha * kl_loss + (1 - alpha) * ce_loss
+
+
+# ========== 训练流程 ==========
+def train():
+    # 初始化组件
+    tokenizer = AutoTokenizer.from_pretrained(config.teacher_model_name)
+    teacher, student = load_models()
+
+    # 数据集示例
+    dataset = DistillationDataset(tokenizer)
+    dataloader = DataLoader(dataset, batch_size=config.batch_size)
+
+    # 优化器设置
+    optimizer = AdamW(student.parameters(), lr=config.learning_rate)
+
+    # 混合精度训练
+    scaler = torch.cuda.amp.GradScaler()
+
+    # 训练循环
+    step_count = 0
+    student.to(config.device)
+
+    for epoch in range(config.num_epochs):
+        for batch_idx, batch in enumerate(dataloader):
+            inputs = {k: v.to(config.device) for k, v in batch.items()}
+
+            # 教师模型前向（不计算梯度即冻结老师的训练，只要老师的输出）
+            with torch.no_grad(), torch.cuda.amp.autocast():
+                teacher_outputs = teacher(**inputs)
+
+            # 学生模型前向
+            with torch.cuda.amp.autocast():
+                student_outputs = student(**inputs)
+                loss = DistillationLoss.calculate(
+                    teacher_outputs.logits,
+                    student_outputs.logits
+                )
+
+            # 反向传播（带梯度累积）
+            scaler.scale(loss / config.grad_accum_steps).backward()
+
+            if (batch_idx + 1) % config.grad_accum_steps == 0:
+                # 梯度裁剪
+                torch.nn.utils.clip_grad_norm_(student.parameters(), 1.0)
+
+                # 参数更新
+                scaler.step(optimizer)
+                scaler.update()
+                optimizer.zero_grad()
+                step_count += 1
+
+                # 学习率调整（示例）
+                lr = config.learning_rate * min(step_count ** -0.5, step_count * (300 ** -1.5))
+                for param_group in optimizer.param_groups:
+                    param_group['lr'] = lr
+
+                # 打印训练信息
+                if step_count % 10 == 0:
+                    print(f"Epoch {epoch + 1} | Step {step_count} | Loss: {loss.item():.4f}")
+
+    # 保存蒸馏后的模型
+    student.save_pretrained("./distilled_qwen")
+    # 保存老师的模型，其实是没有变化的
+    tokenizer.save_pretrained("./distilled_qwen")
+
+
+if __name__ == "__main__":
+    train()
+```
+
+## 大模型推理部署
+
+### 分布式推理
+
+分布式推理是指将大模型的计算任务拆分到多个GPU设备上 ，解决显卡不足(gpu不够用)和算力不足(推理速度变慢)的问题。
+
+其核心在于张量并行（ Tensor Parallelism） 和流水线并行（ Pipeline Parallelism），即拆分大模型到每个GPU上，最后再合并模型。
+
+案例场景：
+
+> 1.单卡显存不足： 如QwQ-32B（ 320亿参数） 需在双A6000显卡上部署。
+>
+> 2.高并发请求： 在线服务需同时处理多用户请求， 分布式推理通过连续批处理（ Continuous Batching） 提升效率。如果用户数超过最大人数，就会进入队列排队，之前deepseek崩了就是因为人太多要排队。
+
+**vLLM的分布式推理原理**
+
+vLLM通过PagedAttention和张量并行技术优化显存管理和计算效率， 支持多GPU推理。  
+
+> - PagedAttention分页注意力机制：Transformer架构是有Attention注意力层和FNN前向计算层，FNN是有顺序的即序列化的，容易拆分，Attention层是无序的不好拆分。PagedAttention主要是划分拆分Attention层
+> - 张量并行：通过tensor_parallel_size参数指定GPU数量， 模型自动拆分到多卡  
+
+**LMDeploy的分布式推理原理（推荐）**
+
+LMDeploy是专为高效部署设计的框架， 支持量化技术与分布式推理， 尤其适合低显存环境。  
+
+> - 张量并行： 通过--tp参数指定GPU数量， 支持多卡协同计算。  
+> - KV Cache量化： 支持INT8/INT4量化， 降低显存占用。  
+> - 有状态推理：缓存多轮对话历史
+
+**如何计算一个模型推理需要多少显存？**
+
+> 对于一个7B（70亿）参数的模型，  一般模型都是使用bfloat16即16位浮点数表示，则模型的权重大小是70x10的9次方x2字节=14GB (1字节=8位，模型的配置文件中可以看到"torch_dtype": "bfloat16" )
+
+### 量化部署
+
+**大模型部署特点**
+
+> - 内存开销巨大
+>   - 庞大的参数量。7B模型仅权重就需要14+G内存  
+>   - 采用自回归生成token即缓存历史对话到内存中,需要缓存Attention的kN,带来巨大的内存开销  
+> - 动态shape即请求的序列长度动态
+>   - 请求数不固定
+>   - Token逐个生成，且数量不定  
+> - 相对视觉模型，LLM结构简单
+>   - Transformers结构，大部分是decoder--only即只做解码
+
+ **模型部署**
+
+主要对模型进行优化，主要是模型压缩和硬件加速(加硬件)
+
+**大模型部署挑战**
+
+> - 设备
+>   - 如何应对巨大的存储问题？低存储设备（消费级显卡、手机等)如何部署？
+> - 推理
+>   - 如何加速token的生成速度  
+>   - 如何解决动态shape,让推理可以不间断  
+>   - 如何有效管理和利用内存  
+> - 服务
+>   - 如何提升系统整体吞吐量？  
+>   - 对于个体用户，如何降低响应时间？  
+
+**大模型部署方案**
+
+> - 技术点
+>   - 模型并行  
+>   - transformer计算和访存优化 ，比如PagedAttention的Attention分片优化管理
+>   - 低比特量化  
+>   - Continuous Batch动态管理批次显存
+> - 方案
+>   - 云端：Imdeploy,vllm,deepspeed,tensorrt-lIm(Nvidia 官方御用)
+>   - 移动端：llama.cpp 这是ollama提供的，效果不理想。
+
+**LMDeploy部署大模型**
+
+> - 接口丰富：支持python、gRPC、RESTFul
+> - 轻量化：4位awq的离线量化，8位k/v缓存的在线量化
+> - 推理引擎：turbomind(首推)、pytorch
+> - 服务：api server、gradio
+> - 模型评估：无缝对接自家的opencompass模型评估框架
+> - 推理性能
+>   - 静态推理：固定batch,输入/输出token数量。w4a16vsfp16的性能对比，w4a16的推理性能是fp16的2倍多  
+>   - 动态推理：真实对话，不定长的输入输出，性能显著提升
+
+1.核心功能-量化
+
+<img src="/img/2026-04-22_21-21-17.png" style="zoom:50%;" />
+
+Weight‑Only的量化（只量化权重）
+
+> LLM是典型的访存密集型任务，常见的LLM模型是Decoder Only架构 
+>
+> - 计算密集(compute-bound)  ：推理主要消耗在算力上，通过硬件加速(增加硬件)来加速计算
+> - 访存密集(memory-bound)  ：推理主要消耗在读取数据上，通过提高计算访存比来提升性能 
+>
+> Weight Only量化一举多得 ：不仅降低了访存成本，还节约了显存。
+>
+> Weight Only的量化如何实现：
+>
+> - LMDeploy使用MIT HAN LAB开源的AWQ算法，量化为4bit模型，推理时，先把4bit权重，反量化回FP16(在Kernel内部进行，从Global Memory读取时仍是4bit),依旧使用的是FP16计算  
+> - 相较于社区使用比较多的GPTQ算法，AWQ的推理速度更快，量化的时间更短  
+
+推理引擎TurboMind 
+
+> 持续批处理  
+
+Blocked k/v cach
+
+> 本质是缓存历史对话，多轮对话可取缓存数据快速计算。
+
+2.核心功能-推理服务api server
+
+> 提供Api接口服务
+
+3.服务部署
+
+3.1首先粗略计算需要多少显存：如上面的7B模型需要14GB显存
+
+3.2验证模型文件是否正常工作：lmdeploy chat /root/models/internlm2_5-7b-chat  
+
+
 
