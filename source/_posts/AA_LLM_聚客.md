@@ -2341,13 +2341,6 @@ if __name__ == "__main__":
 >
 > 2.高并发请求： 在线服务需同时处理多用户请求， 分布式推理通过连续批处理（ Continuous Batching） 提升效率。如果用户数超过最大人数，就会进入队列排队，之前deepseek崩了就是因为人太多要排队。
 
-**vLLM的分布式推理原理**
-
-vLLM通过PagedAttention和张量并行技术优化显存管理和计算效率， 支持多GPU推理。  
-
-> - PagedAttention分页注意力机制：Transformer架构是有Attention注意力层和FNN前向计算层，FNN是有顺序的即序列化的，容易拆分，Attention层是无序的不好拆分。PagedAttention主要是划分拆分Attention层
-> - 张量并行：通过tensor_parallel_size参数指定GPU数量， 模型自动拆分到多卡  
-
 **LMDeploy的分布式推理原理（推荐）**
 
 LMDeploy是专为高效部署设计的框架， 支持量化技术与分布式推理， 尤其适合低显存环境。  
@@ -2355,6 +2348,13 @@ LMDeploy是专为高效部署设计的框架， 支持量化技术与分布式�
 > - 张量并行： 通过--tp参数指定GPU数量， 支持多卡协同计算。  
 > - KV Cache量化： 支持INT8/INT4量化， 降低显存占用。  
 > - 有状态推理：缓存多轮对话历史
+
+**vLLM的分布式推理原理**
+
+vLLM通过PagedAttention和张量并行技术优化显存管理和计算效率， 支持多GPU推理。  
+
+> - PagedAttention分页注意力机制：Transformer架构是有Attention注意力层和FNN前向计算层，FNN是有顺序的即序列化的，容易拆分，Attention层是无序的不好拆分。PagedAttention主要是划分拆分Attention层
+> - 张量并行：通过tensor_parallel_size参数指定GPU数量， 模型自动拆分到多卡  
 
 **如何计算一个模型推理需要多少显存？**
 
@@ -2402,11 +2402,13 @@ LMDeploy是专为高效部署设计的框架， 支持量化技术与分布式�
 
 **LMDeploy部署大模型**
 
+LMDeploy比vLLM在显存管理，推理速度上更强。vLLM只是因为出的较早，大家才用的多。
+
 > - 接口丰富：支持python、gRPC、RESTFul
 > - 轻量化：4位awq的离线量化，8位k/v缓存的在线量化
 > - 推理引擎：turbomind(首推)、pytorch
 > - 服务：api server、gradio
-> - 模型评估：无缝对接自家的opencompass模型评估框架
+> - 模型评估：无缝对接自家的opencompass模型评估框架，评估量化前后模型的精度
 > - 推理性能
 >   - 静态推理：固定batch,输入/输出token数量。w4a16vsfp16的性能对比，w4a16的推理性能是fp16的2倍多  
 >   - 动态推理：真实对话，不定长的输入输出，性能显著提升
@@ -2443,9 +2445,165 @@ Blocked k/v cach
 
 3.服务部署
 
-3.1首先粗略计算需要多少显存：如上面的7B模型需要14GB显存
+3.1检查模型文件是否正常工作
 
-3.2验证模型文件是否正常工作：lmdeploy chat /root/models/internlm2_5-7b-chat  
+> - 首先粗略计算需要多少显存：如上面的7B模型需要14GB显存
+> - 验证模型文件是否正常工作：lmdeploy chat  /root/models/internlm2_5-7b-chat  
 
+3.2单卡部署
 
+> lmdeploy serve /root/models/internlm2_5-7b-chat  --model-name qwen // model-name用于指定后续api访问服务名称
+
+3.3多卡部署
+
+> lmdeploy serve /root/models/internlm2_5-7b-chat  --tp 2 --model-name qwen // tp是分布式部署到2张卡
+
+4.量化模型
+
+4.1 awq离线量化-节约显存
+
+> lmdeploy lite auto_awq internlm/internlm2_5-7b-chat --work-dir internlm2_5-7b-chat-4bit // 服务器需要梯子
+
+4.2 W8A8量化
+
+> lmdeploy lite smooth_quant internlm/internlm2_5-7b-chat --work-dir internlm2_5-7b-chat-4bit // 服务器需要梯子
+
+4.3 K/V cache在线量化-精度最高(推荐)
+
+> 优点：
+>
+> - 不需要校准数据集
+> - kv int8量化精度几乎无损
+>
+> lmdeploy server internlm/internlm2_5-7b-chat --quant-policy 8 // 在线量化表现在推理时，8表示int8即8位量化，也有4位量化
+
+**vLLM部署大模型**
+
+1.服务部署
+
+1.1检查模型文件是否正常工作
+
+1.2单卡部署
+
+> vllm serve /home/data/qwen
+
+1.2多卡部署
+
+> vllm serve /home/data/qwen --tensor-parallel-size 4 // 分布式部署到4张卡
+
+## 大模型评估框架OpenCompass
+
+主要干2件事：
+
+- 根据评估类别的得分选择基座模型
+- 拿基座模型微调，再根据自定义数据集评估微调后的模型，出报告
+
+生成式大模型的评估指标，其中准确率、生成质量使用较多。
+
+> - 准确率(Accuracy)：用于选择和分类任务，通过将生成结果与标准答案对比计算。在OpenCompass中通过metric=accuracy配置。
+> - 困惑度(Perplexity,PPL)：衡量模型对候选答案的预测能力
+> - 生成质量(GEN)：过文本生成结果提取答案，需结合后处理脚本解析输出。
+> - ROUGE/LCS：用于文本生成任务的相似度评估
+> - 条件对数概率(CLP)：结合上下文计算答案的条件概率，适用于复杂推理任务
+
+OpenCompass上支持的开源评估数据集类别：
+
+> 内置了超过70个开源数据集，覆盖5大能力维度，其中知识类和语言类较为常用
+>
+> - 知识类：C-Eval（中文考试题）、CMMLU（多语言知识问答）、MMLU（英文多选题）
+> - 推理类：GSM8K（数学推理）、BBH（复杂推理链）
+> - 语言类：CLUE（中文理解）、AFQMC（语义相似度）
+> - 代码类：HumanEval（代码生成）、MBPP（编程间题）
+> - 多模态类：MMBench（图像理解）、SEED-Bench（多模态问答）
+
+评估范式的差异：
+
+> - _gen后缀数据集：生成式评估，需后处理提取答案（如ceval_gen）
+> - _ppl后缀数据集：困惑度评估，直接比对选项概率（如ceval_ppl）
+
+**OpenCompass安装**
+
+创建虚拟环境
+
+```python
+conda create --name opencompass python=3.10 -y
+conda activate opencompass
+```
+
+基于源码安装(方便找到配置文件)
+
+```python
+git clone https://github.com/open-compass/opencompass opencompass
+cd opencompass
+pip install -e .
+```
+
+下载数据集(一定要在opencompass根目录下，执行)
+
+```python
+# 下载数据集到 data/ 处
+wget https://github.com/open-compass/opencompass/releases/download/0.2.2.rc1/OpenCompassData-core-20240207.zip
+unzip OpenCompassData-core-20240207.zip
+```
+
+执行评估命令
+
+1.采用开源数据集
+
+1.1自定义HF模型（HuggingFace模型）-支持一个模型
+
+```python
+python run.py
+  --datasets demo-gsm8k_chat-gen demo_math-chat-gen
+  --hf-type chat
+  --hf-path /root/models/internlm2_5-7b-chat
+  --debug
+# datasets是数据集，支持多个开源数据集
+# hf-type表示模型类型
+# hf-path表示模型路径，只支持一个模型
+# debug开启记录日志
+```
+
+评估结果如下图：
+
+<img src="/img/2026-04-27_20-52-22.png" style="zoom:50%;" />
+
+1.2命令行-支持多个模型
+
+采用读取配置文件方式
+
+```python
+python run.py
+  --models hf_internlm2-chat_1_8b hf_qwen2_1_5b_instruct
+  --datasets demo-gsm8k_chat-gen demo_math-chat-gen
+  --debug
+# models是opencompass默认的支持的模型的配置文件，包括qwen等，一个模型对应一个配置文件。比如/opencompass/config/models/qwen/hf_qwen2_1_5b_instruct.py
+# datasets是数据集，支持多个开源数据集
+# debug开启记录日志
+```
+
+修改配置文件中的模型路径，如下图：
+
+<img src="/img/2026-04-27_20-58-01.png" style="zoom:50%;" />
+
+评估结果如下图：
+
+<img src="/img/2026-04-27_21-18-53.png" style="zoom:50%;" />
+
+2.采用自定义数据集
+
+test.jsonl
+
+```json
+{"question"："752+361+181+933+235+986=","answer"："3448"}
+{"question"："712+165+223+711=","answer"："1811"}
+```
+
+```python
+python run·py
+--hf-path /root/models/internlm2_5-7b-chat
+--custom-dataset-path  xxx/test_qa.jsonl
+# hf-path 指定微调后的模型
+# custom-dataset-path 指定自定义的数据集
+```
 
