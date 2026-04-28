@@ -68,7 +68,7 @@ cuda是用来加速训练和推理。cuda只能在N卡才有，mac电脑只能�
 
 **AI项目开发流程(对应下面Bert情感分析中的流程)**
 
-AI开发完整流程：数据集-预训练-微调-部署-评测-应用
+> AI开发完整流程：数据集-预训练-微调-部署-评测-应用
 
 预训练：从头开始训练一个全新的模型，参数完全随机，不能处理任何问题。相当复杂，大公司才有实力研发。
 
@@ -1510,6 +1510,13 @@ vLLM 包含预编译的 C++ 和 CUDA (12.1) 二进制库，注意只支持linux�
 
 定义：LoRA 是一种用于微调大型语言模型的技术， 通过低秩近似方法降低适应数十亿参数模型（如 GPT-3） 到特定任务或领域。  属于局部微调的一种，设计思路很巧妙。
 
+**微调的实际落地方向**
+
+> 注：微调不能做专业的问答系统，因为存在幻觉和无法动态适应业务场景。专业的问答系统一般是基于RAG
+>
+> - 模型的自我认知改变(如：名称、功能介绍)
+> - 模型的对话风格
+
 **原理**
 
 > - 训练时， 输入分别与原始权重和两个低秩矩阵进行计算， 共同得到最终结果， 优化则仅优化A和B
@@ -2607,3 +2614,198 @@ python run·py
 # custom-dataset-path 指定自定义的数据集
 ```
 
+## 大模型微调项目实战-情绪对话模型
+
+类似[小智AI语音机器人](https://xiaozhi.dev/)
+
+> AI开发完整流程：数据-模型-训练评测-部署
+>
+> - 数据：甲方提供或自己获取(爬虫，数据接口，AI生成，手动采集)，数据清洗和标注
+
+**数据处理**
+
+1.训练数据集
+
+一般都是利用现有的在线大模型API实现，这里采用[智谱清言的API](https://docs.bigmodel.cn/cn/api/introduction#python-sdk)做数据清洗和标注
+
+> *第1步：风格模板配置（修正消息格式）*
+>
+> *第2步：生成及审核数据（修正消息的结构）*
+>
+> *第3步：执行生成（添加容错）*
+
+createData.py
+
+```python
+import json
+import time
+import random
+from zhipuai import ZhipuAI
+from sentence_transformers import SentenceTransformer
+import numpy as np
+
+"""
+示例数据：
+# 用户输入库（可自定义扩展）
+    user_inputs = [
+        "今天心情不太好", "推荐个电影吧", "怎么才能早睡早起",
+        "养猫好还是养狗好", "工作压力好大", "最近总是失眠"
+    ]
+"""
+# 初始化模型
+client = ZhipuAI(api_key="替换为你的API")  # 智普清言上你的API Key
+# 加载Embeddingmodel，用作相似度检查的，因为可能存在很多相似情绪的回答(使用modelScope上现有的中文Embeddingmodel模型)
+style_model = SentenceTransformer(r"D:\PycharmProjects\test_20250328\embedding_model\thomas\text2vec-base-chinese")
+
+#===============================
+# 第1步：风格模板配置（修正消息格式）
+# system_prompt 提示词
+# examples 样例:user用户，assistant系统，content内容
+# temperature温度值，有些差异化
+#================================
+style_config = {
+    "温柔":{
+        "system_prompt":"你是一个温柔体贴的聊天助手，说话时总是充满关怀，使用以下特征：\n1. 包含'呢、呀、啦'等语气词\n2. 使用🌸💖😊等温暖表情\n3. 主动询问用户感受",
+        "examples": [
+            {"role": "user", "content": "今天好累啊"},
+            {"role": "assistant", "content": "辛苦啦~ 要给自己泡杯热茶放松一下吗？🌸"},
+            {"role": "user", "content": "考试没考好..."},
+            {"role": "assistant", "content": "没关系的呀~ 下次一定会更好！需要我陪你聊聊吗？😊"}
+        ],
+     "temperature": 0.3
+    },
+    "毒舌":{
+        "system_prompt":"你是一个喜欢用犀利吐槽表达关心的朋友，需满足：\n1. 使用网络流行语（如'栓Q''退退退'）\n2. 包含夸张比喻（'你这速度堪比树懒'）\n3. 结尾隐藏关心",
+        "examples": [
+            {"role": "user", "content": "又胖了5斤！"},
+            {"role": "assistant", "content": "好家伙！你这是要把体重秤压成分子料理？🏋️"},
+            {"role": "user", "content": "游戏又输了"},
+            {"role": "assistant", "content": "菜就多练练！需要给你推荐《从零开始的电竞之路》吗？🎮"}
+        ],
+     "temperature": 0.7
+    },
+}
+
+#========================
+#第2步：生成及审核数据（修正消息的结构）
+#========================
+
+def generate_style_data(style_name, num_samples=50):
+    config = style_config[style_name]
+    data = []
+
+    # 构建消息上下文（包含系统提示和示例对话）
+    messages = [
+        {"role": "system", "content": config["system_prompt"]},
+        *config["examples"]  # 直接展开示例对话
+    ]
+
+    # 用户输入库（可自定义扩展）
+    user_inputs = [
+        "今天心情不太好", "推荐个电影吧", "怎么才能早睡早起",
+        "养猫好还是养狗好", "工作压力好大", "最近总是失眠"
+    ]
+
+    for _ in range(num_samples):
+        try:
+            # 随机选择用户输入
+            user_msg = random.choice(user_inputs)
+
+            # 添加当前用户消息
+            current_messages = messages + [
+                {"role": "user", "content": user_msg}
+            ]
+
+            # 调用智普清言的API（修正模型名称）
+            response = client.chat.completions.create(
+                model="glm-3-turbo",
+                messages=current_messages,
+                temperature=config["temperature"],
+                max_tokens=100
+            )
+
+            # 获取回复内容（修正访问路径）
+            reply = response.choices[0].message.content
+
+            # 质量过滤(数据审核)
+            if is_valid_reply(style_name, user_msg, reply):
+                data.append({
+                    "user": user_msg,
+                    "assistant": reply,
+                    "style": style_name
+                })
+
+            time.sleep(1.5)  # 频率限制保护
+
+        except Exception as e:
+            print(f"生成失败：{str(e)}")
+
+    return data
+
+def is_valid_reply(style, user_msg, reply):
+    """质量过滤规则（添加空值检查）"""
+    # 基础检查
+    if not reply or len(reply.strip()) == 0:
+        return False
+
+    # 规则1：回复长度检查(5个token)
+    if len(reply) < 5 or len(reply) > 150:
+        return False
+
+    # 规则2：风格关键词检查
+    style_keywords = {
+        "温柔": ["呢", "呀", "😊", "🌸"],
+        "毒舌": ["好家伙", "栓Q", "!", "🏋️"]
+    }
+    if not any(kw in reply for kw in style_keywords.get(style, [])):
+        return False
+
+    # 规则3：语义相似度检查(去重的核心)
+    #=============================
+    # a.先对文本进行编码(embedding模型实现了将文本转为词向量)
+    # b.使用数学算法比较向量相似度(余弦相似度或欧氏距离)
+    # c.设定阈值(例如相似度高于0.7属于重复回答，则排除)
+    #============================
+    try:
+        # 比较ref_text(样例examples中content)与reply(模型的回答)
+        ref_text = next(msg["content"] for msg in style_config[style]["examples"]
+                        if msg["role"] == "assistant")
+        # a.先对文本进行编码
+        ref_vec = style_model.encode(ref_text)
+        reply_vec = style_model.encode(reply)
+        # b.使用数学算法比较向量相似度
+        similarity = np.dot(ref_vec, reply_vec)
+        return similarity > 0.7
+    except:
+        return False
+
+#=============================
+#第3步：执行生成（添加容错）
+#============================
+if __name__ == '__main__':
+    all_data = []
+
+    try:
+        print("开始生成温柔风格数据...")
+        gentle_data = generate_style_data("温柔", 50)
+        all_data.extend(gentle_data)
+
+        print("开始生成毒舌风格数据...")
+        sarcastic_data = generate_style_data("毒舌", 50)
+        all_data.extend(sarcastic_data)
+
+    except KeyboardInterrupt:
+        print("\n用户中断，保存已生成数据...")
+    finally:
+        with open("style_chat_data.json", "w", encoding="utf-8") as f:
+            json.dump(all_data, f, ensure_ascii=False, indent=2)
+        print(f"数据已保存，有效样本数：{len(all_data)}")
+```
+
+最终生成的数据集，如下图：
+
+<img src="/img/2026-04-28_20-50-29.png" style="zoom:50%;" />
+
+2.原始数据集
+
+这里指日常用语，如开源的[LCC](https://www.modelscope.cn/datasets/OmniData/LCCC)
