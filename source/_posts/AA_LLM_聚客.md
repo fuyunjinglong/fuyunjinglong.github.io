@@ -2526,7 +2526,7 @@ OpenCompass上支持的开源评估数据集类别：
 评估范式的差异：
 
 > - _gen后缀数据集：生成式评估，需后处理提取答案（如ceval_gen）
-> - _ppl后缀数据集：困惑度评估，直接比对选项概率（如ceval_ppl）
+> - _ppl后缀数据集：分类(困惑度)评估，直接比对选项概率（如ceval_ppl）
 
 **OpenCompass安装**
 
@@ -2620,13 +2620,16 @@ python run·py
 
 > AI开发完整流程：数据-模型-训练评测-部署
 >
-> - 数据：甲方提供或自己获取(爬虫，数据接口，AI生成，手动采集)，数据清洗和标注
+> - 数据准备：甲方提供或自己获取(爬虫，数据接口，AI生成，手动采集)，数据清洗和标注
+> - 模型选型：首选DeepSeek(617b太大了),其次qwen(选chat或instruct版本，无后缀名的是基础版本，不要选)
+> - 模型训练：一般都是微调训练
+> - 模型部署：LMDeploy或vLLM
 
-**数据处理**
+**数据准备**
 
 1.训练数据集
 
-一般都是利用现有的在线大模型API实现，这里采用[智谱清言的API](https://docs.bigmodel.cn/cn/api/introduction#python-sdk)做数据清洗和标注
+一般都是利用现有的在线大模型API实现，这里采用[智谱清言的API](https://docs.bigmodel.cn/cn/api/introduction#python-sdk)做数据清洗和标注。开源的日常用语数据集，如开源的[LCC](https://www.modelscope.cn/datasets/OmniData/LCCC)
 
 > *第1步：风格模板配置（修正消息格式）*
 >
@@ -2806,6 +2809,137 @@ if __name__ == '__main__':
 
 <img src="/img/2026-04-28_20-50-29.png" style="zoom:50%;" />
 
-2.原始数据集
+**模型选型**
 
-这里指日常用语，如开源的[LCC](https://www.modelscope.cn/datasets/OmniData/LCCC)
+> 首选DeepSeek(617b太大了),其次qwen(选chat或instruct版本，无后缀名的是基础版本，不要选)
+
+根据任务选择对应的评测数据，对预期模型客观评测
+
+> 一般做中文理解的可以参考OpenCompass上的CLUE即中文语言理解测评基准（Chinese Language Understanding Evaluation）
+>
+> - 执行python tools/list_configs.py clue  #输出数据集清单
+> - CLUE_xxx：中长类型文本
+> - FewCLUE_xxx：短文本
+> - _gen：生成式，评测的得分越高越好
+> - _ppl：分类式(困惑度)，评测的得分越低越好
+
+模型的大小选择
+
+> - 任务的复杂度：如math或coder模型比较复杂，起步就是7B
+> - 服务器配置
+
+根据评估结果，选择最终模型
+
+```python
+# 使用OpenCompass平台对多模型评测，选2个qwen的模型对比初筛下，FewCLUE_bustm_gen(短文本分类)，FewCLUE_ocnli_fc_gen(自然语言推理)
+python run.py \
+--models hf_qwen1_5_0_5b_chat hf_qwen1_5_1_8b_chat \
+--datasets FewCLUE_bustm_gen FewCLUE_ocnli_fc_gen \
+--debug
+```
+
+**模型训练**
+
+模型训练框架：LLamaFactory与XTuner。因为当前任务的结果更偏向主管结果，因此选XTuner
+
+1.数据集转换
+
+> 使用ai工具，提供简单脚本，将上述数据集转为XTuner支持的数据集格式，如下图
+
+<img src="/img/2026-04-29_21-08-04.png" style="zoom:50%;" />
+
+2.配置训练文件
+
+```python
+### PART 1中
+#预训练模型存放的位置
+pretrained_model_name_or_path = 'model_path'#基座模型路径
+#微调数据存放的位置
+data_files = '/root/public/data/target_data.json'
+# 训练中最大的文本长度
+max_length = 512
+# 每一批训练样本的大小
+batch_size = 2
+#最大训练轮数
+max_epochs = 3
+#验证数据(至少5条，尽量覆盖所有场景，如温柔，愤怒等)
+evaluation_inputs = [
+'只剩一个心脏了还能活吗？', '爸爸再婚，我是不是就有了个新娘？',
+'樟脑丸是我吃过最难吃的硬糖有奇怪的味道怎么还有人买','马上要上游泳课了，昨天洗的泳裤还没干，怎么办',
+'我只出生了一次，为什么每年都要庆生'
+] 
+# PART 3中
+dataset=dict(type=load_dataset, path="json",data_files=data_files)
+dataset_map_fn=None
+```
+
+3.根目录启动微调脚本
+
+一定保证上述5条数据得到的表情结果都对，才停止训练。
+
+```python
+#单机单卡
+xtuner train internlm2_chat_1_8b_qlora_alpaca_e3.py
+#单机多卡
+NPROC_PER_NODE=${GPU_NUM} xtuner train internlm2_chat_7b_qlora_oasst1_e3 --
+deepspeed deepspeed_zero2
+```
+
+4.模型转换
+
+模型训练后会自动保存成 PTH 模型（例如 iter_2000.pth ，如果使用了 DeepSpeed，则将会是一个文件夹），我们需要利用 xtuner convert pth_to_hf 将其转换为 HuggingFace 模型，以便于后续使用。具体命令为：  
+
+```python
+xtuner convert pth_to_hf ${FINETUNE_CFG} ${PTH_PATH} ${SAVE_PATH}
+# 例如：xtuner convert pth_to_hf internlm2_chat_7b_qlora_custom_sft_e1_copy.py
+./iter_2000.pth ./iter_2000_
+```
+
+5.模型合并
+
+如果使用了 LoRA / QLoRA 微调，则模型转换后将得到 adapter 参数，而并不包含原 LLM 参数。如果您期望获得合并后的模型权重（例如用于后续评测），那么可以利用 xtuner convert merge ：  
+
+```python
+xtuner convert merge ${LLM} ${LLM_ADAPTER} ${SAVE_PATH}
+```
+
+**模型部署**
+
+一般是LMDeploy或vLLM，建议LMDeploy性能更好点。注意其对话模板一定要与前面xtuner中对应模型的默认对话模板一致！  
+
+xtuner中对应模型的默认对话模板，如下图：
+
+<img src="/img/2026-04-29_21-24-46.png" style="zoom:50%;" />
+
+使用ai工具，提供简单脚本，将xtuner的对话模板转为LMDeploy支持的对话模板（本质就是映射）。LMDeploy的对话模板，如下图：
+
+```python
+{
+"model_name": "your awesome chat template name",
+"system": "<|im_start|>system\n",
+"meta_instruction": "You are a robot developed by LMDeploy.",
+"eosys": "<|im_end|>\n",
+"user": "<|im_start|>user\n",
+"eoh": "<|im_end|>\n",
+"assistant": "<|im_start|>assistant\n",
+"eoa": "<|im_end|>",
+"separator": "\n",
+"capability": "chat",
+"stop_words": ["<|im_end|>"]
+}
+```
+
+本地新建一个JSON_FILE即json文件，把脚本的执行结果复制到文件中
+
+```json
+{system}{meta_instruction}{eosys}{user}{user_content}{eoh}{assistant}
+{assistant_content}{eoa}{separator}{user}...
+```
+
+启动模型,--chat-template 传入自定义对话模板  
+
+> lmdeploy serve api_server internlm/internlm2_5-7b-chat --chat-template${JSON_FILE}
+
+**前端页面**
+
+微调后的展示页面，一般使用Streamlit。
