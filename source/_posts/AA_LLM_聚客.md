@@ -2911,7 +2911,7 @@ xtuner中对应模型的默认对话模板，如下图：
 
 <img src="/img/2026-04-29_21-24-46.png" style="zoom:50%;" />
 
-使用ai工具，提供简单脚本，将xtuner的对话模板转为LMDeploy支持的对话模板（本质就是映射）。LMDeploy的对话模板，如下图：
+LMDeploy的对话模板，如下图：
 
 ```python
 {
@@ -2929,17 +2929,324 @@ xtuner中对应模型的默认对话模板，如下图：
 }
 ```
 
-本地新建一个JSON_FILE即json文件，把脚本的执行结果复制到文件中
+使用ai工具，提供简单脚本，将xtuner的对话模板转为LMDeploy支持的对话模板（本质就是映射），结果写入到json文件中。
 
 ```json
-{system}{meta_instruction}{eosys}{user}{user_content}{eoh}{assistant}
-{assistant_content}{eoa}{separator}{user}...
+输入ai，帮我写一个脚本，将xtuner对话模板的数据结构转化位LMDeploy对话模型的数据结构，并将结果写入到json文件中，得到chat_template.json结果如下
+{
+  "meta_instruction": "You are a helpful assistant.",
+  "capability": "chat",
+  "eosys": "<|im_end|>\n",
+  "eoh": "<|im_end|>\n",
+  "system": "<|im_start|>system\n{{ system }}<|im_end|>\n",
+  "user": "<|im_start|>user\n{{ input }}<|im_end|>",
+  "assistant": "<|im_start|>assistant\n",
+  "eoa": "<|im_end|>",
+  "separator": "\n",
+  "stop_words": [
+    "<|im_end|>",
+    "<|endoftext|>"
+  ]
+}
 ```
 
-启动模型,--chat-template 传入自定义对话模板  
+启动模型,--chat-template 传入自定义对话模板json文件 
 
 > lmdeploy serve api_server internlm/internlm2_5-7b-chat --chat-template${JSON_FILE}
 
 **前端页面**
 
 微调后的展示页面，一般使用Streamlit。
+
+安装Streamlit
+
+> pip install Streamlit
+
+启动脚本chat_app.py
+
+```python
+import streamlit as st
+from openai import OpenAI
+
+# 初始化客户端
+client = OpenAI(base_url="http://localhost:23333/v1/", api_key="suibianxie")
+
+# 设置页面标题
+st.title("项目一效果演示")
+
+# 初始化session状态（仅用于显示历史）
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# 显示历史消息
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+# 获取用户输入
+if prompt := st.chat_input("请输入您的问题，或输入exit退出"):
+    # 处理退出命令
+    if prompt.lower() == "exit":
+        st.info("退出对话。")
+        st.stop()
+    
+    # 添加用户消息到显示历史
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    try:
+        # 发起API请求（每次只发送当前消息）
+        response = client.chat.completions.create(
+            messages=[{"role": "user", "content": prompt}],  # 每次只发送当前问题
+            model="/home/cw/llms/Qwen/Qwen1.5-1.8B-Chat-merged" # 访问模型，也可以是modelname
+        )
+        
+        # 获取模型回复
+        model_response = response.choices[0].message.content
+        
+        # 添加AI回复到显示历史
+        st.session_state.messages.append({"role": "assistant", "content": model_response})
+        with st.chat_message("assistant"):
+            st.markdown(model_response)
+
+    except Exception as e:
+        st.error(f"发生错误：{e}")
+```
+
+启动streamlit
+
+> streamlit run chat_app.py
+
+浏览器即可访问localhost:8051,如下图：
+
+<img src="/img/2026-05-06_19-19-31.png" style="zoom:50%;" />
+
+
+
+# 主-RAG检索增强生成
+
+## LlamaIndex
+
+LlamaIndex 是一个用于 LLM 应用程序的数据框架，用于注入，结构化，并访问私有或特定领域数据。一句话：它是大模型和数据之间的访问桥梁。
+
+LlamaIndex 提供了5大核心工具：  
+
+> - Data connectors(数据连接器)：将各种异构数据源（PDF、Word、Notion、飞书、数据库、API等）里的数据，统一拉取并转换成 LlamaIndex 能处理的标准格式
+> - Data indexes(数据索引)：Embedding向量化和索引化关联，把拉取来的文档进行切分、向量化，并构建成便于快速检索的数据结构（如向量索引、关键词索引、知识图谱等）
+> - Engines(引擎)：包括Query查询和Chat聊天，Query是单轮，Chat是多轮
+> - Data agents(数据代理)：一般通过代理访问大模型数据
+> - Application integrations(应用集成)：数据增强功能接入到第三方框架中辅助他们，如ChatGpt,Flask,LangChain等
+
+**LlamaIndex环境搭建**
+
+> #创建虚拟环境
+> conda create -n llamaindex python==3.12 -y
+>
+> #安装依赖
+>
+> pip install llama-index llama-index-llms-huggingface
+
+直接调用大模型-test1.py
+
+```python
+from llama_index.core.llms import ChatMessage
+from llama_index.llms.huggingface import HuggingFaceLLM
+
+#使用HuggingFaceLLM加载本地大模型
+llm = HuggingFaceLLM(model_name="/home/cw/llms/Qwen/Qwen1.5-1.8B-Chat",
+               tokenizer_name="/home/cw/llms/Qwen/Qwen1.5-1.8B-Chat",
+               model_kwargs={"trust_remote_code":True},
+               tokenizer_kwargs={"trust_remote_code":True})
+#调用模型chat引擎得到回复
+rsp = llm.chat(messages=[ChatMessage(content="xtuner是什么？")])
+
+print(rsp)
+```
+
+RAG调用大模型-test2.py
+
+```python
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from llama_index.core import Settings,SimpleDirectoryReader,VectorStoreIndex
+from llama_index.llms.huggingface import HuggingFaceLLM
+
+#初始化一个HuggingFaceEmbedding对象，用于将文本转换为向量表示
+embed_model = HuggingFaceEmbedding(
+    #指定了一个预训练的sentence-transformer模型的路径
+    model_name="/home/cw/llms/embedding_model/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+)
+
+#将创建的嵌入模型赋值给全局设置的embed_model属性，这样在后续的索引构建过程中，就会使用这个模型
+Settings.embed_model = embed_model
+
+#使用HuggingFaceLLM加载本地大模型
+llm = HuggingFaceLLM(model_name="/home/cw/llms/Qwen/Qwen1.5-1.8B-Chat",
+               tokenizer_name="/home/cw/llms/Qwen/Qwen1.5-1.8B-Chat",
+               model_kwargs={"trust_remote_code":True},
+               tokenizer_kwargs={"trust_remote_code":True})
+#设置全局的llm属性，这样在索引查询时会使用这个模型。
+Settings.llm = llm
+
+#从指定目录读取文档，将数据加载到内存
+documents = SimpleDirectoryReader("/home/cw/projects/demo_17/data").load_data()
+# print(documents)
+#创建一个VectorStoreIndex,并使用之前加载的文档来构建向量索引
+#此索引将文档转换为向量，并存储这些向量（内存）以便于快速检索
+index = VectorStoreIndex.from_documents(documents)
+#创建一个查询引擎，这个引擎可以接收查询并返回相关文档的响应。
+query_engine = index.as_query_engine()
+rsp = query_engine.query("xtuner是什么？")
+print(rsp)
+```
+
+
+
+## RAG
+
+包括两个阶段：
+
+> - 检索：构建知识库
+> - 查询：从知识库检索上下文，辅助大模型回答问题
+
+**检索阶段**
+
+> - Data connectors  :异构数据归一化处理，生成Document 文件，包括了文本和元数据，内部有最小单元Node节点
+> - Data indexes：Embedding向量化和索引化关联
+
+**查询阶段**
+
+> - Engines：召回、重排、生成
+
+## RAG进阶
+
+### Embedding Models 嵌入模型原理及选择
+
+本质：是一个Encode模型即Bert模型。作用：文本转成词向量，高维向量表示（如 768 维或 3072 维）  。
+
+**核心作用**
+
+> - 语义编码：将文本、图像等转换为向量，保留上下文信息（如 BERT 的 CLS Token 或均值池化)。
+> - 相似度计算：通过余弦相似度(自带归一化)、欧氏距离(不推荐)等度量向量关联性，支撑检索增强生成（RAG）、推荐系统等应用。
+> - 信息降维：压缩复杂数据为低维稠密向量，提升存储与计算效率
+
+**关键技术原理**
+
+> - 上下文依赖：现代模型（如 BGE-M3）动态调整向量，捕捉多义词在不同语境中的含义。
+> - 训练方法：对比学习（如 Word2Vec 的 Skip-gram/CBOW）、预训练+微调（如 BERT）。  
+
+**主流模型分类与选型指南**
+
+选择Embedding模型的考虑因素：
+
+| 因素       | 说明                             |
+| ---------- | -------------------------------- |
+| 任务性质   | 匹配任务需求(问答、搜索、聚类等) |
+| 领域特性   | 通用vs专业领域(医学、法律等)     |
+| 多语言支持 | 需处理多语言内容时考虑           |
+| 维度       | 权衡信息丰富度与计算成本         |
+| 许可条款   | 开源vs专有服务                   |
+| 最大tokens | 适合的上下文窗口大小             |
+
+> 1. 通用全能型  
+>    - BGE-M3：北京智源研究院开发，支持多语言、混合检索（稠密+稀疏向量），处理 8K 上下文，适合企业级知识库。
+>    - NV-Embed-v2：基于 Mistral-7B，检索精度高（MTEB 得分 62.65），但需较高计算资源。  
+> 2. 垂直领域特化型  
+>    - 中文场景： BGE-large-zh-v1.5 （合同/政策文件）、 M3E-base （社交媒体分析）。  
+>    - 多模态场景： BGE-VL （图文跨模态检索），联合编码 OCR 文本与图像特征。  
+> 3. 轻量化部署型  
+>    - nomic-embed-text：768 维向量，推理速度比 OpenAI 快 3 倍，适合边缘设备。  
+>    - gte-qwen2-1.5b-instruct：1.5B 参数，16GB 显存即可运行，适合初创团队原型验。  
+
+选型决策树：
+
+1. 中文为主 → BGE 系列 > M3E；
+2. 多语言需求 → BGE-M3 > multilingual-e5；
+3. 预算有限 → 开源模型（如 Nomic Embed）
+
+**Embedding模型选型(其实差距都不大)**
+
+```python
+#embedding_model选型，对比两个模型效果
+from sentence_transformers import SentenceTransformer, util
+import json
+import numpy as np
+
+# 加载SQuAD数据（假设已处理成列表格式）
+with open("squad_dev.json") as f:
+    squad_data = json.load(f)["data"]
+    
+# 提取问题和答案对
+qa_pairs = []
+for article in squad_data:
+    for para in article["paragraphs"]:
+        for qa in para["qas"]:
+            if not qa["is_impossible"]:
+                qa_pairs.append({
+                    "question": qa["question"],
+                    "answer": qa["answers"][0]["text"],
+                    "context": para["context"] 
+                })
+
+# 初始化两个本地模型
+model1 = SentenceTransformer('/home/cw/llms/embedding_model/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')  # 模型1
+model2 = SentenceTransformer('/home/cw/llms/embedding_model/sungw111/text2vec-base-chinese-sentence')   # 模型2
+
+# 编码所有上下文（作为向量库）
+contexts = [item["context"] for item in qa_pairs]
+context_embeddings1 = model1.encode(contexts)  # 模型1的向量库
+context_embeddings2 = model2.encode(contexts)  # 模型2的向量库
+
+# 评估函数
+def evaluate(model, query_embeddings, context_embeddings):
+    correct = 0
+    for idx, qa in enumerate(qa_pairs[:100]):  # 测试前100条
+        # 查找最相似上下文
+        sim_scores = util.cos_sim(query_embeddings[idx], context_embeddings)
+        best_match_idx = np.argmax(sim_scores)
+        # 检查答案是否在匹配段落中
+        if qa["answer"] in contexts[best_match_idx]:
+            correct += 1
+    return correct / len(qa_pairs[:100])
+
+# 编码所有问题
+query_embeddings1 = model1.encode([qa["question"] for qa in qa_pairs[:100]])
+query_embeddings2 = model2.encode([qa["question"] for qa in qa_pairs[:100]])
+
+# 执行评估
+acc1 = evaluate(model1, query_embeddings1, context_embeddings1)
+acc2 = evaluate(model2, query_embeddings2, context_embeddings2)
+
+print(f"模型1准确率: {acc1:.2%}")
+print(f"模型2准确率: {acc2:.2%}")
+```
+
+**使用 HuggingFace 加载 BGE模型(Embedding模型)进行文本嵌入**
+
+```python
+# 安装依赖：pip install llama-index transformers torch numpy
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+import numpy as np
+# 加载 BGE 中文嵌入模型
+model_name = "/home/cw/llms/embedding_model/sentence-transformers/paraphrasemultilingual-MiniLM-L12-v2"
+embed_model = HuggingFaceEmbedding(
+model_name=model_name,
+device="cuda", # 使用 GPU，如果没有 GPU 改为 "cpu"
+normalize=True, # 归一化向量，方便计算余弦相似度
+) #
+嵌入文档
+documents = ["忘记密码如何处理？", "用户账号被锁定"]
+doc_embeddings = [embed_model.get_text_embedding(doc) for doc in documents]
+# 嵌入查询并计算相似度
+query = "密码重置流程"
+query_embedding = embed_model.get_text_embedding(query)
+# 计算余弦相似度（因为 normalize=True，点积就是余弦相似度）
+similarity = np.dot(query_embedding, doc_embeddings[0])
+print(f"相似度：{similarity:.4f}") # 输出示例：0.8512
+```
+
+
+
+### Chroma向量数据库
+
+### LlamaIndex文档分块
