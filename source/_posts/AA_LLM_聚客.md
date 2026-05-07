@@ -3228,6 +3228,8 @@ print(f"模型2准确率: {acc2:.2%}")
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 import numpy as np
 # 加载 BGE 中文嵌入模型
+# 模型1："/home/cw/llms/embedding_model/sentence-transformers/paraphrasemultilingual-MiniLM-L12-v2"
+# 模型2："/home/cw/1lms/embedding_model/sungwl11/text2vec-base=chinese-sentence"
 model_name = "/home/cw/llms/embedding_model/sentence-transformers/paraphrasemultilingual-MiniLM-L12-v2"
 embed_model = HuggingFaceEmbedding(
 model_name=model_name,
@@ -3245,8 +3247,342 @@ similarity = np.dot(query_embedding, doc_embeddings[0])
 print(f"相似度：{similarity:.4f}") # 输出示例：0.8512
 ```
 
-
-
 ### Chroma向量数据库
 
-### LlamaIndex文档分块
+定义：是向量数据库 。作用：高效存储和检索高维向量。与传统数据库不同，Chroma 基于向量距离（如余弦相似度、欧氏距离）衡量数据关联性，而非关键词匹配  
+
+**核心优势**
+
+> - 轻量易用：以 Python/JS 包形式嵌入代码，无需独立部署，适合快速原型开发。
+> - 灵活集成：支持自定义嵌入模型（如 OpenAI、HuggingFace），兼容 LangChain 等框架。
+> - 高性能检索：采用 HNSW 算法优化索引，支持百万级向量毫秒级响应。
+> - 多模式存储：内存模式用于开发调试，持久化模式支持生产环境数据落地。
+
+**安装使用**
+
+> pip install chromadb # 完整功能 ，不支持windows
+
+初始化客户端
+
+> - 内存模式（开发环境）  
+>
+>   import chromadb
+>
+>   client = chromadb.Client()
+>
+> - 持久化模式（生产环境）  
+>
+>   client = chromadb.PersistentClient(path="/path/to/save") # 数据保存至本地目录  
+
+```python
+# Embedding模型调用chromadb案例
+import chromadb
+from sentence_transformers import SentenceTransformer
+
+# 因为是SentenceTransformer(Embedding模型)直接调用chromadb，需要额外函数处理下。如果是LlamaIndex，是可以直接调用的。
+class SentenceTransformerEmbeddingFunction:
+    def __init__(self, model_path: str, device: str = "cuda"):
+        self.model = SentenceTransformer(model_path, device=device)
+    
+    def __call__(self, input: list[str]) -> list[list[float]]:
+        if isinstance(input, str):
+            input = [input]
+        return self.model.encode(input, convert_to_numpy=True).tolist()
+
+# 创建/加载集合（含自定义嵌入函数）
+embed_model = SentenceTransformerEmbeddingFunction(
+    model_path="/home/cw/llms/embedding_model/sungw111/text2vec-base-chinese-sentence",
+    device="cuda"  # 无 GPU 改为 "cpu"
+)
+
+# 创建客户端和集合
+client = chromadb.Client()
+# hnsw是它的高效索引算法，指定cosine余弦相似度
+collection = client.create_collection("my_knowledge_base",metadata={"hnsw:space": "cosine"},embedding_function=embed_model)
+
+# 添加文档
+collection.add(
+    documents=["RAG是一种检索增强生成技术", "向量数据库存储文档的嵌入表示","三英战吕布"],# 文档
+    metadatas=[{"source": "tech_doc"}, {"source": "tutorial"}, {"source": "tutorial1"}],# 元数据
+    ids=["doc1", "doc2","doc3"]# 索引
+)
+
+# 1.查询相似文档
+results = collection.query(
+    query_texts=["什么是RAG技术？"],
+    n_results=3 # 输出3个文档的相似度
+)
+
+print(results)
+# 2.更新文档
+collection.update(
+    ids=["doc1"],  # 使用已存在的ID
+    documents=["更新后的RAG技术内容"]
+)
+
+# 查看更新后的内容 - 方法1：使用get()获取特定ID的内容
+updated_docs = collection.get(ids=["doc1"])
+print("更新后的文档内容：", updated_docs["documents"])
+
+# 查看更新后的内容 - 方法2：查询所有文档
+all_docs = collection.get()
+print("集合中所有文档：", all_docs["documents"])
+
+#3. 删除内容
+collection.delete(ids=["doc1"])
+
+# 查看更新后的内容 - 方法2：查询所有文档
+all_docs = collection.get()
+print("集合中所有文档：", all_docs["documents"])
+
+#4.统计数据条数
+print(collection.count())
+```
+
+### LlamaIndex文档切分和重排序
+
+> - 模块一：文档解析(读取文件)
+> - 模块二：文本切分
+> - 模块三：召回率提升
+> - 模块四：检索结果重排序
+
+**模块一：文档解析(读取文件)**
+
+```python
+from llama_index.core import SimpleDirectoryReader
+
+# 案例1：基本解析，使用llama_index内置的工具读取md,txt,word文件等(有局限性，无法保持表格的格式数据)
+reader = SimpleDirectoryReader(
+    input_files=["/home/cw/projects/demo_17/data/README_zh-CN.md"]
+)
+# 读取目录下的所有文件，包括md,txt,word等文件
+# reader = SimpleDirectoryReader(
+#     "/home/cw/projects/demo_20/data"
+# )
+docs = reader.load_data()
+print(f"Loaded {len(docs)} docs")
+print(docs)
+
+# 案例2：高级解析，使用第三方库，优雅的读取表格数据，呈现也是表格
+# import pdfplumber
+
+# with pdfplumber.open("/home/cw/projects/demo_20/data/report_with_table.pdf") as pdf:
+#     # 提取所有文本
+#     text = ""
+#     for page in pdf.pages:
+#         text += page.extract_text()
+#     print(text[:200])  # 打印前200字符
+
+#     # 提取表格（自动检测）
+#     for page in pdf.pages:
+#         tables = page.extract_tables()
+#         for table in tables:
+#             print("\n表格内容：")
+#             for row in table:
+#                 print(row)
+```
+
+**模块二：文本切分** 
+
+分块三要素 ：
+
+| 要素     | 说明                 | 推荐值       |
+| -------- | -------------------- | ------------ |
+| 块大小   | 每段文字的长度       | 200-500字    |
+| 块重叠   | 相邻块重复内容       | 10%-20%      |
+| 切分依据 | 按句子/段落/语义划分 | 语义分割最优 |
+
+分块策略对比表 ：
+
+| 策略类型   | 优点           | 缺点             | 适用场景     |
+| ---------- | -------------- | ---------------- | ------------ |
+| 固定大小   | 实现简单       | 可能切断完整语义 | 技术文档     |
+| 按段落分割 | 保持逻辑完整性 | 段落长度差异大   | 文学小说     |
+| 语义分割   | 确保内容完整性 | 计算资源消耗较大 | 专业领域文档 |
+
+固定分块 vs 语义分块  
+
+```python
+from llama_index.core import SimpleDirectoryReader
+from llama_index.core.node_parser import TokenTextSplitter # 固定分块
+from llama_index.core.node_parser import SentenceSplitter # 语义分块
+
+# 加载所有文档
+documents = SimpleDirectoryReader(input_files=["/home/cw/projects/demo_20/data/ai.txt"]).load_data()
+
+# 1.使用固定分块
+fixed_splitter = TokenTextSplitter(chunk_size=256, chunk_overlap=20)
+fixed_nodes = fixed_splitter.get_nodes_from_documents(documents)
+print("固定分块示例：", [len(n.text) for n in fixed_nodes[:3]])  # 输出：[200, 200, 200]
+print(print("首个节点内容:\n", fixed_nodes[0].text))
+print(print("第二个节点内容:\n", fixed_nodes[1].text))
+
+# 2.使用语义分块(llama_index内置的句子分割器)
+# SentenceSplitter是llama_index内置的语义分割器，效果不如大模型的语义分割器好
+splitter = SentenceSplitter(chunk_size=256)
+nodes = splitter.get_nodes_from_documents(documents)
+
+# 查看结果
+print(f"生成节点数: {len(nodes)}")
+print("首个节点内容:\n", nodes[0].text)
+print("第二个节点内容:\n", nodes[1].text)
+```
+
+采用大模型的语义分割器进行分块
+
+```python
+from llama_index.core import SimpleDirectoryReader
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from llama_index.core.node_parser import SemanticSplitterNodeParser
+import os
+# 采用大模型的语义分割器进行分块案例
+
+# 2. 加载文档
+documents = SimpleDirectoryReader(input_files=["/home/cw/projects/demo_20/data/test.txt"]).load_data()
+
+# # 3. 筛选Markdown文档
+# md_docs = [d for d in documents if d.metadata["file_path"].endswith(".md")]
+
+# 4. 初始化模型和解析器
+embed_model = HuggingFaceEmbedding(
+    #指定了一个预训练的sentence-transformer模型的路径(词向量模型)
+    model_name="/home/cw/llms/embedding_model/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+)
+
+semantic_parser = SemanticSplitterNodeParser(
+    buffer_size=1,
+    breakpoint_percentile_threshold=90,
+    embed_model=embed_model # 传入embedding模型
+)
+
+# 5. 执行语义分割
+semantic_nodes = semantic_parser.get_nodes_from_documents(documents)
+
+# 6. 打印结果
+print(f"语义分割节点数: {len(semantic_nodes)}")
+for i, node in enumerate(semantic_nodes[:2]):  # 只打印前两个节点
+    print(f"\n节点{i+1}:\n{node.text}")
+    print("-"*50)
+```
+
+**模块三：召回率提升**  
+
+提升召回率的三大策略 
+
+> - 查询扩展：给问题加"修饰词"，即关键词检索
+> - 混合检索：结合关键词检索和语义搜索两种方式 ，语义搜索是大模型先提前理解用户问题。 
+> - 向量优化：让AI更懂专业术语  
+
+```python
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from llama_index.core import Settings, VectorStoreIndex
+from llama_index.llms.huggingface import HuggingFaceLLM
+from llama_index.core.schema import TextNode
+import json
+import torch
+
+# 1. 初始化本地模型
+def setup_local_models():
+    # 设置本地embedding模型
+    embed_model = HuggingFaceEmbedding(
+        model_name="/home/cw/llms/embedding_model/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+        device="cuda" if torch.cuda.is_available() else "cpu"
+    )
+    
+    # 设置本地LLM模型
+    llm = HuggingFaceLLM(
+        model_name="/home/cw/llms/Qwen/Qwen1.5-1.8B-Chat",
+        tokenizer_name="/home/cw/llms/Qwen/Qwen1.5-1.8B-Chat",
+        model_kwargs={"trust_remote_code": True},
+        tokenizer_kwargs={"trust_remote_code": True},
+        device_map="auto",
+        generate_kwargs={"temperature": 0.3, "do_sample": True}  # 修改为do_sample=True避免警告
+    )
+    
+    # 全局设置
+    Settings.embed_model = embed_model
+    Settings.llm = llm
+    Settings.chunk_size = 512
+
+# 2. 加载数据并处理格式
+def load_data(file_path):
+    with open(file_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    
+    nodes = []
+    for item in data:
+        if isinstance(item, dict):
+            # 处理DPR格式数据
+            if 'query' in item and 'positive_passages' in item:
+                text = f"查询: {item['query']}\n相关文档: {item['positive_passages'][0]['text']}"
+            # 处理QA对格式
+            elif 'question' in item and 'answer' in item:
+                text = f"问题: {item['question']}\n答案: {item['answer']}"
+            else:
+                continue
+        elif isinstance(item, str):
+            text = item
+        else:
+            continue
+            
+        node = TextNode(text=text)
+        nodes.append(node)
+    
+    return nodes
+
+# 3. 初始化本地模型
+setup_local_models()
+
+# 4. 加载数据
+data_path = "/home/cw/projects/demo_19/data/qa_pairs.json"
+nodes = load_data(data_path)
+
+# 5. 示例查询
+query = "如何预防机器学习模型过拟合？"
+
+# 案例1：关键词检索（不使用bm25模式）
+from llama_index.core import KeywordTableIndex
+keyword_index = KeywordTableIndex(nodes)
+keyword_retriever = keyword_index.as_retriever(similarity_top_k=3)  # 使用默认模式
+print("关键词检索结果：", [node.text[:50] + "..." for node in keyword_retriever.retrieve(query)])
+
+# 案例2：向量检索（使用本地embedding模型）
+vector_index = VectorStoreIndex(nodes)
+vector_retriever = vector_index.as_retriever(similarity_top_k=3)
+print("向量检索结果：", [node.text[:50] + "..." for node in vector_retriever.retrieve(query)])
+
+# 查询引擎（使用本地LLM生成回答）
+# keyword_index或vector_index
+query_engine = vector_index.as_query_engine()
+response = query_engine.query(query)
+print("LLM生成回答：", response)
+```
+
+**模块四：检索结果重排序**
+
+常见排序模型对比：  
+
+| 模型名称                 | 速度 | 精度 | 硬件要求 | 适用场景       |
+| ------------------------ | ---- | ---- | -------- | -------------- |
+| BM25                     | 快   | 中   | 低       | 关键词匹配     |
+| Cross-Encoder 交叉编码器 | 慢   | 高   | 高       | 小规模精准排序 |
+| ColBERT                  | 中   | 高   | 中       | 平衡速度与精度 |
+
+无排序 vs Cohere Reranker
+
+```python
+# 初始检索结果（无排序）：
+results = [
+"模型正则化方法简述", # 相关度0.7
+"硬件加速技术进展", # 相关度0.65
+"过拟合解决方案详解", # 相关度0.92 ← 正确答案
+"数据集清洗方法"
+] 
+
+# 按相似度重排序
+from llama_index.postprocessor.cohere_rerank import CohereRerank
+reranker = CohereRerank(api_key="YOUR_KEY", top_n=2)
+reranked_results = reranker.postprocess_nodes(results, query_str=query)
+print("重排序后结果：", [res.text for res in reranked_results])
+```
+
