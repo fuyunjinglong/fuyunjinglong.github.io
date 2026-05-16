@@ -3586,3 +3586,359 @@ reranked_results = reranker.postprocess_nodes(results, query_str=query)
 print("重排序后结果：", [res.text for res in reranked_results])
 ```
 
+## Dify实现RAG
+
+可以使用大模型，也可以使用RAG。
+
+定义：**Dify 是一个开源的、面向大模型应用（LLM App）的一站式开发与运行平台**
+
+一句话：**Dify = LLM 应用开发平台 + 可视化工作流/Agent/RAG 编排 + 一套 BaaS + LLMOps（含监控、部署、多模型管理）**
+
+**本地部署Dify**
+
+环境准备
+
+> Ubuntu22.04
+>
+> Docker version 26.1.3
+>
+> docker-compose version 1.29.2
+
+拉取Dify源码
+
+> git clone --branch 0.15.3 --depth 1 https://github.com/langgenius/dify.git
+> cd dify/docker # 关键目录
+> cp .env.example .env # 复制环境变量模板
+> sudo docker-compose up -d # 后台启动docker，会自动拉取镜像
+
+如果拉取失败，则添加docker国内镜像
+
+sudo vim /etc/docker/daemon.json  
+
+```json
+{ "
+registry-mirrors": [
+"https://docker.1panel.live",
+"https://docker.nju.edu.cn",
+"https://docker.m.daocloud.io",
+"https://dockerproxy.com",
+"https://hub-mirror.c.163.com",
+"https://docker.mirrors.ustc.edu.cn",
+"https://registry.docker-cn.com",
+"https://registry.cn-hangzhou.aliyuncs.com"
+] }
+```
+
+浏览然访问：localshost即可，如下图：
+
+<img src="/img/2026-05-16_11-10-20.png" style="zoom:50%;" />
+
+**Dify通过ollama调用大模型配置**
+
+编辑.env新增如下内容  
+
+```
+# 启用自定义模型
+CUSTOM_MODEL_ENABLED=true
+# 将 OLLAMA_API_BASE_URL 改为宿主机的物理 IP,ollama部署方式
+OLLAMA_API_BASE_URL=http://192.168.0.114:11434
+# vLLM 的 OpenAI 兼容 API 地址，vllm或lmdeploy部署方式
+CUSTOM_OPENAI_API_BASE_URL=http://192.168.0.114:8000
+```
+
+修改docker-compose.yaml :
+
+> 增加extra_hosts，增加dify-net，增加底部的networks
+
+```yaml
+services:
+# API service
+api:
+image: langgenius/dify-api:0.15.3
+restart: always
+environment:
+# Use the shared environment variables.
+<<: *shared-api-worker-env
+# Startup mode, 'api' starts the API server.
+MODE: api
+SENTRY_DSN: ${API_SENTRY_DSN:-}
+SENTRY_TRACES_SAMPLE_RATE: ${API_SENTRY_TRACES_SAMPLE_RATE:-1.0}
+SENTRY_PROFILES_SAMPLE_RATE: ${API_SENTRY_PROFILES_SAMPLE_RATE:-1.0}
+depends_on:
+- db
+- redis
+volumes:
+# Mount the storage directory to the container, for storing user files.
+- ./volumes/app/storage:/app/api/storage
+networks:
+- ssrf_proxy_network
+- default
+- dify-net
+extra_hosts:
+- "host.docker.internal:192.168.0.114" # 直接映射宿主机 IP
+# worker service
+# The Celery worker for processing the queue.
+worker:
+image: langgenius/dify-api:0.15.3
+restart: always
+environment:
+# Use the shared environment variables.
+<<: *shared-api-worker-env
+# Startup mode, 'worker' starts the Celery worker for processing the
+queue.
+MODE: worker
+SENTRY_DSN: ${API_SENTRY_DSN:-}
+SENTRY_TRACES_SAMPLE_RATE: ${API_SENTRY_TRACES_SAMPLE_RATE:-1.0}
+SENTRY_PROFILES_SAMPLE_RATE: ${API_SENTRY_PROFILES_SAMPLE_RATE:-1.0}
+depends_on:
+- db
+- redis
+volumes:
+# Mount the storage directory to the container, for storing user files.
+- ./volumes/app/storage:/app/api/storage
+networks:
+- ssrf_proxy_network
+- default
+- dify-net
+extra_hosts:
+- "host.docker.internal:192.168.0.114" # 直接映射宿主机 IP
+networks:
+# create a network between sandbox, api and ssrf_proxy, and can not access
+outside.
+ssrf_proxy_network:
+driver: bridge
+internal: true
+milvus:
+driver: bridge
+opensearch-net:
+driver: bridge
+internal: true
+dify-net:
+driver: bridge
+attachable: true
+#重启dify
+sudo docker-compose d
+```
+
+重启dify
+
+sudo docker-compose down 停止服务
+
+sudo docker-compose up -d 启动服务
+
+Dify右上角个人设置，如下图
+
+<img src="/img/2026-05-16_11-31-51.png" style="zoom:50%;" />
+
+> \#验证ollama启动模型是采用0.0.0.0访问，而不是127.0.0.1方式
+>
+> curl http://192.168.0.114:11434/api/chat -H "Content-Type: application/json" -d'{"model": "deepseek-r1:1.5b"}'
+
+> \#验证跨网络访问
+>
+> curl http://192.168.0.114:8000/v1/models
+
+> \#Ubuntu 默认使用 ufw，需确保 11434 端口开放，避免被防火墙关闭：
+>
+> sudo ufw allow 11434 /tcp
+>
+> sudo ufw reload
+
+**创建空白应用**
+
+<img src="/img/2026-05-16_11-39-15.png" style="zoom:50%;" />
+
+右上角选中模型
+
+<img src="/img/2026-05-16_11-40-44.png" style="zoom:50%;" />
+
+右上角可点击发布
+
+<img src="/img/2026-05-16_11-42-30.png" style="zoom:50%;" />
+
+发布好的应用在首页
+
+<img src="/img/2026-05-16_11-43-49.png" style="zoom:50%;" />
+
+**Dify通过vLLM调用大模型配置**
+
+> 由于前面ollama已经用了cuda的一个设备0，我们使用其他设备1
+>
+> // vllm启动大模型
+>
+> CUDA_VISIBLE_DEVICES=1 vllm serve /home/cw/llms/Qwen/Qwen1.5-1.8B-Chat --dtype=half --enforce-eager
+
+一般是有vLLM的，但是我们选择通用的工具openAI-API-compatible
+
+<img src="/img/2026-05-16_11-55-23.png" style="zoom:50%;" />
+
+配置vLLM的模型
+
+<img src="/img/2026-05-16_11-56-58.png" style="zoom:50%;" />
+
+右上角选中模型
+
+**Dify引用Embdding**
+
+这里我们采用ollama的方式引用，chat模型和embedding模型都是通过ollama安装上来的。
+
+<img src="/img/2026-05-16_12-17-52.png" style="zoom:50%;" />
+
+新增Embdding模型
+
+<img src="/img/2026-05-16_12-23-05.png" style="zoom:50%;" />
+
+创建知识库
+
+<img src="/img/2026-05-16_12-24-21.png" style="zoom:50%;" />
+
+设置Embdding模型
+
+<img src="/img/2026-05-16_12-26-02.png" style="zoom:50%;" />
+
+添加知识库
+<img src="/img/2026-05-16_12-27-29.png" style="zoom:50%;" />
+
+## RAGFlow实现RAG
+
+单独的RAG应用，只能使用RAG。
+
+Dify和RAGFlow一般在公司内部使用做RAG检索，如果对外使用还是采用LlamaIndex开发RAG。
+
+**环境要求**
+
+> CPU >= 4 核
+>
+> RAM >= 16 GB 
+>
+> Disk >= 50 GB
+>
+> Docker >= 24.0.0 & Docker Compose >= v2.26.1
+
+**启动服务**
+
+1.确保 vm.max_map_count 不小于 262144  
+
+> // 查看大小
+>
+> sysctl vm.max_map_count  
+>
+> // 设置大小
+>
+> sudo sysctl -w vm.max_map_count=262144  
+
+2.克隆仓库
+
+> git clone https://github.com/infiniflow/ragflow.git  
+>
+> cd ragflow/docker  
+>
+> // 启动服务
+>
+> docker compose -f docker-compose-gpu.yml up -d  
+>
+> // 查看服务是否启动成功
+>
+> docker logs -f ragflow-server  
+
+3.浏览器登陆locolhost即可访问，如下图：
+
+<img src="/img/2026-05-16_16-27-10.png" style="zoom:50%;" />
+
+**RAGFlow通过ollama使用模型**
+
+点击我的-模型提供商-选择ollama
+
+<img src="/img/2026-05-16_16-40-14.png" style="zoom:50%;" />
+
+添加chat模型
+
+<img src="/img/2026-05-16_16-50-37.png" style="zoom:50%;" />
+
+右上角设置默认模型
+
+<img src="/img/2026-05-16_16-53-46.png" style="zoom:50%;" />
+
+RAGFlow与Dify不同的是，它必须添加embedding模型后才能使用
+
+<img src="/img/2026-05-16_16-55-52.png" style="zoom:50%;" />
+
+配置知识库
+
+<img src="/img/2026-05-16_17-13-56.png" style="zoom:50%;" />
+
+上传知识库并解析
+
+<img src="/img/2026-05-16_17-15-33.png" style="zoom:50%;" />
+
+对话中引用知识库
+
+<img src="/img/2026-05-16_17-31-40.png" style="zoom:50%;" />
+
+**可将RAGFlow应用内嵌到其他引用程序中**
+
+<img src="/img/2026-05-16_17-36-37.png" style="zoom:50%;" />
+
+可通过iframe内嵌
+
+<img src="/img/2026-05-16_17-37-12.png" style="zoom:50%;" />
+
+可通过api方式调用
+
+<img src="/img/2026-05-16_17-39-45.png" style="zoom:50%;" />
+
+## 基于RAG的法律条文智能助手
+
+**项目目标**
+
+> - 掌握法律智能问答系统的需求分析与RAG技术选型逻辑
+> - 学会法律条文数据爬取、清洗与结构化处理
+> - 实现RAG与Lora微调结合的模型优化方案
+
+**核心需求**
+
+> - 每月更新最新法律条文
+> - 支持条款精准引用（如“《劳动法》第36条”）
+> - 处理复杂查询（如劳动纠纷中的多条款关联分析）
+
+**技术选型：RAG vs 微调**
+
+RAG在动态更新和可解释性上的优势
+
+| 对比维度     | RAG方案                      | 微调方案                 |
+| ------------ | ---------------------------- | ------------------------ |
+| 数据更新频率 | 支持动态更新知识库           | 需重新标注并训练模型     |
+| 内容准确性   | 直接引用原文，避免生成失真   | 依赖标注质量，易产生偏差 |
+| 知识覆盖范围 | 适合大规模知识体系           | 需海量标注数据           |
+| 可解释性     | 支持条款溯源，符合法律严谨性 | 黑盒模型，解释性差       |
+
+**核心流程**
+
+> 用户提问 → 问题解析(LLM) → RAG检索 → 生成答案(LLM) → 引用溯源  
+
+关键模块
+
+> RAG检索层
+>
+> - 使用微调后的通用大模型（如劳动法领域适配模型）
+> - 知识库构建：结构化法律条文（JSON格式）
+>
+> 数据更新模块
+>
+> - 定时爬取政府官网最新法规
+> - 自动化解析条款（正则匹配 第[一二三四...]条 ）
+
+**数据收集与整理**
+
+```
+# 网页爬取与解析
+def fetch_and_parse(url):
+soup = BeautifulSoup(response.text, 'html.parser')
+content = [para.get_text(strip=True) for para in soup.find_all('p')]
+return '\n'.join(content)
+# 条款提取（正则表达式）
+pattern = re.compile(r'第([一二三四五六七八九十零百]+)条.*?(?=\n第|$)', re.DOTALL)
+for match in pattern.finditer(data_str):
+lawarticles[f"法律名称 第{articlenumber}条"] = articlecontent
+```
+
