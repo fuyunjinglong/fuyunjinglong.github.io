@@ -5733,3 +5733,428 @@ if __name__ == "__main__":
 最终访问效果如下图
 
 <img src="/img/2026-05-18_21-58-02.png" style="zoom:50%;" />
+
+# 主-Agent智能体
+
+**定义**
+
+Agent是一个独立自主感知环境并做出行动的实体。
+
+**LLM 是 Agent 的核心，但不是全部**：Agent = LLM + 规划 + 记忆 + 工具 + 循环。
+
+> - 自主性：Agent能够独立的做出决策和执行任务，无需人类干预。
+> - 感知能力：Agent能够通过传感器或其他手段感知环境信息。
+> - 行动能力：Agent能够对环境施加影响，执行特定的动作。
+> - 目标导向：Agent具有明确的目标，并能够根据目标调整其行为。
+
+LLM与Agent区别
+
+LLM大模型的本质是一个超大的数学模型（数学矩阵）
+大模型通常是值具有大量参数和复杂结构的深度学习模型。这个模型通过再大量数据上进行训
+练，学习了丰富的特征表示和模式。
+
+> - 参数量庞大：大模型一般指参数量上10亿的深度学习模型
+> - 学习能力强：大模型能够从大量数据中学习到复杂的特征和模式
+> - 泛化能力强：大模型再处理未见过的数据时，能够表现出较好的理解以及做出相应的回复。
+
+深度学习与强化学习区别
+
+| 对比维度          | 深度学习                     | 强化学习                         |
+| :---------------- | :--------------------------- | :------------------------------- |
+| **核心问题**      | “这是什么？”                 | “接下来该做什么？”               |
+| **核心范式**      | 感知、模式识别               | 决策、序贯控制                   |
+| **反馈类型**      | 监督信号（标签）/ 无监督信号 | 评估信号（奖励 Reward）          |
+| **反馈时机**      | 即时、明确                   | 延迟、稀疏                       |
+| **数据来源**      | 静态数据集（给定的）         | 动态交互（自己探索出来的）       |
+| **动作影响**      | 不改变数据集                 | 改变环境状态                     |
+| **核心难点**      | 梯度消失、过拟合、泛化       | 信用分配、探索与利用、训练不稳定 |
+| **与 Agent 关系** | 组成 Agent 的“感知/语言模块” | 组成 Agent 的“决策/行动内核”     |
+
+## Dify实现Agent
+
+**创建Agent**
+
+部署启动本地Dify后，创建空白应用，选择Agent,如下图
+
+<img src="/img/2026-05-19_19-13-52.png" style="zoom:50%;" />
+
+添加工具即Agent插件，使其支持联网搜索功能，如下图
+
+<img src="/img/2026-05-19_19-15-46.png" style="zoom:50%;" />
+
+**添加工具流**
+
+创建工具流，如下图
+
+<img src="/img/2026-05-19_19-27-15.png" style="zoom:50%;" />
+
+制作一个OCR图片识别的工具流
+
+<img src="/img/2026-05-19_19-28-36.png" style="zoom:50%;" />
+
+添加工作流
+
+<img src="/img/2026-05-19_19-30-00.png" style="zoom:50%;" />
+
+**添加图片生成工具**
+
+<img src="/img/2026-05-19_19-37-43.png" style="zoom:50%;" />
+
+## LangGraph构建多智能体
+
+LangGraph 是一个**低级编排框架和运行时**，用于构建、管理和部署**长时间运行、有状态的多智能体Agent**。优势：循环性、可控性和持久性。作为一个非常底层的框架，它提供了对应用程序流程和状态的细粒度控制。
+
+LangGraph 平台由多个组件组成，支持 LangGraph 应用程序的开发、部署、调试和监控：LangGraph 服务器（API）、LangGraph SDK（API 客户端）、LangGraph CLI（构建服务器的命令行工具）、LangGraph Studio（用户界面/调试器）。  
+
+**主要功能**
+
+> - 循环和分支：在您的应用程序中实现循环和条件语句。
+> - 持久性：在图中的每个步骤之后自动保存状态。在任何时候暂停和恢复图执行以支持错误恢复、“人机交互”工作流、时间旅行等等。
+> - “人机交互”：中断图执行以批准或编辑代理计划的下一个动作。
+> - 流支持：在每个节点产生输出时流式传输输出（包括令牌流式传输）。
+> - 与 LangChain 集成：LangGraph 与 LangChain 和 LangSmith 无缝集成（但不需要它们）。
+
+**LangGraph 平台**
+
+LangGraph 平台是一个商业解决方案，用于将代理应用程序部署到生产环境，构建于开源的LangGraph 框架之上。LangGraph 平台解决了这些问题：  
+
+> - 流式支持：LangGraph 服务器提供多种流式模式，优化以满足各种应用需求
+> - 后台运行：在后台异步运行代理
+> - 支持长时间运行的代理：能够处理长时间运行过程的基础设施
+> - 双重文本：处理用户在代理回复之前收到两条消息的情况
+> - 处理突发性：任务队列以确保请求在高负载下也能始终如一地处理，不会丢失
+
+LangGraph的架构流程，如下图
+
+<img src="/img/2026-05-19_19-58-20.png" style="zoom:50%;" />
+
+**Graph(图)**  
+
+LangGraph 的核心是将代理工作流建模为图。你可以使用三个关键组件来定义代理的行为
+
+> 1. 状态：一个共享的数据结构，表示应用程序的当前快照。它可以是任何 Python 类型，但通常是TypedDict 或 Pydantic BaseModel。
+> 2. 节点：编码代理逻辑的 Python 函数。它们接收当前 状态 作为输入，执行一些计算，并返回一个更新的 状态。
+> 3. 边：Python 函数，根据当前 状态 确定要执行的下一个 节点。它们可以是条件分支或固定转换。通过组合 节
+
+StateGraph
+
+StateGraph 类是使用的主要图类。它由用户定义的 状态 对象参数化。  把上面这些东西装在一起的容器，负责：
+
+- 指定状态类型 `state_schema`
+- 注册节点 `add_node`
+- 连边 `add_edge / add_conditional_edges`
+- 设置入口/出口 `set_entry_point / set_finish_point`
+- 最后 `compile()` 成可执行图
+
+Compiling your graph(编译你的图)  
+
+用来检查图的代码是否正常即builder.compile()，只要不报错，说明代码没错。
+
+创建图一个节点核心代码
+
+```python
+#示例：state_graph.py
+# 从langgraph.graph模块导入START和StateGraph
+from langgraph.graph import START, StateGraph
+# 节点可以任意的(agent,函数，工具，大模型等)定义一个节点函数my_node，接收状态和配置，返回新的状态
+def my_node(state, config):
+    return {"x": state["x"] + 1,"y": state["y"] + 2}
+# 创建一个状态图构建器builder，使用字典类型作为状态类型
+builder = StateGraph(dict)
+# 向构建器中添加节点my_node，节点名称将自动设置为'my_node'
+builder.add_node(my_node) # node name will be 'my_node'
+# 添加一条边，从START到'my_node'节点
+builder.add_edge(START, "my_node")
+# 编译状态图，生成可执行的图
+graph = builder.compile()
+# 调用编译后的图，传入初始状态字典类型数据{"x": 1,"y":2}
+print(graph.invoke({"x": 1,"y":2}))
+```
+
+多个节点核心代码
+
+```python
+#示例：node_case.py
+from langchain_core.runnables import RunnableConfig
+from langgraph.graph import StateGraph, START
+from langgraph.graph import END
+# 初始化 StateGraph，状态类型为字典
+graph = StateGraph(dict)
+# 定义节点
+def my_node(state: dict, config: RunnableConfig):
+    print("In node: ", config["configurable"]["user_id"])
+    return {"results": f"Hello, {state['input']}!"}
+def my_other_node(state: dict):
+    return state
+# 将节点添加到图中
+graph.add_node("my_node", my_node)
+graph.add_node("other_node", my_other_node)
+# 连接节点以确保它们是可达的
+graph.add_edge(START, "my_node")
+graph.add_edge("my_node", "other_node")
+graph.add_edge("other_node", END)
+# 编译图
+print(graph.compile())
+```
+
+**State(状态)**  
+
+定义图时，你做的第一件事是定义图的状态 。状态的模式将是图中所有 节点 和 边 的输入模式，可以是 TypedDict字典类型或者Pydantic 函数类型如模型。  
+
+**Nodes(节点)**  
+
+节点可以任意的类型(agent,函数，工具，大模型等)。在 LangGraph 中，节点通常是 Python 函数 。
+
+START 节点 ：开始节点，它代表将用户输入发送到图形的节点  
+
+END 节点  ：结束节点，当您想要指定哪些边在完成操作后没有动作时，会引用此节点。
+
+**Edges(边)**  
+
+边定义了逻辑如何路由以及图形如何决定停止。  
+
+> - 普通边：直接从一个节点到下一个节点。graph.add_edge("node_a", "node_b")  
+> - 条件边：调用一个函数来确定下一个要转到的节点。graph.add_conditional_edges("node_a", routing_function)  
+> - 入口点：用户输入到达时首先调用的节点。graph.add_edge(START, "my_node")  
+> - 条件入口点：调用一个函数来确定用户输入到达时首先调用的节点。graph.add_conditional_edges(START, routing_function)  
+
+一个节点可以有多个输出边。如果一个节点有多个输出边，则所有这些目标节点将在下一个超级步骤中并行执行。  
+
+**利用LangGraph定义多个Agent生成一份报告**
+
+```python
+from typing import Literal, Annotated
+# 采用openAI的工具调用本地大模型
+from langchain_openai import ChatOpenAI
+from langgraph.graph import StateGraph, START, END
+# 用户消息、系统消息、模型消息
+from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
+from langchain_core.pydantic_v1 import BaseModel, Field
+import re
+
+# ================== 强化状态类 ==================
+# 定义状态state,采用Pydantic函数类型
+class AgentState(BaseModel):
+    # 消息类型-上面的3种
+    messages: Annotated[list, Field(default_factory=list)]
+    # 多个节点(agent)
+    next_agent: Literal["researcher", "calculator", "writer", "done"] = "researcher"
+    step_count: int = 0
+    # 是否完成："done"就是完成了即true，其他则是没完成即false
+    is_finalized: bool = False
+
+    @classmethod
+    def from_raw(cls, raw):
+        # 因为模型的回答是任意的，所以需要归一化状态
+        """统一状态转换方法"""
+        if isinstance(raw, cls):
+            return raw
+        if isinstance(raw, dict):
+            # 确保处理旧版状态格式
+            return cls(
+                messages=raw.get('messages', []),
+                next_agent=raw.get('next_agent', 'researcher'),
+                step_count=raw.get('step_count', 0),
+                is_finalized=raw.get('is_finalized', False)
+            )
+        raise ValueError(f"无效状态类型: {type(raw)}")
+    # 打印状态
+    def to_safe_dict(self):
+        """安全转换为字典（用于异常处理）"""
+        return {
+            "messages": [msg.dict() for msg in self.messages],
+            "next_agent": self.next_agent,
+            "step_count": self.step_count,
+            "is_finalized": self.is_finalized
+        }
+
+# ================== 消息转换增强 ==================
+def convert_messages(raw_messages):
+    converted = []
+    for msg in raw_messages:
+        if isinstance(msg, dict):
+            try:
+                role = msg.get("role", "assistant")
+                content = msg.get("content", "")
+                msg_type = {
+                    "user": HumanMessage,
+                    "system": SystemMessage,
+                    "assistant": AIMessage
+                }[role]
+                converted.append(msg_type(content=content))
+            except KeyError:
+                converted.append(AIMessage(content=str(msg)))
+        elif hasattr(msg, 'content'):
+            converted.append(msg)
+        else:
+            converted.append(AIMessage(content=str(msg)))
+    return converted
+
+# ================== 模型配置 ==================
+# 本地用lmdeploy启动模型并暴露api
+model = ChatOpenAI(
+    openai_api_base="http://localhost:23333/v1",
+    model_name="/home/cw/llms/deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+    openai_api_key="EMPTY",
+    max_tokens=300,
+    temperature=0.2
+)
+
+# ================== 核心Agent模板 ==================
+def create_agent(role: str, prompt: str):
+    def agent(raw_state):
+        state = AgentState.from_raw(raw_state)
+        if state.is_finalized:
+            # 判断是否完成，表示执行结束了
+            return state
+
+        try:
+            messages = convert_messages(state.messages)
+            # 边的条件：让大模型自己根据state状态来选择执行下一步的节点
+            messages.append(SystemMessage(
+                content=f"{prompt}\n最后必须用'建议下一步：选项'格式结尾（选项只能是researcher/calculator/writer/done）"
+            ))
+
+            response = model.invoke(messages)
+            print(f"\n[{role}输出] {response.content[:200]}...")  # 限制日志长度
+
+            # 强制Writer添加END标识
+            if role == "writer" and "[END]" not in response.content:
+                response.content += "\n[END]"
+                print(f"[{role}修正] 已添加[END]标识")
+
+            # 解析下一步建议
+            next_agent = "done"
+            if match := re.search(r'建议下一步\s*[:：]\s*(\w+)', response.content):
+                suggestion = match.group(1).lower()
+                # 强制匹配，只能选4个中的1个，否则模型可能无线循环执行下去
+                if suggestion in {"researcher", "calculator", "writer", "done"}:
+                    next_agent = suggestion
+
+            return AgentState(
+                messages=messages + [response],
+                next_agent=next_agent,
+                step_count=state.step_count + 1,
+                is_finalized="[END]" in response.content
+            )
+        except Exception as e:
+            print(f"[{role}错误] {str(e)}")
+            return AgentState(
+                messages=state.messages,
+                next_agent="done",
+                step_count=state.step_count + 1,
+                is_finalized=True
+            )
+    return agent
+
+# ================== Supervisor节点强化 ==================
+# 开始节点
+def supervisor(raw_state):
+    state = AgentState.from_raw(raw_state)
+    if state.is_finalized:
+        return state
+
+    try:
+        print(f"\n[Supervisor] 当前步数: {state.step_count}")
+        
+        # 强制流程控制
+        if state.step_count >= 8:
+            print("[强制终止] 达到最大步数限制")
+            return AgentState(
+                messages=state.messages,
+                next_agent="writer",
+                step_count=state.step_count + 1,
+                is_finalized=False
+            )
+
+        messages = convert_messages(state.messages)
+        control_prompt = '''请严格选择下一步：
+1. 需要更多数据 → researcher
+2. 需要计算 → calculator 
+3. 生成报告 → writer
+4. 完成 → done'''
+        
+        response = model.invoke(messages + [SystemMessage(content=control_prompt)])
+        decision = re.search(r'\b(researcher|calculator|writer|done)\b', response.content.lower())
+        
+        new_agent = decision.group(1).lower() if decision else "done"
+        # 强制done前必须生成报告
+        if new_agent == "done" and not any("[END]" in msg.content for msg in messages):
+            new_agent = "writer"
+
+        return AgentState(
+            messages=state.messages,
+            next_agent=new_agent,
+            step_count=state.step_count + 1,
+            is_finalized=False
+        )
+    except Exception as e:
+        print(f"[Supervisor错误] {str(e)}")
+        return AgentState(
+            messages=state.messages,
+            next_agent="writer",
+            step_count=state.step_count + 1,
+            is_finalized=False
+        )
+
+# ================== 工作流配置 ==================
+builder = StateGraph(AgentState)
+# 开始节点
+builder.add_node("supervisor", supervisor)
+# 创建节点-agent收集资料
+builder.add_node("researcher", create_agent("研究员", "收集经济数据并分析趋势"))
+# 创建节点-agent计算资料
+builder.add_node("calculator", create_agent("计算器", "执行GDP增长率计算"))
+# 创建节点-agent写报告
+builder.add_node("writer", create_agent("作家", "生成包含[END]标识的最终报告"))
+
+# 添加条件边(最有价值的地方：大模型自我判断工作流执行的节点顺序)
+builder.add_conditional_edges(
+    "supervisor",
+    lambda state: state.next_agent,# 大模型自己判断执行的下一个节点
+    {
+        "researcher": "researcher",
+        "calculator": "calculator", 
+        "writer": "writer",
+        "done": END
+    }
+)
+# 如果是自定义的agent,则添加到边里面，补齐工作流
+for agent in ["researcher", "calculator", "writer"]:
+    builder.add_edge(agent, "supervisor")
+
+builder.set_entry_point("supervisor")
+# 编译得到完整工作流
+workflow = builder.compile()
+
+# ================== 执行入口强化 ==================
+if __name__ == "__main__":
+    try:
+        # 初始化状态时确保类型正确
+        initial_state = AgentState(messages=[HumanMessage(content="成都市GDP增长率分析")])
+        
+        for step in workflow.stream(initial_state):
+            node_name, raw_state = step.popitem()
+            current_state = AgentState.from_raw(raw_state)
+            
+            print(f"\n[系统状态] 当前节点: {node_name}")
+            print(f"下一步: {current_state.next_agent}")
+            print(f"步数: {current_state.step_count}")
+            print(f"完成状态: {current_state.is_finalized}")
+
+            # 检查终止条件
+            if current_state.is_finalized or node_name == "__end__":
+                print("\n====== 流程完成 =====")
+                if any("[END]" in msg.content for msg in current_state.messages):
+                    print("最终报告内容:")
+                    print(next(msg.content for msg in reversed(current_state.messages) if "[END]" in msg.content))
+                else:
+                    print("警告：未检测到完整报告")
+                break
+                
+    except Exception as e:
+        print(f"\n!!! 流程异常终止: {str(e)}")
+        if 'current_state' in locals():
+            print("最后状态:", current_state.to_safe_dict())
+```
+
