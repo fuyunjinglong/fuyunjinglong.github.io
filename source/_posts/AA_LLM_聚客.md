@@ -6158,3 +6158,85 @@ if __name__ == "__main__":
             print("最后状态:", current_state.to_safe_dict())
 ```
 
+# 主-DeepSeek
+
+## 思维链
+
+定义：Chain-of-Thought（CoT）是一种提示技术，让大语言模型在输出最终答案前，先生成一系列**中间推理步骤**，从而提升模型在复杂推理任务上的表现。
+
+DeepSeek-R1首先让模型具有输出思维链的能力，然后再使用人类反馈强化学习（RLHF）和基于规则的推理奖励（Rule Base Reward for Reasoning）对模型进行强化学习的训练。  
+
+DeepSeek-R1训练流程如下图，
+
+<img src="/img/2026-05-20_18-25-26.png" style="zoom:50%;" />
+
+**思维链的应用场景**
+
+> - 教育领域：在智能辅导系统中，思维链可以帮助学生理解复杂问题的解决过程。例如，在数学辅导中，模型可以逐步展示解题步骤，帮助学生掌握解题思路。
+> - 医疗领域：在医疗诊断中，思维链可以帮助医生分析患者的症状和检查结果，逐步推导出可能的诊断结果。例如，模型可以根据患者的症状（如发热、咳嗽）和检查结果（如白细胞计数升高），逐步推导出可能的疾病（如肺炎）。
+> - 金融领域：在风险评估和投资决策中，思维链可以帮助分析师逐步推导出潜在的风险和收益。例如，模型可以根据市场数据（如股票价格、经济指标）逐步推导出投资建议。
+> - 法律领域：在法律咨询中，思维链可以帮助律师分析案件事实和法律条文，逐步推导出法律意见。例如，模型可以根据案件事实（如合同条款、双方行为）和法律条文逐步推导出法律责任。
+
+**应用技术原理**
+
+引导大模型生成思维链，最常用的方式可以分成四大类:
+
+> 1. **零样本提示（Zero-shot CoT）**：只喊一句“一步步想”，不给范例。
+> 2. **少样本提示（Few-shot CoT）**：给几条“问题→推理过程→答案”的范例，让模型照猫画虎。
+> 3. **自一致性 / 多路径采样（Self-Consistency 等）**：让模型多想几条路，再投票或综合。
+> 4. **结构化/高级提示（Auto-CoT、Least-to-Most、Tree-of-Thought 等）**：自动构造推理范例、把大问题拆成小问题、或让模型“多想几步再回头”。
+
+1.零样本提示
+
+```python
+from openai import OpenAI
+# 添加了一个简单的提示词
+client = OpenAI(api_key="9155837a4fd747b689b94a7609de8c15.5t1vPA39I9LR1aFW", base_url="https://open.bigmodel.cn/api/paas/v4")
+def chain_of_thought(question):
+    prompt = f"""
+			Q: {question}
+			A: 让我们一步一步地思考这个问题。
+    	"""
+    response = client.chat.completions.create(
+        model="glm-4",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.7,
+        max_tokens=500
+    )
+
+    return response.choices[0].message.content
+
+# 测试数学问题
+result = chain_of_thought("如果一辆车在2小时内行驶了120公里，那么它的平均速度是多少公里/小时？")
+print(result)
+```
+
+2.少样本提示
+
+```python
+from openai import OpenAI
+client = OpenAI(api_key="9155837a4fd747b689b94a7609de8c15.5t1vPA39I9LR1aFW", base_url="https://open.bigmodel.cn/api/paas/v4")
+# 添加了少量样本的问答案例
+few_shot_prompt = """接收到用户的问题后，按照如下模板进行回复：
+Q: 动物园有 15 只狮子和 20 只老虎。如果将 3 只狮子转移到另一个动物园，还剩下多少只大型猫科动物？
+A: 最初有 15 只狮子 + 20 只老虎 = 35 只大型猫科动物。转移 3 只狮子后，35 - 3 = 32。因此，答案是 32。
+
+Q: 书店有 80 本书。他们在周一卖了 25 本，在周二卖了 30 本。还剩下多少本书？
+A: 让我们一步一步思考。
+"""
+
+def few_shot_cot(question):
+    full_prompt = few_shot_prompt + f"Q: {question}\nA: Let's think step by step."
+
+    response = client.chat.completions.create(
+        model="glm-4",
+        messages=[{"role": "user", "content": full_prompt}],
+        temperature=0.5
+    )
+
+    return response.choices[0].message.content
+
+result = few_shot_cot("动物园有 15 只狮子和 18 只老虎。如果将 3 只狮子转移到另一个动物园，还剩下多少只大型猫科动物？")
+print(result)
+```
+
