@@ -6166,6 +6166,8 @@ if __name__ == "__main__":
 
 DeepSeek-R1首先让模型具有输出思维链的能力，然后再使用人类反馈强化学习（RLHF）和基于规则的推理奖励（Rule Base Reward for Reasoning）对模型进行强化学习的训练。  
 
+注意：如果用lora微调训练思维链模型，模型的思维链功能会丧失，不能用lora做微调训练。
+
 DeepSeek-R1训练流程如下图，
 
 <img src="/img/2026-05-20_18-25-26.png" style="zoom:50%;" />
@@ -6238,5 +6240,77 @@ def few_shot_cot(question):
 
 result = few_shot_cot("动物园有 15 只狮子和 18 只老虎。如果将 3 只狮子转移到另一个动物园，还剩下多少只大型猫科动物？")
 print(result)
+```
+
+## 性能指标对比
+
+| 指标     | Demo示例         | 生产级实现     |
+| -------- | ---------------- | -------------- |
+| 响应速度 | 2-10秒/请求      | <500毫秒/请求  |
+| 并发能力 | 单请求           | 1000+ QPS      |
+| 显存占用 | 完整加载         | 量化+卸载优化  |
+| 错误率   | 依赖模型原始能力 | 有后处理校验层 |
+
+# 主-多模态
+
+## 模态
+
+**模态（modality）**：数据存在的表现形式。比如文本、语音、视频。
+
+**多模态**：至少两种这样的模态组合在一起，被系统一起处理和理解。主要研究模态包括"3V"： 即Verbal(文本)、 Vocal(语音)、 Visual(视觉)。  
+
+按照模态对大模型分类：
+
+> - 普通大模型：专指处理文本的自然语言大模型
+> - 多模态大模型：处理文本及以外的数据的模型
+
+## 多模态典型任务
+
+> 1. 跨模态预训练
+>    - 图像/视频与语言预训练。
+>    - 跨任务预训练
+> 2. Language-Audio文本到语音
+>    - Text-to-Speech Synthesis: 给定文本， 生成一段对应的声音。
+>    - Audio Captioning： 给定一段语音， 生成一句话总结并描述主要内容。 (不是语音识别)
+> 3. Vision-Audio视频到语音
+>    - Audio-Visual Speech Recognition(视听语音识别)： 给定某人的视频及语音进行语音识别。
+>    - Video Sound Separation(视频声源分离)： 给定视频和声音信号(包含多个声源)， 进行声源定位与分离。
+>    - Image Generation from Audio: 给定声音， 生成与其相关的图像。
+>    - Speech-conditioned Face generation： 给定一段话， 生成说话人的视频。
+>    - Audio-Driven 3D Facial Animation： 给定一段话与3D人脸模版， 生成说话的人脸3D动画。
+> 4. Vision-Language视频到文本
+>    - Image/Video-Text Retrieval (图(视频)文检索): 图像/视频<-->文本的相互检索。
+>    - Image/Video Captioning(图像/视频描述)： 给定一个图像/视频， 生成文本描述其主要内容。
+>    - Visual Question Answering(视觉问答)： 给定一个图像/视频与一个问题， 预测答案。
+>    - Image/Video Generation from Text： 给定文本， 生成相应的图像或视频。
+>    - Multimodal Machine Translation： 给定一种语言的文本与该文本对应的图像， 翻译为另外一种语言。
+>    - Vision-and-Language Navigation(视觉-语言导航)： 给定自然语言进行指导， 使得智能体根据视觉传感器导航到特定的目标。
+>    - Multimodal Dialog(多模态对话)： 给定图像， 历史对话， 以及与图像相关的问题， 预测该问题的回答。
+> 5. 定位相关的任务
+>    - Visual Grounding： 给定一个图像与一段文本， 定位到文本所描述的物体。
+>    - Temporal Language Localization: 给定一个视频即一段文本， 定位到文本所描述的动作(预测起止时间)。
+>    - Video Summarization from text query： 给定一段话(query)与一个视频， 根据这段话的内容进行视频摘要，预测视频关键帧(或关键片段)组合为一个短的摘要视频。
+>    - Video Segmentation from Natural Language Query: 给定一段话(query)与一个视频， 分割得到query所指示的物体。
+>    - Video-Language Inference: 给定视频(包括视频的一些字幕信息)， 还有一段文本假设(hypothesis)， 判断二者是否存在语义蕴含(二分类)， 即判断视频内容是否包含这段文本的语义。
+>    - Object Tracking from Natural Language Query: 给定一段视频和一些文本， 追踪视频中文本所描述的对象。
+>    - Language-guided Image/Video Editing: 一句话自动修图。 给定一段指令(文本)， 自动进行图像/视频的编辑。
+> 6. 更多模态
+>    - Affect Computing (情感计算)： 使用语音、 视觉(人脸表情)、 文本信息、 心电、 脑电等模态进行情感识别。
+>    - Medical Image： 不同医疗图像模态如CT、 MRI、 PETRGB-D模态： RGB图与深度图  
+
+## 多模态大模型本地部署
+
+**[CogVideoX-5B](https://www.modelscope.cn/models/ZhipuAI/CogVideoX-5b)文生视频模型**
+
+CogVideoX是 清影 同源的开源版本视频生成模型。  单卡推荐使用diffusers引擎，而不是直接使用PyTorch引擎。diffusers 是完全基于 PyTorch 构建的。
+
+**环境准备**
+
+```
+# diffusers>=0.30.3
+# transformers>=0.44.2
+# accelerate>=0.34.0
+# imageio-ffmpeg>=0.5.1
+pip install --upgrade transformers accelerate diffusers imageio-ffmpeg
 ```
 
