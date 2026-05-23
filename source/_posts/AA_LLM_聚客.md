@@ -6300,6 +6300,8 @@ print(result)
 
 ## 多模态大模型本地部署
 
+### 本地部署CogVideoX-5B文生图模型   
+
 **[CogVideoX-5B](https://www.modelscope.cn/models/ZhipuAI/CogVideoX-5b)文生视频模型**
 
 CogVideoX是 清影 同源的开源版本视频生成模型。  单卡推荐使用diffusers引擎，而不是直接使用PyTorch引擎。diffusers 是完全基于 PyTorch 构建的。
@@ -6312,5 +6314,82 @@ CogVideoX是 清影 同源的开源版本视频生成模型。  单卡推荐使�
 # accelerate>=0.34.0
 # imageio-ffmpeg>=0.5.1
 pip install --upgrade transformers accelerate diffusers imageio-ffmpeg
+```
+
+**模型下载**
+
+```
+git clone https://www.modelscope.cn/ZhipuAI/CogVideoX-5b.git
+```
+
+**运行代码**
+
+```python
+import torch
+from diffusers import CogVideoXPipeline
+from diffusers.utils import export_to_video
+# 提示词，目前该模型暂时只支持英文的搜索词
+prompt = "A panda, dressed in a small, red jacket and a tiny hat, sits on a
+wooden stool in a serene bamboo forest. The panda's fluffy paws strum a miniature
+acoustic guitar, producing soft, melodic tunes. Nearby, a few other pandas
+gather, watching curiously and some clapping in rhythm. Sunlight filters through
+the tall bamboo, casting a gentle glow on the scene. The panda's face is
+expressive, showing concentration and joy as it plays. The background includes a
+small, flowing stream and vibrant green foliage, enhancing the peaceful and
+magical atmosphere of this unique musical performance."
+
+pipe = CogVideoXPipeline.from_pretrained(
+"THUDM/CogVideoX-5b",
+torch_dtype=torch.bfloat16 # 标记bf16
+)
+# 不使用cpu
+pipe.enable_sequential_cpu_offload()
+pipe.vae.enable_tiling()
+pipe.vae.enable_slicing()
+
+video = pipe(
+prompt=prompt,
+num_videos_per_prompt=1,# 生成视频数量
+num_inference_steps=50,# 生成视频的轮次，取第50次，次数越多效果越好
+num_frames=49,# 生成视频的总帧数。其中帧率是8帧/s，49 = 48帧+开头的1帧
+guidance_scale=6,# 生成视频长度，6s
+generator=torch.Generator(device="cuda").manual_seed(42),
+).frames[0]
+# 将张量转为视频
+export_to_video(video, "output.mp4", fps=8)
+```
+
+### ollama部署Llama-3.2-11B-Vision-InstructGGUF实现视觉问答  
+
+**模型介绍**
+
+Llama 3.2-Vision 是一系列多模态大语言模型（LLM），包括预训练和指令调优的图像推理生成模型（输入为文本+图像，输出为文本）。Llama 3.2-Vision 指令调优模型针对视觉识别、图像推理、字幕生成以及回答关于图像的一般问题进行了优化 。Llama 3.2-Vision 基于 Llama 3.1 文本模型构建 。
+
+**模型用途**
+
+用户上传图像，并且提问，模型输出回答。
+
+**安装ollama**
+
+```
+#ollama版本需大于等于0.4.0
+curl -fsSL https://ollama.com/install.sh | sh
+#查看ollama版本
+ollama --version
+```
+
+**使用1**
+
+```
+ollama run llama3.2-vision:11b
+然后按照提示，输入问题，再上传图片
+```
+
+**使用2**
+
+```python
+# 前者是问题，后者images.png替换为用户的图片路径
+ollama run x/llama3.2-vision:latest "Which era does this piece belong to? Give
+details about the era: images.png"
 ```
 
