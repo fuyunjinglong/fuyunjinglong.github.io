@@ -9,7 +9,7 @@ toc: true # 是否启用内容索引
 # interview
 
 - [ ] 2024年前端简历（node.js，ts,react，Flutter、Rn，微前端，低代码，小程序，移动端，ssr）
-- [ ] 面试突击-千峰
+- [ ] 面试突击-千峰-= 轻松网赚网 thbcm.com =003-CSS高频面试题-1【 微信号：itcodeba 】.mp4
 - [ ] TypeScript入门
 - [ ] 多端-小程序-Taro
 - [ ] 多端-桌面端Electron
@@ -39,10 +39,14 @@ toc: true # 是否启用内容索引
 
 - <a target="_blank" href="{% post_path 'C_H5_0基础' %}#iframe有哪些优缺点？">iframe 内嵌框架缺点</a>
 - <a target="_blank" href="{% post_path 'C_H5_0基础' %}#Html语义化">html语义化是什么</a>
+- <a target="_blank" href="{% post_path 'H_工程热点_性能优化_0基础' %}#从输入url到渲染完成整个过程">从输入url到渲染完成整个过程</a>
+- <a target="_blank" href="{% post_path 'H_工程热点_性能优化_0基础' %}#浏览器的渲染原理">浏览器的渲染原理</a>
+- <a target="_blank" href="{% post_path 'C_H5_0基础' %}#浏览器内核的理解">浏览器内核的理解</a>
 
 # CSS
 
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#理解回流和重绘？">理解回流和重绘？</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#回流和重绘">回流和重绘</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#外边距折叠">外边距折叠</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS盒子模型">盒子模型</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#页面样式导入link和-import区别">页面样式导入link 和 @import 区别</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#常见兼容性问题？">常见兼容性问题？</a>
@@ -64,7 +68,6 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#消息队列和事件循环">消息队列和事件循环(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包' %}#闭包">闭包(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包' %}#原型、原型链、继承">原型、原型链、继承(看题给结果)</a>
-- <a target="_blank" href="{% post_path 'C_H5_0基础' %}#浏览器内核的理解">浏览器内核的理解</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#8种数据类型">null 和 undefined</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包' %}#JS的8种继承方案">JS的8种继承方案</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#柯里化">柯里化</a>
@@ -174,7 +177,6 @@ toc: true # 是否启用内容索引
 # 性能优化
 
 - <a target="_blank" href="{% post_path 'H_工程热点_性能优化_0基础' %}#性能优化总策略">性能优化总策略</a>
-- <a target="_blank" href="{% post_path 'H_工程热点_性能优化_0基础' %}#从输入url到渲染完成整个过程">从输入url到渲染完成整个过程</a>
 
 # React
 
