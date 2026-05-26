@@ -230,6 +230,10 @@ CSS Modules 特性：
 > 3. **给父元素加 `display: flow-root`**（最正规的触发 BFC 方式，无副作用）
 > 4. **改用 Flexbox 或 Grid 布局**（**重点！** Flex/Grid 容器内的子元素**绝对不会发生 margin 折叠**，这也是现代布局很少遇到这个问题的原因）
 
+## z-index在position的值什么时候可以触发
+
+在position的值是relative、absolute、fixed、sticky时候可以触发，在static时无效。
+
 ## Float浮动
 
 **定义**
@@ -398,16 +402,8 @@ CSS Modules 特性：
 
 ## CSS盒子模型
 
-- `标准盒模型(box-sizing:content-box)`，width 指 content 的宽度，总宽度 = width + border+ padding+ margin；随着边距撑开
-- `怪异盒模型/IE盒模型(box-sizing:border-box)`，width 指 content + border+ padding，总宽度 = width + margin；宽度固定，推荐且浏览器默认
-
-**外边距合并**
-
-块的顶部外边距和底部外边距有时被组合(折叠)为单个外边距，其大小是组合到其中的最大外边距，这种行为称为**外边距合并**。
-
-[CSS 的两种盒模型](https://zhuanlan.zhihu.com/p/110617108)
-
-------
+- `标准盒模型(box-sizing:content-box)`，width 指 content 的宽度，总宽度 = width+ padding内边距 + border边框 + margin；加了边框和内边距，盒子会**变大**
+- `怪异盒模型/IE盒模型(box-sizing:border-box)`，width 指 content + padding内边距 + border边框，总宽度 = width + margin；无论内边距或边框多大，盒子**总大小不变**，内容自动缩水，推荐且浏览器默认
 
 ## 元素水平/垂直居中
 
