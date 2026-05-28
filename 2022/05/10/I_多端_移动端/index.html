@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>多端_移动端 | Hexo</title>
+  <meta name="description" content="参考  Flutter学习仓库 Github Flutter源码仓库 Flutter中文网  移动端适配怎么解决 meta viewport视口 图片适配 媒体查询 动态rem方案  1.meta viewport视口 大多数PC网页的宽度为980px，如果不做移动端适配，文字会缩小的很小。device-width表示等于设备宽度，不写的化就变成默认的980了。initial-scale缩放比例为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多端_移动端">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2022/05/10/I_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="参考  Flutter学习仓库 Github Flutter源码仓库 Flutter中文网  移动端适配怎么解决 meta viewport视口 图片适配 媒体查询 动态rem方案  1.meta viewport视口 大多数PC网页的宽度为980px，如果不做移动端适配，文字会缩小的很小。device-width表示等于设备宽度，不写的化就变成默认的980了。initial-scale缩放比例为">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220510071129446.png">
+<meta property="article:published_time" content="2022-05-09T22:33:16.000Z">
+<meta property="article:modified_time" content="2026-05-27T10:52:52.191Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/image-20220510071129446.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2022/05/10/I_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AA-%E9%9D%A2%E8%AF%95/">AA_面试</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83/">A_编码规范</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-JS/">B_JS</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-LLM/">B_LLM</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-H5%E5%92%8CCSS/">C_H5和CSS</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E6%A1%86%E6%9E%B6%E5%92%8C%E7%B1%BB%E5%BA%93/">D_框架和类库</a><span class="category-list-count">21</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/I-%E5%A4%9A%E7%AB%AF/">I_多端</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E4%B8%9A%E5%8A%A1%E5%92%8C%E9%9D%A2%E7%BB%8F/">Z_业务和面经</a><span class="category-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/11/">十一月 2099</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/05/">五月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/04/">四月 2026</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/03/">三月 2026</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/12/">十二月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/11/">十一月 2025</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/03/">三月 2025</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">二月 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">六月 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a><span class="archive-list-count">22</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/H-%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9/">H_工程热点</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/06/H_%E5%B7%A5%E7%A8%8B%E7%83%AD%E7%82%B9_0%E5%9F%BA%E7%A1%80/" class="title">0基础_工程热点</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-05T22:33:16.000Z" itemprop="datePublished">2099-11-06</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/I-%E5%A4%9A%E7%AB%AF/">I_多端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/05/I_%E5%A4%9A%E7%AB%AF_0%E5%9F%BA%E7%A1%80/" class="title">多端_0基础</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-04T22:33:16.000Z" itemprop="datePublished">2099-11-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/F-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">F_计算机网络</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/04/F_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C_0%E5%9F%BA%E7%A1%80/" class="title">0基础_计算机网络</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-11-03T22:33:16.000Z" itemprop="datePublished">2099-11-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/E-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">E_数据结构</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/E_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_0%E5%9F%BA%E7%A1%80/" class="title">0基础_数据结构</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/J-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">J_设计模式</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/11/01/J_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F_%E5%9F%BA%E7%A1%80/" class="title">0基础_设计模式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-10-31T22:33:16.000Z" itemprop="datePublished">2099-11-01</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3"><span class="toc-number">1.</span> <span class="toc-text">移动端适配怎么解决</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS%E5%AA%92%E4%BD%93%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.1.</span> <span class="toc-text">CSS媒体查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8rem%E5%8D%95%E4%BD%8D"><span class="toc-number">1.2.</span> <span class="toc-text">使用rem单位</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flexible%E9%80%82%E9%85%8D-%E6%B7%98%E5%AE%9D%E6%97%A7%E6%96%B9%E6%A1%88"><span class="toc-number">1.3.</span> <span class="toc-text">flexible适配(淘宝旧方案)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Viewport%E9%80%82%E9%85%8D-%E4%B8%BB%E6%B5%81%E6%96%B9%E6%A1%88"><span class="toc-number">1.4.</span> <span class="toc-text">Viewport适配(主流方案)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#React-Native"><span class="toc-number">2.</span> <span class="toc-text">React Native</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Flutter"><span class="toc-number">3.</span> <span class="toc-text">Flutter</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Flutter%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">3.1.</span> <span class="toc-text">1.Flutter是什么?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Flutter%E4%BC%98%E5%8A%BF"><span class="toc-number">3.2.</span> <span class="toc-text">2.Flutter优势</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%A0%B8%E5%BF%83%E6%A8%A1%E5%9D%97"><span class="toc-number">3.3.</span> <span class="toc-text">3.核心模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%B8%80%E5%88%87%E7%9A%86%E4%B8%BAwidget"><span class="toc-number">3.4.</span> <span class="toc-text">4.一切皆为widget</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Flutter%E4%B8%8EReact-Native%E3%80%81Weex%E6%AF%94%E8%BE%83"><span class="toc-number">3.5.</span> <span class="toc-text">5.Flutter与React Native、Weex比较</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-I_多端_移动端" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      多端_移动端
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/05/10/I_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/" class="article-date">
+	  <time datetime="2022-05-09T22:33:16.000Z" itemprop="datePublished">2022-05-10</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/I-%E5%A4%9A%E7%AB%AF/">I_多端</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/05/10/I_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p><strong>参考</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/chinabrant/flutter_study">Flutter学习仓库</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter">Github Flutter源码仓库</a></li>
+<li><a target="_blank" rel="noopener" href="https://flutterchina.club/">Flutter中文网</a></li>
+</ul>
+<h1 id="移动端适配怎么解决"><a href="#移动端适配怎么解决" class="headerlink" title="移动端适配怎么解决"></a>移动端适配怎么解决</h1><ol>
+<li>meta viewport视口</li>
+<li>图片适配</li>
+<li>媒体查询</li>
+<li>动态rem方案</li>
+</ol>
+<p><strong>1.meta viewport视口</strong></p>
+<p>大多数PC网页的宽度为980px，如果不做移动端适配，文字会缩小的很小。device-width表示等于设备宽度，不写的化就变成默认的980了。initial-scale缩放比例为1。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">names</span>=<span class="string">&quot;viewport&quot;</span><span class="attr">content</span>=<span class="string">&quot;width=device-width,initial-scale=1.0&quot;</span></span></span><br><span class="line"><span class="tag">&lt;<span class="attr">title</span>&gt;</span>测试<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>2.图片适配</strong></p>
+<p>使用img{max-width:100%}，而不是img{width:100%}。后者在容器大于图片时，图片会无线拉伸。前者最大显示自身图片那么大。</p>
+<p><strong>3.媒体查询</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@media screen and（min-width:1200px）&#123;</span><br><span class="line"> body&#123;</span><br><span class="line">  background-color:red;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>4.动态rem方案</strong></p>
+<p>px，em，rem有什么不同？</p>
+<p>px时屏幕上显示像素的基本单位。em是一个相对大小，相当于父元素的font-size的百分比大小(如果使用的话，要一层层计算，太复杂)。rem也是相对大小，是相对于根元素的font-size。</p>
+<p>参考</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7046169975706353701#heading-20">2022 年移动端适配方案指南 — 全网最新最全</a></li>
+<li><a href="https://link.juejin.cn/?target=https://www.jianshu.com/p/6b1f94bfa263">响应式设计 - 理解设备像素、设备独立像素和 css 像素</a></li>
+<li><a href="https://link.juejin.cn/?target=https://www.cnblogs.com/2050/p/3877280.html">移动前端开发之viewport的深入理解</a></li>
+<li><a href="https://link.juejin.cn/?target=https://github.com/amfe/article/issues/17">使用 Flexible 实现手淘 H5 页面的终端适配</a></li>
+<li><a href="https://link.juejin.cn/?target=https://www.jianshu.com/p/e8ae1c3861dc">VW: 是时候放弃 REM 布局了</a></li>
+<li><a href="https://link.juejin.cn/?target=https://github.com/amfe/lib-flexible">lib-flexible</a></li>
+<li><a href="https://link.juejin.cn/?target=https://github.com/evrone/postcss-px-to-viewport">postcss-px-to-viewport</a></li>
+<li><a href="https://link.juejin.cn/?target=https://aotu.io/notes/2017/11/27/iphonex/index.html">网页适配 iPhoneX</a></li>
+</ul>
+<h2 id="CSS媒体查询"><a href="#CSS媒体查询" class="headerlink" title="CSS媒体查询"></a>CSS媒体查询</h2><p>通过 CSS 的 @media  媒体查询设置不同的 style。通过媒体查询，我们可以根据不同屏幕设置不同样式，这样就可以实现不同屏幕的适配。</p>
+<p>如果我们选择<code>600px</code>,<code>900px</code>,<code>1200px</code>,<code>1800px</code>作为分割点，可以适配到常见的14个机型。</p>
+<p>link 元素中的 CSS 媒体查询，不同屏幕加载不同样式文件：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">media</span>=<span class="string">&quot;(max-width: 500px)&quot;</span> <span class="attr">href</span>=<span class="string">&quot;mobile.css&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">media</span>=<span class="string">&quot;(min-width: 980px)&quot;</span> <span class="attr">href</span>=<span class="string">&quot;pc.css&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>CSS 样式表中的媒体查询：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* pc width &gt; 1024px */</span></span><br><span class="line">    <span class="selector-tag">body</span> &#123;</span><br><span class="line">        <span class="attribute">background-color</span>: yellow;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">/* ipad pro */</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">max-width</span>: <span class="number">1024px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">body</span> &#123;</span><br><span class="line">        <span class="attribute">background-color</span>: <span class="number">#FF00FF</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* ipad */</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">max-width</span>: <span class="number">768px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">body</span> &#123;</span><br><span class="line">        <span class="attribute">background-color</span>: green;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* iphone6 7 8 plus */</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">max-width</span>: <span class="number">414px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">body</span> &#123;</span><br><span class="line">        <span class="attribute">background-color</span>: blue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* iphoneX */</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">max-width</span>: <span class="number">375px</span>) <span class="keyword">and</span> (<span class="attribute">-webkit-device-pixel-ratio</span>: <span class="number">3</span>) &#123;</span><br><span class="line">    <span class="selector-tag">body</span> &#123;</span><br><span class="line">        <span class="attribute">background-color</span>: <span class="number">#0FF000</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* iphone6 7 8 */</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">max-width</span>: <span class="number">375px</span>) <span class="keyword">and</span> (<span class="attribute">-webkit-device-pixel-ratio</span>: <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="selector-tag">body</span> &#123;</span><br><span class="line">        <span class="attribute">background-color</span>: <span class="number">#0FF000</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* iphone5 */</span></span><br><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">max-width</span>: <span class="number">320px</span>) &#123;</span><br><span class="line">    <span class="selector-tag">body</span> &#123;</span><br><span class="line">        <span class="attribute">background-color</span>: <span class="number">#0FF000</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用rem单位"><a href="#使用rem单位" class="headerlink" title="使用rem单位"></a>使用rem单位</h2><p>rem（font size of the root element）是指相对于根元素的字体大小的单位，如果我们设置 html 的 font-size 为 16px，则如果需要设置元素字体大小为 16px，则写为 1rem。但是其还是必须得借助 @media 属性来为不同大小的设备设置不同的 font-size，相对上一种方案，可以减少重复编写相同属性的代价，简单示例如下所示。<br> 我们也能看到该方案存在以下问题：</p>
+<ul>
+<li>不同的尺寸需要写多个 @media；</li>
+<li>所有涉及到使用 rem 的地方，全部都需要调用方法 calc() ，这个也挺麻烦的；</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">@media only screen and (min-width: 375px) &#123;</span><br><span class="line">  html &#123;</span><br><span class="line">    font-size : 375px;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@media only screen and (min-width: 360px) &#123;</span><br><span class="line">  html &#123;</span><br><span class="line">    font-size : 360px;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@media only screen and (min-width: 320px) &#123;</span><br><span class="line">  html &#123;</span><br><span class="line">    font-size : 320px;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//定义方法：calc</span><br><span class="line">@function calc($val)&#123;</span><br><span class="line">    @return $val / 1080;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.logo&#123;</span><br><span class="line"> width : calc(180rem);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="flexible适配-淘宝旧方案"><a href="#flexible适配-淘宝旧方案" class="headerlink" title="flexible适配(淘宝旧方案)"></a>flexible适配(淘宝旧方案)</h2><p>在 rem 方案上进行改进，我们可以使用 js 动态来设置根字体，这种方案的典型代表就是 <a href="https://link.juejin.cn/?target=https://github.com/amfe/lib-flexible">flexible 适配方案</a>。</p>
+<p><strong>使用 rem 模拟 vw 特性适配多种屏幕尺寸</strong></p>
+<p>核心代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// set 1rem = viewWidth / 10</span><br><span class="line">function setRemUnit () &#123;</span><br><span class="line">    var rem = docEl.clientWidth / 10</span><br><span class="line">    docEl.style.fontSize = rem + &#x27;px&#x27;</span><br><span class="line">&#125;</span><br><span class="line">setRemUnit();</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码中，将 html 节点的 font-size 设置为页面 clientWidth(布局视口)的 1/10，即 1rem 就等于页面布局视口的 1/10，这就意味着我们后面使用的 rem 都是按照页面比例来计算的。</p>
+<p><strong>控制 viewport 的 width 和 scale 值适配高倍屏显示</strong></p>
+<p>设置 viewport 的 width 为 device-width，改变浏览器 viewport（布局视口和视觉视口）的默认宽度为理想视口宽度，从而使得用户可以在理想视口内看到完整的布局视口的内容。<br> 等比设置 viewport 的 initial-scale、maximum-scale、minimum-scale 的值，从而实现 1 物理像素=1 css像素，以适配高倍屏的显示效果（就是在这个地方规避了大家熟知的“1px 问题”）</p>
+<p>核心代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var metaEL= doc.querySelector(&#x27;meta[name=&quot;viewport&quot;]&#x27;);</span><br><span class="line">var dpr = window.devicePixelRatio;</span><br><span class="line">var scale = 1 / dpr</span><br><span class="line">metaEl.setAttribute(&#x27;content&#x27;, &#x27;width=device-width, initial-scale=&#x27; + scale + &#x27;, maximum-scale=&#x27; + scale + &#x27;, minimum-scale=&#x27; + scale + &#x27;, user-scalable=no&#x27;); </span><br></pre></td></tr></table></figure>
+
+<p><strong>flexible 的缺陷</strong></p>
+<blockquote>
+<ul>
+<li>由于其缩放的缘故，video 标签的视频频播放器的样式在不同 dpr 的设备上展示差异很大；</li>
+<li>如果你去研究过 lib-flexible 的源码，那你一定知道 lib-flexible 对安卓手机的特殊处理，即：一律按 dpr = 1 处理；</li>
+<li>不再兼容 @media 的响应式布局，因为 @media 语法中涉及到的尺寸查询语句，查询的尺寸依据是当前设备的物理像素，和 flexible 的布局理论（即针对不同 dpr 设备等比缩放视口的 scale 值，从而同时改变布局视口和视觉视口大小）相悖，因此响应式布局在“等比缩放视口大小”的情境下是无法正常工作的；</li>
+</ul>
+</blockquote>
+<p>其实 flexible 方案是在 模拟 viewport 功能，只是随着浏览器的发展及兼容性增强，viewport 已经能兼容绝大部分主流浏览器，并且 flexible 方案自身存在的问题，所有其也已几乎退出历史潮流。</p>
+<p>引用 <a href="https://link.juejin.cn/?target=https://github.com/amfe/lib-flexible">lib-flexible</a> 的 github 主页的原话：</p>
+<blockquote>
+<p>由于 viewport 单位得到众多浏览器的兼容，lib-flexible 这个过渡方案已经可以放弃使用，不管是现在的版本还是以前的版本，都存有一定的问题。建议大家开始使用 viewport 来替代此方案。</p>
+</blockquote>
+<h2 id="Viewport适配-主流方案"><a href="#Viewport适配-主流方案" class="headerlink" title="Viewport适配(主流方案)"></a>Viewport适配(主流方案)</h2><p>原理：类似近大远小，每一个元素在不同设备上占据的css像素的个数是一样的。但是css像素和物理像素的比例是不一样的，等比的。<code>vw</code>作为布局单位，从底层根本上解决了不同尺寸屏幕的适配问题，因为每个屏幕的百分比是固定的、可预测、可控制的。</p>
+<p>由于 viewport 单位得到众多浏览器的兼容，所以目前基于 viewport 的移动端适配方案被各大厂团队所采用。</p>
+<p>vw 作为布局单位，从底层根本上解决了不同尺寸屏幕的适配问题，因为每个屏幕的百分比是固定的、可预测、可控制的。 viewport 相关概念如下：</p>
+<ul>
+<li>vw：是 viewport’s width 的简写，1vw 等于 window.innerWidth 的 1%；</li>
+<li>vh：和 vw 类似，是 viewport’s height 的简写，1vh 等于 window.innerHeihgt 的 1%；</li>
+<li>vmin：vmin 的值是当前 vw 和 vh 中较小的值；</li>
+<li>vmax：vmax 的值是当前 vw 和 vh 中较大的值；</li>
+</ul>
+<p>假设我们拿到的视觉稿宽度为 750px，视觉稿中某个字体大小为 75px，则我们的 css 属性只要如下这么写，不需要额外的去用 js 进行设置，也不需要去缩放屏幕等；</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.logo</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">10vw</span>; // <span class="number">1vw</span> = <span class="number">750px</span> * <span class="number">1%</span> = <span class="number">7.5px</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实现步骤</p>
+<ul>
+<li>设置 meta 标签</li>
+<li>px 自动转换为 vw</li>
+<li>标注不需要转换的属性</li>
+<li>Retina 屏预留坑位</li>
+</ul>
+<p><strong>设置 meta 标签</strong></p>
+<p>在 html 头部设置 mata 标签如下所示，让当前 viewport 的宽度等于设备的宽度，同时不允许用户手动缩放。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>px 自动转换为 vw</strong></p>
+<p>设计师一般给宽度大小为 375px 或 750px 的视觉稿，我们采用 vw 方案的话，需要将对应的元素大小单位 px 转换为 vw 单位，这是一项影响开发效率（需要手动计算将 px 转换为 vw）且不利于后续代码维护（css 代码中一堆 vw 单位，不如 px 看的直观）的事情；好在社区提供了 <a href="https://link.juejin.cn/?target=https://github.com/evrone/postcss-px-to-viewport">postcss-px-to-viewport</a> 插件，来将 px 自动转换为 vw。</p>
+<p><strong>标注不需要转换的属性</strong></p>
+<p>在项目中，如果设计师要求某一场景不做自适配，需为固定的宽高或大小，这时我们就需要利用 postcss-px-to-viewport 插件的 Ignoring 特性，对不需要转换的 css 属性进行标注，示例如下所示：</p>
+<ul>
+<li>/* px-to-viewport-ignore-next */  —&gt; 下一行不进行转换.</li>
+<li>/* px-to-viewport-ignore */  —&gt; 当前行不进行转换</li>
+</ul>
+<p><strong>Retina 屏预留坑位</strong></p>
+<p>考虑 Retina 屏场景，可能对图片的高清程度、1px 等场景有需求，所以我们预留判断 Retina 屏坑位。 相关方案如下：在入口的 html 页面进行 dpr 判断，以及 data-dpr 的设置；然后在项目的 css 文件中就可以根据 data-dpr 的值根据不同的 dpr 写不同的样式类；</p>
+<h1 id="React-Native"><a href="#React-Native" class="headerlink" title="React Native"></a>React Native</h1><p><strong>参考</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Pt4y1n7bD/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247">react native入门到实战</a></li>
+</ul>
+<h1 id="Flutter"><a href="#Flutter" class="headerlink" title="Flutter"></a>Flutter</h1><h2 id="1-Flutter是什么"><a href="#1-Flutter是什么" class="headerlink" title="1.Flutter是什么?"></a>1.Flutter是什么?</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://flutter.dev/">Flutter官网</a></li>
+</ul>
+<p>Flutter是一款移动应用程序SDK，一份代码可以同时生成iOS和Android两个高性能、高保真的应用程序。</p>
+<p>Flutter诞生过程：</p>
+<ul>
+<li>2017 年 Google I/O 大会上，Google 首次推出了一款新的用于创建跨平台、高性能的移动应用框架——Flutter。</li>
+<li>2018年2月，Flutter发布了第一个Beta版本，同年五月， 在2018年Google I/O 大会上，Flutter 更新到了 beta 3 版本。</li>
+<li>2018年6月，Flutter发布了首个预览版本，这意味着 Flutter 进入了正式版（1.0）发布前的最后阶段。</li>
+</ul>
+<h2 id="2-Flutter优势"><a href="#2-Flutter优势" class="headerlink" title="2.Flutter优势"></a>2.Flutter优势</h2><ul>
+<li>提高开发效率<ul>
+<li>同一份代码开发iOS和Android</li>
+<li>用更少的代码做更多的事情</li>
+<li>轻松迭代<ul>
+<li>在应用程序运行时更改代码并重新加载（通过热重载）</li>
+<li>修复崩溃并继续从应用程序停止的地方进行调试</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>创建美观，高度定制的用户体验<ul>
+<li>受益于使用Flutter框架提供的丰富的Material Design和Cupertino（iOS风格）的widget</li>
+<li>实现定制、美观、品牌驱动的设计，而不受原生控件的限制</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-核心模块"><a href="#3-核心模块" class="headerlink" title="3.核心模块"></a>3.核心模块</h2><img src="/img/image-20220510071129446.png" alt="image-20220510071129446" style="zoom:67%;" />
+
+<p>Flutter包括一个现代的响应式框架、一个2D渲染引擎、现成的widget和开发工具。</p>
+<p><strong>跨平台自绘引擎</strong></p>
+<p>Flutter与其他用于构建App的大多数框架不同，因为Flutter既不使用WebView，也不使用平台（Android、iOS等）的原生控件。相反，Flutter使用自己的高性能渲染引擎来绘制Widget。这样不仅可以保证在Android和iOS平台上UI的一致性，而且也可以避免对原生控件依赖而带来的限制及高昂的维护成本。</p>
+<p>Flutter使用Skia作为其2D渲染引擎，Skia是Google的一个2D图形处理函数库，包含字型、坐标转换以及点阵图都有高效能且简洁的表现，Skia是跨平台的，并提供了非常友好的API，目前Google Chrome浏览器和Android均采用Skia作为其绘图引擎，值得一提的是，由于Android系统已经内置了Skia，所以Flutter在打包APK（Android应用安装包）时，不需要再将Skia打入APK中，但iOS系统并未内置Skia，所以构建iPA时，也必须将Skia一起打包，这也是为什么Flutter APP的Android应用安装包比iOS应用安装包小的主要原因。</p>
+<p><strong>高性能</strong></p>
+<p>Flutter采用GPU渲染技术，Flutter编写的应用是可以达到120fps（每秒传输帧数），这也就是说，它完全可以胜任游戏的制作，而我们常说的RN的性能只能达到60fps，这也算是Flutter的一个超高竞争力，官方宣称Flutter甚至会超过原生性能。</p>
+<p>Flutter高性能主要靠两点来保证：</p>
+<ul>
+<li>首先，Flutter App采用Dart语言开发，Dart在JIT（即时编译）模式下，速度与JavaScript基本持平；而且Dart还支持AOT（提前编译）模式，当以AOT模式运行时，JavaScript便远远追不上了。速度的提升对高帧率下的视图数据计算很有帮助。</li>
+<li>其次，Flutter使用自己的渲染引擎来绘制UI，布局数据等由Dart语言直接控制，所以在布局过程中不需要像RN那样通过JavaScriptCore在JavaScript和原生之间进行通信，这在一些滑动和拖动的场景下具有明显优势，因为在滑动和拖动过程中往往都会引起布局发生变化，所以JavaScript需要和原生之间不停的同步布局信息，这和在浏览器中要JavaScript频繁操作DOM所带来的问题是相同的，都会带来比较可观的性能开销。</li>
+</ul>
+<p><strong>为什么Flutter采用Dart语言开发？</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6870286147541696525">为什么 Flutter 选择了 Dart 语言</a></li>
+</ul>
+<p>介绍两个概念：JIT和AOT。</p>
+<p>目前，程序主要有两种运行方式：静态编译和动态解释。</p>
+<ul>
+<li>静态编译：静态编译的程序在执行前全部被翻译为机器码，通常将这种类型称为AOT（Ahead of time）即“提前编译”；</li>
+<li>动态解释：动态解释的程序是在执行中一句一句边翻译边运行的，通常将这种类型称为JIT（Just-in-time）即“即时编译”。</li>
+</ul>
+<p>AOT程序的典型代表是用C/C++开发的应用，它们必须在执行前编译成机器码，而JIT的代表则非常多，如JavaScript、Python等，事实上，所有脚本语言都支持JIT模式。但值得一提的是JIT和AOT指的是程序运行方式，它们和编程语言并非强关联，有些语言既可以以JIT方式运行也可以以AOT方式运行，如Java、Python，它们可以在第一次执行时编译成中间字节码，然后在之后执行时可以直接执行字节码，也许有人会说，中间字节码并非机器码，在程序执行时仍然需要动态将字节码转为机器码，是的，不过通常我们区分是否为AOT的标准就是看代码在执行之前是否需要编译，只要需要编译，无论其编译产物是字节码还是机器码，都属于AOT。</p>
+<p>Dart和JavaScript比较：</p>
+<ol>
+<li>开发效率高</li>
+</ol>
+<ul>
+<li>基于JIT的快速开发周期：Flutter在开发阶段采用JIT模式，这样就避免了每次改动都要进行编译，极大的节省了开发时间；（Dart运行时支持）</li>
+<li>基于AOT的发布包：Flutter在发布时可以通过AOT生成高效的ARM代码以保证应用性能，而JavaScript则不具有这个能力。（编译器支持）</li>
+</ul>
+<ol>
+<li><p>高性能</p>
+<p>Flutter旨在提供流畅、高保真的UI体验。为了实现这一点，Flutter需要能够在每个动画帧中运行大量的代码，这意味着需要一种既能提供高性能的语言，又不会出现丢帧的周期性暂停，而Dart支持AOT，在这一点上可以做的比JavaScript更好。</p>
+</li>
+<li><p>快速内存分配</p>
+<p>Flutter框架使用函数式流，这使得它在很大程度上依赖于底层的内存分配器。因此，拥有一个能够有效的处理琐碎任务的内存分配器将显得十分重要，如果Dart语言缺乏此功能，Flutter将无法有效地工作。当然Chrome V8的JavaScript引擎在内存分配上也已经做的很好了，事实上Dart开发团队的很多成员都是来自Chrome团队的，所以在内存分配上Dart并不能作为超越JavaScript的优势，但对于Flutter来说，它需要这样的特性，而Dart也正好满足而已。</p>
+</li>
+<li><p>类型安全</p>
+<p>由于Dart是类型安全的语言，支持静态类型检测，所以可以在编译前发现一些类型的错误，并排除潜在问题，这一点对于前端开发者来说可能会更具有吸引力。与之不同的，JavaScript是一个弱类型语言，也因此前端社区出现了很多给JavaScript代码添加静态类型检测的扩展语言和工具，如：微软的TypeScript以及Facebook的Flow。相比之下，Dart本身就支持静态类型，就是它的一个重要优势。</p>
+</li>
+<li><p>Dart团队的支持</p>
+<p>由于有Dart团队的积极投入，Flutter团队可以获得更多、更方便的支持，正如Flutter官网所诉：“我们正与Dart社区进行密切合作，以改进Dart在Flutter中的使用。例如，当我们最初使用Dart时，该语言并没有提供生成原生二进制文件的工具链（工具链对于实现可预测的高性能具有很大的帮助），但是现在它实现了，因为Dart团队专门为Flutter构建了它。同样，Dart VM之前已经针对吞吐量进行了优化，但团队现在正在优化VM的延迟时间，这对于Flutter的工作负载更为重要。”</p>
+</li>
+</ol>
+<h2 id="4-一切皆为widget"><a href="#4-一切皆为widget" class="headerlink" title="4.一切皆为widget"></a>4.一切皆为widget</h2><p>Widget是Flutter应用程序用户界面的基本构建块。每个Widget都是用户界面一部分的不可变声明。 与其他将视图、控制器、布局和其他属性分离的框架不同，Flutter具有一致的统一对象模型：widget。</p>
+<p>Widget可以被定义为:</p>
+<ul>
+<li>一个结构元素（如按钮或菜单）</li>
+<li>一个文本样式元素（如字体或颜色方案）</li>
+<li>布局的一个方面（如填充）</li>
+<li>等等…</li>
+</ul>
+<h2 id="5-Flutter与React-Native、Weex比较"><a href="#5-Flutter与React-Native、Weex比较" class="headerlink" title="5.Flutter与React Native、Weex比较"></a>5.Flutter与React Native、Weex比较</h2><p>React Native、Weex等一直存在一个问题，就是性能跟原生App存在很大的差异</p>
+<p><strong>原生app</strong></p>
+<p>苹果2008年发布iOS，Google 2009年发布Android，它们的SDK是基于两种不同的编程语言Objective-C 和 Jave.现在又有了Swift和Kotlin。</p>
+<p><strong>WebViews</strong></p>
+<p>最早的跨平台方案是基于JaveScript 和 WebView的，像PhoneGap、Cordova、Ionic等。</p>
+<p><strong>React Native</strong></p>
+<p>RN不仅桥接系统服务，也将系统UI也桥接到了JaveScript中，这样写出来的UI最终也会渲染成原生的控件。</p>
+<p><strong>Flutter</strong></p>
+<p>Flutter使用Dart语言开发，Dart可以被编译（AOT）成不同平台的本地代码，让Flutter可以直接和平台通讯而不需要一个中间的桥接过程，从而提高了性能。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2022/05/10/I_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/" title="多端_移动端" target="_blank" rel="external">https://fuyunjinglong.github.io/2022/05/10/I_多端_移动端/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2022/05/12/I_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/" title="多端_桌面端"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2022/05/05/B_JS_ES6-10%E6%96%B0%E7%89%B9%E6%80%A7/" title="ES6-10新特性"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <!-- <script src="//cdn.jsdelivr.net/npm/valine"></script> -->
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
