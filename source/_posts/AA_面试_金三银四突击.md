@@ -9,7 +9,7 @@ toc: true # 是否启用内容索引
 # interview
 
 - [ ] 2024年前端简历（node.js，ts,react，Flutter、Rn，微前端，低代码，小程序，移动端，ssr）
-- [ ] 面试突击-千峰-= 轻松网赚网 thbcm.com =003-CSS高频面试题-1【 微信号：itcodeba 】.mp4
+- [ ] 面试突击-千峰-= 轻松网赚网 thbcm.com =005-JS高频面试题-1【 微信号：itcodeba 】
 - [ ] TypeScript入门
 - [ ] 多端-小程序-Taro
 - [ ] 多端-桌面端Electron
@@ -48,17 +48,18 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#回流和重绘">回流和重绘</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#外边距折叠">外边距折叠</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS盒子模型">盒子模型</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#transform，transition，animation区别">transform，transition，animation区别</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#元素水平垂直居中">元素水平垂直居中</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#两边固定100px-中间自适应，如何三栏布局">两边固定100px，中间自适应，如何三栏布局</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#页面样式导入link和-import区别">页面样式导入link 和 @import 区别</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#常见兼容性问题？">常见兼容性问题？</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#清除浮动">清除浮动</a>
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#元素水平-垂直居中">元素水平-垂直居中</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#position、float和display的取值意思">position 、float 和 display 的取值意思</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS常用3种引入方式">CSS 常用3种引入方式</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS选择器及优先级">CSS选择器及优先级</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS3有哪些新特性？">CSS3 有哪些新特性 ?</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#BFC">对BFC规范的理解</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#canvas与svg的区别？">canvas 与 svg 的区别 ？</a>
-- <a target="_blank" href="{% post_path 'I_移动端_0基础' %}#rem、em、px、vh与vw的区别？">rem、em、px、vh 与 vw 的区别 ？</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#伪类和伪元素">伪类与伪元素</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#flex-1代表什么，用于什么场景">flex=1代表什么</a>
 
@@ -155,6 +156,10 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#应用缓存-manifest即HTML5的离线缓存">应用缓存-manifest即HTML5的离线缓存</a>
 
 # TypeScript入门
+
+# 多端-移动端
+
+- <a target="_blank" href="{% post_path 'I_多端_移动端' %}#移动端适配怎么解决">移动端适配怎么解决</a>
 
 # 多端-小程序-Taro
 

@@ -234,11 +234,9 @@ CSS Modules 特性：
 
 在position的值是relative、absolute、fixed、sticky时候可以触发，在static时无效。
 
-## Float浮动
+## 清除浮动
 
-**定义**
-
-一句话：让block元素无视float元素，让inline元素像流水一样围绕着float元素实现浮动布局
+float定义：元素脱离文档流即不占用宽高，但是内容是被使用了。
 
 **float特性**
 
@@ -247,65 +245,89 @@ CSS Modules 特性：
 - 块状化
 - 没有任何margin合并
 
-> 1.包裹性,是指包裹和自适应。
->
-> 包裹：将浮动元素父元素宽度设置为200px，浮动元素的子元素是一个128px宽度的图片，则此时浮动元素宽度表现为”包裹”，即包裹了子元素，宽度也是128px.一句话：对内，浮动元素被内部撑起最小值
->
-> 自适应：浮动元素自适应父元素的200px，一句话：对外，浮动元素被内部撑起最大值是父元素容器
-
-```
-/* CSS代码 */
-.father{
-    border: 1px solid deeppink;
-    width: 200px;
-}
-.son {
-    float: left;
-    font-size: 0;
-    border: 1px solid blue;
-    padding: 5px;
-}
-.father img {
-    width: 128px;
-}
-
-/* HTML代码 */
-<div class="father">
-    <div class="son">
-     <!--包裹-->
-        <img src="../../lib/img/mm1.png">
-        <!--自适应-->
-        <span style="font-size: 12px">美女1，美女2，美女3，美女4，美女5，美女6，后宫1，后宫2，后宫3，后宫</span>
-    </div>
-</div>
-```
-
-> 2.高度塌陷
->
-> 会让父元素的高度塌陷，即无法撑开父元素高度
-
-> 3.块状化
->
-> 浮动元素的display值就是block或者table。注意它不是真正的块状元素，只是有块状的属性，如可以设置宽高。
->
-> 以下是冗余写法，浮动元素加display: block;
-
-> 4.没有任何margin合并
->
-> 设置了float属性的元素没有任何的margin重叠
-
 **清除浮动**
 
-注意浮动一直还在，并没有清除！只能清除浮动带来的影响。
+```js
+方法1：父元素触发BFC，overflow:hidden,auto（完美方法）
+方法2：在浮动元素同级最后添加<div style="clear: both;"></div>
+方法3：父元素添加类名clearFix，样式.clearFix::after{content:'';display:block;clear: both}
+// 方法2和3是同一原理，一个是div,一个是伪类
+```
 
-- 父级盒子元素触发BFC，overflow:hidden,auto（完美方法）
-- 浮动元素设置clear:both。本质是让自己不和float元素在一行显示，并不是真正意义上的清除浮动
-  - 如果`clear:both`元素前面的元素就是float元素，则设置margin-top无效
-  - `clear:both`后面的元素依旧可能会发生文字环绕现象
+## 两边固定100px,中间自适应，如何三栏布局
 
-**参考**
+> - 浮动
+> - 绝对定位
+> - flexbox弹性布局：flex:1
 
-[CSS 深入理解之 float 浮动](https://juejin.cn/post/6844903616155746312#heading-1)
+```html
+// 浮动(注意div顺序必须是固定的left,right,mid)
+.left{
+float:left;
+width:100px;
+background-color: gray;
+}
+.right{
+float:right;
+width:100px;
+background-color: gray;
+}
+.mid{
+background-color: yellow;
+}
+    <div class="box">
+        <div class="left">left</div>
+        <div class="right">right</div>
+        <div class="mid">mid</div>
+    </div>
+
+// 绝对定位(注意div顺序可以任意)
+.left{
+	position:absolute;
+	width:100px;
+	left:0;
+    background-color: gray;
+}
+.right{
+	position:absolute;
+	width:100px;
+	right:0;
+    background-color: gray;
+}
+.mid{
+	position:absolute;
+	left:100px;
+	right:100px;
+    background-color: yellow;
+}
+    <div class="box">
+        <div class="left">left</div>
+        <div class="right">right</div>
+        <div class="mid">mid</div>
+    </div>
+
+// flexbox弹性布局
+.box{
+display: flex;
+}
+.left{
+	width:100px;
+    background-color: gray;
+}
+.right{
+	width:100px;
+    background-color: gray;
+}
+.mid{
+	flex:1;
+    background-color: yellow;
+}
+    <div class="box">
+        <div class="left">left</div>
+        <div class="mid">mid</div>
+        <div class="right">right</div>
+    </div>
+```
 
 ## 圣杯布局和双飞翼布局（经典三分栏布局）
 
@@ -405,27 +427,22 @@ CSS Modules 特性：
 - `标准盒模型(box-sizing:content-box)`，width 指 content 的宽度，总宽度 = width+ padding内边距 + border边框 + margin；加了边框和内边距，盒子会**变大**
 - `怪异盒模型/IE盒模型(box-sizing:border-box)`，width 指 content + padding内边距 + border边框，总宽度 = width + margin；无论内边距或边框多大，盒子**总大小不变**，内容自动缩水，推荐且浏览器默认
 
-## 元素水平/垂直居中
+## 元素水平垂直居中
 
-1. 水平居中
+```css
+// 方式1
+position:absolute;
+top：50%;
+Left：50%;
+transform：translate(-50%,-50%）;
 
-- 行内元素：`text-align: center;`
-- 对于确定宽度的块级元素
-  - width 和 margin 实现： `mragin: 0 auto;`
-  - 绝对定位和 margin-left 实现： `margin-left: (父width - 子 width)/2；`(前提是父元素相对定位)
-- 对于宽度未知的块级元素
-  - table 标签配合 margin 左右 auto 实现
-  - inline-block 实现：`display: inline-block; text-align: center;`
-  - 绝对定位和 transform 实现， translateX 可以移动本身元素的50%
-  - flex 布局 `justify-content: center`
+// 方式2
+display:：flex;
+align-items: center;
+justify-content: center;
+```
 
-1. 垂直居中
 
-- 纯文字类，设置 line-height 等于 height
-- 子绝父相，子元素通过 margin 实现自适应居中
-- 子绝父相，通过位移 transform 实现
-- flex 布局，`align-items: center;`
-- table 布局，父级通过转换为表格形式，子级设置 vertical-align 实现
 
 ## position、float和display的取值意思
 
@@ -542,11 +559,33 @@ rgba() 和 opacity 都能实现透明效果
 4. 在 css3 中 transition 支持 visibility 属性，但不支持 display。因为 transition 可以延迟执行，因此配合 visibility 使用纯 css 延时显示效果可以提高用户体验。
 5. display: none 会引起回流（重排）和重绘；visibility: hidden 会引起重绘。
 
-## 简述 transform，transition，animation 的作用
+## transform，transition，animation区别
 
 1. `transform`：描述了元素的静态样式，本身不会呈现动画效果，可以对元素进行旋转 rotate、扭曲 skew、缩放 scale 和移动 translate 以及矩阵变形 matrix。`transition` 和 `animation` 两者都能实现动画效果。`transform` 常配合`transition` 和 `animation` 使用。
+
 2. `transition`：样式过渡，从一种效果逐渐改变为另一种效果，它是一个合写属性。transition: transition-property  transition-duration  transition-timing-function  transition-delay 从左到右，依次是：过渡效果的css属性名称、过渡效果花费时间、速度曲线、过渡开始的延迟时间  `transition` 通常和 hover 等事件配合使用，需要由事件来触发过渡。
+
+   ```css
+   // 移入旋转180度
+   div{
+   transition：transform 2s
+   }
+   div:hover{
+   transform：rotate(180deg)
+   }
+   ```
+
 3. `animation`：动画，有 `@keyframes` 来描述每一帧的样式。
+
+   ```css
+   div{
+   	animation:myTion 5s infinite;
+   }
+   @keyframes myTion{
+   	0%{left:0};
+   	100%{left:10px}
+   }
+   ```
 
 区别：
 
@@ -563,30 +602,6 @@ rgba() 和 opacity 都能实现透明效果
 - `absolute`：该元素从页面流中移除，并相对于其最近的祖先（如果有的话）或相对于初始包含块的指定位置定位。 绝对位置的方框可以有边距，而且它们不会与任何其他外边距一起折叠。 这些元素不影响其他元素的位置。
 - `fixed`：该元素被从页面流中移除，并被定位在相对于视口的指定位置，滚动时不会移动。
 - `sticky`：粘性定位是相对定位和固定定位的一种混合。 该元素被视为 `relative` 定位，直到它越过一个指定的阈值，超过这一阈值它将被视为 `fixed` 定位。
-
-## 清除浮动
-
-1.直接把 `<div style="clear: both;"></div>`作为最后一个子标签
-
-- 优点：通俗易懂，容易掌握；
-- 缺点：会添加较多无意义的空标签，有违结构与表现的分离，在后期维护中将是噩梦
-
-2.clearfix { overflow: hidden; zoom: 1; }
-
-- 优点：不存在结构和语义化问题，代码量极少
-- 缺点：内容增多时容易造成不自动换行，导致内容被隐藏掉，无法显示需要溢出的元素
-
-3.建立伪类选择器
-
-```
-.fix:after{
-content:'';/*设置添加子元素的内容为空*/
-display:block;
-height:0;
-visibility:hidden;
-clear:both;
-}
-```
 
 ## [css modules和scoped区别](https://segmentfault.com/a/1190000021670036)
 
