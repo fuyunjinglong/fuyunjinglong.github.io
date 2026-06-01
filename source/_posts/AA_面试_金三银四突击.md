@@ -52,9 +52,7 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#元素水平垂直居中">元素水平垂直居中</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#两边固定100px-中间自适应，如何三栏布局">两边固定100px，中间自适应，如何三栏布局</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#页面样式导入link和-import区别">页面样式导入link 和 @import 区别</a>
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#常见兼容性问题？">常见兼容性问题？</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#清除浮动">清除浮动</a>
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#position、float和display的取值意思">position 、float 和 display 的取值意思</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS常用3种引入方式">CSS 常用3种引入方式</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS选择器及优先级">CSS选择器及优先级</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS3有哪些新特性？">CSS3 有哪些新特性 ?</a>
@@ -65,6 +63,11 @@ toc: true # 是否启用内容索引
 
 # JS
 
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#数据类型">数据类型</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#null和undefined">null和undefined</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#三大山-作用域和闭包">三大山-作用域和闭包</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#三大山-原型和原型链">三大山-原型和原型链</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#三大山-异步和单线程">三大山-异步和单线程</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#彻底搞懂this">彻底搞懂this(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#消息队列和事件循环">消息队列和事件循环(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包' %}#闭包">闭包(看题给结果)</a>
