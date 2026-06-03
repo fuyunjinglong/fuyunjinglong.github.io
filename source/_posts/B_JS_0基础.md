@@ -6,7 +6,7 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# 基础
+# 初级
 
 ## 编译型与解释型
 
@@ -655,7 +655,224 @@ console.log(a.plus(b).toString()); // "0.3"
 console.log(a.plus(b).equals(0.3)); // true
 ```
 
+## DOM操作
+
+**1.获取节点**
+
+querySelector() 方法选择指定 CSS 选择器的第一个元素；
+
+querySelectorAll() 方法选择指定的所有元素
+
+比较：
+
+- query 选择符选出来的元素是静态的，而 getElement 这种方法选出的元素的动态的
+- Chrome 浏览器下 getElementBy 方法的执行速度基本都高于 querySelector
+
+**querySelector和getElementById的api相同**
+
+- 添加class:el.classList.add("mystyle", "anotherClass")
+- 移除class:el.classList.remove("mystyle", "anotherClass")
+- 设置style:el.setAttribute("class",classVal )
+
+- 设置style:el.style.top='100px' 
+- el.style["border-width"]="10px"
+
+**2.创建节点添加节点**
+
+```js
+window.onload = function() {
+    var childNode = document.createElement('p');
+    childNode.innerHTML = '这里是提示信息〜〜';
+    //childNode.setAttribute('class', 'alerts');
+    //childNode.setAttribute('onclick', 'this.style.display = "none"');
+    childNode.className = 'alerts';
+    childNode.onclick = function () {
+        this.style.display = 'none';
+    }
+    document.getElementsByTagName('body')[0].appendChild(childNode);
+}
+```
+
+**3.获取屏幕或容器的宽高**
+
+```
+获取宽高
+元素的实际高度：document.getElementById("div").offsetHeight
+元素的实际宽度：document.getElementById("div").offsetWidth
+元素的实际距离左边界的距离：document.getElementById("div").offsetLeft
+元素的实际距离上边界的距离：document.getElementById("div").offsetTop
+
+设置宽高
+document.getElementById("div").style.width = "120px";//可行
+document.getElementById("div").style.offsetWidth = "120px";//不可行
+```
+
+**4.JS绑定解除事件**
+
+事件有三要素 : `事件源`、`事件`、`监听器` 。
+
+- 第一种
+  - 缺点：HTML与js代码紧密耦合。如果要更换 事件，就要改动两个地方:HTML代码和JS代码，这就不利于后期代码的维护。
+- 第二种
+  - 优点：它最大的优点是就是兼容性很好，所有浏览器都支持
+  - 缺点：同一个 dom 元素上，on 只能绑定一个同类型事件，后者会覆盖前者，不同类型的事件可以绑定多个。有一个问题，无法允许团队不同人员对同一元素监听同一事件但做出不用的响应
+- 第三种
+  - 优点：它们可以支持绑定多个同类型事件
+  - 缺点：兼容性并不好,它们只兼容相对应的浏览器才有用。
+
+```
+<!-- 第一种 直接在标签里绑定 -->
+<button id="btn" onclick="handleClick()">
+  自定义函数
+</button>
+
+<script>
+ // 利用 DOM0 进行绑定
+  var btn = document.getElementById('btn')
+  btn.onclick = handleClick()
+  
+  // 利用 DOM3 进行绑定
+  btn.addEventListener('click', handleClick)
+</script>
+```
+
+**5.JS事件冒泡和事件捕获(事件委托)**
+
+DOM事件流（event flow ）存在三个阶段：**事件捕获阶段、处于目标阶段、事件冒泡阶段。**
+
+**事件捕获：**通俗的理解就是，当鼠标点击或者触发dom事件时，浏览器会从根节点开始**由外到内**进行事件传播。
+
+**事件冒泡**：与事件捕获恰恰相反，事件冒泡顺序是由内到外进行事件传播，直到根节点。
+
+<img src="/img/image-20230614063620124.png" alt="image-20230614063620124" style="zoom:80%;" />
+
+1-5是捕获过程，5-6是目标阶段，6-10是冒泡阶段；
+
+```
+userCapture 为false
+事件冒泡执行顺序：从内部到外部Document。
+
+userCapture 为true
+事件捕获执行顺序：从Document向内部执行
+
+Dom事件流：包含userCapture ture 和 false
+捕获阶段的处理函数最先执行，其次是目标阶段的处理函数，最后是冒泡阶段的处理函数。
+目标阶段的处理函数，先注册的先执行，后注册的后执行。
+```
+
+**事件委托**
+
+```
+var ul = document.getElementById('ul');
+ul.onclick = function(event){
+	event= event||window.event;
+	const target = event.target;
+	if(target.nodeName==='LI'){
+		alert(target.innerHTML)
+	}
+}
+```
+
+
+
+**6.监听串口变化**
+
+**Resize事件**
+
+```
+ window.addEventListener('resize', () => {
+        this.helpHeight = window.innerHeight - 90
+      })
+```
+
+**ResizeObserverAPI监听元素容器**
+
+```
+const resizeObserver = new ResizeObserver(entries => {
+  //回调
+  this.$chart.resize();
+});
+resizeObserver.observe(this.$refs.chart);
+// 取消某个元素监听
+//resizeObserver.unobserve(this.$refs.chart)
+// 取消全部元素监听
+//resizeObserver.disconnect()
+缺点：但是坏处是，兼容性不高
+解决：
+github上，已经提供了能够兼容至IE9的 resizeObserver polyfill
+yarn add @juggle/resize-observer
+import ResizeObserver from '@juggle/resize-observer';
+```
+
 # 中级
+
+## 数据请求
+
+**1.XHR**
+
+是ajax的底层核心
+
+```js
+var xhr = new XMLHttpRequest();// 创建对象
+xhr.open('GET', 'example.txt', true);// 打开请求
+xhr.send(); // 发送请求
+xhr.onreadystatechange =function(){// 接收响应
+    // readystate 4 表示成功
+    //status 200-300
+    // 200 成功(有可能强缓存策略，cache-control，expired）
+    // 301 302 redirect
+    // 304 从缓存读取数据。（协商缓存策略，etag）
+    // 404 not found
+    // 500 服务器错误
+}
+xhr可以取消？
+xhr.abort() // 终止请求
+```
+
+**2.fetch(w3c）**
+
+解决xhr异步请求混乱问题，它是基于promise规范，替代xhr
+
+```js
+fetch("ur1
+   {method:post',body:，credencia1:include })
+   then(res=>res.json())// 必须要转下json
+   .then(res=>{console.1og(res)})
+// 兼容性问题
+// 发出的请求，默认是不带cookie.credencial:'include'
+```
+
+**3.jsonp(解决跨域)**
+
+```js
+动态创建script src指向没有跨域限制，onload
+
+后端返回的数据格式一定是，test(["111","222"])
+
+前端提前定义好test这个方法，通过形参就拿到数据了。
+
+jsonp可以做get请求，无法做post请求（缺点）
+
+jsonp可以取消吗？不能
+```
+
+## 跨域和同源策略
+
+同源策略：协议、域名、端口都一样。
+
+跨域处理：
+
+1.JSONP
+
+> 主要依赖的是script标签不受同源策略影响，src指向某一个接口的地址，同步需要传递callback回调函数名字，这样当接口调用成功后，本地创建的全局回调函数就会执行，并且接收到数据。不使用img标签的原因是因为img标签无法执行js语句
+
+2.CORS
+
+> 依赖服务端对前端的请求头信息进行放行，不做限制。Access-contro1-A11ow-origin配置成*
+
+3.代理访问
+
+前端访问不存在跨域问题的代理服务器，代理服务器再去访问目标服务器（服务器之间没有跨域限制）
 
 ## 深浅拷贝
 
@@ -1758,223 +1975,7 @@ function throttled(fn, delay) {
   }
   ```
 
-# DOM
-
-## 获取节点
-
-querySelector() 方法选择指定 CSS 选择器的第一个元素；
-
-querySelectorAll() 方法选择指定的所有元素
-
-比较：
-
-- query 选择符选出来的元素是静态的，而 getElement 这种方法选出的元素的动态的
-- Chrome 浏览器下 getElementBy 方法的执行速度基本都高于 querySelector
-
-**querySelector和getElementById的api相同**
-
-- 添加class:el.classList.add("mystyle", "anotherClass")
-- 移除class:el.classList.remove("mystyle", "anotherClass")
-- 设置style:el.setAttribute("class",classVal )
-
-- 设置style:el.style.top='100px' 
-- el.style["border-width"]="10px"
-
-## **创建节点添加节点**
-
-```js
-window.onload = function() {
-    var childNode = document.createElement('p');
-    childNode.innerHTML = '这里是提示信息〜〜';
-    //childNode.setAttribute('class', 'alerts');
-    //childNode.setAttribute('onclick', 'this.style.display = "none"');
-    childNode.className = 'alerts';
-    childNode.onclick = function () {
-        this.style.display = 'none';
-    }
-    document.getElementsByTagName('body')[0].appendChild(childNode);
-}
-```
-
-## 获取屏幕或容器的宽高
-
-```
-获取宽高
-元素的实际高度：document.getElementById("div").offsetHeight
-元素的实际宽度：document.getElementById("div").offsetWidth
-元素的实际距离左边界的距离：document.getElementById("div").offsetLeft
-元素的实际距离上边界的距离：document.getElementById("div").offsetTop
-
-设置宽高
-document.getElementById("div").style.width = "120px";//可行
-document.getElementById("div").style.offsetWidth = "120px";//不可行
-```
-
-## JS绑定解除事件
-
-事件有三要素 : `事件源`、`事件`、`监听器` 。
-
-- 第一种
-  - 缺点：HTML与js代码紧密耦合。如果要更换 事件，就要改动两个地方:HTML代码和JS代码，这就不利于后期代码的维护。
-- 第二种
-  - 优点：它最大的优点是就是兼容性很好，所有浏览器都支持
-  - 缺点：同一个 dom 元素上，on 只能绑定一个同类型事件，后者会覆盖前者，不同类型的事件可以绑定多个。有一个问题，无法允许团队不同人员对同一元素监听同一事件但做出不用的响应
-- 第三种
-  - 优点：它们可以支持绑定多个同类型事件
-  - 缺点：兼容性并不好,它们只兼容相对应的浏览器才有用。
-
-```
-<!-- 第一种 直接在标签里绑定 -->
-<button id="btn" onclick="handleClick()">
-  自定义函数
-</button>
-
-<script>
- // 利用 DOM0 进行绑定
-  var btn = document.getElementById('btn')
-  btn.onclick = handleClick()
-  
-  // 利用 DOM3 进行绑定
-  btn.addEventListener('click', handleClick)
-</script>
-```
-
-## JS事件冒泡和事件捕获(事件委托)
-
-DOM事件流（event flow ）存在三个阶段：**事件捕获阶段、处于目标阶段、事件冒泡阶段。**
-
-**事件捕获：**通俗的理解就是，当鼠标点击或者触发dom事件时，浏览器会从根节点开始**由外到内**进行事件传播。
-
-**事件冒泡**：与事件捕获恰恰相反，事件冒泡顺序是由内到外进行事件传播，直到根节点。
-
-<img src="/img/image-20230614063620124.png" alt="image-20230614063620124" style="zoom:80%;" />
-
-1-5是捕获过程，5-6是目标阶段，6-10是冒泡阶段；
-
-```
-userCapture 为false
-事件冒泡执行顺序：从内部到外部Document。
-
-userCapture 为true
-事件捕获执行顺序：从Document向内部执行
-
-Dom事件流：包含userCapture ture 和 false
-捕获阶段的处理函数最先执行，其次是目标阶段的处理函数，最后是冒泡阶段的处理函数。
-目标阶段的处理函数，先注册的先执行，后注册的后执行。
-```
-
-**事件委托**
-
-```
-var ul = document.getElementById('ul');
-ul.onclick = function(event){
-	event= event||window.event;
-	const target = event.target;
-	if(target.nodeName==='LI'){
-		alert(target.innerHTML)
-	}
-}
-```
-
-
-
-## 监听串口变化
-
-**Resize事件**
-
-```
- window.addEventListener('resize', () => {
-        this.helpHeight = window.innerHeight - 90
-      })
-```
-
-**ResizeObserverAPI监听元素容器**
-
-```
-const resizeObserver = new ResizeObserver(entries => {
-  //回调
-  this.$chart.resize();
-});
-resizeObserver.observe(this.$refs.chart);
-// 取消某个元素监听
-//resizeObserver.unobserve(this.$refs.chart)
-// 取消全部元素监听
-//resizeObserver.disconnect()
-缺点：但是坏处是，兼容性不高
-解决：
-github上，已经提供了能够兼容至IE9的 resizeObserver polyfill
-yarn add @juggle/resize-observer
-import ResizeObserver from '@juggle/resize-observer';
-```
-
-# Ajax原理
-
-`AJAX`全称(Async Javascript and XML)即异步的`JavaScript` 和`XML`，是一种创建交互式网页应用的网页开发技术，可以在不重新加载整个网页的情况下，与服务器交换数据，并且更新部分网页.
-
-```
-(1)创建对象
-var xhr = new XMLHttpRequest();
-
-(2)打开请求
-xhr.open('GET', 'example.txt', true);
-
-(3)发送请求
-xhr.send(); 发送请求到服务器
-
-(4)接收响应
-xhr.onreadystatechange =function(){}
-
-(1)当readystate值从一个值变为另一个值时，都会触发readystatechange事件。
-(2)当readystate==4时，表示已经接收到全部响应数据。
-(3)当status ==200时，表示服务器成功返回页面和数据。
-(4)如果(2)和(3)内容同时满足，则可以通过xhr.responseText，获得服务器返回的内容。
-```
-
-**服务器响应处理**
-
-同步处理
-
-```
-	1. xhr.open("GET","info.txt",false);  
-	2. xhr.send();  
-	3. document.getElementById("myDiv").innerHTML=xhr.responseText; //获取数据直接显示在页面上
-```
-
-异步处理
-
-```
-	1. xhr.onreadystatechange=function()  { 
-	2.    if (xhr.readyState==4 &&xhr.status==200)  { 
-	3.       document.getElementById("myDiv").innerHTML=xhr.responseText;  
-	4.      }
-	5.    } 
-```
-
-什么是**readyState**？
-
-readyState是XMLHttpRequest对象的一个属性，用来标识当前XMLHttpRequest对象处于什么状态。 readyState总共有5个状态值，分别为0~4，每个值代表了不同的含义。
-
-0：未初始化 -- 尚未调用.open()方法；
-
-1：启动 -- 已经调用.open()方法，但尚未调用.send()方法；
-
-2：发送 -- 已经调用.send()方法，但尚未接收到响应；
-
-3：接收 -- 已经接收到部分响应数据；
-
-4：完成 -- 已经接收到全部响应数据，而且已经可以在客户端使用了；
-
-**什么是status？**
-
-1：服务器收到请求
-
-2：成功
-
-3：重定向
-
-4：客户端错误
-
-5：服务端错误
+# 高级
 
 # 手写setTimeout实现setInterval
 

@@ -65,6 +65,8 @@ toc: true # 是否启用内容索引
 
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#数据类型">数据类型</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#null和undefined">null和undefined</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#数据请求">数据请求</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#跨域和同源策略">跨域和同源策略</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#三大山-作用域和闭包">三大山-作用域和闭包</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#三大山-原型和原型链">三大山-原型和原型链</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#三大山-异步和单线程">三大山-异步和单线程</a>
