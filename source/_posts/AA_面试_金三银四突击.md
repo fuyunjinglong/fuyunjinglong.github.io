@@ -6,7 +6,7 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# interview
+# interview-临时
 
 - [ ] 2024年前端简历（node.js，ts,react，Flutter、Rn，微前端，低代码，小程序，移动端，ssr）
 - [ ] 面试突击-千峰-= 轻松网赚网 thbcm.com =005-JS高频面试题-1【 微信号：itcodeba 】
@@ -31,11 +31,11 @@ toc: true # 是否启用内容索引
 - [前端小社区](https://lee.js.org/My-Nav/FrontEnd/#/Index)
 - [印记中文](https://docschina.org/)
 
-# 前端工程化
+以下AI搜索均可冠以“内容最后，增加按照面试答题模板总结”
 
-- <a target="_blank" href="{% post_path 'H_工程热点_0基础' %}#前端工程化">前端工程化</a>
+# 初级
 
-# H5
+## H5
 
 - <a target="_blank" href="{% post_path 'C_H5_0基础' %}#iframe有哪些优缺点？">iframe 内嵌框架缺点</a>
 - <a target="_blank" href="{% post_path 'C_H5_0基础' %}#Html语义化">html语义化是什么</a>
@@ -43,7 +43,7 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'H_工程热点_性能优化_0基础' %}#浏览器的渲染原理">浏览器的渲染原理</a>
 - <a target="_blank" href="{% post_path 'C_H5_0基础' %}#浏览器内核的理解">浏览器内核的理解</a>
 
-# CSS
+## CSS
 
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#回流和重绘">回流和重绘</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#外边距折叠">外边距折叠</a>
@@ -61,13 +61,25 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#伪类和伪元素">伪类与伪元素</a>
 - <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#flex-1代表什么，用于什么场景">flex=1代表什么</a>
 
-# JS
+## ES6
+
+- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#for-循环中的-var-、let-与-const-区别">for 循环中的 var 、let 与 const 区别(看题给结果)</a>
+- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#判断空对象">判断空对象</a>
+- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#ES5和ES6之默认值的区别-？">ES5和ES6之默认值的区别？</a>
+- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#ES5和ES6之继承的区别-？">ES5和ES6之继承的区别？</a>
+- <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#Promise是什么">Promise是什么</a>
+- Generator函数是什么
+- async函数是什么
+- <a target="_blank" href="{% post_path 'D_框架_axios技巧' %}#axios取消请求">axios取消请求</a>
+- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#for-in、for-of、forEach的比较">for in、for of、forEach的比较</a>
+
+## JS
 
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#数据类型">数据类型</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#null和undefined">null和undefined</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#数据请求">数据请求</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#跨域和同源策略">跨域和同源策略</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#三大山-作用域和闭包">三大山-作用域和闭包</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#三大山-作用域和闭包">三大山-作用域和闭包-开发中哪些场景用到闭包</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#三大山-原型和原型链">三大山-原型和原型链</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#三大山-异步和单线程">三大山-异步和单线程</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#彻底搞懂this">彻底搞懂this(看题给结果)</a>
@@ -100,24 +112,32 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-实现拖拽">必会20道JS-手写实现拖拽</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#防抖和节流">必会20道JS-手写防抖和节流</a>
 
-# ES6
+## 计算机网络
 
-- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#for-循环中的-var-、let-与-const-区别">for 循环中的 var 、let 与 const 区别(看题给结果)</a>
-- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#判断空对象">判断空对象</a>
-- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#ES5和ES6之默认值的区别-？">ES5和ES6之默认值的区别？</a>
-- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#ES5和ES6之继承的区别-？">ES5和ES6之继承的区别？</a>
-- <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#Promise是什么">Promise是什么</a>
-- Generator函数是什么
-- async函数是什么
-- <a target="_blank" href="{% post_path 'D_框架_axios技巧' %}#axios取消请求">axios取消请求</a>
-- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#for-in、for-of、forEach的比较">for in、for of、forEach的比较</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#HTTP-常见的状态码">HTTP-常见的状态码</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#一文读懂-HTTP-1、HTTP-2、HTTP-3">一文读懂 HTTP/1、HTTP/2、HTTP/3</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#彻底搞懂Https">彻底搞懂Https</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#既然有-HTTP-协议，为什么还要有-RPC？">RPC是什么？</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#既然有-HTTP-协议，为什么还要有-WebSocket？">webSocket是什么？</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#TCP是什么">TCP是什么？</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#TCP为什么是三次握手？四次挥手？">TCP为什么是三次握手？四次挥手？</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#TCP-与-UDP-的区别">TCP 与 UDP 的区别</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#网络缓存-http缓存">Http缓存原理</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Cookies、SessionStorage和LocalStorage">cookies，sessionStorage 和 localStorage 的区别</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Cookie">Cookie的实现原理</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#应用缓存-manifest即HTML5的离线缓存">应用缓存-manifest即HTML5的离线缓存</a>
 
-# 框架-基础
+## 数据结构与算法
 
-- <a target="_blank" href="{% post_path 'D_框架_权限认证和权限认证' %}#权限认证">权限认证</a>
-- <a target="_blank" href="{% post_path 'D_框架_权限认证和权限认证' %}#权限控制">权限控制</a>
+- <a target="_blank" href="{% post_path 'E_数据结构_JavaScript-刷题' %}#大纲">数据结构_JavaScript-刷题</a>
+- <a target="_blank" href="{% post_path 'E_数据结构_左神' %}#大纲">数据结构_左神</a>
+- <a target="_blank" href="{% post_path 'E_数据结构_JavaScript' %}#大纲">数据结构_JavaScript</a>
 
-# 框架-vue2
+## git协作(Husky+lint-staged)
+
+# 中级
+
+## vue2
 
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#双向绑定">如何理解双向绑定</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#数据响应式">如何理解数据响应式</a>
@@ -141,53 +161,63 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#Virtual-DOM">Virtual-DOM虚拟DOM</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#Virtual-DOM-diff算法">Virtual-DOM-diff算法</a>
 
-# 框架-vue3
+## vue3
 
 - <a target="_blank" href="{% post_path 'D_框架_Vue2和Vue3比较' %}#Virtual-DOM-diff算法">Vue2和Vue3的diff算法对比</a>
 
-# 计算机网络
+## React
 
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#HTTP-常见的状态码">HTTP-常见的状态码</a>
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#一文读懂-HTTP-1、HTTP-2、HTTP-3">一文读懂 HTTP/1、HTTP/2、HTTP/3</a>
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#彻底搞懂Https">彻底搞懂Https</a>
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#既然有-HTTP-协议，为什么还要有-RPC？">RPC是什么？</a>
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#既然有-HTTP-协议，为什么还要有-WebSocket？">webSocket是什么？</a>
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#TCP是什么">TCP是什么？</a>
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#TCP为什么是三次握手？四次挥手？">TCP为什么是三次握手？四次挥手？</a>
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#TCP-与-UDP-的区别">TCP 与 UDP 的区别</a>
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#网络缓存-http缓存">Http缓存原理</a>
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Cookies、SessionStorage和LocalStorage">cookies，sessionStorage 和 localStorage 的区别</a>
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Cookie">Cookie的实现原理</a>
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#应用缓存-manifest即HTML5的离线缓存">应用缓存-manifest即HTML5的离线缓存</a>
+- [必须要会的 50 道 React 面试题](https://segmentfault.com/a/1190000018604138)
 
-# TypeScript入门
+## webpack
 
-# 多端-移动端
+## vite
+
+## 状态管理(pinia或vuex)
+
+## TypeScript
+
+## Taiwind CSS
+
+## Headless UI组件库
+
+## 多端-移动端
 
 - <a target="_blank" href="{% post_path 'I_多端_移动端' %}#移动端适配怎么解决">移动端适配怎么解决</a>
 
-# 多端-小程序-Taro
+## 多端-小程序-Taro
 
-# 多端-桌面端Electron
+## 多端-桌面端Electron
 
-# NodeJS入门
+# 高级
 
-# 服务端渲染
+## AI开发
 
-# 工程热点
+## Monorepo大厂基建
 
-- <a target="_blank" href="{% post_path 'H_工程热点_性能优化_webpack' %}#webpack-loader机制">性能优化-webpack-loader机制</a>
+## 前端工程化
 
-# 数据结构与算法
+- <a target="_blank" href="{% post_path 'H_工程热点_0基础' %}#前端工程化">前端工程化</a>
 
-- <a target="_blank" href="{% post_path 'E_数据结构_JavaScript-刷题' %}#大纲">数据结构_JavaScript-刷题</a>
-- <a target="_blank" href="{% post_path 'E_数据结构_左神' %}#大纲">数据结构_左神</a>
-- <a target="_blank" href="{% post_path 'E_数据结构_JavaScript' %}#大纲">数据结构_JavaScript</a>
+## 微前端与模块联邦
 
-# 性能优化
+## 全链路监控(SDK设计)
+
+## 性能优化
 
 - <a target="_blank" href="{% post_path 'H_工程热点_性能优化_0基础' %}#性能优化总策略">性能优化总策略</a>
 
-# React
+## NodeJS
 
-- [必须要会的 50 道 React 面试题](https://segmentfault.com/a/1190000018604138)
+## 元框架(服务端渲染)
+
+## WebAssembly/Rust链接工具
+
+## 网络安全防御
+
+## 边缘计算部署
+
+## 权限认证
+
+- <a target="_blank" href="{% post_path 'D_框架_权限认证和权限认证' %}#权限认证">权限认证</a>
+- <a target="_blank" href="{% post_path 'D_框架_权限认证和权限认证' %}#权限控制">权限控制</a>

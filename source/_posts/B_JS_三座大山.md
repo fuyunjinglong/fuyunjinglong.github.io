@@ -1,5 +1,5 @@
 ---
-title: 原形原型链继承闭包
+title: JS三大山
 date: 2022-05-29 07:33:16
 categories:
 - B_JS
@@ -495,23 +495,21 @@ var c = fun(0).fun(1);  c.fun(2);  c.fun(3);//undefined,?,?,?
 
 ## 原型与原型链
 
-JS原型和原型链是一种实现对象之间继承和共享属性的机制。每个对象都有一个内部属性-proto-(google浏览器是[[Prototype]])，指向另一个对象，称为该对象的原型。原型对象也有自己的原型，这样就形成了一个原型链，直到某个对象的原型为null为止。
+原型和原型链是一种实现对象之间继承和共享属性的机制。
 
-**1.核心**
+每个对象都有一个内部属性-proto-(google浏览器是[[Prototype]])，指向另一个对象，称为该对象的原型。原型对象也有自己的原型，这样就形成了一个原型链，直到某个对象的原型为null为止。
 
-> **原型存在的意义就是组成原型链**：引用类型皆对象，每个对象都有原型，原型也是对象，也有它自己的原型，一层一层，组成原型链。
->
-> **原型链存在的意义就是继承**：访问对象属性时，在对象本身找不到，就在原型链上一层一层找。说白了就是一个对象可以访问其他对象的属性。
->
-> **继承存在的意义就是属性共享**：好处有二：一是代码重用，字面意思；二是可扩展，不同对象可能继承相同的属性，也可以定义只属于自己的属性。
+> 一句话：“老王（原型对象）是张三的父亲（原型）
 
-**2.标准**
+
+
+**1.标准**
 
 js之父在设计js原型、原型链的时候遵从以下两个准则
 
 >  **准则1：原型对象（即Person.prototype）的constructor指向构造函数本身**
 >
->  Person.prototype.constructor == Person //
+>  Person.prototype.constructor == Person
 >
 >  **准则2：实例的-proto-保存着构造函数的prototype即实例（即person01）的-proto-和原型对象指向同一个地方**
 >
@@ -520,21 +518,21 @@ js之父在设计js原型、原型链的时候遵从以下两个准则
 - Person.prototype是显示原形属性
 - person01._-proto_-是隐式原形属性,对应新版google中的[[prototype]]
 
-**3.定义**
+**2.定义**
 
-原型：proto是对象object的原形属性，所以proto叫对象的原形
+原型：proto是对象object的原形属性，所以proto叫对象的原形。原型才是核心的核心。
 
-原型对象：prototype是函数fn的原形属性，所以prototype叫fn的原形对象。注意原型对象中默认有一个`constructor`属性，指回该构造函数。
+原型对象：prototype是构造函数fn的原形属性，所以prototype叫fn的原形对象。原形对象只是构造函数才有的一个名称。
+
+> 一句话：“老王（原型对象）是张三的父亲（原型）。
 
 原型链：一句话就是以对象为基准，以proto为连接点，一直到Object.prototype为止的一条链条。(原型链顶层Object.prototype.-proto-=null)
 
-三角恋关系：
-
-> 官方描述
+> **原型存在的意义就是组成原型链**：每个对象都有原型，原型也是对象，也有它自己的原型，一层一层，组成原型链。
 >
-> 在 JavaScript 中，实例对象在读取属性时总是先检查私有属性。如果存在，则会返回私有属性值；否则就会检索 prototype 原型；如果找到同名属性，则返回 prototype 原型的属性值。
+> **原型链存在的意义就是继承**：访问对象属性时，在对象本身找不到，就在原型链上一层一层找。
 >
-> prototype 原型允许引用其他对象。如果在 prototype 原型中没有找到指定的属性，则 JavaScript 将会根据引用关系，继续检索 prototype 原型对象的 prototype 原型，以此类推。
+> **继承存在的意义就是属性共享**：好处：一是代码重用，字面意思；二是可扩展，不同对象可能继承相同的属性，也可以定义只属于自己的属性。
 
 ```js
 // 原型
@@ -576,7 +574,7 @@ function getProperty(obj, propName) {
 }
 ```
 
-**4.创建对象**
+**3.创建对象**
 
 对象的创建方式主要有两种，一种是`new`操作符后跟函数调用，另一种是字面量表示法。(字面量表示法可以理解为语法糖，本质还是new)。
 
@@ -596,10 +594,9 @@ function Person(name) {
 
 // 使用自定义构造函数Person创建对象
 let person = new Person('logan')
-person.sayName() // 输出：logan
 ```
 
-**5.函数对象的原型链**
+**4.函数对象的原型链**
 
 函数都是由`Function`原生构造函数创建的，所以函数的`__proto__`属性指向`Function`的`prototype`属性。
 
@@ -613,7 +610,7 @@ Array.__proto__ === Function.prototype // true
 Object.__proto__ === Function.prototype // true
 ```
 
-**6.Foo经典原型图**
+**5.Foo经典原型图**
 
 <img src="/img/image-20220605092641925.png" alt="image-20220605092641925" style="zoom:80%;" />
 
@@ -662,9 +659,9 @@ Object.__proto__ === Function.prototype
 Function.__proto__ === Function.prototype
 ```
 
-**7.举一反三**
+**6.举一反三**
 
-**7.1`instanceof`操作符**
+**6.1`instanceof`操作符**
 
 `typeof`运算符判断基本类型可以，但对引用类型无法判断(函数对象会返回`function`外，其他都返回`object`)。
 
@@ -734,7 +731,7 @@ Function instanceof Function // true
 // Function.__proto__ === Function.prototype
 ```
 
-**7.2`Object.create`**
+**6.2`Object.create`**
 
 其实是创建对象的第三种方法，是ES5提供的，原理：将传入的对象作为原型
 
@@ -747,7 +744,7 @@ function createObj(proto) {
 }
 ```
 
-**7.3`new`操作符**
+**6.3`new`操作符**
 
 四件事：
 
@@ -782,7 +779,7 @@ function person(name, age) {
 let obj = myNew(person)('chen', 18) // {name: "chen", age: 18}
 ```
 
-**7.4Function & Object 鸡蛋问题**
+**6.4Function & Object 鸡蛋问题**
 
 不必深究，[鸡蛋问题原文](https://github.com/yygmind/blog/issues/35)
 
