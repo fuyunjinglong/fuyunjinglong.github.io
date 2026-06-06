@@ -489,44 +489,52 @@ var c = fun(0).fun(1);  c.fun(2);  c.fun(3);//undefined,?,?,?
 
 # 三大山-原型和原型链
 
+## 原型与原型链
+
 面试答题模板：
 
 > **原型与原型链**：不要死记硬背，手写几遍**原型链继承**、**寄生组合继承**，画图推导 `instanceof` 的查找过程。
 
-## 原型与原型链
-
 原型和原型链是一种实现对象之间继承和共享属性的机制。
 
-每个对象都有一个内部属性-proto-(google浏览器是[[Prototype]])，指向另一个对象，称为该对象的原型。原型对象也有自己的原型，这样就形成了一个原型链，直到某个对象的原型为null为止。
-
-> 一句话：“老王（原型对象）是张三的父亲（原型）
-
-
+**原型是 JS 实现继承的载体，原型链是 JS 实现继承的机制**。**原型对象是内存中存储共享属性和方法的实体对象**
 
 **1.标准**
 
-js之父在设计js原型、原型链的时候遵从以下两个准则
+js之父在设计了两个准则：
 
->  **准则1：原型对象（即Person.prototype）的constructor指向构造函数本身**
+>  **准则 1：** `构造函数.prototype.constructor === 构造函数` （原型对象通过 constructor 指回构造函数本身）
 >
->  Person.prototype.constructor == Person
+>  **准则 2：** `实例.__proto__ === 构造函数.prototype` （实例通过 `__proto__` 指向构造函数的原型对象）
 >
->  **准则2：实例的-proto-保存着构造函数的prototype即实例（即person01）的-proto-和原型对象指向同一个地方**
->
->  person01._-proto_- == Person.prototype
-
-- Person.prototype是显示原形属性
-- person01._-proto_-是隐式原形属性,对应新版google中的[[prototype]]
+>  **形成三角关系**：构造函数通过 `prototype` 找到原型，原型通过 `constructor` 找回构造函数，实例通过 `__proto__` 链接到原型。
 
 **2.定义**
 
-原型：proto是对象object的原形属性，所以proto叫对象的原形。原型才是核心的核心。
+一句话：构造函数的 `prototype` 和 实例对象的 `__proto__`，指向的是内存中同一个原型对象。
 
-原型对象：prototype是构造函数fn的原形属性，所以prototype叫fn的原形对象。原形对象只是构造函数才有的一个名称。
+proto（隐式原型）
 
-> 一句话：“老王（原型对象）是张三的父亲（原型）。
+> - **所有对象**（包括原型对象本身，函数、对象、数组等）都有 `proto` 属性。
+> - **是它自己找爹用的**：儿子通过 `__proto__` 往上找爹的工具箱，用来**指向父级原型**的指针。
+> - 它只是一个属性引用（一个地址），指向爹的 `prototype`。
 
-原型链：一句话就是以对象为基准，以proto为连接点，一直到Object.prototype为止的一条链条。(原型链顶层Object.prototype.-proto-=null)
+prototype（显式原型）
+
+> - 只有**函数**（构造函数）拥有 `prototype` 属性。
+> - **是给它的孩子准备的**：爹通过 `prototype` 指明自己的工具箱在哪，用来**存放共享属性和方法**的容器。
+> - 是一个实实在在的对象（原型对象），还自带一个 `constructor` 属性指回构造函数。
+
+原型链：对象属性查找的路径。实例 -> 构造函数原型 -> 父类构造函数原型 -> … -> Object.prototype -> null
+
+```js
+// 实例 -> 构造函数原型（实例靠 __proto__ 连到 构造函数原型）
+实例.__proto__ === 构造函数.prototype
+// 构造函数原型 -> 父类构造函数原型 -> … -> Object.prototype（构造函数原型靠 __proto__ 连到 父类原型 / Object原型）
+构造函数.prototype.__proto__ === Object.prototype
+// （Object.prototype）是万物之源，他没有爹了（Object原型靠 __proto__ 连到 null）
+Object.prototype.__proto__ === null
+```
 
 > **原型存在的意义就是组成原型链**：每个对象都有原型，原型也是对象，也有它自己的原型，一层一层，组成原型链。
 >
@@ -574,11 +582,11 @@ function getProperty(obj, propName) {
 }
 ```
 
-**3.创建对象**
+**3.原型的引子**
 
-对象的创建方式主要有两种，一种是`new`操作符后跟函数调用，另一种是字面量表示法。(字面量表示法可以理解为语法糖，本质还是new)。
+创建对象：一种是`new`操作符，一种是字面量表示法。
 
-**任何一个函数都可以当做构造函数**。
+> 优先使用**构造函数+原型模式**（或 ES6 的 Class），将私有属性放在构造函数中，共享方法放在原型上，兼顾内存和性能。
 
 ```js
 // 惯例，构造函数应以大写字母开头
@@ -586,29 +594,55 @@ function Person(name) {
   // 函数内this指向构造的对象
   // 构造一个name属性
   this.name = name
-  // 构造一个sayName方法
-  this.sayName = function() {
-    console.log(this.name)
+  // 构造一个sayName方法。缺点：每次new都会创建，浪费内存。
+  this.sayHi = function() {
+    console.log('hi')
   }
 }
-
+// 如果采用原型，解决上述缺点
+Person.prototype.sayHi = function() { console.log('Hi') }; // 共享方法放原型
 // 使用自定义构造函数Person创建对象
 let person = new Person('logan')
 ```
 
-**4.函数对象的原型链**
+采用ES6 Class 语法（语法糖）
 
-函数都是由`Function`原生构造函数创建的，所以函数的`__proto__`属性指向`Function`的`prototype`属性。
-
-注意一个特例：Function`的`__proto__`属性指向`Function.prototype
-
+```js
+// 比上述构造函数，更像面向对象编程
+class Person {
+  constructor(name) { this.name = name;}
+  sayHi() { console.log('Hi') } // 自动放在原型上
+}
 ```
-let fn = function() {}
-// 函数（包括原生构造函数）的原型对象为Function.prototype
-fn.__proto__ === Function.prototype // true
-Array.__proto__ === Function.prototype // true
-Object.__proto__ === Function.prototype // true
+
+**4.函数的双重身份**
+
+> - 作为构造函数：它有 `prototype` 属性
+> - 作为函数对象：它有 `__proto__ ` 属性
+
+```js
+第一步：函数的爹
+// 所有函数的爹 都是Function
+Person.__proto__ === Function.prototype(这个工具箱理由call,apply,bind)
+第二步：Function.prototype 的爹是谁
+// Function.prototype也属于对象，所以它的爹自然也是Object
+Function.prototype.__proto__ === Object.prototype
+第三步：Function的爹是谁
+// JS 引擎在启动时，搞了一个时间循环（Bootstrap 闭环）俗称自己生自己。
+Function.__proto__ === Function.prototype
+第四步：Object的爹是谁
+// Object也属于函数，所以它的爹自然也是Function
+Object.__proto__ === Function.prototype
 ```
+
+神仙逻辑
+
+> **函数的尽头是 Function，对象的尽头是 Object**，而它们俩在顶层打了个死结，最后一起掉进 `null`。
+>
+> 死结(JS 引擎在初始化时硬编码设定的闭环):
+>
+> - Function 创造了 Object即（Object 是 Function 的实例），因为 Object.__proto__ === Function.prototype
+> - Object 是 Function 的底座即（Function.prototype 继承自 Object.prototype），因为 Function.prototype.__proto__ === Object.prototype
 
 **5.Foo经典原型图**
 
@@ -659,135 +693,226 @@ Object.__proto__ === Function.prototype
 Function.__proto__ === Function.prototype
 ```
 
-**6.举一反三**
+## instanceof操作符
 
-**6.1`instanceof`操作符**
+> `A instanceof B` 的本质，就是检查 **`A.__proto__` 的整条链条上，是否存在等于 `B.prototype` 的节点。**
 
-`typeof`运算符判断基本类型可以，但对引用类型无法判断(函数对象会返回`function`外，其他都返回`object`)。
-
-**关键一句话**：`instanceof`用于检查右边变量的原型存在于左边变量的原型链上。其实它表示的是一种原型链继承的关系
-
-> MDN描述：instanceof运算符用于测试构造函数的prototype属性是否出现在对象的原型链中的任何位置
-
-```html
-instanceof`操作符左边是一个对象，右边是一个构造函数，在左边对象的原型链上查找，直到找到右边构造函数的prototype属性就返回`true`，或者查找到顶层`null`（也就是`Object.prototype.__proto__`），就返回`false
-```
-
-**实现思路：**
-
-> 1. 首先 instanceof 左侧必须是对象, 才能找到它的原型链
-> 2. instanceof 右侧必须是函数, 函数才会prototype属性
-> 3. 迭代 , 左侧对象的原型不等于右侧的 prototype时, 沿着原型链重新赋值左侧
-
-```
-// 手写instanceOf-递归版本
-function instanceOfMe(obj, Constructor) { // obj 表示左边的对象，Constructor表示右边的构造函数
-  let leftP = obj.__proto__ // 取对象隐式原型
-    let rightP = Constructor.prototype // 取构造函数显示原型
-    // 到达原型链顶层还未找到则返回false
-    if (leftP === null) {
-        return false
+```js
+function myInstanceof(obj, Constructor) {
+  // 1. 拿到右边构造函数的原型对象（目标靶子）
+  let target = Constructor.prototype; 
+  
+  // 2. 拿到左边对象的隐式原型（起点）
+  let current = obj.__proto__;       
+  
+  // 3. 开始顺着原型链往上找
+  while (true) {
+    // 找到头了，没找到，返回 false
+    if (current === null) {
+      return false;
     }
-    // 对象实例的隐式原型等于构造函数显示原型则返回true
-    if (leftP === rightP) {
-        return true
+    // 找到了！当前节点等于目标靶子，返回 true
+    if (current === target) {
+      return true;
     }
-    // 查找原型链上一层
-    return instanceOfMe(obj.__proto__, Constructor)
-}
-// 手写instanceOf-非递归版本
-function instanceOfMe(L, R) { // L 表示左边的对象，R表示右边的构造函数
-    // 验证如果为基本数据类型，就直接返回false
-    const baseType = ['string', 'number','boolean','undefined','symbol']
-    if(baseType.includes(typeof(L))) { return false }
-    
-    let RP  = R.prototype;  //取 R 的显示原型
-    L = L.__proto__;       //取 L 的隐式原型
-    while(true){           // 无线循环的写法（也可以使 for(;;) ）
-        if(L === null){    //找到最顶层
-            return false;
-        }
-        if(L === RP){       //严格相等
-            return true;
-        }
-        L = L.__proto__;  //没找到继续向上一层原型链查找
-    }
-}
-```
-
-可以解释令人费解的现象：
-
-```
-fn instanceof Object //true
-// 1. fn.__proto__ === Function.prototype
-// 2. fn.__proto__.__proto__ === Function.prototype.__proto__ === Object.prototype
-arr instanceof Object //true
-// 1. arr.__proto__ === Array.prototype
-// 2. arr.__proto__.__proto__ === Array.prototype.__proto__ === Object.prototype
-Object instanceof Object // true
-// 1. Object.__proto__ === Function.prototype
-// 2. Object.__proto__.__proto__ === Function.prototype.__proto__ === Object.prototype
-Function instanceof Function // true
-// Function.__proto__ === Function.prototype
-```
-
-**6.2`Object.create`**
-
-其实是创建对象的第三种方法，是ES5提供的，原理：将传入的对象作为原型
-
-```
-// 手写Object.create
-function createObj(proto) {
-    function F() {}
-    F.prototype = proto
-    return new F()
-}
-```
-
-**6.3`new`操作符**
-
-四件事：
-
-1.创建一个空对象
-
-2.把该对象的`__proto__`属性指向`Sub.prototype`
-
-3.让构造函数里的`this`指向新对象，然后执行构造函数，
-
-4.返回该对象
-
-依然来模拟实现一下：
-
-```javascript
-function myNew (fun) {
-  return function () {
-    // 创建一个新对象且将其隐式原型指向构造函数原型
-    let obj = {
-      __proto__ : fun.prototype
-    }
-    // 执行构造函数
-    fun.call(obj, ...arguments)
-    // 返回该对象
-    return obj
+    // 没找到，也没到头，顺着链条往上走一步
+    current = current.__proto__;
   }
 }
-
-function person(name, age) {
-  this.name = name
-  this.age = age
-}
-let obj = myNew(person)('chen', 18) // {name: "chen", age: 18}
 ```
 
-**6.4Function & Object 鸡蛋问题**
+## Object.create操作符
 
-不必深究，[鸡蛋问题原文](https://github.com/yygmind/blog/issues/35)
+> **凭空造一个空对象，让这个空对象的 `__proto__` 指向传入的 `proto`。**实现这个等式：`新对象.__proto__ === proto`
 
-**参考**
+```js
+function myCreate(proto) {
+  // 1. 创建一个空的构造函数
+  function F() {}
+  // 2. 将空函数的 prototype 指向传入的 proto
+  F.prototype = proto;
+  // 3. 返回这个空函数的实例
+  return new F();
+}
+```
 
-[深入JavaScript系列（六）：原型与原型链](https://juejin.cn/post/6844903749345886216#heading-5)
+```js
+一步步推导：
+1.function F() {}：定义了一个空函数。此时，JS 引擎自动给 F 分配了一个原型对象 F.prototype。
+2.F.prototype = proto：我们粗暴地把 F 默认的原型对象扔掉，替换成传入的 proto。
+3.return new F()：这是最关键的一步。new F() 做了什么？
+3.1创建了一个空实例对象 obj。
+3.2将实例的隐式原型指向构造函数的显式原型：obj.__proto__ = F.prototype。
+4.代入替换：因为第二步中 F.prototype = proto，所以第三步的等式变成了：obj.__proto__ = proto
+```
 
-[深入理解javascript原型和闭包（完结）](https://www.cnblogs.com/wangfupeng1988/p/3977924.html)
+**为什么我们要用 `Object.create`？**
+
+在 `Object.create` 出现之前，JS 实现继承通常是这样的：
+
+```js
+// 旧式继承
+// 有个大坑：你在把 Animal 的实例赋给 Dog.prototype 时，Animal 构造函数会被执行！如果 Animal 里有 this.name = '默认名' 这种属性，就会污染 Dog.prototype。
+Dog.prototype = new Animal(); 
+
+`Object.create` 完美解决了这个问题：
+// 新式继承
+// 它只建立原型链的连接（Dog.prototype.__proto__ === Animal.prototype），绝不执行 Animal 的构造函数，干净利落！只认爹（原型），不干活（不执行构造函数）。
+Dog.prototype = Object.create(Animal.prototype);
+```
+
+## new操作符
+
+```javascript
+function myNew(Constructor, ...args) {
+  // 1. 创建一个空对象
+  let obj = {};
+
+  // 2. 连接原型链：让空对象的 __proto__ 指向构造函数的 prototype
+  obj.__proto__ = Constructor.prototype;
+  // （更优雅的写法是：let obj = Object.create(Constructor.prototype); 直接合并了1和2）
+
+  // 3. 改变 this 指向，执行构造函数，拿到返回结果
+  let result = Constructor.apply(obj, args);
+
+  // 4. 返回值判断
+  // 如果构造函数返回了一个对象或函数，就返回它；否则返回新创建的 obj
+  return (result !== null && typeof result === 'object') || typeof result === 'function' ? result : obj;
+}
+```
+
+## JS的5种继承方式
+
+**1.原型链继承—— “全家共用一个钱包”**
+
+**核心**：直接把爹实例化，当成儿子的公共工具箱。
+
+**大白话**：儿子不自己赚钱，直接把爹的钱包当成全家的公共钱包。
+
+```js
+function Father() { 
+    this.money = [100]; // 爹的私有财产
+}
+Father.prototype.makeMoney = function() {}; // 爹的工具箱
+
+function Son() {}
+Son.prototype = new Father(); // 核心代码：把爹的实例当成儿子的原型
+```
+
+**缺点**：共享过剩（修改引用类型，全家遭殃）。
+
+```js
+let s1 = new Son();
+let s2 = new Son();
+s1.money.push(50); // s1 从钱包里拿了 50
+
+console.log(s2.money); // [100, 50] ！！！s2 的钱也变多了！
+// 因为 money 是个数组（引用类型），挂在 Son.prototype 上，所有儿子实例共享这一个数组，一个儿子改了，其他儿子全受影响。而且，儿子实例化时没法给爹传参。
+```
+
+**2.借用构造函数继承（构造函数窃取） —— “抄爹的作业”**
+
+为了解决“共享钱包”的问题：不共享了，各抄各的！
+
+**核心**：在儿子构造函数里，用 `call` 强行把爹的代码在儿子家里执行一遍。
+
+**大白话**：儿子不让爹留公共钱包了。而是把爹当年赚钱的代码（函数体）拿过来，在自己家里原样执行一遍，自己造一份一样的私有财产。
+
+**优点**：完美解决了引用类型共享的问题，还能给爹传参。
+**致命缺点**：拿不到爹的工具箱（函数复用无从谈起）。每次 new 儿子，都要把爹的代码重新执行一遍，内存浪费
+
+```js
+Father.prototype.makeMoney = function() {}; // 爹的工具箱
+let s1 = new Son();
+s1.makeMoney(); // 报错！s1 找不到这个方法
+```
+
+**3.组合继承 —— “前两种的结合（最常用的老派方案）”**
+
+第一种能拿到工具箱，第二种能拿到私有财产，合体就行了。
+
+**核心**：用 call 借私有财产，用 prototype 借工具箱。
+
+**大白话**：爹的私有财产儿子自己抄一份（防共享），爹的公共工具箱儿子拿过来共享（省内存）。
+
+**优点**：既能防共享，又能用原型方法，还能传参。在 ES6 之前，这是最完美的方案。
+**致命缺点**：爹被调用了两次，有点冗余。一次在 call，一次在 new Father()。而且 new Father() 产生的私有属性，其实会被 call 抄来的同名属性覆盖掉，纯属浪费性能。
+
+```js
+function Father(name) { 
+    this.name = name; 
+    this.money = [100]; 
+}
+Father.prototype.makeMoney = function() {};
+
+function Son(name) {
+    Father.call(this, name); // 第二次调用 Father：抄私有财产
+}
+Son.prototype = new Father(); // 第一次调用 Father：借工具箱
+Son.prototype.constructor = Son; // 记得把 constructor 扳回儿子自己
+```
+
+**4.原型式继承 —— “轻量级的对象克隆”**
+
+这种方案不是用来做“父子类”继承的，而是用来“基于一个现有对象，造一个新对象”。
+
+**核心**：就是前面讲的 `Object.create` 的原理。
+
+**大白话**：没有构造函数，直接找一个现成的爹对象，儿子顺着 `__proto__` 认他做爹。
+
+**缺点**：跟第一种一样，引用类型共享。而且没法给初始对象传参。
+
+```js
+let father = { money: [100], makeMoney: function(){} };
+let son = Object.create(father); // 核心代码
+```
+
+**5.寄生组合式继承 —— “终极完美方案（ES5 巅峰）”**
+
+专门为了解决“组合继承调用了两次爹”的问题。
+
+**核心**：用 `call` 借私有财产，用 `Object.create` 借工具箱（绝不调用爹的构造函数！）。
+
+**大白话**：
+
+- 私有财产？我儿子自己抄（call）。
+- 公共工具箱？我不实例化你，我直接用 Object.create 造一个空对象，让这个空对象的 __proto__ 指向你的工具箱（Father.prototype）！
+
+**优点**：完美！私有属性不共享，原型方法能复用，爹只调用了一次，没有多余属性。这就是 ES6 class 继承的底层实现原理！
+
+```js
+function Father(name) { 
+    this.name = name; 
+    this.money = [100]; 
+}
+Father.prototype.makeMoney = function() {};
+
+function Son(name) {
+    Father.call(this, name); // 只调用一次 Father：抄私有财产
+}
+// 核心魔法：不调用 Father，只建立原型链连接！
+Son.prototype = Object.create(Father.prototype); 
+Son.prototype.constructor = Son;
+```
+
+**终极总结：ES6 class 继承（语法糖）**
+
+现在我们写代码，再也不用写那一坨恶心的 `call` 和 `Object.create` 了。JS 给我们提供了 `class` 和 `extends` 关键字：
+
+```js
+class Father {
+    constructor(name) { this.name = name; this.money = [100]; }
+    makeMoney() {}
+}
+class Son extends Father {
+    constructor(name) { super(name); } // super 相当于 Father.call(this, name)
+}
+```
+
+注意：`class` 只是语法糖！
+
+- `constructor` 里的 `super()`，底层就是 **`Father.call(this)`**。
+- `extends`，底层就是 **`Son.prototype = Object.create(Father.prototype)`**。
 
 ## 彻底搞懂this
 
@@ -1183,375 +1308,6 @@ Function.prototype.myBind = function(context) {
 **参考**
 
 [手写源码系列（一）——call、apply、bin](https://zhuanlan.zhihu.com/p/69070129)
-
-## JS的8种继承方案
-
-**1.原型链继承**
-
-继承的本质就是复制，即重写原型对象，代之以一个新类型的实例。
-
-```js
-function SuperType() {
-    this.property = true;
-}
-
-SuperType.prototype.getSuperValue = function() {
-    return this.property;
-}
-
-function SubType() {
-    this.subproperty = false;
-}
-
-// 这里是关键，创建SuperType的实例，并将该实例赋值给SubType.prototype
-SubType.prototype = new SuperType(); 
-
-SubType.prototype.getSubValue = function() {
-    return this.subproperty;
-}
-
-var instance = new SubType();
-console.log(instance.getSuperValue()); // true
-```
-
-缺点：多个实例对引用类型的操作会被篡改。
-
-```
-function SuperType(){
-  this.colors = ["red", "blue", "green"];
-}
-function SubType(){}
-
-SubType.prototype = new SuperType();
-
-var instance1 = new SubType();
-instance1.colors.push("black");
-alert(instance1.colors); //"red,blue,green,black"
-
-var instance2 = new SubType(); 
-alert(instance2.colors); //"red,blue,green,black"
-```
-
-**2.借用构造函数继承**
-
-使用父类的构造函数来增强子类**实例**，等同于复制父类的实例给子类（不使用原型）
-
-```js
-function  SuperType(){
-    this.color=["red","green","blue"];
-}
-function  SubType(){
-    //继承自SuperType
-    SuperType.call(this);
-}
-var instance1 = new SubType();
-instance1.color.push("black");
-alert(instance1.color);//"red,green,blue,black"
-
-var instance2 = new SubType();
-alert(instance2.color);//"red,green,blue"
-复制代码
-```
-
-核心代码是`SuperType.call(this)`，创建子类实例时调用`SuperType`构造函数，于是`SubType`的每个实例都会将SuperType中的属性复制一份。
-
-缺点：
-
-- 只能继承父类的**实例**属性和方法，不能继承原型属性/方法
-- 无法实现复用，每个子类都有父类实例函数的副本，影响性能
-
-**3.组合继承**
-
-组合上述两种方法就是组合继承。用原型链实现对**原型**属性和方法的继承，用借用构造函数技术来实现**实例**属性的继承。
-
-```js
-function SuperType(name){
-  this.name = name;
-  this.colors = ["red", "blue", "green"];
-}
-SuperType.prototype.sayName = function(){
-  alert(this.name);
-};
-
-function SubType(name, age){
-  // 继承属性
-  // 第二次调用SuperType()
-  SuperType.call(this, name);
-  this.age = age;
-}
-
-// 继承方法
-// 构建原型链
-// 第一次调用SuperType()
-SubType.prototype = new SuperType(); 
-// 重写SubType.prototype的constructor属性，指向自己的构造函数SubType
-SubType.prototype.constructor = SubType; 
-SubType.prototype.sayAge = function(){
-    alert(this.age);
-};
-
-var instance1 = new SubType("Nicholas", 29);
-instance1.colors.push("black");
-alert(instance1.colors); //"red,blue,green,black"
-instance1.sayName(); //"Nicholas";
-instance1.sayAge(); //29
-
-var instance2 = new SubType("Greg", 27);
-alert(instance2.colors); //"red,blue,green"
-instance2.sayName(); //"Greg";
-instance2.sayAge(); //27
-复制代码
-```
-
-缺点：
-
-- 第一次调用`SuperType()`：给`SubType.prototype`写入两个属性name，color。
-- 第二次调用`SuperType()`：给`instance1`写入两个属性name，color。
-
-实例对象`instance1`上的两个属性就屏蔽了其原型对象SubType.prototype的两个同名属性。所以，组合模式的缺点就是在使用子类创建实例对象时，其原型中会存在两份相同的属性/方法。
-
-**4.原型式继承**
-
-利用一个空对象作为中介，将某个对象直接赋值给空对象构造函数的原型。
-
-```js
-function object(obj){
-  function F(){}
-  F.prototype = obj;
-  return new F();
-}
-复制代码
-```
-
-object()对传入其中的对象执行了一次`浅复制`，将构造函数F的原型直接指向传入的对象。
-
-```js
-var person = {
-  name: "Nicholas",
-  friends: ["Shelby", "Court", "Van"]
-};
-
-var anotherPerson = object(person);
-anotherPerson.name = "Greg";
-anotherPerson.friends.push("Rob");
-
-var yetAnotherPerson = object(person);
-yetAnotherPerson.name = "Linda";
-yetAnotherPerson.friends.push("Barbie");
-
-alert(person.friends);   //"Shelby,Court,Van,Rob,Barbie"
-复制代码
-```
-
-缺点：
-
-- 原型链继承多个实例的引用类型属性指向相同，存在篡改的可能。
-- 无法传递参数
-
-另外，ES5中存在`Object.create()`的方法，能够代替上面的object方法。
-
-**5.寄生式继承**
-
-核心：在原型式继承的基础上，增强对象，返回构造函数
-
-```js
-function createAnother(original){
-  var clone = object(original); // 通过调用 object() 函数创建一个新对象
-  clone.sayHi = function(){  // 以某种方式来增强对象
-    alert("hi");
-  };
-  return clone; // 返回这个对象
-}
-复制代码
-```
-
-函数的主要作用是为构造函数新增属性和方法，以**增强函数**
-
-```js
-var person = {
-  name: "Nicholas",
-  friends: ["Shelby", "Court", "Van"]
-};
-var anotherPerson = createAnother(person);
-anotherPerson.sayHi(); //"hi"
-复制代码
-```
-
-缺点（同原型式继承）：
-
-- 原型链继承多个实例的引用类型属性指向相同，存在篡改的可能。
-- 无法传递参数
-
-**6.寄生组合式继承**
-
-结合借用构造函数传递参数和寄生模式实现继承
-
-```js
-function inheritPrototype(subType, superType){
-  var prototype = Object.create(superType.prototype); // 创建对象，创建父类原型的一个副本
-  prototype.constructor = subType;                    // 增强对象，弥补因重写原型而失去的默认的constructor 属性
-  subType.prototype = prototype;                      // 指定对象，将新创建的对象赋值给子类的原型
-}
-
-// 父类初始化实例属性和原型属性
-function SuperType(name){
-  this.name = name;
-  this.colors = ["red", "blue", "green"];
-}
-SuperType.prototype.sayName = function(){
-  alert(this.name);
-};
-
-// 借用构造函数传递增强子类实例属性（支持传参和避免篡改）
-function SubType(name, age){
-  SuperType.call(this, name);
-  this.age = age;
-}
-
-// 将父类原型指向子类
-inheritPrototype(SubType, SuperType);
-
-// 新增子类原型属性
-SubType.prototype.sayAge = function(){
-  alert(this.age);
-}
-
-var instance1 = new SubType("xyc", 23);
-var instance2 = new SubType("lxy", 23);
-
-instance1.colors.push("2"); // ["red", "blue", "green", "2"]
-instance1.colors.push("3"); // ["red", "blue", "green", "3"]
-复制代码
-```
-
-这个例子的高效率体现在它只调用了一次`SuperType` 构造函数，并且因此避免了在`SubType.prototype` 上创建不必要的、多余的属性。于此同时，原型链还能保持不变；因此，还能够正常使用`instanceof` 和`isPrototypeOf()`
-
-**这是最成熟的方法，也是现在库实现的方法**
-
-**7.混入方式继承多个对象**
-
-```js
-function MyClass() {
-     SuperClass.call(this);
-     OtherSuperClass.call(this);
-}
-
-// 继承一个类
-MyClass.prototype = Object.create(SuperClass.prototype);
-// 混合其它
-Object.assign(MyClass.prototype, OtherSuperClass.prototype);
-// 重新指定constructor
-MyClass.prototype.constructor = MyClass;
-
-MyClass.prototype.myMethod = function() {
-     // do something
-};
-复制代码
-```
-
-`Object.assign`会把  `OtherSuperClass`原型上的函数拷贝到 `MyClass`原型上，使 MyClass 的所有实例都可用 OtherSuperClass 的方法。
-
-**8.ES6类继承extends**
-
-`extends`关键字主要用于类声明或者类表达式中，以创建一个类，该类是另一个类的子类。其中`constructor`表示构造函数，一个类中只能有一个构造函数，有多个会报出`SyntaxError`错误,如果没有显式指定构造方法，则会添加默认的 `constructor`方法，使用例子如下。
-
-```js
-class Rectangle {
-    // constructor
-    constructor(height, width) {
-        this.height = height;
-        this.width = width;
-    }
-    
-    // Getter
-    get area() {
-        return this.calcArea()
-    }
-    
-    // Method
-    calcArea() {
-        return this.height * this.width;
-    }
-}
-
-const rectangle = new Rectangle(10, 20);
-console.log(rectangle.area);
-// 输出 200
-
------------------------------------------------------------------
-// 继承
-class Square extends Rectangle {
-
-  constructor(length) {
-    super(length, length);
-    
-    // 如果子类中存在构造函数，则需要在使用“this”之前首先调用 super()。
-    this.name = 'Square';
-  }
-
-  get area() {
-    return this.height * this.width;
-  }
-}
-
-const square = new Square(10);
-console.log(square.area);
-// 输出 100
-复制代码
-```
-
-`extends`继承的核心代码如下，其实现和上述的寄生组合式继承方式一样
-
-```js
-function _inherits(subType, superType) {
-  
-    // 创建对象，创建父类原型的一个副本
-    // 增强对象，弥补因重写原型而失去的默认的constructor 属性
-    // 指定对象，将新创建的对象赋值给子类的原型
-    subType.prototype = Object.create(superType && superType.prototype, {
-        constructor: {
-            value: subType,
-            enumerable: false,
-            writable: true,
-            configurable: true
-        }
-    });
-    
-    if (superType) {
-        Object.setPrototypeOf 
-            ? Object.setPrototypeOf(subType, superType) 
-            : subType.__proto__ = superType;
-    }
-}
-复制代码
-```
-
-**总结**
-
-1、函数声明和类声明的区别
-
-函数声明会提升，类声明不会。首先需要声明你的类，然后访问它，否则像下面的代码会抛出一个ReferenceError。
-
-```js
-let p = new Rectangle(); 
-// ReferenceError
-
-class Rectangle {}
-复制代码
-```
-
-2、ES5继承和ES6继承的区别
-
-- ES5的继承实质上是先创建子类的实例对象，然后再将父类的方法添加到this上（Parent.call(this)）.
-- ES6的继承有所不同，实质上是先创建父类的实例对象this，然后再用子类的构造函数修改this。因为子类没有自己的this对象，所以必须先调用父类的super()方法，否则新建实例报错。
-
-> [《javascript高级程序设计》笔记：继承](https://link.juejin.cn?target=https%3A%2F%2Fsegmentfault.com%2Fa%2F1190000011917606)
-> [MDN之Object.create()](https://link.juejin.cn?target=https%3A%2F%2Fdeveloper.mozilla.org%2Fzh-CN%2Fdocs%2FWeb%2FJavaScript%2FReference%2FGlobal_Objects%2FObject%2Fcreate)
-> [MDN之Class](https://link.juejin.cn?target=https%3A%2F%2Fdeveloper.mozilla.org%2Fzh-CN%2Fdocs%2FWeb%2FJavaScript%2FReference%2FClasses)
-
-**参考**
-
-[JavaScript常用八种继承方案](https://juejin.cn/post/6844903696111763470#heading-3)
 
 # 三大山-异步与事件循环
 

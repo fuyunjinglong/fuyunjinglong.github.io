@@ -79,9 +79,13 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#null和undefined">null和undefined</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#数据请求">数据请求</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#跨域和同源策略">跨域和同源策略</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#三大山-作用域和闭包">三大山-作用域和闭包-开发中哪些场景用到闭包</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#三大山-原型和原型链">三大山-原型和原型链</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#三大山-异步和单线程">三大山-异步和单线程</a>
+- <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#三大山-原型和原型链">[三大山-原型和原型链]-原型的理解</a>
+- <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#instanceof操作符">[三大山-原型和原型链]-instanceof操作符</a>
+- <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#Object-create操作符">[三大山-原型和原型链]-Object-create操作符</a>
+- <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#new操作符">[三大山-原型和原型链]-new操作符</a>
+- <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#JS的5种继承方式">[三大山-原型和原型链]-JS的5种继承方式</a>
+- <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#三大山-作用域和闭包">[三大山-作用域和闭包]-开发中哪些场景用到闭包</a>
+- <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#三大山-异步和单线程">[三大山-异步和单线程]</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#彻底搞懂this">彻底搞懂this(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#消息队列和事件循环">消息队列和事件循环(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包' %}#闭包">闭包(看题给结果)</a>
@@ -101,7 +105,6 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#函数式编程">函数式编程</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2和Vue3比较' %}#Object-defineProperty和Porxy">必会20道JS-手写数据双向绑定</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#call-apply-bind">必会20道JS-手写call/apply/bind</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS类型判断-完整">必会20道JS-手写instanceof</a>
 - <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#手写Promise-核心流程">必会20道JS-手写Promise</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#深浅拷贝">必会20道JS-手写深浅拷贝</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写setTimeout实现setInterval">必会20道JS-手写setTimeout模拟setInterval</a>
