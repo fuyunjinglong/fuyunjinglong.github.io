@@ -79,11 +79,13 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#null和undefined">null和undefined</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#数据请求">数据请求</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#跨域和同源策略">跨域和同源策略</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#前端登录鉴权如何实现？">前端登录鉴权如何实现？</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#三大山-原型和原型链">[三大山-原型和原型链]-原型的理解</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#instanceof操作符">[三大山-原型和原型链]-instanceof操作符</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#Object-create操作符">[三大山-原型和原型链]-Object-create操作符</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#new操作符">[三大山-原型和原型链]-new操作符</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#JS的5种继承方式">[三大山-原型和原型链]-JS的5种继承方式</a>
+- <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#彻底搞懂this">[三大山-原型和原型链]-为什么要有 this？</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#三大山-作用域和闭包">[三大山-作用域和闭包]-开发中哪些场景用到闭包</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#三大山-异步和单线程">[三大山-异步和单线程]</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#彻底搞懂this">彻底搞懂this(看题给结果)</a>
@@ -91,7 +93,6 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包' %}#闭包">闭包(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包' %}#原型、原型链、继承">原型、原型链、继承(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#8种数据类型">null 和 undefined</a>
-- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包' %}#JS的8种继承方案">JS的8种继承方案</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#柯里化">柯里化</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#垃圾回收">垃圾回收</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#内存溢出和内存泄漏">内存泄露</a>
@@ -219,8 +220,3 @@ toc: true # 是否启用内容索引
 ## 网络安全防御
 
 ## 边缘计算部署
-
-## 权限认证
-
-- <a target="_blank" href="{% post_path 'D_框架_权限认证和权限认证' %}#权限认证">权限认证</a>
-- <a target="_blank" href="{% post_path 'D_框架_权限认证和权限认证' %}#权限控制">权限控制</a>

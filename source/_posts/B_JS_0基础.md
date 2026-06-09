@@ -1961,6 +1961,74 @@ function throttled(fn, delay) {
 
 # 高级
 
+## 前端登录鉴权如何实现？
+
+登录鉴权的本质是**对用户身份凭证的生命周期管理**。核心流程包括：**登录获取凭证 -> 存储凭证 -> 路由级拦截 -> 接口级拦截 -> 凭证失效处理**。
+
+**1.两种主流的鉴权模型**
+
+> - Cookie + Session（传统模式）
+> - JWT (JSON Web Token)（现代主流）
+
+**1.1Cookie + Session（传统模式）**
+
+大白话：用身份证号去银行读取个人所有信息。服务器有档案（Session），浏览器只拿档案号（SessionID）→ **有状态**。“我给你一个档案号，你自己别乱动，我这边有你的完整档案。”
+
+原理：用户登录后，后端创建并生成一个 `sessionId`，返回给前端，前端自动保存到cookie中，后续请求中自动携带cookie(核心cookie中的sessionId)
+
+> 凭证获取与存储：
+>
+> - **localStorage**：前端可控，跨域处理简单，但易受 XSS 攻击窃取。
+> - **HttpOnly Cookie**：JS 无法读取，能防 XSS，但需处理跨域 Cookie 配置，且易受 CSRF 攻击。
+> - *（补充亮分项）*：一般普通业务用 localStorage；金融等高安全级别业务推荐 HttpOnly Cookie + CSRF Token。
+
+**1.2JWT (JSON Web Token)（现代主流）**
+
+大白话：拿着手环去游乐园玩。服务器没档案，只给你一张自带信息+签名的通行证（Token）→ **无状态**。“我给你一张写好信息+签名的通行证，你以后自己带过来，我只看票不查档案。”
+
+原理：用户登录后，后端生成一个加密的 Token 字符串返回给前端。后续请求的 HTTP Header 中手动携带这个 Token。
+
+**Token 过期与无感刷新**
+
+Token 为了安全通常有效期较短（如 2 小时），如果让用户频繁重新登录体验极差。解决方案是引入 双 Token 机制（Access Token + Refresh Token）。
+
+> 现代推荐做法：AccessToken 存内存（如 Vuex/Pinia 的 state），RefreshToken 存 HttpOnly Cookie。但为了简单，大多数中小项目依然采用 localStorage 存 AccessToken。
+>
+> - Access Token：有效期短（如 2h），用于业务接口请求。
+> - Refresh Token：有效期长（如 7d），仅用于在 Access Token 过期时去换发新的 Access Token。
+
+无感刷新的流程：
+
+> 1. Access Token 过期，后端返回 401。
+> 2. 前端拦截 401，利用 Refresh Token 调用刷新接口。
+> 3. 拿到新的 Access Token，存储起来。
+> 4. 关键点：把刚才失败的请求重新发一次，对用户完全透明。
+
+如果页面同时发起多个请求且 Token 过期，会触发多次刷新请求导致后端报错：
+
+> 解决方案：使用互斥锁 + 请求队列。第一个 401 触发刷新时加锁，后续的 401 请求不再刷新，而是将请求存入队列（返回未 resolve 的 Promise），等新 Token 返回后，统一遍历队列携带新 Token 重发。
+
+**2.权限控制**
+
+> - 后端权限（核心防线）：接口层、数据库层必须校验权限，前端防不住恶意请求。
+> - 前端权限（体验优化）：隐藏用户无权操作的按钮和菜单，避免误导用户。
+>   - 菜单路由权限：后端返回当前用户的菜单树，前端动态生成路由（router.addRoute）。
+>   - 按钮操作权限：通常使用自定义指令，如 v-permission="['edit_article']"，如果没有该权限则移除 DOM 节点或 disable。
+
+**3.鉴权安全**
+
+> 1. XSS（跨站脚本攻击）：黑客注入 JS 读取 localStorage 中的 Token。
+>
+>    *防御*：对用户输入进行转义；将 Token 存入 HttpOnly Cookie；配置 CSP。
+>
+> 2. CSRF（跨站请求伪造）：黑客利用浏览器自动携带 Cookie 的特性，伪造用户请求。
+>
+>    防御：使用 Token 机制（不用 Cookie）；如果用 Cookie，需后端校验 SameSite 属性、Referer/Origin 头，或加入 CSRF Token。
+>
+> 3. 网络劫持：HTTP 请求被中间人窃听或篡改。
+>
+>    *防御*：全站 HTTPS。
+
 # 手写setTimeout实现setInterval
 
 **为什么要用setTimeout来模拟setInterval的行为？**

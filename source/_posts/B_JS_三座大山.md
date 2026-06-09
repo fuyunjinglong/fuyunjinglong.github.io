@@ -763,6 +763,13 @@ Dog.prototype = Object.create(Animal.prototype);
 
 ## new操作符
 
+> `new` 做了四件事：
+>
+> 1. 创建一个全新的空对象。
+> 2. 将这个新对象的 `__proto__` 指向函数的 `prototype`。
+> 3. **将函数的 `this` 绑定到这个新对象上，并执行函数代码。**
+> 4. 如果函数没有返回其他对象，则自动返回这个新对象。
+
 ```javascript
 function myNew(Constructor, ...args) {
   // 1. 创建一个空对象
@@ -916,239 +923,211 @@ class Son extends Father {
 
 ## 彻底搞懂this
 
-小结：
-
-- 对于直接调用 foo 来说，不管 foo 函数被放在了什么地方，this 一定是 window
-- 对于 obj.foo() 来说，我们只需要记住，谁调用了函数，谁就是 this，所以在这个场景下 foo 函数中的 this 就是 obj 对象
-- 在构造函数模式中，类中(函数体中)出现的this.xxx=xxx中的this是当前类的一个实例
-- call、apply和bind：this 是第一个参数
-- 箭头函数this指向:箭头函数没有自己的this，看其外层的是否有函数，如果有，外层函数的this就是内部箭头函数的this，如果没有，则this是window。
-
 **为什么要有 this？**
 
-官方解释：
+> 一句话：this 的存在是为了让一个函数能在不同的对象上下文中复用，而不需要把对象显式地当做参数传来传去。
 
-> `this` 被自动定义在所有函数的作用域中，它提供了一种更好的方式来“隐式”的传递对象引用，这样使得我们的 `API` 设计或者函数变得更加简洁，而且还更容易复用。
-
-看一段代码：
-
-```
-function say() {
-  console.log("你好！", this.name);
-}
-let person1 = {
-  name: '小猪课堂'
-}
-let person2 = {
-  name: '张三'
-}
-say.call(person1); // 你好！ 小猪课堂
-say.call(person2); // 你好！ 张三
+```js
+// 本质：this 就是一个隐形的第 0 号参数
+obj.foo(arg1, arg2);
+// 引擎在底层其实是这样运行的：
+foo.call(obj, arg1, arg2);
 ```
 
-如果我们没有 `this`，那么我们就需要显式的将上下文对象传入函数，即显式传入 `person1` 和 `person2` 对象。
+**四大核心规则**
 
-**this的定义**
+一句话：`this` 永远指向最后调用它的那个对象。（箭头函数除外)
 
-`this` 就是一个对象，`this` 是在函数被调用时发生的绑定，它指向什么完全取决于函数在哪里被调用。
+> - 规则一：默认绑定（独立调用）
+> - 规则二：隐式绑定（作为对象方法调用）
+> - 规则三：显式绑定（call/apply/bind）
+> - 规则四：new 绑定
 
-> - this 是在运行时绑定的，不是在编写时绑定
-> - this 的绑定与函数的声明和位置没有任何关系
-> - 函数在调用时，会创建一个执行上下文，this 就是这个执行上下文中的一个属性，在函数执行的时候可以用到 this。所以 this 是在函数调用的时候确定绑定关系的，也就是运行时。
+1.默认绑定（独立调用）
 
-**this的绑定规则**
-
-> 绑定流程：先确定函数调用位置，然后确定使用哪条规则，然后根据规则确定 `this` 绑定。
+> 场景：函数没有任何修饰符，直接被调用。比如 foo()。
 >
-> 绑定优先级：默认绑定 < 隐式绑定 < 显式绑定 < new 绑定
-
-4条核心绑定规则
-
-> - 默认绑定(函数的普通调用)：`this` 绑定到全局对象
-> - 隐式绑定(函数作为对象方法调用)：一般绑定到调用对象，如 `obj.foo` 绑定到 `obj`
-> - 显示绑定(函数通过`call`、`apply`、`bind`间接调用)：通过 `call`、`apply` 指定 `this` 绑定到哪里。使用 `bind` 函数硬绑定
-> - new绑定(函数作为构造函数调用)：使用 `new` 关键词，绑定到当前函数对象
-
-判断 this 最终指向，总体流程：
-
-> 1. 判断函数调用时是否使用了 `new`，即 `new` 绑定，如果使用了，则 `this` 绑定的是新创建的对象。
-> 2. 函数调用是否使用了 `call`、`apply` 等显式绑定，或者硬绑定（bind），如果是的话，`this` 指向指定的对象。
-> 3. 函数是否在某个上下文对象中调用，即隐式绑定，如 `obj1.foo`，如果是的话，`this` 指向绑定的那个上下文对象。
-> 4. 以上 3 点都不涉及的话，则采用默认绑定，但是需要注意的是，在严格模式下，默认绑定的 `this` 是 `undefined`，非严格模式下绑定到全局对象。
-
-**1.默认绑定(函数的普通调用)**
-
-> 当函数不带用任何修饰进行调用时，此时 `this` 的绑定就是默认绑定规则，`this` 指向全局对象。
+> 规则：
 >
-> let变量声明不会绑定在window上面，只有var声明的才会，这是需要注意的。除此之外，严格模式下上段代码的 `this` 是 `undefined`，
+> - 在非严格模式下，`this` 绑定到全局对象（浏览器是 `window`，Node 是 `global`）。
+> - 在严格模式下，`this` 绑定到 `undefined`。
 
-```
-var name = '小猪课堂';
-function foo(){
-  console.log(this) // Window{}
-  console.log(this.name) // 小猪课堂
-}
-foo(); // 小猪课堂
-```
-
-在全局作用域中定义了一个变量`name`，然后我们在函数 `foo` 中使用`this.name`，输出的结果就是全局变量`name`，这说明我们 `this` 指向了全局作用域，也就是说 `this` 绑定到了 `window` 对象上。
-
-函数的这种调用方式就被称为默认绑定，默认绑定规则下的 `this` 指向全局对象。
-
-**2.隐式绑定(函数作为对象方法调用)**
-
-```
-//var foo=()=> {
-//  console.log(this.name) // undefined
-//}
+```js
+var a = 10; // var 声明会挂载到 window 上
 function foo() {
-  console.log(this.name) // 小猪课堂
+  console.log(this.a);
 }
-let obj = {
-  name: '小猪课堂',
-  foo: foo
+foo(); // 10 (非严格模式，this -> window)
+
+function bar() {
+  "use strict";
+  console.log(this);
 }
-obj.foo();
+bar(); // undefined (严格模式)
 ```
 
-在 `obj` 对象中引用了函数 `foo`，然后我们使用 `obj.foo`（函数别名）的方式调用了该函数，此时不是独立函数调用，我们不能使用默认绑定规则。
+2.规则二：隐式绑定（作为对象方法调用）
 
-此时 `this` 的绑定规则称为隐式绑定规则，因为我们不能直接看出函数的调用位置，它的实际调用位置在 `obj` 对象里面，调用 `foo` 时，它的执行上下文对象为 `obj` 对象，所以 `this` 将会被绑定到 `obj` 对象上，所以我们函数中的 `this.name` 其实就是`obj.name`。这就是我们的隐式绑定规则。
+> 场景：函数作为某个对象的方法被调用。比如 obj.foo()。
+>
+> 规则：this 绑定到调用该函数的对象（即点前面的那个对象）。如果存在多层引用，只看最后一层。
 
-i.多个引用调用
+```js
+var a = 100;
 
-如果我们调用函数时有多个引用调用，比如`obj1.obj2.foo()`。这个时候函数 `foo` 中的 `this` 指向哪儿呢？其实不管引用链多长，`this` 的绑定都由最顶层调用位置确定，即`obj1.obj2.foo()`的 `this` 还是绑定带 `obj2`。
-
-ii隐式绑定中 this 丢失
-
-在隐式绑定规则中，我们认为谁调用了函数，`this` 就绑定谁，比如 `obj.foo` 中 `this` 就绑定到 `obj`，但是有一些情况比较特殊，即使采用的隐式绑定规则，但是 `this` 并没有按照我们的想法去绑定，这就是所谓的隐式绑定 `this` 丢失，常见于回调函数中。
-
-```
-function foo() {
-  console.log(this.name) // 小猪课堂
-}
-function doFoo(fn) {
-  fn(); // 函数调用位置
-}
-
-let obj = {
-  name: '张三',
-  foo: foo
-}
-let name = '小猪课堂';
-doFoo(obj.foo); // 小猪课堂
-```
-
-上段代码中我们很容易会以为 `foo` 绑定的 `this` 是 `obj` 对象，因为我们使用了 `obj.foo` 的方式，这种方式就是遵循隐式绑定规则。但是事实上 `this` 却绑定到了全局对象上去，这是因为我们在 `doFoo` 函数中调用 `fn` 时，这里才是函数的实际调用位置，此时是独立函数调用，所以 `this` 指向了全局对象。
-
-实际项目中我们容易遇到这种问题的场景可能就是定时器了，比如下面的代码：
-
-```scss
-setTimeout(obj.foo, 100)
-```
-
-这种写法就很容易造成 `this` 丢失。
-
-**3.显示绑定(函数通过`call`、`apply`、`bind`间接调用)**
-
-明确的将函数的 `this` 绑定在某个对象上。使用call、apply、bind。其中bind就是硬绑定。
-
-虽然显式绑定本身不能解决 `this` 绑定丢失的问题，但是我们可以通过变通的方式来解决这个问题，也被称作**硬绑定**。
-
-硬绑定：
-
-```
-function foo() {
-  console.log(this.name) // 小猪课堂
-}
-function doFoo(fn) {
-  fn(); // 函数调用位置
-}
-let obj = {
-  name: '张三',
-}
-let bar = function () {
-  foo.call(obj)
-}
-let name = '小猪课堂';
-doFoo(bar); // 张三
-setTimeout(bar, 100); // 张三
-```
-
-其实思路也比较简单，出现 `this` 绑定丢失原因无非就是我们传入的回调函数在被执行时，`this` 绑定规则变为了默认绑定，那么为了解决这个问题，我们不妨在封装一个函数，将 `foo` 函数的 `this` 显式绑定到 `obj` 对象上去即可。
-
-这里提一点，下面写法是错误的：
-
-```scss
-doFoo(foo.call(obj));
-```
-
-因为回调函数是在 `doFoo` 里面执行的，上面的写法相当于 `foo` 函数立即执行了。
-
-**4.new绑定(函数作为构造函数调用)**
-
-使用 new 来调用函数时，会执行下面操作：
-
-- 创建一个全新的对象
-- 这个新对象会被执行原型连接
-- 这个新对象会绑定到函数调用的 `this`
-- 如果函数没有返回其它对象，那么 `new` 表达式种的函数调用会自动返回这个新对象
-
-我们可以看到 `new` 的操作中就有 `this` 的绑定，我们在来看看代码。
-
-代码如下：
-
-```ini
-function foo(name) {
-  this.name = name;
-}
-let bar = new foo('小猪课堂');
-console.log(bar.name); // 小猪课堂
-复制代码
-```
-
-上段代码我们使用 `new` 关键词调用了 `foo` 函数，大家注意这不是默认调用规则，这是 `new` 绑定规则。
-
-练习绑定：
-
-```
-var name = 'window'
-
-const person1 = {
-  name: 'person1',
-  show1: function () {
-    console.log(this.name)
-  },
-  show2: () => console.log(this.name),
-  show3: function () {
-    return function () {
-      console.log(this.name)
-    }
-  },
-  show4: function () {
-    return () => console.log(this.name)
+const obj = {
+  a: 2,
+  foo: function() {
+    console.log(this.a);
   }
-}
-const person2 = { name: 'person2' }
+};
 
-person1.show1()                     // person1 函数作为对象方法调用，this指向对象
-person1.show1.call(person2)         // person2 使用call间接调用函数，this指向传入的person2
+obj.foo(); // 2 (this 指向 obj)
 
-person1.show2()                     // window  箭头函数无this绑定，在全局环境找到this，指向window
-person1.show2.call(person2)         // window  间接调用改变this指向对箭头函数无效
-
-person1.show3()()                   // window  person1.show3()返回普通函数，相当于普通函数调用，this指向window
-person1.show3().call(person2)       // person2 使用call间接调用函数，this指向传入的person2
-person1.show3.call(person2)()       // window  person1.show3.call(person2)仍然返回普通函数
-
-person1.show4()()                   // person1 person1.show4调用对象方法，this指向person1，返回箭头函数，this在person1.show4调用时的词法环境中找到，指向person1
-person1.show4().call(person2)       // person1  间接调用改变this指向对箭头函数无效
-person1.show4.call(person2)()       // person2  改变了person1.show4调用时this的指向，所以返回的箭头函数的内this解析改变
+// 多层引用：只看最后一层
+const obj2 = { a: 3, obj: obj };
+obj2.obj.foo(); // 2 (最后一层是 obj，this 指向 obj)
 ```
 
-**参考**
+⚠️ 致命陷阱：隐式丢失
 
-[面试官：JS中this指向哪儿？你是如何确定this的？](https:/面试官：JS中this指向哪儿？你是如何确定this的？/juejin.cn/post/7115390077353590792#heading-13)
+```js
+// 当把对象的方法赋值给一个变量，或者作为回调函数传递时，会发生隐式丢失，this 会回退到默认绑定。
+var a = '全局';
+const obj = {
+  a: '对象内',
+  foo: function() { console.log(this.a); }
+};
+
+// 赋值给变量
+const fn = obj.foo; 
+fn(); // '全局' (fn 直接调用，没有对象修饰，默认绑定 window)
+
+// 作为回调函数
+setTimeout(obj.foo, 100); // '全局' (相当于把函数交给 setTimeout 执行，也是独立调用)
+```
+
+3.规则三：显式绑定（call/apply/bind）
+
+> 场景：我们不希望 this 随便乱跑，想强行指定 this 指向谁。
+>
+> 规则：使用 call、apply 或 bind 强行把 this 绑定到指定的对象上。
+>
+> - call(thisArg, arg1, arg2)：立即执行，参数列表。
+> - apply(thisArg, [argsArray])：立即执行，参数数组。
+> - bind(thisArg, arg1)：不立即执行，而是返回一个硬绑定了新 this 的新函数。
+
+```js
+const obj1 = { name: 'obj1' };
+const obj2 = { name: 'obj2' };
+
+function foo() {
+  console.log(this.name);
+}
+
+foo.call(obj1); // 'obj1'
+foo.apply(obj2); // 'obj2'
+
+// bind 的硬绑定
+const boundFoo = foo.bind(obj1);
+boundFoo.call(obj2); // 'obj1' (bind 一旦绑定，死都不会变)
+```
+
+4.规则四：new 绑定
+
+> 场景：使用 new 关键字调用函数（构造函数）。
+
+**一个例外-箭头函数（ES6）**
+
+> 箭头函数是 this 规则中的法外狂徒，它根本不遵守以上四条规则。
+>
+> 规则：
+>
+> - 箭头函数没有自己的 this。
+> - 它的 this 是在定义时决定的，继承自外层第一个普通函数的 this（词法作用域）。
+> - 箭头函数的 this 一旦确定，用 call/apply/bind 也无法改变。
+
+```js
+var name = 'window';
+
+const obj = {
+  name: 'obj',
+  foo: function() {
+    // 这里的 this 指向 obj (普通函数规则二)
+    const innerFunc = () => {
+      // 箭头函数，继承外层 foo 的 this，也指向 obj
+      console.log(this.name); 
+    };
+    innerFunc();
+  },
+  bar: () => {
+    // 箭头函数，外层没有普通函数，只能继承全局作用域的 this (window)
+    console.log(this.name);
+  }
+};
+
+obj.foo(); // 'obj'
+obj.bar(); // 'window'
+```
+
+**一套优先级机制**
+
+> 箭头函数 > new 绑定 > 显式绑定 > 隐式绑定 > 默认绑定
+
+证明一下 `new` 和 `bind` 的冲突：
+
+```js
+// 注：虽然 new 的优先级高于 bind，但 new 不能和 call/apply 一起使用，所以这个优先级主要针对 bind。
+function foo(age) {
+  this.age = age;
+}
+
+const obj = {};
+const boundFoo = foo.bind(obj); // 显式绑定到 obj
+
+// new 的优先级比 bind 高！
+const instance = new boundFoo(25); 
+
+console.log(obj.age);    // undefined (obj 没有被改变)
+console.log(instance.age); // 25 (this 指向了 new 创建的新对象)
+```
+
+判断this的总流程
+
+> - 看是不是箭头函数:直接找**定义时**外层普通函数的 `this` 是谁，它就是谁。（死规矩，任何调用方式都改变不了）
+> - 普通函数，按优先级从高到低找（命中即止）
+>   - 有 new？ 👉 指向新创建的实例对象。
+>   - 有 call/apply/bind？ 👉 指向绑定的对象。（注意：绑了 null/undefined 无效，往下走）
+>   - 有对象调用（obj.fn()）？ 👉 指向点前面的对象。（注意：赋值给变量后再调用算丢失，往下走）
+>   - 直接裸调（fn()）？ 👉 严格模式指向 undefined，非严格模式指向 window。
+
+**实战**
+
+实战 1：对象嵌套与箭头函数
+
+```js
+var a = 1;
+const obj = {
+  a: 2,
+  foo: () => {
+    console.log(this.a);
+  },
+  bar: function() {
+    const inner = () => console.log(this.a);
+    inner();
+  }
+};
+
+obj.foo(); // ? 
+obj.bar(); // ?
+```
+
+解析：
+
+obj.foo()：foo 是箭头函数，外层没有普通函数，this 指向 window。输出 1。
+obj.bar()：bar 是普通函数，this 指向 obj；inner 是箭头函数，继承 bar 的 this，也指向 obj。输出 2。
+
+
 
 ## call/apply/bind
 
@@ -1304,10 +1283,6 @@ Function.prototype.myBind = function(context) {
     }
 }
 ```
-
-**参考**
-
-[手写源码系列（一）——call、apply、bin](https://zhuanlan.zhihu.com/p/69070129)
 
 # 三大山-异步与事件循环
 
