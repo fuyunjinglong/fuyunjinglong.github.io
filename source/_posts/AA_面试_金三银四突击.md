@@ -86,6 +86,7 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#new操作符">[三大山-原型和原型链]-new操作符</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#JS的5种继承方式">[三大山-原型和原型链]-JS的5种继承方式</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#彻底搞懂this">[三大山-原型和原型链]-为什么要有 this？</a>
+- <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#call、apply、bind-的区别">[三大山-原型和原型链]-call、apply、bind-的区别</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#三大山-作用域和闭包">[三大山-作用域和闭包]-开发中哪些场景用到闭包</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#三大山-异步和单线程">[三大山-异步和单线程]</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#彻底搞懂this">彻底搞懂this(看题给结果)</a>

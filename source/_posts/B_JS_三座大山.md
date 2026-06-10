@@ -12,6 +12,24 @@ toc: true # 是否启用内容索引
 
 > **作用域与闭包**：理解执行上下文栈和变量对象，明白函数创建和执行是两个不同阶段。
 
+## 作用域
+
+定义：作用域是变量的可访问范围和规则。
+
+三种类型
+
+> - 全局作用域： 最外层，随处可见，容易污染。
+> - 函数作用域： 函数内部定义的变量外部无法访问（JS传统作用域）。
+> - 块级作用域（ES6）： {}内使用 let/const 声明的变量具有块级作用域（如 if、for）。
+
+**词法作用域**
+
+一句话：JS的作用域在代码编写（词法分析）阶段就确定了，与函数在哪调用无关，只与函数在哪定义有关。
+
+**作用域链**
+
+一句话：当访问一个变量时，会先在当前作用域找，找不到就去外层作用域找，直到全局作用域，这个查找链条就是作用域链。（*注意：这与 `this` 的指向完全相反，`this` 是运行时动态确定的*）。
+
 ## 作用域-执行上下文
 
 参考
@@ -1127,160 +1145,74 @@ obj.bar(); // ?
 obj.foo()：foo 是箭头函数，外层没有普通函数，this 指向 window。输出 1。
 obj.bar()：bar 是普通函数，this 指向 obj；inner 是箭头函数，继承 bar 的 this，也指向 obj。输出 2。
 
+## call、apply、bind 的区别
 
+> - 都是 Function 原型上的方法，作用是改变函数内部 this 的指向
+> - 执行时机不同（call/apply 立即执行，bind 返回新函数）
+> - 传参形式不同（call 逐个传，apply 数组传，bind 逐个传且可合并）
 
-## call/apply/bind
+| 方法      | 执行时机       | 传参方式                       | 返回值                                 | 常用场景                                |
+| :-------- | :------------- | :----------------------------- | :------------------------------------- | --------------------------------------- |
+| **call**  | **立即执行**   | 逐个传递 `(arg1, arg2, ...)`   | 函数的执行结果                         | 借数组方法处理类数组比如 arguments      |
+| **apply** | **立即执行**   | 数组传递 `([arg1, arg2, ...])` | 函数的执行结果                         | 求 Math.max 处理数组                    |
+| **bind**  | **不立即执行** | 逐个传递 `(arg1, arg2, ...)`   | 返回原函数的拷贝，且 `this` 被永久绑定 | 在 React 类组件或者回调里防止 this 丢失 |
 
-回顾call/apply/bind用法
+**应用场景**
 
-```
-function sayHelloTo (to) {
-    console.log(`${this.name} say hello to ${to}`)
-}
-var Jerry = {
-  name: 'Jerry'
-}
-sayHelloTo.call(Jerry, 'Tom')
-//Jerry say hello to Tom.
+> call
+>
+> - 类数组转数组： Array.prototype.slice.call(arguments) （或 [].slice.call(arguments)）
+> - 借用构造函数实现继承： 子类构造函数中调用 Parent.call(this, args)，实现属性继承。
+>
+> apply
+>
+> - 数学极值： Math.max.apply(null, [1, 2, 3]) （因为 Math.max 不支持接收数组，apply 刚好可以展开数组）
+> - 数组合并： Array.prototype.push.apply(arr1, arr2) （比 concat 性能好，因为直接修改原数组不产生新数组）
+>
+> bind
+>
+> - 防丢 this： React 类组件中绑定事件 this.handleClick = this.handleClick.bind(this)；或者在定时器/回调函数中保存当前上下文。
+> - 函数柯里化（偏函数）： function add(a, b) { return a+b }, const add5 = add.bind(null, 5)，预先传入部分参数。
 
-var Foo = {
-  name: 'Foo'
-}
-sayHelloTo.apply(Foo, ['Bar'])
-//Foo say hello to Bar.
+**手写实现（区分度最高，必考）**
 
-var XYZ = {
-  name: 'XYZ'
-}
-var say = sayHelloTo.bind(XYZ)
-say('ABC')
-//XYZ say hello to ABC.
-```
+手写call
 
-**call/apply**
-
-```
-- 第一个参数就是改变 this 的指向，写谁就是谁，在非严格模式下，null/undefined 指向的是 window。
-- call/apply 的唯一区别就是，传递参数不一样，apply 第二个参数是数组，call的参数是一个一个传递。
-- call 的性能要比 apply 好一些（尤其是传递给函数的参数超过三个的时候）
-```
-
-**bind**
-
-```
--  call/apply都是改变this的同时就把函数执行了，但是bind不是立即执行函数，属于预先改变this和传递一些内容，利用的是柯理化的思想。
-```
-
-**小结：**
-
-> 1. 当我们使用一个函数需要改变`this`指向的时候才会用到`call``apply``bind`
-> 2. 如果你要传递的参数不多，则可以使用`fn.call(thisObj, arg1, arg2 ...)`
-> 3. 如果你要传递的参数很多，则可以用数组将参数整理好调用`fn.apply(thisObj, [arg1, arg2 ...])`
-> 4. 如果你想生成一个新的函数长期绑定某个函数给某个对象使用，则可以使用`const newFn = fn.bind(thisObj); newFn(arg1, arg2...)`
-
-经典面试题：
-
-```
-  // 谁调用我，我就指向谁
-  var name = 222
-  var a={
-    name:111,
-    say:function(){
-      console.log(this.name);
-    }
-  }
-  var fun = a.say
-  fun() // fun.call(window)
-  a.say() // a.say.call(a)
-
-  var b={
-    name:333,
-    say:function(fn){
-      fn(); // fn.call(window),难点
-    }
-  }
-  b.say(a.say) // 相当于把函数当进去执行，这种函数作为入参的，都是指向全局window，所以就是fn.call(window)
-  b.say=a.say
-
-  b.say() // b.say.call(b)
-```
-
-**call、apply、bind更详细用法**
-
-1. 怎么利用 call、apply 来求一个数组中最大或者最小值 ?
-2. 如何利用 call、apply 来做继承 ?
-3. apply、call、bind 的区别和主要应用场景 ?
-
-利用 call、apply 来求一个数组中最大或者最小值
-
-```
-const arr = [1,8,6]
-Math.max.apply(Math或null, arr); //8
-Math.max.call(Math或null, 1,8,6); //8
-Math.max(...arr); //8 es6扩展运算符法
-```
-
-**手写call**
-
-核心思路是：
-
-1. 为传入的`context`扩展一个属性，将原函数指向这个属性
-2. 将`context`之外的所有参数全部传递给这个新属性，并将运行结果返回。
-
-一些细节：
-
-1. 利用**rest 参数**(`…args`)可以存储函数多余的参数
-2. 为传入的`context`扩展参数扩展新属性使用了**`Symbol()`数据类型**，这样确保不会影响到传入的`context`，因为Symbol值一定是独一无二的。
-3. 用**扩展运算符**(`…`)将原来是数组的`args`转发为逗号分隔一个个参数传入到函数中
-
-为什么能找到`this.name`呢？因为`context[fnSymbol]`中的`this`指向的是`context`。
-
-```
+```js
 Function.prototype.myCall = function(context, ...args) {
-  // 判断是否是undefined和null
-  if (typeof context === 'undefined' || context === null) {
-    context = window
-  }
-  // 思路和call是一样的只是传参不同方式
-  let fnSymbol = Symbol()
-  context[fnSymbol] = this
-  //通过隐式绑定的方式调用函数
-  let fn = context[fnSymbol] (...args)
-  //删除添加的属性
-  delete context[fnSymbol] 
-  return fn
+  // 1. 处理 context 为 null 或 undefined 的情况，默认指向 window
+  context = context || window;
+  // 2. 创建一个唯一的 key，防止覆盖原对象属性
+  const fnKey = Symbol('fn');
+  // 3. 将调用的函数作为 context 的属性（this 就是当前调用的函数）
+  context[fnKey] = this;
+  // 4. 执行函数并保存结果
+  const result = context[fnKey](...args);
+  // 5. 删除临时属性，恢复原样
+  delete context[fnKey];
+  // 6. 返回结果
+  return result;
 }
 ```
 
-**手写apply**
+手写bind（核心考点：支持柯里化 + 当作构造函数 new 时 this 失效）
 
-思路和`call`是一样的只是传参不同方式
-
-```
-Function.prototype.myApply = function(context, args) {
-  // 判断是否是undefined和null
-  if (typeof context === 'undefined' || context === null) {
-    context = window
+```js
+Function.prototype.myBind = function(context, ...bindArgs) {
+  // 保存原函数
+  const fn = this;
+  
+  // 返回的新函数
+  const boundFn = function(...callArgs) {
+    // 关键点：如果 boundFn 被 new 调用，this 应该指向实例，而不是传入的 context
+    // 判断是否是 new 调用：this instanceof boundFn
+    return fn.apply(this instanceof boundFn ? this : context, [...bindArgs, ...callArgs]);
   }
-  let fnSymbol = Symbol()
-  context[fnSymbol] = this
-  let fn = context[fnSymbol] (...args)
-  return fn
-}
-```
-
-**手写bind**
-
-```
-Function.prototype.myBind = function(context) {
-// 判断是否是undefined和null
-    if (typeof context === "undefined" || context === null) {
-     context = window;
-    }
-    self = this;
-    return function() {
-     return self.apply(context);
-    }
+  
+  // 关键点：维持原型链，保证 new 出来的实例能访问原函数的原型
+  boundFn.prototype = Object.create(fn.prototype);
+  
+  return boundFn;
 }
 ```
 
