@@ -22,10 +22,6 @@ toc: true # 是否启用内容索引
 - Nust
 - 桌面端(electron)、web(小程序)，server(nextjs+nustjs+prisma+Postgresql+docker)
 
-
-
-
-
 # 大模型发展史
 
 ![image](/img/LLM_Time.png)
@@ -101,6 +97,58 @@ toc: true # 是否启用内容索引
 2. **多模态融合**：视频、3D等多维度数据建模。
 3. **具身智能**：结合机器人、传感器实现物理世界交互。
 4. **可信AI**：提升可解释性、安全性和伦理对齐。
+
+# 全网最全名词
+
+**LLM(Large Language Model)大语言模型**
+
+本质：弱智的语言模型在参数量逐渐扩大时，突破临界值，涌现了只能。
+
+LLM 是基于 Transformer 架构、参数量达到十亿～万亿级，通过“预测下一个词”的方式在海量文本上训练，再经过指令微调和人类对齐，从而能聊天、写代码、做推理等通用任务的 AI 模型。
+
+**对话**
+
+LLM只能“预测下一个词”，对话让它开始快速使用。只能一问一答，不能自动追问。
+
+**Prompt提示词**
+
+分为背景信息+最终指令
+
+**Context上下文**
+
+也就是上面的背景信息
+
+**Memory记忆**
+
+将之前的对话历史放到context部分，作为背景信息，这样大模型就有记忆
+
+**智能体Agent**
+
+用户想让小L帮忙查询天气，但它没有上网的能力，所以智能体来了(一段程序)，能上网。
+
+以前的智能体其实就是加了一段提示词Prompt，再去问大模型，其实就是诈骗。
+
+**RAG检索增强生成**
+
+既然Agent能上网，那么也可以搜索本地文件(向量数据库)，将匹配好的语义的向量数据，加入到context，实现搜索功能，就是RAG
+
+**Function Calling**
+
+LLM与Agent之间交互，不能总使用自然语言(汉字)，Agent是不知道LLM怎么描述需求(LLM可能会胡说)，所以需要一套固定的约定的对话格式，就是Function Calling。
+
+**MCP模型上下文协议**
+
+之前Agent是把上网能力，搜索本地文件能力放到自己内部，没有解耦。现在优化下，解耦出来，但是也需要Agent与工具一套固定的约定的对话格式，就是MCP
+
+> 所以目前形成:LLM(只会说不会做的弱智)，MCP服务提供各种服务，Agent就是传话筒(不生产信息，只是信息的搬运工)。
+
+**LangChain编程框架**
+
+接下来我们专注用户与Agent之间交互，形式有多种多样，主要有：
+
+> - CLI命令行：iFlow，Codex，Claude Code
+> - IDE界面:Trae，Antigravity，Cursor
+> - 桌面助手：OpenClaw，Moltbot，Clawdbot
 
 # MCP 与 Function Calling
 
