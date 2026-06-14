@@ -100,116 +100,181 @@ toc: true # 是否启用内容索引
 
 # 全网最全名词
 
-**LLM(Large Language Model)大语言模型**
+- [一口气拆穿Skill/MCP/RAG/Agent/OpenClaw底层逻辑](https://www.bilibili.com/video/BV1ojfDBSEPv/?spm_id_from=333.1007.top_right_bar_window_history.content.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+
+<img src="/img/2026-06-14_13-30-25.png" style="zoom:50%;" />
+
+## **LLM(Large Language Model)大语言模型**
 
 本质：弱智的语言模型在参数量逐渐扩大时，突破临界值，涌现了只能。
 
 LLM 是基于 Transformer 架构、参数量达到十亿～万亿级，通过“预测下一个词”的方式在海量文本上训练，再经过指令微调和人类对齐，从而能聊天、写代码、做推理等通用任务的 AI 模型。
 
-**对话**
+## **对话**
 
 LLM只能“预测下一个词”，对话让它开始快速使用。只能一问一答，不能自动追问。
 
-**Prompt提示词**
+## **Prompt提示词**
 
 分为背景信息+最终指令
 
-**Context上下文**
+## **Context上下文**
 
 也就是上面的背景信息
 
-**Memory记忆**
+## **Memory记忆**
 
 将之前的对话历史放到context部分，作为背景信息，这样大模型就有记忆
 
-**智能体Agent**
+## **智能体Agent**
 
 用户想让小L帮忙查询天气，但它没有上网的能力，所以智能体来了(一段程序)，能上网。
 
 以前的智能体其实就是加了一段提示词Prompt，再去问大模型，其实就是诈骗。
 
-**RAG检索增强生成**
+## **RAG检索增强生成**
 
 既然Agent能上网，那么也可以搜索本地文件(向量数据库)，将匹配好的语义的向量数据，加入到context，实现搜索功能，就是RAG
 
-**Function Calling**
+## **Function Calling**
 
 LLM与Agent之间交互，不能总使用自然语言(汉字)，Agent是不知道LLM怎么描述需求(LLM可能会胡说)，所以需要一套固定的约定的对话格式，就是Function Calling。
 
-**MCP模型上下文协议**
+## **MCP模型上下文协议**
 
 之前Agent是把上网能力，搜索本地文件能力放到自己内部，没有解耦。现在优化下，解耦出来，但是也需要Agent与工具一套固定的约定的对话格式，就是MCP
 
 > 所以目前形成:LLM(只会说不会做的弱智)，MCP服务提供各种服务，Agent就是传话筒(不生产信息，只是信息的搬运工)。
 
-**LangChain编程框架**
+> 后续可能会退化。常用的MCP会内化到Agent主程序内部，基础的MCP会被封装到常用的skill中。
 
-接下来我们专注用户与Agent之间交互，形式有多种多样，主要有：
+## **LangChain编程框架**
+
+接下来我们专注用户与Agent之间交互，形式有多种多样，主要分为三类：CLI、TUI、GUI，
+
+> - CLI：纯文本命令行，敲字执行，效率高、资源少、适合自动化和服务器运维。
+> - TUI：在终端里用字符“画”出来的界面，有菜单/窗口，但仍是文本，比 CLI 更直观，比 GUI 更轻量。
+> - GUI：常见窗口/图标/鼠标那种图形界面，直观好用，但资源消耗大、自动化弱。
+
+比如：
 
 > - CLI命令行：iFlow，Codex，Claude Code
 > - IDE界面:Trae，Antigravity，Cursor
 > - 桌面助手：OpenClaw，Moltbot，Clawdbot
 
-# MCP 与 Function Calling
+有一种场景，用户需要智能体完成pdf翻译任务：PDF文件-提取-翻译-保存文件。我们可以把提取和保存环节固化为程序，翻译交给LLM。这样一套流程可以用编程实现，就是LangChain。
 
-## 区别
+## **workflow工作流**
 
-**MCP（Model Context Protocol，模型上下文协议）**
+为了照顾非程序员，用低代码的拖拉拽替代编程的LangChain，就是workflow。个人认为是比较鸡肋的存在。
 
-- 由 Anthropic 公司提出，是一种开放标准协议，旨在统一 AI 模型（如大语言模型）与外部数据源或工具之间的通信接口，实现“即插即用”式的连接。
-- 可类比于 AI 的 USB 接口，不依赖特定语言或模型，只要遵循协议，任何工具、数据源都可以被模型调用。
+## **Skill技能**
 
-**Function Calling（函数调用）**
+在上述pdf翻译任务，如果源文件换成其他格式如word,excell等，要么你要增加大量if else，要么用脚本事先控制好，如from_doc.py,from_txt.py,to_pdf.py,to_word.py。用自然语言动态调用脚本，就是skill。
 
-- 是 OpenAI、Qwen 等大模型厂商提供的专属能力，允许模型根据用户自然语言生成结构化指令，从而调用外部系统中预定义的函数或 API。
+在未来，skill可能也只是一个中间产物，未来会有更灵活更好用的形式出现，更符合人直觉无脑使用。
 
-小结：
+## SubAgent子任务
 
-- 如果你的应用需要**多工具、多数据源、复杂任务、安全隔离**，优先考虑 **MCP**。
-- 如果只是**快速实现单一功能、轻量级工具调用**，**Function Calling** 更合适。
-- MCP 更像是“AI 操作系统”，而 Function Calling 是“模型自带工具箱”。两者都是大模型与外部世界交互的重要手段，合理选择将极大提升 AI 系统的开发效率和扩展性。
+Agent处理复杂任务可能上下文非常庞大，且耦合。这时就可以拆分为子任务，且上下文隔离。这就是SubAgent
 
-**MCP、A2A、Function Calling 的关系**
+# Transformer演进
 
-| 概念                 | 角色                                                    |
-| :------------------- | :------------------------------------------------------ |
-| **Agent**            | 具备自主决策、规划、执行能力的智能系统。                |
-| **Function Calling** | 模型调用外部函数的机制，是 Agent 与工具交互的基础能力。 |
-| **MCP**              | 标准化协议，解决 Agent 与外部工具/数据源的连接问题。    |
-| **A2A**              | 协议，解决不同 Agent 之间的协作与通信问题。             |
+Transformer架构图，如下图：
 
-- Function Calling 是 Agent 调用工具的“基础动作”。
-- MCP 是 Agent 与工具/数据源连接的“通用插座”。
-- A2A 是 Agent 与 Agent 之间协作的“通用语言”。
+<img src="/img/2026-06-14_15-54-48.png" style="zoom:50%;" />
 
-## MCP
+**优化-Positional Embedding 位置编码**
 
-全称Model Context Protocol模型上下文协议。MCP就是客户端调用MCP服务的胶水。
+定义：原向量+新向量
 
-**MCP Host**
+新向量计算，有多种算法“
 
-表示支持MCP协议的软件，如Claude Desktop,Cursor,Cline,Cherry Studio。其中Cline是vscode的插件
+> - 固定位置编码PE
+> - 旋转位置编码RoPE：向量在计算点积时，得到更友好的位置特性
+> - 旋转位置编码的扩展方法YaPE：支持更长的上下文位置计算
+> - 没有位置的编码NoPE
 
-**MCP Server**
+**优化-Norm归一化**
 
-MCP服务商，有些基本要自己去实现代码，调用服务的api。
+1.作用于词向量
 
-MCP的工作流程如下图
+为了稳定训练，需要把向量的位置控制在一个可控范围，且之间的相对差距不变。即把数据变换到一个更稳定的范围。
 
-![image](/img/2025-12-07_20-33-21.png)
+在原始论文叫LayerNorm层归一化，在LLM中叫*RMSNorm*。
 
-## Function Calling
+Norm归一化放在Attenttion注意力层的前面，叫Pre-Norm前向归一化。放到后面叫Post-Norm后向归一化。
 
-函数调用，就是模型调用函数的过程。如下图
+Pre-Norm放在残差链接前面，叫Pre-Norm before Residual。放到后面叫Pre-Norm after Residual。
 
-![image](/img/2025-12-07_20-55-43.png)
+> - Pre-Norm
+> - Post-Norm
+> - Pre-Norm & Post-Norm：前面放一个，后面放一个
+> - Pre-Norm before Residual
+> - Pre-Norm after Residual
+> - ...
 
-# 领域模型微调
+2.作用于注意力层里面(QKV)
 
-**ChatGPT训练三步走**
+作用于Q向量，叫Q-Norm。也可以同时作用于QK,叫QK-Norm
 
-![image](/img/2025-11-13_20-06-37.png)
+> - Q-Norm
+> - K-Norm
+> - V-Norm
+> - QK-Norm
+> - ...
 
-**训练领域模型的一般范式**
+**优化-残差连接**
 
-![image](/img/2025-11-13_20-09-37.png)
+原始论文中的算法是简单加法计算，后优化算法：
+
+> - HC超连接：字节
+> - mHC流形约束的超连接：DeepSeek
+> - AttentionResidual注意力残差：Kimi
+
+**优化-FFN前馈神经网络层**
+
+1.MoE架构
+
+原始是一个普通的全连接神经网络。因为LLM的FFN太过于庞大，所以拆分成很多个小的FFN,也叫Expert专家。增加一个底座叫可训练的Router路由层，每次Token计算只路由到一个小FFN上。这就实现了总参数量很多，但推理时只激活少量的参数到小FFN。这就是MoE（混合专家模型）
+
+<img src="/img/2026-06-14_14-43-01.png" style="zoom:20%;" />
+
+2.DeepSeek进一步优化Expert
+
+拆分为更小的Expert，引入共享Expert概念。就叫做DeepSeek MoE。
+
+> - 目前很多模型名称上，比如397B-A17B，类似AxxxB就是MoE架构，表示总参数量397B，推理只激活17B参数量。
+> - FFN架构分类
+>   - Dense稠密类型：以前的所有参数参与计算的模型
+>   - Sparse稀疏类型：目前只激活部分参数的模型即MoE
+
+**优化-Attenttion注意力层(卷王)**
+
+核心解决的问题：每个Token向量需要与其他向量进行一次计算，所以烧Token。
+
+所以为了降低成本，要么缩短向量长度，要么减少计算次数。
+
+> - 缩短向量长度：Dense(MQA/GQA/MLA)
+> - 固定窗口计算或部分计算：Sparse(DSA/SWA/CSA/HCA)
+> - n2转为n的线性计算：Linear
+
+1.Dense稠密类型
+
+> - MHA：多头注意力
+> - MQA：多查询注意力
+> - GQA：分组查询注意力
+> - MLA：多头潜在注意力
+
+2.Sparse稀疏类型
+
+> - DSA：DeepSeek Sparse Attention
+> - SWA：滑动窗口注意力
+> - CSA/HCA：Compressed Sparse Attention
+
+3.Linear Attention(hybrid)线性注意力(混合架构)
+
+> - KDA：Kimi Delta Attention
+> - GatedDeltaNet：Gated Delta Networks
+> - Lighting Attention：Lighting Attention-2
+> - Manba：一种SSM(State Space Model)状态空间模型，新出的
