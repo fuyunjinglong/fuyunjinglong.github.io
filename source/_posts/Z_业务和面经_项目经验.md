@@ -679,6 +679,98 @@ onMounted(async () => {
 - [vue3-infinite-scroll](https://link.juejin.cn?target=https%3A%2F%2Fgithub.com%2FDevTony101%2Fvue3-infinite-scroll): 这是一个支持无限滚动的 Vue 3 组件，可以用于渲染大量数据。它支持异步加载、滚动到指定位置、动态高度等功能。
 - [vue-lazy-render](https://link.juejin.cn?target=https%3A%2F%2Fgithub.com%2Fyeyan1996%2Fvue-lazy-render): 这是一个基于 Vue 3 的懒加载组件，可以用于渲染大量数据。它支持滚动监听、动态高度、动画效果等功能。
 
+## 内-SKILL-prd-reverse-generator（PRD反向生成器）
+
+代码结构
+
+> - SKILL.md // 主文档：概述、核心特性、使用流程
+> - templates/prd-template.md // 标准PRD模板
+> - templates/version-tracker.md // 版本追踪模板
+> - rules/markdown-validation.md // MarkDown格式验证规则
+> - rules/code-evidence-collection.md // 代码证据收集规则
+> - rules/tech-stack-detection // 技术栈识别规则
+> - workflows/initial-generation.md // 首次生成流程
+> - workflows/incremental-update.md // 增量更新流程
+> - workflows/change-detection // 变更检测规则
+> - utils/hash-algorithm.md // 代码哈希生成算法
+> - utils/smart-merge // 智能合并策略
+
+## 内-SKILL-codehub-mr-reviewer
+
+注意使用员工助手
+
+## 内-SKILL-AI辅助代码检视(mr-reviewer)
+
+代码结构
+
+> - SKILL.md // 检视流程定义(5个Stage,必须严格按顺序执行)
+> - scripts/0-clean-temp
+> - scripts/1-prepare-data
+> - scripts/2-ai-analysis
+> - scripts/3-generate-report
+> - scripts/4-submit-review
+> - scripts/5-welink-notify
+> - tips/common_tips.md // 通用检视规则
+> - tips/{language}_tips.md// 编程语言规则
+> - tips/tips_guide.md // 规则编写指南
+> - reference/ai_analysis.md // 分析技术细节(Stage2必读)
+> - reference/report_template.md // 报告模板
+> - reference/submit_mr_review.md // 提交评论流程(Stage4必读)
+> - reference/pre_requisites.md // 前置条件详细说明
+> - evals/evals.json //分析示例
+> - pack/publish.py // 打包发布脚本
+> - pack/config_pack.json // 打包配置
+
+## 内-AgentCenter
+
+1.提供MCP、Skill、SubAgent、Command、Extension。
+
+| 子市场        | 功能                                         |
+| ------------- | -------------------------------------------- |
+| MCP市场       | 支持上传及使用local/remote两种类型MCP        |
+| SubAgent市场  | 支持浏览SubAgent卡片列表与详情、上传SubAgent |
+| Skill市场     | 支持浏览Skill卡片列表与详情、上传Skill       |
+| Command市场   | 同上                                         |
+| Extension市场 | 同上                                         |
+
+2.math-mcp-server（MCP工具）
+
+## 内-项目开发套件
+
+1.核心模块
+
+> - 设计阶段 DesignStage
+> - 开发阶段 DevelopmentStage
+> - 测试阶段 TestingStage
+> - 运维阶段 OMStage
+
+2.开发阶段核心技能
+
+> - mr-xx：MR代码检视工具，自动分析代码变更、识别功能风险、生成检视报告并发送邮件通知
+> - java-ut-xx：JavaUT生成工具，根据UT规范自动生成单元测试，支持覆盖率达标
+> - java-dt-xx：WorkOrder单测生成，通过Flex录制自动生成数据交易单测用例
+> - java-dt-tdd-xx：TDD测试先行策略，基于测试用例驱动开发，先测试后实现
+
+3.项目优势
+
+> - 端到端覆盖：覆盖软件开发全生命周期，从需求设计到运维监控，一站式提效
+> - AI智能化辅助
+>   - MR代码检视：自动识别功能风险，提供验证场景建议
+>   - TDD驱动开发：先测试后实现，确保代码质量
+>   - 智能场景生成：自动分析代码路径，生成全面测试场景
+> - 开箱即用
+>   - 配置简单：通过config.json轻松配置
+>   - 文档完善：每个技能都有详细的使用说明和示例
+>   - 门径保证：内置编译检查、覆盖率门禁，确保交付质量
+
+4.多语言场景支持
+
+| 开发语言             | 支持场景                           |      |
+| -------------------- | ---------------------------------- | ---- |
+| Java                 | UT生成、WorkOrder单测、TDD驱动开发 |      |
+| Python               | MR代码检视、MetaMock管理           |      |
+| Go/C++/Rust/JS/TS/C# | MR检视规则支持                     |      |
+
 
 
 # 项目亮点

@@ -101,6 +101,7 @@ toc: true # 是否启用内容索引
 # 全网最全名词
 
 - [一口气拆穿Skill/MCP/RAG/Agent/OpenClaw底层逻辑](https://www.bilibili.com/video/BV1ojfDBSEPv/?spm_id_from=333.1007.top_right_bar_window_history.content.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+- [思维脑图](https://www.processon.com/mindmap/6a2e0fe952e2c91543829054)
 
 <img src="/img/2026-06-14_13-30-25.png" style="zoom:50%;" />
 
@@ -178,9 +179,33 @@ LLM与Agent之间交互，不能总使用自然语言(汉字)，Agent是不知�
 
 Agent处理复杂任务可能上下文非常庞大，且耦合。这时就可以拆分为子任务，且上下文隔离。这就是SubAgent
 
+# Claude源码泄露
+
+[github仓库地址](https://github.com/fuyunjinglong/LLM/tree/claudecode-haha)
+
+<img src="/img/2026-06-23_21-42-12.png" style="zoom:50%;" />
+
+# Harness
+
+<img src="/img/2026-06-15_21-24-49.png" style="zoom:30%;" />
+
+一句话：驾驭工程，增加限制条件，限制输出。
+
+比如用户驾驭Agent,Agent驾驭大模型LLM,都属于Harness。用户驾驭Agent,常用的有OpenSpec,SpecKit等中间层
+
+# 韬（τ）定律
+
+历史的摩尔定律(Scalling Law缩放定律在元器件上的应用)：把晶体管越做越小（几何缩微），在单位面积塞更多晶体管。
+
+华为的T定律：*τ*=*R*×*C*，电路从一个状态切换到另一个状态所需的时间。不再执着于尺寸，而是**系统性降低信号传播时延（τ）**，让数据在芯片里“跑得更快、绕路更少”
+
+华为给出的框架，是**器件–电路–芯片–系统**四层协同，围绕“降低 τ”一起优化
+
+# Vibe Coding
+
 # Transformer演进
 
-Transformer架构图，如下图：
+[Transformer架构图](https://www.processon.com/mindmap/6a2e40300bc6156068f379d1)，如下图：
 
 <img src="/img/2026-06-14_15-54-48.png" style="zoom:50%;" />
 
@@ -278,3 +303,98 @@ Pre-Norm放在残差链接前面，叫Pre-Norm before Residual。放到后面叫
 > - GatedDeltaNet：Gated Delta Networks
 > - Lighting Attention：Lighting Attention-2
 > - Manba：一种SSM(State Space Model)状态空间模型，新出的
+
+# Kimi的注意力残差
+
+<img src="/img/2026-06-24_18-16-38.png" style="zoom:30%;" />
+
+梯度消失与梯度爆炸
+
+> - 两者都是影响神经网络训练的稳定度
+> - 梯度消失：输入参数基本不影响输出参数
+> - 梯度爆炸：输入参数完全影响输出参数
+
+1.传统的残差连接
+
+> a1 = a0 + F(a0)，其中F函数可以是任意的，比如注意层，MoE层等等
+>
+> 缺点：输出参数不可控
+
+<img src="/img/2026-06-24_18-21-35.png" style="zoom:30%;" />
+
+2.字节的HC超连接
+
+> 优点：解决传统的不可控，通过复制多分参数和连乘矩阵，限制输出
+>
+> 缺点：连乘矩阵可能导致参数不可控
+
+<img src="/img/2026-06-24_18-24-48.png" style="zoom:50%;" />
+
+3.DeepSeek的mHC流形约束的超连接
+
+> 优点：连乘矩阵进控制下，替换为限制矩阵，进一步限制输出
+
+4.Kimi的注意力残差
+
+> - 在深度上模仿RNN在时间维度上的做法，依次累加传递
+> - 既然是从左到右，依次传递，那么是不是也可以采用注意力机制的方法，进行各个参数的加权求值，每个参数都记录前面参数的信息
+> - 基于Scalling Law定律，最终可以提升训练的效率，提升了1.25倍
+
+<img src="/img/2026-06-24_18-36-11.png" style="zoom:50%;" />
+
+# Scalling Law定律
+
+**Scaling Law 描述的是：大语言模型的测试损失（Loss）会随着模型参数量 N、训练数据量 D、计算量 C 的增长，按照稳定的幂律关系下降**
+
+Scaling Law 围绕三个核心变量展开：
+
+| 变量  | 含义                         | 说明             |
+| ----- | ---------------------------- | ---------------- |
+| **N** | 模型参数量（不含嵌入层）     | 模型的"大脑容量" |
+| **D** | 训练数据规模（Token 数）     | 模型的"学习资料" |
+| **C** | 计算量（FLOPs 浮点运算次数） | 模型的"学习时间" |
+
+# DeekSeek演进
+
+<img src="/img/2026-06-15_20-09-56.png" style="zoom:50%;" />
+
+- DS LLM：基于Scalling Law缩放定律，在大模型中应用就是参数越多，模型性能越强。研究参数量，batch size、学习率、训练数据、算力。
+- DS MoE：优化底层Transform，拆分FFN为更小专家和共享专家。
+- DS V2：优化底层Transform，优化多头注意力机制MLA
+- DS V3：引入auxiliary-loss-free(无辅助损失的负载均衡策略)、MTP(多Token预测)、FP8 Training，总参数量671B,激活参数37B
+- DS R1：优化训练范式，采用RL奖惩(没有用SFT)训练推理，在结合自己的GRPO强化学习算法，举世闻名。
+- DS mHC：优化底层Transform，优化残差连接，mHC流形约束。
+- DS V4：优化底层Transform，优化多头注意力机制，旧的多采用滑动窗口。优化为DSA(主动找相关Token)，CSA(压缩历史Token)，HCA(长短距离不同压缩策略)
+
+# AI编程工具
+
+编程工具-国外
+
+- Copilot:github出品
+- Cursor:能用御三家模型但定位尴尬，能用claude模型就用CC，能用GPT就用Codex，能用Gemini就用AntiGravity。
+- CloudeCode:上手门槛高,简称CC，主力
+- Codex:CC的竞争对手，只能接入自家模型，辅助
+- AntiGravity:介于Codex和Cursor之间
+- Windsurf：Cursor的竞争对手，有flow强大上下文管理能力，与openAI有争议，公司稳定性待定
+
+编程工具-国内
+
+- Trae：国内阿里第一
+- Qoder:阿里，上下文管理和工程能力弱于Trae，agent和harness弱于Trae
+- 通义灵码
+- Codebuddy:腾讯，上下文管理和工程能力弱于Trae，agent和harness弱于Trae
+- 文心快码(百度/Comate)
+- CodeGeeX(智普AI)
+
+无代码编程工具
+
+- replit：美观且周全
+- lovable：
+
+UI设计工具
+
+- Figma：老牌原型图软件，支持MCP
+- Pencil:Figma的竞争对手
+- Stitch：手绘方式生成设计稿
+
+御三家模型

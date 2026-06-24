@@ -223,3 +223,61 @@ GEMINI_API_KEY=xxx
 | 生成答案 | GPT-4.1      | 保证答案的准确性     |
 | 答案验证 | o4-mini      | 推理强               |
 
+# windows搭建本地知识库
+
+**要求**
+
+> - 本地知识库文件，向量数据库，LLM处理的数据都是个人私有数据，不允许上传云端公开，也不允许拿来做训练
+> - 在windows上部署，要求不使用docker,因为doker配置环境太复杂且占用内存
+> - 本地知识库文件夹有100G大小，每个文件大小不超过10M，文件中内容主要以中文和英文为主，文件类型都是常规的txt、word、ppt、excel、png等，限制只基于本地知识库回答，不要胡编乱造，不会的就说不会
+> - 目前已采购在线DeepSeek Api的Token,可以直接使用
+> - Embedding模型是采用工具软件内置的，还是其他更好的模型？
+> - 将100G文件夹，划分为20个5G文件夹，每次拖拽1个到工作区解析，全部处理完后，本地电脑会不会多占用100G存储空间？会不会卡死？
+> - 我的电脑是荣耀笔记本电脑，型号是14Pro,内存只有6G,具体有什么方案实现？
+
+**方案**
+
+核心：AnythingLLM DeskTop+DeepSeek Api+ollama
+
+AnythingLLM DeskTop
+
+> - AnythingLLM 安装在固态硬盘C最好，否则需要手动迁移数据，并做软连接
+> - 向量库采用LanceDB，设置 → 向量数据库 → 显示为「Built-in LanceDB (Local)」
+> - Setting-Document Processing 填3
+> - 在工作区设置，将Chuck Size设为500-1000
+> - 禁用全文检索(FTS)索引：工作区设置关闭Full-Text Search
+> - 智能清理暂存区：每次5G文件解析保存后，在Document 中将这些文件"un-map"(取消映射)。此时向量已写入LanDB，而暂存区缓存会被清空。
+> - 严格控制向量检索返回数量：在工作区的Chat Settings,将LLMContext window Item（Top-K）限制在3-5
+> - 建议先将png转为txt
+> - 多个是混合的切片调整：在工作区设置，将Overlap(切片重叠度)设为10%-15%
+> - 私有数据不上传：侧边栏最下方 → “Privacy & Data” → 把 “Anonymous Telemetry Enabled” 关掉（绿色变灰）
+> - AnythingLLM如果需要移动存储目录的话：
+>   - 把 storage 整个文件夹复制到 D 盘目标目录
+>   - rd /s /q "C:\Users\lw\AppData\Roaming\anythingllm-desktop\storage"
+>   - mklink /J "C:\Users\lw\AppData\Roaming\anythingllm-desktop\storage" "D:\profilegram\LLM\anythingllm\storage"
+
+DeepSeek Api
+
+> - 私有数据不上传：登录 DeepSeek 开放平台：platform.deepseek.com，进入右上角头像 → 设置 → 隐私设置，关闭「数据用于优化体验 / 模型训练」开关
+
+ollama
+
+> - Embedding模型选择：bge-large-zh-v1.5/bge-small-zh-v1.5/nomic-embed-text
+> - 限制ollama内存常驻：添加系统变量，变量名是OLLAMA_KEEP_ALIVE，值是5m
+> - GPU加速确认：荣耀14 Pro部分型号带有NVIDA独显(RTX系列)，部分是核显
+> - 任务管理器，切换到性能，在解析文件时，观察GPU0/GPU1利用率
+> - 如果ollama自动调用了显卡，速度回避纯CPU快5-10倍。如果发现它只利用了CPU，查看显卡驱动是否最新
+> - 环境变量并发控制：添加系统变量，变量名是OLLAMA_NUM_PARALLEL，值是1
+> - 私有数据不上传：关闭匿名统计：Ollama可能默认收集匿名使用统计。在系统环境变量中，新建 OLLAMA_NO_TELEMETRY，将其值设为 1
+
+本地电脑优化配置
+
+> - 开启高性能模式：按win+i,打开设置-系统-电源与电池-电源模式调整为"最佳性能"
+> - 防止自动休眠：同样页面，屏幕和睡眠在接通电源后，关闭设备设为"永不"
+> - 设置磁盘写入缓存：设备管理器-磁盘驱动器-右键固态硬盘选择属性-在策略中，确保勾选"启动设备上的写入缓存"。这样可大幅提高LanceDB写入向量速度
+> - 开启windows虚拟缓存：高级系统设置-性能设置-高级-虚拟内存更改，取消勾选。选中固态硬盘盘符，初始大小填16384（16G）,最大填32G,重启电脑
+> - 让ollama吃满显卡：右键-打开NVIDIA面板-管理3D设置-程序设置，点击添加，找到并选择ollama.exe(c:/users/xx/appData/local/programs),图形处理器改为"高性能NVIDIA处理器"
+> - 每次解析完5G文件后，重启电脑，完全释放内存
+> - 调大NVIDIA虚拟显存(独显型号)：在NVIDIA控制面板，管理3D设置-全局设置-确保"CUDA-系统内存回退策略"设置为"驱动程序默认值"
+> - 按下Fn+P，直接开启荣耀笔记本的"高能模式"
+
