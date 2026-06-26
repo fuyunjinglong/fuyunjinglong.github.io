@@ -179,6 +179,48 @@ LLM与Agent之间交互，不能总使用自然语言(汉字)，Agent是不知�
 
 Agent处理复杂任务可能上下文非常庞大，且耦合。这时就可以拆分为子任务，且上下文隔离。这就是SubAgent
 
+# 小龙虾OpenClaw
+
+**基础版Agent**
+
+带有记忆功能的聊天机器人，本质就是缓存了历史对话
+
+<img src="/img/2026-06-26_18-05-06.png" style="zoom:50%;" />
+
+**高级版Agent**
+
+小龙虾本质：带有提示词Skill的工具。当然它会更智能，还要基于自主的ReAct范式。
+
+<img src="/img/2026-06-26_18-10-42.png" style="zoom:50%;" />
+
+Agent.md：智能体的调度逻辑
+
+```
+你的目标是完成用户的任务，你必须选择下面的其中一种格式进行回复：
+1：如果你认为需要执行命令，则输出命令：XXX"，XXX为命令本身，不要用任何的格式，不要解释，每次只进行一条命令，不要多条放一起
+2.如果你认为不需要执行命令，则输出完成：XXX，XXX为你的总结信息
+我们的沟通过程是个循环，你每次回复一条命令后，要等我给你返回命令执行的结果，然后你再继续回复。
+
+比如：
+用户：创建一个hello.txt和helloworid.txt文件
+AI：命令：echoihellohello.txt
+用户：执行成功
+AI：命令：echoThettoworld”helloworld.txt
+用户：执行成功
+AI：完成：我已经完成了用户的需求、hello.txt和helloworld.txt文件已经创建成功
+```
+
+Skill.md：工具的执行逻辑
+
+```
+如果需要获取新闻，使用如下命令，XXX为用户希望搜索的关键词
+curl-L-AMozilla/5.0！“https://news.google.com/rss/search？q=XXX&hl=zh-CN&gL=CN&ceid=CN:zh-Hans'
+```
+
+当然前面这些都是命令行，太丑了，小龙虾火爆，主要是因为换皮。启动一个http服务，然后部署到页面中，手机访问页面，输入需求，就能远程任意操作电脑了。
+
+<img src="/img/2026-06-26_18-20-35.png" style="zoom:50%;" />
+
 # Claude源码泄露
 
 [github仓库地址](https://github.com/fuyunjinglong/LLM/tree/claudecode-haha)
