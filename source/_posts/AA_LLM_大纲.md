@@ -26,6 +26,19 @@ toc: true # 是否启用内容索引
 
 ![image](/img/LLM_Time.png)
 
+> - 1936-2022：ChatGPT智能
+> - 2023：Gemini多模态
+> - 2024：GPT4o(过渡的一年)
+> - 2025：Gemini3 pro全模态
+
+<img src="/img/2026-06-27_11-34-52.png" style="zoom:50%;" />
+
+<img src="/img/2026-06-27_11-36-51.png" style="zoom:50%;" />
+
+<img src="/img/2026-06-27_11-39-18.png" style="zoom:50%;" />
+
+<img src="/img/2026-06-27_11-43-38.png" style="zoom:50%;" />
+
 ## 按照里程碑
 
 1. **Transformer（2017年）**：Transformer架构的引入，为构建大规模、高效的模型奠定了基础，这些模型能够以前所未有的精度和灵活性处理复杂任务。
@@ -179,7 +192,49 @@ LLM与Agent之间交互，不能总使用自然语言(汉字)，Agent是不知�
 
 Agent处理复杂任务可能上下文非常庞大，且耦合。这时就可以拆分为子任务，且上下文隔离。这就是SubAgent
 
+# Loop Engineering
+
+**2026 年 6 月在 AI 编程社区爆火的一种新工程范式，核心思想是：开发者不再手动一轮一轮地给 Agent 写提示词，而是设计一套让 Agent 自主发现工作、执行、验证、迭代，直到目标达成的自动循环系统。**
+
+本质就是一个定时任务，国内厂商早就支持了
+
+# 1M Context
+
+1M上下文：模型支持用户一次输入喂给100万Token的信息量。
+
+以GLM5.2为例，解决的痛点，[原文](https://z.ai/blog/glm-5.2)：
+
+> - 计算量：IndexShare。复用注意力机制的层，减少计算量的层级。
+> - 存储空间(KV缓存)：LayerSplit解决KV缓存占用。只存部分层的KV Cache，减少显存占用。
+> - 有效性：Slime RL。
+
+# 文生图/视频架构
+
+**架构演进**
+
+<img src="/img/2026-06-27_11-58-02.png" style="zoom:50%;" />
+
+**核心原理**
+
+<img src="/img/2026-06-27_10-55-33.png" style="zoom:50%;" />
+
+**AI视频**
+
+> - 可行：(适合解空间较大的视频)适合人工成本巨大，视觉冲击力强，对内容本身影响不大
+> - 不可行：人工成本小，视觉冲击力弱，需要和内容深度配合
+
+# 蒸馏/开源
+
+大模型本质Fn(x) =  ax + b
+
+|      | 传统语境   | 大模型语境                   |
+| ---- | ---------- | ---------------------------- |
+| 开源 | 开放源代码 | 开放参数权重                 |
+| 蒸馏 | 知识蒸馏KD | 使用模型输出作为输入训练数据 |
+
 # 小龙虾OpenClaw
+
+（曾用名Clawdbot/Clawbot/Moltbot）
 
 **基础版Agent**
 
@@ -407,6 +462,36 @@ Scaling Law 围绕三个核心变量展开：
 - DS R1：优化训练范式，采用RL奖惩(没有用SFT)训练推理，在结合自己的GRPO强化学习算法，举世闻名。
 - DS mHC：优化底层Transform，优化残差连接，mHC流形约束。
 - DS V4：优化底层Transform，优化多头注意力机制，旧的多采用滑动窗口。优化为DSA(主动找相关Token)，CSA(压缩历史Token)，HCA(长短距离不同压缩策略)
+
+# 大模型测试
+
+> - Reasoning and Academic Knowledge 推理和学术知识
+>   - Humanity's Last Exam人类最后一次考试
+>   - ARC-AGI-2 通用智商测试
+>   - GPQA Diamond 谷歌搜不到答案的题目
+>   - AIME 2025 全美数学邀请赛
+>   - MathAreng Apex MaithAreng数学题最难版
+>   - MMMLU 多语言学科知识
+>   - Global PIQA 全球化的常识推理题
+> - image 图像
+>   - MMMU-Pro 多学科多模态测试
+>   - ScreenSpot-Pro 屏幕截图理解
+>   - CharXiV Reasoning 图表理解能力
+>   - OmniDocBench 1.5 文档识别
+> - video 视频
+>   - video-MMMU 各个学科知识
+> - code 代码
+>   - LiveCodeBench Pro 是持续更新的
+>   - Terminal-Bench 2.0  大模型在终端里完成的操作测试
+>   - SWE-Bench Verified 目前测试大模型最权威的，测试落地的真实工程能力
+> - Factuality 事实性
+>   - FACTS Benchmark Suite 用一个模型判断另一个模型是否存在幻觉
+>   - SimpleQA Verified
+> - Tool Use 工具使用
+>   - t2-bench 在双重控制环境中评估对话代理
+>   - Vending-Bench2
+> - Long Context 长文本
+>   - MRCR v2 多轮长文本
 
 # AI编程工具
 
