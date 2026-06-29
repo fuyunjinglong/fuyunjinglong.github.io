@@ -8,7 +8,7 @@ toc: true # 是否启用内容索引
 
 # interview-临时
 
-https://www.bilibili.com/video/BV19hwTzwETF?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247&trackid=web_related_0.router-related-2589621-z4htq.1782294708878.992
+https://www.bilibili.com/video/BV1PAUrBVEc8/?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247
 
 - [ ] 2024年前端简历（node.js，ts,react，Flutter、Rn，微前端，低代码，小程序，移动端，ssr）
 - [ ] 面试突击-千峰-= 轻松网赚网 thbcm.com =005-JS高频面试题-1【 微信号：itcodeba 】
