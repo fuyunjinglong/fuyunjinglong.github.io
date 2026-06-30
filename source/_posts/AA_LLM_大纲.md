@@ -14,6 +14,10 @@ toc: true # 是否启用内容索引
 
 # AI全栈进阶体系
 
+参考
+
+> - [B站飞天闪客](https://space.bilibili.com/325864133)
+
 ## 妙码学院
 
 - TypeScript 100%-大多数大模型都是采用ts或python
@@ -301,6 +305,10 @@ curl-L-AMozilla/5.0！“https://news.google.com/rss/search？q=XXX&hl=zh-CN&gL=
 # Vibe Coding
 
 # Transformer演进
+
+参考
+
+> - [一小时从函数到 Transformer](https://www.bilibili.com/video/BV1NCgVzoEG9?spm_id_from=333.788.videopod.sections&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 
 [Transformer架构图](https://www.processon.com/mindmap/6a2e40300bc6156068f379d1)，如下图：
 

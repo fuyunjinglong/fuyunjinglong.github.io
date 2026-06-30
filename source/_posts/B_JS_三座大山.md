@@ -14,291 +14,29 @@ toc: true # 是否启用内容索引
 
 ## 作用域
 
-定义：作用域是变量的可访问范围和规则。
+**一、定义**
+作用域是指代码中定义变量的区域，它决定了变量的可访问性和生命周期。简单来说，作用域就是一套规则，用于确定在何处以及如何查找变量（标识符）。如果查找失败，通常会报 `ReferenceError`。
 
-三种类型
+**二、作用域的类型：**
+JavaScript主要包含以下三种作用域：
 
-> - 全局作用域： 最外层，随处可见，容易污染。
-> - 函数作用域： 函数内部定义的变量外部无法访问（JS传统作用域）。
-> - 块级作用域（ES6）： {}内使用 let/const 声明的变量具有块级作用域（如 if、for）。
+- **全局作用域：** 在任何函数、代码块（`{}`）之外声明的变量。它们在代码的任何地方都可以被访问。
+- **函数作用域：** 在函数内部声明的变量。它们只能在函数内部被访问，外部无法直接访问。`var` 声明的变量就具有函数作用域。
+- **块级作用域：** 在代码块（如 `if`、`for`、`while`、`try/catch` 以及直接使用 `{}`）内部声明的变量。`let` 和 `const` 声明的变量具有块级作用域，这弥补了 `var` 的不足。
 
-**词法作用域**
+**三、工作原理 - 作用域链：**
+当代码在一个环境中执行时，会创建一个变量对象的一个作用域链。这个作用域链保证了对执行环境有权访问的所有变量和函数的有序访问。
 
-一句话：JS的作用域在代码编写（词法分析）阶段就确定了，与函数在哪调用无关，只与函数在哪定义有关。
-
-**作用域链**
-
-一句话：当访问一个变量时，会先在当前作用域找，找不到就去外层作用域找，直到全局作用域，这个查找链条就是作用域链。（*注意：这与 `this` 的指向完全相反，`this` 是运行时动态确定的*）。
-
-## 作用域-执行上下文
-
-参考
-
-- [JavaScript 深入之执行上下文栈](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fmqyqingfeng%2FBlog%2Fissues%2F4)；
-- [JavaScript 深入之变量对象](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fmqyqingfeng%2FBlog%2Fissues%2F5)；
-- [JavaScript 深入之作用域链](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fmqyqingfeng%2FBlog%2Fissues%2F6)；
-- [JavaScript 深入之执行上下文](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fmqyqingfeng%2FBlog%2Fissues%2F8)。
-
-**执行上下文**
-
-定义：执行上下文就是当前 JavaScript 代码被解析和执行时所在环境的抽象概念。
-
-- 它包含**三部分**
-  - 变量对象（VO）
-  - 作用域链（词法作用域）
-  - this 指向
-
-- 它的**类型**：
-  - 全局执行上下文
-  - 函数执行上下文
-  - eval 执行上下文
-
-> - 全局执行上下文： 这是默认的、最基础的执行上下文。不在任何函数中的代码都位于全局执行上下文中。它做了两件事：1. 创建一个全局对象，在浏览器中这个全局对象就是 window 对象。2. 将 this 指针指向这个全局对象。一个程序中只能存在一个全局执行上下文。
-> - 函数执行上下文： 每次调用函数时，都会为该函数创建一个新的执行上下文。每个函数都拥有自己的执行上下文，但是只有在函数被调用的时候才会被创建。一个程序中可以存在任意数量的函数执行上下文。每当一个新的执行上下文被创建，它都会按照特定的顺序执行一系列步骤，具体过程将在本文后面讨论。
-> - Eval 函数执行上下文： 运行在 eval 函数中的代码也获得了自己的执行上下文，但由于 Javascript 开发人员不常用 eval 函数，所以在这里不再讨论。
-
-- 代码执行**过程**：
-  - 创建 **全局上下文**（global EC）
-  - 全局执行上下文（caller）**自上而下** 逐行执行。遇到函数时，**函数执行上下文**（callee）被 push 到执行栈顶
-  - 函数执行上下文被激活，成为 active EC，开始执行函数中的代码，caller 被挂起
-  - 函数执行完后，callee 被 pop 移除出执行栈，控制权交还给全局上下文（caller）继续执行
-
-包括三个阶段：**创建阶段→执行阶段→回收阶段**
-
-1.创建阶段
-
-当函数被调用，但未执行任何其内部代码之前，会做以下三件事：
-
-- 创建变量对象：首先初始化函数的参数arguments，提升函数声明和变量声明。下文会详细说明。
-- 创建作用域链（Scope Chain）：在执行期上下文的创建阶段，作用域链是在变量对象之后创建的。作用域链本身包含变量对象。作用域链用于解析变量。当被要求解析变量时，JavaScript 始终从代码嵌套的最内层开始，如果最内层没有找到变量，就会跳转到上一层父作用域中查找，直到找到该变量。
-- 确定this指向：包括多种情况，下文会详细说明
-
-在一段 JS 脚本执行之前，要先解析代码（所以说 JS 是解释执行的脚本语言），解析的时候会先创建一个全局执行上下文环境，先把代码中即将执行的变量、函数声明都拿出来。变量先暂时赋值为undefined，函数则先声明好可使用。这一步做完了，然后再开始正式执行程序。
-
-另外，一个函数在执行之前，也会创建一个函数执行上下文环境，跟全局上下文差不多，不过 函数执行上下文中会多出this arguments和函数的参数。
-
-2.执行阶段
-
-执行变量赋值、代码执行
-
-3.回收阶段
-
-执行上下文出栈等待虚拟机回收执行上下文
-
-**作用域与执行上下文**
-
-JavaScript属于解释型语言，JavaScript的执行分为：解释和执行两个阶段。解释阶段确定作用域规则，执行阶段确定上下文。太妙了
-
-解释阶段：
-
-- 词法分析
-- 语法分析
-- 作用域规则确定
-
-执行阶段：
-
-- 创建执行上下文
-- 执行函数代码
-- 垃圾回收
-
-> 作用域和执行上下文之间最大的区别是：
-> **执行上下文在运行时确定，随时可能改变；作用域在定义时就确定，并且不会改变**。
-
-## 作用域-变量对象(VO/AO/GO)
-
-JS有两个特性，一个是单线程，一个是解释性语言。
-
-JS运行步骤：1.语法分析2.预编译3.解释执行
-
-函数执行四部曲：
-
-1.创建AO对象，供js引擎自己去访问
-
-activation object （活跃对象/执行期上下文）
-
-2.找变量和形参的声明，作为AO对象的属性名，值是undefined
-
-3.实参和形参相统一，实参赋值给形参
-
-4.找函数声明(注意不是函数表达式)，会覆盖变量的声明。
-
-```js
-   function fn(a,c){
-console.log(a);//function a(){}
-var a=123;
-console.log(a);//123
-console.log(c);//function c(){}
-function a(){}
-if(false){
-var d= 678;
-}
-console.log(d);//undefined
-console.log(b);//undefined
-var b=function(){}
-console.log(b);//function (){}
-function c(){}
-console.log(c);//function c(){}
-}
-fn(1,2);
-
-AO{
-a:undefined,1,function a(){}
-c:undefined,2,function c(){}
-d:undefined,
-b:undefined,
-}
-```
-
-**静态作用域与动态作用域**
-
-> JavaScript 采用词法作用域(lexical scoping)，就是静态作用域。
-
-因为 JavaScript 采用的是词法作用域，函数的作用域在函数定义的时候就决定了。
-
-而与词法作用域相对的是动态作用域，函数的作用域是在函数调用的时候才决定的。
-
-```
-var value = 1;
-function foo() {
-    console.log(value);
-}
-function bar() {
-    var value = 2;
-    foo();
-}
-bar();
-// 结果是 ???
-```
-
-假设JavaScript采用静态作用域，让我们分析下执行过程：
-
-执行 foo 函数，先从 foo 函数内部查找是否有局部变量 value (价值) ，如果没有，就根据书写的位置，查找上面一层的代码，也就是 value (价值) 等于 1，所以结果会打印 1。
-
-假设JavaScript采用动态作用域，让我们分析下执行过程：
-
-执行 foo 函数，依然是从 foo 函数内部查找是否有局部变量 value (价值) 。如果没有，就从调用函数的作用域，也就是 bar 函数内部查找 value (价值) 变量，所以结果会打印 2。
-
-前面我们已经说了，JavaScript采用的是静态作用域，所以这个例子的结果是 1。
-
-来自《JavaScript权威指南》中的例子：
-
-```
-var scope = "global scope";
-function checkscope(){
-    var scope = "local scope";
-    function f(){
-        return scope;
-    }
-    return f();
-}
-checkscope();
-```
-
-```
-var scope = "global scope";
-function checkscope(){
-    var scope = "local scope";
-    function f(){
-        return scope;
-    }
-    return f;
-}
-checkscope()();
-```
-
-两段代码都会打印：`local scope`。因为JavaScript采用的是词法作用域，函数的作用域基于函数创建的位置。
-
-> 引用《JavaScript权威指南》的回答就是：
->
-> JavaScript 函数的执行用到了作用域链，这个作用域链是在函数定义的时候创建的。嵌套的函数 f() 定义在这个作用域链里，其中的变量 scope (范围) 一定是局部变量，不管何时何地执行函数 f()，这种绑定在执行 f() 时依然有效。
-
-**变量提升**
-
-- 变量声明提升
-- 函数声明提升
-
-> 有个细节必须注意：当遇到函数和变量同名且都会被提升的情况，函数声明优先级比较高，因此变量声明会被函数声明所覆盖，但是可以重新赋值。
-
-```
-// 变量声明提升
-console.log(a)// undefined
-var a = 10
-
-// 函数声明提升
-function test() {
-    foo(); // Uncaught TypeError "foo is not a function"
-    bar(); // "this will run!"
-    var foo = function () { // function expression assigned to local variable 'foo'
-        alert("this won't run!");
-    }
-    function bar() { // function declaration, given the name 'bar'
-        alert("this will run!");
-    }
-}
-test();
-
-// 复杂点例子
-function test(arg){
-    // 1. 形参 arg 是 "hi"
-    // 2. 因为函数声明比变量声明优先级高，所以此时 arg 是 function
-    console.log(arg);  
-    var arg = 'hello'; // 3.var arg 变量声明被忽略， arg = 'hello'被执行
-    function arg(){
- console.log('hello world') 
-    }
-    console.log(arg);  
-}
-test('hi');
-/* 输出：
-function arg(){
-    console.log('hello world') 
-    }
-hello 
-*/
-```
-
-## 作用域-作用域与作用域链
-
-**`作用域`** 指代码当前上下文，控制着变量和函数的可见性和生命周期。最大的作用是隔离变量，不同作用域下同名变量不会冲突。
-
-**`作用域链`** 指如果在当前作用域中没有查到值，就会向上级作用域查询，直到全局作用域，这样一个查找过程所形成的链条就被称之为作用域链。
-
-作用域具体可细分为四种：**`全局作用域`**、**`模块作用域`**、**`函数作用域`**、**`块级作用域`**
-
-**全局作用域：** 代码在程序的任何地方都能被访问，例如 window 对象。但全局变量会污染全局命名空间，容易引起命名冲突。
-
-**模块作用域：** 早期 js 语法中没有模块的定义，因为最初的脚本小而简单。后来随着脚本越来越复杂，就出现了模块化方案（AMD、CommonJS、UMD、ES6模块等）。通常一个模块就是一个文件或者一段脚本，而这个模块拥有自己独立的作用域。
-
-**函数作用域：** 顾名思义由函数创建的作用域。闭包就是在该作用域下产生，后面我们会单独介绍。
-
-**块级作用域：** 由于 js 变量提升存在变量覆盖、变量污染等设计缺陷，所以 ES6 引入了块级作用域关键字来解决这些问题。典型的案例就是 let 的 for 循环和 var 的 for 循环。
-
-```
-// var demo
-for(var i=0; i<10; i++) {
-    console.log(i);
-}
-console.log(i); // 10
-
-// let demo
-for(let i=0; i<10; i++) {
-    console.log(i);
-}
-console.log(i); //ReferenceError：i is not defined
-```
+- **查找规则：** 当访问一个变量时，JavaScript引擎会首先在当前作用域中查找。如果找不到，就会沿着作用域链向上一级作用域查找，直到找到该变量或到达全局作用域。如果在全局作用域中仍未找到，就会抛出 `ReferenceError`。
+- **词法作用域（静态作用域）：** JavaScript采用的是词法作用域。这意味着函数的作用域在函数**定义**的时候就已经确定了，而不是在调用的时候。无论函数在哪里被调用，它的作用域链都基于它被定义时的位置。
 
 ## 闭包
 
 **1.定义**
 
-闭包是指有权访问另外一个函数作用域中的变量的函数。当内部函数被保存到外部时会产生闭包。**本质是函数与其词法作用域的绑定组合。**
+闭包是**能够访问其外部函数作用域中变量的内部函数**。**本质是函数与其词法作用域的绑定组合。**
 
 JavaScript引擎通过将闭包所需变量存储在堆内存（而非栈）中，避免函数调用后作用域被销毁。
-
-**两个核心**
-
-- 是函数
-- 能够访问函数作用域外的变量
 
 **三个特性(如何判断是闭包)**
 
@@ -319,39 +57,11 @@ console.log(counter()); // 1
 console.log(counter()); // 2
 ```
 
-
-
-```js
-// 内层函数一定操作了外层函数的局部变量
-function updateCount(){
-  var count = 0;
-  function getCount(val){
-    count = val;
-    console.log(count);
-  }
-  return getCount;     //外部函数返回
-}
-var count = updateCount();
-count(815); //815
-count(816); //816
-// 即使外部函数已经返回，闭包仍能访问外部函数定义的变量
-function getOuter(){
-  var date = '815';
-  function getDate(str){
-    console.log(str + date);  //访问外部的date
-  }
-  return getDate;     //外部函数返回
-}
-var today = getOuter();
-today('今天是：');   //"今天是：815"
-today('明天不是：');   //"明天不是：815"
-```
-
 **2.为什么需要闭包**
 
-局部变量无法共享和长久保存，而全局变量可能造成变量污染，当我们希望有一种机制既可以长久保存变量，又不会造成全局污染，所有有了闭包。
+局部变量无法共享和长久保存，而全局变量可能造成变量污染。**闭包一句话**：长久保存变量，又不会造成全局污染。
 
-**3.闭包的作用**
+**闭包的优缺点**
 
 优点：
 
@@ -361,114 +71,18 @@ today('明天不是：');   //"明天不是：815"
 
 缺点：滥用闭包导致内存泄漏，能不用尽量不用，及时释放内存。（闭包会加深作用域链，加长变量查找时间）
 
-**4.闭包的5个使用场景**
+**3.闭包的常用场景**
 
-**常用场景**
+> - **数据封装与模拟私有变量：** 如上面的计数器例子，`count` 变量对外部是不可见的，只能通过返回的函数来操作，这实现了数据的私有化和封装
+> - **柯里化：** 将一个接受多个参数的函数变换为一系列接受单个参数的函数。
+> - **函数防抖和节流：** 这些优化技术通常依赖闭包来保存定时器和上一次执行的时间戳等状态。
+> - **模块化模式：** 可以用闭包来创建模块，暴露公共API，隐藏内部实现细节。这是许多现代模块系统的基础思想。
+> - **回调函数和事件监听器：** 在异步操作或事件处理中，经常需要访问外部作用域的变量，闭包是实现这一点的重要机制。
 
-- 实现公有变量 => 累加器
-- 可以做缓存,存储结构
-- 可以实现封装,属性私有化
-- 模块化开发,防止污染全局变量
-
-**5个场景**
-
-> 1. 模块化与封装私有变量
-> 2. 高阶函数与状态管理
-> 3. 函数柯里化（Currying）
-> 4. 迭代器与生成器模式
-> 5. 单例模式与缓存优化
-
-**4.1模块化与封装私有变量**
-
-通过立即执行函数（IIFE）创建独立作用域，避免全局污染：
-
-```
-const module = (function() {
-  let privateVar = 0;
-  return {
-    increment: () => privateVar++,
-    getValue: () => privateVar
-  };
-})();
-module.increment();
-console.log(module.getValue()); // 1
-```
-
-此时，privateVar对外不可见，仅通过闭包暴露操作方法。
-
-**4.2高阶函数与状态管理**
-
-闭包允许函数携带状态，例如实现防抖（Debounce）和节流（Throttle）：
-
-```
-function debounce(fn, delay) {
-  let timer = null;
-  return function(...args) {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn.apply(this, args), delay);
-  };
-}
-const searchInput = debounce(() => console.log("Search triggered"), 300);
-```
-
-每次调用searchInput时，闭包中的timer变量被复用。
-
-**4.3函数柯里化（Currying）**
-
-将多参数函数转换为单参数链式调用，增强灵活性：
-
-```
-function add(x) {
-  return function(y) {
-    return x + y;
-  };
-}
-const add5 = add(5);
-console.log(add5(3)); // 8
-```
-
-柯里化通过闭包缓存部分参数，便于复用
-
-**4.4迭代器与生成器模式**
-
-闭包可保存迭代状态，实现自定义迭代逻辑：
-
-```
-function createIterator(arr) {
-  let index = 0;
-  return {
-    next: () => (index < arr.length ? arr[index++] : null)
-  };
-}
-const iterator = createIterator([1, 2, 3]);
-console.log(iterator.next()); // 1
-```
-
-**4.5单例模式与缓存优化**
-
-通过闭包缓存计算结果，避免重复计算：
-
-```
-function memoize(fn) {
-  const cache = new Map();
-  return function(arg) {
-    if (cache.has(arg)) return cache.get(arg);
-    const result = fn(arg);
-    cache.set(arg, result);
-    return result;
-  };
-}
-```
-
-[闭包例子1](https://cnodejs.org/topic/5d39c5259969a529571d73a8)
-
-**5.闭包题**
-
-**一个闭包题**
+**4.闭包题**
 
 ```
 var data = [];
-
 for (var i = 0; i < 3; i++) {
   data[i] = function () {
     console.log(i);
@@ -480,9 +94,8 @@ data[1]();
 data[2]();
 ```
 
-**奇葩的闭包面试题**
-
 ```
+// 奇葩的闭包面试题
 function fun(n,o) {
   console.log(o)
   return {
@@ -1224,14 +837,14 @@ Function.prototype.myBind = function(context, ...bindArgs) {
 
 ## JS异步编程六大方案
 
-参考：[异步编程方案](https://github.com/ljianshu/Blog/issues/53)
+演变历程是从**回调函数** -> **Promise** -> **Generator** -> **Async/Await**
 
-- 回调函数（Callback）
-- 事件监听
-- 发布订阅
-- Promise/A+
-- 生成器Generators/ yield
-- async/await
+> - **回调函数**是基础，但容易产生回调地狱。
+> - **Promise** 解决了链式调用和错误管理问题。
+> - **Generator** 提供了暂停执行的能力，但需要手动执行器。
+> - **Async/Await** 是目前最主流、最优雅的方案，它结合了 Generator 的同步写法和 Promise 的自动执行特性，是我们在实际开发中的首选。
+> - 事件监听
+> - 发布订阅
 
 **回调函数**
 致命的弱点，就是容易写出回调地狱（Callback hell）。
@@ -1244,19 +857,6 @@ ajax(url, () => {
     // 处理逻辑
 })
 ```
-
-**事件监听**
-
-这种方式下，异步任务的执行不取决于代码的顺序，而取决于某个事件是否发生。
-
-- 优点：比较容易理解，可以绑定多个事件，每个事件可以指定多个回调函数，而且可以"去耦合"，有利于实现模块化。
-- 缺点：整个程序都要变成事件驱动型，运行流程会变得很不清晰。阅读代码的时候，很难看出主流程。
-
-**发布订阅**
-
-我们假定，存在一个"信号中心"，某个任务执行完成，就向信号中心"发布"（publish）一个信号，其他任务可以向信号中心"订阅"（subscribe）这个信号，从而知道什么时候自己可以开始执行。这就叫做"发布/订阅模式"（publish-subscribe pattern），又称"观察者模式"（observer pattern）。
-
-- 优点：与“事件监听”类似，但是明显优于后者。因为可以通过查看“消息中心”，了解存在多少信号、每个信号有多少订阅者，从而监控程序的运行。
 
 **Promise/A+**
 
@@ -1278,6 +878,19 @@ Generator 函数是 ES6 提供的一种异步编程解决方案，语法行为�
 - async/await是基于Promise实现的，它不能用于普通的回调函数。
 - async/await与Promise一样，是非阻塞的。
 - async/await使得异步代码看起来像同步代码，这正是它的魔力所在。
+
+**事件监听**
+
+这种方式下，异步任务的执行不取决于代码的顺序，而取决于某个事件是否发生。
+
+- 优点：比较容易理解，可以绑定多个事件，每个事件可以指定多个回调函数，而且可以"去耦合"，有利于实现模块化。
+- 缺点：整个程序都要变成事件驱动型，运行流程会变得很不清晰。阅读代码的时候，很难看出主流程。
+
+**发布订阅**
+
+我们假定，存在一个"信号中心"，某个任务执行完成，就向信号中心"发布"（publish）一个信号，其他任务可以向信号中心"订阅"（subscribe）这个信号，从而知道什么时候自己可以开始执行。这就叫做"发布/订阅模式"（publish-subscribe pattern），又称"观察者模式"（observer pattern）。
+
+- 优点：与“事件监听”类似，但是明显优于后者。因为可以通过查看“消息中心”，了解存在多少信号、每个信号有多少订阅者，从而监控程序的运行。
 
 ## 消息队列和事件循环
 

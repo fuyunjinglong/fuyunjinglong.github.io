@@ -8,10 +8,8 @@ toc: true # 是否启用内容索引
 
 # interview-临时
 
-https://www.bilibili.com/video/BV1PAUrBVEc8/?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247
-
 - [ ] 2024年前端简历（node.js，ts,react，Flutter、Rn，微前端，低代码，小程序，移动端，ssr）
-- [ ] 面试突击-千峰-= 轻松网赚网 thbcm.com =005-JS高频面试题-1【 微信号：itcodeba 】
+- [ ] 面试突击-千峰-007-JS高频面试题-3
 - [ ] TypeScript入门
 - [ ] 多端-小程序-Taro
 - [ ] 多端-桌面端Electron
@@ -89,8 +87,8 @@ https://www.bilibili.com/video/BV1PAUrBVEc8/?spm_id_from=333.788.player.switch&v
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#JS的5种继承方式">[三大山-原型和原型链]-JS的5种继承方式</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#彻底搞懂this">[三大山-原型和原型链]-为什么要有 this？</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#call、apply、bind-的区别">[三大山-原型和原型链]-call、apply、bind-的区别</a>
-- <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#三大山-作用域和闭包">[三大山-作用域和闭包]-开发中哪些场景用到闭包</a>
-- <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#三大山-异步和单线程">[三大山-异步和单线程]</a>
+- <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#闭包">[三大山-作用域和闭包]-开发中哪些场景用到闭包</a>
+- <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#JS异步编程六大方案">[三大山-异步和单线程]-异步编程方案</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#彻底搞懂this">彻底搞懂this(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#消息队列和事件循环">消息队列和事件循环(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包' %}#闭包">闭包(看题给结果)</a>
