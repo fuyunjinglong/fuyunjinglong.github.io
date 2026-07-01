@@ -75,11 +75,13 @@ toc: true # 是否启用内容索引
 
 ## JS
 
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#数据类型">数据类型</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#null和undefined">null和undefined</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#数据请求">数据请求</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#跨域和同源策略">跨域和同源策略</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#前端登录鉴权如何实现？">前端登录鉴权如何实现？</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#数据类型">[初级]-数据类型</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#null和undefined">[初级]-null和undefined</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#数据请求">[初级]-数据请求</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#跨域和同源策略">[初级]-跨域和同源策略</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#防抖和节流">[中级]-防抖和节流有什么区别</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#柯里化">[中级]-柯里化是什么</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#前端登录鉴权如何实现？">[高级]-前端登录鉴权如何实现？</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#三大山-原型和原型链">[三大山-原型和原型链]-原型的理解</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#instanceof操作符">[三大山-原型和原型链]-instanceof操作符</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#Object-create操作符">[三大山-原型和原型链]-Object-create操作符</a>
@@ -89,12 +91,7 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#call、apply、bind-的区别">[三大山-原型和原型链]-call、apply、bind-的区别</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#闭包">[三大山-作用域和闭包]-开发中哪些场景用到闭包</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#JS异步编程六大方案">[三大山-异步和单线程]-异步编程方案</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#彻底搞懂this">彻底搞懂this(看题给结果)</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#消息队列和事件循环">消息队列和事件循环(看题给结果)</a>
-- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包' %}#闭包">闭包(看题给结果)</a>
-- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包' %}#原型、原型链、继承">原型、原型链、继承(看题给结果)</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#8种数据类型">null 和 undefined</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#柯里化">柯里化</a>
+- <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#消息队列和事件循环">[三大山-异步和单线程]-事件循环</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#垃圾回收">垃圾回收</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#内存溢出和内存泄漏">内存泄露</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS-类型判断-对象-数组">JS 判断变量是对象还是数组</a>

@@ -894,88 +894,65 @@ Generator 函数是 ES6 提供的一种异步编程解决方案，语法行为�
 
 ## 消息队列和事件循环
 
-js是单线程阻塞执行的，js 引擎执行异步代码和支持多线程，主要依靠消息队列和事件循环机制。
+**一、核心组件**
 
-为什么js是一门单线程语言呢？最初设计JS是用来在浏览器验证表单以及操控DOM元素，为了避免同一时间对同一个DOM元素进行操作从而导致不可预知的问题，JavaScript从一诞生就是单线程。
+1. **Call Stack（调用栈）**
+   负责执行同步代码。遵循“后进先出”原则。JS 引擎一行行读取代码，把函数压入栈中执行，执行完毕后弹出。
+2. **Web APIs（浏览器 API / Node API）**
+   当遇到 `setTimeout`、`fetch`、DOM 事件等异步操作时，JS 引擎不会在主线程等待，而是把这些任务交给浏览器的其他线程（Web APIs）去处理。
+3. **Microtask Queue（微任务队列）**
+   存放优先级较高的异步回调。常见的微任务包括：`Promise.then/catch/finally`、`MutationObserver`、`process.nextTick` (Node.js)。
+4. **Macrotask Queue（宏任务队列/消息队列）**
+   存放普通的异步回调。常见的宏任务包括：`setTimeout`、`setInterval`、`setImmediate` (Node.js)、I/O 操作、UI 渲染。(async await 本身就是 promise+generator 的语法糖。所以 await 后面的代码是微任务。)
 
-**基本概念**
+**二、事件循环**
 
-- 消息队列：消息队列是一个先进先出的队列，它里面存放着各种消息。
-- 事件循环：事件循环是指主线程重复异步任务压入消息队列，从消息队列中取消息、执行回调函数的过程。
+1. **执行同步代码**：从脚本开始，把同步代码放入调用栈中执行。
+2. **清空微任务队列**：如果调用栈为空，事件循环会去检查微任务队列。如果队列里有任务，就会**全部执行完毕**（哪怕在执行微任务的过程中又产生了新的微任务，也会在这个阶段一并执行完）。接着或进行UI渲染。
+3. **执行一个宏任务**：从宏任务队列（消息队列）中取出**第一个任务**，放入调用栈中执行。
+4. **重复上述过程**：执行完这个宏任务后，再次回到第 2 步，检查并清空微任务队列，然后再取一个宏任务……如此循环往复。
 
-**核心流程**
+**一句话总结执行顺序**：同步任务 > 微任务队列（清空） > 宏任务（取一个） > 微任务队列（清空） > 宏任务（取一个）…
 
-- 主线程(调用栈)执行同步代码，异步任务就放入到消息队列中
-- 消息队列按照先进先出原则，异步处理不阻塞主线程
-- 当主线程的同步任务执行完后，开始执行回调函数，处理从消息队列的出来的返回值
-
-![image-20220123200002149](/img/image-20220123200002149.png)
-
-主线程执行的回调函数，一定是在下一轮事件循环中的开始，属于下一轮。
-
-**消息队列**
-
-按照异步任务优先级，分为微任务(microtask队列)和宏任务(macrotask队列)。
-
-- 微任务包括 `process.nextTick` ，`promise` ，`MutationObserver`。
-- 宏任务包括 `script` ， `setTimeout` ，`setInterval` ，`setImmediate` ，`I/O` ，`UI rendering`。
-
-**经典题**
-
-[js异步任务](https://www.cnblogs.com/xiaozhumaopao/p/11066005.html)
-
-[js 异步执行顺序](https://www.cnblogs.com/xiaozhumaopao/p/11066005.html)
-
-```
-加强版练习
-console.log('script start')
-async function async1() {
-  await async2()
-  console.log('async1 end')
-}
-async function async2() {
-  console.log('async2 end')
-}
-async1()
-setTimeout(function() {
-  console.log('setTimeout')
-}, 0)
-new Promise(resolve => {
-  console.log('Promise')
-  resolve()
-})
-  .then(function() {
-    console.log('promise1')
-  })
-  .then(function() {
-    console.log('promise2')
-  })
-console.log('script end')
-1. 定义函数`async1`、`async2`，**打印`script start`**；
-2. 执行`setTimeout`，回调交由`Web API`处理，`Web API`将其加入宏任务队列；
-3. 执行`async1`，**打印`async1 start`**；
-4. 执行`async2`，**打印`async2`**，由于左边有`await`，将`console.log('async1 end')`放入微任务队列；
-5. 执行`new Promise`，同步执行传入构造函数的函数，**打印`promise1`**；
-6. promise完成，将`console.log('promise2')`所在函数放入微任务队列；
-7. **打印`script end`**，当前任务执行完毕；
-8. 检查微任务队列并依次取出执行，**打印`async1 end`**、**打印`promise2`**；
-9. 微任务队列为空，执行栈为空，检查宏任务队列，取出任务执行，**打印`setTimeout`**；
-10. 执行完毕。
+```js
+console.log('1. 同步代码开始');
+// 宏任务
+setTimeout(() => {
+    console.log('2. 宏任务 setTimeout');
+}, 0);
+// 微任务
+Promise.resolve().then(() => {
+    console.log('3. 微任务 Promise');
+});
+// 宏任务2x
+setTimeout(() => {
+    console.log('2x. 宏任务x setTimeout');
+	// 微任务3x
+    Promise.resolve().then(() => {
+        console.log('3x. 微任务x Promise');
+    });
+}, 0);
+console.log('4. 同步代码结束');
+打印结果如下：
+1. 同步代码开始
+4. 同步代码结束
+3. 微任务 Promise
+2. 宏任务 setTimeout
+2x. 宏任务x setTimeout
+3x. 微任务x Promise
 ```
 
-async await 本身就是 promise+generator 的语法糖。所以 await 后面的代码是 microtask。所以对于上面代码中的
+**三、宏任务与微任务的区别**
 
-```
-async function async1() {
-	console.log('async1 start');
-	await async2();
-	console.log('async1 end');
-}
-等价于
-async function async1() {
-	console.log('async1 start');
-	Promise.resolve(async2()).then(() => {
-                console.log('async1 end');
-        })
-}
-```
+- **微任务**的设计是为了解决异步回调的延迟问题。如果使用宏任务（如 `setTimeout`）来处理 Promise 的状态改变，会有较大的时间延迟(因为前面可能排着很多宏任务)
+- **宏任务**则用来处理那些耗时的、不需要立即反馈的操作，比如定时器或者网络请求
+
+| 特性         | 宏任务                                   | 微任务                                                 |
+| :----------- | :--------------------------------------- | :----------------------------------------------------- |
+| **常见API**  | `setTimeout`, `setInterval`, I/O, UI渲染 | `Promise.then`, `await` 后面的代码, `MutationObserver` |
+| **执行时机** | 每次事件循环只取**一个**执行             | 每次事件循环中必须**全部清空**才执行宏任务             |
+| **优先级**   | 较低                                     | 较高（仅次于同步代码）                                 |
+| **产生方式** | 由宿主环境（浏览器/Node）发起            | 由 JS 引擎自身发起                                     |
+
+
+

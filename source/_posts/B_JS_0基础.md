@@ -36,44 +36,19 @@ toc: true # 是否启用内容索引
 
 ## null和undefined
 
-> - **`undefined`**：表示 **“缺失”**（本来应该有值，但还没给）。
-> - **`null`**：表示 **“空”**（特意设定为没有值）。
-
-1.类型不同
-
-```js
-console.log(typeof undefined); // "undefined"
-console.log(typeof null);      // "object" (注意这是一个历史Bug，null并不是对象)
-```
-
-2.语义与出现场景不同
-
-```js
-let a;
-console.log(a); // undefined (变量声明了但未赋值)
-
-let b = null; // 主动赋值为 null
-console.log(b); // null
-```
-
-3.转换为数字时的结果不同
-
-```js
-// undefined 转数字是 NaN (Not a Number)
-console.log(Number(undefined)); // NaN
-console.log(5 + undefined);     // NaN
-
-// null 转数字是 0
-console.log(Number(null));      // 0
-console.log(5 + null);          // 5
-```
-
-4.相等性比较
-
-```js
-console.log(null == undefined);  // true  (因为双等号会进行类型转换，JS认为它们都是“假值”)
-console.log(null === undefined); // false (类型不同)
-```
+1. **语义与来源**
+   - `undefined`：系统默认值。如变量声明未赋值、函数无返回值、对象属性不存在。
+   - `null`：手动赋值。表示“此处应该有值，但现在为空”，常用于初始化或释放对象引用。
+2. **类型判断 (`typeof`)**
+   - `typeof undefined` 结果是 `'undefined'`。
+   - `typeof null` 结果是 `'object'`（这是 JS 的历史遗留 Bug）。
+   - *准确判断 null 用：`变量 === null`*
+3. **转换为数字**
+   - `Number(undefined)` 结果是 `NaN`。
+   - `Number(null)` 结果是 `0`。
+4. **比较规则**
+   - 宽松相等：`null == undefined` 为 `true`。
+   - 严格相等：`null === undefined` 为 `false`。
 
 **isNaN和Number.isNaN**
 
@@ -1783,181 +1758,89 @@ console.log(button.getWidth()); // 600
 
 ## 防抖和节流
 
-**小结**
+**【一句话总结】**
+防抖和节流都是用来限制函数执行频率，优化高频触发事件的性能。**防抖**是“打断重来”，**节流**是“按部就班”。
 
-- 函数防抖和函数节流都是防止某一时间频繁触发，但原理不一样。
-- 防抖是多次操作变成一次，而节流是一定时间内只调用一次。
+**【核心要点对比】**
 
-**应用场景**
+1. **防抖**
+   - **原理**：事件触发后，等待 n 秒再执行；如果在 n 秒内**再次触发**，则**重新计时**。
+   - **特点**：只执行最后一次。
+   - **场景**：搜索框输入联想、窗口大小 `resize`、表单验证。
+2. **节流**
+   - **原理**：事件触发后，在 n 秒内只执行**第一次**，后续触发无效，直到 n 秒过后才允许再次执行。
+   - **特点**：每隔一段时间执行一次。
+   - **场景**：滚动条滚动 `scroll`、高频点击按钮提交、鼠标拖拽 `mousemove`。
 
-- debounce防抖
-  - search搜索联想，用户在不断输入值时，用防抖来节约请求资源。
-  - window触发resize的时候，不断的调整浏览器窗口大小会不断的触发这个事件，用防抖来让其只触发一次
-- throttle节流
-  - 鼠标不断点击触发，mousedown(单位时间内只触发一次)
-  - 监听滚动事件，比如是否滑到底部自动加载更多，用throttle来判断
+**【核心实现代码】**
 
-**本质上是优化高频率执行代码的一种手段**
-
-- 节流: n 秒内只运行一次，若在 n 秒内重复触发，只有一次生效
-
-- 防抖: n 秒后在执行该事件，若在 n 秒内被重复触发，则重新计时
-
-  一个经典的比喻:
-
-  想象每天上班大厦底下的电梯。把电梯完成一次运送，类比为一次函数的执行和响应
-
-  假设电梯有两种运行策略 `debounce` 和 `throttle`，超时设定为15秒，不考虑容量限制
-
-  电梯第一个人进来后，15秒后准时运送一次，这是**节流**
-
-  电梯第一个人进来后，等待15秒。如果过程中又有人进来，15秒等待重新计时，直到15秒后开始运送，这是**防抖**
-
-  
-
-  **防抖**
-
-  核心逻辑
-  
-  > - 延迟执行：通过`setTimeout`设置延迟，每次触发事件时重置计时器。
-  > - 取消前序触发：若事件在延迟时间内重复触发，用`clearTimeout`清除前一次的计时器。
-  
-  使用场景
-  
-  > - 搜索框输入联想（停止输入后再触发搜索）
-  > -  窗口大小调整（调整结束后再计算布局） 
-  > - 文本编辑器自动保存（停止编辑后保存）
-  
-    简单版本
-  
-  ```html
-  <html>
-  <body>
-      <input/>
-  </body>
-  </html>
-  <script >
-     let tInput = document.querySelector('input')
-     tInput.addEventListener('input',debounce(demo,2000));
-  // 支持立即执行与非立即执行
-  function debounce(func, delay, immediate = false) {
-      let timer = null;
-      return function (...args) {
-          const context = this;
-          if (timer) clearTimeout(timer);
-          if (immediate) {
-              const callNow = !timer;
-              timer = setTimeout(() => {
-                  timer = null;
-              }, delay);
-              if (callNow) func.apply(context, args);
-          } else {
-              // 简单版本
-              timer = setTimeout(() => {
-                  func.apply(context, args);
-              }, delay);
-          }
-      };
-  }
-  
-     function demo(){
-      console.log('发起请求')
-     }
-  </script>
-  ```
-  
-   
-  
-  **节流**
-  
-  核心逻辑
-  
-  > - 时间戳版：比较当前时间与上次执行时间差。
-  > - 定时器版：通过setTimeout标记可执行状态。
-  
-  使用场景
-  
-  > - 滚动事件加载更多内容（滚动时每隔一段时间触发） 
-  > - 按钮频繁点击提交（防止重复提交） 
-  > - 鼠标移动事件（如拖拽元素时）
-  
-  完整节流可以使用**定时器与时间戳**的写法
-  
-  使用定时器写法，`delay`毫秒后第一次执行，第二次事件停止触发后依然会再一次执行
-  
-
-```html
-<html>
-    <head>
-        <style>
-            .box{
-                width: 500px;
-                height: 500px;
-                background-color: aqua;
-            }
-        </style>
-    </head>
-<body>
-    <div class="box"></div>
-</body>
-</html>
-<script >
-   let tBox = document.querySelector('.box')
-   tBox.addEventListener('touchmove',demo);
-	// 简单版本
-   function throttled1(fn, delay = 500) {
-    let timer = null
-    return function (...args) {
-        if (!timer) {
-            timer = setTimeout(() => {
-                fn.apply(this, args)
-                timer = null
-            }, delay);
-      }
-    }
+```js
+// 1. 防抖：清空旧定时器，建新定时器
+function debounce(fn, delay) {
+  let timer;
+  return function(...args) {
+    clearTimeout(timer); // 如果再次触发，取消上一次的执行
+    timer = setTimeout(() => {
+      fn.apply(this, args);
+    }, delay);
+  };
 }
-   function demo(){
-    console.log('发起请求')
-   }
-</script>
+
+// 2. 节流：用时间戳判断是否在冷却期
+function throttle(fn, interval) {
+  let lastTime = 0;
+  return function(...args) {
+    let now = Date.now();
+    if (now - lastTime >= interval) { // 间隔超过设定时间才执行
+      lastTime = now;
+      fn.apply(this, args);
+    }
+  };
+}
 ```
 
- 使用时间戳写法，事件会立即执行，停止触发后没有办法再次执行
+**【总结】**
+防抖重在“延迟执行，过滤中间过程”，节流重在“稀释执行频率，保证过程均匀”。
 
-```
-function throttled2(fn, delay = 500) {
-      let oldtime = Date.now()
-      return function (...args) {
-          let newtime = Date.now()
-          if (newtime - oldtime >= delay) {
-              fn.apply(null, args)
-              oldtime = Date.now()
+## 柯里化
+
+**【一句话总结】**
+柯里化（Currying）是一种函数式编程技巧，它把接收多个参数的函数，转化为一系列接收单一参数的函数。简单说就是：`f(a, b, c)` 变成 `f(a)(b)(c)`。
+
+**【核心要点】**
+
+1. **核心作用**
+
+   - **参数复用**：固定某些不变参数，生成更具体的函数（如生成专用的 log 函数）。
+   - **延迟执行**：只有当参数收集齐全时，才真正执行原函数。
+
+2. **实现原理**
+   利用**闭包**保存已传入的参数，每次调用返回一个新函数继续接收参数。当收集的参数总数等于原函数参数个数时，执行原函数。
+
+3. **简单实现代码**
+
+   ```js
+      function curry(fn) {
+        return function curried(...args) {
+          // 如果传入参数大于等于原函数参数个数，直接执行
+          if (args.length >= fn.length) {
+            return fn.apply(this, args);
           }
-      }
-  }
-```
-
-可以将时间戳写法的特性与定时器写法的特性相结合，实现一个更加精确的节流。实现如下
-
-  ```
-function throttled(fn, delay) {
-      let timer = null
-      let starttime = Date.now()
-      return function () {
-          let curTime = Date.now() // 当前时间
-          let remaining = delay - (curTime - starttime)  // 从上一次到现在，还剩下多少多余时间
-          let context = this
-          let args = arguments
-          clearTimeout(timer)
-          if (remaining <= 0) {
-              fn.apply(context, args)
-              starttime = Date.now()
-        } else {
-              timer = setTimeout(fn, remaining);
+          // 否则返回新函数继续收集参数
+          return function(...args2) {
+            return curried.apply(this, args.concat(args2));
+          }
         }
       }
-  }
-  ```
+      // 使用
+      const sum = (a, b, c) => a + b + c;
+      const curriedSum = curry(sum);
+      console.log(curriedSum(1)(2)(3)); // 6
+      console.log(curriedSum(1, 2)(3)); // 6
+   ```
+
+**【总结】**
+柯里化的本质是“降维”和“延迟执行”，在编写高阶函数、中间件设计（如 Redux）以及函数组合时非常有用，但需注意闭包可能带来的内存开销。
 
 # 高级
 
@@ -2869,168 +2752,6 @@ function fact(n){
 - 循环叠加变量acc
 
 ## 实现机制
-
-### 闭包
-
-定义
-
-> 当一个函数被定义时，它会捕获其词法环境（即函数被定义时的作用域），并将其作为一个“隐藏状态”与函数一起保存。这个隐藏状态可以被函数访问和修改，即使函数在不同的作用域中被调用。
-
-闭包的意义：
-
-> 1. **实现信息隐藏和封装** ：通过闭包，我们可以创建“私有”变量，这些变量只能被特定的函数访问和修改，从而实现信息隐藏和封装。
-> 2. **实现函数柯里化** ：闭包可以用来实现函数柯里化，即将一个多参数函数转换为一系列单参数函数。
-> 3. **实现函数记忆化** ：闭包可以用来实现函数记忆化，即将函数的结果缓存起来，避免重复计算。
-
-闭包的注意：
-
-> - **内存管理** ：闭包会占用额外的内存空间，因为它需要保存其词法环境。如果闭包被频繁创建和销毁，可能会导致内存泄漏或性能问题。
-> - **可维护性** ：过度使用闭包可能会导致代码难以理解和维护。因此，在使用闭包时，需要权衡其带来的灵活性和可能的负面影响。
-
-### 柯里化
-
-定义
-
-> 将一个接受多个参数的函数转换为一系列接受单个参数的函数。
-
-柯里化的原理基于函数的 **闭包** 特性。通过使用闭包，柯里化函数能够“记住”之前传入的参数，并返回一个新的函数，这个新函数接受剩余的参数。这种方式使得函数可以逐步接受参数，而不是一次性接受所有参数。
-
-柯里化的意义：
-
-> **参数复用** ：通过柯里化，可以固定某些参数，创建更具针对性的函数。
->
-> **延迟执行** ：柯里化函数可以在接收到足够的参数时才执行，这在某些场景下非常有用。
->
-> **函数组合** ：柯里化使得函数组合更加灵活和强大。
-
-```
-参数复用
-const log = (date, importance, message) => {
-    console.log(`${date} [${importance}] ${message}`);
-};
-
-const logToday = log(new Date());
-logToday('DEBUG', 'Some debug message');
-
-延迟执行
-function add(x) {
-    return function(y) {
-        return x + y;
-    };
-}
-const add5 = add(5);
-setTimeout(add5, 1000, 3); // 1秒后输出: 8
-
-函数组合
-const double = x => x * 2;
-const addOne = x => x + 1;
-const square = x => x * x;
-
-const doubleAndAddOneAndSquare = x => square(addOne(double(x)));
-const curriedDoubleAndAddOneAndSquare = curry(doubleAndAddOneAndSquare);
-
-const result = curriedDoubleAndAddOneAndSquare(3);
-console.log(result); // 输出: 49
-```
-
-柯里化的注意：
-
-> - **函数嵌套增加** ：柯里化会导致函数嵌套层次增加，可能会影响代码的可读性。
-> - **内存占用** ：柯里化函数会占用额外的内存，特别是在频繁创建和销毁柯里化函数的场景中。
-> - **性能问题** ：在某些情况下，柯里化可能会导致性能下降，特别是在需要频繁调用柯里化函数的场景中。
-
-实现一个简单柯里化
-
-```
-    function add() {
-      let sum = 0;
-      return function innerFn(num) {
-        if (num !== undefined) {
-          sum += num;
-          return innerFn;
-        } else {
-          return sum;
-        }
-      }
-    }
-
-    console.log(add()(1)(2)(3)()); // 输出 6
-```
-
-> 我们首先定义了一个 `add` 函数，它返回了一个内部函数 `innerFn`。在 `innerFn` 中，我们首先定义了一个变量 `sum`，用于保存累加的结果。当传入的参数不为 `undefined` 时，我们将其加到 `sum` 中，并返回 `innerFn`。这样就可以继续传递下一个参数了。当参数为 `undefined` 时，我们返回 `sum`，表示累加完毕
->
-> 但是，这种简单的实现方式存在一个问题，那就是只能处理参数数量为 2 的函数，无法处理参数数量不确定的函数。因此我们需要更加通用的柯里化实现方式
->
-> 这里是一个更加通用的函数柯里化的实现方式：
-
-**柯里化写法**
-
-```
-// es6写法
-const curry = (fn, ...args) => 
-            args.length < fn.length 
-            // 参数长度不足时,重新柯里化函数,等待接受新参数
-            ? (...arguments) => curry(fn, ...args, ...arguments)
-            // 函数长度满足时,执行函数
-             : fn(...args);
-// es5写法
-function curry(fn) {
-      return function curried(...args) {
-        if (args.length >= fn.length) {
-          return fn.apply(this, args);
-        } else {
-          return function(...args2) {
-            return curried.apply(this, args.concat(args2));
-          }
-        }
-      }
-    }
-该函数的参数是一个函数 fn，它返回一个柯里化后的函数。在函数内部，我们定义了一个 curried 函数，它的作用是接受函数需要的所有参数。当传入的参数数量大于或等于原函数需要的参数数量时，就直接调用原函数并返回结果；否则，返回一个新函数，然后使用闭包将当前已经传入的参数保存下来。这个新函数再次接受一个参数，并将这个参数与之前已经保存的参数合并，然后递归调用 curried 函数
-const add = (a, b, c) => a + b + c;
-const curriedAdd = curry(add);
-console.log(curriedAdd(1)(2)(3));
-```
-
-currying 函数详解：
-
-```js
-function currying(fn, length) {
-  length = length || fn.length;  // 注释 1
-  return function (...args) {   // 注释 2
-    return args.length >= length // 注释 3
-     ? fn.apply(this, args)   // 注释 4
-      : currying(fn.bind(this, ...args), length - args.length) // 注释 5
-  }
-}
-
-// Test
-const fn = currying(function(a, b, c) {
-    console.log([a, b, c]);
-});
-
-fn("a", "b", "c") // ["a", "b", "c"]
-fn("a", "b")("c") // ["a", "b", "c"]
-fn("a")("b")("c") // ["a", "b", "c"]
-fn("a")("b", "c") // ["a", "b", "c"]
-```
-
-**柯里化应用场景**
-
-> - 参数复用，如var curriedAdd = curry(add, 5)
-> - 延迟执行，sum(1)(2)(3)，传入参数个数没有满足原函数入参个数，都不会立即返回结果。
-> - 函数式编程中，作为compose, functor, monad 等实现的基础
-
-**注意事项**
-
-使用柯里化函数，离不开闭包， arguments， 递归。
-
-> 闭包，函数中的变量都保存在内存中，内存消耗大，有可能导致内存泄漏。
-> 递归，效率非常差，
-> arguments, 变量存取慢，访问性很差,
-
-**参考**
-
-[JavaScript专题之函数柯里化](https://github.com/mqyqingfeng/Blog/issues/42)
 
 ### 函子
 
