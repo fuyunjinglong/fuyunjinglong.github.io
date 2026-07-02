@@ -329,25 +329,20 @@ Function.__proto__ === Function.prototype
 > `A instanceof B` 的本质，就是检查 **`A.__proto__` 的整条链条上，是否存在等于 `B.prototype` 的节点。**
 
 ```js
-function myInstanceof(obj, Constructor) {
-  // 1. 拿到右边构造函数的原型对象（目标靶子）
-  let target = Constructor.prototype; 
-  
-  // 2. 拿到左边对象的隐式原型（起点）
-  let current = obj.__proto__;       
-  
-  // 3. 开始顺着原型链往上找
+function myInstanceof(left, right) {
+  // 基础类型判断
+  // 如果 left 不是对象类型，或者 left 为 null，直接返回 false
+  // 因为 instanceof 只能用于对象，原始值（如 number, string, boolean）直接返回 false
+  if (typeof left !== 'object' || left === null) {
+    return false;
+  }
+  // 获取实例对象的原型对象（使用 Object.getPrototypeOf 更加标准）
+  let proto = Object.getPrototypeOf(left);
   while (true) {
-    // 找到头了，没找到，返回 false
-    if (current === null) {
-      return false;
-    }
-    // 找到了！当前节点等于目标靶子，返回 true
-    if (current === target) {
-      return true;
-    }
-    // 没找到，也没到头，顺着链条往上走一步
-    current = current.__proto__;
+    if (proto === null) return false;// 如果查到了尽头，还没找到，返回 false
+    // right.prototype表示构造函数的原型对象
+    if (proto === right.prototype) return true;// 如果找到完全相等的原型对象，返回 true
+    proto = Object.getPrototypeOf(proto);// 未找到，继续向上层原型链查找
   }
 }
 ```

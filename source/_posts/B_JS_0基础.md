@@ -29,169 +29,77 @@ toc: true # 是否启用内容索引
 
 ## 数据类型
 
-也叫内置对象
+8 种数据类型，其中 7 种是基本类型，1 种是引用类型
 
-- 6基本类型：Number,String,Boolean,Null,undefined,symbol(ES6),BigInt(ES2020)
-- 3引用类型：Object,Array,function,日期、正则、Map/Set等
+- 7基本类型：Number,String,Boolean,Null,undefined,symbol(ES6),BigInt(ES2020)
+- 1引用类型：只有 Object 这一种。日常用的 Array（数组）、Function（函数）、Date（日期）、RegExp（正则）等，本质上都是 Object 的派生实例。
 
-## null和undefined
+**💡 面试官可能追问及加分项：**
 
-1. **语义与来源**
-   - `undefined`：系统默认值。如变量声明未赋值、函数无返回值、对象属性不存在。
-   - `null`：手动赋值。表示“此处应该有值，但现在为空”，常用于初始化或释放对象引用。
-2. **类型判断 (`typeof`)**
-   - `typeof undefined` 结果是 `'undefined'`。
-   - `typeof null` 结果是 `'object'`（这是 JS 的历史遗留 Bug）。
-   - *准确判断 null 用：`变量 === null`*
-3. **转换为数字**
-   - `Number(undefined)` 结果是 `NaN`。
-   - `Number(null)` 结果是 `0`。
-4. **比较规则**
-   - 宽松相等：`null == undefined` 为 `true`。
-   - 严格相等：`null === undefined` 为 `false`。
+> **追问1：为什么 `0.1 + 0.2 !== 0.3`？如何解决？**
+> 回答思路：计算机底层使用二进制表示小数，有些十进制小数（如 0.1）在二进制中是无限循环的。IEEE 754 标准在截断尾数时会产生精度丢失。解决方法通常是将小数乘以 10 的幂次方转为整数计算，然后再除回去；或者使用 `Number.EPSILON` 设置一个极小的误差范围来判断是否相等。
+>
+> **追问2：`undefined` 和`null` 有什么区别？**
+> 回答思路：
+>
+> - 语义不同：`undefined` 系统默认值。如变量声明未赋值、函数无返回值、对象属性不存在。`null` 手动赋值。表示“此处应该有值，但现在为空”，常用于初始化或释放对象引用。
+> - 类型转换不同：转换为数字时，`Number(undefined)` 是 `NaN`，而`Number(null)` 是 `0`。
+> - 类型判断：`typeof undefined` 结果是 `'undefined'`。`typeof null` 结果是 `'object'`（这是 JS 的历史遗留 Bug）。
+>
+> **追问3：说一下 Symbol 的应用场景？**
+> 回答思路：主要用于防止对象属性名冲突。例如在第三方库扩展对象属性时使用 Symbol 作为 key，或者在实现类的私有属性/方法时使用。此外，JS 内部很多内置行为也依赖 Symbol（如 `Symbol.iterator` 决定对象是否可被 `for...of` 遍历）。
 
-**isNaN和Number.isNaN**
+## 类型判断
 
-- isNaN是es5的语法特性,这个值能被转成一个合法的数字吗？如果不能，我就返回 true。
-- Number.isNaN是es6的语法特性。先判断类型，如果不是 `number` 类型，直接返回 `false`。如果是 `number` 类型，再判断是不是 `NaN`。
+**1. `typeof` 操作符**
 
-| 参数值      | `isNaN(val)` (全局) | `Number.isNaN(val)` (ES6) | 解释                                       |
-| :---------- | :------------------ | :------------------------ | :----------------------------------------- |
-| `NaN`       | `true`              | `true`                    | 两者结果一致                               |
-| `'hello'`   | **`true`**          | **`false`**               | `isNaN` 转换失败变成 NaN；后者直接判断不是 |
-| `undefined` | **`true`**          | **`false`**               | 同上                                       |
-| `{}`        | **`true`**          | **`false`**               | 同上                                       |
-| `123`       | `false`             | `false`                   | 两者结果一致                               |
-| `'123'`     | `false`             | `false`                   | `isNaN` 转为 123；后者直接判断不是         |
+> - **原理**：在 JS 底层实现中，变量在机器码中存储的类型标签的前 3 位决定了 `typeof` 的返回值。
+> - **优点**：能够精准判断所有的原始类型（除了 `null`），并且能识别出 `function`。
+> - 缺点：
+>   - `typeof null` 会返回 `'object'`（这是 JS 早期的历史遗留 Bug，因为 null 的机器码前三位和 object 一样都是 000）。
+>   - 对于引用类型（如 Array、Object、RegExp），除了 function 会返回 `'function'` 外，其他的都会返回 `'object'`，无法进一步细分。
+> - **适用场景**：常用于判断原始类型，以及判断某个变量是否为函数。
 
+**2. `instanceof` 操作符**
 
+> - **原理**：其内部运行机制是检查右边构造函数的 `prototype` 属性，是否出现在左边对象的原型链上。
+> - **优点**：能够准确区分引用类型（如 `[] instanceof Array === true`）。
+> - 缺点：
+>   - 无法判断原始类型（如 `'abc' instanceof String === false`，除非用 `new String('abc')` 创建）。
+>   - 只要是在原型链上的构造函数，都会返回 true（例如 `[] instanceof Object === true`），不够精准。
+> - **适用场景**：主要用于判断引用类型的实例，特别是在涉及原型链继承的场景中。
 
-## JS 类型判断-对象,数组
+**3. `constructor` 属性**
 
-第一，使用 typeof 加 length 属性
+> - **原理**：当实例对象被创建时，其内部会指向它的构造函数。
+> - **优点**：似乎既能判断原始类型，又能判断引用类型。
+> - **缺点**：非常不安全。因为 `constructor` 指向是可以被随意修改的（比如在写原型继承时常常会重写 `prototype`，导致 `constructor` 丢失或指向错误），并且 `null` 和 `undefined` 是没有 `constructor` 的。
+> - **适用场景**：一般很少单独使用，仅作了解。
 
-数组有 length 属性，object 没有，而 typeof 数组与对象都返回 object，所以我们可以这么判断
+**4. `Object.prototype.toString.call()`（最准确）**
 
-```js
-var getDataType = function(o){
-    if(typeof o == 'object'){
-        if( typeof o.length == 'number' ){
-            return 'Array';
-        } else {
-            return 'Object';   
-        }
-    } else {
-        return 'param is no object type';
-    }
-};
-```
+> - **原理**：`toString` 是 Object 原型上的方法，默认返回当前对象的内部属性 `[[Class]]`，格式为 `'[object Type]'`。通过 `call` 改变 this 指向，可以让任何值都调用这个方法。
+> - 优点：最准确、最全面。能精准判断 JS 中所有的内置类型，包括 `null`、`undefined` 和各种细分引用类型。
+>   - 例如：`Object.prototype.toString.call(null)` 返回 `'[object Null]'`。
+>   - 例如：`Object.prototype.toString.call([])` 返回 `'[object Array]'`。
+> - **缺点**：写法较繁琐。不能判断自定义的类实例（比如 `new Person()`，它只能返回 `'[object Object]'`）。
+> - **适用场景**：作为通用类型判断的最佳实践。通常会将其封装成一个工具函数，配合正则提取字符串。
 
-第二，使用 instanceof
+**总结与最佳实践（总）**
 
-利用 instanceof 判断数据类型是对象还是数组时应该优先判断 array，最后判断 object。
+综上所述，在我的日常开发中：
 
-```js
-var getDataType = function(o){
-    if(o instanceof Array){
-        return 'Array'
-    } else if ( o instanceof Object ){
-        return 'Object';
-    } else {
-        return 'param is no object type';
-    }
-};
-```
+> 1. 如果只是判断变量是否定义或者是不是函数，我会用 `typeof`。
+> 2. 如果是判断具体的引用类型（特别是数组），我会用 `instanceof` 或者 ES6 提供的 `Array.isArray()`。
+> 3. 如果需要写一个通用的、最严谨的类型判断工具函数，我会选择 `Object.prototype.toString.call()`。
 
-## JS类型判断-完整
+**💡 面试官可能追问及加分项：**
 
-**typeof**
+**追问1：能不能手写一个 `instanceof`？**
+*回答思路：利用原型链，写一个 `while` 循环即可。*
 
-缺点：无法区分null，数组，对象
-
-```js
-typeof null            ------------------>"object"
-typeof [1,2,3]         ------------------>"object"
-typeof ibj          ------------------>"object"
-typeof new Date()      ------------------>"object"
-typeof new RegExp()    ------------------>"object"
-typeof "helloworld"    ------------------>"string"     
-typeof 123             ------------------>"number"
-typeof new Function()  ------------------>"function"
-typeof Symbol()        ------------------>"symbol"
-typeof true            ------------------>"true"
-typeof undefined       ------------------>"undefined"
-typeof 'undefined'     ------------------>"string"
-```
-
-**instanceof**
-
-缺点：不能区分undefined和null，不能区分Object和Function。对于基本类型如果不是用new声明的则也测试不出来，对于是使用new声明的类型，它还可以检测出多层继承关系。
-
-```
-console.log(bool instanceof Boolean);// false
-console.log(num instanceof Number);// false
-console.log(str instanceof String);// false
-console.log(und instanceof Object);// false
-console.log(arr instanceof Array);// true
-console.log(nul instanceof Object);// false
-console.log(obj instanceof Object);// true
-console.log(fun instanceof Function);// true
-
-var bool2 = new Boolean()
-console.log(bool2 instanceof Boolean);// true
-
-var num2 = new Number()
-console.log(num2 instanceof Number);// true
-
-var str2 = new String()
-console.log(str2 instanceof String);//  true
-
-function Person(){}
-var per = new Person()
-console.log(per instanceof Person);// true
-
-function Student(){}
-Student.prototype = new Person()
-var haoxl = new Student()
-console.log(haoxl instanceof Student);// true
-console.log(haoxl instanceof Person);// true
-```
-
-**constructor**
-
-`constructor`主要是利用原型上的`prototype.constructor`指向实例的构造函数来进行判断的。
-
-缺点：不能判断undefined和null，并且使用它是不安全的，因为contructor的指向是可以改变的
-
-```
-console.log('1'.constructor === String);  // true
-console.log(new Number(1).constructor === Number); // true
-console.log(true.constructor === Boolean); // true
-console.log(alert.constructor === Function); // true
-console.log([].constructor === Array); // true
-console.log(new Date().constructor === Date); // true
-```
-
-**toString**
-
-`toString`是`Object.prototype`上的一个方法, 常用方式为 `Object.prototype.toString.call(target)`返回值是 `[object 类型]`字符串,该方法基本上能判断所有的数据类型(自定义数据类型除外)
-
-```
-// 定义判断类型函数
-let getType = target => Object.prototype.toString.call(target)
-
-console.log(getType('')); // [object String]
-console.log(getType(2)); // [object Number]
-console.log(getType(true)); // [object Boolean]
-console.log(getType(undefined)); // [object Undefined]
-console.log(getType(null)); // [object Null]
-console.log(getType(Symbol())); // [object Symbol]
-console.log(getType({})); // [object Object]
-console.log(getType([])); // [object Array]
-console.log(getType(alert)); // [object Function]
-console.log(getType(new RegExp())); // [object RegExp]
-console.log(getType(new Date())); // [object Date]
-```
+**追问2：为什么 `Object.prototype.toString.call()` 能判断类型，而直接 `xxx.toString()` 不行？**
+*回答思路：因为很多派生对象（如 Array、Function）都**重写**了 `toString` 方法，导致直接调用时无法返回类型字符串。只有 Object 原型上的 `toString` 才会去读取内部的 `[[Class]]` 属性。因此必须用 `call` 借用 Object 原型上的原生方法。*
 
 ## 模块化规范
 
@@ -1067,555 +975,118 @@ a = null;
 
 ## **垃圾回收**
 
-**(1)定义**
+**1. 开篇：什么是垃圾回收？**
+垃圾回收就是 JS 引擎中的一套自动化机制，它的核心目的是**监控内存分配，并自动释放那些不再使用的内存，以防止内存泄漏**。
 
-JavaScript 中自动垃圾回收机制的原理为：
+**2. 核心原理：如何判断“垃圾”？**
+目前主流的浏览器引擎（如 Chrome 的 V8）主要使用**可达性**算法来判断对象是否可以被回收。
 
-```
-找出那些不再使用的变量，然后释放其占用的内存。
-垃圾收集器会按照固定的时间间隔(或预定的收集时间)周期性地执行此操作。
-```
+- **根节点：** 垃圾回收器会从一组被称为“根”的全局变量开始寻找，比如 `window` 对象（浏览器中）、`global` 对象（Node.js 中）以及当前的调用栈。
+- **标记过程：** 从根节点出发，所有能被根节点直接或间接引用的对象，都被标记为“活动对象”。
+- **清除过程：** 那些没有被标记到的对象，也就是从根节点无法到达的对象，就被视为“垃圾”，等待回收。
 
-**(2)内存生命周期**
+*(补充：早期的浏览器曾使用“引用计数法”，即记录一个对象被引用的次数。但这有一个致命缺陷——**循环引用**，即 A 引用 B，B 也引用 A，导致两者都无法被回收，因此已被现代浏览器弃用。)*
 
-不管什么程序语言，内存生命周期基本是一致的：
+**3. 主流算法：标记-清除与分代回收**
+现代垃圾回收主要采用**标记-清除** 算法及其变种。
 
-- 分配你所需要的内存
-- 使用分配到的内存（读、写）
-- 不需要时将其释放归还
+- **标记-清除：**
+  1. **标记：** 遍历所有对象，标记可达对象。
+  2. **清除：** 遍历堆内存，清除未标记的对象。
+  3. **缺点：** 清除后会产生不连续的内存碎片（类似磁盘碎片），后续如果要分配大对象可能内存不足。
+- **标记-整理：**
+  - 为了解决碎片化问题，在清除阶段会将存活的对象向内存一端移动，整理出连续的内存空间。通常用于老生代。
 
-对于javascript而言，
+**4. 进阶：V8 引擎的优化策略（分代回收）**
+V8 引擎为了提高性能，根据对象的生命周期长短，将堆内存分为**新生代** 和 **老生代**，并采用不同的回收策略。
 
-- 简单类型，内存是保存在栈（stack）空间
-- 复杂数据类型，内存是保存在堆（heap）空间
+- **新生代：** 存放生存时间较短的对象（如临时变量）。
+  - **算法：Scavenge 算法（Cheney 算法）。**
+  - **机制：** 将内存分为两块，`From` 空间和 `To` 空间。新对象分配在 `From`。GC 时，将 `From` 中存活的对象复制到 `To` 并有序排列，然后清空 `From`。优点是速度快，不产生碎片。缺点是只能使用一半内存。经历一次复制还存活的对象，会被晋升到老生代。
+- **老生代：** 存放生存时间较长的对象或从新生代晋升过来的对象。
+  - **算法：标记-清除 + 标记-整理。**
+  - **机制：** 由于空间大、对象多，复制算法效率低。采用标记-清除清理垃圾，并在必要时进行标记-整理以解决内存碎片。
+- **V8 的性能优化（减少全停顿）：**
+  - **增量标记：** 将一个大的 GC 任务拆分成很多个小任务，穿插在 JS 代码执行中，避免长时间阻塞主线程（即“全停顿”）。
+  - **并发回收：** 利用多核 CPU，在辅助线程上进行 GC 标记和清理，完全不阻塞主线程的 JS 执行。
 
-**(3)为什么需要垃圾回收机制？**
+**5. 开发中的常见问题：内存泄漏**
+虽然 GC 很强大，但代码不当仍会导致无法回收的内存泄漏。常见原因包括：
 
-在Chrome中，v8被限制了内存的使用（64位约1.4G/1464MB ， 32位约0.7G/732MB），为什么要限制？
+> 1. **意外的全局变量：** 在函数内未声明的变量（如 `a = 10`）会挂在全局对象上，无法回收。
+> 2. **未清理的定时器：** `setInterval` 或 `setTimeout` 在组件销毁时未清除。
+> 3. **闭包：** 闭包会维持对外部作用域变量的引用，如果不当使用，会导致变量始终无法被释放。
+> 4. **游离的 DOM 引用：** 页面中删除了 DOM 节点，但 JS 代码中还保留着对该节点的引用。
+> 5. **事件监听器未解绑：** 添加了 `addEventListener` 却未在移除元素时 `removeEventListener`。
 
-- 表层原因是，V8最初为浏览器而设计，不太可能遇到用大量内存的场景。JS的单线程机制，垃圾回收的过程阻碍了主线程逻辑的执行。
-- 深层原因是，V8的垃圾回收机制的限制（垃圾回收的过程缓慢，也就会导致主线程的等待时间越长，那么性能和应用直线下降）
+**6. 总结**
+JS 的垃圾回收机制是基于**可达性分析**的。V8 引擎通过**分代回收**（新生代用 Scavenge，老生代用标记-整理）来平衡效率与空间。理解 GC 机制能帮助我们编写更高效的代码，并有效避免内存泄漏问题。
 
-**(4)垃圾收集机制**
+💡 **面试官可能会追问的点（准备思路）：**
 
-V8的垃圾回收策略主要是基于`分代垃圾回收机制`，其根据**对象的存活时间**将内存的垃圾回收进行不同的分代，然后对不同的分代采用不同的垃圾回收算法。
-
-(1.1)内存模型
-
-- 新生代：生存时间短的对象，支持 1～8M 的容量
-- 老年代：生存时间长的对象，容量较大
-
-为了提高回收效率，V8 分别使用两个不同的垃圾回收器，
-
-- 副垃圾回收器 - Scavenge：主要负责新生代的垃圾回收。
-- 主垃圾回收器 - Mark-Sweep & Mark-Compact：主要负责老生代的垃圾回收。
-
-(1.2)新生代回收
-
-在新生代中，主要使用`Scavenge`算法进行垃圾回收，`Scavenge`算法是一个典型的牺牲空间换取时间的复制算法，在占用空间不大的场景上非常适用。
-
-Scavange算法将新生代堆分为两部分，分别叫`from-space`和`to-space`。
-
-工作过程如下：
-
-- 标记活动对象和非活动对象
-- 复制 from space 的活动对象到 to space 并对其进行排序
-- 释放 from space 中的非活动对象的内存
-- 将 from space 和 to space 角色互换
-
-<img src="/img/image-20220222215742735.png" alt="image-20220222215742735" style="zoom: 80%;" />
-
-新生代又细分为`nursery`子代和`intermediate`子代两个区域。一个对象第一次分配内存时会被分配到新生代中的`nursery`子代，如果进过下一次垃圾回收这个对象还存在新生代中，这时候我们移动到 `intermediate` 子代，再经过下一次垃圾回收，如果这个对象还在新生代中，副垃圾回收器会将该对象移动到老生代中，这个移动的过程被称为**晋升**。
-
-对象晋升的条件主要有以下两个：
-
-- 对象是否经历过一次`Scavenge`算法
-- `To`空间的内存占比是否已经超过`25%`(之所以有`25%`的内存限制是因为`To`空间在经历过一次`Scavenge`算法后会和`From`空间完成角色互换，会变为`From`空间，后续的内存分配都是在`From`空间中进行的，如果内存使用过高甚至溢出，则会影响后续对象的分配，因此超过这个限制之后对象会被直接转移到老生代来进行管理)
-
-(1.3)老年代回收
-
-scavenge算法缺陷：
-
-- scavenge为复制算法，重复复制活动对象会使得效率低下
-- scavenge是牺牲空间来换取时间效率的算法，而老生代支持的容量较大，会出现空间资源浪费问题
-
-老年代采用 Mark-Sweep（标记清除） 和 Mark-Compact（标记整理） 算法。
-
-1.）Mark-Sweep
-
-Mark-Sweep处理时分为两阶段，标记阶段和清理阶段。看起来与Scavenge类似，不同的是，Mark-Sweep在标记了活动对象和非活动对象之后，直接把非活动对象清除。
-
-- 标记阶段：对老生代进行第一次扫描，标记活动对象
-- 清理阶段：对老生代进行第二次扫描，清除未被标记的对象，即清理非活动对象
-
-<img src="/img/image-20220504095928130.png" alt="11" style="zoom: 80%;" />
-
-但是遗留一个问题，被清除的对象遍布于各内存地址，产生很多内存碎片。
-
-2.)Mark-Compact
-
-若不清理这些内存碎片，如果出现需要分配一个大对象的时候，这时所有的碎片空间都完全无法完成分配，就会提前触发垃圾回收,而这次回收其实不是必要的。
-
-Mark-Compact被提出，它是在 Mark-Sweep的基础上演进而来的，相比Mark-Sweep，Mark-Compact添加了活动对象整理阶段，将所有的活动对象往一端移动，移动完成后，直接清理掉边界外的内存。
-
-<img src="/img/image-20220222220554956.png" alt="image-20220222220554956" style="zoom: 80%;" />
-
-(1.4)全停顿 Stop-The-World
-
-由于垃圾回收是在JS引擎中进行的，而Mark-Compact算法在执行过程中需要移动对象，而当活动对象较多的时候，它的执行速度不可能很快，为了避免JavaScript应用逻辑和垃圾回收器的内存资源竞争导致的不一致性问题，垃圾回收器会将JavaScript应用暂停，这个过程，被称为`全停顿`（stop-the-world）。
-
-在新生代中，由于空间小、存活对象较少、Scavenge算法执行效率较快，所以全停顿的影响并不大。而老生代中就不一样，如果老生代中的活动对象较多，垃圾回收器就会暂停主线程较长的时间，使得页面变得卡顿。
-
-**(5)标记活动对象和非活动对象的策略**
-
-通常有两个：**引用计数**和**标记清除**
-
-- 引用计数-dom的垃圾回收机制
-- 标记清除-js的垃圾回收机制
-
-(1.1)引用计数
-
-定义：每个值被引用的次数。声明一个变量后，当使用引用类型值赋值时，+1，当这个变量又赋值另外一值，计数-1。
-
-这是最初级的垃圾收集算法，如果没有引用指向该对象（零引用），对象将被垃圾回收机制回收。
-
-缺陷:在循环的情况下，引用计数算法存在很大的局限性。
-
-```
-存在内存泄漏
-function problem() {
-var objA = new Object();
-var objB = new Object();
-objA.someOtherObject = objB;
-objB.anotherObject = objA;
-}
-objectA 和objectB 通过各自的属性相互引用，即这两个对象的引用次数都是2，在采用标记清除策略的实现中，由于函数执行之后，这两个对象都离开了作用域，因此这种相互引用不是个问题。但在采用引用计数策略的实现中，当函数执行完毕后，objectA 和objectB 还说明将继续存在，因为它们的引用次数永远不会是0。
-
-DOM中也如此
-var element=document.getElementById（''）；
-var myObj=new Object();
-myObj.element=element;
-element.someObject=myObj;
-```
-
-(1.2)标记清除
-
-定义：当变量进入环境时，标记“进入环境”。当变量离开环境时，标记“离开环境”。
-
-垃圾回收器创建了一个“roots”列表,“window”对象是一个全局变量，被当作root.
-
-从root开始的所有对象如果是可达的，它就不被当作垃圾。所有未被标记的内存会被当做垃圾，收集器现在可以释放内存。
-
-循环引用的问题迎刃而解，缺点: 算法运行时程序执行被暂停。
-
-```
-以下几种情况都可以作为根节点：
-全局对象
-本地函数的局部变量和参数
-当前嵌套调用链上的其他函数的变量和参数
-```
+> 1. V8 的老生代什么时候从标记-清除切换到标记-整理？
+>    - 答：通常是在内存空间不足以分配新生对象晋升过来的内存，或者为了应对严重的内存碎片化时触发。
+> 2. 什么是全停顿？
+>    - 答：GC 运行时，为了防止逻辑冲突，JS 执行线程会被挂起，等待 GC 执行完毕。对于大内存堆，这会导致页面卡顿。增量标记和并发回收就是为了解决这个问题。
+> 3. 如何手动触发 GC？（调试用）
+>    - 答：在 Node.js 中可以使用 `global.gc()`（需要启动参数 `--expose-gc`）；在 Chrome DevTools 中可以点击 Performance 面板里的 “Collect garbage” 按钮。
 
 ## 内存溢出和内存泄漏
 
-**概念**
-
-内存溢出：当程序需要的内存超过了剩余内存，就会抛出内存溢出错误。
-
-内存泄漏：**不再用到的内存，没有及时释放，就叫做内存泄漏。**应用程序不再需要占用内存的时候，由于某些原因，内存没有被操作系统或可用内存池回收。
-
-**内存泄漏的几种原因**
-
-> - 意外的全局变量
-> - 被遗忘的定时器或回调函数
-> - 被遗忘的dom引用
-> - 闭包
-
-(1)意外的全局变量
-
-```
-function foo(arg) {
-    bar = "this is a hidden global variable";
-    this.bar = "potential accidental global"
-}
-
-真相是：
-function foo(arg) {
-    window.bar = "this is an explicit global variable";
-}
-
-实战：
-<html>
-<head></head>
-<body>
-<botton onclick="grow()">点击测试内存泄漏</botton>
-<botton onclick="clearGrow()">点击释放内存</botton>
-<div id="nodes"></div>
-<script>
-var largeObj = []
-function grow(){
-grow3()
-}
-function clearGrow(){
-clearGrow3()
-}
-function getBigData(){
-let res = []
-for (var i = 0; i < 100; i++) {
-let obj = {}
-for(let i=0;i<10000;i++){
-  obj[`key-${i}`] = `js创建一个很大内存的对象？`
-}
-res.push(obj)
-}
-return res
-}
-function grow0(){
- largeObj=[...largeObj,getBigData()]
-}
-var timer
-function grow1(){
-let someResource = getBigData();
- timer = setInterval(function() {
-    var node = document.getElementById('nodes');
-    if(node) {
-        node.innerHTML = JSON.stringify(someResource);
-        // 定时器也没有清除
-    }
-    // node、someResource 存储了大量数据 无法回收
-}, 1000);
-}
-function clearGrow1(){
-window.clearInterval(timer)
-}
-var childNode = document.createElement('p');
-function grow2(){
-let someResource = getBigData();
-var node = document.getElementById('nodes');
-    if(node) {
-childNode.innerHTML = JSON.stringify(someResource);
-node.appendChild(childNode)
-  }
-}
-function clearGrow2(){
-var node = document.getElementById('nodes');
-node.remove();
-//childNode = null;
-}
-function grow3(){
-var theThing = null
-    var replaceThing = function () {
-        var originalThing = theThing
-        var unused = function () {
-            if (originalThing)
-                console.log("hi")
-        }
-        theThing = {
-            longStr: new Array(1000000).join('*'),
-            someMethod: function someMethod() {
-                console.log('someMessage')
-            }
-        };
-    };
-    setInterval(replaceThing,100)
-}
-function clearGrow3(){
-解决: 去除unuserd函数或者在replaceThing函数最后一行加上 originlThing = null.
-}
-</script>
-</body>
-</html>
-```
-
-![image-20220313115045079](/img/image-20220313115045079.png)
-
-解决方法：
-
-- 避免创建全局变量
-- 在 JavaScript 文件头部加上 `'use strict'`，可以避免此类错误发生。启用严格模式解析 JavaScript ，避免意外的全局变量
-
-(2)被遗忘的定时器或回调函数
-
-```
-var timer
-function grow1(){
-let someResource = getBigData();
- timer = setInterval(function() {
-    var node = document.getElementById('nodes');
-    if(node) {
-        node.innerHTML = JSON.stringify(someResource);
-        // 定时器也没有清除
-    }
-    // node、someResource 存储了大量数据 无法回收
-}, 1000);
-}
-function clearGrow1(){
-window.clearInterval(timer)
-}
-
-原因:与节点或数据关联的计时器不再需要，node 对象可以删除，整个回调函数也不需要了。可是，计时器回调函数仍然没被回收（计时器停止才会被回收）。同时，someResource 如果存储了大量的数据，也是无法被回收的。
-解决方法： 在定时器完成工作的时候，手动清除定时器和回调函数。
-现代的浏览器（包括 IE 和 Microsoft Edge）使用了更先进的垃圾回收算法，已经可以正确检测和处理循环引用了。换言之，回收节点内存时，不必非要调用 removeEventListener 了。
-```
-
-![image-20220313115410595](/img/image-20220313115410595.png)
-
-![image-20220313120537563](/img/image-20220313120537563.png)
-
-(3)被遗忘的dom引用
-
-```
-function grow2(){
-let someResource = getBigData();
-var node = document.getElementById('nodes');
-    if(node) {
-childNode.innerHTML = JSON.stringify(someResource);
-node.appendChild(childNode)
-  }
-}
-
-function clearGrow2(){
-var node = document.getElementById('nodes');
-node.remove();
-//childNode = null;必须主动释放dom引用
-}
-```
-
-![image-20220320214519742](/img/image-20220320214519742.png)
-
-**原因**: 保留了DOM节点的引用,导致GC没有回收
-
-**解决办法**：断开引用，childNode=null
-
-(4)闭包
-
-使用闭包只是让内存常驻，滥用闭包才会导致内存泄漏。
-
-```
-function grow3(){
-var theThing = null
-    var replaceThing = function () {
-        var originalThing = theThing
-        var unused = function () {
-            if (originalThing)
-                console.log("hi")
-        }
-        theThing = {
-            longStr: new Array(1000000).join('*'),
-            someMethod: function someMethod() {
-                console.log('someMessage')
-            }
-        };
-    };
-    setInterval(replaceThing,100)
-}
-
-function clearGrow3(){
-解决: 去除unuserd函数或者在replaceThing函数最后一行加上 originlThing = null.
-}
-```
-
-首先我们明确一下，unused是一个闭包，因为它引用了自由变量 originalThing，虽然它被没有使用，但v8引擎并不会把它优化掉，因为 JavaScript里存在eval函数，所以v8引擎并不会随便优化掉暂时没有使用的函数。
-
-theThing 引用了someMethod，someMethod这个函数作用域隐式的和unused这个闭包共享一个闭包上下文。所以someMethod也引用了originalThing这个自由变量。
-
-```
-GCHandler -> replaceThing -> theThing -> someMethod -> originalThing -> someMethod(old) -> originalThing(older)-> someMethod(older)
-```
-
-这里面的引用链是：
-
-随着setInterval的不断执行，这条引用链是不会断的，所以内存会不断泄漏，直致程序崩溃。
-因为是闭包作用域引起的内存泄漏，这时候最好的选择是使用 chrome的heap snapshot的container视图，我们通过container视图能清楚的看到这条不断泄漏内存的引用链
-
-![image-20220320221047255](/img/image-20220320221047255.png)
-
-这是一段糟糕的代码,每次调用 replaceThing ，theThing 得到一个包含一个大数组和一个新闭包（someMethod）的新对象。同时，变量 unused 是一个引用 originalThing 的闭包（先前的 replaceThing 又调用了theThing）。思绪混乱了吗？最重要的事情是，闭包的作用域一旦创建，它们有同样的父级作用域，作用域是共享的。someMethod 可以通过 theThing 使用，someMethod 与 unused 分享闭包作用域，尽管 unused 从未使用，它引用的 originalThing 迫使它保留在内存中（防止被回收）。当这段代码反复运行，就会看到内存占用不断上升，垃圾回收器（GC）并无法降低内存占用。本质上，闭包的链表已经创建，每一个闭包作用域携带一个指向大数组的间接的引用，造成严重的内存泄漏。
-
-**解决**: 去除unuserd函数或者在replaceThing函数最后一行加上 originlThing = null.
-
-**4.内存泄漏排查手段**
-
-> - 打开ChromeDevTools-Performance
-> - 勾选 Screenshots 和 memory
-> - 左上角小圆点开始录制(record)
-> - 停止录制
-> - 查看heap对内存是否周期性变化
-
-内存泄漏优化
-
-> - 数组优化，用完arr=[]
-> - 对象复用，t=null
-> - 在循环中的表达式，最好放在循环外面
-
-(1)chrome devtools-memory工具
-
-主要功能分为：Head snapshot堆快照，Allocaiton instrumentastion on timeline(js堆内存在时间线上的回收情况)
-
-```
-<botton @click="grow()"></botton>
-function largeObj(){
-var largeArr= new Array(1000_10000);
-}
-var x= [];
-fucntion grow(){
-var o = new larfeObj();
-x.push(new Array(1000_10000));
-}
-
-```
-
-1)Head snapshot堆快照
-
-```
-1.核心参数
-Summary：摘要视图
-Comparison：对比视图，与其它快照对比，看增、删、Delta数量及内存大小
-Containment：俯瞰视图，自顶向下看堆的情况，根节点包括window对象，GC root，原生对象等等列头
-Shallow Size   ： 对象本身占用的内存
-Retained Size ： 对象本身及其引用总共占用的内存
-Distance ：当前对象到根的引用层级距离
-Alloc. Size : 新分配的内存
-Freed  Size ： 释放的内存
-2.其他参数
-Detached DOM tree：表示它已经不在DOM树上了，但Javascript仍旧对它有引用
-(compiled code) — 未知，估计是程序代码区
-(closure) — 闭包(array) — 未知
-Object — JS对象类型(system) — 未知
-(string) — 字符串类型，有时对象里添加了新属性，属性的名称也会出现在这里
-Array — JS数组类型cls — 游戏大厅特有的继承类
-Window — JS的window对象
-Quark.DisplayObjectContainer — Quark引擎的显示容器类
-Quark.ImageContainer — Quark引擎的图片类
-Quark.Text — Quark引擎的文本类
-Quark.ToggleButton — Quark引擎的开关按钮类
-
-```
-
-功能：查看两次快照之间的新建对象情况
-
-录制两次可以操作之间的快照，使用object allocation between snashot1 and snapshot选项，比较两次快照间创建的对象，常用这个功能；
-
-使用comparison，比较两次快照的内存增减情况
-
-![image-20211207073137249](/img/image-20211207073137249.png)
-
-largeObj的第0个元素，被window全局变量x引用着。
-
-2)Allocaiton instrumentastion on timeline分配栈时间轴
-
-功能：查看内存分配在代码中的位置，查看内存回收的时机和频率，要勾选Record stack
-
-蓝色竖条表示内存未被回收，灰色表示内存回收。
-
-![image-20211207073246002](/img/image-20211207073246002.png)
-
-选中蓝色竖条，不仅可以查看Retainer表示的泄漏的对象，还可以通过Allocaiton stack分配栈，定位具体代码位置。
-
-![image-20211207235441427](/img/image-20211207235441427.png)
-
-在class filter中输入detached,查看是否存在分离的dom节点，如果能搜索出结果，说明有分离的dom节点
-
-![image-20211208000338908](/img/image-20211208000338908.png)
-
-查看Constructor构造器中出现system/Context,说明有函数导致闭包留存，下面的Retainer可以找到是inner函数引起的闭包内存泄漏。
-
-![image-20211208001049548](/img/image-20211208001049548.png)
-
-(2)在控制台使用ctrl+shift+p打开command menu，输入performance monitor来监听
-
-**内存溢出的几种场景**
-
-**i.溢出原因**
-
-由于过多的函数调用，导致调用堆栈无法容纳这些调用的返回地址，一般在递归中产生。堆栈溢出很可能由无限递归（Infinite recursion）产生，但也可能仅仅是过多的堆栈层级
-
-**ii.如何解决堆栈溢出**
-
-解决方案：1，引入闭包； 2，引入计时器； 3，尾调优化
-
-(2.1)引入闭包
-
-错误代码
-
-```
-  function isEven(num){
-     if(num == 0){return true;}
-     if(num == 1){return false;}
-     return isEven(Math.abs(num)-2);
- }
- console.log(isEven(100000))//堆栈溢出
-```
-
-引入闭包代码
-
-```
-function isEven(num){
-    function isEvenInner(num){
-        if(num === 0){return true;}
-        if(num === 1){return false;}
-        return function(){
-        return isEvenInner(Math.abs(num)-2);
-        }
-    }
-    function simplify(func,num){
-        var value=func(num);
-        while(typeof value == 'function'){
-            value=value();
-        }
-        return value;
-    }
-    return simplify.bind(null,isEvenInner)(num)
-}
-console.log(isEven(100000));//这种方法num太大也不可以
-```
-
-(2.3)使用尾递归(尾调用)
-
-错误代码
-
-```
-  function tailFactorial(n, total) {
-    if (n === 1) return total;
-    return tailFactorial(n - 1, n * total);
-  }
-  console.log(tailFactorial(5,1))
-```
-
-尾调优化（新增简化函数）
-
-```
-function tailFactorial(n, total) {
-  if (n === 1) return total;
-  return tailFactorial(n - 1, n * total);
-}
-console.log(tailFactorial(5,1))
-function factorial(n) {
-  return tailFactorial(n, 1);
-}
-console.log(factorial(10000))
-```
-
-尾调优化（柯里化）
-
-```
-function currying(fn,n){//柯里化要绑定的参数
-    return function(m){//柯里化的函数，m对应输入的唯一一个参数
-        return fn.call(this,m,n)  
-}//柯里化
-}
-var factorial_1=currying(tailFactorial,1);
-console.log(factorial_1(5));
-```
-
-尾调优化（ES6）
-
-```
-function factorial(n, total = 1) {
-  if (n === 1) return total;
-  return factorial(n - 1, n * total);
-}
-factorial(5) // 120
-```
+**1. 开场白：一句话**
+**内存泄漏是因，内存溢出是果**。简单来说，内存泄漏是指程序中已经不再使用的内存没有及时释放，随着程序运行时间的推移，泄漏的内存越来越多，最终导致可用内存耗尽，就会引发内存溢出，从而使程序崩溃。
+
+**2. 概念解析：分别定义**
+
+- **内存泄漏：**
+  - 指程序在申请内存后，无法释放已不再使用的内存空间。
+  - 表现为：页面随着时间的推移变得越来越卡，占用的内存（Chrome DevTools Memory 面板中）持续走高，不会回落。
+- **内存溢出：**
+  - 指程序在申请内存时，没有足够的内存供申请者使用。
+  - 表现为：程序报错，如 `RangeError: Maximum call stack size exceeded`（栈溢出）或 `FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory`（堆溢出），严重时直接导致进程崩溃或浏览器标签页崩溃。
+
+**3. 核心重点：常见的内存泄漏场景**
+常见的内存泄漏：
+
+> 1. 意外的全局变量：
+>    - 在函数内未使用 `var/let/const` 声明的变量（如 `a = 10`）会挂载到 `window` 全局对象上，函数执行完后该变量依然存在，无法被回收。
+> 2. 未清理的定时器与回调函数：
+>    - 使用了 `setInterval` 或 `setTimeout`，但在组件销毁或页面卸载时没有调用 `clearInterval/clearTimeout`。只要定时器还在，它内部的回调函数以及引用的变量就永远不会被回收。
+> 3. 闭包引起的泄漏：
+>    - 闭包可以维持函数内部的变量引用。如果闭包使用不当（例如将闭包赋值给一个长生命周期的对象），导致内部的大对象始终被外部引用，就无法被回收。
+> 4. 游离的 DOM 引用：
+>    - 页面中删除了一个 DOM 节点，但在 JS 代码中（如某个对象的属性）还保留着对该节点的引用。此时 DOM 树已移除，但 JS 内存中仍保留着该节点数据，导致泄漏。
+> 5. 事件监听器未解绑：
+>    - 给元素绑定了 `addEventListener`，但元素移除时没有调用 `removeEventListener`。
+
+**4. 扩展：内存溢出的常见触发条件**
+除了由内存泄漏积累导致外，瞬间的大流量操作也可能直接导致溢出：
+
+- **一次性处理大量数据：** 比如尝试一次性向内存中加载几 GB 的日志文件或图片。
+- **无限递归：** 函数由于逻辑错误无限调用自身，导致调用栈瞬间爆满。
+
+**5. 实战解决：如何排查与避免**
+
+> - 排查工具（Chrome DevTools）：
+>   - Memory 面板：
+>     - **Heap Snapshot（堆快照）：** 拍摄两张快照（操作前和操作后），对比查看“对象”的增长情况，找出分离的 DOM 节点或未释放的对象。
+>     - **Allocation Timeline（分配时间线）：** 实时观察内存的分配情况，看是否存在锯齿状不回落（即持续增长）的情况。
+> - 避免策略：
+>   - 严格使用 `let/const` 避免意外全局变量。
+>   - 在页面/组件销毁的生命周期（如 Vue 的 `beforeUnmount`，React 的 `useEffect` 清理函数）中，统一清除定时器、解绑事件、手动置空大对象引用。
+>   - 合理使用 **WeakMap** 和 **WeakSet**，它们对对象的引用是弱引用，不会阻止垃圾回收。
+
+**6. 总结**
+内存泄漏是由于代码逻辑疏忽导致无法回收无用内存，长期积累会导致内存溢出。在日常开发中，我们要养成良好习惯，特别是在处理生命周期、闭包和 DOM 引用时，要格外小心。当遇到页面卡顿时，要善于利用浏览器 DevTools 进行内存分析，找出泄漏点。
+
+💡 **面试官可能会追问的点（准备思路）**：
+
+> 1. 追问：如何判断是内存泄漏还是正常的内存波动？
+>    - **回答：** 正常的应用会有波浪式的内存曲线（GC 发生时会回落）。内存泄漏的表现是：执行一系列操作（如打开关闭页面 5 次），然后强制触发 GC（点击垃圾桶图标），内存水位依然明显高于操作前，且呈阶梯状上升。
+> 2. 追问：WeakMap 和 WeakMap 弱引用的原理是什么？
+>    - **回答：** 弱引用的意思是，如果一个对象只被 WeakMap 引用，而没有其他强引用，垃圾回收器会忽略 WeakMap 的引用，直接回收该对象。这非常适合用来存储关联 DOM 节点的元数据，DOM 删除了，数据自动消失，不会泄漏。
+> 3. 追问：Node.js 中的内存溢出怎么处理？
+>    - **回答：** Node.js 默认内存限制较小（64位系统约 1.4GB）。可以通过启动参数 `--max-old-space-size=4096` 扩大内存限制，但这只是治标；根本还是要通过 `node --inspect` 结合 Chrome DevTools 或 `heapdump` 模块分析快照，找到泄漏的代码。
 
 ## 如何创建私有变量
 
