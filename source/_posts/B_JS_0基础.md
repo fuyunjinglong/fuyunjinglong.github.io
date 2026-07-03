@@ -103,208 +103,20 @@ toc: true # 是否启用内容索引
 
 ## 模块化规范
 
-参考
+一句话：服务端用 CommonJS，浏览器端早期用 AMD/CMD，现在全面拥抱官方的 ES Modules。ESM 的静态声明特性也直接推动了 Webpack/Vite 等工具的 Tree-shaking（摇树优化）能力，是目前的绝对主流。
 
-- [前端模块化详解(完整版)](https://juejin.cn/post/6844903744518389768#heading-2)
-
-**模块化是什么？**
-
-- 按照一定的规则(规范)封装成几个块(文件), 并自由组合在一起
-- 对内数据封装，对外暴露接口
-
-**模块化详解**
-
-- ESModule支持es6语法的浏览器规范
-- CommonJS 是同步支持nodejs的后端规范
-- UMD统一模块规范，支持amd和cmd(amd和cmd一般不单独使用)，支持全局变量Vue
-
-```
-常用的是ESM和CJS,其中UMD还可以指定全局变量
-浏览器端使用ESM和UMD,nodejs使用CJS
-```
-
-> **ESModule**
-
-简称ESM,是一个符合ES6语法的模块化规范，语法为：import export。
-
-ECMAScript 6 的一个目标是解决作用域的问题，也为了使 JS 应用程序显得有序，于是引进了模块。目前部分主流浏览器已原生支持 ES Module，使用 type = module 指定为模块引入即可
-注意：使用该方式执行 JS 时自动应用 defer 属性。
-
-ESM由于具有简单的语法，**同步异步**加载的特性，适用于前后端，以及**Tree-shakeable**的特性.具有Tree-shakeable的特性，这是由于**ES6的静态模块**结构。
-
-```js
-import {foo, bar} from './myLib';
-...
-export default function() {
-  // your Function
-};
-export const function1() {...};
-export const function2() {...};
-```
-
-- 在很多[现代浏览器](https://link.juejin.cn?target=https%3A%2F%2Fcaniuse.com%2Fes6-module)可以使用
-- 它兼具两方面的优点：具有 `CJS` 的简单语法和 `AMD` 的异步
-- 得益于 `ES6` 的[静态模块结构](https://link.juejin.cn?target=https%3A%2F%2Fexploringjs.com%2Fes6%2Fch_modules.html%23sec_design-goals-es6-modules)，可以进行 [ Tree Shaking](https://link.juejin.cn?target=https%3A%2F%2Fdevelopers.google.com%2Fweb%2Ffundamentals%2Fperformance%2Foptimizing-javascript%2Ftree-shaking%2F)
-- `ESM` 允许像 `Rollup` 这样的打包器，[删除不必要的代码](https://link.juejin.cn?target=https%3A%2F%2Fdev.to%2Fbennypowers%2Fyou-should-be-using-esm-kn3)，减少代码包可以获得更快的加载
-- 可以在 `HTML` 中调用，只要如下
-
-```javascript
-<script type="module">
-  import {func1} from 'my-lib';
-
-  func1();
-</script>
-```
-
-> **CommonJS **
-
-简称CJS,是同步支持nodejs的后端规范。语法为：module.exports，require。
-
-```javascript
-// importing 
-const doSomething = require('./doSomething.js'); 
-
-// exporting
-module.exports = function doSomething(n) {
-  // do something
-}
-复制代码
-```
-
-- 很多人可以从 `Node` 中立刻认出 `CJS` 的语法。这是因为 `Node` 就是使用 [`CJS` 模块](https://link.juejin.cn?target=https%3A%2F%2Fblog.risingstack.com%2Fnode-js-at-scale-module-system-commonjs-require%2F)的
-- `CJS` 是同步导入模块
-- 你可以从 `node_modules` 中引入一个库或者从本地目录引入一个文件 。如 `const myLocalModule = require('./some/local/file.js')` 或者 `var React = require('react');` ，都可以起作用
-- 当 `CJS` 导入时，它会给你一个导入对象的副本
-- `CJS` 不能在浏览器中工作。它必须经过转换和打包
-
-CommonJS和es6区别
-
-> - 因为CommonJS的`require`语法是同步的，所以就导致了CommonJS模块规范只适合用在服务端，而ES6模块无论是在浏览器端还是服务端都是可以使用的，但是在服务端中，还需要遵循一些特殊的规则才能使用 ；
-> - CommonJS 模块输出的是一个值的拷贝，而ES6 模块输出的是值的引用；
-> - CommonJS 模块是动态引入，执行时引入，而ES6 模块是静态引入，编译时引入；
-> - 因为两个模块加载机制的不同，所以在对待循环加载的时候，它们会有不同的表现。CommonJS遇到循环依赖的时候，只会输出已经执行的部分，后续的输出或者变化，是不会影响已经输出的变量。而ES6模块相反，使用`import`加载一个变量，变量不会被缓存，真正取值的时候就能取到最终的值；
-> - 关于模块顶层的`this`指向问题，在CommonJS顶层，`this`指向当前模块；而在ES6模块中，`this`指向`undefined`；
-
-> **UMD**
-
-简称统一模块规范，支持amd和cmd(amd和cmd一般不单独使用)，支持全局变量Vue
-
-- 当使用 `Rollup/Webpack` 之类的打包器时，`UMD` 通常用作备用模块
-
-`AMD` 代表异步模块定义。
-
-```js
-define(['dep1', 'dep2'], function (dep1, dep2) {
-    //Define the module value by returning a value.
-    return function () {};
-});
-或者
-define(function (require) {
-    var dep1 = require('dep1'),
-        dep2 = require('dep2');
-    return function () {};
-});
-```
-
-- `AMD` 是异步(`asynchronously`)导入模块的(因此得名)
-- 一开始被提议的时候，`AMD` 是为前端而做的(而 `CJS` 是后端)
-- `AMD` 的语法不如 `CJS` 直观。我认为 `AMD` 和 `CJS` 完全相反
-
-**模块化进化过程**
-
-> **全局function模式** 
-
- 将不同的功能封装成不同的全局函数
-
-- 编码: 将不同的功能封装成不同的全局函数
-- 问题: 污染全局命名空间, 容易引起命名冲突或数据不安全，而且模块成员之间看不出直接关系
-
-> **namespace模式** 
-
-简单对象封装
-
-- 作用: 减少了全局变量，解决命名冲突
-- 问题: 数据不安全(外部可以直接修改模块内部的数据)
-
-```
-let myModule = {
-  data: 'www.baidu.com',
-  foo() {
-    console.log(`foo() ${this.data}`)
-  },
-  bar() {
-    console.log(`bar() ${this.data}`)
-  }
-}
-myModule.data = 'other data' //能直接修改模块内部的数据
-myModule.foo() // foo() other data
-```
-
-> **IIFE模式**
-
-匿名函数自调用(闭包)
-
-- 作用: 数据是私有的, 外部只能通过暴露的方法操作
-- 编码: 将数据和行为封装到一个函数内部, 通过给window添加属性来向外暴露接口
-- 问题: 如果当前这个模块依赖另一个模块怎么办?
-
-```
-// index.html文件
-<script type="text/javascript" src="module.js"></script>
-<script type="text/javascript">
-    myModule.data = 'xxxx' //不是修改的模块内部的data
-    myModule.foo() //没有改变
-</script>
-
-// module.js文件
-(function(window) {
-  let data = 'www.baidu.com'
-  //操作数据的函数
-  function foo() {
-    //用于暴露有函数
-    console.log(`foo() ${data}`)
-  }
-  function bar() {
-    //用于暴露有函数
-    console.log(`bar() ${data}`)
-    otherFun() //内部调用
-  }
-  function otherFun() {
-    //内部私有的函数
-    console.log('otherFun()')
-  }
-  //暴露行为
-  window.myModule = { foo, bar } //ES6写法
-})(window)
-```
-
-> **IIFE模式增强** 
-
- 引入依赖,这就是现代模块实现的基石。**这样做除了保证模块的独立性，还使得模块之间的依赖关系变得明显**。
-
-```
-// module.js文件
-(function(window, $) {
-  let data = 'www.baidu.com'
-  //操作数据的函数
-  function foo() {
-    //用于暴露有函数
-    console.log(`foo() ${data}`)
-    $('body').css('background', 'red')
-  }
-  function bar() {
-    //用于暴露有函数
-    console.log(`bar() ${data}`)
-    otherFun() //内部调用
-  }
-  function otherFun() {
-    //内部私有的函数
-    console.log('otherFun()')
-  }
-  //暴露行为
-  window.myModule = { foo, bar }
-})(window, jQuery)
-```
+1. **CommonJS (CJS)**
+   - **代表**：Node.js
+   - **特点**：同步加载（`require` 导入，`module.exports` 导出）；在**运行时**加载；输出的是**值的拷贝**。
+   - **场景**：服务端（文件都在本地，同步加载无影响）。
+2. **AMD / CMD**
+   - **代表**：AMD (RequireJS) / CMD (SeaJS)
+   - **特点**：专为浏览器端设计的**异步加载**规范。AMD 依赖前置（提前执行），CMD 依赖就近（按需执行）。
+   - **现状**：随着打包工具的普及，目前已基本被淘汰。
+3. **ES Modules (ESM)**
+   - **代表**：ES6 官方标准
+   - **特点**：静态模块（`import` 导入，`export` 导出）；在**编译时**确定依赖关系（支持 Tree-shaking）；输出的是**值的引用**（模块内部变化会影响外部）。
+   - **场景**：现代前端开发的通用标准（浏览器端与Node.js均支持）。
 
 ## slice(),splice()两种方法
 
@@ -480,11 +292,21 @@ console.log(array1.concat(array2)); // [1,2,3,4,5,6];
 console.log(array1.push.apply(array1, array2)); // [1, 2, 3, 4, 5, 6]
 ```
 
-## async和defer的作用是什么？有什么区别?
+## async和defer有什么区别?
 
-- `script` ：会阻碍 HTML 解析，只有下载好并执行完脚本才会继续解析 HTML。
-- `async script` ：解析 HTML 过程中进行脚本的异步下载，下载成功立马执行，有可能会阻断 HTML 的解析。
-- `defer script`：完全不会阻碍 HTML 的解析，解析完成之后再按照顺序执行脚本。
+一句话：`async` 是‘下载完就执行’，适合独立脚本；`defer` 是‘解析完再执行’，适合主业务逻辑且保证顺序。实际开发中，`defer` 的应用场景更为广泛。
+
+1. **无属性（默认情况）**
+   - **机制**：遇到 `<script>` 立即停止HTML解析，下载并执行完毕后才继续解析。
+   - **缺点**：严重阻塞页面渲染。
+2. **`async`（异步执行）**
+   - **机制**：下载过程不阻塞HTML解析，但**下载完成后会立即执行**，此时会暂停HTML解析。
+   - **顺序**：**不保证执行顺序**，谁先下载完谁先执行。
+   - **场景**：互不依赖的独立脚本（如统计代码、广告脚本）。
+3. **`defer`（延迟执行）**
+   - **机制**：下载过程不阻塞HTML解析，且**会等到HTML完全解析完毕后**，在 `DOMContentLoaded` 事件触发前执行。
+   - **顺序**：**保证按代码出现顺序执行**。
+   - **场景**：有依赖关系的脚本，或需要操作DOM的脚本。
 
 ![image-20211201070616431](/img/image-20211201070616431.png)
 

@@ -79,6 +79,8 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#类型判断">[初级]-类型判断</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#数据请求">[初级]-数据请求</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#跨域和同源策略">[初级]-跨域和同源策略</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#async和defer有什么区别">[初级]-async和defer有什么区别</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#模块化规范">[初级]-模块化规范</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#防抖和节流">[中级]-防抖和节流有什么区别</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#柯里化">[中级]-柯里化是什么</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#垃圾回收">[中级]-垃圾回收</a>
@@ -95,9 +97,6 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#JS异步编程六大方案">[三大山-异步和单线程]-异步编程方案</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#消息队列和事件循环">[三大山-异步和单线程]-事件循环</a>
 - 
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#常见六大Web安全攻防解析">常见六大Web安全攻防解析</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#async和defer的作用是什么？有什么区别">async和defer的作用是什么？有什么区别</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#模块化规范">模块化规范</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS事件冒泡和事件捕获-事件委托">事件冒泡和事件捕获</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS异步编程六大方案">JS异步编程六大方案</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#函数式编程">函数式编程</a>
@@ -115,6 +114,7 @@ toc: true # 是否启用内容索引
 
 ## 计算机网络
 
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Web漏洞攻防">[初级]-Web漏洞攻防</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#HTTP-常见的状态码">HTTP-常见的状态码</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#一文读懂-HTTP-1、HTTP-2、HTTP-3">一文读懂 HTTP/1、HTTP/2、HTTP/3</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#彻底搞懂Https">彻底搞懂Https</a>
