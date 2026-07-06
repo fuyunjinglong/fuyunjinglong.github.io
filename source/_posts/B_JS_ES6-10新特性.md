@@ -114,6 +114,16 @@ Promise.any() 接收一个Promise可迭代对象，只要其中的一个 promise
 
 `Promise.any()`跟`Promise.race()`方法很像，只有一点不同，就是不会因为某个 `Promise` 变成rejected状态而结束。
 
+# 初级
+
+# 中级
+
+# 高级
+
+
+
+
+
 # 箭头函数与普通函数区别
 
 参考

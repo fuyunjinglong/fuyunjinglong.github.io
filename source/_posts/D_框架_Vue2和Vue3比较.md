@@ -1,6 +1,6 @@
 ---
 title: Vue2和Vue3比较
-date: 2023-09-12 07:33:16
+date: 2023-09-14 07:33:16
 categories:
 - D_框架和类库
 toc: true # 是否启用内容索引
@@ -104,8 +104,6 @@ Vue2 方案：针对常用数组原型方法push、pop、shift、unshift、splic
 
 **Tips**： *Object.defineOProperty是可以监听数组已有元素，但 Vue2 没有提供的原因是性能问题。*
 
-
-
 **Proxy**
 
 Proxy是ES6新特性，通过第2个参数handler拦截目标对象的行为。相较于Object.defineProperty提供语言全范围的响应能力，消除了局限性。
@@ -151,7 +149,7 @@ Vue3 由TS重写，相对于 Vue2 有更好地TypeScript支持。
 - Vue2 Option API中 option 是个简单对象，而TS是一种类型系统，面向对象的语法，不是特别匹配。
 - Vue2 需要vue-class-component强化vue原生组件，也需要vue-property-decorator增加更多结合Vue特性的装饰器，写法比较繁琐。
 
-# 入门
+# 初级
 
 ## 体系架构比较
 
@@ -270,7 +268,7 @@ b.优化逻辑复用
 - 在 Vue.js 2.x 中，我们一般会用 mixins 去复用逻辑。当抽离并引用了大量的mixins，你就会发现两个不可避免的问题：命名冲突和数据来源不清晰。
 - Vue.js 3.0 设计的 Composition API，在逻辑复用方面就会很有优势了。
 
-# 进阶
+# 中级
 
 ## 双向绑定
 

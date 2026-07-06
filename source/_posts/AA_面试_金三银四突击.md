@@ -31,35 +31,35 @@ toc: true # 是否启用内容索引
 - [前端小社区](https://lee.js.org/My-Nav/FrontEnd/#/Index)
 - [印记中文](https://docschina.org/)
 
-以下AI搜索均可冠以“内容最后，增加按照面试答题模板总结”
+按照面试答题模板
 
 # 初级
 
 ## H5
 
-- <a target="_blank" href="{% post_path 'C_H5_0基础' %}#iframe有哪些优缺点？">iframe 内嵌框架缺点</a>
-- <a target="_blank" href="{% post_path 'C_H5_0基础' %}#Html语义化">html语义化是什么</a>
-- <a target="_blank" href="{% post_path 'H_工程热点_性能优化_0基础' %}#从输入url到渲染完成整个过程">从输入url到渲染完成整个过程</a>
-- <a target="_blank" href="{% post_path 'H_工程热点_性能优化_0基础' %}#浏览器的渲染原理">浏览器的渲染原理</a>
-- <a target="_blank" href="{% post_path 'C_H5_0基础' %}#浏览器内核的理解">浏览器内核的理解</a>
+- <a target="_blank" href="{% post_path 'C_H5_0基础' %}#iframe有哪些优缺点？">[初级]-iframe 内嵌框架缺点</a>
+- <a target="_blank" href="{% post_path 'C_H5_0基础' %}#Html语义化">[初级]-html语义化是什么</a>
+- <a target="_blank" href="{% post_path 'H_工程热点_性能优化_0基础' %}#从输入url到渲染完成整个过程">[中级]-从输入url到渲染完成整个过程</a>
+- <a target="_blank" href="{% post_path 'H_工程热点_性能优化_0基础' %}#浏览器的渲染原理">[中级]-浏览器的渲染原理</a>
+- <a target="_blank" href="{% post_path 'C_H5_0基础' %}#浏览器内核的理解">[中级]-浏览器内核的理解</a>
 
 ## CSS
 
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#回流和重绘">回流和重绘</a>
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#外边距折叠">外边距折叠</a>
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS盒子模型">盒子模型</a>
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#transform，transition，animation区别">transform，transition，animation区别</a>
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#元素水平垂直居中">元素水平垂直居中</a>
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#两边固定100px-中间自适应，如何三栏布局">两边固定100px，中间自适应，如何三栏布局</a>
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#页面样式导入link和-import区别">页面样式导入link 和 @import 区别</a>
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#清除浮动">清除浮动</a>
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS常用3种引入方式">CSS 常用3种引入方式</a>
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS选择器及优先级">CSS选择器及优先级</a>
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS3有哪些新特性？">CSS3 有哪些新特性 ?</a>
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#BFC">对BFC规范的理解</a>
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#canvas与svg的区别？">canvas 与 svg 的区别 ？</a>
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#伪类和伪元素">伪类与伪元素</a>
-- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#flex-1代表什么，用于什么场景">flex=1代表什么</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS3有哪些新特性？">[初级]-CSS3 有哪些新特性 ?</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS常用3种引入方式">[初级]-CSS 常用3种引入方式</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS盒子模型">[初级]-盒子模型</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#CSS选择器及优先级">[初级]-CSS选择器及优先级</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#清除浮动">[初级]-清除浮动</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#transform，transition，animation区别">[初级]-transform，transition，animation区别</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#元素水平垂直居中">[初级]-元素水平垂直居中</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#两边固定100px-中间自适应，如何三栏布局">[初级]-两边固定100px，中间自适应，如何三栏布局</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#页面样式导入link和-import区别">[初级]-页面样式导入link 和 @import 区别</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#回流和重绘">[中级]-回流和重绘</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#外边距折叠">[中级]-外边距折叠</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#flex-1代表什么，用于什么场景">[中级]-flex=1代表什么</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#BFC">[中级]-对BFC规范的理解</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#canvas与svg的区别？">[中级]-canvas 与 svg 的区别 ？</a>
+- <a target="_blank" href="{% post_path 'C_CSS_0基础' %}#伪类和伪元素">[中级]-伪类与伪元素</a>
 
 ## ES6
 
@@ -86,6 +86,7 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#垃圾回收">[中级]-垃圾回收</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#内存溢出和内存泄漏">[中级]-内存泄露</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#前端登录鉴权如何实现？">[高级]-前端登录鉴权如何实现？</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#函数式编程">[高级]-函数式编程</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#三大山-原型和原型链">[三大山-原型和原型链]-原型的理解</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#instanceof操作符">[三大山-原型和原型链]-instanceof操作符</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#Object-create操作符">[三大山-原型和原型链]-Object-create操作符</a>
@@ -97,11 +98,7 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#JS异步编程六大方案">[三大山-异步和单线程]-异步编程方案</a>
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#消息队列和事件循环">[三大山-异步和单线程]-事件循环</a>
 - 
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS事件冒泡和事件捕获-事件委托">事件冒泡和事件捕获</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#JS异步编程六大方案">JS异步编程六大方案</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#函数式编程">函数式编程</a>
-- <a target="_blank" href="{% post_path 'D_框架_Vue2和Vue3比较' %}#Object-defineProperty和Porxy">必会20道JS-手写数据双向绑定</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#call-apply-bind">必会20道JS-手写call/apply/bind</a>
+- 
 - <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#手写Promise-核心流程">必会20道JS-手写Promise</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#深浅拷贝">必会20道JS-手写深浅拷贝</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写setTimeout实现setInterval">必会20道JS-手写setTimeout模拟setInterval</a>
@@ -140,6 +137,7 @@ toc: true # 是否启用内容索引
 
 ## vue2
 
+- 手写Object.defineProperty和Porxy
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#双向绑定">如何理解双向绑定</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#数据响应式">如何理解数据响应式</a>
 - <a target="_blank" href="{% post_path 'D_框架_Vue2.0_原理' %}#methods和watch、computed">computed和watch区别</a>
