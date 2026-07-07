@@ -120,7 +120,238 @@ Promise.any() 接收一个Promise可迭代对象，只要其中的一个 promise
 
 # 高级
 
+## 手写 Promise
 
+**核心：**
+
+> 1. **核心状态机**（状态与值的维护）
+> 2. **执行器逻辑**（`executor` 的立即执行与错误捕获）
+> 3. **then 方法**（回调订阅与发布、链式调用、值穿透与错误冒泡）
+
+**1. 核心架构与状态机**
+
+首先定义 Promise 的三种状态，并在构造函数中初始化状态和回调队列。因为同一个 Promise 可以被 `then` 多次，所以需要用数组来保存成功的回调和失败的回调。
+
+```js
+const PENDING = 'pending';
+const FULFILLED = 'fulfilled';
+const REJECTED = 'rejected';
+
+class MyPromise {
+  constructor(executor) {
+    // 初始状态
+    this.status = PENDING;
+    // 成功的值
+    this.value = undefined;
+    // 失败的原因
+    this.reason = undefined;
+    // 成功回调队列
+    this.onFulfilledCallbacks = [];
+    // 失败回调队列
+    this.onRejectedCallbacks = [];
+
+    // 成功函数
+    const resolve = (value) => {
+      if (this.status === PENDING) {
+        this.status = FULFILLED;
+        this.value = value;
+        // 状态确定后，执行所有缓存的成功回调
+        this.onFulfilledCallbacks.forEach(fn => fn());
+      }
+    };
+
+    // 失败函数
+    const reject = (reason) => {
+      if (this.status === PENDING) {
+        this.status = REJECTED;
+        this.reason = reason;
+        // 状态确定后，执行所有缓存的失败回调
+        this.onRejectedCallbacks.forEach(fn => fn());
+      }
+    };
+
+    // 立即执行 executor，捕获抛出的异常
+    try {
+      executor(resolve, reject);
+    } catch (error) {
+      reject(error);
+    }
+  }
+}
+```
+
+**2. then 方法的实现（核心难点）**
+
+`then` 方法需要处理以下逻辑：
+
+- **参数默认值**：实现 `catch` 的值穿透和错误冒泡。
+- **异步处理**：利用 `setTimeout` 模拟微任务（实际 Promise 用的是微任务，这里用宏任务模拟异步表现）。
+- **链式调用**：`then` 必须返回一个新的 `MyPromise`。
+- **返回值解析**：处理 `then` 回调返回普通值或返回一个新的 `Promise` 的情况。
+
+```js
+class MyPromise {
+  // ... 前面的 constructor 代码省略 ...
+
+  then(onFulfilled, onRejected) {
+    // 处理参数默认值，实现值穿透
+    onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : v => v;
+    // 处理错误冒泡，让错误能一直传递到 catch
+    onRejected = typeof onRejected === 'function' ? onRejected : e => { throw e; };
+
+    // then 返回一个新的 Promise 以支持链式调用
+    let promise2 = new MyPromise((resolve, reject) => {
+      // 封装微任务执行逻辑
+      const handleFulfilled = () => {
+        // 用 setTimeout 模拟微任务
+        setTimeout(() => {
+          try {
+            let x = onFulfilled(this.value);
+            // 解析 then 回调返回的值 x
+            this.resolvePromise(promise2, x, resolve, reject);
+          } catch (error) {
+            reject(error);
+          }
+        }, 0);
+      };
+
+      const handleRejected = () => {
+        setTimeout(() => {
+          try {
+            let x = onRejected(this.reason);
+            this.resolvePromise(promise2, x, resolve, reject);
+          } catch (error) {
+            reject(error);
+          }
+        }, 0);
+      };
+
+      if (this.status === FULFILLED) {
+        handleFulfilled();
+      } else if (this.status === REJECTED) {
+        handleRejected();
+      } else {
+        // 如果是 PENDING 状态，将回调推入队列，等待 resolve/reject 触发
+        this.onFulfilledCallbacks.push(handleFulfilled);
+        this.onRejectedCallbacks.push(handleRejected);
+      }
+    });
+
+    return promise2;
+  }
+
+  // 处理 then 返回值的 Promise 解析过程
+  resolvePromise(promise2, x, resolve, reject) {
+    // 1. 防止循环引用
+    if (promise2 === x) {
+      return reject(new TypeError('Chaining cycle detected for promise #<MyPromise>'));
+    }
+
+    // 2. 如果 x 是对象或函数（可能是 Promise 或 thenable 对象）
+    if (x !== null && (typeof x === 'object' || typeof x === 'function')) {
+      let called = false; // 防止多次调用
+      try {
+        let then = x.then; // 获取 then 方法
+        if (typeof then === 'function') {
+          // 这里的 then.call 等同于 x.then
+          then.call(
+            x,
+            (y) => {
+              if (called) return;
+              called = true;
+              // 递归解析，直到返回值不是 Promise 为止
+              this.resolvePromise(promise2, y, resolve, reject);
+            },
+            (r) => {
+              if (called) return;
+              called = true;
+              reject(r);
+            }
+          );
+        } else {
+          // 普通对象，直接 resolve
+          resolve(x);
+        }
+      } catch (error) {
+        if (called) return;
+        called = true;
+        reject(error);
+      }
+    } else {
+      // 3. 如果 x 是普通值，直接 resolve
+      resolve(x);
+    }
+  }
+}
+```
+
+**3. 测试用例**
+
+为了验证代码的正确性，我会用几个典型的场景进行测试：
+
+```js
+// 1. 测试基本异步状态流转
+const p1 = new MyPromise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('成功 1');
+  }, 1000);
+});
+p1.then(res => console.log('Test 1:', res)); // 1秒后输出: Test 1: 成功 1
+
+// 2. 测试链式调用与值穿透
+const p2 = new MyPromise((resolve) => resolve(1));
+p2.then(res => res + 1)
+  .then() // 测试值穿透
+  .then(res => {
+    console.log('Test 2:', res); // 输出: Test 2: 2
+  });
+
+// 3. 测试错误捕获与冒泡
+const p3 = new MyPromise((resolve, reject) => reject('初始错误'));
+p3.then(() => {})
+  .catch(err => {
+    console.log('Test 3:', err); // 输出: Test 3: 初始错误
+  });
+
+// 4. 测试 then 中返回 Promise
+const p4 = new MyPromise((resolve) => resolve(1));
+p4.then(res => {
+  return new MyPromise((resolve) => resolve(res + 10));
+}).then(res => {
+  console.log('Test 4:', res); // 输出: Test 4: 11
+});
+```
+
+**面试总结**
+
+以上就是我的手写实现。在编写时我特别注意了几个 **Promise/A+ 规范** 的核心要求：
+
+1. **状态不可逆**：状态一旦从 `pending` 变为 `fulfilled` 或 `rejected`，就不能再改变。
+2. **异步执行**：回调的执行被包裹在 `setTimeout` 中，确保在事件循环的微任务阶段执行（这里用宏任务模拟）。
+3. **错误穿透**：`then` 的第二个参数默认设为抛出错误的函数，实现了不写 `onRejected` 时错误能一直向后传递，直到被 `catch` 捕获。
+4. **循环引用检测**：在 `resolvePromise` 中判断了 `promise2 === x`，防止死循环。
+
+## Promise/A+ 规范
+
+**一、 3句话核心总结**
+
+1. **状态不可逆**：只有 `pending` -> `fulfilled` 或 `pending` -> `rejected`，且状态一旦改变，永远凝固。
+2. **then 返回新 Promise**：`then` 必须返回一个新的 Promise，以支持链式调用。
+3. **回调异步执行**：`onFulfilled` 和 `onRejected` 必须在执行栈清空后（微任务阶段）异步执行。
+
+**二、 链式调用的解析规则（处理 then 的返回值 x）**
+
+当 `then` 的回调返回一个值 `x` 时，决定新 Promise 状态的规则如下：
+
+1. **防止死循环**：如果 `x === 新Promise`，直接抛出 `TypeError`。
+2. **x 是 Promise**：采用 `x` 的最终状态。
+3. **x 是 thenable 对象**（有 `then` 方法）：以 `x` 为 `this` 执行它的 `then` 方法，并加入 `called` 标志位防止多次调用。
+4. **x 是普通值**：直接把 `x` 传给新 Promise 的 `resolve`。
+
+**三、 两个默认特性**
+
+1. **值穿透**：如果 `onFulfilled` 不是函数，默认包装成 `v => v`，把值向后传。
+2. **错误冒泡**：如果 `onRejected` 不是函数，默认包装成 `e => { throw e }`，把错误向后传，直到被 `catch` 捕获。
 
 
 

@@ -560,37 +560,7 @@ jsonp可以取消吗？不能
 
 前端访问不存在跨域问题的代理服务器，代理服务器再去访问目标服务器（服务器之间没有跨域限制）
 
-## 深浅拷贝
-
-var obj={}
-
-obj存放在栈内存中，{}实例存在在堆中。
-
-```
-//example 1
-let a={}, b='0', c=0;
-a[b]='珠峰';
-a[c]='培训';
-console.log(a[b]); // '培训', 对象的key数字和字符串等效
-
-// ---------------------
-//example 2
-let a={}, b=Symbol('1'), c=Symbol('1');
-a[b]='珠峰';
-a[c]='培训';
-console.log(a[b]); // '珠峰', Symbol的特点，都是唯一的
-
-// ---------------------
-//example 3
-let a={}, b={n:'1'}, c={m:'2'};
-a[b]='珠峰';
-a[c]='培训';
-console.log(a[b]); // '培训', key会转化成字符串[Obejct object]
-```
-
-**赋值、浅拷贝、深拷贝**
-
-赋值：把一个对象赋给一个新变量，赋的其实是该对象在栈中的地址，所有值都会相互影响
+## 手写-深浅拷贝
 
 浅拷贝：重新在堆中创建内存，拷贝后的基本数据类型不影响，但是引用类型属性是相互影响共用
 
@@ -635,6 +605,149 @@ function deepClone(obj) {
   return copy
 }
 ```
+
+## 手写-setTimeout实现setInterval
+
+**一、 为什么要模拟？（`setInterval` 的缺陷）**
+
+原生的 `setInterval` 存在两个主要问题：
+
+1. **无视代码报错和执行时间**：`setInterval` 会每隔固定时间往事件队列里推入回调，如果前一次回调执行时间很长（或者发生了阻塞），后一次回调依然会按时触发，导致**任务堆叠**，甚至同时执行多个定时器任务。
+2. **忘记停止导致内存泄漏**：如果 `setInterval` 没有被正确 `clear`，它会在后台一直执行，占用资源。
+
+**用 `setTimeout` 模拟的优势**：采用递归调用，每次回调执行完毕后，才会去开启下一次定时。这样保证了**前一次任务执行完毕后，才会间隔固定时间开启下一次任务**，避免了任务堆叠。
+
+**二、 代码实现**
+
+我的实现思路是：利用递归调用 `setTimeout`，通过闭包保存定时器 ID，并对外提供一个 `clear` 方法用于停止定时器。
+
+```js
+function mySetInterval(callback, delay, ...args) {
+  let timer = null;
+
+  // 内部递归函数
+  const interval = () => {
+    // 1. 执行回调，绑定 this 并传入参数
+    callback.apply(this, args);
+    
+    // 2. 递归调用，设置下一次定时
+    timer = setTimeout(interval, delay);
+  };
+
+  // 启动第一次定时
+  timer = setTimeout(interval, delay);
+
+  // 返回一个闭包对象，用于清除定时器
+  return {
+    clear: () => {
+      clearTimeout(timer);
+      console.log('定时器已停止');
+    }
+  };
+}
+```
+
+**面试总结**
+
+使用 `setTimeout` 模拟 `setInterval` 的核心在于**递归**和**闭包**。
+
+1. **递归**保证了任务串行执行，前一个任务结束后才调度下一个，避免了 `setInterval` 的任务堆叠问题。
+2. **闭包**用于保存内部变量（如 `timer`），并对外暴露清除定时器的接口，实现了类似 `clearInterval` 的功能。
+3. 同时注意使用 `apply` 绑定 `this` 和传递剩余参数，保证函数的通用性。
+
+## 手写-发布订阅
+
+**一、 核心架构设计**
+
+EventBus 的核心逻辑是维护一个**事件中心**（通常是一个对象或 Map）。
+
+- **键**：事件名。
+- **值**：一个数组，里面存放该事件所有的回调函数。
+
+核心 API 包括：
+
+1. `on(event, callback)`：将回调推入对应事件的数组中。
+2. `emit(event, ...args)`：遍历对应事件的数组，依次执行回调。
+3. `off(event, callback)`：从数组中移除指定的回调。
+4. `once(event, callback)`：订阅一次，触发后自动解绑。
+
+**二、 完整代码实现**
+
+在实现时，需要特别注意**`this` 指向**、**执行时动态 `off` 导致的数组遍历跳过问题**，以及**参数传递**。
+
+```js
+class EventBus {
+  constructor() {
+    this.events = {};
+  }
+
+  // 订阅
+  on(event, cb) {
+    if (!this.events[event]) this.events[event] = [];
+    this.events[event].push(cb);
+  }
+
+  // 触发
+  emit(event, ...args) {
+    const cbs = this.events[event];
+    if (!cbs) return;
+    // 【关键点】拷贝一份遍历，防止回调内部触发 off 修改原数组导致遍历跳过
+    [...cbs].forEach(cb => cb(...args));
+  }
+
+  // 解绑
+  off(event, cb) {
+    if (!this.events[event]) return;
+    this.events[event] = this.events[event].filter(fn => fn !== cb);
+  }
+
+  // 单次订阅
+  once(event, cb) {
+    const fn = (...args) => {
+      cb(...args);
+      this.off(event, fn); // 执行后自动解绑
+    };
+    this.on(event, fn);
+  }
+}
+```
+
+**三、 测试用例**
+
+为了验证代码的健壮性，我会用几个典型场景进行测试：
+
+```js
+const bus = new EventBus();
+
+// 1. 测试 on 和 emit
+const sayHi = (name) => console.log(`Hi, ${name}`);
+bus.on('greet', sayHi);
+bus.emit('greet', '张三'); // 输出: Hi, 张三
+
+// 2. 测试 off
+bus.off('greet', sayHi);
+bus.emit('greet', '李四'); // 无输出 (解绑成功)
+
+// 3. 测试 once
+bus.once('connect', () => console.log('连接成功!'));
+bus.emit('connect'); // 输出: 连接成功!
+bus.emit('connect'); // 无输出 (只触发了一次)
+
+// 4. 测试执行回调时动态 off 会不会导致跳过
+const cb1 = () => { console.log('cb1执行'); bus.off('test', cb1); };
+const cb2 = () => { console.log('cb2执行'); };
+bus.on('test', cb1);
+bus.on('test', cb2);
+bus.emit('test'); 
+// 预期输出: cb1执行  cb2执行 (如果没有拷贝数组，cb2会被跳过)
+```
+
+**面试总结：**
+简化版核心就三点：
+
+1. `on` 往数组里 `push`，`emit` 遍历数组执行。
+2. `emit` 时**必须拷贝数组**再遍历，防止回调内调用 `off` 删除元素导致遍历跳过。
+3. `once` 本质是套了一层壳，利用闭包执行后自动调 `off`。
 
 ## **V8引擎**
 
@@ -1268,227 +1381,6 @@ Token 为了安全通常有效期较短（如 2 小时），如果让用户频�
 >    - *答题思路：* 将副作用推到代码的边缘。例如在React中，使用 `useEffect` 将副作用（如请求、DOM操作）与纯函数组件的渲染逻辑分离。
 
 
-
-# 手写setTimeout实现setInterval
-
-**为什么要用setTimeout来模拟setInterval的行为？**
-
-这里用setInerval不是更方便吗？
-
-```
-setTimeout(function(){··· }, n); // n毫秒后执行function
-setInterval(function(){··· }, n); // 每隔n毫秒执行一次function
-```
-
-可以看看setInterval有什么缺点：
-
-> 再次强调，定时器指定的时间间隔，表示的是何时将定时器的代码添加到消息队列，而不是何时执行代码。所以真正何时执行代码的时间是不能保证的，取决于何时被主线程的事件循环取到，并执行。
-
-```
-setInterval(function, N)  
-//即：每隔N秒把function事件推到消息队列中
-```
-
-<img src="/img/image-20230614063755823.png" alt="image-20230614063755823" style="zoom:80%;" />
-
-上图可见，setInterval每隔100ms往队列中添加一个事件；100ms后，添加T1定时器代码至队列中，主线程中还有任务在执行，所以等待，some event执行结束后执行T1定时器代码；又过了100ms，T2定时器被添加到队列中，主线程还在执行T1代码，所以等待；又过了100ms，理论上又要往队列里推一个定时器代码，但由于此时T2还在队列中，所以T3不会被添加，结果就是此时被跳过；这里我们可以看到，T1定时器执行结束后马上执行了T2代码，所以并没有达到定时器的效果。
-
-综上所述，setInterval有两个缺点：
-
-1. 使用setInterval时，某些间隔会被跳过；
-2. 可能多个定时器会连续执行；
-
-> 可以这么理解：**每个setTimeout产生的任务会直接push到任务队列中；而setInterval在每次把任务push到任务队列前，都要进行一下判断(看上次的任务是否仍在队列中)**。因而我们一般用setTimeout模拟setInterval，来规避掉上面的缺点。
-
-**使用setTimeout实现setInterval**
-
-> setInterval 的作用是每隔一段指定时间执行一个函数，但是这个执行不是真的到了时间立即执行，它真正的作用是每隔一段时间将事件加入事件队列中去，只有当当前的执行栈为空的时候，才能去从事件队列中取出事件执行。所以可能会出现这样的情况，就是当前执行栈执行的时间很长，导致事件队列里边积累多个定时器加入的事件，当执行栈结束的时候，这些事件会依次执行，因此就不能到间隔一段时间执行的效果。
-
- 针对 setInterval 的这个缺点，我们可以使用 setTimeout 递归调用来模拟 setInterval，这样我们就确保了只有一个事件结束了，我们才会触发下一个定时器事件，这样解决了 setInterval 的问题。
-
- 实现思路是使用递归函数，不断地去执行 setTimeout 从而达到 setInterval 的效
-
-```js
- // 可避免setInterval因执行时间导致的间隔执行时间不一致
-function myInterval(fn,time){
-    let interval=()=>{
-      fn()
-      setTimeout(interval,time)
-    }
-    setTimeout(interval,time)
-}
-
-function mySetInterval2(fn, timeout) {
-        // 控制器，控制定时器是否继续执行
-        let timer = { flag: true };
-        // 设置递归函数，模拟定时器执行
-        function interval() {
-          if (timer.flag) {
-            fn();
-            setTimeout(interval, timeout);
-          }
-        }
-        // 启动定时器
-        setTimeout(interval, timeout);
-        // 返回控制器
-        return timer;
-      }
-```
-
-**使用setInterval实现setTimeout**
-
-```js
-function mySetInterval(fn, timeout) {
-        //timer用来接收setInterval返回的编号，用于后面清除setInterval
-        //setInterval会一直执行，但是在setInterval里面执行clearInterval()将会被清除
-        const timer = setInterval(() => {
-          //执行传入函数
-          fn();
-          //清除该次setInterval
-          clearInterval(timer);
-        }, timeout);
-      }
-```
-
-
-
-# 手写-EventBus
-
-通俗理解：
-
-> 小明最近看上了一套房子，到了售楼处之后才被告知，该楼盘的房子早已售罄。好在售楼 MM 告诉小明，不久之后还有一些尾盘推出，开发商正在办理相关手续，手续办好后便可以购买。但到底是什么时候，目前还没有人能够知道。
->
-> 小明离开之前，把电话号留在了售楼处。售楼 MM 答应他，新楼盘一推出就马上发信息通知小明。小红、小强和小龙也是一样，他们的电话号码都被记载售楼处的花名册上，新楼盘推出的时候，售楼 MM 会翻开花名册，遍历上面的电话号码，依次发送一条短信来通知他们。
-
-有三个要点：
-
-- `发布者`：dep 对象
-- `缓存列表`：dep.subscribers
-- `发布消息`：dep.notify()
-
-1. 首先要指定好谁充当发布者（比如售楼处）
-2. 然后给发布者添加一个缓存列表，用于存放回调函数以便通知订阅者（售楼处的花名册）
-3. 最后发布消息的时候，发布者会遍历这个缓存列表，依次触发里面存放的订阅者回调函数（遍历花名册，挨个发短信）
-
-极简版本
-
-```
-class SyncHook {
-  constructor() {
-    this.taps = [];
-  }
-
-  //注册监听函数，这里的name其实没啥用
-  tap(name, fn) {
-    this.taps.push({ name, fn });
-  }
-
-  //执行函数
-  call(...args) {
-    this.taps.forEach((tap) => tap.fn(...args));
-  }
-}
-```
-
-一般版本
-
-```js
-// 组件通信，一个触发与监听的过程
-class EventEmitter {
-  constructor () {
-    // 存储事件
-    this.events = this.events || new Map()
-  }
-  // 监听事件
-  addListener (type, fn) {
-    if (!this.events.get(type)) {
-      this.events.set(type, fn)
-    }
-  }
-  // 触发事件
-  emit (type) {
-    let handle = this.events.get(type)
-    handle.apply(this, [...arguments].slice(1))
-  }
-}
-
-// 测试
-let emitter = new EventEmitter()
-// 监听事件
-emitter.addListener('ages', age => {
-  console.log(age)
-})
-// 触发事件
-emitter.emit('ages', 18)  // 18
-```
-
-# 手写-JSON.stringfy()和JSON.parse()
-
-```
-if (!window.JSON) {
-    window.JSON = {
-        parse: function(jsonStr) {
-            return eval('(' + jsonStr + ')');
-        },
-        stringify: function(jsonObj) {
-            var result = '',
-                curVal;
-            if (jsonObj === null) {
-                return String(jsonObj);
-            }
-            switch (typeof jsonObj) {
-                case 'number':
-                case 'boolean':
-                    return String(jsonObj);
-                case 'string':
-                    return '"' + jsonObj + '"';
-                case 'undefined':
-                case 'function':
-                    return undefined;
-            }
-
-            switch (Object.prototype.toString.call(jsonObj)) {
-                case '[object Array]':
-                    result += '[';
-                    for (var i = 0, len = jsonObj.length; i < len; i++) {
-                        curVal = JSON.stringify(jsonObj[i]);
-                        result += (curVal === undefined ? null : curVal) + ",";
-                    }
-                    if (result !== '[') {
-                        result = result.slice(0, -1);
-                    }
-                    result += ']';
-                    return result;
-                case '[object Date]':
-                    return '"' + (jsonObj.toJSON ? jsonObj.toJSON() : jsonObj.toString()) + '"';
-                case '[object RegExp]':
-                    return "{}";
-                case '[object Object]':
-                    result += '{';
-                    for (i in jsonObj) {
-                        if (jsonObj.hasOwnProperty(i)) {
-                            curVal = JSON.stringify(jsonObj[i]);
-                            if (curVal !== undefined) {
-                                result += '"' + i + '":' + curVal + ',';
-                            }
-                        }
-                    }
-                    if (result !== '{') {
-                        result = result.slice(0, -1);
-                    }
-                    result += '}';
-                    return result;
-
-                case '[object String]':
-                    return '"' + jsonObj.toString() + '"';
-                case '[object Number]':
-                case '[object Boolean]':
-                    return jsonObj.toString();
-            }
-        }
-    };
-}
-```
 
 # 手写-简单路由
 

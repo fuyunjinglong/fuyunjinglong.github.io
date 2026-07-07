@@ -63,6 +63,7 @@ toc: true # 是否启用内容索引
 
 ## ES6
 
+- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#手写-Promise">[高级]-手写-Promise</a>
 - <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#for-循环中的-var-、let-与-const-区别">for 循环中的 var 、let 与 const 区别(看题给结果)</a>
 - <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#判断空对象">判断空对象</a>
 - <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#ES5和ES6之默认值的区别-？">ES5和ES6之默认值的区别？</a>
@@ -83,6 +84,9 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#模块化规范">[初级]-模块化规范</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#防抖和节流">[中级]-防抖和节流有什么区别</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#柯里化">[中级]-柯里化是什么</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-深浅拷贝">[中级]-手写-深浅拷贝</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-setTimeout实现setInterval">[中级]-手写-setTimeout实现setInterval</a>
+- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-发布订阅">[中级]-手写-发布订阅</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#垃圾回收">[中级]-垃圾回收</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#内存溢出和内存泄漏">[中级]-内存泄露</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#前端登录鉴权如何实现？">[高级]-前端登录鉴权如何实现？</a>
@@ -99,11 +103,6 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_三座大山' %}#消息队列和事件循环">[三大山-异步和单线程]-事件循环</a>
 - 
 - 
-- <a target="_blank" href="{% post_path 'B_JS_Promise进阶' %}#手写Promise-核心流程">必会20道JS-手写Promise</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#深浅拷贝">必会20道JS-手写深浅拷贝</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写setTimeout实现setInterval">必会20道JS-手写setTimeout模拟setInterval</a>
-- <a target="_blank" href="{% post_path 'B_JS_原形原型链继承闭包' %}#JS的8种继承方案">必会20道JS-手写一种原型式继承和构造函数继承</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-EventBus">必会20道JS-手写-EventBus发布订阅</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-简单路由">必会20道JS-手写简单路由</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-rem实现原理">必会20道JS-手写rem实现原理</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-实现拖拽">必会20道JS-手写实现拖拽</a>
