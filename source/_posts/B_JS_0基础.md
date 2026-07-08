@@ -101,6 +101,13 @@ toc: true # 是否启用内容索引
 **追问2：为什么 `Object.prototype.toString.call()` 能判断类型，而直接 `xxx.toString()` 不行？**
 *回答思路：因为很多派生对象（如 Array、Function）都**重写**了 `toString` 方法，导致直接调用时无法返回类型字符串。只有 Object 原型上的 `toString` 才会去读取内部的 `[[Class]]` 属性。因此必须用 `call` 借用 Object 原型上的原生方法。*
 
+## 判断空对象
+
+1. **首选 Object.keys(obj).length === 0**：对于 99% 的常规业务场景，这个方法最简洁高效，能满足判断自身可枚举属性的需求。
+2. **特殊场景使用 Reflect.ownKeys**：如果业务中大量使用了 Symbol 或不可枚举属性来定义内部状态，需要绝对严格的空判断时，再使用此方法。
+3. **避免单独使用 JSON.stringify**：除非明确知道对象内的属性都是普通的可序列化数据，否则极易产生 Bug。
+4. **前置校验**：在执行判断前，最好先加上类型校验（如 `typeof obj === 'object' && obj !== null`），防止传入 `null` 或非对象类型导致报错。
+
 ## 模块化规范
 
 一句话：服务端用 CommonJS，浏览器端早期用 AMD/CMD，现在全面拥抱官方的 ES Modules。ESM 的静态声明特性也直接推动了 Webpack/Vite 等工具的 Tree-shaking（摇树优化）能力，是目前的绝对主流。
@@ -559,6 +566,55 @@ jsonp可以取消吗？不能
 3.代理访问
 
 前端访问不存在跨域问题的代理服务器，代理服务器再去访问目标服务器（服务器之间没有跨域限制）
+
+## Axios取消请求
+
+主要依赖原生的 `AbortController` API。它的核心应用场景是**避免竞态条件**（如搜索框频繁输入导致旧请求覆盖新请求）和**防止内存泄漏**（如组件卸载时取消未完成的请求）。基本思路是：“创建取消信号 -> 绑定到请求 -> 触发取消”。
+
+**核心实现**
+
+> 1. **创建控制器**：实例化一个 `new AbortController()`，它包含一个 `signal` 属性和一个 `abort()` 方法。
+> 2. **绑定信号到请求**：在调用 axios 请求时，将 `controller.signal` 传入请求的配置项中（`{ signal: controller.signal }`）。
+> 3. **触发取消**：在业务逻辑需要时（如组件销毁、发起新请求前），调用 `controller.abort()` 来主动中断该请求。
+> 4. **错误处理**：请求被取消后会进入 `catch` 回调，需使用 `axios.isCancel(error)` 来区分是“主动取消”还是“网络错误等真实报错”。
+
+```js
+let controller = null;
+
+async function fetchSearchData(keyword) {
+  // 1. 如果有上一次未完成的请求，先取消它
+  if (controller) {
+    controller.abort();
+  }
+
+  // 2. 创建新的控制器
+  controller = new AbortController();
+
+  try {
+    // 3. 绑定 signal 到请求
+    const res = await axios.get('/api/search', {
+      params: { q: keyword },
+      signal: controller.signal 
+    });
+    console.log('请求成功:', res.data);
+  } catch (error) {
+    // 4. 区分是否是主动取消的请求
+    if (axios.isCancel(error)) {
+      console.log('请求被主动取消:', error.message);
+    } else {
+      console.log('真实网络错误:', error);
+    }
+  } finally {
+    controller = null;
+  }
+}
+
+// 模拟快速连续输入
+fetchSearchData('a'); 
+fetchSearchData('ab'); // 这会取消 'a' 的请求
+```
+
+
 
 ## 手写-深浅拷贝
 
@@ -1381,189 +1437,6 @@ Token 为了安全通常有效期较短（如 2 小时），如果让用户频�
 >    - *答题思路：* 将副作用推到代码的边缘。例如在React中，使用 `useEffect` 将副作用（如请求、DOM操作）与纯函数组件的渲染逻辑分离。
 
 
-
-# 手写-简单路由
-
-```
-// hash路由
-class Route{
-  constructor(){
-    // 路由存储对象
-    this.routes = {}
-    // 当前hash
-    this.currentHash = ''
-    // 绑定this，避免监听时this指向改变
-    this.freshRoute = this.freshRoute.bind(this)
-    // 监听
-    window.addEventListener('load', this.freshRoute, false)
-    window.addEventListener('hashchange', this.freshRoute, false)
-  }
-  // 存储
-  storeRoute (path, cb) {
-    this.routes[path] = cb || function () {}
-  }
-  // 更新
-  freshRoute () {
-    this.currentHash = location.hash.slice(1) || '/'
-    this.routes[this.currentHash]()
-  }   
-}
-```
-
-# 手写-JS实现图片懒加载
-
-```
-let imgs =  document.querySelectorAll('img')
-// 可视区高度
-let clientHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-function lazyLoad () {
-  // 滚动卷去的高度
-  let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-  for (let i = 0; i < imgs.length; i ++) {
-    // 图片在可视区冒出的高度
-    let x = clientHeight + scrollTop - imgs[i].offsetTop
-    // 图片在可视区内
-    if (x > 0 && x < clientHeight+imgs[i].height) {
-      imgs[i].src = imgs[i].getAttribute('data')
-    } 
-  }      
-}
-// addEventListener('scroll', lazyLoad) or setInterval(lazyLoad, 1000)
-```
-
-# 手写-rem实现原理
-
-```
-// 原始配置
-function setRem () {
-  let doc = document.documentElement
-  let width = doc.getBoundingClientRect().width
-  let rem = width / 75
-  doc.style.fontSize = rem + 'px'
-}
-// 监听窗口变化
-addEventListener("resize", setRem)
-```
-
-# 手写-AJAX
-
-```
-// 1. 简单流程
-// 实例化
-let xhr = new XMLHttpRequest()
-// 初始化
-xhr.open(method, url, async)
-// 发送请求
-xhr.send(data)
-// 设置状态变化回调处理请求结果
-xhr.onreadystatechange = () => {
-  if (xhr.readyStatus === 4 && xhr.status === 200) {
-    console.log(xhr.responseText)
-  }
-}
-
-// 2. 基于promise实现 
-function ajax (options) {
-  // 请求地址
-  const url = options.url
-  // 请求方法
-  const method = options.method.toLocaleLowerCase() || 'get'
-  // 默认为异步true
-  const async = options.async
-  // 请求参数
-  const data = options.data
-  // 实例化
-  const xhr = new XMLHttpRequest()
-  // 请求超时
-  if (options.timeout && options.timeout > 0) {
-    xhr.timeout = options.timeout
-  }
-  // 返回一个Promise实例
-  return new Promise ((resolve, reject) => {
-    xhr.ontimeout = () => reject && reject('请求超时')
-    // 监听状态变化回调
-    xhr.onreadystatechange = () => {
-      if (xhr.readyState == 4) {
-        // 200-300 之间表示请求成功，304资源未变，取缓存
-        if (xhr.status >= 200 && xhr.status < 300 || xhr.status == 304) {
-          resolve && resolve(xhr.responseText)
-        } else {
-          reject && reject()
-        }
-      }
-    }
-    // 错误回调
-    xhr.onerror = err => reject && reject(err)
-    let paramArr = []
-    let encodeData
-    // 处理请求参数
-    if (data instanceof Object) {
-      for (let key in data) {
-        // 参数拼接需要通过 encodeURIComponent 进行编码
-        paramArr.push(encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
-      }
-      encodeData = paramArr.join('&')
-    }
-    // get请求拼接参数
-    if (method === 'get') {
-      // 检测url中是否已存在 ? 及其位置
-      const index = url.indexOf('?')
-      if (index === -1) url += '?'
-      else if (index !== url.length -1) url += '&'
-      // 拼接url
-      url += encodeData
-    }
-    // 初始化
-    xhr.open(method, url, async)
-    // 发送请求
-    if (method === 'get') xhr.send(null)
-    else {
-      // post 方式需要设置请求头
-      xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded;charset=UTF-8')
-      xhr.send(encodeData)
-    }
-  })
-}
-```
-
-# 手写-实现拖拽
-
-```
-window.onload = function () {
-  // drag处于绝对定位状态
-  let drag = document.getElementById('box')
-  drag.onmousedown = function(e) {
-    var e = e || window.event
-    // 鼠标与拖拽元素边界的距离 = 鼠标与可视区边界的距离 - 拖拽元素与边界的距离
-    let diffX = e.clientX - drag.offsetLeft
-    let diffY = e.clientY - drag.offsetTop
-    drag.onmousemove = function (e) {
-      // 拖拽元素移动的距离 = 鼠标与可视区边界的距离 - 鼠标与拖拽元素边界的距离
-      let left = e.clientX - diffX
-      let top = e.clientY - diffY
-      // 避免拖拽出可视区
-      if (left < 0) {
-        left = 0
-      } else if (left > window.innerWidth - drag.offsetWidth) {
-        left = window.innerWidth - drag.offsetWidth
-      }
-      if (top < 0) {
-        top = 0
-      } else if (top > window.innerHeight - drag.offsetHeight) {
-        top = window.innerHeight - drag.offsetHeight
-      }
-      drag.style.left = left + 'px'
-      drag.style.top = top + 'px'
-    }
-    drag.onmouseup = function (e) {
-      this.onmousemove = null
-      this.onmouseup = null
-    }
-  }
-}
-```
-
-# 手写-其他
 
 ## 手写forEach
 

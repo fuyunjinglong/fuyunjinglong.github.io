@@ -116,7 +116,268 @@ Promise.any() 接收一个Promise可迭代对象，只要其中的一个 promise
 
 # 初级
 
+## for 循环中的var/let/const
+
+一句话：在 `for` 循环中，`var`、`let` 和 `const` 的核心区别在于**作用域机制**、**变量提升**以及**每次循环迭代是否创建新的变量绑定**。
+
+简单来说，`var` 会引发闭包陷阱，`let` 完美解决该问题，而 `const` 在普通 `for` 循环中会报错，但可用于 `for...of/in`。
+
+**1. `var` —— 函数作用域与共享绑定**
+
+- **作用域**：`var` 声明的变量是函数作用域（或全局作用域），没有块级作用域。
+- **变量提升**：存在变量提升，在声明前访问值为 `undefined`。
+- **循环表现**：在传统的 `for` 循环中，`var i` 在整个循环过程中只声明了一次，所有迭代共用同一个 `i`。
+- **闭包陷阱**：如果在循环体内有异步执行（如 `setTimeout`），因为闭包捕获的是同一个 `i` 的引用，当异步任务执行时，循环已经结束，`i` 已经变成了最终值，导致输出全部是同一个值。
+
+**2. `let` —— 块级作用域与每次迭代新绑定**
+
+- **作用域**：`let` 声明的变量是块级作用域，只在当前 `{}` 内有效。
+- **暂时性死区（TDZ）**：不存在变量提升，在声明前访问会报错 `ReferenceError`。
+- **循环表现**：这是 `let` 在 `for` 循环中最关键的特性。**JS 引擎会在每次循环迭代时，为 `let` 声明的变量创建一个新的绑定**。相当于每次循环都会复制一份当前的 `i` 值给本次迭代。
+- **闭包表现**：由于每次迭代都有独立的 `i` 绑定，循环内的异步闭包捕获到的是各自独立的状态，从而能正确输出预期的 0, 1, 2… 序列。
+
+**3. `const` —— 块级作用域与不可变绑定**
+
+- **作用域与死区**：同 `let` 一样，具有块级作用域和暂时性死区。
+
+- **不可变性**：`const` 声明的变量不能被重新赋值。
+
+- 循环表现（分情况）
+
+  ：
+
+  - **传统的 `for` 循环**：由于 `i++` 试图修改 `const` 变量，会直接抛出 `TypeError: Assignment to constant variable.` 报错，因此**不能**用于传统 `for` 循环。
+  - **`for...of` 或 `for...in` 循环**：**可以使用**。因为在这类循环中，每次迭代都会在新的块级作用域中声明一个新的 `const` 变量，不存在修改同一个变量值的情况。非常适合遍历不需要修改的数组或对象元素。
+
+**代码示例佐证（实战演示）**
+
+为了更直观地展示，我用代码说明 `var` 和 `let` 在闭包中的区别：
+
+```js
+// 1. var 的闭包陷阱
+for (var i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 0);
+}
+// 输出：3, 3, 3 
+// 原因：共享同一个 i，异步执行时 i 已变成 3
+
+// 2. let 的完美解决
+for (let i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 0);
+}
+// 输出：0, 1, 2
+// 原因：每次迭代生成新的块级作用域，闭包保留了当前的 i
+
+// 3. const 在普通 for 循环中报错
+for (const i = 0; i < 3; i++) {
+  console.log(i); 
+}
+// 输出：0，然后报错：TypeError: Assignment to constant variable.
+
+// 4. const 在 for...of 中正常使用
+const arr = ['a', 'b', 'c'];
+for (const item of arr) {
+  console.log(item); 
+}
+// 输出：a, b, c （每次迭代 item 都是新的 const 变量）
+```
+
+## for...in、for...of和forEach
+
+一句话：**他们在设计初衷、适用对象以及中断机制**有显著区别。
+
+- **`for...in`**：遍历对象的原型链上的**可枚举属性名（键名/索引）**，主要用于对象，也可数组(不推荐，如果数组挂载了自定义属性，也会遍历出来)，支持中断
+- **`for...of`**：遍历**可迭代对象的值**，主要用于数组、字符串、Map、Set 等，支持中断
+- **`forEach`**：数组原型上的方法，遍历数组的**值**，不支持中断
+
+```js
+for (let key in obj) {
+    if(obj.hasOwnProperty(key)){
+      // 仅遍历自身key
+     console.log(key, obj[key]); // 输出: a 1, b 2   
+    }
+}
+
+for (let value of arr) {
+  console.log(value);
+  if (value === 20) break; // 支持中断
+}
+
+obj.forEach(...) 
+```
+
+中断：for...in和for...of
+
+> `break`：跳出整个循环，循环语句后面的代码还会执行。
+>
+> `continue`：跳过本次循环，进入下一次。
+>
+> `return`：跳出整个循环，循环语句后面的代码不再执行。
+
+中断：forEach
+
+> `break` / `continue`：会直接代码报错
+>
+> `return`：只会跳过本次循环，进入下一次
+>
+> `抛出异常`：跳出整个循环(不推荐，建议用some、find替代)
+
+```js
+const arr = [1, 2, 3, 4, 5];
+try {
+    arr.forEach((item) => {
+        if (item === 3) {
+            throw new Error('停止循环'); // 抛出异常强制停止
+        }
+    });
+} catch (e) {
+    // 捕获异常，防止代码报错中断
+    if (e.message !== '停止循环') throw e;
+}
+```
+
+## ES5和ES6函数默认值的区别
+
+**1. 语法表现形式**
+
+- **ES5**：没有原生语法，需在函数体内部手动处理，通常用 `y = y || 'default'`。
+- **ES6**：原生支持，直接在参数列表中赋值，如 `function fn(x, y = 'default')`，代码更简洁。
+
+**2. 触发默认值的逻辑（最核心区别）**
+
+- **ES5（有坑）**：使用 `||` 时，只要参数是**假值**（如 `0`、`false`、`''`、`null`），就会触发默认值。这会导致传入有效的 `0` 被错误覆盖。
+- **ES6（精准）**：只有参数严格等于 `undefined` 时，才会触发默认值。如果传入 `0` 或 `false`，会正常使用传入的值。
+
+**3. 惰性求值（ES6特性）**
+
+- **ES6**：如果默认值是一个表达式或函数调用，只有当参数确实缺失（为 `undefined`）时，表达式才会执行；如果传了参数，表达式根本不运行。
+
+```js
+// ES5: 遇到假值 0 会误判
+function es5(x, y) {
+  y = y || 'default';
+  console.log(y);
+}
+es5(1, 0); // 输出 'default' (错误)
+
+// ES6: 只有 undefined 才触发
+function es6(x, y = 'default') {
+  console.log(y);
+}
+es6(1, 0);       // 输出 0 (正确)
+es6(1, undefined); // 输出 'default'
+```
+
+## ES5和ES6继承的区别
+
+一句话：ES5 和 ES6 继承的核心区别在于**语法表现形式**、**实例对象的构建顺序**以及**静态方法的继承机制**。ES6 的 `class/extends` 本质上是 ES5 寄生组合式继承的语法糖，但底层逻辑更严谨。
+
+**1. 语法形式**
+
+- **ES5**：通过构造函数和原型链配合实现（最完善的是寄生组合式继承），代码冗长且手动维护原型链容易出错。
+- **ES6**：引入了 `class` 和 `extends` 关键字，提供了更接近传统面向对象语言的语法，语义清晰，代码简洁。
+
+**2. `this` 的构建顺序（最核心的区别）**
+
+- **ES5**：先创建子类自己的实例对象 `this`，然后在子类构造函数中通过 `Parent.call(this)` 将父类的属性和方法挂载到这个 `this` 上。
+- **ES6**：底层机制不同，它是**先创建父类的实例对象 `this`，然后再用子类的构造函数去修改 `this`**。因此，ES6 规定子类必须在 `constructor` 中调用 `super()`，否则 `this` 无法生成会直接报错。
+
+**3. 静态方法/属性的继承**
+
+- **ES5**：构造函数本身挂载的方法（静态方法）默认**不会**被继承，需要开发者手动处理（如 `Child.__proto__ = Parent`）。
+- **ES6**：`extends` 关键字会**自动**将父类的静态方法和静态属性继承给子类，不需要额外写代码。
+
+简单代码对比：
+
+```js
+// --- ES5 寄生组合继承 ---
+function Parent(name) { this.name = name; }
+Parent.prototype.say = function() { console.log(this.name); };
+
+function Child(name, age) {
+  Parent.call(this, name); // 继承属性
+  this.age = age;
+}
+// 继承方法
+Child.prototype = Object.create(Parent.prototype);
+Child.prototype.constructor = Child;
+
+// --- ES6 class 继承 ---
+class Parent {
+  constructor(name) { this.name = name; }
+  say() { console.log(this.name); }
+}
+
+class Child extends Parent {
+  constructor(name, age) {
+    super(name); // 必须调用 super，且在 this 之前
+    this.age = age; 
+  }
+}
+```
+
+**总结**：
+ES6 的继承虽然是语法糖，但不仅写法更优雅，还通过强制要求 `super()` 调用，规范了对象的实例化顺序，并自动处理了静态方法的继承。现代开发中，应完全使用 ES6 的 `class` 和 `extends` 来实现继承。
+
 # 中级
+
+## Generator 函数
+
+Generator 函数是 ES6 提供的一种**异步编程解决方案**。语法上在 `function` 关键字后加星号（`function*`），内部使用 `yield` 表达式。它最大的特点是**可以暂停执行和恢复执行**。执行 Generator 函数不会立即执行函数体，而是返回一个**迭代器对象**，通过调用该对象的 `next()` 方法来逐步推进执行。
+
+**核心特征**
+
+> 1. **分段执行与交出执行权**
+>    普通函数是一气呵成执行到底，而 Generator 遇到 `yield` 表达式会暂停执行，并将紧随其后的表达式的值作为返回对象的 `value`，同时 `done` 属性标记为 `false`。只有再次调用 `next()` 才会继续往下执行，实现了执行权的交接。
+> 2. **双向数据流**
+>    不仅可以向外输出数据（`yield` 后面的值），还可以向内传入数据。`next(arg)` 方法的参数 `arg` 会作为**上一个被暂停的 `yield` 表达式的返回值**，从而实现内外部数据的双向通信。
+> 3. **符合迭代器协议**
+>    因为它返回的对象实现了 `next()` 方法，所以它是一个合法的迭代器。这意味着我们可以直接使用 `for...of` 循环遍历它，或者使用扩展运算符 `...` 将其转为数组，而不需要手动一直调用 `next()`。
+
+```js
+function* myGenerator() {
+  console.log('开始执行');
+  // 遇到 yield 暂停，向外部返回 'A'
+  let a = yield 'A'; 
+  console.log('接收外部传入的:', a); 
+  // 再次遇到 yield 暂停，向外部返回 'B'
+  yield 'B';
+  return 'C'; // 函数执行完毕
+}
+
+const gen = myGenerator();
+
+console.log(gen.next());      // 打印: '开始执行'，输出: { value: 'A', done: false }
+console.log(gen.next('传给a')); // 打印: '接收外部传入的: 传给a'，输出: { value: 'B', done: false }
+console.log(gen.next());      // 输出: { value: 'C', done: true }
+
+// 符合迭代器协议，可使用 for...of
+// for (let val of myGenerator()) { console.log(val); } // 输出: A, B (遇到 done: true 自动停止，不含 return 的值)
+```
+
+Generator 的主要价值在于：
+
+1. **异步流程控制（最重要）**：在 `async/await` 出现之前，Generator 常配合 Promise（如 `co` 库）实现“用同步的写法处理异步操作”。事实上，`async/await` 本质上就是 Generator 函数的语法糖（`async` 相当于 `*`，`await` 相当于 `yield`）。
+2. **自定义迭代器**：为任何复杂的数据结构提供按需计算、惰性求值的遍历接口。
+3. **状态机**：利用 `yield` 天然的暂停特性，可以非常优雅地实现状态机逻辑。
+
+现代业务代码中很少直接手写 Generator 来处理异步，但理解它是深入掌握 `async/await` 和前端异步编程演进的必经之路。
+
+## async函数
+
+本质上是 Generator 函数的语法糖，通过配合 `await` 关键字，**让异步代码看起来像同步代码一样执行**，彻底解决了传统 Promise 链式调用（`.then`）导致的代码冗长和嵌套问题。
+
+**核心特征**
+
+> 1. **返回值永远是 Promise**
+>    无论 `async` 函数内部 `return` 的是什么（普通值、对象，甚至不 return），引擎都会自动将它包装成一个 `Promise` 对象返回。如果 return 的是一个 Promise，则会直接返回该 Promise。
+> 2. **`await` 暂停与等待机制**
+>    `await` 只能在 `async` 函数内部使用。它会暂停当前 `async` 函数的执行，等待右侧的 Promise 决议。
+>    - 如果 Promise 变为 `resolved`，`await` 表达式返回其结果。
+>    - 如果 Promise 变为 `rejected`，会抛出异常。
+>    - 注意：`await` 只是暂停函数内部的执行，**不会阻塞主线程**，此时主线程会交出控制权继续执行其他任务。
+> 3. **错误处理更友好**
+>    相比于 Promise 需要在末尾使用 `.catch()`，`async` 函数可以直接使用传统的 `try...catch` 结构包裹 `await` 语句来捕获异常，符合开发者直觉。
 
 # 高级
 
@@ -333,6 +594,8 @@ p4.then(res => {
 
 ## Promise/A+ 规范
 
+A+就是A plus，即 A 的增强版
+
 **一、 3句话核心总结**
 
 1. **状态不可逆**：只有 `pending` -> `fulfilled` 或 `pending` -> `rejected`，且状态一旦改变，永远凝固。
@@ -433,120 +696,6 @@ ES2020引入了链判断运算符 ?. 来简化这个操作：
 
 ```
 const firstName = message?.body?.user?.firstName || 'default';
-```
-
-# let
-
-*ES6规定，`let/const` 命令会使区块形成封闭的作用域。若在声明之前使用变量，就会报错。*
-*总之，在代码块内，使用 `let` 命令声明变量之前，该变量都是不可用的。*
-*这在语法上，称为 **“暂时性死区”**（ temporal dead zone，简称 **TDZ**）。*
-
-**一、作用域**
-
-作用域 (scope) 可以被理解为是标识符（变量）在程序中的可见性范围。
-
-**作用域类型**
-
-动态作用域：动态作用域是在代码运行时确定的，关注函数从何处调用。javascript 并不具有动态作用域，但是this机制某种程度上很像动态作用域。
-
-静态作用域：静态作用域在函数定义时决定了，关注函数在何处声明。静态作用域又叫词法作用域，JS就是静态作用域。
-
-**作用域种类**
-
-ES2015 / ES6出现之前，作用域分为函数作用域和全局作用域，es6增加了块级作用域。
-
-**作用域链**
-
-访问变量时，如果当前作用域没有，会一级一级往上找，一直到全局作用域，这就是作用域链。
-
-**作用域链延长**
-
-大部分情况下，作用域链有多长主要看它当前嵌套的层数，但是有些语句可以在作用域链的前端临时增加一个变量对象，这个变量对象在代码执行完后移除，这就是作用域延长了。
-
-能够导致作用域延长的语句有两种:`try...catch`的`catch`块和`with`语句。
-
-**二、变量提升**
-
-变量声明的提升是以变量所处的第一层词法作用域为“单位”的，即全局作用域中声明的变量会提升至全局最顶层，函数内声明的变量只会提升至该函数作用域最顶层。
-
-说变量完全不提升是不准确的。只是 **let 和 const 所在的块级作用域变量提升后的行为跟`var`不一样，`var`是读到一个`undefined`，而块级作用域的提升行为是会制造一个暂时性死区。**
-
-**三、函数提升**
-
-有了上面变量提升的说明，函数提升理解起来就比较容易了，但较之变量提升，函数的提升还是有区别的。即：**函数提升只会提升函数声明，而不会提升函数表达式。**
-
-```
-console.log(foo1) // [Function: foo1]
-foo1() // foo1
-console.log(foo2) // undefined
-foo2() // TypeError: foo2 is not a function
-function foo1 () {
-  console.log("foo1")
-}
-var foo2 = function () {
-  console.log("foo2")
-} // foo2在这里是一个函数表达式且不会被提升
-```
-
-以上代码中，函数 `foo1` 是一个函数声明，在执行前会预解析，所以会提升至全局作用域，输出函数本身。但是`foo2` 是一个表达式，是在执行阶段才进行的赋值操作，所以不能预解析。
-
-**小结var 和 let、const**
-
-总结一下var 和 let、const的区别：
-
-- `var`变量会进行申明提前，在赋值前可以访问到这个变量，值是`undefined`。
-- 块级作用域也有“变量提升”，但是行为跟`var`不一样，块级作用域里面的“变量提升”会形成“暂时性死区”，在申明前访问会直接报错。
-- var 定义的变量可以反复去定义，let 和 const 不可以
-- var 定义的变量在循环过程中无法保存，let 和 const 可以
-- const 不能在 for 循环中定义，对于`for...in`和`for...of`循环是没问题的
-- var声明的变量会挂载到 window 全局对象上，let 和 const 不会
-
-# 判断空对象
-
-```js
-function isEmpty(obj) {
-  // 1. 判断 null 和 undefined
-  if (obj === null || obj === undefined) {
-    return true;
-  }
-  // 2. 判断构造函数是否为 Object (可选，视需求而定)
-  // 如果想排除数组、Date等对象，取消下面注释
-  // if (Object.prototype.toString.call(obj) !== '[object Object]') return false;
-
-  // 3. 判断键的数量
-  return Object.keys(obj).length === 0;
-}
-
-// 测试
-console.log(isEmpty(null));        // true
-console.log(isEmpty(undefined));   // true
-console.log(isEmpty({}));          // true
-console.log(isEmpty({name: 'xs'})); // false
-console.log(isEmpty([]));          // true (Object.keys([]).length === 0)
-```
-
-# for 循环中的 var 、let 与 const 区别
-
-> - var具有函数作用域，因此在for循环内定义的迭代变量会渗透到for循环外面。根据事件循环机制，先执行同步再异步，当5次循环结束后，i的值为5，i渗透到for循环外部
->
-> - let声明的迭代变量i不能渗透到for循环外面，因此可以认为是，声明了5个块级作用域。可以认为每个for都是独立的作用域块。
->
->   ```
->   {let i = 0;setTimeout(()=>console.log(i),0);}
->   ```
-
-```
-//使用var声明for循环中的迭代变量
-for(var i = 0;i < 5;++ i){
-setTimeout(()=>console.log(i),0);
-}
-// 5,5,5,5,5
-
-//使用let声明for循环中的迭代变量
-for(let i = 0;i < 5;++ i){
-setTimeout(()=>console.log(i),0);
-}
-// 0,1,2,3,4
 ```
 
 # 声明变量的六种方法
@@ -1161,179 +1310,6 @@ async/await 自动进行了 Generator 的流程控制。
 
 1. 使用async函数可以让代码简洁很多，不需要像Promise一样需要些then，不需要写匿名函数处理Promise的resolve值，也不需要定义多余的data变量，还避免了嵌套代码。
 2. 错误处理：Async/Await 让 try/catch 可以同时处理同步和异步错误。
-
-# for in、for of、forEach的比较
-
-- **`for...in`**：遍历对象的原型链上的**可枚举属性名（键名/索引）**，主要用于对象，也可数组(不推荐，如果数组挂载了自定义属性，也会遍历出来)，支持中断
-- **`for...of`**：遍历**可迭代对象的值**，主要用于数组、字符串、Map、Set 等，支持中断
-- **`forEach`**：数组原型上的方法，遍历数组的**值**，不支持中断
-
-```js
-for (let key in obj) {
-    if(obj.hasOwnProperty(key)){
-      // 仅遍历自身key
-     console.log(key, obj[key]); // 输出: a 1, b 2   
-    }
-}
-
-for (let value of arr) {
-  console.log(value);
-  if (value === 20) break; // 支持中断
-}
-
-obj.forEach(...) 
-```
-
-中断：for...in和for...of
-
-> `break`：跳出整个循环，循环语句后面的代码还会执行。
->
-> `continue`：跳过本次循环，进入下一次。
->
-> `return`：跳出整个循环，循环语句后面的代码不再执行。
-
-中断：forEach
-
-> `break` / `continue`：会直接代码报错
->
-> `return`：只会跳过本次循环，进入下一次
->
-> `抛出异常`：跳出整个循环(不推荐，建议用some、find替代)
-
-```js
-const arr = [1, 2, 3, 4, 5];
-try {
-    arr.forEach((item) => {
-        if (item === 3) {
-            throw new Error('停止循环'); // 抛出异常强制停止
-        }
-    });
-} catch (e) {
-    // 捕获异常，防止代码报错中断
-    if (e.message !== '停止循环') throw e;
-}
-```
-
-
-
-# ES5和ES6之默认值的区别 ？
-
-**ES5**
-
-- 使用三目运算符判断
-
-```
-function doSomething (name) {
-  name = name === undefined ? 'default name' : name
-}
-```
-
-**ES6**
-
-- 普通值入参，直接赋值默认值
-
-- 对象入参，fun({a}={}),使用空对象
-
-- 针对必填参数，可添加函数
-
-  ```
-  function requireParams () {
-    throw new Error('required params')
-  }
-  function doSomething (name = requireParams(), age = 18) {
-    // do something
-  }
-  ```
-
-# ES5和ES6之继承的区别 ？
-
-- ES5的继承通过寄生组合式继承来实现。`ES5 的继承实质上是先创建子类的实例对象，然后再将父类的方法添加到this上（Parent.apply(this)）`。
-- `ES6 的继承机制完全不同，实质上是先创建父类的实例对象this（所以必须先调用父类的 super()方法），然后再用子类的构造函数修改 this`。
-
-**ES5 寄生组合式继承**
-
-ES5的继承，实质上是先创造子类的实例对象this，然后再将父类的方法添加到子类（this）上面。
-
-所以，
-
-> **es5的写法不能继承原生构造函数**（比如Array、Number等） 因为es5的继承是先创造子类的实例对象this，再将父类原型的属性和方法重写到子类上，因为没法访问父类的内部属性，导致**es5的继承方式无法继原生的构造函数**。
-
-<img src="/img/image-20230614063858609.png" alt="image-20230614063858609" style="zoom:50%;" />
-
-**ES6 extend继承**
-
-参考
-
-- [廖雪峰的原型继承](https://www.liaoxuefeng.com/wiki/1022910821149312/1023021997355072)
-- [ES6类以及继承的实现原理](https://segmentfault.com/a/1190000014798678)
-- [ES6下babel如何编译Class](https://www.aligoogle.net/pages/25e63f/#%E4%BA%94-babel-%E7%BC%96%E8%AF%91)
-
-ES6的继承机制完全不同，实质上是先创造父类的实例对象this，并将父类的属性和方法放到this上（前提是通过super函数调用），然后再用子类的构造函数修改this。
-
-所以，
-
->  es6允许继承构造函数生成子类。因为es6是先创建父类的实例对象this，然后再用子类的构造函数修饰，所以子类就可以继承父类的所有属性和方法。因此**class可以继承并自定义原生构造函数的子类**。extends不仅可以用来继承类，还能用来继承原生构造函数，因此也就可以在原生数据结构的基础上，构造自定义的数据结构。
-
-<img src="/img/image-20230614063939130.png" alt="image-20230614063939130" style="zoom:50%;" />
-
-**ES6继承核心源码**
-
-bable编译Class文件后的代码：
-
-```
-var Child = function(_Parent) {
-    _inherits(Child, _Parent);// 核心
-    function Child(name, age) {
-        _classCallCheck(this, Child);
-        // 调用父类的 constructor(name)
-        var _this = _possibleConstructorReturn(this, (Child.__proto__ || Object.getPrototypeOf(Child)).call(this, name));
-        _this.age = age;
-        return _this;
-    }
-
-    return Child;
-}(Parent);
-```
-
-其中核心是_inherits：
-
-```
-function _inherits(subClass, superClass) {
-    // extend 的继承目标必须是函数或者是 null
-    if (typeof superClass !== "function" && superClass !== null) {
-        throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-    }
-    // 代码1，类似于 ES5 的寄生组合式继承，使用 Object.create，设置子类 prototype 属性的 __proto__ 属性指向父类的 prototype 属性
-    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
-
-    // 代码2，设置子类的 __proto__ 属性指向父类
-    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-}
-```
-
-_inherits通俗理解：
-
-- 代码1：保证了`c instanceof Parent`是true,Child的实例可以访问到父类的属性，包括内部属性，以及原型属性。
-
-<img src="/img/image-20230614064228077.png" alt="image-20230614064228077" style="zoom:50%;" />
-
-- 代码2：子类能访问到父类的静态方法
-
-```
-// 代码1翻译下就是
-function F(){}
-F.prototype = superClass.prototype
-subClass.prototype = new F()
-subClass.prototype.constructor = subClass
-简写为一行代码是：subClass.prototype.__proto__ = superClass.prototype
-
-// 代码2翻译下就是：
-function A(){}
-var a = new A()
-a.__proto__ = A.prototype
-// a是一个实例，A.prototype是构造方法的原型。通过这种方式，那么a就可以访问A.prototype上面的方法。
-// 那把 subClass类比成 a，superClass类比成A.prototype，那是不是subClass可以直接访问 superClass的静态属性，静态方法了。
-```
 
 # Module模块化语法
 
