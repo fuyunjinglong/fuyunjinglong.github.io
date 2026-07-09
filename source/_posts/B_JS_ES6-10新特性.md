@@ -10,111 +10,22 @@ toc: true # 是否启用内容索引
 
 - JavaScript ES(6-11)全版本语法
 
-# ES新特性
-
-## ES7新特性
-
-- Array.prototype.includes()
-
-**Array.prototype.includes()**
-
-查询给定字符串是否包含一个字符
-
-## ES8新特性
-
-- Async/Await
-- Object.values()，Object.entries()
-
-**Async/Await**
-
-这是JavaScript异步编程的一个重大改进，提供了在不阻塞主线程的情况下使用同步代码实现异步访问资源的能力，并且使得代码逻辑更加清晰。
-
-**Object.values()，Object.entries()**
-
-作为遍历一个对象的补充手段，供for...of循环使用
-
-## ES9新特性
-
-- for await of
-
-**for await of**
-
-for of方法能够遍历具有Symbol.iterator接口的同步迭代器数据，但是不能遍历异步迭代器。
-
-for await of可以用来遍历具有Symbol.asyncIterator方法的数据结构，也就是异步迭代器，且会等待前一个成员的状态改变后才会遍历到下一个成员，相当于async函数内部的await。
-
-## ES10新特性
-
-- Array.prototype.flat()
-- String.trimStart 和 String.trimEnd
-
-**Array.prototype.flat()**
-
-将多维数组打平，flat() 方法会按照一个可指定的深度递归遍历数组，并将所有元素与遍历到的子数组中的元素合并为一个新数组返回。
-
-```
-newArray = arr.flat(depth) // depth是指定要提取嵌套数组的结构深度，默认值为 1
-```
-
-**String.trimStart 和 String.trimEnd**
-
-移除开头和结尾的空格。
-
-trimStart() 方法从字符串的开头删除空格，trimLeft()是此方法的别名。
-
-trimEnd() 方法从一个字符串的右端移除空白字符，trimRight 是 trimEnd 的别名。
-
-## ES2020新特性
-
-- 可选链操作符
-- 空位合并操作符
-- Promise.allSettled
-
-**可选链操作符**
-
-```
-let nestedProp = obj && obj.first && obj.first.second;
-let nestedProp = obj?.first?.second;
-```
-
-**空位合并操作符**
-
-空位合并操作符，用 ?? 表示
-
-```
-let c = a ? a : b // 方式1
-let c = a || b // 方式2
-缺点：它都会覆盖所有的假值，如a(0, '', false)，这些值可能是在某些情况下有效的输入，但会执行b
-```
-
-```
-let c = a ?? b;
-// 等价于let c = a !== undefined && a !== null ? a : b;
-```
-
-**Promise.allSettled**
-
-使用 Promise.all 来并发请求三个接口，如果其中任意一个接口出现异常，状态是reject,这会导致页面中该三个区域数据全都无法出来，这个状况我们是无法接受。
-
-Promise.allSettled跟Promise.all类似, 其参数接受一个Promise的数组, 返回一个新的Promise, **唯一的不同在于, 它不会进行短路**, 也就是说当Promise全部处理完成后,我们可以拿到每个Promise的状态, 而不管是否处理成功。
-
-## ES2021/ES12新特性
-
-候选提案
-
-- String.prototype.replaceAll()
-- Promise.any
-- 逻辑运算符和赋值表达式
-- 数值分隔符
-- WeakRef and Finalizers
-
-**Promise.any**
-
-Promise.any() 接收一个Promise可迭代对象，只要其中的一个 promise 成功，就返回那个已经成功的 promise。
-
-`Promise.any()`跟`Promise.race()`方法很像，只有一点不同，就是不会因为某个 `Promise` 变成rejected状态而结束。
-
 # 初级
+
+## ES6(2015)-ES17(2026)新特性
+
+- ES6：let/const、解构、模板字符串、箭头函数、扩展/剩余、Symbol、Set/Map、迭代器/生成器、Promise、Class、Module。
+- ES7：includes、 幂运算。
+- ES8：async/await、Object.values/entries、padStart/padEnd、getOwnPropertyDescriptors。
+- ES9：对象展开/剩余、for await…of、Promise.finally、正则增强。
+- ES10：flat/flatMap、fromEntries、trimStart/End、Symbol.description、可选 catch、matchAll、sort 稳定。
+- ES11：?. 可选链、?? 空值合并、BigInt、Promise.allSettled、globalThis、动态 import()。
+- ES12：replaceAll、Promise.any、逻辑赋值、数字分隔符、WeakRefs。
+- ES13：类字段/私有、顶层 await、at、Object.hasOwn、Error cause。
+- ES14：toSorted/toReversed/toSpliced/with、findLast/LastIndex、#!、Symbol 做 WeakMap 键
+- ES15：Object.groupBy/Map.groupBy、Promise.withResolvers、正则 /v、Atomics.waitAsync、String.isWellFormed/toWellFormed
+- ES16：迭代器助手、Set 方法（union/intersection/difference/symmetricDifference/isSubsetOf/isSupersetOf/isDisjointFrom）、Promise.try、JSON 模块与导入属性、Float16Array
+- ES17：Map.getOrInsert/getOrInsertComputed、Error.isError。
 
 ## for 循环中的var/let/const
 

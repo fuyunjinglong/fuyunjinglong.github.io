@@ -9,7 +9,7 @@ toc: true # 是否启用内容索引
 # interview-临时
 
 - [ ] 2024年前端简历（node.js，ts,react，Flutter、Rn，微前端，低代码，小程序，移动端，ssr）
-- [ ] 面试突击-千峰-007-JS高频面试题-3
+- [ ] 面试突击-千峰-008
 - [ ] TypeScript入门
 - [ ] 多端-小程序-Taro
 - [ ] 多端-桌面端Electron
@@ -63,6 +63,7 @@ toc: true # 是否启用内容索引
 
 ## ES6
 
+- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#ES6-2015-ES17-2026-新特性">[初级]-ES6-ES17新特性</a>
 - <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#for-循环中的var-let-const">[初级]-for 循环中的var/let/const</a>
 - <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#for…in、for…of和forEach">[初级]-for…in、for…of和forEach的区别</a>
 - <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#ES5和ES6函数默认值的区别">[初级]-ES5和ES6函数默认值的区别</a>
@@ -105,7 +106,8 @@ toc: true # 是否启用内容索引
 ## 计算机网络
 
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Web漏洞攻防">[初级]-Web漏洞攻防</a>
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#HTTP-常见的状态码">HTTP-常见的状态码</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#HTTP常见的状态码">[初级]-HTTP常见的状态码</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#从输入URL到页面渲染完成过程">[中级]-从输入URL到页面渲染完成过程</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#一文读懂-HTTP-1、HTTP-2、HTTP-3">一文读懂 HTTP/1、HTTP/2、HTTP/3</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#彻底搞懂Https">彻底搞懂Https</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#既然有-HTTP-协议，为什么还要有-RPC？">RPC是什么？</a>
