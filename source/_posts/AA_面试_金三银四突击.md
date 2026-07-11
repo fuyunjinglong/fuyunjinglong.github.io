@@ -107,8 +107,8 @@ toc: true # 是否启用内容索引
 
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Web漏洞攻防">[初级]-Web漏洞攻防</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#HTTP常见的状态码">[初级]-HTTP常见的状态码</a>
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#从输入URL到页面渲染完成过程">[中级]-从输入URL到页面渲染完成过程</a>
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#一文读懂-HTTP-1、HTTP-2、HTTP-3">一文读懂 HTTP/1、HTTP/2、HTTP/3</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#HTTP-1、HTTP-2、HTTP-3">[初级]-HTTP-1、HTTP-2、HTTP-3</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#从输入URL到页面渲染完成过程">[中级]-从输入URL到页面渲染完成过程</a>s
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#彻底搞懂Https">彻底搞懂Https</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#既然有-HTTP-协议，为什么还要有-RPC？">RPC是什么？</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#既然有-HTTP-协议，为什么还要有-WebSocket？">webSocket是什么？</a>
