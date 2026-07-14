@@ -147,6 +147,186 @@ try {
 }
 ```
 
+## Symbol、Map、Set三种常用的数据类型
+
+**一、 Symbol**
+
+- **一句话解释**：ES6 引入的**原始数据类型**，表示独一无二的值。
+- **核心特性**：每次创建都唯一；作为对象属性时不可枚举（`for...in`、`JSON.stringify`无法读取）。
+- 常用 API 与场景：
+  - `Symbol('desc')`：创建唯一值。
+  - `Symbol.for('key')`：全局复用同一个 Symbol。
+  - **场景**：消除魔法字符串、防止对象属性名冲突、定义对象的私有属性/迭代器（`Symbol.iterator`）。
+
+**二、 Set**
+
+- **一句话解释**：类似数组的集合，核心特点是**成员唯一、自动去重**。
+- **核心特性**：内部使用 `SameValueZero` 算法去重（`NaN` 视为相等）；无索引；`has` 查找时间复杂度接近 O(1)。
+- 常用 API 与场景：
+  - `add`、`delete`、`has`、`clear`、`size`。
+  - **场景**：数组去重（`[...new Set(arr)]`）、字符串去重([...new Set(str)].join(''))、高频数据查重。
+
+**三、 Map**
+
+- **一句话解释**：**键值对（Hash）集合**，类似对象，但键可以是任意类型。
+- **核心特性**：任何类型（对象、函数、基本类型等）均可作键；严格保持插入顺序；频繁增删性能优于 Object。
+- 常用 API 与场景：
+  - `set`、`get`、`has`、`delete`、`size`。
+  - **场景**：将 DOM 节点或复杂对象作为键存储数据，避免数据污染；需要有序且高频增删的键值对缓存。
+
+**一句话总结**：
+`Symbol` 解决属性冲突；`Set` 解决去重与高效查重；`Map` 解决键类型限制与高频增删的性能问题。
+
+## 模块化规范
+
+一句话：服务端用 CommonJS，浏览器端早期用 AMD/CMD，现在全面拥抱官方的 ES Modules。ESM 的静态声明特性也直接推动了 Webpack/Vite 等工具的 Tree-shaking（摇树优化）能力，是目前的绝对主流。
+
+1. **CommonJS (CJS)**
+   - **代表**：Node.js
+   - **特点**：同步加载（`require` 导入，`module.exports` 导出）；在**运行时**加载；输出的是**值的拷贝**。
+   - **场景**：服务端（文件都在本地，同步加载无影响）。
+2. **AMD / CMD**
+   - **代表**：AMD (RequireJS) / CMD (SeaJS)
+   - **特点**：专为浏览器端设计的**异步加载**规范。AMD 依赖前置（提前执行），CMD 依赖就近（按需执行）。
+   - **现状**：随着打包工具的普及，目前已基本被淘汰。
+3. **ES Modules (ESM)**
+   - **代表**：ES6 官方标准
+   - **特点**：静态模块（`import` 导入，`export` 导出）；在**编译时**确定依赖关系（支持 Tree-shaking）；输出的是**值的引用**（模块内部变化会影响外部）。
+   - **场景**：现代前端开发的通用标准（浏览器端与Node.js均支持）。
+
+| 特性             | ES6 Modules (ESM)              | CommonJS (CJS)             |
+| :--------------- | :----------------------------- | :------------------------- |
+| **加载机制**     | **静态**（编译时确定依赖关系） | **动态**（运行时加载）     |
+| **输出值**       | **值的引用**（只读动态绑定）   | **值的拷贝**（缓存输出值） |
+| **this 指向**    | 顶层 `this` 指向 `undefined`   | 顶层 `this` 指向模块本身   |
+| **Tree Shaking** | **支持**（因静态分析）         | 不支持（难以静态分析）     |
+
+## ES6 Export和Import
+
+**1. 开场白（简述概念）**
+
+ES6 Modules（ESM）是 JavaScript 官方的模块化标准，通过 `export` 导出模块接口，通过 `import` 导入模块。它取代了之前的 CommonJS（Node.js）和 AMD（RequireJS），成为现代前端开发（如 React、Vue、Webpack/Vite 环境）通用的模块化方案。
+
+**2. 核心语法回顾**
+
+- **命名导出：**
+
+  ```js
+      // utils.js
+      export const add = (a, b) => a + b;
+      export const sub = (a, b) => a - b;
+      // 或者统一导出
+      // export { add, sub };
+  ```
+
+- **默认导出：**
+
+  ```js
+      // App.js
+      export default class App { ... }
+  ```
+
+- **导入：**
+
+  ```js
+      import { add, sub } from './utils'; // 命名导入
+      import App from './App';            // 默认导入
+      import * as Utils from './utils';   // 命名空间导入（作为对象）
+  ```
+
+**3. 最佳实践（核心重点）**
+
+在实际项目开发中，为了保证代码的可维护性、构建效率和可读性，遵循“优先命名导出、规范导入顺序、避免通配符导入”等最佳实践：
+
+- **优先使用命名导出**
+  - **原因**：命名导出能提供更好的 IDE 智能提示和自动补全，便于代码重构（重命名时 IDE 能自动更新引用），且有利于 Tree Shaking（摇树优化），去除未使用的代码，减小打包体积。
+  - **避免**：滥用默认导出，因为它可能导致导入时的命名不一致，且不利于静态分析。
+- **统一、清晰的导入顺序**
+  - 遵循 ESLint 插件（如eslint-plugin-import）推荐的顺序，通常分为三组，组与组之间用空行隔开：
+    1. **第三方库**（如 `import React from 'react'`）
+    2. **内部绝对路径**（如 `import { Button } from '@/components'`）
+    3. **相对路径**（如 `import styles from './App.css'`）
+  - 这样可以让依赖关系一目了然。
+- **使用路径别名**
+  - 在构建工具中配置别名（如 `@` 指向 `src` 目录），避免使用冗长的相对路径（如 `../../../utils/helper`），提高代码可读性和可移植性。
+- **杜绝“通配符”导入**
+  - **避免**：`import * as Utils from './utils'`。
+  - **原因**：这会导入整个模块，即使你只使用其中一个函数。这会阻碍 Tree Shaking，增加打包体积。应明确导入需要的方法：`import { add } from './utils'`。
+- **仅导入副作用**
+  - 如果只是为了执行全局代码（如注入样式、初始化 polyfill），而不引入任何变量，可以直接写入路径： import './styles/global.css';
+
+- **导出原则**
+  - 文件过大时拆分模块，保持“高内聚，低耦合”。
+  - 如果一个模块主要只导出一个功能（如工具类函数或组件），可以使用默认导出；如果导出多个工具函数，务必使用命名导出。
+
+**4.代码示例**
+
+```js
+// 1. 第三方库
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+
+// 2. 内部组件/工具 (使用别名)
+import { Button, Modal } from '@/components/ui';
+import { formatDate, validateEmail } from '@/utils/helpers';
+
+// 3. 相对路径 (样式、静态资源、类型)
+import styles from './UserProfile.module.css';
+import type { User } from './types';
+
+// ... 组件逻辑 ...
+```
+
+
+
+## ES6 Class
+
+**1. 开场白（简述概念）**
+ES6 的 `class` 是一种语法糖，它基于 ES5 的原型链和构造函数实现，提供了更清晰、更接近传统面向对象语言的写法，主要用于定义对象模板和实现继承。
+
+**2. 核心特性**
+
+- **本质**：依然是函数，底层逻辑是原型链。
+- **继承**：通过 `extends` 关键字实现，语法简洁。
+- **方法**：类内部定义的方法自动挂载到 `prototype` 上。
+- **静态**：支持 `static` 关键字定义静态方法/属性。
+- **严格模式**：类体内部默认开启严格模式。
+- **无提升**：类声明不存在变量提升（存在 TDZ）。
+
+**3. 与 ES5 构造函数的区别**
+
+| 特性         | ES5 构造函数            | ES6 Class                |
+| :----------- | :---------------------- | :----------------------- |
+| **定义**     | `function`              | `class`                  |
+| **方法挂载** | 手动挂载 `prototype`    | 自动挂载 `prototype`     |
+| **继承**     | 复杂（借用构造+原型链） | `extends` + `super` 简洁 |
+| **严格模式** | 默认非严格              | **默认严格**             |
+| **变量提升** | 函数提升                | **不提升** (TDZ)         |
+
+**4. 关键语法**
+
+```js
+// 基本定义与继承
+class Parent {
+  constructor(name) {
+    this.name = name;
+  }
+  say() { console.log(this.name); }
+}
+
+class Child extends Parent {
+  constructor(name, age) {
+    super(name); // 必须先调用 super,调用父类构造函数
+    this.age = age;
+  }
+}
+```
+
+**5. 优缺点**
+
+- **优点**：写法简洁、语义清晰、继承方便、支持私有属性 `#`。
+- **缺点**：需 Babel 转译兼容旧浏览器，灵活性略低于原型操作。
+
 ## ES5和ES6函数默认值的区别
 
 **1. 语法表现形式**
@@ -289,6 +469,83 @@ Generator 的主要价值在于：
 >    - 注意：`await` 只是暂停函数内部的执行，**不会阻塞主线程**，此时主线程会交出控制权继续执行其他任务。
 > 3. **错误处理更友好**
 >    相比于 Promise 需要在末尾使用 `.catch()`，`async` 函数可以直接使用传统的 `try...catch` 结构包裹 `await` 语句来捕获异常，符合开发者直觉。
+
+## Reflect
+
+**1. 一句话总结**
+
+`Reflect` 是一个内置的全局对象，它提供了一系列用于拦截和操作 JavaScript 对象的静态方法。它的方法与 `Proxy` 的处理器方法一一对应，并且它不能被实例化（`new Reflect()` 会报错），只能通过静态方法调用。
+
+**2. 诞生的背景与目的**
+
+在 ES6 之前，JS 对象的内部方法（如 `[[Get]]`、`[[Set]]`）并没有统一暴露给开发者，操作对象有时依赖 `Object` 上的方法，有时依赖操作符（如 `in`、`delete`）。引入 `Reflect` 的主要目的有三个：
+
+1. **统一语言内部方法：** 将原本散落在 `Object` 上或作为操作符的方法，统一挂载到 `Reflect` 上，使其成为正规的函数式方法调用（如 `Reflect.has` 替代 `in`，`Reflect.deleteProperty` 替代 `delete`）。
+2. **规范返回值：** 修改一些不合理的方法返回值。比如 `Object.defineProperty` 在失败时会抛出错误，而 `Reflect.defineProperty` 失败时只会返回 `false`，便于用 `if` 语句进行错误处理。
+3. **配合 Proxy 使用：** 提供与 `Proxy` 拦截器同名的方法，方便在拦截操作后，优雅地恢复默认行为。
+
+**3. 核心 API 概览**
+
+`Reflect` 提供了 13 个静态方法，与 `Proxy` 的拦截操作一一对应，常用的有：
+
+- **属性操作：** `Reflect.get(target, propKey, receiver)`、`Reflect.set(target, propKey, value, receiver)`
+- **属性判断：** `Reflect.has(target, propKey)`、`Reflect.ownKeys(target)`
+- **属性删除：** `Reflect.deleteProperty(target, propKey)`
+- **函数调用与构造：** `Reflect.apply(target, thisArg, argumentsList)`、`Reflect.construct(target, argumentsList)`
+- **对象扩展与拦截：** `Reflect.defineProperty(target, propKey, attributes)`、`Reflect.getPrototypeOf(target)` 等。
+
+**4. 典型应用场景与代码示例**
+
+**场景一：与 Proxy 完美配合（保留默认行为）**
+在 `Proxy` 拦截器中，如果我们拦截了某些操作，又希望该操作继续执行，最规范的做法是调用 `Reflect` 对应的方法，而不是直接操作原始对象。
+
+```js
+const target = { name: '前端面试' };
+const handler = {
+  get(target, key, receiver) {
+    console.log(`获取了 ${key} 属性`);
+    // 推荐做法：通过 Reflect 转发操作，而不是直接 return target[key]
+    return Reflect.get(target, key, receiver); 
+  },
+  set(target, key, value, receiver) {
+    console.log(`设置了 ${key} 属性为 ${value}`);
+    return Reflect.set(target, key, value, receiver);
+  }
+};
+const proxy = new Proxy(target, handler);
+proxy.name; // 输出：获取了 name 属性
+```
+
+**场景二：解决 Proxy 中 getter 的 this 指向问题（进阶考点）**
+`Reflect.get` 的第三个参数 `receiver` 非常关键。当原始对象存在 getter，且通过 Proxy 访问时，传入 `receiver` 可以保证 getter 内部的 `this` 指向 Proxy 实例，而不是原始对象。
+
+```js
+const obj = {
+  foo: 1,
+  get bar() { return this.foo; } // 这里的 this 决定了返回谁的 foo
+};
+
+const proxy = new Proxy(obj, {
+  get(target, key, receiver) {
+    // 如果不传 receiver，this 指向 obj，后续拦截 obj.foo 会失效
+    return Reflect.get(target, key, receiver); 
+  }
+});
+
+const child = Object.create(proxy);
+child.foo = 2;
+console.log(child.bar); // 输出 2，因为 receiver 保证了 this 指向 child
+```
+
+**场景三：函数式调用替代老旧语法**
+
+- 用 `Reflect.has(obj, 'a')` 替代 `'a' in obj`
+- 用 `Reflect.deleteProperty(obj, 'a')` 替代 `delete obj.a`
+- 用 `Reflect.apply(fn, obj, args)` 替代 `Function.prototype.apply.call(fn, obj, args)`（更整洁）
+
+**5. 总结**
+
+在开发中，`Reflect` 很少单独使用，它统一内部方法，更规范返回，其中最大的价值在于**配合 `Proxy` 实现响应式系统或数据劫持**（例如 Vue 3 的 reactive 实现就大量使用了 `Reflect`），并完美解决 `this` 指向问题。
 
 # 高级
 
@@ -615,412 +872,7 @@ const firstName = message?.body?.user?.firstName || 'default';
 - ES6 除了添加 let 和 const 命令。
 - 还有两种声明变量的方法：import 命令和 class 命令。
 
-# 数组的扩展
 
-**reduce累加器**
-
-var total = [ 0, 1, 2, 3 ].reduce(( acc, cur ) => {    return acc + cur }, 0);
-
-**every一假即假**
-
-const flag=[ 0, 1, 2, 3 ].every(ele=> {    return ele>3 });
-
-**some一真即真**
-
-const flag=[ 0, 1, 2, 3 ].some(ele=> {    return ele>3 });
-
-# Set
-
-`Set` 本身是一个构造函数，用来生成 `Set` 数据结构。`Set` 对象允许你存储任何类型的值，但是成员的值都是唯一的，没有重复的值。
-
-**Set 中的特殊值**
-
-`Set` 对象存储的值总是唯一的，所以需要判断两个值是否恒等。有几个特殊值需要特殊对待：
-
-- +0 与 -0 在存储判断唯一性的时候是恒等的，所以不重复
-- `undefined` 与 `undefined` 是恒等的，所以不重复
-- `NaN` 与 `NaN` 是不恒等的，但是在 `Set` 中认为 `NaN` 与 `NaN` 相等，所有只能存在一个，不重复。
-
-**Set 实例对象的方法**
-
-- `add(value)`：添加某个值，返回 `Set` 结构本身(可以链式调用)。
-- `delete(value)`：删除某个值，删除成功返回 `true`，否则返回 `false`。
-- `has(value)`：返回一个布尔值，表示该值是否为 `Set` 的成员。
-- `clear()`：清除所有成员，没有返回值。
-
-**遍历方法**
-
-- `keys()`：返回键名的遍历器。
-- `values()`：返回键值的遍历器。
-- `entries()`：返回键值对的遍历器。
-- `forEach()`：使用回调函数遍历每个成员。
-
-**Array 和 Set 对比**
-
-- `Array` 的 `indexOf` 方法比 `Set` 的 `has` 方法效率低下
-- `Set` 不含有重复值（可以利用这个特性实现对一个数组的去重）
-- `Set` 通过 `delete` 方法删除某个值，而 `Array` 只能通过 `splice`。两者的使用方便程度前者更优
-- `Array` 的很多新方法 `map`、`filter`、`some`、`every` 等是 `Set` 没有的（但是通过两者可以互相转换来使用）
-
-**Set 的应用**
-
-1、`Array.from` 方法可以将 `Set` 结构转为数组。
-
-```js
-const items = new Set([1, 2, 3, 4, 5])
-const array = Array.from(items)
-```
-
-2、数组去重
-
-```js
-// 去除数组的重复成员
-;[...new Set(array)]
-Array.from(new Set(array))
-复制代码
-```
-
-3、数组的 `map` 和 `filter` 方法也可以间接用于 `Set`
-
-```js
-let set = new Set([1, 2, 3])
-set = new Set([...set].map((x) => x * 2))
-// 返回Set结构：{2, 4, 6}
-let set = new Set([1, 2, 3, 4, 5])
-set = new Set([...set].filter((x) => x % 2 == 0))
-// 返回Set结构：{2, 4}
-```
-
-4、实现并集 `(Union)`、交集 `(Intersect)` 和差集
-
-```js
-let a = new Set([1, 2, 3])
-let b = new Set([4, 3, 2])
-// 并集
-let union = new Set([...a, ...b])
-// Set {1, 2, 3, 4}
-// 交集
-let intersect = new Set([...a].filter((x) => b.has(x)))
-// set {2, 3}
-// 差集
-let difference = new Set([...a].filter((x) => !b.has(x)))
-// Set {1}
-```
-
-**weakSet**
-
-`WeakSet` 结构与 `Set` 类似，也是不重复的值的集合。
-
-- 成员都是数组和类似数组的对象，若调用 `add()` 方法时传入了非数组和类似数组的对象的参数，就会抛出错误。
-
-```js
-const b = [1, 2, [1, 2]]
-new WeakSet(b) // Uncaught TypeError: Invalid value used in weak set
-复制代码
-```
-
-- 成员都是弱引用，可以被垃圾回收机制回收，可以用来保存 DOM 节点，不容易造成内存泄漏。
-- `WeakSet` 不可迭代，因此不能被用在 `for-of` 等循环中。
-- `WeakSet` 没有 `size` 属性。
-
-# Map
-
-`Map` 中存储的是 `key-value` 形式的键值对, 其中的 `key` 和 `value` 可以是任何类型的
-
-**Map 和 Object 的区别**
-
-1. `Object` 对象有原型， 也就是说他有默认的 `key` 值在对象上面， 除非我们使用 `Object.create(null)`创建一个没有原型的对象；
-2. 在 `Object` 对象中， 只能把 `String` 和 `Symbol` 作为 `key` 值， 但是在 `Map` 中，`key` 值可以是任何基本类型(`String`, `Number`, `Boolean`, `undefined`, `NaN`….)，或者对象(`Map`, `Set`, `Object`, `Function` , `Symbol` , `null`….);
-3. 通过 `Map` 中的 `size` 属性， 可以很方便地获取到 `Map` 长度， 要获取 `Object` 的长度， 你只能手动计算
-
-**Map 对象的方法**
-
-- `set(key, val)`: 向 `Map` 中添加新元素
-- `get(key)`: 通过键值查找特定的数值并返回
-- `has(key)`: 判断 `Map` 对象中是否有 `Key` 所对应的值，有返回 `true`，否则返回 `false`
-- `delete(key)`: 通过键值从 `Map` 中移除对应的数据
-- `clear()`: 将这个 `Map` 中的所有元素删除
-
-**遍历方法**
-
-- `keys()`：返回键名的遍历器
-- `values()`：返回键值的遍历器
-- `entries()`：返回键值对的遍历器
-- `forEach()`：使用回调函数遍历每个成员
-
-**数据类型转化**
-
-Map 转为数组
-
-```js
-let map = new Map()
-let arr = [...map]
-```
-
-数组转为 Map
-
-```js
-const arr = [[a,'aa'],[b,'bb']]
-const map = new Map(arr)
-// {a:'aa',b:'bb'}
-```
-
-Map 转为对象
-
-```js
-let obj = {}
-for (let [k, v] of map) {
-  obj[k] = v
-}
-```
-
-对象转为 Map
-
-```js
-for( let k of Object.keys(obj)）{
-  map.set(k,obj[k])
-}
-```
-
-**Map的应用**
-
-Map 会保留所有元素的顺序, 是在基于可迭代的基础上构建的，如果考虑到元素迭代或顺序保留或键值类型丰富的情况下都可以使用。
-
-下面摘抄自 vue3 源码中依赖收集的核心实现 
-
-```js
-let depsMap = targetMap.get(target)  
- if (!depsMap) {  
-   targetMap.set(target, (depsMap = new Map()))  
- }  
- let dep = depsMap.get(key)  
- if (!dep) {  
-   depsMap.set(key, (dep = new Set()))  
- }  
- if (!dep.has(activeEffect)) {  
-   dep.add(activeEffect)  
-   activeEffect.deps.push(dep)  
-   ...  
- } 
-```
-
-**WeakMap**
-
-`WeakMap` 结构与 `Map` 结构类似，也是用于生成键值对的集合。
-
-- 只接受对象作为键名（`null` 除外），不接受其他类型的值作为键名
-- 键名是弱引用，键值可以是任意的，键名所指向的对象可以被垃圾回收，此时键名是无效的
-- 不能遍历，方法有 `get`、`set`、`has`、`delete`
-
-# Set、WeakSet 、Map、WeakMap 比较
-
-Set
-
-- 是一种叫做集合的数据结构(ES6新增的)
-- 成员唯一、无序且不重复
-- `[value, value]`，键值与键名是一致的（或者说只有键值，没有键名）
-- 允许储存任何类型的唯一值，无论是原始值或者是对象引用
-- 可以遍历，方法有：`add`、`delete`、`has`、`clear`
-
-WeakSet
-
-- 成员都是对象
-- 成员都是弱引用，可以被垃圾回收机制回收，可以用来保存 `DOM` 节点，不容易造成内存泄漏
-- 不能遍历，方法有 `add`、`delete`、`has`
-
-Map
-
-- 是一种类似于字典的数据结构，本质上是键值对的集合
-- 可以遍历，可以跟各种数据格式转换
-- 操作方法有:`set`、`get`、`has`、`delete`、`clear`
-
-WeakMap
-
-- 只接受对象作为键名（`null` 除外），不接受其他类型的值作为键名
-- 键名是弱引用，键值可以是任意的，键名所指向的对象可以被垃圾回收，此时键名是无效的
-- 不能遍历，方法有 `get`、`set`、`has`、`delete`
-
-**weakset 和 weakmap**
-
-ES6 考虑到防止内存泄漏，推出了两种新的数据结构： weakset 和 weakmap 。他们对值的引用都是不计入垃圾回收机制的，也就是说，如果其他对象都不再引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存。
-
-```
-const wm = new WeakMap()const element = document.getElementById('example') vm.set(element, 'something') vm.get(element)
-```
-
-上面代码中，先新建一个 Weakmap 实例。然后，将一个 DOM 节点作为键名存入该实例，并将一些附加信息作为键值，一起存放在 WeakMap 里面。这时，WeakMap 里面对 element 的引用就是弱引用，不会被计入垃圾回收机制。
-
-注册监听事件的 listener 对象很适合用 WeakMap 来实现。
-
-```
-// 代码1
-ele.addEventListener('click', handler, false)// 
-代码2
-const listener = new WeakMap() 
-listener.set(ele, handler) 
-ele.addEventListener('click', listener.get(ele), false)
-```
-
-代码 2 比起代码 1 的好处是：由于监听函数是放在 WeakMap 里面，一旦 dom 对象 ele 消失，与它绑定的监听函数 handler 也会自动消失。
-
-**小结：**
-
-Set、Map、WeakSet、WeakMap、都是一种集合的数据结构
-
-Set 和 WeakSet 是一种值-值的集合，且元素唯一不重复
-
-Map 和 WeakMap 是一种键-值对的集合，Map 的键可以是任意类型，WeakMap 的键只能是对象类型。
-
-Set 和 Map可遍历，WeakSet 和 WeakMap不可遍历
-
-WeakSet 和 WeakMap 键名所指向的对象，不计入垃圾回收机制
-
-# Symbol
-
-ES6引入了一种新的原始数据类型Symbol，表示**独一无二的值**。
-
-基本数据类型有6种：Undefined、Null、布尔值（Boolean）、字符串（String）、数值（Number）、对象（Object）。
-
-`Symbol`函数前不能使用`new`命令，否则会报错。这是因为生成的Symbol是一个原始类型的值，不是对象。
-
-```
-// 没有参数的情况
-var s1 = Symbol();
-var s2 = Symbol();
-s1 === s2 // false
-
-// 有参数的情况
-var s1 = Symbol("foo");
-var s2 = Symbol("foo");
-s1 === s2 // false
-```
-
-**1)应用场景1：使用Symbol来作为对象属性名(key)**
-
-```
-const PROP_NAME = Symbol()
-const PROP_AGE = Symbol()
-
-let obj = {
-  [PROP_NAME]: "一斤代码"
-}
-obj[PROP_AGE] = 18
-obj[PROP_NAME] // '一斤代码'
-obj[PROP_AGE] // 18
-```
-
-Symbol类型的key是不能通过`Object.keys()`或者`for...in`来枚举的，它未被包含在对象自身的属性名集合(property names)之中。所以，利用该特性，我们可以把一些不需要对外操作和访问的属性使用Symbol来定义。
-
-也正因为这样一个特性，当使用`JSON.stringify()`将对象转换成JSON字符串的时候，Symbol属性也会被排除在输出内容之外。
-
-```
-let obj = {
-   [Symbol('name')]: '一斤代码',
-   age: 18,
-   title: 'Engineer'
-}
-
-Object.keys(obj)   // ['age', 'title']
-
-for (let p in obj) {
-   console.log(p)   // 分别会输出：'age' 和 'title'
-}
-
-Object.getOwnPropertyNames(obj)   // ['age', 'title']
-JSON.stringify(obj)  // {"age":18,"title":"Engineer"}
-```
-
-还是会有一些专门针对Symbol的API
-
-```
-// 使用Object的API
-Object.getOwnPropertySymbols(obj) // [Symbol(name)]
-
-// 使用新增的反射API
-Reflect.ownKeys(obj) // [Symbol(name), 'age', 'title']
-```
-
-**2)应用场景2：使用Symbol来替代常量**
-
-```
-const TYPE_AUDIO = Symbol()
-const TYPE_VIDEO = Symbol()
-const TYPE_IMAGE = Symbol()
-
-function handleFileResource(resource) {
-  switch(resource.type) {
-    case TYPE_AUDIO:
-      playAudio(resource)
-      break
-    case TYPE_VIDEO:
-      playVideo(resource)
-      break
-    case TYPE_IMAGE:
-      previewImage(resource)
-      break
-    default:
-      throw new Error('Unknown type of resource')
-  }
-}
-```
-
-**3)应用场景3：使用Symbol定义类的私有属性/方法**
-
-在JavaScript中，是没有如Java等面向对象语言的访问控制关键字`private`的，类上所有定义的属性或方法都是可公开访问的。因此这对我们进行API的设计时造成了一些困扰。
-
-而有了`Symbol`以及`模块化机制`，类的私有属性和方法才变成可能。例如：
-
-```
-a.js
-const PASSWORD = Symbol()
-
-class Login {
-  constructor(username, password) {
-    this.username = username
-    this[PASSWORD] = password
-  }
-
-  checkPassword(pwd) {
-      return this[PASSWORD] === pwd
-  }
-}
-
-export default Login
-```
-
-```
-b.js
-import Login from './a'
-
-const login = new Login('admin', '123456')
-
-login.checkPassword('admin')  // true
-
-login.PASSWORD  // oh!no!
-login[PASSWORD] // oh!no!
-login["PASSWORD"] // oh!no!
-```
-
-**4)Symbol.for()，Symbol.keyFor()**
-
-**Symbol.for**机制有点类似于单例模式，首先在全局中搜索有没有以该参数作为名称的Symbol值，如果有，就返回这个Symbol值，否则就新建并返回一个以该字符串为名称的Symbol值。和直接的Symbol就点不同了。
-
-```
-var s1 = Symbol.for('foo');
-var s2 = Symbol.for('foo');
-
-s1 === s2 // true
-```
-
-**Symbol.keyFor**方法返回一个已登记的Symbol类型值的key。实质就是检测该Symbol是否已创建
-
-```
-var s1 = Symbol.for("foo");
-Symbol.keyFor(s1) // "foo"
-
-var s2 = Symbol("foo");
-Symbol.keyFor(s2) // undefined
-```
 
 # bigint
 
@@ -1171,219 +1023,3 @@ for (let [key, value] of entries(obj)) {
   console.log(key, '->', value);
 }
 ```
-
-**参考**
-
-[弄懂!!ES6中的Iterator迭代器](https://segmentfault.com/a/1190000022894514)
-
-# Generator函数是什么
-
-Generator 是ES6引入的新语法，Generator是一个可以暂停和继续执行的函数。Generator函数是将函数分步骤阻塞 ，只有主动调用next() 才能进行下一步 。
-
-简单的用法，可以当做一个Iterator来用，进行一些遍历操作。复杂一些的用法，他可以在内部保存一些状态，成为一个状态机。
-
-```
-Generator 基本语法包含两部分：函数名前要加一个星号；函数内部用 yield 关键字返回值。
-yield，表达式本身没有返回值，或者说总是返回undefined。
-next，方法可以带一个参数，该参数就会被当作上一个yield表达式的返回值。
-```
-
-```
-function * foo(x) {
-  var y = 2 * (yield (x + 1));
-  var z = yield (y / 3);
-  return (x + y + z);
-
-}
-
-var b = foo(5); 
-b.next() // { value:6, done:false }
-b.next(12) // { value:8, done:false } 
-b.next(13) // { value:42, done:true }
-
-```
-
-# async函数是什么
-
-asyns函数是Generator函数的语法糖。
-
-相当于自执行的Generator函数，相当于自带一个状态机，在await的部分等待返回， 返回后自动执行下一步。而且相较于Promise,async的优越性就是把每次异步返回的结果从then中拿到最外层的方法中，不需要链式调用，只要用同步的写法就可以了。
-
-但是async必须以一个Promise对象开始 ，所以async通常是和Promise结合使用的。
-
-async 对应的是 * 。
-
-await 对应的是 yield 。
-
-async/await 自动进行了 Generator 的流程控制。
-
-**为什么Async/Await更好？**
-
-1. 使用async函数可以让代码简洁很多，不需要像Promise一样需要些then，不需要写匿名函数处理Promise的resolve值，也不需要定义多余的data变量，还避免了嵌套代码。
-2. 错误处理：Async/Await 让 try/catch 可以同时处理同步和异步错误。
-
-# Module模块化语法
-
-注意：导入导出均可使用as别名
-
-参考
-
-- [「万字进阶」深入浅出 Commonjs 和 Es Module](https://juejin.cn/post/6994224541312483336)
-- [深入 CommonJs 与 ES6 Module](https://link.juejin.cn/?target=https%3A%2F%2Fsegmentfault.com%2Fa%2F1190000017878394)
-- [「Node.js系列」深入浅出Node模块化开发——CommonJS规范](https://juejin.cn/post/6892786383249735687)
-
-```
-/**
- * 导出
- */
-export * from 'module'; //重定向导出 不包括 module内的default
-export { name1, name2, ..., nameN } from 'module'; // 重定向命名导出
-export { import1 as name1, import2 as name2, ..., nameN } from 'module'; // 重定向重命名导出
-export { name1, name2, …, nameN }; // 与之前声明的变量名绑定 命名导出
-export { variable1 as name1, variable2 as name2, …, nameN }; // 重命名导出
-export let name1 = 'name1'; // 声明命名导出 或者 var, const，function， function*, class
-export default expression; // 默认导出
-export default function () { ... } // 或者 function*, class
-export default function name1() { ... } // 或者 function*, class
-
-/**
- * 导入
- */
-import defaultExport from "module"; // 默认导入
-import { a, b, c } from "module"; //解构导入
-import defaultExport, { a, b, c as newC } from "module"; //混合导入
-import * as name from "module"; //混合导入
-var promise = import("module"); //动态导入(异步导入)
-```
-
-**一、exports**
-
-**1.命名导出（Named exports）**
-
-每一个需要导出的数据类型都要有一个name，**引入的时候都需要`{}`**。除非使用*命名空间引入，才不需要{}
-
-```js
-//------ lib0.js ------
-const sqrt = Math.sqrt;
-function square(x) {
-    return x * x;
-}
-export {sqrt, square}//同时导出多个方法
-export {sqrt as sqrtOut, square as squareOut}//同时也支持别名导出
-或者
-//------ lib0.js ------
-export const sqrt = Math.sqrt;//单独导出
-export const square = ()=>{xx}//单独导出
------------------------------------------------------------------------------------
-//------ main.js ------
-import { sqrt, square } from 'lib0'; 
-import { sqrt, square } from 'lib1';
-```
-
-**2.默认导出（Default exports）**
-
-默认导出就不需要name了，但是一个js文件中只能有一个export default，**引入的时候不需要`{}`**
-
-> *相当于默认导出了一个名称为default的数据类型*
-
-```js
-//------ lib0.js ------
-const sqrt = Math.sqrt;
-const square = ()=>{xx}
-export default sqrt //单独导出
-或
-//------ lib1.js ------
-const sqrt = Math.sqrt;
-const square = ()=>{xx}
-export default {sqrt,square} //导出多个方法
------------------------------------------------------------------------------------
-//------ main.js ------
-import sqrt from 'lib0';
-或
-import lib from 'lib1';
-lib.sqrt
-等价于
-import { default as lib } from './lib1';
-lib.sqrt
-```
-
-**二、import**
-
-**1.别名引入（Aliasing named imports）**
-
-```js
-//------ lib0.js ------
-export const sqrt = Math.sqrt;//单独导出
-//------ lib1.js ------
-const sqrt = Math.sqrt;
-export default sqrt //单独导出
----------------------------------------------------------------------------------
-//------ main.js ------
-import {sqrt as sqrt0} from 'lib0';//非default
-import sqrt from 'lib1';//default
-```
-
-**2.命名空间引入（Namespace imports）**
-
-当从每个模块需要引入的方法很多的时候，别名引入显得十分繁琐
-
-```js
-//------ lib0.js ------
-export const sqrt = Math.sqrt;//单独导出
-export const square = ()=>{xx}//单独导出
-------------------------------------------------------------------------------------
-//------ main.js ------
-import * as coreLib0 from 'lib0';
-coreLib0.sqrt//优雅
-```
-
-**三、最佳实践**
-
-**1.Combinations exports (混合导出)**
-
-> 混合导出是 `Named exports` 和 `Default exports` 组合导出。
->
-> 混合导出后，默认导入一定放在命名导入前面；
-
-```js
-//------ lib0.js ------
-export const sqrt = Math.sqrt;//单独导出
-const square = ()=>{xx}
-export default {square}
----------------------------------------------------------------
-// index.js
-import defaultlib0, { sqrt } from 'lib0';
-defaultlib0.square;sqrt
-import defaultlib0, * as all from 'lib0';
-all.default.square;all.sqrt
-注意：{}大括号和*不能同时存在
-```
-
-**2.Module Redirects (中转模块导出)**
-
-创建单个模块，集中多个模块的多个导出。使用 `export from` 语法实现
-
-```js
-export { hostname, hostname2 } from './env'; // 域名
-export { Api } from './api'; // 接口api
-export { default as config } from './config'; // 配置
-export { default as httpAxios } from './axios'; // 请求函数
-```
-
-其他如：
-
-```js
-export * from 'lib'; // 没有设置 export default
-export * as myFunc2 from 'myFunc'; // 【ES2021】没有设置 export default
-import { default as function1, function2 } from 'bar.js';
-export { function1, function2 };
-```
-
-```js
-// Empty import (for modules with side effects)
-import './lib0';
-```
-
-# 参考
-
-[ES6、ES7、ES8、ES9、ES10新特性](https://juejin.cn/post/6844903811622912014#heading-56)

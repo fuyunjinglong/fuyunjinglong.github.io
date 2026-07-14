@@ -9,7 +9,7 @@ toc: true # 是否启用内容索引
 # interview-临时
 
 - [ ] 2024年前端简历（node.js，ts,react，Flutter、Rn，微前端，低代码，小程序，移动端，ssr）
-- [ ] 面试突击-千峰-008
+- [ ] 面试突击-千峰-10
 - [ ] TypeScript入门
 - [ ] 多端-小程序-Taro
 - [ ] 多端-桌面端Electron
@@ -66,6 +66,8 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#ES6-2015-ES17-2026-新特性">[初级]-ES6-ES17新特性</a>
 - <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#for-循环中的var-let-const">[初级]-for 循环中的var/let/const</a>
 - <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#for…in、for…of和forEach">[初级]-for…in、for…of和forEach的区别</a>
+- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#Symbol、Map、Set三种常用的数据类型">[初级]-Symbol、Map、Set</a>
+- <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#模块化规范">[初级]-模块化规范</a>
 - <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#ES5和ES6函数默认值的区别">[初级]-ES5和ES6函数默认值的区别</a>
 - <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#ES5和ES6继承的区别">[初级]-ES5和ES6继承的区别</a>
 - <a target="_blank" href="{% post_path 'B_JS_ES6-10新特性' %}#Generator-函数">[中级]-Generator函数</a>
@@ -81,7 +83,6 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#数据请求">[初级]-数据请求</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#跨域和同源策略">[初级]-跨域和同源策略</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#async和defer有什么区别">[初级]-async和defer有什么区别</a>
-- <a target="_blank" href="{% post_path 'B_JS_0基础' %}#模块化规范">[初级]-模块化规范</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#防抖和节流">[中级]-手写-防抖和节流有什么区别</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-深浅拷贝">[中级]-手写-深浅拷贝</a>
 - <a target="_blank" href="{% post_path 'B_JS_0基础' %}#手写-setTimeout实现setInterval">[中级]-手写-setTimeout实现setInterval</a>
@@ -106,6 +107,7 @@ toc: true # 是否启用内容索引
 ## 计算机网络
 
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#网络模型-4层">[初级]-网络模型(4层)</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Cookies、SessionStorage和LocalStorage">[初级]-Cookies、SessionStorage和LocalStorage</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#HTTP常见的状态码">[初级]-HTTP常见的状态码</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Web漏洞攻防">[初级]-Web漏洞攻防</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#HTTP-1、HTTP-2、HTTP-3">[初级]-HTTP-1、HTTP-2、HTTP-3</a>
@@ -115,9 +117,6 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#RPC是什么">[中级]-RPC是什么</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#WebSocket是什么">[中级]-WebSocket是什么</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#前端缓存">[高级]-前端缓存</a>
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Cookies、SessionStorage和LocalStorage">cookies，sessionStorage 和 localStorage 的区别</a>
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Cookie">Cookie的实现原理</a>
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#应用缓存-manifest即HTML5的离线缓存">应用缓存-manifest即HTML5的离线缓存</a>
 
 ## 数据结构与算法
 
