@@ -109,14 +109,12 @@ toc: true # 是否启用内容索引
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#HTTP常见的状态码">[初级]-HTTP常见的状态码</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Web漏洞攻防">[初级]-Web漏洞攻防</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#HTTP-1、HTTP-2、HTTP-3">[初级]-HTTP-1、HTTP-2、HTTP-3</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#TCP是什么-3次握手4次挥手">[初级]-TCP是什么(3次握手4次挥手)</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#从输入URL到页面渲染完成过程">[中级]-从输入URL到页面渲染完成过程</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#彻底搞懂Https">[中级]-彻底搞懂Https</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#RPC是什么">[中级]-RPC是什么</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#WebSocket是什么">[中级]-WebSocket是什么</a>
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#TCP是什么-3次握手4次挥手">[初级]-TCP是什么(3次握手4次挥手)</a>
-- 
-- 
-- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#网络缓存-http缓存">Http缓存原理</a>
+- <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#前端缓存">[高级]-前端缓存</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Cookies、SessionStorage和LocalStorage">cookies，sessionStorage 和 localStorage 的区别</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#Cookie">Cookie的实现原理</a>
 - <a target="_blank" href="{% post_path 'F_计算机网络_0基础' %}#应用缓存-manifest即HTML5的离线缓存">应用缓存-manifest即HTML5的离线缓存</a>
