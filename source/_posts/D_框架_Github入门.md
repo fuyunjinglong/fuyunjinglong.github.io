@@ -6,241 +6,227 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-[Git入门教程](https://www.w3cschool.cn/git/git-tutorial.html)
-
-[Github入门教程](https://www.w3cschool.cn/githubcn/)
-
-# 仓库关系
-
-![image-20211107141510723](/img/image-20211107141510723.png)
-
-> - 工作区：用来编辑保存项目文件的地方，也是用户能直接操作到的地方。
-> - 暂存区：保存了下次将提交的文件列表信息，一般在 Git 仓库目录中，是一个叫index的文件，通常多数说法还是叫暂存区域；
-> - 版本库：也叫本地版本库，之所以说git 快，是因为它是分布式版本控制系统，大部分提交都是对本地仓库而言的，不依赖网络，最后一次会推送的到远程仓库。
-
-# 主流开发流程
-
-## 代码分支
-
-Gitflow工作流(Gitflow Workflow)是2010年由Vincent Driessen在他的一篇[博客](https://nvie.com/posts/a-successful-git-branching-model)里提出来的。它定义了一整套完善的基于Git分支模型的框架，结合了版本发布的研发流程，适合管理具有固定发布周期的大型项目。
-
-- **master** 生产主分支,发布到生产环境使用这个分支,由hotfix或者release分支合并过来，不直接提交代码。
-- **develop** 主开发分支 , 基于master分支克隆，由feature分支合并过来，一般不直接提交代码。
-- **feature** 功能开发分支 , 基于develop分支克隆 , 主要用于新需求新功能的开发，同时存在多个。
-- **release** 预发布分支 , 基于feature分支合并到develop之后 , 从develop分支克隆，测试完成后合并到master并打上版本号，同时也合并到develop。
-- **hotfix** 补丁分支 , 基于master分支克隆 , 主要用于对线上的版本进行BUG修复,完成后合并到master分支和develop分支。
-
-> --no-ff 在这的作用是**禁止快进式合并**
-
-**develop分支管理**
-
-```
-// 从master分支上创建develop分支，并推送到远端
-git checkout –b develop
-git push -u origin develop
-```
-
-**feaeure分支管理**
-
-```
-# feaeure分支基于develop创建
-git checkout -b some-feature develop
-# 或者, 推送至远程服务器:
-git push -u origin some-feature    
-
-# 一波骚操作   
-git status
-git add .
-git commit  -m 'xx'  
-git push
-
-# 切换develop分支
-git checkout develop 
-git pull origin develop
-
-# 合并到develop分支并push
-git merge --no-ff some-feature
-git push origin develop
-
-# 删除feature分支(也可以不删除)
-git branch -d some-feature
-git push origin --delete some-feature  
-```
-
-**Release分支管理**
-
-```
-# Release分支基于develop创建
-git checkout -b some-release develop
-# ...一波骚操作
-# 代码发布后合并到master分支并提交
-git checkout master
-git merge --no-ff some-release
-git tag -a 0.1
-
-# 合并到develop分支并提交
-git checkout 
-git merge --no-ff some-release
-
-# 删除release分支
-git branch -d some-release
-git push origin --delete some-release  
-```
-
-**Hotfix分支管理**
-
-```
-# Hotfix分支基于master创建
-git checkout -b hotfix-0.1.1 master  
-# ...一波骚操作
-# 合并到master分支并提交
-git checkout master
-git merge --no-ff hotfix-0.1.1
-git tag -a 0.1.1
-
-# 合并到develop分支并提交
-git checkout develop
-git merge --no-ff hotfix-0.1.1
-
-# 删除hotfix分支
-git branch -d hotfix-0.1
-git push origin --delete  hotfix-0.1.1
-```
-
-## 代码合并-基操
-
-假设有：
-
-- alias-主分支
-- alias-zhangsan-某个组员分支
-
-**建立新组员分支**
-
-> 建立新分支alias-zhangsan，git checkout -b alias-zhangsan
-
-**分支合并拉取**
-
-> alias-zhangsan先上传代码：
->
-> git add .
->
-> git commit -m 'xx'
->
-> git push
->
-> git checkout alias
->
-> alias合并分支:
->
-> git pull(此处可能有冲突，可以先提交当前，再拉取)
->
-> git merge alias-zhangsan
->
-> git push
-
-## git merge和git rebase
-
-当前分支状态：
-
-> a—>b—>c—>d  master分支
->
-> |—>e—>f dev分支
-
-**定义**
-
-- git merge：会把当前分支和待合入分支commit合并在一起，形成一个新的commit
-- git rebase：会把待合入分支插入到当前分支的最前面，叫做变基。
-
-1.git merge
-
-```
-$ git merge master  // 合并master分支代码
-$ git log --graph --oneline // 查看log点线图
-  * 表示一个commit， 注意不要管*在哪一条主线上 
-  | 表示分支前进 
-  / 表示分叉 
-  \ 表示合入
-```
-
-执行后变为：
-
-当前分支状态：
-
-> a—>b——————————g  dev分支
->
-> |—>e—>f—>c—>d—| 
-
-2.git rebase
-
-执行后变为：
-
-当前分支状态：
-
-> a—>b—>c—>d—>e—>f  dev分支
-
-**git merge和git rebase的优缺点**
-
-git merge
-
-- 优点：不会破坏原分支的提交记录。
-- 缺点：会产生额外的提交记录，并进行两条分支线的合并。
-
-git rebase
-
-- 优点：无需新增提交记录到目标分支，reabse后可以直接将对象分支的提交历史加到目标分支上，形成线性提交历史记录，更加直观。
-- 缺点：不能在一个共享分支上进行reabse操作，会带来分支安全问题。
-
-**git merge和git rebase的应用场景**
-
-- 合代码到公共分支的时候使用**git merge**，书写正确规范的**merge commits**留下记录。
-- 合代码到个人分值的时候使用**git rebase**，可以不污染分支的历史提交记录，形成简介的线性记录。开源项目代码合并常使用。
-
 **参考**
 
-- [一文搞懂 git rebase](https://juejin.cn/post/7038093620628422669#heading-5)
-- [【Git】 什么！？都快2023年了还搞不清楚 git rebase 与 git merge](https://juejin.cn/post/7135261815935598600#heading-3)
+> - [Git入门教程](https://www.w3cschool.cn/git/git-tutorial.html)
+>
+>   [Github入门教程](https://www.w3cschool.cn/githubcn/)
 
-## Git合并那些事儿
+# 初级
 
-| [认识几种Merge方法](https://morningspace.github.io/tech/git-merge-stories-1) | 介绍什么是快进式合并，三方合并，压缩合并       |
-| ------------------------------------------------------------ | ---------------------------------------------- |
-| [Merge策略（上）](https://morningspace.github.io/tech/git-merge-stories-2) | 认识Criss-Cross现象，以及Recursive，Ours等策略 |
-| [Merge策略（下）](https://morningspace.github.io/tech/git-merge-stories-3) | 认识Octopus和Subtree策略                       |
-| [当冲突发生的时候](https://morningspace.github.io/tech/git-merge-stories-4) | 讲述冲突发生时，那些你也许不曾知道的事儿       |
-| [撤销合并](https://morningspace.github.io/tech/git-merge-stories-5) | 讲述冲各种撤销合并的方法                       |
-| [神奇的Rebase](https://morningspace.github.io/tech/git-merge-stories-6) | 认识Rebase及其用法，以及什么时候用到它         |
-| [交互式Rebase](https://morningspace.github.io/tech/git-merge-stories-7) | 介绍更多有关Rebase的玩法                       |
-| [Rebase的烦恼](https://morningspace.github.io/tech/git-merge-stories-8) | 通过一个例子来演示Rebase使用不当带来的麻烦     |
+## Husky+lint-staged
 
-## Git工作流面面观
+**一句话**：Husky 提供"触发时机 + 强制约束"，lint-staged 提供"精准文件范围 + 快速校验"
 
-| [分支模型](https://morningspace.github.io/tech/git-workflow-1) | Git强大的分支模型，所有Git工作流的基础                  |
-| ------------------------------------------------------------ | ------------------------------------------------------- |
-| [集中式工作流](https://morningspace.github.io/tech/git-workflow-2) | 最为基本的一种Git工作流，适合习惯传统版本控制方式的团队 |
-| [特性分支工作流](https://morningspace.github.io/tech/git-workflow-3) | 非常重要的一种Git工作流，充分发挥分支模型的优势         |
-| [Gitflow工作流](https://morningspace.github.io/tech/git-workflow-4) | 广泛应用的一种Git工作流，适合管理有固定发布周期的大项目 |
-| [Forking工作流](https://morningspace.github.io/tech/git-workflow-5) | 开源项目的标准Git工作流，灵活与约束并存的分布式工作流   |
+**Husky 是管理 Git Hooks 的工具，负责在 `git commit`/`git push` 等动作前后触发自定义脚本；lint-staged 则负责只对 Git 暂存区（已 `git add`）的文件执行 lint/格式化命令。** 两者通常配合使用：Husky 负责"什么时候做"，lint-staged 负责"对哪些文件做"
 
-| 课程                            | 中文资源                                                     | 英文资源                             |
-| :------------------------------ | :----------------------------------------------------------- | :----------------------------------- |
-| 《如何使用Hello Git》           | [视频](http://v.youku.com/v_show/id_XMzk2NjQ5NzcyNA==.html)  | [视频](https://youtu.be/14pBZSXHz-Y) |
-| 《新建本地库》                  | [视频](http://v.youku.com/v_show/id_XMzk3NzM3OTIxMg==.html)  | [视频](https://youtu.be/q2De0LrOZFk) |
-| 《添加新文件》                  | [视频](http://v.youku.com/v_show/id_XMzk3ODM0NjU4MA==.html)  | [视频](https://youtu.be/yP9v4egMQwA) |
-| 《连接远程库》                  | [视频](http://v.youku.com/v_show/id_XMzk3ODQzMTU5Ng==.html)  | [视频](https://youtu.be/KjsexSUOdNA) |
-| 《理解暂存》                    | [视频](http://v.youku.com/v_show/id_XMzk5MTU2NDk3Mg==.html)  | [视频](https://youtu.be/dJSmmtiOoTM) |
-| 《恢复到指定版本》              | [视频](http://v.youku.com/v_show/id_XMzk5OTA3MzE2NA==.html)  | [视频](https://youtu.be/4361HjW1ldA) |
-| 《撤销本地更改》                | [视频](http://v.youku.com/v_show/id_XMzk5OTA4NzY5Mg==.html)  | [视频](https://youtu.be/7SpAQgzp0h8) |
-| 《删除文件》                    | [视频](http://v.youku.com/v_show/id_XMzk5OTA4ODI1Mg==.html)  | [视频](https://youtu.be/MN0FMGIPMVM) |
-| 《理解分支》                    | [视频](http://v.youku.com/v_show/id_XNDAxMTgxMjg4NA==.html)  | [视频](https://youtu.be/1xx7-QDcQsY) |
-| 《解决分支冲突》                | [视频](http://v.youku.com/v_show/id_XNDAyMzk0MTY1Ng==.html)  | [视频](https://youtu.be/wjz9tbGEvRg) |
-| 《利用分支修复bug》             | [视频](http://v.youku.com/v_show/id_XNDA1NTQ0Mzc2OA==.html)  | [视频](https://youtu.be/G4M-ofXOqHg) |
-| 《利用分支开发特性》            | [视频](http://v.youku.com/v_show/id_XNDA2NzQwMzU0MA==.html)  | [视频](https://youtu.be/0W1ylLgdwG4) |
-| 《解决多人开发冲突》            | [视频](http://v.youku.com/v_show/id_XNDA2NzQyNzMyNA==.html)  | [视频](https://youtu.be/mMSTEy5wbK0) |
-| 《理解rebase》                  | [视频](http://v.youku.com/v_show/id_XNDA3NTQ0OTk3Mg==.html)  | [视频](https://youtu.be/XraY8PGivxg) |
-| 《管理标签》                    | [视频](http://v.youku.com/v_show/id_XNDA3NTQ1MzYzNg==.html)  | [视频](https://youtu.be/DI1_FastrNY) |
-| 《Hello Git Cheat Sheet(小抄)》 | [查看](https://morningspace.github.io/tech/lab/hello-git-cheat-sheet/) |                                      |
+> 执行 `git commit` 时，Husky 触发 pre-commit → 调用 lint-staged → 只对暂存区的 js/ts 文件跑 ESLint 修复和 Prettier 格式化，对 json/css/md 跑 Prettier；任一命令失败就以非零退出码中断提交。
 
-# 给开源项目贡献代码
+**Q1: lint-staged 是如何只拿到暂存区代码的？**
+
+> 答：lint-staged 底层使用了 `git` 命令。它通过类似 `git diff --staged --diff-filter=d --name-only` 的命令，获取到被修改且已 `git add`，同时未被删除的文件列表，然后把这个列表传给 ESLint 或 Prettier。
+
+**Q2: 如果 pre-commit 时 Prettier 自动修改了文件格式，提交会中断吗？**
+
+> 答：早期可能会有提交中断的问题，但现在的 `lint-staged` 做了优化。它在执行完带有 `--write` 或 `--fix` 的命令后，如果发现文件被修改了，会自动将修改后的内容重新 `git add` 到暂存区。只要最终代码符合规范，提交就不会中断。
+
+**Q3: 为什么不用 CI/CD（如 GitHub Actions / GitLab CI）去检查，而要在本地做？**
+
+> 答：本地检查是“防御前置”，能在代码推送到远程之前就把问题拦截住，成本最低。CI/CD 是最后一道防线，虽然也能拦截，但反馈链路长（需要 Push -> 等待构建 -> 看结果），而且浪费 CI 服务器资源。两者是互补关系。
+
+**Q4: Husky v8 和早期版本（如 v4）有什么区别？**
+
+> 答：Husky v4 是通过在 `package.json` 中配置 hooks 来实现的，依赖 Git 的 `core.hooksPath`。Husky v5/v8 进行了重构，改用独立脚本的方式，不再依赖 `package.json` 中的配置，启动速度更快，且不再需要 `postinstall` 脚本来安装 hooks，更加安全和解耦。
+
+## Git 的工作流程
+
+Git 的核心在于：工作区、暂存区（索引区）和本地仓库，以及远程仓库。文件在这四个区域之间流转，形成不同的状态。
+
+**详细解析：**
+
+1. **工作区：** 我们实际在电脑上看到的目录，也就是当前正在操作的文件。
+2. **暂存区：** 这是一个虚拟的中间层，用于临时存放下次提交的文件信息（`git add`  工作区 -> 暂存区）。
+3. **本地仓库：** 本地保存版本信息的地方（`git commit`  暂存区 -> 本地仓库）。里面保存了提交的历史记录和具体的文件快照。
+4. **远程仓库：** 如 GitHub、GitLab 等托管代码的服务器(`git push` 本地仓库 -> 远程仓库)。
+
+**文件流转与状态：**
+
+- **Untracked (未跟踪)：** 新建的文件，未被 Git 管理。
+- **Modified (已修改)：** 文件被修改了，但还没保存到暂存区。
+- **Staged (已暂存)：** 文件已放入暂存区，等待提交。
+- **Committed (已提交)：** 数据已安全保存在本地仓库。
+
+## Git 提交规范
+
+最常采用的是 **Angular** 规范：
+
+> 1. **feat:** 新功能
+> 2. **fix:** 修复 Bug
+> 3. **docs:** 文档变更
+> 4. **style:** 代码格式（不影响代码运行的变动，如空格、缩进、分号等）
+> 5. **refactor:** 重构（既不是新增功能，也不是修改 Bug 的代码变动）
+> 6. **perf:** 性能优化
+> 7. **test:** 增加测试或修改测试
+> 8. **chore:** 构建过程或辅助工具的变动（如修改 webpack 配置、更新 npm 包）
+> 9. **revert:** 回滚之前的 commit
+
+## Git 解决代码冲突
+
+- **核心考点**：实际工程冲突解决流程。
+- **标准回答**：Git 会在冲突文件插入 `<<<<<<<` 标记，开发者需手动删除标记并决定最终代码，随后 `git add` 标记冲突解决，最后 `git commit` 完成合并。
+- **深入拓展**：前端常冲突点为 `package.json`、路由配置及公共组件。
+- **最佳实践**：频繁同步主干减少分支偏离；遇到 `lock` 文件冲突，保留主干版本后重新 `npm install`。
+
+## Git 分支管理策略
+
+- **核心考点**：团队工程化协作规范。
+- 标准回答：
+  - Git Flow：重型，含 `master`、`develop`、`feature`、`release`、`hotfix`，适合长周期发版。
+  - GitHub Flow：轻量，仅 `main` 和 `feature`，靠 PR 合并即部署，适合 CI/CD 敏捷开发。
+- **深入拓展**：现代前端工程随着 CI/CD 普及，越来越倾向使用轻量级策略。
+- **最佳实践**：统一分支命名（如 `feature/xxx`），严格执行 PR 评审机制。
+
+## Git 最常用命令
+
+**日常五步曲（最常用）**
+
+- `git status` — 看看改了啥
+- `git add .` — 全部放进暂存区
+- `git commit -m "说明"` — 提交到本地
+- `git pull` — 拉取远端最新代码
+- `git push` — 推送到远端
+
+**分支管理**
+
+- `git checkout -b <分支名>` — 新建并切换分支
+- `git branch` — 查看分支
+- `git checkout <分支名>` — 切换分支
+- `git merge <分支名>` — 将某分支合并到当前分支
+
+**查看记录**
+
+- `git log --oneline` — 简洁查看提交历史
+- `git diff` — 查看未提交的代码修改
+
+**撤销操作**
+
+- `git checkout -- <文件名>` — 撤销工作区的修改
+- `git reset HEAD <文件名>` — 撤销暂存（退回工作区）
+- `git reset --hard HEAD^` — 彻底回退到上个版本（慎用）
+
+**暂存救急**
+
+- `git stash` — 临时藏起当前修改
+- `git stash pop` — 恢复修改
+
+## git add和 git stash的区别
+
+`git add`：
+
+- **作用**：工作区内容存到暂存区。
+- **状态变化**：文件修改依然保留在你的电脑硬盘上，只是 Git 记录了这些修改“准备被提交”。
+- **目的**：为了精细控制下一次 `git commit` 将包含哪些文件的哪些修改。
+
+`git stash`：
+
+- **作用**：工作区+暂存区存到Git储藏区（Stash栈），然后**重置**工作区。
+- **状态变化**：修改从你的当前工作区“消失”了（被隐藏在 Git 的内部储藏区中），你需要通过 `git stash pop` 或 `git stash apply` 才能把它们找回来。
+- **目的**：为了临时切换上下文（比如切换分支、拉取最新代码），但又不想把写了一半的烂代码提交到版本库中。
+
+## git pull 和 git fetch 的区别
+
+- **核心考点**：远程仓库同步机制。
+- **标准回答**：`fetch` 仅将远程最新代码拉取到本地，不自动合并；`pull` 等同于 `fetch` + `merge`，拉取并自动合并到当前分支。
+- **深入拓展**：`pull` 自动合并时，若本地有修改易产生意料之外的 Merge commit，导致历史混乱。
+- **最佳实践**：推荐使用 `fetch` 配合手动 `merge` 或 `rebase`，以掌控合并过程。
+
+## git merge 和 git rebase 的区别
+
+- **核心考点**：分支整合策略。
+- **标准回答**：`merge` 保留双方历史，交汇处生成新合并节点，历史呈非线性；`rebase` 将当前分支提交“移”到目标分支最新节点之后，历史呈线性。
+- **深入拓展**：`rebase` 会重写历史生成新的 commit hash。
+- **最佳实践**：黄金法则——绝不在公共分支执行 `rebase`，只在本地特性分支使用。
+
+## git stash 的作用
+
+- **核心考点**：工作区状态暂存。
+- **标准回答**：`stash` 将未提交的修改临时保存，使工作区恢复到 HEAD 干净状态，之后可用 `stash pop` 恢复。
+- **深入拓展**：支持多次暂存形成栈结构，通过 `stash list` 查看和 `stash apply` 恢复指定记录。
+- **最佳实践**：开发半路需切分支修紧急 Bug 时，先 `stash` 暂存进度，修完再切回 `pop` 恢复。
+
+## git reset 的三种模式
+
+- **核心考点**：版本回退原理。
+- 标准回答：
+  - `--soft`：移动 HEAD，保留暂存区和工作区。
+  - `--mixed`（默认）：移动 HEAD，重置暂存区，保留工作区。
+  - `--hard`：移动 HEAD，重置暂存区和工作区（代码丢失）。
+- **深入拓展**：本质是控制 HEAD 指针回退时，对暂存区和工作区状态的清理程度。
+- **最佳实践**：`--hard` 属破坏性操作，执行前建议先 `git stash` 留底。
+
+# 中级
+
+## git reset 和 git revert 的区别
+
+- **核心考点**：撤销提交的安全性。
+- **标准回答**：`reset` 通过移动 HEAD 指针回退，直接丢弃后续历史；`revert` 通过生成一个逆向新提交来抵消目标提交，不改变历史。
+- **深入拓展**：`reset` 修改历史，若已推送到公共分支会导致他人冲突；`revert` 安全。
+- **最佳实践**：代码已推送到远程公共分支必须用 `revert`；本地未推送的误提交用 `reset` 更干净。
+
+## git cherry-pick 是什么
+
+- **核心考点**：选择性提取提交能力。
+- **标准回答**：将指定的单个或多个 commit 应用到当前分支，而非合并整个分支。
+- **深入拓展**：若提取时冲突，解决后需执行 `cherry-pick --continue`。
+- **最佳实践**：线上 Bug 修复后，需将 `hotfix` 分支的修复提交同步到 `develop` 分支时使用。
+
+## Git如何进行版本发布管理
+
+- **核心考点**：Tag 版本标记。
+- **标准回答**：使用 `git tag` 为特定 commit 打标签。分轻量标签（仅指针）和附注标签（含元数据，推荐）。推送到远程需 `git push origin --tags`。
+- **深入拓展**：附注标签存储在 Git 独立对象中，更安全，不可被轻易篡改。
+- **最佳实践**：遵循语义化版本规范，打 Tag 后触发 CI/CD 自动构建和 NPM 包发布。
+
+
+
+# 高级
+
+## git reset --hard 误删代码，如何找回
+
+- **心考点**：Git 底层恢复机制。
+- **标准回答**：使用 `git reflog` 查看 HEAD 所有的移动历史，找到误操作前的 commit hash，再执行 `git reset --hard <hash>` 恢复。
+- **深入拓展**：`reflog` 记录了所有指针变动，只要底层 commit 对象未被垃圾回收（默认 30-90 天），均可找回。
+- **最佳实践**：发现代码丢失立刻查 `reflog`，切勿在恢复前执行大量 Git 操作触发 GC。
+
+## git rebase -i 的作用
+
+- **核心考点**：高级历史记录整理。
+- **标准回答**：交互式变基，在编辑器中对多个 commit 进行 `pick`（保留）、`squash`（合并）、`reword`（改信息）、`drop`（删除）等编排。
+- **深入拓展**：它允许开发者将零碎的本地提交揉合成一个完整的功能提交。
+- **最佳实践**：Feature 分支合并主干前，先用 `rebase -i` 整理提交，保持主干历史线性且清晰，提升 CR 效率。
+
+## Git 的底层数据结构
+
+- **核心考点**：对版本控制系统本质的理解。
+- **标准回答**：Git 是基于内容寻址的文件系统。核心包含四种对象：`Blob`（文件内容）、`Tree`（目录结构）、`Commit`（提交快照）、`Tag`（标签）。
+- **深入拓展**：Git 存储全量快照而非差异，未修改的文件 Tree 会复用之前的 Blob 哈希，故分支切换极快。
+- **最佳实践**：理解底层有助于排查仓库体积膨胀问题，合理利用 Git GC 机制。
+
+## 线上Bug，如何在海量提交中快速定位引入点
+
+- **核心考点**：二分查找 Debug 能力。
+- **标准回答**：使用 `git bisect`。`bisect start` 启动，标记当前为 `bad`，标记正常旧版本为 `good <hash>`。Git 自动切到中间版本供测试，反馈 `good/bad` 缩小范围，最终输出首恶 commit。
+- **深入拓展**：支持自动化，`git bisect run <test-script>` 可根据测试脚本退出码自动完成二分。
+- **最佳实践**：依赖升级或重构引发的隐蔽 Bug，`bisect` 是定位效率最高的终极杀器。
+
+## 不用 rebase，如何合并本地已推送到远程的多个零碎 Commit
+
+- **核心考点**：`git reset --soft` 的高级运用。
+- **标准回答**：先找到合并目标前的 commit hash，执行 `git reset --soft <hash>`。HEAD 回退但所有代码修改保留在暂存区，重新 `git commit` 后，执行 `git push -f` 强推覆盖远程。
+- **深入拓展**：相比 `rebase -i`，`reset --soft` 揉合提交更直接，但彻底重写了远程历史。
+- **最佳实践**：强推极其危险！仅限个人独立分支使用，且必须用 `git push --force-with-lease` 防止覆盖他人提交。
+
+## 给开源项目贡献代码
 
 参考
 
@@ -261,21 +247,6 @@ git rebase
 
 [开源指北-科普](https://oschina.gitee.io/opensource-guide/guide/%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%EF%BC%9A%E5%88%9D%E8%AF%86%E5%BC%80%E6%BA%90/%E7%AC%AC%201%20%E5%B0%8F%E8%8A%82%EF%BC%9A%E4%BB%80%E4%B9%88%E6%98%AF%E5%BC%80%E6%BA%90/#%E5%BC%80%E6%BA%90%E7%9A%84%E6%A6%82%E5%BF%B5)
 
-# git提交规范
-
-> feat: 新功能（feature）
-> fix: 修补bug
-> docs: 文档（documentation）
-> style: 格式（不影响代码运行的变动）
-> refactor: 重构（即不是新增功能，也不是修改bug的代码变动）
-> chore: 构建过程或辅助工具的变动
-> revert: 撤销，版本回退
-> perf: 性能优化
-> test：测试
-> improvement: 改进
-> build: 打包
-> ci: 持续集成
-
 # 常见问题
 
 ## rebase变基
@@ -291,25 +262,6 @@ git rebase
 [Git 的 4 个阶段的撤销更改](https://segmentfault.com/a/1190000011969554)
 
 [惊艳！小姐姐用动画图解 Git 的 10 大命令，这也太秀了吧！](https://github.com/biaochenxuying/blog/issues/67)
-
-## git最常用命令
-
-```
-git init // 初始化
-git add . // 提交代表到本地仓
-git commit -m 'hello' // 提交代表到本地仓
-git branch -M main // 重命名分支
-git remote add origin git@github.com:fuyunjinglong/fuyunjinglong.github.io.git // 建立远程仓库链接
-git pull origin master // 拉取代码
-git push -u origin master // 推送代码
-git checkout -b newBranch //创建并切换到新分支
-git reset --hard 97ea0f9 //回退并删除提交记录
-git revert -n 97ea0f9 // 回退但不删除提交记录
-
-如果你在开发着业务，突然另一个分支有一个bug要改，你怎么办
-git stash       //将本次修改存到暂存区（紧急切换分支时）
-git stash pop   //将所有暂存区的内容取出来
-```
 
 ## 新建代码库
 
