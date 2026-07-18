@@ -1,0 +1,538 @@
+---
+title: 前端工程化
+date: 2016-11-06 06:33:16
+categories:
+- C_高级
+toc: true # 是否启用内容索引
+---
+
+# 初级
+
+## 前端工程化是什么
+
+> - **本质**：将软件工程的思想、规范和工具引入前端开发。
+> - **目标**：降本增效（提高开发效率、降低维护成本、保证代码质量）。
+> - **定位**：它不是单一的工具，而是一个贯穿“开发 -> 构建 -> 测试 -> 部署 -> 监控”的全生命周期体系。
+
+**四大核心维度**
+
+> 1. **模块化**（JS/CSS/资源的模块化管理）。
+> 2. **组件化**（UI/逻辑复用）。
+> 3. **规范化**（ESLint/Prettier/Git Commit 规范）。
+> 4. **自动化**（构建、部署、测试流程自动化）。
+
+# 中级
+
+# 高级
+
+
+
+# 前端工程化
+
+**工程化本质**
+
+DevOps即Development和Operations的组合词，是一组**过程、方法与系统**的统称。
+
+从DevOps软件开发角度出发，设计-》开发-》联调-》测试-》发布。
+
+**工程化解决的问题效率&质量**
+
+项目立项-》需求分析-》产品原型-》开发实施-》测试部署-》上线运行
+
+通过各种工具和技术，提高开发效率和质量。
+
+- 安全内容安全策略=》如ie的activeX策略、
+- 代码管理代码实践=》如前后端分离,项目结构、代码结构、代码检查、CI/CD配置，编译器、版本控制、项目配置、系统环境
+- 性能问题=》压缩、打包、线上线下优化措施
+- 代码复用=》组件化、模块化、服务化
+- 多设备兼容=》pollyfill,shim,auto-prefixer,响应式，如android,ios,手表电视，IOT设备的兼容性、分辨率
+- 跨平台=》React Native、Weex、Flutter、Hybrid、Electron、uniapp,如android,ios,手表电视，IOT设备的兼容性、分辨率
+- 跨端=》web,Node.js,IOT,如移动端，IOT设备等
+- 跨场景=》WebXR，WebRTC，WebSocket，如直播场景j跨语言WebAssembly
+
+**重要节点的技术**
+
+uglifyjs,jQuery的前后端分离年代-》V8、nodejs的创世纪-》grunt、gulp本地执行的任务流管理器，产生大量包-》npm和Bower-》css的sass和less优化-》webpack、rollup.js编译打包-》eslint和ts规范-》跨段的方案React Native、Weex、Flutter-》微信小程序、支付宝小程序、百度小程序-》WebAssembly-》PWA-》vite-》deno-》docker4.react的优雅UI=fn(state),一个输入对应一个输出，可以事先知道
+
+**前端在发力的事情**
+
+淘宝直播(webRTC)，webXR(ARVR)、Electron、Flutter,SSR优化、ServiceWorker、 GraphQL 、WebAssembly、Serverless
+
+**按照项目的生命周期来分配：**
+
+- 需求评审：技术选型
+- 开发前：统一规范
+- 开发中：模块化、组件化
+- 开发完：测试
+- 编译：构建工具
+- 部署：自动化部署
+- 上线后：性能监控
+- 发现问题：性能优化
+- 项目迭代：重构
+- 项目巨型化：微服务
+- 无服务架构升级：Serverless 
+
+**工程化内容：**
+
+脚手架工具:专用工具(vue-cli,create-react-app,angular-cli,vite),通用工具(Yeoman+generator,Plop)
+
+自动化构建:npm script&script hooks,Grunt，Gulp,FIS
+
+模块化打包：webpack,Rollup,Parcel
+
+标准化规范：Eslint,StyleLint,Prettier
+
+自动化测试：Mocha,Jest,Enzyme,Cypress,Nightmare,Puppeteer
+
+自动化部署：Git Hook，Lint-staged,CI/CD
+
+## 常用周边生态轮子
+
+**PC UI**
+
+- Element Plus
+- Ant Design Vue
+- Echarts
+- Quasar
+- Vuetify
+- NativeUI
+- Prime Vue
+
+**Mobile UI**
+
+- Ionic Vue
+- Vant
+- Varlet
+
+**国际化**
+
+- vue-i18n
+- i18next
+
+**其他生态**
+
+- VueUse：针对vue3 composition api的工具库
+- lodash.js
+- moment:解析、校验、操作、显示日期和时间
+- validator.js：表单验证
+- nuxt3
+- Animate.css：动画库
+- mescroll.js：滚动插件
+- swiper：轮播图
+- day.js
+- vue-draggable：拖拽
+- vue-qr：生成二维码
+- vue-cropper：图片裁剪
+- vue-lazyload：图片懒加载
+- clipboard.js：复制粘贴
+
+## 技术选型
+
+- 可控性
+- 稳定性
+- 适用性
+- 易用性
+
+**可控性**
+
+可控，就是指如果这门技术因为 BUG 对项目造成了影响，团队中有人能够解决它，而不是等待官方修复。作为技术团队的负责人，一定要是能够兜底的那个人。如果团队解决不了，你必须能够解决。比如魔改vue,react
+
+**稳定性**
+
+稳定性，表示一门技术更新迭代比较稳定，不会有特别大的修改，比较靠谱。即使有，也很容易做到向后兼容（迁移简单、成本小）。
+
+有两个很典型的反例，那就是 Angular 和 python。例如 python2 升级到 python3，除了语法、API 不兼容之外，python3 的各个版本之间也有差异，直到现在才逐渐稳定下来。
+
+稳定性判断：
+
+> 1. 社区是否活跃、配套插件是否丰富。
+> 2. 是否经常维护，可以通过 git commit 查看。
+> 3. 官方文档是否齐全。
+> 4. 更新是稳定、小步的迭代，而不是非常激进的更新。
+
+**适用性**
+
+适用性，是指需要根据业务场景和团队成员来选择技术。
+
+适用性判断：
+
+> 1. 业务的生命周期：短期js，长期推荐ts
+> 2. 业务的兼容性：ios,android，iot,不能有死机、白屏、卡顿
+> 3. 团队成员：选择约束性比较强的技术是一个更好的选择，如ts(不会就去学)。要用长远的眼光来为团队考虑，太过自由的技术，往往会造成灾难。
+
+**易用性**
+
+学习曲线相对平缓，而不是陡峭的
+
+## 统一规范
+
+- 代码规范
+- git规范
+- 项目规范
+- UI规范
+
+**代码规范**
+
+- 代码格式
+- 命名规范
+- 文档注释
+
+出名的js规范：
+
+> - [airbnb (101k star 英文版)](https://github.com/airbnb/javascript)，[airbnb-中文版](https://github.com/lin-123/javascript)
+> - [standard (24.5k star) 中文版](https://github.com/standard/standard/blob/master/docs/README-zhcn.md)
+> - [百度前端编码规范 3.9k star](https://github.com/ecomfe/spec)
+
+出名的css规范：
+
+> - [styleguide 2.3k star](https://github.com/fex-team/styleguide/blob/master/css.md)
+> - [spec 3.9k star](https://github.com/ecomfe/spec/blob/master/css-style-guide.md)
+
+**git规范**
+
+- 分支管理规范
+- git commit规范
+
+**项目规范**
+
+- npm管理
+- pnpm管理
+
+**UI规范**
+
+- 统一命名
+- 统一样式
+
+## 模块化、组件化
+
+- 高内聚 低耦合
+- 模块化、组件化
+- Web Components
+
+**高内聚 低耦合**
+
+高内聚：一个函数尽量只做一件事，如注册模块，只处理注册逻辑
+
+低耦合：两个模块之间的关联程度低，如注册模块调用其他模块，直接引用其他模块即可，不要直接在注册模块中写其他功能
+
+**模块化、组件化**
+
+模块化：拆分html,css,js，按照功能拆分模块
+
+组件化：按照功能拆分为各个组件
+
+**Web Components**
+
+目前三大框架在构建工具下可很好实现组件化，但如果自己实现呢？
+
+组件化是前端未来的发展方向，[Web Components ](https://developer.mozilla.org/zh-CN/docs/Web/Web_Components)就是浏览器原生支持的组件化标准。使用 Web Components API，浏览器可以在不引入第三方代码的情况下实现组件化。
+
+## 测试
+
+原则：程序简单，不用测试代码；功能越复杂，越需要测试代码(如果修改一个复杂项目，你要对所有功能都点击一遍，但有了测试代码，一条命令执行就行)
+
+- 单元测试Unit
+- 集成测试Integration
+- 端到端测试E2E
+
+## 构建工具
+
+- webpack
+- rollup
+- vite
+
+## 自动化部署
+
+- Gitea + Jenkins
+- Github Actions
+
+## 性能监控
+
+- 事前预警
+- 事后分析
+
+**数据上报**
+
+- [sendBeacon](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/sendBeacon)
+- [XMLHttpRequest](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest)
+- image
+
+## 性能优化
+
+- 加载时优化
+- 运行时优化
+
+**加载时优化**
+
+- 白屏时间
+- 首屏时间
+
+**运行时优化**
+
+## 重构
+
+**定义**
+
+《重构2》定义：
+
+> 所谓重构（refactoring）是这样一个过程：在不改变代码外在行为的前提下，对代码做出修改，以改进程序的内部结构。重构是一种经千锤百炼形成的有条不紊的程序整理方法，可以最大限度地减小整理过程中引入错误的概率。本质上说，重构就是在代码写好之后改进它的设计。
+
+重构和性能优化都在不改变程序功能的情况下修改代码
+
+- 重构：为了让代码变得更加容易理解、易于修改
+- 性能优化：为了让程序运行得更快
+
+**重构的原则**
+
+1. 事不过三，三则重构。即不能重复写同样的代码，在这种情况下要去重构。
+2. 如果一段代码让人很难看懂，那就该考虑重构了。
+3. 如果已经理解了代码，但是非常繁琐或者不够好，也可以重构。
+4. 过长的函数，需要重构。
+5. 一个函数最好对应一个功能，如果一个函数被塞入多个功能，那就要对它进行重构了。（4 和 5 不冲突）
+6. 重构的关键在于运用大量微小且保持软件行为的步骤，一步步达成大规模的修改。每个单独的重构要么很小，要么由若干小步骤组合而成。
+
+**重构手法**
+
+在[《重构2》](https://book.douban.com/subject/30468597/)这本书中介绍了上百种方法，其中8种比较常用：
+
+1. 提取重复代码，封装成函数
+2. 拆分功能太多的函数
+3. 变量/函数改名
+4. 替换算法
+5. 以函数调用取代内联代码
+6. 移动语句
+7. 折分嵌套条件表达式
+8. 将查询函数和修改函数分离
+
+
+
+## 微服务
+
+- 小应用，建议还是单独建一个项目开发
+- 大应用，使用微前端可以减少开发维护成本
+
+## Serverless 
+
+**定义**
+
+无服务架构。是指由第三方云计算供应商以服务的方式为开发者提供所需功能，例如数据库、消息，以及身份验证等。它的核心思想是让开发者专注构建和运行应用，而无需管理服务器。
+
+优点：
+
+> - 自动扩展伸缩、无需自己管理
+
+缺点：
+
+> - 云上访问速度变得比较慢
+
+**分类**
+
+- Faas(Function as a Service) 函数即服务
+- Baas(Backend as a Service) 后端即服务
+
+Faas 其实是一个云计算平台，用户可以将自己写的函数托管到平台上运行。而 Baas 则是提供一系列的服务给用户运用，用户通过 API 调用。
+
+**Faas**
+
+定义
+
+> 一个函数通常用于处理某种业务逻辑，例如一个 `abs()` 函数，它将返回所传参数的绝对值。我们可以把这个函数托管到 Faas 平台，由平台提供容器并运行这个函数。当执行函数时，只需要提供函数所需的参数，就可以在不部署应用的情况下得到函数的执行结果。
+
+**Baas**
+
+定义
+
+> 假设你是一个前端，现在要开发一个网站。前端部分你可以自己完成，但后端部分怎么办呢？这个时候就可以使用 Baas 了。也就是说，你只需编写和维护前端页面。其他的一切，例如数据库、身份验证、对象存储等等都由云服务商提供。你只需要在前端通过 API 调用它们就可以使用所需的服务。
+
+**参考**
+
+[带你入门前端工程化](https://woai3c.github.io/introduction-to-front-end-engineering/12.html#faas)
+
+# 微前端和低代码
+
+**1.微前端**
+ **(1)微前端是什么？**
+ (1.1)定义
+ 微前端只是管理这种复杂性的一种方法，通过将产品拆分为更小、更简单的应用程序，这些应用程序可以由独立的自治团队一直交付到生产环境。
+ 微前端是一种整合项目框架和组织结构的架构思维和方法，不是一种技术。
+ 缺点：
+ 前端模块包使用npm构建发布使用。
+ 开发和维护成本比较高;
+ 团队协作之间不规范；
+ 特点：
+ 独立部署、增量迁移、团队自治、松耦合代码。
+ **(1.2)解决的问题**
+ 大型项目，复杂项目的更新维护。
+ 解决场景：
+ 拆分巨型应用，使应用变得更加可维护;
+ 兼容历史应用，实现增量开发;
+ **(1.3)微前端架构方案**
+ 主要有3种：
+ 自由组织模式，不借助任何框架，自己开发解决第三方依赖问题;
+ 基座模式，需要容器作为基座，基于Single-spa的乾坤;
+ 去中心模式，webpack5新出的模块联邦特性,实现跨技术栈调用，相同技术栈之间实现更加深度的定制;
+ 1)Systemjs模块化解决方案
+ 此类解决方案使用的不多。使用起来很不友好。
+ 关键配置：
+ //指定构建所需要的库
+ out:{
+ libraryTarget:'system'
+ },
+ //排除打包react,因为要system
+ externals:['react']
+2)Single-spa微前端框架实战
+ (1.1)Single-spa最重要三种类型的微前端应用
+ single-spa-application:微前端架构中的微应用，可以使用vue,react等。
+ single-spa root config:创建微前端容器应用。
+ utility modules：公共模块应用，非渲染组件，用于跨应用共享业务逻辑
+ (1.3)Single-spa的2.3版本
+ 执行create-single-spa命令。
+ 1)初始化相关的两个函数，registerApplication和start
+ 主入口引入基座，基座引入子应用。
+ //注册子应用
+ registerApplication({
+ name:"@study/navbar",//这里是@团队/应用名称
+ app:()=>System.import("@study/navbar"),//应用原地址
+ activeWhen:["/"]//应用路径
+ })
+ //子应用另一个写法，精准匹配
+ registerApplication(
+ "@single-spa/welcome",
+ ()=>System.import("https://unpkg.com/single-spa-welcome/dist/single-spa-welcome.js),
+ location=>location.pathname==='/'
+ )
+ //设置基座
+ start({
+ uurlRerouteOnly:true
+ })
+ 3)基于Module Federation的微前端架构
+ 模块联邦的应用，比较少。
+
+**2.低代码Low Code**
+ **(1)简介**
+ (1.1)定义
+ 一个创建应用软件的开发环境，更好维护和易用的可视化IDE。
+ (1.2)特点
+ 全栈可视化编程-what you see is what you get.
+ 低代码扩展能力：组件、主题、模板、逻辑。
+ 全生命周期管理：开发、构建、测试、部署、运维、运营。
+ (1.3)难点
+ 参考阿里技术专家汪凤震跨端经验(PC、H5、Hybird、小程序、RN 类)《探索低代码的未来》
+ 一是自身是不是适合可视化
+ 搞清核心诉求，不要什么功能都要。
+ 如果是研发这类工具，如没有相关研发资源的重投(5人以上，周期1年以上)，不建议开发
+ 二是可视化引入的难点
+ 低代码一般是全生命周期，本身就是个挑战;
+ 开发周期长;
+ 除了依赖技术底蕴，更要过硬的产品思维
+ **(2)可视化搭建技术**
+ 三部曲
+ IDE的鼠标拖拽=》生成JSON文件=》渲染页面
+ (1.1)设计原则
+ 组件可嵌套
+ 所见即所得
+ 低侵入性(比如组件包括渲染和编辑，应该是组件只负责渲染，组件编辑留给系统做，而不是组件内部做，组件不关心编辑属性，否则陷入强耦合逻辑。)
+ 组件渲染(深度优先遍历，逐层向上渲染。具体：组件名称->加载->注册->属性拼装->创建实例)
+ (3)高级低代码平台搭建
+ 阿里的Sula
+
+# SPA和MPA
+
+**1.单页应用SPA**
+
+第一次进入页面的时候会请求一个`html`文件，刷新清除一下。切换到其他组件，此时路径也相应变化，但是并没有新的`html`文件请求，页面内容也变化了。
+
+**为什么页面切换快？** 页面每次切换跳转时，并不需要做`html`文件的请求，这样就节约了很多`http`发送时延，我们在切换页面的时候速度很快。
+
+**缺点：首屏时间慢，SEO差**
+
+单页应用的首屏时间慢，首屏时需要请求一次`html`，同时还要发送一次`js`请求，两次请求回来了，首屏才会展示出来。相对于多页应用，首屏时间慢。 SEO效果差，因为搜索引擎只认识`html`里的内容，不认识`js`的内容，而单页应用的内容都是靠`js`渲染生成出来的，搜索引擎不识别这部分内容，也就不会给一个好的排名，会导致单页应用做出来的网页在百度和谷歌上的排名差。
+
+**2.多页面应用MPA**
+
+每一次页面跳转的时候，后台服务器都会给返回一个新的html文档，这种类型的网站也就是多页网站，也叫做多页应用。
+
+**为什么多页应用的首屏时间快？** 首屏时间叫做页面首个屏幕的内容展现的时间，当我们访问页面的时候，服务器返回一个html，页面就会展示出来，这个过程只经历了一个HTTP请求，所以页面展示的速度非常快。
+
+**为什么搜索引擎优化效果好（SEO）？** 搜索引擎在做网页排名的时候，要根据网页内容才能给网页权重，来进行网页的排名。搜索引擎是可以识别html内容的，而我们每个页面所有的内容都放在Html中，所以这种多页应用，seo排名效果好。
+
+|   比较   |          单页SPA          |                  多页MPA                  |
+| :------: | :-----------------------: | :---------------------------------------: |
+|   定义   |     页面跳转->JS渲染      |            页面跳转->HTML渲染             |
+|   构成   |  一个html和多个html片段   |                 多个html                  |
+|   优点   |        页面切换慢         |             首屏时间快，SEO好             |
+|   缺点   |     首屏时间慢，SEO差     |                页面切换慢                 |
+| 数据通信 | `借助vuex`或`storage`之类 | 依赖`URL`、`cookie`或者`localstorage`麻烦 |
+
+# CI/CD实践
+
+- [什么是 CI/CD？](https://www.redhat.com/zh/topics/devops/what-is-ci-cd)
+
+## **前言**
+
+CI/CD 是一种通过在应用开发阶段引入自动化来频繁向客户交付应用的方法。CI/CD 的核心概念是持续集成、持续交付和持续部署。
+
+CI/CD 既可能仅指持续集成和持续交付构成的关联环节，也可以指持续集成、持续交付和持续部署这 3 项构成的关联环节。更为复杂的是，"持续交付"有时也包含了持续部署流程。
+
+**CI 持续集成（Continuous Integration）**
+
+在互联网敏捷开发的过程中，持续集成通常用来进行日常编译和自动化测试。持续集成主要包含以下步骤：
+
+- 自动化构建Continuous Build
+- 自动化测试Continuous Test
+- 自动化集成Continuous Intergration
+
+**CD 持续交付（Continuous Delivery）**
+
+持续交付是一种软件工程的手段，让软件在短周期内产出，确保软件随时可以被可靠地发布。
+
+**CD 持续部署（Continuous Deployment）**
+
+对于一个成熟的 CI/CD 管道来说，最后的阶段是持续部署。作为持续交付——自动将生产就绪型构建版本发布到代码存储库——的延伸，持续部署可以自动将应用发布到生产环境。
+
+## Gitlab CI/CD
+
+Gitlab 是开源的 devops 平台，集成了 Gitlab CI/CD 功能，通过 gitlab runner 完成CICD：
+
+- 开发者在commit代码或者提交merge request会自动触发CI/CD流程
+- 流程开始后，会主动读取项目根目录下的 [.gitlab_ci.yml 文件](https://link.juejin.cn?target=https%3A%2F%2Fdocs.gitlab.com%2Fee%2Fci%2Fyaml%2Fgitlab_ci_yaml.html)，获取构建镜像，构建步骤，构建命令等,并运行一个CI pipeline（一个pipeline通常分为三个阶段：build，test，deploy），即会执行一系列任务，如用eslint校验代码规范，单元测试等。
+- 根据.gitlab_ci.yml中配置的stage中的tags，选择对应的gitlab runner，根据配置的image启动容器，并在该容器中执行stage中的构建命令
+
+Gitlab CI/CD 中pipeline（流水线），stage（阶段），job（任务）之间的关系为：pipeline 包含了若干个 stage，stage 包含了多个 job，job 是流水线中最小的单位，这些任务是在 gitlab runner 中运行。
+
+# Iaas,Paas,Saas
+
+sass,paas,laas这都是云服务的一种，是一种租赁的关系，而不是买卖的关系。我只关注使用，不需要维护。一次性收费变为按批次周期性服务。云服务本质就是把大家通用的一些服务，放到云端操作。
+
+aas即as a Service以什么东西作为服务，
+
+xass即anything as a Service一切即服务
+
+SaaS即Software as  a Service软件即服务，如：salesforce的CRM客户关系管理、google docs。
+
+PaaS即Platform as a Service平台即服务，如：Google的App Engine、微软的windows Server on Azure、AWS Elastic Beanstalk。IaaS读依亚S即Infrastructure as a Service基础设施即服务，如：Amazon S3、微软Azure、Google的Compute Engine
+
+三者合称为SPI模式。
+
+还有其他的服务，DaaS数据即服务，DBaaS数据库即服务，DWaaS数据仓库即服务，FaaS功能即服务，AI PaaS人工智能平台即服务，BaaS后端即服务，NaaS网络即服务。
+
+# Polyfill黑话
+
+`Polyfill`或者`Polyfiller`，是英国Web开发者 [Remy Sharp](https://remysharp.com/) 在咖啡店蹲坑的时候拍脑袋造出来的。当时他想用一个词来形容"用JavaScript来**实现一些浏览器不支持的原生API**"。
+
+`Polyfill`的准确意思为：**用于实现浏览器并不支持的原生API的代码。**
+
+`querySelectorAll`是很多现代浏览器都支持的原生Web API，但是有些古老的浏览器并不支持。假设有人写了库，只要用了这个库， 你就可以在古老的浏览器里面使用`document.querySelectorAll`，使用方法跟现代浏览器原生API无异。那么这个库就可以称为`Polyfill`或者`Polyfiller`。
+
+# 如何用chatgpt提升前端开发效率
+
+**问题解答和指导**：`ChatGPT`可以帮助回答与前端开发相关的问题。当你在编写代码的时候，当一时忘记了某个API怎么用，就可以向`ChatGPT`提问，并获得解答和指导，甚至还会给出一些更加深入且性能更好的应用。这可以帮助更快地解决问题和理解前端开发中的概念。
+
+**代码片段和示例**：`ChatGPT`可以帮助你生成常见的前端代码片段和示例。你可以描述你想要实现的功能或解决的问题，然后向`ChatGPT`请求相关代码片段。这样，您可以更快地获得一些基础代码，从而加快开发速度。
+
+**自动生成文档**：`ChatGPT`可以帮助你生成前端代码的文档。你可以描述一个函数、组件或类，并向`ChatGPT`请求生成相关的文档注释。这可以帮助您更轻松地为你的代码添加文档，提高代码的可读性和可维护性。
+
+**问题排查和调试**：在开发过程中，您可能会遇到问题或错误。您可以向`ChatGPT`描述您遇到的问题，或者直接把代码交给它，并请求帮助进行排查和调试。`ChatGPT`可以提供一些建议和指导，帮助您更快地找到问题的根本原因并解决它们。
+
+**学习资源和最新信息**：`ChatGPT`可以为你提供关于前端开发的学习资源和最新信息。你可以向`ChatGPT`询问关于前端开发的最佳实践、最新的框架或库、前端设计原则等方面的问题。这可以帮助我们不断学习和更新自己的前端开发知识，从而提高效率。
+

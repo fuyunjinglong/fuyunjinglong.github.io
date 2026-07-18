@@ -28,7 +28,7 @@
         <div id="collapse<%= item.name %>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading<%= item.name %>">
           <div class="panel-body">
             <div class="collection">
-              <% item.posts.each(function(post){ %>
+              <% item.posts.sort('date').each(function(post){ %>
                 <%- partial('_partial/item-post', {post: post, type: 'link'}) %>
               <% }) %>
             </div>

@@ -1,0 +1,518 @@
+---
+title: Html
+date: 2016-01-01 07:33:16
+categories:
+- A_初级
+toc: true # 是否启用内容索引
+---
+
+# iframe有哪些优缺点？
+
+优点：
+
+> 1. iframe 能原封不动的把嵌入的网页展现出来。
+> 2. 如果有多个网页引用 iframe，只需修改 iframe 的内容，就可以实现调用每一个页面的更改，方便快捷。
+
+缺点：
+
+> 1. iframe 会阻塞主页面的 onload 事件。
+> 2. iframe 和主页面共享链接池，而浏览器对相同域的链接有限制，所以会影响页面的并行加载。
+> 3. 不利于 SEO，代码复杂，无法一下被搜索引擎索引到。
+> 4. iframe 框架页面会增加服务器的 http 请求，对于大型网站不可取。
+> 5. 很多移动设备无法完全显示框架，设备兼容性差。
+
+注意：通过动态给 iframe 添加 src 属性值，可解决前两个问题。
+
+# 浏览器内核的理解
+
+内核分为2部分：
+
+> - 渲染引擎：解析 HTML 构建 DOM 树，解析 CSS 构建 CSSOM 树，合并成渲染树，然后进行**布局**算位置，**绘制**画像素，最后**合成**上屏。
+> - JS 引擎：把 JS 代码编译成机器码执行，处理变量、函数、作用域、闭包、事件循环等逻辑。
+
+# web基础及演进史
+
+**(1)js组成**
+ ECMAScript(js核心)，DOM(文档对象模型),BOM(浏览器对象模型)。
+ ECMAScript：主要定义JS的语法和数据类型。
+ DOM：一套操作页面的API.
+ BOM:一套操作浏览器功能的API.
+
+**(2)web技术演进史**
+ (1.1)历史进程
+
+-  2005年以前：前后端耦合；
+-  2005年Ajax时代：前后端分离；
+-  2006-2012Jquery时代；
+-  2009年nodejs服务端能力发布；
+-  2012-2016后jquery时代：模块化，MV架构；
+-  2016至今三大框架；
+
+ 1)前端耦合
+ 前端代码只是View视图层。
+ 2)Ajax时代，允许客户端向服务器异步发送请求，处理后，异步局部刷新页面。划时代意义：前后端分离，服务端更专注于数据处理，前端更专注于数据展示。
+ 3)Jquery时代，精简dom操作和浏览器兼容性
+ 4)NodeJs时代
+ 开始用js开发服务端程序，同时构建了用NPM包管理工具的NodeJs生态系统。
+ 5)后Jquery时代
+ 前端引入模块化。具体有CMD/AMD/commonJS，后面ES6 Module。
+ **AMD/CMD**：异步的，主要用于浏览器。模块定义和加载机制稍有不同。AMD推崇前置依赖，CMD推崇就近依赖。AMD是定义时声明依赖，CMD是懒加载，仅在require时才会加载。
+ **CommonJS**:是同步的，主要服务端。
+ **ES6 Module**:满足ES6标准的模块化输出，设计思想静态化。编译时就确定了依赖关系，是浏览器和服务端的通用模块解决方案。
+ **MV框架**
+ 前端的复杂功能驱动MV*框架引入。
+ **MVC框架**
+ View指令传送到Controller;
+ Controller完成业务逻辑后，要求Model改变;
+ Model将新的数据发送到View，用户得到反馈
+ **MVVM框架**
+ 双向绑定，view改变自动反馈到viewmodel。view与model不发生联系。
+ **(1.2)三大框架介绍**
+ **1)angular**
+ **历史**:2012开始1.0版本，16年升级2.0版本。新版本支持es6和ts。
+ **基本特点**：
+ 双向绑定；
+ 依赖注入；
+ 基于ts的组件；
+ 良好的应用架构；
+ 工具生态完整，angular-cli用于创建、开发、测试等。有整套的解决方案，适合大型项目。
+ **缺点**：中文文档较少，框架较重，学习成本高。
+ **2)react**
+ **历史**：2013年facebook发布版本。2015年版本稳定，同年发布reacr-native。
+ **基本特点**：
+ 虚拟dom，跨浏览器兼容，性能较好；
+ 组件化，代码复用;
+ JSX,js语法的扩展，模板简单、直接、语义化。
+ 单项数据流：数据流清晰，组件状态更可控。
+ **缺点**：
+ 本身只是view，大型项目需要加上React Router和Redux。
+ **3)VUE**
+ **历史**：
+ 2015年1.0版本发布，同年vue-router、vuex、vue-cli出现，标志从一个视图层发展成一个渐进式框架。
+ 2016年vue2.0发布，引入虚拟dom，性能大幅提升。
+ 2019年vue2.0公布源码。
+ **基本特点**：
+ 渐进式、轻量级框架;
+ 简单易用;
+ 双向数据绑定;
+ 组件化;
+ 轻量高效(使用虚拟dom，压缩后只有20kb)
+ **缺点**：
+ vue不支持IE8，生态比较差(语法提示不友好，插件数量比较少)
+
+# Html语义化
+
+参考
+
+- [开启前端之路——HTML 标签](https://powerdong.github.io/myBlog/2019/04/25/HTML-%E6%A0%87%E7%AD%BE/)
+
+## 什么是语义化
+
+语义化，指对文本内容的结构化（内容语义化），选择合乎语义的标签（代码语义化）。
+
+语义化标签：`header`、`nav`、`main`、`article`、`section`、`aside`、`footer`等。
+
+优点：
+
+- 代码结构清晰，易于阅读，有利于维护
+- 方便其他设备解析（如：屏幕阅读器）
+- 有利于搜索引擎优化（SEO），搜索引擎爬虫会根据不同的标签来赋予不同的权重
+
+## 为什么要语义化?
+
+- 让人更容易读懂（增加代码可读性）。
+- 让搜索引擎更容易读懂，有助于爬虫抓取更多的有效信息，爬虫依赖于标签来确定上下文和各个关键字的权重（SEO）。
+- 在没有 CSS 样式下，页面也能呈现出很好地内容结构、代码结构。
+
+## 易混淆的HTML标签
+
+- i 标签
+
+*i 标签效果*,i 标签通常表示因为某种原因和正常文本不同的文本,例如专业术语,外语短语或排版用的文字。通常表现为斜体。
+
+- em 标签
+
+*em 标签效果*,em 表示强调的文本,视觉上也是斜体效果。
+
+- strong 标签
+
+**strong 效果**,以加粗的形式展现。表示这个文本的重要性,在 HTMl4 中表示特别强调,HTML5 中描述为“strong importance for its contents”。
+
+- b 标签
+
+**b 标签效果**,表示的风格不同于正常的文本,没有表达任何特殊的重要性和相关性。通常用于关键回顾,回顾中的产品名称,或者是其他需要表现为粗体的文本。另一个例子就是标志每个段落的 lead sentence。
+
+- mark 标签
+
+mark 标签效果,表现为高亮文本。例如我们在网页查找关键字时,找到的结果就会以高亮的形式展现。
+mark 元素通常是表现跨越不同的上下文种的相关文本。
+
+## 常见的行/块级元素
+
+- inline 行级元素
+  - 内容决定元素所占位置
+  - 不可以通过 Css 改变宽高
+  - 都有文字特性
+    - `<span>`、`<strong>`、`<em>`、`<a>`、`<del>`、`<i>`
+- block 块级元素
+  - 独占一行
+  - 可以通过 Css 改变宽高
+    - `<div>`、`<p>`、`<ul>`、`<li>`、`<ol>`、`<form>`
+- inline-block 行块级元素
+  - 内容决定大小
+  - 可以改变宽高
+    - `<img>`
+
+## 写 HTML 代码注意什么
+
+- 尽可能少的使用无语义的标签 `<div>` 和 `<span>`
+- 在语义不明显时既可以使用 `<div>` 或者 `<p>` 时,尽量使用 `<p>`,因为 `<p>` 在默认情况下有上下间距,对兼容特殊终端有利
+- 不要使用纯样式标签,改用 css 设置
+- 需要强调的文本,可以包含在 `<strong>` 或者 `<em>` 标签中(浏览器预设样式,能用 css 指定就不用他们),`<strong>` 默认样式是加粗(不要用 `<b>`),`<em>` 是斜体(不用 `<i>`)
+- 使用表格时,标题要用 `caption`,表头用 `<thead>`,主体部分用 `<tbody>` 包围,尾部用 `<tfoot>` 包围。表头和一般单元格要区分开,表头用 `<th>`,单元格用 `<td>`
+- 表单域要用 `<fieldset>` 标签包起来,并用 `<legend>` 标签说明表单的用途
+- 每个 `<input>` 标签对应的说明文本都需要使用 `label` 标签,并且通过 `<input>` 标签设置 id 属性,在 `label` 标签中设置 for 来让说明文本和相对应的 `<input>` 关联起来。
+
+# DOCTYPE 的作用是什么？
+
+`<!DOCTYE>` 声明一般位于文档的第一行，它的作用主要是告诉浏览器以什么样的模式来解析文档。一般指定了之后会以“标准模式”进行文档解析，否则就以“兼容模式”进行解析。
+
+- 在`标准模式`下，浏览器的解析规则都是按照最新的标准进行解析的。
+- 而在`兼容模式`下，浏览器会以向后兼容的方式来模拟老式浏览器的行为，以保证一些老的网站能正常访问。
+
+# SGML、HTML、XML 和 XHTML的区别
+
+- `SGML` 是标准通用标记语言，是一种定义电子文档结构和描述其内容的国际标准语言，是所有电子文档标记语言的起源。
+- `HTML` 是超文本标记语言，主要是用于规定怎样显示网页。
+- `XML` 是可扩展标记语言，是未来网页语言的发展方向，XML 和 HTML 的最大区别就在于 XML 的标签是可以自己创建的，数量无限多，而 HTML 的标签都是固定的而且数量有限。
+- `XHTML` 也是现在基本上所有网页都在用的标记语言，他其实和 HTML 没什么本质的区别，标签都一样，用法也都一样，就是比 HTML 更严格，比如标签必须都用小写，标签都必须有闭合标签等。
+
+# HTML5 有哪些新特性、移除了哪些元素？
+
+HTML5 现在已经不是 SGML 的子集，主要是关于图像、位置、存储、多任务等功能的增加。
+
+新增的：
+
+- 绘图 `canvas`
+- 用于媒介回放的 `video` 和 `audio` 元素
+- 本地离线存储 `localStorage` 、`sessionStorage`
+- 语义化更好的内容元素，如：`header`、`article`、`nav`、`section`、`footer`等
+- 表单控件 `calendar`、`date`、`time`、`email`、`url`、`search` 等
+- 新的技术 `webworker`、`websocket`
+- 新的文档属性 `document.visibilityState`
+
+移除的：
+
+- 纯表现的元素：`basefont`、`big`、`center`、`s`、`tt`、`u`
+- 对可用性产生负面影响的元素：`frame`、`frameset`、`noframes`
+
+# XML与JSON
+
+最根本上来说，XML是一个markup language（标记语言），而JSON是一种用于数据交换（data-interchange）的序列化对象的语言。
+
+标记语言除了文本信息，还包括了一些元信息，这些元信息用来标注如何处理文本信息，比如：
+
+```js
+<Document>
+    <Paragraph Align="Center">         Align是元信息
+        Here <Bold>is</Bold> some text.
+    </Paragraph>
+</Document>
+```
+
+假如试图用JSON完完整整的表述上述的信息：
+
+```json
+{
+    "Paragraphs": [
+        {
+            "align": "center",
+            "content": [
+                "Here ", {
+                    "style" : "bold",
+                    "content": [ "is" ]
+                },
+                " some text."
+            ]
+        }
+    ]
+}
+```
+
+原因在于，JSON里面没有**元数据和数据的区别**，**所有的东西都是数据**。同样的，XML也不擅长做JSON所擅长做的事，那就是序列化对象。
+
+JSON有2点优于XML：
+
+- 对象的内部结构一目了然，简洁明了。
+- JSON语法规定[]是数组，{}是对象，而XML没有如此的语法规定，我们只能临时发明一种方式来表示数组，然后自己添加代码来识别这个数组。
+
+作用为：
+
+**两者比较：***JSON**比**XML**更小，更快，更易解析**
+
+**两者作用范围：***JSON**适用于简单的传值，**XML**适用于元数据的标识。*
+
+![image-20211107230640963](/img/image-20211107230640963.png)
+
+# BOM和DOM对象
+
+**1.BOM**
+
+BOM（Browser Object Model）是指浏览器对象模型，可以对浏览器窗口进行访问和操作。
+
+window对象核心
+
+- Location对象
+- History对象 
+- document
+- navigation
+- screen
+
+(1)window对象
+
+```js
+alert()            显示带有一段消息和一个确认按钮的警告框。
+confirm()          显示带有一段消息以及确认按钮和取消按钮的对话框。
+prompt()           显示可提示用户输入的对话框。
+
+open()             打开一个新的浏览器窗口或查找一个已命名的窗口。
+close()            关闭浏览器窗口。
+setInterval()      按照指定的周期（以毫秒计）来调用函数或计算表达式。
+clearInterval()    取消由 setInterval() 设置的 timeout。
+setTimeout()       在指定的毫秒数后调用函数或计算表达式。
+clearTimeout()     取消由 setTimeout() 方法设置的 timeout。
+```
+
+(2)Location对象
+
+Location 对象包含有关当前 URL 的信息。
+
+```js
+location.reload()  //重新加载页面，即刷新
+// 跳转到指定页面（可以返回上一个页面）
+location.assign("URL")
+location.href="URL"
+// 跳转到指定页面（不可以返回上一个页面）
+location.replace("URL")
+```
+
+(3)History对象 
+
+History 对象包含用户（在浏览器窗口中）访问过的 URL。
+
+```js
+history.forward()  // 前进一页
+history.back()  // 后退一页
+```
+
+**2.DOM**
+
+根据 W3C 的 HTML DOM 标准，HTML 文档中的所有内容都是节点(NODE)：
+
+导航属性：
+
+- parentNode - 节点（元素）的父节点 （一般用这个）
+- firstChild – 节点下第一个子元素
+- lastChild – 节点下最后一个子元素
+- childNodes - 节点（元素）的子节点
+
+**(1)查找标签**
+
+```js
+document.getElementsByClassName   根据class属性获取
+document.getElementsByTagName     根据标签名获取标签合集
+document.getElementById           根据id属性值获取一个标签
+document.getElementsByName()      根据name属性值获取一个标签
+```
+
+间接查找
+
+```
+parentElement　　　　　　　//父节点标签元素
+children　　　　  　　　　 //所有子标签
+firstElementChild　　　　 //第一个子标签元素
+lastElementChild　　　　  //最后一个子标签元素
+nextElementtSibling　　  //下一个兄弟标签元素
+previousElementSibling  //上一个兄弟标签元素
+
+示例:
+var ele1=document.getElementsByTagName("a")[0];
+var ele2=ele1.parentElement;
+console.log(ele2);
+```
+
+**(2)节点操作**
+
+创建节点
+
+```
+var divEle = document.createElement("div");
+```
+
+添加节点
+
+```
+// 追加一个子节点（作为最后的子节点）
+Anode.appendChild(Bnode)；
+// 把增加的节点放到某个节点的前边。
+Anode.insertBefore(Bnode,Cnode); // 在Anode节点下，将Cnode节点插入Bnode节点前面
+// 示例
+var imgEle = document.createElement("img");
+imgEle.src = "#"; 
+var d1Ele = document.getElementById("d1");
+d1Ele.appendChild(imgEle);
+```
+
+替换节点
+
+```
+Anode.replaceChild(Bnode,Cnode);
+```
+
+属性节点
+
+```
+// 获取文本节点的值
+var ele = document.getElementById("d1")
+// 1.如果id为d1的标签内嵌套其他标签
+ele.innerText  // 只取d1标签内的所有文本内容
+ele.innerHTML  // d1标签内嵌套的标签和所有文本内容都取
+```
+
+设置文本节点的值
+
+```
+var ele = document.getElementById("d1")
+ele.innerText = "在干嘛"
+ele.innerHTML = "<p>在干嘛<p/>"
+```
+
+attribute操作
+
+```
+var ele = document.getElementsByClassName("c1")[0];
+ele.setAttribute("hobby","swimming");
+console.log(ele.getAttribute("hobby"));
+ele.removeAttribute("hobby");
+// 自带的属性可以直接.属性名来获取和设置
+ele.id;
+ele.id = "xxx";
+```
+
+获取值操作
+
+```
+var ele = document.getElementById("i1");
+console.log(ele.value);
+```
+
+class的操作
+
+```
+// elementNode（节点名，简化用ele，像上面那样）
+ele.className  获取所有样式类名(字符串)
+ele.classList.remove(cls)    删除指定类
+ele.classList.add(cls)       添加类
+ele.classList.contains(cls)  存在返回true，否则返回false
+ele.classList.toggle(cls)    存在就删除，否则添加
+```
+
+指定CSS操作
+
+```
+var ele = document.getElementById("d1");
+ele.style.color = "red";
+```
+
+JS操作CSS属性的规律
+
+①对于没有中横线的CSS属性一般直接使用style.属性名即可。如：
+
+```
+ele.style.margin
+ele.style.width
+ele.style.left
+ele.style.position
+```
+
+②对含有中横线的CSS属性，将中横线后面的第一个字母换成大写即可。如：
+
+```
+ele.style.marginTop
+ele.style.borderLeftWidth
+ele.style.zIndex
+ele.style.fontFamily
+```
+
+事件
+
+```
+onclick        当用户点击某个对象时调用的事件句柄。
+ondblclick     当用户双击某个对象时调用的事件句柄。
+
+onfocus        元素获得焦点。  //练习：输入框
+onblur         元素失去焦点。  //应用场景：用于表单验证，用户离开某个输入框时，代表已经输入完了，我们可以对它进行验证。
+onchange       域的内容被改变。//应用场景：通常用于表单元素,当元素内容被改变时触发，（三级联动）
+
+onkeydown      某个键盘按键被按下。//应用场景: 当用户在最后一个输入框按下回车按键时，表单提交。
+onkeypress     某个键盘按键被按下并松开。
+onkeyup        某个键盘按键被松开。
+onload         一张页面或一幅图像完成加载。
+onmousedown    鼠标按钮被按下。
+onmousemove    鼠标被移动。
+onmouseout     鼠标从某元素移开。
+onmouseover    鼠标移到某元素之上。
+onmouseleave   鼠标从元素离开
+
+onselect       文本被选中。
+onsubmit       确认按钮被点击。
+```
+
+绑定方式
+
+```
+<div id="d1" onclick="changeColor(this);">点我字体变颜色</div>
+
+var ele= document.getElementById("d1");
+    ele.onclick = function () {
+    this.innerText="想干嘛呢？";
+    }
+```
+
+Event对象
+
+```
+ var ele1 = document.getElementsByClassName("inner")[0];
+    ele1.onclick = function (e) {
+        alert("I am inner!");
+        e.stopPropagation();
+    };
+    var ele2 = document.getElementsByClassName("outer")[0];
+    ele2.onclick = function () {
+        alert("I am outer!")
+    };
+```
+
+# 为什么多个域名来存储网站资源会更有效
+
+- 确保用户在不同地区能用最快的速度打开网站，其中某个域名崩溃用户也能通过其他域名访问网站。
+- CDN 缓存更方便。简单来说，CDN 主要用来使用户就近获取资源。
+- 突破浏览器并发限制。同一时间针对同一域名下的请求有一定数量限制，超过限制数目的请求会被阻塞。大多数浏览器的并发数量都控制在6以内。有些资源的请求时间很长，因而会阻塞其他资源的请求。因此，对于一些静态资源，如果放到不同的域名下面就能实现与其他资源的并发请求
+
+# 行内、块级、空元素
+
+- 行内元素有：a b span img input select strong（强调的语气）
+- 块级元素有：div ul ol li dl dt dd h1 h2 h3 h4 p
+- 常见的空元素： img input link meta br hr ，鲜为人知的是：area base col command embed keygen param source track wbr
+
+# style标签和script标签的位置
+
+**style标签**
+
+- 推荐写在head标签里最底部即body标签前：有利于浏览器逐步渲染 resources downloading --> cssDOM + DOM --> Render Tree --> layout --> paint
+- 不推荐写在body标签后：在这之前的元素的样式就不会生效，会导致页面结构出来了，而CSS还没开始渲染。IE 下可能出现样式失效导致的页面闪烁问题。
+
+**script标签**
+
+- 推荐写在body标签里最底部：等到页面所有内容加载完成之后，再来加载JavaScript
+- 不推荐写在body标签前：会造成页面阻塞

@@ -63,7 +63,25 @@ prismjs:
 index_generator:
   path: ''
   per_page: 10
-  order_by: -date
+  order_by: date
+
+archive_generator:
+  per_page: 10
+  yearly: true
+  monthly: true
+  order_by: date  # 归档页也升序
+
+category_generator:
+  per_page: 10
+  yearly: true
+  monthly: true
+  order_by: date
+
+tag_generator:
+  per_page: 10
+  yearly: true
+  monthly: true
+  order_by: date
 
 # Category & Tag
 default_category: uncategorized
