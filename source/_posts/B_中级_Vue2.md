@@ -1,10 +1,296 @@
 ---
-title: Vue2_入门
-date: 2022-04-17 06:33:16
+title: Vue2
+date: 2000-01-01 06:33:16
 categories:
   - B_中级
 toc: true # 是否启用内容索引
 ---
+
+# 初级
+
+## MVC / MVP / MVVM
+
+**1.定义**
+
+MVC / MVP / MVVM 都是架构设计模式，用于分离数据、UI 和业务逻辑，让代码职责更清晰，便于维护和团队协作。
+
+> - MVC：Model 负责数据，View 负责展示，Controller 接收用户输入并协调 Model 和 View。View 往往直接依赖 Model，Controller 容易膨胀。典型代表是早期 Backbone.js。
+> - MVP：View 被动，不直接依赖 Model，Presenter 处理所有逻辑并更新 View。可测试性强，常见于对质量要求高的客户端应用。
+> - MVVM：View 通过数据绑定与 ViewModel 关联，ViewModel 抽象 View 的状态和行为。框架帮我们完成“数据同步”，典型代表是 Vue 和 Angular，React 在实践中也类似 MVVM 的结构。
+
+其中，MVVM
+
+> - **Model**：数据与业务逻辑。
+> - **View**：声明式 UI（模板/组件），通过**数据绑定**与 ViewModel 关联。
+> - ViewModel：
+>   - 抽取 View 的“状态 + 行为”，是 **View 的一对一抽象模型**。
+>   - 不持有 View 引用，通过**数据绑定 + 命令**驱动 View 更新。
+
+**2.优缺点**
+
+> - MVC 最简单，但 View 与 Model 耦合，不利于扩展和测试。
+> - MVP 可测试性最好，但 Presenter 容易写得很大。
+> - MVVM 在前端框架中最常见，通过数据绑定减少手动 DOM 操作，适合数据驱动的 SPA。
+
+**3.实践**
+
+> - Vue：组件实例类似 ViewModel，模板是 View，通过响应式系统 + `v-model` 实现近似 MVVM 的结构。
+> - React：JSX 是 View，Hook/状态类似 ViewModel，整体是 MVVM 风格，但官方更强调“视图层 + 单向数据流”，所以我们更多用状态管理、分层架构来组织业务逻辑，而不是硬套某个模式名称。
+
+## 生命周期
+
+| Vue2          | Vue3            |
+| ------------- | --------------- |
+| beforeCreate  | setup           |
+| created       | setup           |
+| beforeMount   | onBeforeMount   |
+| mounted       | onMounted       |
+| beforeUpdate  | onBeforeUpdate  |
+| updated       | onUpdated       |
+| beforeDestory | onBeforeUnmount |
+| destoryed     | onUnmounted     |
+
+**1.时机**
+
+> - beforeCreate：实例刚在内存中被创建出来，组件 `props`、`data`、`methods` 都还未初始化。
+> - created：实例已创建，`data`、`methods`、`computed` 等已初始化，但 `DOM` 还未渲染（`$el` 不存在）。**发送 AJAX 请求、初始化数据（无需 DOM 的逻辑）**
+> - beforeMount：模板编译完成，虚拟 DOM 已生成，但还未挂载到真实 DOM 上。最后一次修改数据不会触发重渲染。
+> - mounted：真实 DOM 已挂载完成，`this.$el` 可访问。**操作 DOM、初始化第三方库、绑定 DOM 事件**
+> - beforeUpdate：数据已变，DOM 还未更新（页面显示旧数据）。
+> - updated：数据已变，DOM 已更新（页面显示新数据）。
+> - beforeDestory：实例销毁前，实例属性（`data`、`methods`）仍可访问。**清除定时器、解绑全局事件监听器、销毁第三方实例**
+> - destoryed：实例销毁后，所有事件监听和子组件均被移除。
+
+**2.父子组件生命周期执行顺序**
+
+加载渲染过程
+
+> 父 beforeCreate -> 父 created -> 父 beforeMount -> **子 beforeCreate -> 子 created -> 子 beforeMount -> 子 mounted** -> 父 mounted
+
+子组件更新过程
+
+> 父 beforeUpdate -> 子 beforeUpdate -> 子 updated -> 父 updated
+
+销毁过程
+
+> 父 beforeDestroy -> 子 beforeDestroy -> 子 destroyed -> 父 destroyed
+
+**3.特殊钩子：keep-alive**
+
+当使用 `<keep-alive>` 缓存组件时，会新增两个钩子：
+
+- `activated`：组件被激活时调用（从缓存中取出或首次加载）。
+- `deactivated`：组件被停用时调用（切换到其他组件）。
+
+## 单向数据流与双向数据绑定
+
+**一、 定义**
+
+**1. 单向数据流**
+单向数据流是指数据的流向是单向的，即**数据总是从父组件流向子组件**。父组件通过 `props` 向子组件传递数据，子组件不能直接修改父组件传递过来的数据。如果子组件需要修改数据，必须通过 `$emit` 触发事件通知父组件，由父组件修改数据后再通过 `props` 传递下来。
+
+- **核心原则**：数据向下传，事件向上传。
+
+**2. 双向数据绑定**
+双向数据绑定是指数据模型与视图之间的自动同步机制。当数据变化时，视图自动更新；当视图发生变化（如用户输入）时，数据模型也自动更新。在 Vue 2 中，`v-model` 是实现双向数据绑定的典型指令。
+
+**二、原理与机制**
+
+1.单向数据流的实现机制
+
+Vue 2 强制要求组件间通信遵循单向数据流，主要体现在 `props` 的传递上：
+
+- **数据传递**：父组件将数据通过 `props` 传给子组件。
+- **只读限制**：子组件内部不允许直接修改 `props` 中的数据。如果尝试修改，Vue 会在控制台抛出警告。
+- **修改方式**：子组件必须通过 `this.$emit('eventName', newValue)` 通知父组件，父组件在事件回调中修改源数据。
+
+1.双向数据绑定的实现原理
+
+Vue 2 的双向数据绑定是由 **数据劫持** + **发布-订阅模式** 配合 **语法糖** 实现的。
+
+> - **底层原理（响应式）**：Vue 2 使用 `Object.defineProperty` 劫持对象属性的 `getter` 和 `setter`。在 `getter` 中收集依赖，在 `setter` 中触发更新，实现数据变视图变。
+> - v-model 原理（语法糖）：v-model本质上是value属性绑定和input事件的语法糖。
+>   - 对于普通输入框：`<input v-model="msg">` 等价于 `<input :value="msg" @input="msg = $event.target.value">`。
+>   - 对于组件：`v-model` 默认会利用名为 `value` 的 prop 和名为 `input` 的事件。
+
+**三、进阶**
+
+**1. 为什么 Vue 要采用单向数据流？**
+主要是为了**降低代码复杂度和避免状态混乱**。如果允许子组件直接修改父组件的数据，当多个子组件都依赖该数据时，数据的变更源头将变得不可追踪，调试成本极高。单向数据流使得所有状态的修改都有迹可循。
+
+2.**.sync 修饰符**
+
+Vue 2 中的 `.sync` 修饰符也是一种双向绑定的语法糖，常用于“一次性更新多个 prop”或非 value 类型的双向绑定场景。
+`<child :title.sync="doc.title"></child>` 等价于 `<child :title="doc.title" @update:title="doc.title = $event"></child>`。
+
+## Object.defineProperty
+
+**一、.定义**
+
+**`Object.defineProperty`** 是 ES5 提供的一个原生方法，用于在一个对象上定义一个新属性，或者修改一个现有属性，并返回这个对象。
+
+在 Vue 2 中，它是实现**响应式系统**的核心 API。Vue 利用它来**劫持** data 对象属性的 `getter` 和 `setter`，从而在数据被读取或修改时，自动触发视图更新或依赖收集。
+
+**二.响应式原理**
+
+响应式主要包含三个步骤：**数据劫持**、**依赖收集**、**派发更新**。
+
+**1.数据劫持**
+
+Vue 在初始化时，会遍历 `data` 中的所有属性，并使用 `Object.defineProperty` 将它们转化为 `getter` 和 `setter`。
+
+- **Getter（读取）**：当读取属性时（如模板渲染时），会触发 `getter`。Vue 会在此处进行**依赖收集**，将当前正在渲染的 Watcher 添加到该属性的依赖列表中。
+- **Setter（修改）**：当修改属性值时，会触发 `setter`。Vue 会在此处通知所有依赖该属性的 Watcher，触发**派发更新**，最终重新渲染视图。
+
+**2. 递归遍历**
+
+Vue 会对 `data` 对象进行深度遍历，对嵌套对象的每一个属性都调用 `Object.defineProperty`，确保所有层级的属性都是响应式的。
+
+**三、优缺点**
+
+优点
+
+> - **兼容性好**：支持 IE9 及以上浏览器（这是 Vue 2 一直沿用此方案的主要原因）。
+> - **实现机制成熟**：作为 ES5 标准方法，性能稳定，不需要像 Proxy 那样的 Polyfill。
+
+缺点
+
+> - 无法监测对象属性的添加或删除：
+>   - 对于后来添加的属性（如 `this.obj.newProp = 'value'`），Vue 无法检测到，因为它没有经过 `defineProperty` 的劫持。必须使用 `Vue.set` 或 `this.$set` 手动处理。
+> - 无法监测数组索引和长度的变化：
+>   - 直接通过索引修改数组项（`this.arr[0] = 'new'`）或修改长度（`this.arr.length = 0`）不会触发更新。Vue 2 通过重写数组原型方法（`push`, `pop`, `splice` 等）来变相解决这个问题。
+> - 深层监听性能问题：
+>   - `Object.defineProperty` 必须在初始化时递归遍历所有属性。如果数据层级很深，初始化耗时较长，影响性能。
+
+**四、对比Vue3**
+
+| 特性         | Vue 2 (Object.defineProperty)    | Vue 3                            |
+| :----------- | :------------------------------- | :------------------------------- |
+| **劫持方式** | 劫持对象的具体属性               | 劫持整个对象                     |
+| **新增属性** | 需要使用 `Vue.set`，默认无响应式 | 自动响应式，无需特殊处理         |
+| **数组监听** | 索引修改无响应，需重写数组方法   | 支持                             |
+| **性能**     | 初始化时递归定义，层级深时耗性能 | 惰性响应式，只有访问到才进行代理 |
+| **兼容性**   | 支持 IE9+                        | 不支持 IE (Proxy 无法 Polyfill)  |
+
+**五、手写响应式**
+
+```js
+// ==========================================
+// 1. Dep 类 (依赖管理器)
+// ==========================================
+class Dep {
+  constructor() {
+    this.subs = []; // 存储 Watcher 实例
+  }
+
+  // 添加观察者
+  addSub(sub) {
+    if (sub && sub.update) {
+      this.subs.push(sub);
+    }
+  }
+
+  // 通知所有观察者更新
+  notify() {
+    this.subs.forEach(sub => sub.update());
+  }
+}
+
+// 静态属性，指向当前正在收集依赖的 Watcher
+// 作用：在 getter 执行时，通过这个全局变量知道是谁在“用”我
+Dep.target = null;
+// ==========================================
+// 2. Observer 函数 (数据劫持/响应式转换)
+// ==========================================
+function observe(data) {
+  if (!data || typeof data !== 'object') return;
+
+  Object.keys(data).forEach(key => {
+    // 递归处理嵌套对象
+    observe(data[key]); 
+    // 定义响应式
+    defineReactive(data, key, data[key]);
+  });
+}
+
+function defineReactive(obj, key, val) {
+  // 每个属性都创建一个属于自己的 Dep 容器
+  const dep = new Dep();
+  Object.defineProperty(obj, key, {
+    enumerable: true,
+    configurable: true,
+    get() {
+      // 【依赖收集】
+      // 如果此时 Dep.target 有值（说明有 Watcher 正在读取数据）
+      if (Dep.target) {
+        dep.addSub(Dep.target);
+      }
+      return val;
+    },
+    set(newVal) {
+      if (val === newVal) return;
+      val = newVal;
+      // 如果新值是对象，也需要进行响应式处理
+      observe(newVal);
+      // 【派发更新】
+      dep.notify();
+    }
+  });
+}
+
+// ==========================================
+// 3. Watcher 类 (观察者/视图渲染代表)
+// ==========================================
+class Watcher {
+  constructor(data, key, cb) {
+    this.data = data;
+    this.key = key;
+    this.cb = cb; // 回调函数，通常用于更新视图
+    // 初始化时，主动触发一次 getter，建立连接
+    this.get();
+  }
+  get() {
+    // 【关键步骤】
+    // 1. 将当前实例挂载到 Dep.target 上
+    Dep.target = this;
+    // 2. 触发 getter，此时 getter 中的 Dep.target 有值，会调用 addSub
+    this.data[this.key]; 
+    // 3. 重置 Dep.target，避免重复收集
+    Dep.target = null;
+  }
+  update() {
+    // 数据变化时执行的逻辑
+    const newVal = this.data[this.key];
+    this.cb(newVal);
+  }
+}
+
+// ==========================================
+// 4. 简易 Vue 类 (入口)
+// ==========================================
+class Vue {
+  constructor(options) {
+    this.$data = options.data;
+    // 1. 数据响应化
+    observe(this.$data);
+    // 2. 模拟模板编译/视图渲染
+    // 实际 Vue 中会解析 template，这里简化为手动创建 Watcher
+    if (options.render) {
+      new Watcher(this.$data, 'msg', (val) => {
+        options.render(val);
+      });
+      // 初始化渲染一次
+      options.render(this.$data.msg);
+    }
+  }
+}
+```
+
+
+
+# 中级
+
+# 高级
 
 # 入门
 
