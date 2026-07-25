@@ -82,6 +82,625 @@ MVC / MVP / MVVM 都是架构设计模式，用于分离数据、UI 和业务逻
 - `activated`：组件被激活时调用（从缓存中取出或首次加载）。
 - `deactivated`：组件被停用时调用（切换到其他组件）。
 
+## 自定义指令
+
+**一、定义**
+
+Vue 2 自定义指令主要用于对普通 DOM 元素进行底层操作，它提供了一组生命周期钩子函数（如 `bind`、`inserted`、`update`），允许开发者在指令绑定的不同阶段对 DOM 进行访问和修改，从而封装可复用的 DOM 操作逻辑。
+
+在 Vue 2 中，当我们需要对 DOM 元素进行直接操作，而这些操作无法通过组件的模板语法或内置指令（如 `v-model`、`v-show`）完成时，自定义指令是最佳选择。
+
+**二、注册方式**
+
+自定义指令分为 **全局注册** 和 **局部注册**。
+
+1.**全局注册**：在任何组件中都可以使用。
+
+```js
+    // 在 main.js 中
+    Vue.directive('focus', {
+      // 指令配置对象
+    })
+```
+
+2.**局部注册**：只能在当前组件中使用。
+
+```js
+    // 在组件内部
+    directives: {
+      focus: {
+        // 指令配置对象
+      }
+    }
+```
+
+**三、5个钩子函数**
+
+| 钩子函数           | 调用时机                               | 说明                       |
+| ------------------ | -------------------------------------- | -------------------------- |
+| `bind`             | 指令第一次绑定到元素时                 | 只调用一次，适合初始化操作 |
+| `inserted`         | 被绑定元素插入父节点时                 | 元素已存在于 DOM 中        |
+| `update`           | 所在组件的 VNode 更新时                | 可能在子 VNode 更新前触发  |
+| `componentUpdated` | 组件 VNode 及其子 VNode **全部更新后** | 更新完成后调用             |
+| `unbind`           | 指令与元素解绑时                       | 只调用一次，适合清理工作   |
+
+**钩子函数参**
+
+> 每个钩子函数都会接收以下参数（除了 `update` 和 `componentUpdated` 多了一个 `oldVnode`）：
+>
+> - **`el`**：指令所绑定的元素，可以直接用来操作 DOM。
+>
+> - `binding`
+>
+>   ：一个对象，包含以下属性：
+>
+>   - `name`：指令名（不包括 `v-` 前缀）。
+>   - `value`：指令的绑定值（例如 `v-my-dir="1 + 1"`，`value` 是 2）。
+>   - `oldValue`：指令绑定的前一个值（仅在 `update` 和 `componentUpdated` 中可用）。
+>   - `expression`：字符串形式的指令表达式（例如 `v-my-dir="1 + 1"`，`expression` 是 `"1 + 1"`）。
+>   - `arg`：传给指令的参数（例如 `v-my-dir:foo`，`arg` 是 `"foo"`）。
+>   - `modifiers`：一个包含修饰符的对象（例如 `v-my-dir.foo.bar`，`modifiers` 是 `{ foo: true, bar: true }`）。
+>
+> - **`vnode`**：Vue 编译生成的虚拟节点。
+>
+> - **`oldVnode`**：上一个虚拟节点（仅在 `update` 和 `componentUpdated` 中可用）。
+
+**四、Vue 2 与 Vue 3 自定义指令**
+
+1. 钩子函数名称变化：
+   - Vue 2：`bind` -> `inserted` -> `update` -> `componentUpdated` -> `unbind`
+   - Vue 3：重命名，为了与组件生命周期保持一致，更容易记忆。
+     - `bind` →→ `beforeMount`
+     - `inserted` →→ `mounted`
+     - `update` →→ 被拆分（移除）
+     - `componentUpdated` →→ `updated`
+     - `unbind` →→ `unmounted`
+2. 参数变化：
+   - Vue 3 中，不再提供 `binding.expression` 和 `binding.arg` 等部分属性（虽然主要逻辑还在），且钩子中接受的 `vnode` 和 `oldVnode` 结构发生了变化。
+
+## 自定义过滤器
+
+**一、定义**
+
+Vue 2 自定义过滤器主要用于**文本格式化**，它可以在插值表达式 `{{ }}` 或 `v-bind` 表达式中使用管道符 `|` 进行调用，对原始数据进行处理后返回显示结果，而不改变原始数据本身。过滤器本质上是一个 JavaScript 函数，接受输入值，处理后返回新的值。
+
+注意：过滤器只能用在**插值表达式**和 **`v-bind`** 表达式中，不能用在 `v-model` 或其他指令中。
+
+**二、注册方式**
+
+过滤器分为 **全局注册** 和 **局部注册**。
+
+1.**全局注册**：在所有 Vue 实例中都可以使用。
+
+```js
+    // 参数1：过滤器名称，参数2：过滤器函数
+    Vue.filter('capitalize', function (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.charAt(0).toUpperCase() + value.slice(1)
+    })
+```
+
+2.**局部注册**：只在当前组件实例中可用。
+
+```js
+    export default {
+      filters: {
+        reverse(value) {
+          return value.split('').reverse().join('')
+        }
+      }
+    }
+```
+
+**三、使用方法**
+
+过滤器通过管道符 `|` 进行连接，支持**串联**和**传参**。
+
+```
+{{ message | filteA | filterB('arg1', 'arg2') }}
+```
+
+## Vue Router的 params 与 query
+
+**一、定义**
+
+> `query` 传参类似于 HTTP 的 GET 请求，参数拼接在 URL 后面（`?key=value`），**刷新页面参数不丢失**；`params` 传参类似于 RESTful 风格，参数属于路由的一部分，**配合路由配置使用，如果不配置动态路由，刷新页面参数会丢失**。
+
+**二、区别**
+
+| 比较维度     | **Query**                     | **Params**                                                   |
+| :----------- | :---------------------------- | :----------------------------------------------------------- |
+| **表现形态** | `/path?id=123&name=tom`       | `/path/123` (动态路由) 或 不显示 (非配置)                    |
+| **路由配置** | **不需要**特殊配置            | **通常需要**在 `path` 中定义动态段（如 `/:id`）              |
+| **刷新页面** | **数据保留**（参数在 URL 上） | **数据丢失**（如果未配置动态路由）或 **数据保留**（如果配置了动态路由） |
+| **获取方式** | `this.$route.query.id`        | `this.$route.params.id`                                      |
+| **适用场景** | 搜索、筛选、分页等非敏感数据  | 必须存在才能正常访问的详情页 ID、用户唯一标识                |
+
+**三、详细解析**
+
+1.Query 传参
+
+Query 传参就是我们传统 URL 中 `?` 后面的参数。
+
+```js
+   // path或者name: 'User'都可以
+	this.$router.push({
+      path: '/user',
+      query: {
+        userId: '123',
+        name: 'alice'
+      }
+    });
+    // 地址栏显示: /user?userId=123&name=alice
+    // 获取
+    const id = this.$route.query.userId;
+```
+
+2.Params 传参
+
+**场景 A：配置了动态路由**
+
+```js
+    // 路由配置
+    { path: '/user/:id', component: User, name: 'User' }
+
+    // 跳转 (只能使用name，params 。如果用 path则无效)
+    this.$router.push({
+      name: 'User',
+      params: {
+        id: '123'
+      }
+    });
+    // 地址栏显示: /user/123
+    // 结果：刷新页面后，参数依然存在（因为 123 是 URL 路径的一部分）。
+```
+
+**场景 B：未配置动态路由**
+
+如果路由配置是 `path: '/user'`（没有 `:id`）。*第一次进入能获取到 userId，但一旦刷新页面，参数就会丢失。*
+
+**四、总结**
+
+- **Query**：相当于 `?id=1`，**刷新保留**，适合搜索、筛选。
+- **Params**：相当于 `/1`，**依赖路由配置**，配合 `name` 使用，适合详情页 ID。
+- **核心技巧**：怕刷新丢失就用 `query` 或者把 `params` 写在路由配置的 `path` 里；传参必须用 `name` 时记得别用 `path` 导致 `params` 失效。
+
+##  keep-alive
+
+**一、定义**
+
+> `<keep-alive>` 是 Vue 2 提供的一个内置抽象组件，用于在组件切换时将失活的组件实例**缓存**在内存中，而不是销毁它们。它可以保留组件的状态（如滚动位置、表单输入），避免重复渲染
+
+**二、原理**
+
+1.**抽象组件**
+
+> - `<keep-alive>` 自身不会渲染成 DOM 元素（在页面上看不到它），也不会出现在父组件链中。
+> - 它作用于包裹在其内部的**第一个子组件**（通常配合 `<router-view>` 或动态组件 `<component :is="...">` 使用）。
+
+2.**缓存机制**
+
+> - 当组件在 `<keep-alive>` 内被切换时，它的 `activated` 和 `deactivated` 两个生命周期钩子函数会被执行。
+> - 组件实例会被缓存在内存中，下次切换回来时，会直接从缓存中读取实例，**不会再次执行 `created`、`mounted` 等初始化钩子**。
+
+**3.LRU算法**
+
+> - 如果设置了 `max` 属性，`keep-alive` 使用 **LRU (Least Recently Used)** 算法来管理缓存。即：如果缓存数量超过上限，最近最少使用的缓存实例会被销毁，以便为新实例腾出空间。
+
+**三、核心属性**
+
+`<keep-alive>` 接受三个属性：
+
+> 1. `include`：白名单。只有名称匹配的组件会被缓存。
+>    - 类型：`String`、`RegExp` 或 `Array`。
+> 2. `exclude`：黑名单。任何名称匹配的组件都不会被缓存。
+>    - 类型：`String`、`RegExp` 或 `Array`。
+> 3. `max`：限制最多可以缓存多少组件实例。
+>    - 类型：`Number`。
+
+**注意：** `include` 和 `exclude` 匹配的是**组件内部定义的 `name` 选项**，而不是路由的名称。
+
+**四、进阶**
+
+1.**配合路由使用时的清除缓存需求**
+
+> - 场景：从 A 页面进入 B 页面，再回到 A 页面，需要缓存 A；但是从 A 页面进入 C 页面，再回到 A 页面，不需要缓存 A。
+> - **解决方案**：利用路由元信息（`meta`）动态控制 `include` 数组。或者使用 `beforeRouteLeave` 导航守卫手动设置当前组件是否需要缓存（较少用，通常通过 Vuex 控制 keep-alive 的 include 列表）。
+
+## 路由模式 Hash 与 History
+
+**一、定义**
+
+> Vue Router 的 `Hash` 模式和 `History` 模式是两种实现前端路由的方式。`Hash` 模式基于 URL 的哈希值（`#`）变化，兼容性好但 URL 不美观；`History` 模式基于 HTML5 History API，URL 美观但需要后端服务器配合配置，否则刷新页面会报 404。
+
+**二、原理**
+
+1.Hash 模式 (默认)
+
+> - 原理：
+>   - URL 中 `#` 及其后面的部分被称为 Hash。Hash 的改变不会导致浏览器向服务器发送请求，也就是说**不会刷新页面**。
+>   - Vue Router 通过监听浏览器的 `window.addEventListener('hashchange', ...)` 事件来感知 Hash 的变化。
+>   - 一旦 Hash 变化，Router 会根据新的 Hash 值匹配路由表，渲染对应的组件。
+> - 特点：
+>   - 虽然地址栏变了，但 HTTP 请求中不会包含 Hash 部分，因此对后端无影响。
+>   - 兼容性极好。
+
+2.History 模式
+
+> - 原理：
+>   - 利用 HTML5 History Interface 中新增的 `pushState()` 和 `replaceState()` 方法。
+>   - 这两个方法可以改变 URL 地址且**不会发送 HTTP 请求**，也不会刷新页面。
+>   - Vue Router 使用 `window.addEventListener('popstate', ...)` 来监听浏览器前进后退操作，从而触发路由更新。
+> - 特点：
+>   - URL 更加美观、正规，看起来像传统的多页面应用 URL。
+>   - **坑点**：因为 URL 是真实的路径（如 `/user`），当用户直接在地址栏输入或刷新页面时，浏览器会把这个 URL 当作一个普通的 HTTP 请求发送给后端。如果后端没有对应的路由处理（例如 `/user` 这个接口或文件），就会返回 **404 Not Found**。
+
+**三、进阶**
+
+**1.History 模式的 404 问题与解决方案（必问）**
+
+**问题**：在 History 模式下，刷新页面为什么会报 404？
+**回答**：因为前端路由是单页应用（SPA），只有 `index.html` 一个入口。刷新 `/user` 时，服务器会去寻找文件系统下的 `/user` 目录或文件，找不到自然报 404。
+
+**解决方案**：
+需要在服务器端进行配置，实现**资源回退**（Fallback）。即：如果 URL 匹配不到任何静态资源，就统一返回 `index.html`，把控制权交还给前端路由。
+
+```js
+location / {
+  try_files $uri $uri/ /index.html;
+}
+```
+
+**四、总结**
+
+**1.使用 Hash 模式**：
+
+- 如果是简单的后台管理系统、Web App，不需要复杂的 URL 语义。
+- 服务器环境不可控（例如部署在静态文件托管服务，无法配置 Nginx）。
+- 需要兼容非常老的浏览器。
+
+**2.使用 History 模式**：
+
+- 如果是对外的官网、电商网站，需要 SEO 优化。
+- 追求 URL 美观和语义化（如 `/product/123`）。
+- 有能力或权限配置服务器。
+
+## 一个路径渲染多个组件
+
+**1.定义**
+
+在 Vue 2 中，要实现一个路径（URL）同时渲染多个组件，需要使用 Vue Router 的 **命名视图** 功能。通过在路由配置中使用 `components`（复数）对象，并在模板中使用带 `name` 属性的 `<router-view>` 标签，将不同的组件渲染到页面的不同位置。
+
+**2.实战代码**
+
+定义三个组件
+
+```js
+// 简单组件定义
+const Header = { template: '<div class="header">我是顶部导航</div>' };
+const Sidebar = { template: '<div class="sidebar">我是侧边栏</div>' };
+const Content = { template: '<div class="content">我是主要内容</div>' };
+```
+
+配置路由
+
+```js
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/home',
+      // 注意这里是 components (复数)，并且是一个对象
+      components: {
+        // key 对应 <router-view> 的 name 属性
+        // value 对应要渲染的组件
+        default: Content,  // 默认视图，对应没有 name 的 <router-view>
+        a: Header,         // 名为 'a' 的视图
+        b: Sidebar         // 名为 'b' 的视图
+      }
+    }
+  ]
+});
+```
+
+- **适用场景**：复杂布局（多面板、侧边栏+内容区+顶部栏）。
+
+## 检测路由动态变化
+
+**一.定义**
+
+> 在 Vue 2 中，检测路由变化主要通过 **`watch` 监听 `$route` 对象** 或使用组件内的 **导航守卫 `beforeRouteUpdate`**。这主要用于解决在**同一个组件被复用**（如从 `/user/1` 跳转到 `/user/2`）时，组件生命周期钩子（`created`、`mounted`）不会再次触发，导致数据无法更新的问题。
+
+**二.解决方案**
+
+1.使用 `watch` 监听 `$route`（最常用）
+
+```js
+  // 1. 简单写法
+  watch: {
+    '$route'(to, from) {
+      // 路由变化时，重新获取数据
+      console.log('路由变化了', to.params.id);
+      this.fetchData();
+    }
+  },
+
+  // 2. 进阶写法（推荐）：使用 handler + immediate
+  watch: {
+    '$route': {
+      handler(to, from) {
+        this.userId = to.params.id;
+        this.fetchData();
+      },
+      // 关键点：immediate: true 表示组件创建时立即执行一次 handler
+      // 这样就不需要在 created 里再写一遍 fetchData 了
+      immediate: true 
+    }
+  },
+```
+
+2.使用 `beforeRouteUpdate` 导航守卫
+
+```js
+  // 关键点：beforeRouteUpdate
+  beforeRouteUpdate(to, from, next) {
+    // to: 即将进入的目标路由对象
+    // from: 当前导航正要离开的路由
+    // next: 必须调用该方法来 resolve 这个钩子
+    this.userId = to.params.id;
+    this.fetchData(); // 重新请求数据
+    
+    next(); // 不要忘记调用 next()
+  }
+```
+
+## router-link上v-slot
+
+**1.定义**
+
+早期，`router-link` 只能渲染为 `<a>` 标签，虽然可以通过 `tag` 属性改为 `<li>` 或 `<div>`，但这会导致 HTML 结构不合理（例如 `div` 包裹 `a` 或 `li` 包裹 `a` 产生无效的嵌套）。
+
+使用 `v-slot` 可以让我们完全掌控渲染的内容，手动控制触发跳转的事件和样式，从而写出更符合语义化和 SEO 的结构。
+
+**2.核心参数**
+
+使用 `v-slot="{ props }"` 时，`router-link` 会向插槽传递一个对象，包含以下关键属性：
+
+> 1. **`href`**: 解析后的 URL 地址。必须将其绑定到标签的 `href` 属性上。
+> 2. **`route`**: 解析后的标准路由对象。
+> 3. **`navigate`**: 一个函数，用于触发导航。必须绑定到点击事件上（通常配合 `.prevent` 修饰符使用）。
+> 4. **`isActive`**: 布尔值，如果当前路由匹配该链接（模糊匹配），则为 `true`。
+> 5. **`isExactActive`**: 布尔值，如果当前路由**精确匹配**该链接，则为 `true`。
+
+```js
+<ul>
+  <li>
+    <router-link to="/" custom v-slot="{ href, route, navigate, isActive }">
+      <a 
+        :href="href" 
+        @click="navigate"
+        :class="{ 'text-red': isActive }"
+      >
+        首页 (当前状态: {{ isActive ? '激活' : '未激活' }})
+      </a>
+    </router-link>
+  </li>
+</ul>
+```
+
+## $router与$route区别
+
+**一、定义**
+
+> **`$router`** 是 Vue Router 的**全局路由实例**，相当于“路由指挥官”，用于控制路由跳转（如 `push`、`replace`）；**`$route`** 是当前激活的**路由信息对象**，相当于“当前路况”，用于获取当前路径、参数等状态（如 `path`、`query`、`params`）。
+
+- **`$router` 是“导航仪”**：
+  - 你想“去北京”或者“回退到上一站”，你需要操作导航仪（调用 `$router.push` 或 `$router.go`）。整个车里只有一个导航仪（全局单例）。
+- **`$route` 是“路牌”**：
+  - 你想知道“我现在在哪里”、“这条叫什么路”、“这条路限速多少”，你需要看路牌（读取 `$route` 的属性）。不同的路口有不同的路牌（每个路由状态不同）。
+
+**二、实践**
+
+1.使用 `$router` 进行跳转 (写操作)
+
+```js
+export default {
+  methods: {
+    goToDetail() {
+      // 使用 $router 进行编程式导航
+      // 类似于点击了 <router-link to="/detail">
+      // 1. push (跳转，保留历史记录，可回退)
+      this.$router.push('/detail');
+      this.$router.push({ path: '/detail', query: { id: 1 } });
+      // 2. replace (替换当前记录，不可回退)
+      this.$router.replace('/login');
+      // 3. go (前进或后退，类似于浏览器的左右箭头)
+      this.$router.go(-1); // 后退一页
+      this.$router.back(); // 后退
+      this.$router.forward(); // 前进
+    }
+  }
+}
+```
+
+2.使用 `$route` 获取参数 (读操作)
+
+```js
+export default {
+  created() {
+    // 读取当前 URL 的参数
+    // 获取 Query 参数 (?id=123)
+    const id = this.$route.query.id;
+    // 获取 Params 参数 (/detail/123)
+    const userId = this.$route.params.id;
+    // 获取当前路径
+    const path = this.$route.path; // "/detail" 
+    // 获取元信息
+    const requiresAuth = this.$route.meta.requiresAuth;
+  }
+}
+```
+
+## 路由守卫
+
+**一、定义**
+
+> 路由守卫是 Vue Router 提供的**钩子函数**，主要用于通过**跳转或取消**的方式来守卫导航。常用于**登录验证（鉴权）**、**权限控制**和**页面标题设置**等场景。它分为**全局守卫**、**路由独享守卫**和**组件内守卫**三类。
+
+**二、三种路由守卫**
+
+> 1. **全局守卫**：注册在 `router` 实例上，对所有路由跳转生效。
+>    - `beforeEach`：**全局前置守卫**（最常用），常用于登录拦截。
+>    - `beforeResolve`：**全局解析守卫**，在导航被确认之前，且所有组件内守卫和异步路由组件被解析之后调用。
+>    - `afterEach`：**全局后置钩子**，导航结束之后调用，没有 `next` 函数，常用于修改页面 Title。
+> 2. **路由独享守卫**：直接在路由配置（`routes` 数组的对象）中定义，只对特定路由生效。
+>    - `beforeEnter`。
+> 3. **组件内守卫**：直接在 `.vue` 组件内部定义（与 `methods`、`mounted` 同级）。
+>    - `beforeRouteEnter`：进入该组件前调用（**此时组件实例还未创建**，不能访问 `this`）。
+>    - `beforeRouteUpdate`：复用组件时（如 `/a/1` -> `/a/2`）调用。
+>    - `beforeRouteLeave`：离开该组件时调用（常用于防止误操作，如未保存提示）。
+
+**核心参数**
+
+> 在 Vue 2 的守卫中（`afterEach` 除外），通常接收三个参数：
+>
+> - **`to`**: 即将要进入的目标 路由对象。
+> - **`from`**: 当前导航正要离开的 路由对象。
+> - `next`: (Vue 2 必须调用) 这是一个必须调用的函数，用来 resolve 这个钩子。
+>   - `next()`: 进行管道中的下一个钩子。
+>   - `next(false)`: 中断当前的导航。
+>   - `next('/')` 或 `next({ path: '/' })`: 跳转到一个不同的地址。
+
+**三、实战**
+
+1.全局前置守卫（登录鉴权经典案例）
+
+```js
+// router/index.js
+router.beforeEach((to, from, next) => {
+  // 1. 判断是否需要登录（meta 字段配置）
+  if (to.meta.requiresAuth) {
+    // 2. 判断是否有 token
+    const token = localStorage.getItem('token');
+    if (token) {
+      next(); // 已登录，放行
+    } else {
+      // 未登录，强制跳转到登录页
+      next('/login?redirect=' + encodeURIComponent(to.fullPath));
+    }
+  } else {
+    next(); // 不需要登录，直接放行
+  }
+})
+```
+
+2.组件内守卫（获取组件实例与离开确认）
+
+```js
+export default {
+  data() {
+    return { isSaved: false }
+  },
+  // 进入组件前
+  beforeRouteEnter(to, from, next) {
+    // 注意：这里不能访问 this，因为组件实例还没创建
+    // 可以通过回调函数来访问实例
+    next(vm => {
+      // 通过 vm 访问组件实例
+      console.log('当前组件 ID:', vm.id);
+    });
+  },
+  // 离开组件前
+  beforeRouteLeave(to, from, next) {
+    if (this.isSaved) {
+      next(); // 已保存，允许离开
+    } else {
+      const answer = window.confirm('您有未保存的内容，确定要离开吗？');
+      if (answer) {
+        next();
+      } else {
+        next(false); // 取消离开
+      }
+    }
+  }
+}
+```
+
+## 路由懒加载
+
+**一、定义**
+
+> 路由懒加载是 Vue Router 结合 Webpack 实现的一种**性能优化手段**。它通过**动态导入**语法替代静态导入，将不同路由对应的组件打包成独立的代码块
+
+**二、实战**
+
+```
+// import User from './User.vue' 静态导入
+const User = () => import('./User.vue') // 动态导入
+const router = createRouter({
+	// ...
+	routes:[{path:'/user/:id', component: User}]
+})
+```
+
+**三、进阶用法-命名 Chunk 和预加载**
+
+配合 Webpack 的**魔法注释**来控制打包后的文件名，以及进行资源预取/预加载，进一步提升体验。
+
+**1.把组件打包在同一个 chunk 中（分组）**
+
+相关的页面，或者业务逻辑强相关，可以打包在一起。
+
+```js
+const About = () => import(/* webpackChunkName: "about-group" */ '@/views/About.vue')
+const User = () => import(/* webpackChunkName: "about-group" */ '@/views/User.vue')
+// 打包后文件名会类似 about-group.a1b2.js
+```
+
+**2.预加载**
+
+在主 bundle 加载完成后，浏览器空闲时，偷偷下载其他路由的资源。
+
+```js
+const About = () => import(/* webpackPrefetch: true */ '@/views/About.vue')
+```
+
+## 插槽
+
+分为：**默认插槽**、**具名插槽**和**作用域插槽**。
+
+```js
+// Parent.vue
+	<Child>
+      <p>这是父组件插入的一段话</p>
+	  <template #content></template>
+	  <template v-slot="{data:[]}"></template>
+    </Child>
+// Child.vue
+	<div class="box">
+      <slot>默认插槽</slot>
+	  <slot name="content">具名插槽</slot>
+	  <slot :data="item">作用域插槽</slot>
+    </div>
+```
+
+## computed 和 watch
+
+**1.共同点**：watch和computed都是依赖数据变化触发
+
+**2.区别**
+
+> - watch:擅长一对多的关系处理，无缓存性。支持异步。不需要返回值。
+> - computed:擅长多对一的关系处理，有缓存性。不支持异步。必须有返回值
+
+**3.进阶**
+
+**Computed 为什么不能做异步**
+
+> 因为 computed 的本质是 getter，它需要依赖 return 返回一个值给模板渲染。如果在里面写异步，函数会立即返回一个 Promise，而不是计算后的数据，导致模板无法正确显示。
+
+# 中级
+
 ## 单向数据流与双向数据绑定
 
 **一、 定义**
@@ -286,11 +905,155 @@ class Vue {
 }
 ```
 
+## vue-loader是什么
 
+**1.定义**
 
-# 中级
+> `vue-loader` 是 Webpack 的一个 **loader（加载器）**，它的核心作用是解析和转换 Vue 的**单文件组件（.vue 文件）**。它能将 `.vue` 文件中的 `<template>`、`<script>` 和 `<style>` 块拆分出来，分别交给对应的 loaders 处理，最后组装成一个标准的 JavaScript 模块。
+
+**2.原理**
+
+浏览器无法直接识别 `.vue` 文件。Webpack 本身也只理解 JavaScript 和 JSON。
+
+`vue-loader` 就是一个“翻译官”：
+
+> 1. **拆解**：把一个 `.vue` 文件拆解成三部分（HTML、JS、CSS）。
+> 2. 分发：
+>    - `<template>` -> 提取给 `vue-template-compiler` 编译成 `render` 函数。
+>    - `<script>` -> 提取给 `babel-loader` 或 `ts-loader` 处理。
+>    - `<style>` -> 提取给 `css-loader`、`style-loader` 或 `sass-loader` 处理。
+> 3. **组装**：将处理好的部分重新组合，导出一个 ESM 模块，供 Webpack 打包。
+
+**3.Scoped CSS 原理**
+
+在 Vue 2 中，给 `<style>` 标签加上 `scoped` 属性后，CSS 样式只会作用于当前组件，`vue-loader` 是如何实现的？
+
+> 1. **生成 Hash**：在编译组件时，`vue-loader` 会为该组件生成一个唯一的哈希字符串（例如 `data-v-12345678`）。
+> 2. **HTML 注入**：将该 Hash 作为属性添加到组件内所有的 HTML 标签上（例如 `<div data-v-12345678></div>`）。
+> 3. **CSS 选择器增强**：通过 PostCSS 处理 CSS，给所有的样式选择器末尾添加一个 `[data-v-12345678]` 的属性选择器。
 
 # 高级
+
+## $forceUpdate原理
+
+**1.定义**
+
+迫使Vue实例重新渲染。注意它仅仅影响实例本身和插入插槽内容的子组件，而不是所有子组件。
+
+2.内部原理
+
+```
+Vue.prototype.$forceUpdate = function (){
+	const vm:Component = this
+	if(vm._watcher){
+		// 触发watcher手动更新update方法
+		vm._watcher.update()
+	}
+}
+```
+
+
+
+## Vue Router原理
+
+**一、定义**
+
+> Vue Router 的底层原理核心在于**URL 变化监听**与**组件映射**。通过监听浏览器 URL 的变化，利用**路由匹配器**找到对应的组件，再通过 Vue 的响应式机制更新 `<router-view>` 中的内容，从而实现页面无刷新切换。主要分为 **Hash 模式**和 **History 模式**两种实现方式。
+
+**二、核心流程**
+
+无论哪种模式，Vue Router 的内部工作流程都遵循以下三个步骤：
+
+1. **监听**：监听浏览器地址栏 URL 的变化。
+2. **匹配**：根据新的 URL 路径，在路由配置表中进行查找，生成一个匹配的路由记录对象（Route Record）。
+3. **渲染**：将匹配到的组件实例渲染到页面上的 `<router-view>` 占位符中。
+
+**三、底层原理**
+
+**1.Hash 模式（基于 `window.location.hash`）**
+
+> 底层实现逻辑：
+>
+> 1. **初始化**：页面加载时，读取 `window.location.hash`，根据初始值进行首次路由匹配。
+> 2. **监听**：调用 `window.addEventListener('hashchange', callback)`。
+> 3. **触发**：当用户点击 `<router-link>` 或调用 `router.push` 时，Vue Router 会直接修改 `window.location.hash`（例如从 `#/home` 改为 `#/user`），从而触发 `hashchange` 事件。
+> 4. **回调处理**：在回调函数中，解析新的 Hash 值，匹配对应的组件，并渲染。
+
+**2.History 模式（基于 HTML5 History API）**
+
+> 底层实现逻辑：
+>
+> 1. **URL 修改**：当路由跳转时，调用 `history.pushState(state, title, url)`。注意：**手动调用 `pushState` 不会触发任何事件**，所以 Vue Router 内部封装了 `push` 方法，在修改 URL 后，手动执行路由匹配逻辑。
+> 2. **事件监听**：监听 `window.addEventListener('popstate', callback)`。
+> 3. **触发时机**：`popstate` 事件仅在浏览器**前进/后退**按钮被点击时触发（或在 JS 中调用 `back()`/`forward()` 时）。
+> 4. **刷新问题**：用户直接刷新页面时，浏览器会向服务器请求该 URL。如果没有后端配置返回 `index.html`，就会报 404。
+
+**四、`<router-view>`的底层原理**
+
+“路由变了，组件是怎么换掉的？”
+
+> - `<router-view>` 是一个**函数式组件**（Functional Component）。
+> - 它不渲染自己的 HTML，而是根据当前的路由状态（`this.$route`），找到匹配到的组件定义，并将其渲染出来。
+> - 它通过维护一个深度标记来支持嵌套路由：
+>   - Vue Router 会维护一个 `matched` 数组（例如：`[ParentComponent, ChildComponent]`）。
+>   - 最外层的 `<router-view>` 渲染 `matched[0]`。
+>   - `ParentComponent` 内部的 `<router-view>` 渲染 `matched[1]`，以此类推。
+
+## Diff算法
+
+**1.定义**
+
+> Vue 2 的 Diff 算法采用的是**基于双端比较**的同层比较策略。它的核心目标是在 Virtual DOM（虚拟 DOM）树发生变更时，通过对比新旧节点，找出最小的变动量，从而以最小的操作代价更新真实 DOM，提高渲染性能。
+
+**2.核心前提**
+
+在进行 Diff 之前，Vue 做了几个假设来优化效率，这也是它比原生 DOM 操作快的原因：
+
+- **只比较同层级**：不会跨层级比较（例如：父节点不会和孙子节点比），如果层级不同，直接销毁重建。
+- **Tag 不同直接删除**：如果新旧节点的标签名不同（如 `div` 变 `p`），直接销毁旧节点及子节点，创建新节点。
+- **Key 的存在**：通过 Key 判断节点是否可以复用。
+
+**3.详细流程(双端比较)**
+
+当新旧节点的 Tag 和 Key 都相同时，进入子节点更新流程（`updateChildren`）。Vue 2 使用了**四指针**（OldStart, OldEnd, NewStart, NewEnd）法，在旧节点列表和新节点列表的头尾向中间移动并进行比对。
+
+具体比对顺序（优先级从高到低）：
+
+> 1. **旧头 vs 新头 (`oldStartIdx` vs `newStartIdx`)**：
+>    - 如果匹配，说明节点位置没变，直接 `patch` 更新属性，两指针右移。
+> 2. **旧尾 vs 新尾 (`oldEndIdx` vs `newEndIdx`)**：
+>    - 如果匹配，说明节点位置没变，直接 `patch` 更新属性，两指针左移。
+> 3. **旧头 vs 新尾 (`oldStartIdx` vs `newEndIdx`)**：
+>    - 如果匹配，说明该旧节点被移动到了新列表的末尾。
+>    - 操作：将该真实 DOM 节点移动到旧尾节点的后面，旧头指针右移，新尾指针左移。
+> 4. **旧尾 vs 新头 (`oldEndIdx` vs `newStartIdx`)**：
+>    - 如果匹配，说明该旧节点被移动到了新列表的开头。
+>    - 操作：将该真实 DOM 节点移动到旧头节点的前面，旧尾指针左移，新头指针右移。
+> 5. **非上述四种情况（乱序/未知匹配）**：
+>    - 拿新头节点（`newStartIdx`）的 Key 去旧节点列表中查找。
+>    - **如果找到了**：说明该旧节点存在于旧列表中，但位置变了。将该真实 DOM 节点移动到旧头指针之前。并将该旧节点在旧列表中标记为 `undefined`（表示已处理，防止重复移动）。
+>    - **如果没找到**：说明这是一个新节点，直接创建新 DOM 节点插入到旧头指针之前。
+
+**4.循环结束后的收尾工作**
+
+当循环结束（通常是 `OldStart > OldEnd` 或 `NewStart > NewEnd`）时，可能存在多余节点：
+
+- **如果旧列表先遍历完**：说明新列表中还有剩余节点，这些节点都是需要新增的。直接批量创建并插入到 DOM 中。
+- **如果新列表先遍历完**：说明旧列表中还有剩余节点，这些节点都是需要删除的。直接批量销毁这些真实 DOM。
+
+**5.总结**
+
+Vue 2 的 Diff 算法通过**双端比较**和**Key 映射**，将最坏情况下的全量比对 O(n3)*O*(*n*3) 降低到了 O(n)*O*(*n*)。它虽然不如 Vue 3 的最长递增子序列算法极致，但在大多数业务场景下已经提供了非常好的性能表现。
+
+**6.进阶**
+
+> 1.**为什么不建议用 index 做 Key**
+>
+> 如果用数组索引做 Key，当列表发生插入、删除操作时，所有后续元素的索引都会变化，导致 DOM 没有被复用，而是全部重新渲染（Patch 失效），极大地降低了性能。建议使用唯一的 ID（如后端返回的 ID）作为 Key。
+>
+> 2.**Vue 3 的 Diff 有什么不同**
+>
+> Vue 3 采用了**最长递增子序列**算法，去掉了双端比较，仅通过新的头尾和旧的头尾进行比对，利用 Map 查找 Key，整体算法更复杂但减少了不必要的 DOM 移动，性能更高。
 
 # 入门
 
