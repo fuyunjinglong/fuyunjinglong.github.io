@@ -699,6 +699,34 @@ const About = () => import(/* webpackPrefetch: true */ '@/views/About.vue')
 
 > 因为 computed 的本质是 getter，它需要依赖 return 返回一个值给模板渲染。如果在里面写异步，函数会立即返回一个 Promise，而不是计算后的数据，导致模板无法正确显示。
 
+## 组件的data是函数，而根组件是对象
+
+**1.定义**
+
+**Vue 组件的 `data` 必须是一个函数，是为了防止组件在多次复用时发生数据污染（多个实例共享同一份数据）；而根实例（Root Instance）是单例模式，不会被复用，因此 `data` 可以是对象。**
+
+**2.详细分析**
+
+data 必须是函数
+
+> - **对象是引用类型**：如果 `data` 是一个对象，当该组件被复用多次（例如在页面中使用多个 `<my-component>`），所有的实例实际上都指向内存中的同一个对象地址。
+> - **数据污染风险**：一旦某个组件实例修改了数据，其他所有实例的数据也会随之改变，这显然不符合组件独立性的设计原则。
+> - **函数返回新对象**：如果 `data` 是一个函数，Vue 在创建每个组件实例时，都会调用这个函数。函数每次执行都会返回一个新的对象，从而确保每个组件实例都有自己独立的数据作用域，互不干扰。
+
+根组件的 data 是对象
+
+> - **单例特性**：Vue 应用的根实例（通过 `new Vue()` 创建）在整个应用中通常是唯一的，不存在“复用”的情况。
+> - **无需隔离**：既然根实例不会被多次实例化，也就不存在多个实例共享数据引用的问题，所以直接使用对象形式更加简洁方便。
+
+## 组件通信
+
+分为三类：**父子通信**、**跨级通信**、**兄弟/任意组件通信**
+
+> - 父子：`props/$emit`，语法糖 (`v-model` / `.sync`)
+> - 跨级：`provide` / `inject`(依赖注入)，`$attrs` / `$listeners`(隔代传递)
+> - 兄弟/任意：Event Bus (事件总线)，Vuex (状态管理)
+> - 其他：`$refs`，`$parent` / `$children`
+
 # 中级
 
 ## 单向数据流与双向数据绑定
@@ -952,7 +980,47 @@ Vue.prototype.$forceUpdate = function (){
 }
 ```
 
+## nextTick原理
 
+**一.定义**
+
+**核心作用是：将回调函数推迟到下一次 DOM 更新循环结束之后执行**
+
+简单说：当你修改了数据（Data），视图（DOM）还来不及更新时，使用 `nextTick` 可以确保在 DOM 更新完成后才执行相关逻辑，从而获取到最新的 DOM 元素。
+
+**二.为什么要用它**
+
+Vue 的**异步更新策略**
+
+> Vue 2 在修改数据时，默认不会立即更新 DOM。如果同一个事件循环内多次修改同一个数据，Vue 会将其放入队列，并在下一次事件循环的微任务中去批量更新。这样做是为了避免不必要的性能消耗
+
+**三.源码实现**
+
+两个关键点：**回调队列** 和 **降级策略**。
+
+**1.核心逻辑**
+
+> Vue 内部维护了一个回调队列（`callbacks`数组）。当我们调用 `nextTick(cb)` 时，会将回调函数 `cb` 推入这个队列。然后，Vue 会利用浏览器的异步任务机制（微任务优先，宏任务兜底）来异步清空这个队列。
+
+**2. 降级策略（优先级排序）**
+
+> Vue 2 为了兼容性和性能，会按照优先级依次尝试使用以下异步方法：
+>
+> 1. **Promise**（微任务）：
+>    如果浏览器支持 Promise，则首选 `Promise.then`。这是最理想的微任务方案。
+> 2. **MutationObserver**（微任务）：
+>    如果不支持 Promise，会尝试使用 H5 的 `MutationObserver`（它通常也是微任务）。
+> 3. **setImmediate**（宏任务/准微任务）：
+>    如果以上都不支持，会尝试使用 IE 特有的 `setImmediate`。
+> 4. **setTimeout**（宏任务）：
+>    最后的兜底方案。虽然性能稍差，但所有浏览器都支持。
+
+**3.流程**
+
+> - 用户修改数据 -> 触发 `setter` -> 通知 Watcher -> Watcher 被推入队列 -> 调用 `nextTick(flushSchedulerQueue)`。
+> - `nextTick` 将刷新视图的函数 `flushSchedulerQueue` 和用户自定义的回调一起推入 `callbacks` 队列。
+> - 执行 `timerFunc`（上述降级策略中的一种）。
+> - 在异步任务中，遍历 `callbacks` 队列并执行所有回调。
 
 ## Vue Router原理
 
@@ -999,6 +1067,63 @@ Vue.prototype.$forceUpdate = function (){
 >   - 最外层的 `<router-view>` 渲染 `matched[0]`。
 >   - `ParentComponent` 内部的 `<router-view>` 渲染 `matched[1]`，以此类推。
 
+## Vuex原理
+
+**一、定义**
+
+Vuex 的本质是一个**专为 Vue 应用设计的全局状态管理插件**。
+
+> `Vue.use` 注入 -> `Mixin` 挂载 -> `new Store` 初始化内部 Vue 实例
+
+核心原理有2点：
+
+> 1. **注入机制**：利用 Vue 的**插件系统**（`Vue.use`），通过 `Vue.mixin` 全局混入，将 `$store` 实例挂载到每个组件实例上。
+> 2. **响应式机制**：利用 Vue 的**响应式系统**，在内部创建一个 Vue 实例来存储 state，使得 state 的变化能自动触发视图更新。
+
+**二、架构**
+
+**1.整体**
+
+Vuex 的核心是一个 `Store` 类。它包含了 `state`、`getters`、`mutations`、`actions` 等核心概念。
+
+**2. 响应式原理**
+
+这是 Vuex 最巧妙的地方。Vuex 内部维护了一个 Vue 实例（VM）：
+
+- State 的响应式：Vuex 将 state 对象作为这个内部 Vue 实例的data选项。
+  - 因为 Vue 的 `data` 是响应式的，所以当 `state` 改变时，依赖该 state 的组件会自动重新渲染。
+- Getters 的实现：Vuex 将 getters 作为这个内部 Vue 实例的computed计算属性。
+  - 计算属性具有缓存和依赖收集的特性，非常适合处理派生状态。
+
+**3.注入与挂载原理**
+
+为了让所有组件都能访问 `$store`，Vuex 实现了 `install` 方法：
+
+- **`Vue.use(Vuex)`**：调用 Vuex 的 `install` 方法。
+- **全局混入 (`Vue.mixin`)**：通过 `beforeCreate` 生命周期钩子进行混入。
+- 逻辑流程：
+  1. 根实例创建时，`options.store` 存在，将 `this.$store` 指向它。
+  2. 子组件创建时，通过 `options.parent.$store` 向上查找，从而实现所有组件共享同一个 `$store` 实例。
+
+**4.单向数据流**
+
+- **State**：数据源。
+- **View**：渲染视图。
+- **Mutations**：同步修改 state（唯一途径）。
+- **Actions**：处理异步操作，提交 Mutation。
+
+**三、源码层面**
+
+> 1. **`resetStoreVM`**：
+>    在 Vuex 源码中，核心逻辑在 `resetStoreVM` 函数中。它创建了内部的 Vue 实例，并遍历 `getters`，通过 `Object.defineProperty` 将每个 getter 代理到 Store 实例上，使其访问方式为 `store.getterName`，但实际上读取的是内部 VM 的计算属性。
+> 2. **严格模式**：
+>    源码中通过 `_vm.$watch` 监听 state 的变化。在严格模式下，如果 state 的变化不是由 mutation 函数触发的（即没有通过 commit 修改），控制台会报警告。这是通过检查 `commiting` 标志位实现的。
+
+**四、面试**
+
+> - Q：Mutations 为什么不能做异步操作？
+> - A：Mutation 同步性不是语法限制，而是**调试体系的契约**——它用"放弃异步便利性"换取了"状态变更可追踪、可回放、可预测。异步逻辑应交给 Action，由 Action 在异步完成后 commit 一个同步 Mutation 来落地状态。
+
 ## Diff算法
 
 **1.定义**
@@ -1019,14 +1144,14 @@ Vue.prototype.$forceUpdate = function (){
 
 具体比对顺序（优先级从高到低）：
 
-> 1. **旧头 vs 新头 (`oldStartIdx` vs `newStartIdx`)**：
+> 1. **旧头 vs 新头** (`oldStartIdx` vs `newStartIdx`)：
 >    - 如果匹配，说明节点位置没变，直接 `patch` 更新属性，两指针右移。
-> 2. **旧尾 vs 新尾 (`oldEndIdx` vs `newEndIdx`)**：
+> 2. **旧尾 vs 新尾** (`oldEndIdx` vs `newEndIdx`)：
 >    - 如果匹配，说明节点位置没变，直接 `patch` 更新属性，两指针左移。
-> 3. **旧头 vs 新尾 (`oldStartIdx` vs `newEndIdx`)**：
+> 3. **旧头 vs 新尾** (`oldStartIdx` vs `newEndIdx`)：
 >    - 如果匹配，说明该旧节点被移动到了新列表的末尾。
 >    - 操作：将该真实 DOM 节点移动到旧尾节点的后面，旧头指针右移，新尾指针左移。
-> 4. **旧尾 vs 新头 (`oldEndIdx` vs `newStartIdx`)**：
+> 4. **旧尾 vs 新头** (`oldEndIdx` vs `newStartIdx`)：
 >    - 如果匹配，说明该旧节点被移动到了新列表的开头。
 >    - 操作：将该真实 DOM 节点移动到旧头节点的前面，旧尾指针左移，新头指针右移。
 > 5. **非上述四种情况（乱序/未知匹配）**：
