@@ -727,6 +727,40 @@ data 必须是函数
 > - 兄弟/任意：Event Bus (事件总线)，Vuex (状态管理)
 > - 其他：`$refs`，`$parent` / `$children`
 
+## 常用修饰符
+
+在 *vue* 中修饰符可以分为 *3* 类：
+
+- 事件修饰符
+- 按键修饰符
+- 表单修饰符
+
+事件修饰符
+
+> - *.stop*：阻止冒泡。
+> - *.prevent*：阻止默认事件。
+> - *.capture*：使用事件捕获模式。
+> - *.self*：只在当前元素本身触发。
+> - *.once*：只触发一次。
+> - *.passive*：默认行为将会立即触发。
+
+按键修饰符
+
+> - .*left*：左键
+> - .*right*：右键
+> - .*middle*：滚轮
+> - .*enter*：回车
+> - .*tab*：制表键
+> - .*delete*：捕获 “删除” 和 “退格” 键
+> - .*esc*：返回
+> - .*space*：空格
+
+表单修饰符
+
+> - .*lazy*：在文本框失去焦点时才会渲染
+> - .*number*：将文本框中所输入的内容转换为number类型
+> - .*trim*：可以自动过滤输入首尾的空格
+
 # 中级
 
 ## 单向数据流与双向数据绑定
@@ -1149,6 +1183,113 @@ Vuex 的核心是一个 `Store` 类。它包含了 `state`、`getters`、`mutati
 
 > - Q：Mutations 为什么不能做异步操作？
 > - A：Mutation 同步性不是语法限制，而是**调试体系的契约**——它用"放弃异步便利性"换取了"状态变更可追踪、可回放、可预测。异步逻辑应交给 Action，由 Action 在异步完成后 commit 一个同步 Mutation 来落地状态。
+
+## template 编译过程
+
+**一、定义**
+
+本质上是：**模板字符串 → AST →（优化）→ 渲染函数代码字符串 → 真正的 render 函数**，核心由 `parse`、`optimize`、`generate` 三个阶段完成，通常由 `vue-template-compiler` 在构建时预编译，或在运行时使用 `Vue.compile` 动态编译。
+
+> 分为三步：`parse` 将模板字符串解析成 AST；`optimize` 标记静态节点；`generate` 将 AST 转成渲染函数代码字符串，再通过 `new Function` 得到真正的 render 函数。
+
+**二、整体流程**
+
+> - template 字符串
+> - parseHTML 解析模板
+> - AST 抽象语法树
+> - optimize 标记静态节点
+> - generate 生成代码字符串
+> - new Function 创建 render 函数
+> - 组件实例执行 render 生成 VNode
+
+**1.第一步：parse —— 模板字符串 → AST**
+
+目标：把模板字符串解析成抽象语法树（AST）
+
+> - 使用基于正则的有限状态机解析 HTML：
+>   - 面试可说：**“逐字符扫描，用正则匹配标签、属性、文本、注释等，维护一个栈来构建层级关系”**。
+> - 主要生成的 AST 节点类型：
+>   - `Element`：元素节点，包含 `tag`、`attrsList`、`children`、`parent` 等。
+>   - `Text`：普通文本节点。
+>   - `Expression`：模板插值 `{{ msg }}` 解析出的表达式。
+>   - `Comment`：注释节点。
+> - 处理的关键内容：
+>   - 指令解析：`v-if`、`v-for`、`v-model` 等，转换成 AST 上的特殊属性（如 `if`、`for`、`model`）。
+>   - 插值表达式：`{{ xxx }}` 被解析为带有 `expression` 的文本节点或表达式节点。
+> - 输出：
+>   - 一棵描述模板结构的 AST 树，后面所有优化和代码生成都基于这棵树进行。
+
+**2.第二步：optimize —— 标记静态节点（重要优化）**
+
+目标：在 AST 上标记静态子树，为后续渲染性能优化打基础。
+
+> - 核心思想：
+>   - **静态节点**：一旦渲染就不会再变化的节点（没有绑定、没有指令、没有插值）。
+>   - 静态子树在每次重渲染时可以跳过重新创建，直接复用，甚至提升为静态渲染函数。
+> - 做的事情：
+>   - 标记每个 AST 节点的 `static` 属性。
+>   - 标记 `staticRoot`：当某个节点及其所有子节点都是静态时，将其标记为静态根。
+> - 收益：
+>   - 生成 `staticRenderFns`，将静态子树单独渲染为函数，在 `_render` 中直接调用。
+>   - 减少每次 render 的开销，提升更新性能，这是模板编译相对于手写 render 的主要优化之一。
+
+**3.第三步：generate —— AST → 渲染函数代码字符串**
+
+目标：根据优化后的 AST 生成渲染函数的代码字符串。
+
+> - 输入：
+>   - 优化后的 AST。
+> - 输出（vue-template-compiler.compile返回的对象）
+>   - `render`：主渲染函数代码字符串。
+>   - `staticRenderFns`：静态子树的渲染函数代码字符串数组。
+>   - `ast`：解析后的 AST（可选）。
+>   - `errors/warnings`：编译错误/警告信息。
+> - 生成的代码特点：
+>   - 使用 `with(this){...}` 包裹，简化属性访问（运行时也可在非严格模式下使用）。
+>   - 内部通过 `_c(tag, data, children)`、`_v(text)`、`_s(expr)` 等运行时辅助函数创建 VNode。
+>   - `v-if` / `v-for` 等被展开成三元表达式、`_l` 循环等 JavaScript 逻辑。
+
+**4.第四步：代码字符串 → 真正的 render 函数**
+
+目标：把生成的代码字符串变成可执行的函数。
+
+> - 通常通过 new Function(code) 创建函数：
+>   - 在运行时编译场景下，Vue 使用类似：const res = Vue.compile(template);const render = new Function(res.render)
+> - 在构建时预编译时，`vue-loader` 直接把生成的 `render` / `staticRenderFns` 字符串注入到组件选项中，无需运行时编译。
+> - 严格模式 / CSP 问题：
+>   - 因为生成的代码使用了 `with`，所以不能在严格模式或 CSP 环境直接执行；这就是推荐预编译的原因之一。
+
+5.运行时执行：render → VNode
+
+> - 组件初始化时，会把编译得到的 `render` 和 `staticRenderFns` 挂载到组件选项上。
+> - 在组件渲染流程中：
+>   - 调用 `render` 函数，结合组件实例作为上下文（`this`），生成 VNode 树。
+>   - 静态子树通过 `staticRenderFns` 单独调用，返回的 VNode 会被复用。
+> - 后续：
+>   - VNode 经过 `patch` 过程，转化为真实 DOM 并挂载到页面。
+
+**三、关键点**
+
+**1.编译时机：构建时 vs 运行时**
+
+> - 构建时预编译（主流）：
+>   - `vue-loader` + `vue-template-compiler`，在构建阶段就生成 `render` / `staticRenderFns`。
+>   - 运行时只需要“运行时构建”，体积更小，且没有 CSP / 严格模式问题。
+> - 运行时编译：
+>   - 使用完整构建版本，通过 `Vue.compile` 在浏览器端编译模板。
+>   - 适合动态模板、简单示例，但性能和兼容性都不如预编译。
+
+**2.AST 的作用**
+
+> - AST 是模板的中间表示，所有后续操作（优化、代码生成）都基于 AST。
+> - AST 让我们可以对模板做静态分析、优化、错误检查，而不是直接用正则“硬拼”代码。
+
+**3.optimize 的意义**
+
+> - 标记静态节点，让 Vue 能够：
+>   - 跳过静态子树的 diff。
+>   - 提升为静态渲染函数，减少每次渲染的函数调用开销。
+> - 面试可以顺带说：**“这是模板编译比手写 render 性能更好的关键点之一”**。
 
 ## Diff算法
 
