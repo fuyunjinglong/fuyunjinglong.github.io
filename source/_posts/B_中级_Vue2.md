@@ -8,6 +8,64 @@ toc: true # 是否启用内容索引
 
 # 初级
 
+## 声明式渲染与渐进式框架
+
+- 声明式渲染：数据驱动视图
+- 组件系统：UI 结构到组件树
+- 核心插件(热插拔)：客户端路由、状态管理、构建系统 vue-cli
+
+## vue.min.js体验
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #app {
+        background-color: pink;
+      }
+      .app-msg {
+        color: yellow;
+      }
+    </style>
+    <script src="./vue.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <h1 class="app-msg">{{msg}}</h1>
+      <div v-cloak>{{noData}}</div>
+      <div v-text="textData"></div>
+      <div v-html="textData"></div>
+      <input />
+    </div>
+    <script>
+      Vue.config.productionTiop = false; //阻止Vue在生产环境下产生提示
+      var vm = new Vue({
+        el: "#app",
+        data() {
+          return {
+            msg: "基本代码",
+            noData: "无数据",
+            textData: '<span style="color:red">阳光</span>',
+          };
+        },
+        mounted() {
+          const that = this;
+          setTimeout(() => {
+            that.noData = "";
+          }, 1000);
+        },
+      });
+      console.log("vm", vm);
+    </script>
+  </body>
+</html>
+```
+
 ## MVC / MVP / MVVM
 
 **1.定义**
@@ -38,6 +96,8 @@ MVC / MVP / MVVM 都是架构设计模式，用于分离数据、UI 和业务逻
 > - React：JSX 是 View，Hook/状态类似 ViewModel，整体是 MVVM 风格，但官方更强调“视图层 + 单向数据流”，所以我们更多用状态管理、分层架构来组织业务逻辑，而不是硬套某个模式名称。
 
 ## 生命周期
+
+<img src="/img/vue2生命周期.png" style="zoom:50%;" />
 
 | Vue2          | Vue3            |
 | ------------- | --------------- |
@@ -200,6 +260,40 @@ Vue 2 自定义过滤器主要用于**文本格式化**，它可以在插值表�
 ```
 {{ message | filteA | filterB('arg1', 'arg2') }}
 ```
+
+## 常用修饰符
+
+在 *vue* 中修饰符可以分为 *3* 类：
+
+- 事件修饰符
+- 按键修饰符
+- 表单修饰符
+
+事件修饰符
+
+> - *.stop*：阻止冒泡。
+> - *.prevent*：阻止默认事件。
+> - *.capture*：使用事件捕获模式。
+> - *.self*：只在当前元素本身触发。
+> - *.once*：只触发一次。
+> - *.passive*：默认行为将会立即触发。
+
+按键修饰符
+
+> - .*left*：左键
+> - .*right*：右键
+> - .*middle*：滚轮
+> - .*enter*：回车
+> - .*tab*：制表键
+> - .*delete*：捕获 “删除” 和 “退格” 键
+> - .*esc*：返回
+> - .*space*：空格
+
+表单修饰符
+
+> - .*lazy*：在文本框失去焦点时才会渲染
+> - .*number*：将文本框中所输入的内容转换为number类型
+> - .*trim*：可以自动过滤输入首尾的空格
 
 ## Vue Router的 params 与 query
 
@@ -727,39 +821,84 @@ data 必须是函数
 > - 兄弟/任意：Event Bus (事件总线)，Vuex (状态管理)
 > - 其他：`$refs`，`$parent` / `$children`
 
-## 常用修饰符
+## 动态class/动态style
 
-在 *vue* 中修饰符可以分为 *3* 类：
+> - 动态class对象：`<div :class="{ 'is-active': true, 'red': isRed }"></div>`
+> - 动态class数组：`<div :class="['is-active', isRed ? 'red' : '' ]"></div>`
+> - 动态style对象：`<div :style="{ color: textColor, fontSize: '18px' }"></div>`
+> - 动态style数组：`<div :style="[{ color: textColor, fontSize: '18px' }, { fontWeight: '300' }]"></div>`
 
-- 事件修饰符
-- 按键修饰符
-- 表单修饰符
+## 动画
 
-事件修饰符
+**原生CSS**
 
-> - *.stop*：阻止冒泡。
-> - *.prevent*：阻止默认事件。
-> - *.capture*：使用事件捕获模式。
-> - *.self*：只在当前元素本身触发。
-> - *.once*：只触发一次。
-> - *.passive*：默认行为将会立即触发。
+```
+.come{
+	animation:aiMe 1s;
+}
+@keyframes aiMe{
+	from{
+		transform:translateX(-100px)
+	}
+	to{
+		transform:translateX(0px)
+	}
+}
+```
 
-按键修饰符
+**Vue2的transition标签**
 
-> - .*left*：左键
-> - .*right*：右键
-> - .*middle*：滚轮
-> - .*enter*：回车
-> - .*tab*：制表键
-> - .*delete*：捕获 “删除” 和 “退格” 键
-> - .*esc*：返回
-> - .*space*：空格
+```
+<transition name="hello" appear>//使用name标记动画，appear初次加载产生动画
+	<div v-show="isShow"></div>
+</transition>
 
-表单修饰符
+.hello-enter-active{
+	animation:aiMe 1s linear;
+}
+.hello-leave-active{
+	animation:aiMe 1s linear reverse;
+}
+```
 
-> - .*lazy*：在文本框失去焦点时才会渲染
-> - .*number*：将文本框中所输入的内容转换为number类型
-> - .*trim*：可以自动过滤输入首尾的空格
+*还有另外的2个指令hello-enter，hello-enter-to，可能比较繁琐*
+
+```
+<transition name="hello" appear>//使用name标记动画，appear初次加载产生动画
+	<div v-show="isShow"></div>
+</transition>
+// 进入的起点，离开的终点
+.hello-enter,.hello-leave-to{
+	transform：translateX(-100px)
+}
+.hello-enter-active,hello-leave-active{
+	transform: 1s linear;
+}
+// 进入的终点，离开的起点
+.hello-enter-to,.hello-leave{
+	transform：translateX(-100px)
+}
+```
+
+*transition-group多个元素过度*
+
+```
+<transition-group name="hello" appear>//必须保证key唯一
+	<div v-show="isShow" key="0"></div>
+	<div v-show="isShow" key="0"></div>
+</transition>
+```
+
+*使用第三方动画animate.css*
+
+```
+<transition-group name="animate_animated animate_bounce"
+	enter-active-class="animate_swing"
+	leave-active-calss="animate-backOutUp"
+>
+	<div v-show="isShow"></div>
+</transition>
+```
 
 # 中级
 
@@ -1188,19 +1327,15 @@ Vuex 的核心是一个 `Store` 类。它包含了 `state`、`getters`、`mutati
 
 **一、定义**
 
-本质上是：**模板字符串 → AST →（优化）→ 渲染函数代码字符串 → 真正的 render 函数**，核心由 `parse`、`optimize`、`generate` 三个阶段完成，通常由 `vue-template-compiler` 在构建时预编译，或在运行时使用 `Vue.compile` 动态编译。
+本质上是：**模板字符串 → AST →（优化）→ 渲染函数代码字符串 → 真正的 render 函数**
 
-> 分为三步：`parse` 将模板字符串解析成 AST；`optimize` 标记静态节点；`generate` 将 AST 转成渲染函数代码字符串，再通过 `new Function` 得到真正的 render 函数。
+> - parse解析器：将template模板中的节点和数据解析成 AST抽象语法树
+> - optimize优化器：标记静态节点，提升渲染性能
+> - generate代码生成器：将 AST 转换成“代码字符串”，然后将 render 字符串通过 new Function 的方式转换成渲染函数
+
+通常由 `vue-template-compiler` 在构建时预编译，或在运行时使用 `Vue.compile` 动态编译。
 
 **二、整体流程**
-
-> - template 字符串
-> - parseHTML 解析模板
-> - AST 抽象语法树
-> - optimize 标记静态节点
-> - generate 生成代码字符串
-> - new Function 创建 render 函数
-> - 组件实例执行 render 生成 VNode
 
 **1.第一步：parse —— 模板字符串 → AST**
 
@@ -1379,1600 +1514,691 @@ Vue 2 的 Diff 算法通过**双端比较**和**Key 映射**，将最坏情况�
 > - 图片资源优化：小图片使用 Base64 或转为雪碧图；大图片使用懒加载（vue-lazyload）；使用 WebP 格式替代 JPG/PNG
 > - 开启生产环境优化：确保 vue.config.js 或 Webpack 配置中开启了代码压缩、开启 Gzip 压缩、开启 CDN 加速
 
+# 源码
 
+## 前言
 
-# 入门
+**关于源码**
 
-**定义**
+> - 为了面试
+> - 为了在简历上写自己会源码
+> - 了解底层原理 学习高手思路
+> - 通过源码来学习一些小技巧(*骚操作*)
+> - 对框架如何实现的各种功能感到好奇
+> - 内卷严重 不看不行 逆水行舟 不进则退
+> - 自己也想造轮子 先看看别人都是怎么做的
+> - 各种公众号和卖课的都在贩卖焦虑 被洗脑洗的
+>
+> 
 
-vue2 是一套基于**声明式渲染**和**渐进式**的轻量级响应式框架，它可以设计为自底向上的逐层应用。
+**怎样学习源码才是最科学的方式呢？**
 
-缺点：单页面不利于seo，不支持IE8以下，首屏加载时间长
+> 我们来看一个例子：有一些听起来非常高大上的高科技产品，如`电磁轨道炮`。那么当我们拆解一个电磁轨道炮的时候，大概率你是看不懂它的。
+>
+> 但用了一些磁铁、若干钢珠、以及几个我们日常生活中能够搞到的材料来制作了一个`简易版的电磁轨道炮`。这样我们一下子就能够搞懂`电磁轨道炮的真正原理`。
+>
+> 虽然这样的轨道炮并不能真正的用于实战，但只要我们明白了最基础的那部分，我们就可以在此基础上一步步进行扩展，慢慢弄懂整个能够用于实战的复杂轨道炮。
 
-## 声明式渲染
+## Vue源码调试
 
-**声明式渲染和命令式渲染比较**
+**1.下载源码**
 
-- 命令式渲染 ： 命令我们的程序去做什么，程序就会跟着你的命令去一步一步执行
-- 声明式渲染 ： 我们只需要告诉程序我们想要什么效果，其他的交给程序来做。
+[vue-v2.6.14版本](https://github.com/vuejs/vue/tree/v2.6.14)下载
 
-## **渐进式框架**
+**2.安装依赖**
 
-- 声明式渲染：数据到视图
-- 组件系统：UI 结构到组件树
-- 核心插件：客户端路由、状态管理、构建系统 vue-cli
+```
+npm i
+```
 
-Vue 核心框架只做了前面 2 层，核心插件是热插拔部分。
+安装依赖报错-phantomjs-prebuilt@2.1.14 install: `node install.js`
 
-细节结构图如下：
+```
+解决方案：npm install phantomjs-prebuilt@2.1.14 --ignore-scripts
+```
 
-- Declarative Rendering(声明式渲染)
-- Component System(组件系统)
-- Client-Side Routing(客户端路由)
-- Large Scale State Management(全局状态管理)
-- Build System(构建系统)
+安装依赖报错-(plugin Rollup Core) Error: Could not load或者提示 no such file or directory, src\core\config
 
-## **Vue2框架特点**
+```
+手动下载依赖包https://github.com/ideayuye/rollup-plugin-alias，并覆盖掉本地文件夹 \node_modules\rollup-plugin-alias。进入rollup-plugin-alias文件夹，依次执行npm i
+```
 
-- 轻量：内置 bunding 和 tree-shaking,打包后体积 30k,而 angular 是 65k
-- 学习成本低：文档组织结构清晰，采用组件化模式，提高代码复用性
-- 性能优化：虚拟dom和优化的diff算法,避免子组件渲染
-- 国内生态良好：众多厂商使用，持续增长
+安装依赖报错-idealTree:vue: sill idealTree buildDeps
 
-## 从 0 开始构建
+```
+清除npm缓存npm cache clean --force
+设置新的淘宝镜像源npm config set registry https://registry.npmmirror.com
+```
 
-```html
+**3.开启打包源文件**
+
+```
+// package.json
+"dev": "rollup -w -c scripts/config.js --environment TARGET:web-full-dev --sourcemap",
+```
+
+**4.开始调试源码**
+
+> 在源码目录中添加断点调试即可，比如\vue-2.6.14\src\core\instance\init.js
+
+```
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
     <style>
-      #app {
-        background-color: pink;
-      }
-      .app-msg {
-        color: yellow;
+      #demo {
+        font-family: "Helvetica", Arial, sans-serif;
+        text-align: center;
       }
     </style>
-    <script src="./vue.min.js"></script>
+    <script src="./dist/vue.js"></script>
   </head>
   <body>
-    <div id="app">
-      <h1 class="app-msg">{{msg}}</h1>
-      <div v-cloak>{{noData}}</div>
-      <div v-text="textData"></div>
-      <div v-html="textData"></div>
-      <input />
+    <div id="demo">
+      <button @click="num++">Object类型自增加：{{num}}</button>
+      <button @click="add">Array类型自增加：{{arr}}</button>
     </div>
     <script>
-      Vue.config.productionTiop = false; //阻止Vue在生产环境下产生提示
-      var vm = new Vue({
-        el: "#app",
-        data() {
-          return {
-            msg: "基本代码",
-            noData: "无数据",
-            textData: '<span style="color:red">阳光</span>',
-          };
+      new Vue({
+        el: "#demo",
+        data: {
+          num: 0,
+          arr: [1, 2, 3],
         },
-        mounted() {
-          const that = this;
-          setTimeout(() => {
-            that.noData = "";
-          }, 1000);
+        methods: {
+          add() {
+            this.arr.push(this.arr[this.arr.length - 1] + 1);
+            // this.$set(this.arr, 0, this.arr[0] + 1);
+          },
         },
       });
-      console.log("vm", vm);
     </script>
   </body>
 </html>
 ```
 
-vm 实例如下：
-
-<img src="/img/image-20220608072943567.png" alt="image-20220608072943567" style="zoom:67%;" />
-
-# 进阶
-
-## 插件
-
-main.js
-
-```
-import plugins from './plugins'
-Vue.use(plugins)
-```
-
-plugins.js
-
-本质是包含install方法的对象，第一个参数是Vue
-
-```
-export default{
-	install(Vue){
-		//全局过滤器
-		Vue.filter('mySlice',()=>{})
-		//全局指令
-		Vue.directive('mySlice',()=>{})
-		// 全局混入
-		Vue.mixin('mySlice',()=>{})
-		Vue.prototype.$hello ='xx'
-	}
-}
-```
-
-## **双向绑定**
-
-**v-model原理**
-
-```
-<input type="text" v-model="age">
-<input type="text" v-bind="age" v-on:input="age = $event.target.value">
-```
-
-v-model的原理就是: v-bind 和 v-on的语法糖
-
-**第一种: v-bind**
-
-**原理: 子组件通过监听父组件数据，子组件改变数据之后通知给父组件**
-
-错误写法: 不可以直接修改props的值
-
-父组件：
-
-```
-// Users.vue 
-<template>
-  <div>
-    <Son :ageValue="age" @changeInput="changeInput"/>
-    <el-button @click="age = Math.floor(Math.random()*10)">添加</el-button>
-  </div>
-</template>
-
-<script>
-export default {
-  data() {
-    return {
-      age: ''
-    }
-  },
-  methods: {
-    changeInput(val) {
-      this.age = val
-    }
-  }
-}
-</script>
-```
-
-子组件：
-
-```
-// Son.vue
-<template>
-  <div>
-    <input type="text" v-model="sonAge" @input="changeInput">
-  </div>
-</template>
-
-<script>
-export default {
-  props: {
-    ageValue: {
-      typeof: String
-    }
-  },
-  data() {
-    return {
-      sonAge: ''
-    }
-  },
-  methods: {
-    changeInput() {
-      this.$emit('changeInput', this.sonAge)
-    }
-  },
-
-  /*
-   为什么要监听:
-   因为父组件传递过来属性, 可能有默认值,
-   子组件的input需要根据默认值回显,或者别的地方需要
-  */
-  watch: {
-    ageValue: {
-      immediate: true, // 立即执行 :当刷新页面时会立即执行一次handler函数
-      handler(val) {
-        this.sonAge = val
-      }
-    }
-  }
-}
-</script>
-```
-
-**第二种.sync修饰符**
-
-原理:.sync:名字 是自己起的, 通过update:名字进行触发对象的事件。update：是vue为我们约定好的名称部分
-
-父组件：
-
-```
-// Users.vue
-<template>
-  <div>
-    <Son :ageValue.sync="age" />
-    <el-button @click="age = Math.floor(Math.random()*10)">添加</el-button>
-  </div>
-</template>
-
-<script>
-export default {
-  data() {
-    return {
-      age: ''
-    }
-  },
-  methods: {
-  }
-}
-</script>
-```
-
-子组件：
-
-```
-// Son.vue
-<template>
-  <div>
-    <input type="text" v-model="sonAge" @input="changeInput">
-  </div>
-</template>
-
-<script>
-export default {
-  props: {
-    ageValue: {
-      typeof: String
-    }
-  },
-  data() {
-    return {
-      sonAge: ''
-    }
-  },
-  methods: {
-    changeInput() {
-      // this.$emit('changeInput', this.sonAge)
-      // 这样父组件内的值也同时被更改,省略了监听事件这一步
-      this.$emit('update:ageValue', this.sonAge)
-    }
-  },
-  watch: {
-    ageValue: {
-      immediate: true, // 立即执行 :当刷新页面时会立即执行一次handler函数
-      handler(val) {
-        this.sonAge = val
-      }
-    }
-  }
-}
-</script>
-```
-
-**第三种 v-model**
-
-原理: 通过 model新属性: 配置一个 props:接受的属性, 和一个事件名。
-
-父组件：
-
-```
-// Users.vue
-<template>
-  <div>
-    <Son v-model="age" />
-    <el-button @click="age = Math.floor(Math.random()*10)">添加</el-button>
-  </div>
-</template>
-
-<script>
-export default {
-  data() {
-    return {
-      age: ''
-    }
-  }
-}
-</script>
-```
-
-子组件：
-
-```
-// Son.vue
-<template>
-  <div>
-    <input type="text" v-model="sonAge" @input="changeInput">
-  </div>
-</template>
-
-<script>
-export default {
-  props: {
-    value: {
-      typeof: String
-    }
-  },
-  data() {
-    return {
-      sonAge: ''
-    }
-  },
-  // 超级牛
-  model: {
-    prop: 'value',
-    event: 'change'
-  },
-  methods: {
-    changeInput() {
-      this.$emit('change', this.sonAge)
-    }
-  },
-  watch: {
-    value: {
-      immediate: true, // 立即执行 :当刷新页面时会立即执行一次handler函数
-      handler(val) {
-        this.sonAge = val
-      }
-    }
-  }
-}
-</script>
-```
-
-## 修饰符与指令
-
-在 *vue* 中修饰符可以分为 *3* 类：
-
-- 事件修饰符
-- 按键修饰符
-- 表单修饰符
-
-事件修饰符
-
-> - *.stop*：阻止冒泡。
-> - *.prevent*：阻止默认事件。
-> - *.capture*：使用事件捕获模式。
-> - *.self*：只在当前元素本身触发。
-> - *.once*：只触发一次。
-> - *.passive*：默认行为将会立即触发。
-
-按键修饰符
-
-> - .*left*：左键
-> - .*right*：右键
-> - .*middle*：滚轮
-> - .*enter*：回车
-> - .*tab*：制表键
-> - .*delete*：捕获 “删除” 和 “退格” 键
-> - .*esc*：返回
-> - .*space*：空格
-
-表单修饰符
-
-> - .*lazy*：在文本框失去焦点时才会渲染
-> - .*number*：将文本框中所输入的内容转换为number类型
-> - .*trim*：可以自动过滤输入首尾的空格
-
-**自定义指令**
-
-局部指令
-
-```
-<input  v-focuslw />
-data() {
-    return {
-      userName: ''
-    };
-  },
-  directives: {
-    focuslw: {
-      // 指令的定义
-      inserted: function (el,binding,vnode,oldVnode) {
-        el.focus();
-      }
-    }
-  },
-指令钩子函数会被传入以下参数:
-el：指令所绑定的元素，可以用来直接操作 DOM。
-binding：一个对象，包含以下 property：
-    name：指令名，不包括 v- 前缀。
-    value：指令的绑定值，例如：v-my-directive="1 + 1" 中，绑定值为 2。
-    oldValue：指令绑定的前一个值，仅在 update 和 componentUpdated 钩子中可用。无论值是否改变都可用。
-    expression：字符串形式的指令表达式。例如 v-my-directive="1 + 1" 中，表达式为 "1 + 1"。
-    arg：传给指令的参数，可选。例如 v-my-directive:foo 中，参数为 "foo"。
-    modifiers：一个包含修饰符的对象。例如：v-my-directive.foo.bar 中，修饰符对象为 { foo: true, bar: true }。
-vnode：Vue 编译生成的虚拟节点。移步 VNode API 来了解更多详情。
-oldVnode：上一个虚拟节点，仅在 update 和 componentUpdated 钩子中可用。
-```
-
-全局指令
-
-```
-<input  v-focusGlobal />
-Vue.directive('focusGlobal', {
-  // 当被绑定的元素插入到 DOM 中时……
-  inserted: function (el,binding,vnode,oldVnode) {
-    // 聚焦元素
-    el.focus();
-  }
-});
-```
-
-指令的钩子函数如下：
-
-- `bind`：只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置。
-- `inserted`：被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中)。
-- `update`：所在组件的 VNode 更新时调用
-- `componentUpdated`：指令所在组件的 VNode **及其子 VNode** 全部更新后调用。
-- `unbind`：只调用一次，指令与元素解绑时调用
-
-**自定义事件传递额外参数**
-
-```
-<div @childClick="getData($event,'额外参数')">我是父级内容<div>
-```
-
-**常用自定义指令**
-
-- 复制粘贴指令 `v-copy`
-- 长按指令 `v-longpress`
-- 输入框防抖指令 `v-debounce`
-- 禁止表情及特殊字符 `v-emoji`
-- 图片懒加载 `v-LazyLoad`
-- 权限校验指令 `v-premission`
-- 实现页面水印 `v-waterMarker`
-- 拖拽指令 `v-draggable`
-
-## 动态class/动态style
-
-- 动态class对象：`<div :class="{ 'is-active': true, 'red': isRed }"></div>`
-- 动态class数组：`<div :class="['is-active', isRed ? 'red' : '' ]"></div>`
-- 动态style对象：`<div :style="{ color: textColor, fontSize: '18px' }"></div>`
-- 动态style数组：`<div :style="[{ color: textColor, fontSize: '18px' }, { fontWeight: '300' }]"></div>`
-
-## 全局组件
-
-创建全局组件的两种方式 component 和 use
-
-```
-import PageTools from '@/components/PageTools' // 导入需要注册的组件
-Vue.component(PageTools.name, PageTools) // 全局注册组件
-
-import ExpHeader from './ExpHeader';
-const components = {
-  ExpHeader // 导航头
-};
-// 全局注册组件;
-const initComponent = function(app) {
-  Object.keys(components).forEach(comp => {
-    app.component(comp, components[comp]);
-  });
-};
-export default initComponent;
-Vue.use(initComponent)
-```
-
-## 动态组件和异步组件
-
-**动态组件**
-
-```
-<component v-bind:is="currentTabComponent"></component>
-```
-
-**异步组件**
-
-```
-new Vue({
-  // ...
-  components: {
-    'my-component': () => import('./my-async-component')
-  }
-})
-```
-
-**Vue 的异步组件放在哪个生命周期**
-
-结论：created 和 mounted 都可以。
-
-- 对于作为子组件被调用的组件里，异步请求应当在`mounted`里调用，因为这个时候子组件可能需要涉及到对 dom 的操作；
-- 对于页面级组件，当我们需要使用`ssr`（服务端渲染）的时候，只有`created`是可用的，所以这个时候请求数据只能用它；
-- 对于页面级组件， 当我们做异步操作时，涉及到要访问 dom 的操作，我们仍旧只能使用`mounted`;
-- 对于一般情况，`created`和`mounted`都是可以的；
-
-## Socpe样式
-
-```
-<style lang='less'></style>
-不指定lang，则默认按照css处理。否则按照less,sass等处理器处理
-```
-
-## 自定义事件
-
-props属性值也可以传递函数
-
-child.vue
-
-```
-...
-<button @click="getVal"></button>
-props:['getFatherVal'],
-method:{
-	getVal(){
-		this.getFatherVal()
-	}
-}
-```
-
-**销毁事件**
-
-```
-this.$off('clickMe')//销毁一个事件
-this.$off(['clickMe]')//销毁多个事件
-this.$off()//解绑所有自定义事件
-this.$destory()//销毁实例并解绑所有自定义事件
-```
-
-## 动画
-
-**原生CSS**
-
-```
-.come{
-	animation:aiMe 1s;
-}
-@keyframes aiMe{
-	from{
-		transform:translateX(-100px)
-	}
-	to{
-		transform:translateX(0px)
-	}
-}
-```
-
-**Vue2的transition标签**
-
-```
-<transition name="hello" appear>//使用name标记动画，appear初次加载产生动画
-	<div v-show="isShow"></div>
-</transition>
-
-.hello-enter-active{
-	animation:aiMe 1s linear;
-}
-.hello-leave-active{
-	animation:aiMe 1s linear reverse;
-}
-```
-
-*还有另外的2个指令hello-enter，hello-enter-to，可能比较繁琐*
-
-```
-<transition name="hello" appear>//使用name标记动画，appear初次加载产生动画
-	<div v-show="isShow"></div>
-</transition>
-// 进入的起点，离开的终点
-.hello-enter,.hello-leave-to{
-	transform：translateX(-100px)
-}
-.hello-enter-active,hello-leave-active{
-	transform: 1s linear;
-}
-// 进入的终点，离开的起点
-.hello-enter-to,.hello-leave{
-	transform：translateX(-100px)
-}
-```
-
-*transition-group多个元素过度*
-
-```
-<transition-group name="hello" appear>//必须保证key唯一
-	<div v-show="isShow" key="0"></div>
-	<div v-show="isShow" key="0"></div>
-</transition>
-```
-
-*使用第三方动画animate.css*
-
-```
-<transition-group name="animate_animated animate_bounce"
-	enter-active-class="animate_swing"
-	leave-active-calss="animate-backOutUp"
->
-	<div v-show="isShow"></div>
-</transition>
-```
-
-## 路由
-
-**query参数**
-
-```
-<!--1.完整路径-->
-<router-link :to="/home?id=11"></router-link>
-<!--2.通过名字跳转-->
-<router-link :to="{name:'home'}"></router-link>
-<!--3.配合参数->
-<router-link :to="{
-path:'/home',
-query:{
-id:11
-}
-}"></router-link>
-```
-
-**param参数**
-
-```
-路由配置
-{
-	name:home,
-	path:'/home/:id',// id占位符
-	conponent:Home
-}
-<!--1.完整路径-->
-<router-link :to="/home/11"></router-link>
-<!--2.配合参数->
-<router-link :to="{
-name:'home',
-param:{
-id:11
-}
-}"></router-link>
-```
-
-**Props配置项**
-
-```
-路由配置
-{
-	name:home,
-	path:'/home/:id',// id占位符
-	conponent:Home，
-	props:{id:99},//用法1，固定值
-	props:true//用法2，只能接受所有的params参数
-	props:(route){//用法3，返回一组数据,路由组件可以接收到
-		return{
-			id：route.param.id
-		}
-	}
-}
-
-组件
-props:[id]
-```
-
-**push和replace**
-
-push是追加历史记录，replace是替换当前最新记录
-
-```
-开启replace模式
-<router-link replace :to="/home/11"></router-link>
-```
-
-## v-if 与 v-for 比较
-
-- 2.x 版本中在一个元素上同时使用 `v-if` 和 `v-for` 时，`v-for` 会优先作用
-- 3.x 版本中 `v-if` 总是优先于 `v-for` 生效。
-
-# 高级
-
-## 高级技巧
-
-- 多用Array.includes()
-- 提前退出/提前返回。如果不使用，可能有多层if
-- 用字面量替代switch,如用obj的属性取值替代switch
-
-**提前退出/提前返回**
-
-```
-a({type}={})=>{
- if(!type) return 'no type';
- if(type==='dog') return 'is dog';
- return type
-}
-```
-
-## 接口权限-路由权限-菜单权限-按钮权限
-
-[控制到按钮级别怎么做？](https://github.com/febobo/web-interview/issues/29)
-
-**接口权限**
-
-接口权限目前一般采用`jwt`的形式来验证，没有通过的话一般返回`401`，跳转到登录页面重新进行登录
-
-登录完拿到`token`，将`token`存起来，通过`axios`请求拦截器进行拦截，每次请求的时候头部携带`token`
-
-**路由权限**
-
-> **方案一**
-
-初始化即挂载全部路由，并且在路由上标记相应的权限信息，每次路由跳转前做校验
-
-缺点：加载所有的路由，菜单信息写死在前端，不易维护，菜单跟路由耦合
-
-> **方案二**
-
-初始化的时候先挂载不需要权限控制的路由，比如登录页，404等错误页。如果用户通过URL进行强制访问，则会直接进入404，相当于从源头上做了控制
-
-登录后，获取用户的权限信息，然后筛选有权限访问的路由，在全局路由守卫里进行调用`addRoutes`添加路由
-
-缺点：全局路由守卫里，每次路由跳转都要做判断；菜单跟路由耦合
-
-**菜单权限**
-
-菜单权限可以理解成将页面与理由进行解耦
-
-> **方案一**
-
-菜单与路由分离，菜单由后端返回.
-
-缺点:菜单需要与路由做一一对应，前端添加了新功能
-
->方案二
-
-菜单和路由都由后端返回.
-
-缺点：全局路由守卫里，每次路由跳转都要做判断。前后端的配合要求高
-
-**按钮权限**
-
-> **方案一**
-
-按钮权限也可以用`v-if`判断
-
-但是如果页面过多，每个页面页面都要获取用户权限`role`和路由表里的`meta.btnPermissions`，然后再做判断
-
-这种方式就不展开举例了
-
-> **方案二**
-
-通过自定义指令进行按钮权限的判断
-
-**参考文献**
-
-- https://mp.weixin.qq.com/s/b-D2eH1mLwL_FkaZwjueSw
-- https://segmentfault.com/a/1190000020887109
-- https://juejin.cn/post/6844903648057622536#heading-6
-
-## vuecli 定制化模板
-
-需要准备内容包含三个件
-
-- generator/index.js
-- preset.json
-- template 自己封装的一套代码
-
-generator/index.js 文件内容
-
-```
-const fs = require('fs');
-const tool = (api) => {
-    return {
-        deleteFile(path) {
-            const file = api.resolve(path);
-            if (fs.existsSync(file)) {
-                fs.unlinkSync(file);
-            }
-        },
-        deleteDir(path) {
-            const dir = api.resolve(path);
-            if (fs.existsSync(dir)) {
-                fs.readdirSync(dir).forEach((o) => {
-                    const file = dir + '\\' + o;
-                    if (fs.statSync(file).isDirectory()) {
-                        fs.readdirSync(dir).forEach((p) => {
-                            fs.unlinkSync(dir + '\\' + o + '\\' + p);
-                        });
-                    } else {
-                        fs.unlinkSync(file);
-                    }
-                });
-                fs.rmdirSync(dir);
-            }
-        }
-    };
-};
-module.exports = (api, options, rootOptions) => {
-    const utils = tool(api);
-    // 命令
-    api.extendPackage({
-        scripts: {
-            "serve": "vue-cli-service serve",
-            "build": "vue-cli-service build",
-            "lint": "vue-cli-service lint"
-        },
-    });
-
-    // 安装一些基础公共库
-    api.extendPackage({
-        dependencies: {
-            "core-js": "^3.6.4",
-            "vue": "^2.6.11",
-            "vue-router": "^3.1.5",
-            "vuex": "^3.1.2",
-            "element-ui": "^2.15.6",
-            "vant": "^2.12.31",
-            "axios": "^0.24.0",
-        },
-        devDependencies: {
-            "@vue/cli-plugin-babel": "~4.5.0",
-            "@vue/cli-plugin-router": "~4.5.0",
-            "@vue/cli-plugin-vuex": "~4.5.0",
-            "@vue/cli-service": "~4.5.0",
-            "less": "^3.0.4",
-            "less-loader": "^5.0.0",
-            "vue-template-compiler": "^2.6.11"
-        }
-    });
-    api.render('../template');
-    api.onCreateComplete(() => {
-        process.env.VUE_CLI_SKIP_WRITE = true;
-    });
-};
-```
-
-preset.json 文件内容
-
-```
-{
-    "useConfigFiles": true,
-    "plugins": {
-        "@vue/cli-plugin-babel": {},
-        "@vue/cli-plugin-router": {
-            "historyMode": true
-        },
-        "@vue/cli-plugin-vuex": {}
-    },
-    "cssPreprocessor": "less"
-}
-```
-
-**将模版上传 github**
-
-- https://github.com/fuyunjinglong/vue2_template
-
-**安装 vue3 cli**
-
-```
-npm install -g @vue/cli
-```
-
-**创建项目**
-
-```
-vue create --preset fuyunjinglong/vue2_template demo
-```
-
-## 实现防抖截流函数
-
-```
-import {debounce} from "@/utils/utils"
-```
-
-```
-methods: {
-      inputNum: debounce(function(){
-          console.log(1111);
-      }, 1000)
-  }
-```
-
-## vue-router动态路由
-
-**动态路由的 2 种方案**
-
-1. 前端将全部路由规定好，登录时根据用户角色权限来动态展示路由；
-2. 路由存储在数据库中，前端通过接口获取当前用户对应路由列表并进行渲染；
-
-**实战-大致思路**
-
-> - 若未登录，跳转至登录页面
-> - 若已经登录，判断是否已获取路由列表
->   - 若未获取，从后端获取、解析并保存到 `Vuex` 中
->   - 若已获取，跳转至目标页面
-
-**实战-路由列表解析**
-
-1. 将 `JSON` 格式的路由信息解析为 `JavaScript` 列表对象；
-2. 利用列表对象的 `filter` 方法实现解析函数，通过 `component` 判断是否为布局组件；
-3. 若为布局组件，使用布局组件代替 `component` 字符串；
-4. 若为具体页面，使用 `loadView` 函数加载对应的具体页面；
-
-```js
-// router/index.js
-import Vue from "vue";
-import store from "@/store";
-import Router from "vue-router";
-import { getToken } from "@/lib/util";
-
-Vue.use(Router);
-
-// 定义静态路由
-const staticRoutes = [
-  {
-    path: "/login",
-    name: "login",
-    meta: {
-      title: "登录页面",
-      hideInMenu: true,
-    },
-    component: () => import("@/view/login/login.vue"),
-  },
-  {
-    path: "/401",
-    name: "error_401",
-    meta: {
-      hideInMenu: true,
-    },
-    component: () => import("@/view/error-page/401.vue"),
-  },
-  {
-    path: "/500",
-    name: "error_500",
-    meta: {
-      hideInMenu: true,
-    },
-    component: () => import("@/view/error-page/500.vue"),
-  },
-];
-
-// 定义登录页面名称（为了方便理解才定义的）
-const LOGIN_PAGE_NAME = "login";
-
-// 实例化 Router 对象
-const router = new Router({
-  routes: staticRoutes,
-  mode: "history",
-});
-
-// 定义全局前置守卫（里面有两个坑要注意）
-router.beforeEach((to, from, next) => {
-  // 通过自定义方法获取用户 token 用来判断用户登录状态
-  const token = getToken();
-  if (!token && to.name !== LOGIN_PAGE_NAME) {
-    // 如果没有登录而且前往的页面不是登录页面，跳转到登录页
-    next({ name: LOGIN_PAGE_NAME });
-  } else if (!token && to.name === LOGIN_PAGE_NAME) {
-    // 如果没有登录而且前往的页面是登录页面，跳转到登录页面
-    // 这里有一个坑，一定要注意这一步和上一步得分开写
-    // 如果把前两步判断合并为 if (!token) next({ name:login })
-    // 则会形成登录页面无限刷新的错误，具体成因后面解释
-    next();
-  } else {
-    // 如果登录了
-    if (!store.state.app.hasGetRoute) {
-      // 如果没有获取路由信息，先获取路由信息而后跳转
-      store.dispatch("getRouteList").then(() => {
-        router.addRoutes(store.state.app.routeList);
-        // 这里也是一个坑，不能使用简单的 next()
-        // 如果直接使用 next() 刷新后会一直白屏
-        next({ ...to, replace: true });
-      });
+## Vue源码目录
+
+```
+├── benchmarks                  性能、基准测试
+├── dist                        构建打包的输出目录
+├── examples                    案例目录
+├── flow                        因为Vue使用了Flow来进行静态类型检查，这里定义了声明了一些静态类型
+├── packages                    一些额外的包，比如：负责服务端渲染的包 vue-server-renderer、配合 vue-loader 使用的 									vue-template-compiler，还有 weex 相关的
+    ├── vue-server-renderer
+    ├── vue-template-compiler
+    ├── weex-template-compiler
+    └── weex-vue-framework
+├── scripts                     所有的配置文件的存放位置，比如 rollup 的配置文件
+├── src                         vue 源码目录
+│   ├── compiler                编译器
+      |—codegen     根据ast生成render函数
+         |—directives    通用生成render函数之前需要处理的指令
+         |—parser     模板解析
+│   ├── core                    运行时的核心包
+│   │   ├── components          全局组件，比如 keep-alive
+│   │   ├── config.js           一些默认配置项
+│   │   ├── global-api          全局方法，也就是添加在Vue对象上的方法，比如Vue.use,Vue.extend,,Vue.mixin等
+│   │   ├── instance            实例相关内容，包括实例方法，生命周期，事件等
+│   │   ├── observer            响应式原理
+│   │   ├── util                工具方法
+│   │   └── vdom                虚拟 DOM 相关，比如熟悉的 patch 算法就在这儿
+│   ├── platforms               平台相关的编译器代码
+│   │   ├── web					
+│   │   ├── weex 				类似react native跨端平台
+    |— web web端独有文件
+                |— compiler 编译阶段需要处理的指令和模块
+                |— runtime 运行阶段需要处理的组件、指令和模块
+                |— server 服务端渲染相关
+                |— util 工具库
+│   ├── server                  服务端渲染相关
+├── test                        测试目录
+├── types                       TS 类型声明
+```
+
+## Vue从实例化到渲染的完整流程
+
+参考：[vue源码分析](https://segmentfault.com/a/1190000023649060)
+
+> new Vue->init->mount->compile->render->vnode->patch->dom
+
+**1. 定义Vue**构造函数
+
+```
+initMixin(Vue);  // 定义 _init
+stateMixin(Vue);  // 定义 $set $get $delete $watch 等
+eventsMixin(Vue);   // 定义事件  $on  $once $off $emit
+lifecycleMixin(Vue); // 定义 _update  $forceUpdate  $destroy
+renderMixin(Vue); // 定义 _render 返回虚拟dom  
+```
+
+**2. initMixin**
+
+实例化Vue时，执行 _init, _init 定义在 initMixin 中
+
+```
+  Vue.prototype._init = function (options) {
+    // 合并 options
+    if (options && options._isComponent) {
+      initInternalComponent(vm, options); // 组件合并
     } else {
-      // 如果已经获取路由信息，直接跳转
-      next();
+      // 非组件合并
+      vm.$options = mergeOptions(
+        resolveConstructorOptions(vm.constructor), 
+        options || {},
+        vm
+      );
     }
+    initLifecycle(vm); // 定义 vm.$parent vm.$root vm.$children  vm.$refs 等
+    initEvents(vm);   // 定义 vm._events  vm._hasHookEvent 等
+    initRender(vm); // 定义 $createElement $c
+    callHook(vm, 'beforeCreate'); // 挂载 beforeCreate 钩子函数
+    initInjections(vm); // resolve injections before data/props
+    initState(vm);  // 初始化 props methods data computed watch 等方法
+    initProvide(vm); // resolve provide after data/props
+    callHook(vm, 'created'); // 挂载 created 钩子函数
+    if (vm.$options.el) {
+      vm.$mount(vm.$options.el); // 实例挂载渲染dom
+    }
+  };
+```
+
+**3. $mount**
+
+vue最终都是通过render函数将dom编译为虚拟dom
+
+```
+// 构建render函数
+if (!options.render) {
+  // 如果没有render属性，那么将template模版编译转为render
+}
+// 最后调用 mount
+return mount.call(this, el, hydrating)
+// mount 调用 mountComponent
+return mountComponent(this, el, hydrating)
+```
+
+**4. mountComponent**
+
+通过 new Watcher 调用执行 updateComponent, vm._render获取虚拟dom, vm._update将虚拟dom转为真实的dom并挂载到页面。
+
+```
+// hydrating 代表服务端渲染 hydrating => false
+updateComponent = function () {
+  vm._update(vm._render(), hydrating); // 关键点
+};
+```
+
+**5. _render**
+
+_render执行render函数 返回vnode。
+
+```
+Vue.prototype._render = function () {
+    // 此处的 vm._renderProxy 等价于 vm
+    vnode = render.call(vm._renderProxy, vm.$createElement);
+}
+```
+
+$createElement 主要是参数重载，整合为统一格式后调用 _createElement函数。
+
+**6. _update**
+
+_update 主要实现 vnode 转化为实际的dom， 注入到页面的同时并销毁页面模版。
+
+## Vue源码深度解析
+
+**参考**
+
+> - [Vue.js源码全方位深入解析-黄轶-video](https://www.1024zyz.com/3206.html)
+> - [Vue.js源码全方位深入解析-黄轶](https://ustbhuangyi.github.io/vue-analysis/v2/prepare/)
+> - [李永宁Vue源码解读-video](https://www.bilibili.com/video/BV1Jb4y1D7eA/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+> - [珠峰公开课-vue2.0源码实现-video](https://www.bilibili.com/video/BV1aq4y1o7Ny/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+> - [vue核心四大模块](https://winteroo.github.io/ylblog/docs/vue/01introduce.html#%E5%89%8D%E8%A8%80)
+> - [Vue源码系列-Vue中文社区](https://vue-js.com/learn-vue/)
+> - [李永宁Vue源码解读](https://juejin.cn/column/6960553066101735461)
+> - [汪道南源码解析](https://wangtunan.github.io/blog/vueAnalysis/introduction/)
+> - [推荐 7 个 Vue2、Vue3 源码解密分析的开源项目](https://github.com/FrontEndGitHub/FrontEndGitHub/issues/35)
+
+**Vue核心四大模块**
+
+- 生命周期过程
+- 变化监测原理
+- 模板编译原理
+- 虚拟DOM原理
+
+**生命周期过程-待续**
+
+**变化监测原理-待续**
+
+**模板编译原理-待续**
+
+**虚拟DOM原理-待续**
+
+## Vue.js源码全方位深入解析-黄轶
+
+- [vue2源码分析仓库](https://github.com/fuyunjinglong/web-sourceCode-vue2)
+- [2.x版本笔记](https://ustbhuangyi.github.io/vue-analysis/v2/prepare/)
+
+### 准备工作
+
+**1.认识Flow**
+
+[Flow](https://flow.org/en/docs/getting-started/) 是 facebook 出品的 JavaScript 静态类型检查工具。Vue.js 的源码利用了 Flow 做了静态类型检查。
+
+**为什么用 Flow**
+
+> JavaScript 是动态类型语言，但是它过于灵活的副作用是很容易写出非常隐蔽的隐患代码，在编译期不会报错，但在运行阶段就可能出现各种奇怪的bug。
+>
+> 类型检查是当前动态类型语言的发展趋势，所谓类型检查，就是在编译期尽早发现（由类型错误引起的）bug，又不影响代码运行（不需要运行时动态检查类型），使编写 JavaScript 具有和编写 Java 等强类型语言相近的体验。
+>
+> 项目越复杂就越需要通过工具的手段来保证项目的维护性和增强代码的可读性。
+>
+> Vue.js 在做 2.0 重构的时候，引入了 Flow 做静态类型检查,之所以选择 Flow，主要是因为 Babel 和 ESLint 都有对应的 Flow 插件以支持语法,非常小成本的改动就可以拥有静态类型检查的能力。
+
+**Flow 的工作方式**
+
+> - 类型推断：通过变量的使用上下文来推断出变量类型，然后根据这些推断来检查类型。
+> - 类型注释：事先注释好我们期待的类型，Flow 会基于这些注释来判断。
+
+```
+类型推断
+/*@flow*/
+function split(str) {
+  return str.split(' ')
+}
+split(11)
+
+类型注释
+/*@flow*/
+function add(x: number, y: number): number {
+  return x + y
+}
+add('Hello', 11)
+```
+
+**类型注释**
+
+更多请移步 Flow 的[官方文档](https://flow.org/en/docs/types/)。
+
+数组
+
+```
+/*@flow*/
+var arr: Array<number> = [1, 2, 3]
+arr.push('Hello')
+```
+
+类和对象
+
+```
+/*@flow*/
+class Bar {
+  x: string;           // x 是字符串
+  y: string | number | void;  // y 可以是字符串或者数字，void表示为空即可不传
+  z: boolean;
+  constructor(x: string, y: string | number| void) {
+    this.x = x
+    this.y = y
+    this.z = false
   }
-});
-export default router;
+}
+
+var bar: Bar = new Bar('hello', 4)
+var obj: { a: string, b: number, c: Array<string>, d: Bar } = {
+  a: 'hello',
+  b: 11,
+  c: ['hello', 'world'],
+  d: new Bar('hello', 3)
+}
 ```
 
-```js
-// store/index.js
-import router from "@/router";
-import Main from "@/components/main";
-import { getToken } from "@/lib/util";
-import { getRoute } from "@/api/app";
+Null
 
-const loadView = (viewPath) => {
-  // 用字符串模板实现动态 import 从而实现路由懒加载
-  return () => import(`@/view/${viewPath}`);
-};
+若想任意类型 `T` 可以为 `null` 或者 `undefined`，只需类似如下写成 `?T` 的格式即可。
 
-const filterAsyncRouter = (routeList) => {
-  return routeList.filter((route) => {
-    if (route.component) {
-      if (route.component === "Main") {
-        // 如果 component = Main 说明是布局组件
-        // 将真正的布局组件赋值给它
-        route.component = Main;
-      } else {
-        // 如果不是布局组件就只能是页面的引用了
-        // 利用懒加载函数将实际页面赋值给它
-        route.component = loadView(route.component);
-      }
-      // 判断是否存在子路由，并递归调用自己
-      if (route.children && route.children.length) {
-        route.children = filterAsyncRouter(route.children);
-      }
-      return true;
-    }
-  });
-};
-
-export default {
-  state: {
-    routeList: [],
-    token: getToken(),
-    hasGetRoute: false,
-  },
-  mutations: {
-    setRouteList(state, data) {
-      // 先将 JSON 格式的路由列表解析为 JavaScript List
-      // 再用路由解析函数解析 List 为真正的路由列表
-      state.routeList = filterAsyncRouter(JSON.parse(data));
-      // 修改路由获取状态
-      state.hasGetRoute = true;
-    },
-  },
-  atcions: {
-    getRouteList({ state, commit }) {
-      return new Promise((resolve) => {
-        const token = state.token;
-        getRoute({ token }).then((res) => {
-          let data = res.data.data;
-          // 注意这里取出的是 JSON 格式的路由列表
-          commit("setRouteList", data);
-          resolve();
-        });
-      });
-    },
-  },
-};
+```
+/*@flow*/
+var foo: ?string = null // 此时，foo 可以为字符串，也可以为 null。
 ```
 
-**常见问题**
+**Flow 在 Vue.js 源码中的应用**
 
-**1.页面卡在登录页面而且不断刷新**
+对于引用的第三方库，或者自定义一些类型，但 Flow 并不认识，因此检查的时候会报错。为了解决这类问题，Flow 提出了一个 `libdef` 的概念，可以用来识别这些第三方库或者是自定义类型。
 
-主要原因是把两种未登录的状态混在一起判断
+在 Vue.js 的主目录下有 `.flowconfig` 文件， `[libs]` 部分用来描述包含指定库定义的目录，这里 `[libs]` 配置的是 `flow`，表示指定的库定义都在 `flow` 文件夹内。
 
-**2.动态路由刷新后 404**
+```
+flow
+├── compiler.js        # 编译相关
+├── component.js       # 组件数据结构
+├── global-api.js      # Global API 结构
+├── modules.js         # 第三方库定义
+├── options.js         # 选项相关
+├── ssr.js             # 服务端渲染相关
+├── vnode.js           # 虚拟 node 相关
+```
 
-是因为在创建「基本静态路由」的时候回把 404 页面的路由也加入在里面，从而导致页面加载初期动态路由还没有加入到路由实例中，匹配范围最广的 404 页面就会跳出来。解决方法就是将 404 页面的路由也加入到动态路由中。
+**2.Vue.js 源码构建**
 
-## vuex
+Vue.js 源码是基于 [Rollup](https://github.com/rollup/rollup) 构建的，它的构建相关配置都在 scripts 目录下。
 
-Vuex**集中式**存储管理应用的所有组件的状态，规定所有的数据操作必须通过 `action -> mutation -> state(响应式数据)` ->update view
+**构建脚本**
 
-<img src="/img/image-20220529182549936.png" alt="image-20220529182549936" style="zoom:67%;" />
+总共有 3 条命令，Vue.js 源码构建的脚本如下：
 
-**核心模块：**
-
-> State：定义了应用状态的数据结构，可以在这里设置默认的初始状态。
->
-> Getter：允许组件从 Store 中获取数据，mapGetters 辅助函数仅仅是将 store 中的 getter 映射到局部计算属性。
->
-> Mutation：是唯一更改 store 中状态的方法，且必须是同步函数。
->
-> Action：用于提交 mutation，而不是直接变更状态，可以包含任意异步操作。
->
-> Module：允许将单一的 Store 拆分为多个 store 且同时保存在单一的状态树中。
-
-**vuex 的组成**
-
-<img src="/img/image-20220530070800925.png" alt="image-20220530070800925" style="zoom:50%;" />
-
-**为什么 Vuex 的 mutation 中不能做异步操作？**
-
-- Vuex中所有的状态更新的唯一途径都是mutation，异步操作通过 Action 来提交 mutation实现，这样使得我们可以方便地跟踪每一个状态的变化，从而让我们能够实现一些工具帮助我们更好地了解我们的应用。
-- 每个mutation执行完成后都会对应到一个新的状态变更，这样devtools就可以打个快照存下来，然后就可以实现 time-travel 了。如果mutation支持异步操作，就没有办法知道状态是何时更新的，无法很好的进行状态的追踪，给调试带来困难。
-
-**为什么不直接分发mutation,而要通过分发action之后提交 mutation变更状态**
-
-- mutation 必须同步执行，我们可以在 action 内部执行异步操作
-- 可以进行一系列的异步操作，并且通过提交 mutation 来记录 action 产生的副作用（即状态变更）
-
-**Q1：vuex 的插件加载机制**
-
-所谓插件机制，就是需要实现 Install 方法，并且通过`mixin`形式混入到 Vue 的生命周期中
-
-利用 vue 的插件机制，使用 Vue.use(vuex) 时，会调用 vuex 的 install 方法，装载 vuex。applyMixin 方法使用 vue 混入机制，vuex 是利用 vue 的 mixin 混入机制，在 beforeCreate 钩子前混入 vuexInit 方法，vuexInit 方法实现了 store 注入 vue 组件实例，并注册了 vuex store 的引用属性 `$store`。store 注入过程如下图所示：
-
-<img src="/img/image-20220529183039739.png" alt="image-20220529183039739" style="zoom:80%;" />
-
-将初始化 Vue 根组件时传入的 store 设置到 this 对象的 `$store` 属性上，子组件从其父组件引用 `$store` 属性，层层嵌套进行设置。在任意组件中执行 `this.$store` 都能找到装载的那个 store 对象。
-
-Vue.use(Vuex) 方法执行的是 install 方法，它实现了 Vue 实例对象的 init 方法封装和注入，使传入的 store 对象被设置到 Vue 上下文环境的 `$store` 中。因此在 Vue Component 任意地方都能够通过 `this.$store` 访问到该 store。
-
-**Q2. state 内部支持模块配置和模块嵌套，如何实现的？**
-
-在 store 构造方法中有 makeLocalContext 方法，所有 module 都会有一个 local context，根据配置时的 path 进行匹配。所以执行如 `dispatch('user', payload)` 这类 action 时，默认的拿到都是 module 的 local state，如果要访问最外层或者是其他 module 的 state，只能从 rootState 按照 path 路径逐步进行访问。
-
-**Q3. Vuex 如何区分 state 是外部直接修改，还是通过 mutation 方法修改的？**
-
-Vuex 中修改 state 的唯一渠道就是执行 `commit` 方法，其底层通过执行 `this._withCommit(fn)` 设置 `_committing` 标志变量为 true，然后才能修改 state，修改完毕还需要还原 `_committing` 变量。外部修改虽然能够直接修改 state，但是并没有修改 `_committing` 标志位，所以只要 `watch` 一下 state，state 改变时判断是否 `_committing` 值为 true，即可判断修改的合法性
-
-**Q4. vuex 的 state 和 getters 是如何映射到各个组件实例中响应式更新状态呢？**
-
-```js
-function resetStoreVM(store, state, hot) {
-  const oldVm = store._vm;
-
-  // 设置 getters 属性
-  store.getters = {};
-  const wrappedGetters = store._wrappedGetters;
-  const computed = {};
-  // 遍历 wrappedGetters 属性
-  forEachValue(wrappedGetters, (fn, key) => {
-    // 给 computed 对象添加属性
-    computed[key] = partial(fn, store);
-    // 重写 get 方法
-    // store.getters.xx 其实是访问了store._vm[xx]，其中添加 computed 属性
-    Object.defineProperty(store.getters, key, {
-      get: () => store._vm[key],
-      enumerable: true, // for local getters
-    });
-  });
-
-  const silent = Vue.config.silent;
-  Vue.config.silent = true;
-  // 创建Vue实例来保存state，同时让state变成响应式
-  // store._vm._data.$$state = store.state
-  store._vm = new Vue({
-    data: {
-      $$state: state,
-    },
-    computed,
-  });
-  Vue.config.silent = silent;
-
-  // 只能通过commit方式更改状态
-  if (store.strict) {
-    enableStrictMode(store);
+```
+{
+  "script": {
+    "build": "node scripts/build.js",
+    "build:ssr": "npm run build -- web-runtime-cjs,web-server-renderer",
+    "build:weex": "npm run build -- weex"
   }
 }
 ```
 
-Vuex 的 state 状态是响应式，是借助 vue 的 data 响应式，将 state 存入 vue 实例组件的 data 中；Vuex 的 getters 则是借助 vue 的计算属性 computed 实现数据实时监听。
+**构建过程**
 
-<img src="/img/image-20220529183414437.png" alt="image-20220529183414437" style="zoom:67%;" />
+> scripts/build.js
 
-自定义实现一个 Vuex
+```
+// 1.读取配置文件
+let builds = require('./config').getAllBuilds()
 
-```js
-// store.js
-let Vue
-
-// 定义store类
-class Store{
-  constructor(options = {}) {
-    this.$options = options
-    this._mutations = options.mutations
-    this._actions = options.actions
-   this._wrappedGetters = options.getters
-
-
-    // 定义computed
-    const computed = {}
-    this.getters = {}
-    const store = this
-    Object.keys(this._wrappedGetters).forEach(key => {
-      // 获取用户定义的getters
-      const fn = store._wrappedGetters[key]
-
-      // 转换为computed可以使用无参数形式
-      computed[key] = function() {
-        return fn(store.state)
-      }
-
-      // 为getters定义只读属性
-      Object.defineProperty(store.getters, key {
-       get:() => store._vm[key]
-     })
-    })
-
-    // state的响应式实现
-    this._vm = new Vue({
-      data: {
-        // 加两个$，Vue不做代理
-        $$state: options.state
-      },
-      computed // 添加计算属性
-    })
-
-    this.commit = this.commit.bind(this)
-    this.dispatch = this.dispatch.bind(this)
-  }
-
-  // 存取器，获取store.state ，只通过get形式获取，而不是直接this.xxx, 达到对state
-  get state() {
-    return this._vm._data.$$state
-  }
-
- set state(v) {
-    // 如果用户不通过commit方式来改变state，就可以在这里做一控制
-  }
-
-  // commit的实现
-  commit(type, payload) {
-    const entry = this._mutations[type]
-    if (entry) {
-      entry(this.state, payload)
-    }
-  }
-
-  // dispatch的实现
-  dispatch(type, payload) {
-    const entry = this._actions[type]
-    if (entry) {
-      entry(this, payload)
-    }
-  }
-}
-
-// 实现install
-function install(_Vue) {
-  Vue = _Vue
-  Vue.mixin({
-    beforeCreate() {
-      if (this.$options.store) {
-       Vue.prototype.$Store = this.$options.store // 这样就可以使用 this.$store
-      }
-    }
+// 2.根据package.json中脚本的配置参数，得到需要打包的平台，然后过滤配置
+if (process.argv[2]) {
+  const filters = process.argv[2].split(',')
+  builds = builds.filter(b => {
+    return filters.some(f => b.output.file.indexOf(f) > -1 || b._name.indexOf(f) > -1)
+  })
+} else {
+  // filter out weex builds by default
+  builds = builds.filter(b => {
+    return b.output.file.indexOf('weex') === -1
   })
 }
+// 3.开始构建
+build(builds)
 
-// 导出Vuex对象
-export default {
-  Store,
-  install
-}
-```
-
-## 事件总线EventBus 发布订阅
-
-**源码**
-
-```
-// $on 的实现逻辑
-Vue.prototype.$on = function (event: string | Array<string>, fn: Function): Component {
-    const vm: Component = this
-    if (Array.isArray(event)) {
-      for (let i = 0, l = event.length; i < l; i++) {
-        vm.$on(event[i], fn)
+function build (builds) {
+  let built = 0
+  const total = builds.length
+  const next = () => {
+    // 根据配置逐个构建对应平台的js文件
+    buildEntry(builds[built]).then(() => {
+      built++
+      if (built < total) {
+        next()
       }
-    } else {
-      (vm._events[event] || (vm._events[event] = [])).push(fn)
-    }
-    return vm
+    }).catch(logError)
   }
 
-// $emit 的实现逻辑
-Vue.prototype.$emit = function (event: string): Component {
-    const vm: Component = this
-    let cbs = vm._events[event]
-    if (cbs) {
-      cbs = cbs.length > 1 ? toArray(cbs) : cbs
-      const args = toArray(arguments, 1)
-      const info = `event handler for "${event}"`
-      for (let i = 0, l = cbs.length; i < l; i++) {
-        invokeWithErrorHandling(cbs[i], vm, args, vm, info)
-      }
-    }
-    return vm
-  }
-
-// invokeWithErrorHandling 的实现逻辑
-export function invokeWithErrorHandling (
-  handler: Function,
-  context: any,
-  args: null | any[],
-  vm: any,
-  info: string
-) {
-  let res
-  try {
-    res = args ? handler.apply(context, args) : handler.call(context)
-  } catch (e) {
-    handleError(e, vm, info)
-  }
-  return res
-}
-```
-
-**分析：**
-
-1. 首先我们都了解 vue 的数据相应是依赖于“观察-订阅”模式，那 o n 、 on、on、emit 也不例外;
-2. $on 用来收集所有的事件依赖，他会将传入的参数 event 和 fn 作为 key 和 value 的形式存到 vm.\_events 这个事件集合里，就像这样 vm.\_events[event]=[fn];
-3. 而$emit 是用来触发事件的，他会根据传入的 event 在 vm_events 中找到对应的事件并执行 invokeWithErrorHandling(cbs[i], vm, args, vm, info)
-4. 最后我们看 invokeWithErrorHandling 方法可以发现，他是通过 handler.apply(context, args)和 handler.call(context)的形式执行对应的方法
-
-**自定义实现一个 Bus**
-
-```
-// Bus： 事件派发、监听和回调
-class Bus {
-  constructor() {
-    this.callbacks = {}
-  }
-  // 收集监听的回调函数
-  $on(name, fn) {
-    this.callbacks[name] = this.callbacks[name] || []
-    this.callbacks[name].push(fn)
-  }
-  // 执行监听的回调函数
-  $emit(name, args) {
-    if (this.callbacks[name]) {
-      this.callbacks[name].forEach(cb => cb(args))
-    }
-  }
-}
-// 在main.js中这样使用
-Vue.prototype.$bus = new Bus()
-```
-
-**手写发布订阅**
-
-```js
-class EventEmitter {
-  constructor() {
-    this.cache = {};
-  }
-
-  on(name, fn) {
-    if (this.cache[name]) {
-      this.cache[name].push(fn);
-    } else {
-      this.cache[name] = [fn];
-    }
-  }
-
-  off(name, fn) {
-    const tasks = this.cache[name];
-    if (tasks) {
-      const index = tasks.findIndex((f) => f === fn || f.callback === fn);
-      if (index >= 0) {
-        tasks.splice(index, 1);
-      }
-    }
-  }
-
-  emit(name, once = false) {
-    if (this.cache[name]) {
-      // 创建副本，如果回调函数内继续注册相同事件，会造成死循环
-      const tasks = this.cache[name].slice();
-      for (let fn of tasks) {
-        fn();
-      }
-      if (once) {
-        delete this.cache[name];
-      }
-    }
-  }
+  next()
 }
 
-// 测试
-const eventBus = new EventEmitter();
-const task1 = () => {
-  console.log("task1");
-};
-const task2 = () => {
-  console.log("task2");
-};
-
-eventBus.on("task", task1);
-eventBus.on("task", task2);
-eventBus.off("task", task1);
-setTimeout(() => {
-  eventBus.emit("task"); // task2
-}, 1000);
-```
-
-**手写发布订阅 2**
-
-1. **首先定义一个`list`对象用于存放事件的集合的映射表**
-   **当调用`on`事件绑定的时候通过传入的事件名判断当前是否已存在`list`中，不存在则先设置一个空数组，否则就直接 push 进去。**
-2. **`emit`发布执行对应事件 event 对入参 arguments 进行处理（shift 剪出要触发的事件名），通过事件名先浅拷贝一个列表副本，然后遍历执行对应列表的所有的函数`this.list[event][i].apply(this, arguments)`**
-3. `remove`删除事件先获取`fns`对应主题的函数列表进行一些判断，**如果没指定删除列表中的哪个函数（函数引用）就默认把对应整个列表给删除，如果有传 fn 就在循环中和对应的函数进行引用的判断`fns.fn === fn`是给 once 函数删除的时候使用的**
-4. **`once`这里给传入的订阅者包装成一个闭包函数，把订阅者`fn`放在订阅者`once`函数属性下，当对应订阅者执行的时候先执行这个闭包函数删除掉自身后再去执行挂在`once`下的订阅者`fn`，做到用完即删。**
-
-**因为如果想使用`remove`方法删除`once`订阅者的话和删除普通订阅者不一样，单凭传入的 fn(`fns[i] === fn`)是删除不掉`once`订阅者的（因为传入的`fn`函数和`once`包装函数引用不相等），需要用到包装函数下的`fn`属性引用（`fns.fn === fn`）去识别订阅者才能进行删除。**
-
-**核心代码-eventEmitter.js**
-
-```
-//发布订阅模式
-var eventEmitter = (function () {
-  "use strict";
-  var eventEmitter = {
-    list: {},
-    //订阅主题
-    on: function (event, fn) {
-      if (typeof fn !== "function") {
-        return false;
+function buildEntry (config) {
+  const output = config.output
+  const { file, banner } = output
+  const isProd = /(min|prod)\.js$/.test(file)
+  return rollup.rollup(config)// 生成bundle
+    .then(bundle => bundle.generate(output))// 生成输出文件
+    .then(({ output: [{ code }] }) => {
+      if (isProd) {// 如果是生产环境，是否需要压缩代码
+        const minified = (banner ? banner + '\n' : '') + terser.minify(code, {
+          toplevel: true,
+          output: {
+            ascii_only: true
+          },
+          compress: {
+            pure_funcs: ['makeMap']
+          }
+        }).code
+        // 最后生成打包文件
+        return write(file, minified, true)
+      } else {
+        return write(file, code)
       }
-      //创建订阅者列表,如果存在就直接插入
-      (this.list[event] || (this.list[event] = [])).push(fn);
-      return this;
-    },
-    //发布主题
-    emit: function () {
-      var event = [].shift.call(arguments);
-      if (this.list[event] && this.list[event].length) {
-        var fns = this.list[event].slice();
-        //浅拷贝后直接对列表所有订阅者函数依次执行
-        for (var i in fns) {
-          this.list[event][i].apply(this, arguments);
-        }
-        return this;
-      }
-      return false;
-    },
-    //创建执行后立即销毁的订阅者
-    once(event, fn) {
-      function once() {
-        this.remove(event, once);
-        fn.apply(this, arguments);
-      }
-      //存储当前fn副本用于删除时的查找
-      once.fn = fn;
-      this.on(event, once);
-      return this;
-    },
-    //移除对应订阅者
-    remove: function (event, fn) {
-      var fns = this.list[event];
-      if (!fns) return false;
-      //如没传递对应的订阅者函数引用，就默认删除整个事件列表
-      if (!fn) {
-        delete this.list[event];
-        return this;
-      }
-      //找到对应的订阅者进行删除,包括once的订阅者
-      for (var i = 0; i <= fns.length; i++) {
-        if (fns[i] === fn || fns.fn === fn) {
-          fns.splice(i, 1);
-          break;
-        }
-      }
-      return this;
-    },
-  };
-  return eventEmitter;
-})();
-```
-
-**使用**
-
-```
-<script src="./eventEmitter.js"></script>
-<script>
-    //注册订阅者
-    eventEmitter.on('test',(t)=>{
-        document.querySelector('#txt').textContent = t;
     })
-    //发布
-    eventEmitter.emit('test','start...');
-</script>
-```
-
-## nodeJS 手写 mock 数据服务器
-
-**前言**
-
-- koa 基本使用
-- koa-router 的基本用法
-- koa-logger 的使用
-- glob 支持文件遍历查寻
-- node 几个核心 api 的使用
-- 使用 nodemon 做自动重启
-
-**核心代码**
-
-[github 源码](https://github.com/MrXujiang/openCoder/tree/master/mockServer)
-
-api/v1/user.json 目录层级结构
-
-**index.js**-关键五部曲
-
-```
-const Koa = require('koa');
-const Router = require('koa-router');
-const glob = require("glob");
-const logger = require('koa-logger')
-const { resolve } = require('path');
-const fs = require('fs');
-
-const app = new Koa();
-const router = new Router({prefix: '/api'});
-const routerMap = {};  // 存放路由映射
-//4.添加控制台日志 我们使用koa-logger实现在终端打印node日志，方便调试
-app.use(logger());
-
-//2.注册路由 我们使用koa-router来实现后台服务的路由功能，并通过koa提供的上下文ctx将读取到的数据返回给前端
-//3.自动注册api接口并返回数据 我们将在这个阶段实现api服务的自动注册，这里我们使用glob这个第三方模块来遍历目录，并通过node的fs模块读取api文件的数据并返回给前台
-glob.sync(resolve('./api', "**/*.json")).forEach((item, i) => {
-    let apiJsonPath = item && item.split('/api')[1];
-    let apiPath = apiJsonPath.replace('.json', '');
-
-    router.get(apiPath, (ctx, next) => {
-        try {
-            let jsonStr = fs.readFileSync(item).toString();
-            ctx.body = {
-                data: JSON.parse(jsonStr),
-                code: 200,
-            }
-        }catch(err) {
-            ctx.throw('服务器错误', 500);
-        }
-      });
-    // 记录路由
-    routerMap[apiJsonPath] = apiPath;
-});
-//5.路由映射文件的生成 该功能也不是本文的重点，但是会极大的方便前端开发者调试请求
-fs.writeFile('./routerMap.json', JSON.stringify(routerMap, null , 4), err => {
-    if(!err) {
-        console.log('路由地图生成成功！')
-    }
-});
-
-app
-  .use(router.routes())
-  .use(router.allowedMethods());
-//1.搭建一个node服务
-app.listen(9001);
-
-```
-
-**nodemon.json**
-
-```
-{
-    "restartable": "rs",
-    "ignore": [
-        ".git",
-        "dist",
-        ".cache",
-        "routerMap.json",
-        "readme.md",
-        "node_modules/**/node_modules"
-    ],
-    "verbose": true,
-    "watch": [
-        "./"
-    ],
-    "ext": "js json"
 }
 ```
 
-**package.json**
+> scripts/config.js
 
 ```
-{
-  "name": "mockserver",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon -w ./ --exec"
+if (process.env.TARGET) {
+  module.exports = genConfig(process.env.TARGET)
+} else {
+  exports.getBuild = genConfig
+  // 根据package.json的脚本配置，生成rollup所需要的配置文件格式数组，genConfig是最终格式
+  exports.getAllBuilds = () => Object.keys(builds).map(genConfig)
+}
+// 所有平台需要配的配置
+const builds = {
+    // Runtime+compiler development build (Browser)
+  'web-full-dev': {
+    entry: resolve('web/entry-runtime-with-compiler.js'),// 后面分析的入口
+    dest: resolve('dist/vue.js'),
+    format: 'umd',
+    env: 'development',
+    alias: { he: './entity-decoder' },
+    banner
   },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "glob": "^7.1.4",
-    "koa": "^2.8.1",
-    "koa-logger": "^3.2.1",
-    "koa-router": "^7.4.0",
-    "nodemon": "^1.19.2"
+  'web-runtime-cjs-prod': {
+    entry: resolve('web/entry-runtime.js'),
+    dest: resolve('dist/vue.runtime.common.prod.js'),
+    format: 'cjs',
+    env: 'production',
+    banner
+  },
+  ....
   }
+  
+// 转换为rollup最终需要的配置数据格式，并添加其他配置
+function genConfig (name) {
+  const opts = builds[name]
+  const config = {
+    input: opts.entry,
+    external: opts.external,
+    plugins: [
+      flow(),
+      alias(Object.assign({}, aliases, opts.alias))
+    ].concat(opts.plugins || []),
+    output: {
+      file: opts.dest,
+      format: opts.format,
+      banner: opts.banner,
+      name: opts.moduleName || 'Vue'
+    },
+    onwarn: (msg, warn) => {
+      if (!/Circular/.test(msg)) {
+        warn(msg)
+      }
+    }
+  }
+  ...
+  return config
 }
 ```
+
+**3.Runtime Only VS Runtime + Compiler**
+
+通常我们利用 vue-cli 去初始化我们的 Vue.js 项目的时候会询问我们用 Runtime Only 版本的还是 Runtime + Compiler 版本。下面我们来对比这两个版本。
+
+- Runtime Only
+
+我们在使用 Runtime Only 版本的 Vue.js 的时候，通常需要借助如 webpack 的 vue-loader 工具把 .vue 文件编译成 JavaScript，因为是在编译阶段做的，所以它只包含运行时的 Vue.js 代码，因此代码体积也会更轻量。
+
+- Runtime + Compiler
+
+我们如果没有对代码做预编译，但又使用了 Vue 的 template 属性并传入一个字符串，则需要在客户端编译模板
+
+**4.从入口开始**
+
+**核心**
+
+> 本质上是一个Vue函数，通过`src\core\instance\index.js`重写原型方法和`src\core\global-api\index.js`挂载静态全局方法，扩展功能方法。
+
+我们之前提到过 Vue.js 构建过程，在 web 应用下，我们来分析 Runtime + Compiler 构建出来的 Vue.js，它的入口是 `src/platforms/web/entry-runtime-with-compiler.js`：
+
+```
+import Vue from './runtime/index'
+Vue.prototype.$mount = function (){
+...// luwen重写了原型mount方法
+}
+export default Vue // luwen来自另外一个地方
+```
+
+`src\platforms\web\runtime\index.js`：
+
+```
+import Vue from 'core/index'
+// luwen定义一些静态方法
+Vue.config.mustUseProp = mustUseProp
+Vue.prototype.$mount = function (
+  ...// luwen重写了原型mount方法
+  }
+export default Vue // luwen来自另外一个地方
+```
+
+`src\core\index.js`：
+
+```
+import Vue from './instance/index'
+// luwen定义全局方法
+initGlobalAPI(Vue)
+export default Vue // luwen来自另外一个地方
+```
+
+`src\core\instance\index.js`
+
+```
+// luwen最后发现Vue本质是一个函数
+function Vue (options) {
+  if (process.env.NODE_ENV !== 'production' &&
+    !(this instanceof Vue)
+  ) {
+    warn('Vue is a constructor and should be called with the `new` keyword')
+  }
+  this._init(options)
+}
+// luwen-通过重写原型，扩展Vue函数的方法
+initMixin(Vue)
+stateMixin(Vue)
+eventsMixin(Vue)
+lifecycleMixin(Vue)
+renderMixin(Vue)
+
+export default Vue
+```
+
+`src\core\global-api\index.js`
+
+```
+export function initGlobalAPI (Vue: GlobalAPI) {
+  // luwen定义了一些工具函数吗，但有可能会变化，所以有使用风险
+  Vue.util = {
+    warn,
+    extend,
+    mergeOptions,
+    defineReactive
+  }
+// luwen定义了全局的set,delete,delete
+  Vue.set = set
+  Vue.delete = del
+  Vue.delete = nextTick
+// luwen定义了全局的方法component、directive、filter,合并到options上
+  ASSET_TYPES.forEach(type => {
+    Vue.options[type + 's'] = Object.create(null)
+  })
+  // luwen定义了全局内置组件KeepAlive
+  extend(Vue.options.components, builtInComponents)
+  // luwen-通过重写原型，扩展全局静态方法
+  initUse(Vue)// luwen定义了全局use方法
+  initMixin(Vue)// luwen定义了全局mixin方法
+  initExtend(Vue)// luwen定义了全局extend方法
+  initAssetRegisters(Vue)// luwen定义了全局component、directive、filter方法处理
+}
+
+```
+
+### 数据驱动
+
+**1.new Vue 发生了什么**
+
+我们看下Vue的构造函数
+
+`src\core\instance\index.js`
+
+```
+// luwen最后发现Vue本质是一个函数
+function Vue (options) {
+  if (process.env.NODE_ENV !== 'production' &&
+    !(this instanceof Vue)
+  ) {
+    warn('Vue is a constructor and should be called with the `new` keyword')
+  }
+  // luwen-最初的初始化方法，_init是在initMixin函数中实现的原形重写定义
+  this._init(options)
+}
+// luwen-通过重写原型，扩展Vue函数的方法
+initMixin(Vue)// luwen-来自另外一个地方
+```
+
+`src\core\instance\init.js`
+
+```
+export function initMixin (Vue: Class<Component>) {
+  Vue.prototype._init = function (options?: Object) {
+  // luwen-最终将options合并并挂载到$options上,方便后续调用。这里的options就是Vue函数的入参
+   vm.$options = mergeOptions(
+        resolveConstructorOptions(vm.constructor),
+        options || {},
+        vm
+      )
+   initLifecycle(vm)// luwen-初始化生命周期
+    initEvents(vm)// luwen-初始化事件中心
+    initRender(vm)// luwen-初始化渲染函数
+    callHook(vm, 'beforeCreate')
+    initInjections(vm) // resolve injections before data/props
+    initState(vm)// luwen-初始化用户数据
+    initProvide(vm) // resolve provide after data/props
+    callHook(vm, 'created')    
+     // luwen-最后判断是否存在el,存在则挂载dom
+    if (vm.$options.el) {
+      vm.$mount(vm.$options.el)
+    }
+  }
+  }
+```
+
+**为什么this.num就能访问data定义中的num？**
+
+> this.num本质就是访问this._data.num
+
+`src\core\instance\state.js`
+
+```
+function initData (vm: Component) {
+  let data = vm.$options.data
+  // luwen-data赋值到_data
+  data = vm._data = typeof data === 'function'
+    ? getData(data, vm)
+    : data || {}
+    
+    // luwen-比较data和props有没有重复定义
+  while (i--) {
+    const key = keys[i]
+    if (process.env.NODE_ENV !== 'production') {
+      if (methods && hasOwn(methods, key)) {
+        warn(
+          `Method "${key}" has already been defined as a data property.`,
+          vm
+        )
+      }
+    }
+    // luwen-就是访问this.num本质就是访问this._data.num。
+    // luwen-将vm的数据通过代理访问到_data上
+      proxy(vm, `_data`, key)
+  }
+```
+
