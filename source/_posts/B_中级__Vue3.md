@@ -49,7 +49,410 @@ Vue 是一套用于构建用户界面的渐进式框架。Vue.js 3.0 "One Piece"
 >
 > A:它遍历 reactive 对象的每个 key，把每个属性都转换成一个 ref，从而在解构时保持响应式链接。
 
+## 生命周期
+
+- 新增钩子：
+  - `onRenderTracked`：状态渲染跟踪（用于调试）。
+  - `onRenderTriggered`：状态触发渲染（用于调试）。
+  - `onServerPrefetch`：SSR 服务端渲染相关。
+
+## 自定义指令
+
+**1.定义**
+
+> Vue 3 的自定义指令主要用来对普通 DOM 元素进行底层操作。
+> 虽然 Vue 推崇数据驱动视图，但在某些场景下（如自动聚焦输入框、防抖节流、无限滚动、权限控制等），我们仍然需要直接访问 DOM
+
+**2.核心钩子函数**
+
+自定义指令的钩子函数名称与组件生命周期保持了一致性（但有所不同），主要包括以下几个：
+
+> - **created**：指令绑定到元素后，只调用一次。此时 DOM 还没挂载，可以在此时进行一些初始化逻辑。
+> - **beforeMount**：元素插入 DOM 前调用。
+> - **mounted**：元素被插入父节点后调用（最常用），通常在这里进行 DOM 操作。
+> - **beforeUpdate**：元素更新前调用。
+> - **updated**：元素更新后调用。
+> - **beforeUnmount**：元素卸载前调用。
+> - **unmounted**：指令与元素解绑，且元素从 DOM 移除后调用（常用于清理定时器、解绑事件）。
+
+**3.钩子参数**
+
+> - **el**：指令绑定的**真实 DOM 元素**，可以直接操作它。
+>
+> - **binding**
+>
+>   ：是一个对象，包含以下核心属性：
+>
+>   - `value`：指令绑定的值（例如 `v-focus="true"` 中的 `true`）。
+>   - `oldValue`：指令绑定的前一个值（仅在 `updated` 和 `beforeUpdate` 中可用）。
+>   - `arg`：传给指令的参数（例如 `v-text:msg` 中的 `"msg"`）。
+>   - `modifiers`：包含修饰符的对象（例如 `v-submit.prevent` 中的 `{ prevent: true }`）。
+>   - `instance`：使用指令的组件实例。
+>
+> - **vnode**：代表绑定元素的底层 VNode。
+>
+> - **prevVnode**：上一个渲染状态中代表绑定元素的 VNode（仅在 `beforeUpdate` 和 `updated` 中可用）。
+
+**4.注册方式**
+
+**A. 全局注册 (main.js)**
+
+```js
+const app = createApp(App)
+
+// 定义一个 v-focus 指令
+app.directive('focus', {
+  mounted(el) {
+    el.focus()
+  }
+})
+```
+
+**B. 局部注册 (script setup 语法糖)**
+
+在 Vue 3 `<script setup>` 中，指令名需要以 `v` 开头的小驼峰命名。
+
+```js
+<script setup>
+// 局部指令：vLoading
+const vLoading = {
+  mounted(el, binding) {
+    if (binding.value) {
+      // 模拟添加 loading 样式
+      el.classList.add('loading')
+      el.innerText = 'Loading...'
+    }
+  },
+  updated(el, binding) {
+    if (binding.value !== binding.oldValue) {
+      if (binding.value) {
+        el.classList.add('loading')
+      } else {
+        el.classList.remove('loading')
+      }
+    }
+  }
+}
+</script>
+
+<template>
+  <div v-loading="isLoading">Content</div>
+</template>
+```
+
+**C. 简写形式**
+
+如果指令逻辑只在 `mounted` 和 `updated` 时相同（例如根据值动态设置样式），可以使用简写：
+
+```js
+app.directive('color', (el, binding) => {
+  // 这里的函数会在 mounted 和 updated 时调用
+  el.style.color = binding.value
+})
+```
+
+**5. 实际应用场景（项目经验）**
+
+在项目中，我通常会在以下场景使用自定义指令：
+
+1. **权限控制**：`v-permission`，根据用户权限动态移除或禁用按钮。
+2. **防抖节流**：`v-debounce`，防止用户频繁点击提交按钮。
+3. **懒加载**：`v-lazy`，图片滚动到可视区域时才加载。
+4. **一键复制**：`v-copy`，点击元素自动将内容复制到剪贴板。
+5. **Loading 状态**：全屏 Loading 或局部 Loading 的切换。
+
+**6.Vue2与Vue3区别**
+
+| 特性            | Vue 2                                                      | Vue 3                                                        |
+| :-------------- | :--------------------------------------------------------- | :----------------------------------------------------------- |
+| **钩子命名**    | `bind`, `inserted`, `update`, `componentUpdated`, `unbind` | `created`, `beforeMount`, `mounted`, `beforeUpdate`, `updated`, `beforeUnmount`, `unmounted` |
+| **`el` 的时机** | 在 `bind` 钩子中，`el` 可能是一个注释节点（如果是 `v-if`） | 在 `created` 中就能拿到真实的 DOM 元素                       |
+| **逻辑复用**    | 较难复用，通常混合在钩子里                                 | 可以利用 Composition API 的函数提取复用逻辑                  |
+
+## 自定义过滤器
+
+**Vue 3 移除了内置的过滤器。**
+
+官方给出了两个主要原因：
+
+> 1. **可替代性强**：过滤器的功能完全可以通过 Methods（方法调用）或 Computed（计算属性）来实现，且计算属性拥有更好的响应式缓存机制。
+> 2. **语法冗余与模糊**：过滤器在模板中看起来像函数调用（`{{ msg | filter }}`），但又不完全等同于 JavaScript 的函数调用或管道操作符，这增加了学习成本和解析复杂度。同时，过滤器只适用于插值 `{{ }}` 和 `v-bind`，限制了使用场景。
+
+## 常用修饰符
+
+Vue 2 和 Vue 3 在修饰符上的区别，主要在于 **`v-model` 的参数**。
+
+- **Vue 2**：组件上的 `v-model` 默认利用名为 `value` 的 prop 和 `input` 事件。如果要绑定其他变量，需要用 `.sync` 修饰符。
+- **Vue 3**：移除了 `.sync` 修饰符。`v-model` 在组件上默认利用名为 `modelValue` 的 prop 和 `update:modelValue` 事件。如果需要绑定多个值，使用 `v-model:arg` 的形式。
+
+## keep-alive
+
+Vue3替换为两个新的钩子：
+
+> - `onActivated`：组件被激活（从缓存中取出，插入 DOM）时调用。
+>   - *替代场景*：原来写在 `mounted` 中的刷新数据逻辑，如果需要每次进入都刷新，应移入此钩子。
+> - `onDeactivated`：组件失活（从 DOM 移除，放入缓存）时调用。
+>   - *场景*：在这里可以保存当前的滚动位置，或者清除定时器。
+
+**面试**
+
+> Q:**如果一个组件使用了 `<KeepAlive>`，它什么时候会被销毁？**
+>
+> A:1. 组件被从 `<KeepAlive>` 中移除（如 `v-if="false"`）。2. 达到了 `max` 缓存上限，且该实例是最久未使用的（LRU）。
+>
+> Q:**为什么我的 `include` 写了组件名却不生效？**
+>
+> A:检查组件内部是否显式定义了 `name` 选项。Vue 3 的 `<script setup>` 语法糖需要配合 `defineOptions` 或单独的 `<script>` 标签来定义 `name`。
+
+## 检测路由动态变化
+
+**1.定义**
+
+> 在 Vue 3 中，由于推荐使用 **Composition API**，我们不再像 Vue 2 那样通过 `watch: { '$route': ... }` 来监听路由。
+> Vue 3 提供了组合式函数 `useRoute`，配合 Vue 的 `watch` 或 `watchEffect` 来实现路由监听。此外，Vue Router 还提供了组件内的导航守卫 `onBeforeRouteUpdate`，专门用于处理组件复用时的路由参数变化。
+
+**2.核心实现**
+
+**方案一：使用 `watch` 监听（最常用）**
+
+注意：必须监听路由的某个具体属性（如 `route.params.id`），不能直接监听 `route` 对象本身，因为 `route` 对象的引用在路由跳转时是不变的。
+
+```js
+<script setup>
+import { watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { fetchData } from '@/api'
+
+const route = useRoute()
+
+// 监听路由参数 id 的变化
+watch(
+  () => route.params.id, 
+  (newId, oldId) => {
+    console.log(`ID 从 ${oldId} 变为 ${newId}`)
+    fetchData(newId) // 重新获取数据
+  },
+  { immediate: true } // 可选：初始化时立即执行一次
+)
+</script>
+```
+
+**方案二：使用导航守卫 `onBeforeRouteUpdate`（推荐用于“组件复用”场景）**
+
+```js
+<script setup>
+import { onBeforeRouteUpdate } from 'vue-router'
+import { ref } from 'vue'
+
+const userData = ref(null)
+
+const getUser = (id) => { /* ... */ }
+
+// 在当前路由改变，但是该组件被复用时调用
+onBeforeRouteUpdate((to, from, next) => {
+  console.log('路由即将更新，目标：', to)
+  getUser(to.params.id)
+  next() // 务必调用 next() 或直接 return true
+})
+</script>
+```
+
+**方案三：使用 `watchEffect`（简化版）**
+
+```js
+<script setup>
+import { watchEffect } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+
+watchEffect(() => {
+  // 只要 route 里的任意属性发生变化，这里都会重新执行
+  document.title = route.meta.title || '默认标题'
+})
+</script>
+```
+
+**3.对比**
+
+| 方案                      | 适用场景                           | 特点                                                         |
+| :------------------------ | :--------------------------------- | :----------------------------------------------------------- |
+| **`watch`**               | 需要根据路由变化获取新数据         | 精确控制，可以拿到 `newValue` 和 `oldValue`，灵活性高。      |
+| **`onBeforeRouteUpdate`** | 涉及导航拦截、取消旧请求、权限控制 | 能访问 `next` 函数，可以在路由更新**前**执行逻辑，适合在组件复用时替代 `created`。 |
+| **`watchEffect`**         | 副作用简单，如修改网页标题         | 代码简洁，但难以获取新旧值对比。                             |
+
+## router-link上v-slot
+
+**Vue 2 与 Vue 3 的区别（迁移相关）**
+
+- **Vue 2 (`tag` 属性)**：过去可以使用 `<router-link to="/foo" tag="li">` 来渲染 `li` 标签。
+- **Vue 3 (移除 `tag`)**：Vue Router 4 移除了 `tag` 和 `event` 属性。**原因**是这种属性组合不够灵活，无法支持在链接中渲染多个根节点。
+- **替代方案**：现在必须使用 `v-slot` + `custom` 来实现同样的效果。
+
+## 插槽
+
+**Vue 2 与 Vue 3 的语法区别（重要）**
+
+- **废弃了 `slot` 属性**：Vue 2 中具名插槽使用 `<div slot="header">`，Vue 3 中必须使用 `<template #header>`。
+- **废弃了 `slot-scope`**：Vue 2 中作用域插槽使用 `<div slot-scope="props">`，Vue 3 中统一使用 `<template #default="props">`。
+- **统一指令**：Vue 3 引入了 `v-slot` 指令（可缩写为 `#`），统一了所有插槽的语法，更加规范和强大。
+
+## Watch vs WatchEffect
+
+> - `watch` 需要明确指定依赖源。
+> - `watchEffect` 会自动追踪回调内访问的响应式数据，但无法获取 `oldVal`，且初始时就会立即执行一次。
+
+## 组件通信
+
+分为三类：**父子通信**、**跨级通信**、**兄弟/任意组件通信**
+
+> - 父子：`props/$emit`，defineProps/defineEmits。**多个 v-model**
+> - 跨级：`provide` / `inject`(依赖注入)
+> - 兄弟/任意：**Mitt** (事件总线)，**Pinia**(状态管理)
+> - 其他：**Ref & defineExpose**
+
+**场景选择**
+
+> 1. **最简单直接的父子交互**，首选 **Props/Emits**。
+> 2. 如果层级很深（如布局组件），使用 **Provide/Inject**。
+> 3. 如果涉及到全局数据（如用户登录态），直接上 **Pinia**。
+> 4. 如果仅仅是两个非关联组件偶尔通信，且不想引入重型状态库，可以用 **Mitt**。
+> 5. 如果需要父组件直接操作子组件的表单校验，用 **Ref** 获取实例调用 `defineExpose` 暴露的方法。
+
+## 动画
+
+Vue 3 对类名进行了重命名以符合 W3C 标准：
+
+| 阶段         | Vue 2 旧版命名 | Vue 3 新版命名     |
+| :----------- | :------------- | :----------------- |
+| **进入开始** | `v-enter`      | **`v-enter-from`** |
+| **离开结束** | `v-leave-to`   | **`v-leave-to`**   |
+
 # 中级
+
+## 双向数据绑定
+
+**1.重大变化**
+
+`v-model` 实际上就是 `prop` + `event` 的语法糖。
+
+- **Vue 2**：默认绑定 `value` 属性，监听 `input` 事件。
+- **Vue 3**：默认绑定 `modelValue` 属性，监听 `update:modelValue` 事件。**并且支持多个 `v-model`**。
+
+| 特性           | Vue 2                         | Vue 3                                |
+| :------------- | :---------------------------- | :----------------------------------- |
+| **默认 Prop**  | `value`                       | **`modelValue`**                     |
+| **默认 Event** | `input`                       | **`update:modelValue`**              |
+| **支持多绑定** | 不支持（需用 `.sync` 修饰符） | **支持**（可写多个 `v-model:xxx`）   |
+| **配置方式**   | `model` 选项                  | 无需配置，直接实现 `update:xxx` 事件 |
+
+**2.底层原理**
+
+Vue 3 的双向绑定，表面上是 `v-model` 的语法糖，底层依赖于 **Proxy (代理)** 实现的响应式系统。
+
+当数据变化时，Vue 的 `Proxy` 会拦截赋值操作，触发依赖更新，实现数据驱动视图。
+我们在使用时，应理解 Vue 3 推崇的 `modelValue` 和 `update:xxx` 模式，这比 Vue 2 更规范，且支持多参数绑定，非常适合开发复杂的业务组件。
+
+## Proxy
+
+**1.定义**
+
+> 它是一个 ES6 新增的特性，用于创建一个对象的代理，从而拦截和自定义该对象的基本操作（如属性查找、赋值、枚举、函数调用等）。
+> Vue 2 使用 `Object.defineProperty`，而 Vue 3 改用 `Proxy`，是为了解决 Vue 2 中无法监听数组下标变化、无法监听对象属性新增/删除等痛点，并提升了性能。
+
+**2.Vu2与Vue3对比**
+
+| 维度           | Vue 2 (`Object.defineProperty`)                       | Vue 3 (`Proxy`)                                    |
+| :------------- | :---------------------------------------------------- | :------------------------------------------------- |
+| **监听对象**   | 递归遍历，给每个属性添加 getter/setter                | **代理整个对象**，不需要遍历                       |
+| **数组监听**   | **无法监听**索引修改和长度变化（需重写 7 个数组方法） | **原生支持**，直接监听数组的索引和长度变化         |
+| **属性增删**   | **无法监听**，需要调用 `Vue.set` / `Vue.delete`       | **直接监听**，`delete` 操作也能触发更新            |
+| **Map/Set 等** | 不支持                                                | **支持** Map, Set, WeakMap, WeakSet                |
+| **性能**       | 初始化时递归遍历，耗时多                              | **惰性代理**（Lazy Proxy），用到才递归，初始化更快 |
+
+**3.核心原理**
+
+Vue 3 在实现 `reactive` 时，使用 `new Proxy(target, handler)` 来包装对象，并配合 **`Reflect`**（反射）来进行操作的实现了更高效、更规范的惰性响应式。
+
+**为什么需要 `Reflect`？**
+
+1. **保证 `this` 指向**：在 Proxy 的 handler 中调用 `Reflect` 可以确保 `this` 始终指向原始对象，而不是 Proxy 对象（解决依赖收集时的上下文丢失问题）。
+2. **统一返回值**：`Reflect` 的返回值与 Proxy 的拦截要求一致，方便错误处理。
+
+**4.手写Proxy**
+
+```js
+function reactive(target) {
+  return new Proxy(target, {
+    get(target, key, receiver) {
+      console.log(`获取了属性: ${key}`) // 依赖收集
+      
+      // 1. Reflect.get 获取值
+      // 2. receiver 作用是保证如果 target 内部有 getter，this 指向代理对象，从而保持响应式
+      const result = Reflect.get(target, key, receiver)
+      
+      // 3. 懒代理：只有当访问到的值是对象时，才递归调用 reactive，而不是一开始就递归
+      if (isObject(result)) {
+        return reactive(result)
+      }
+      
+      return result
+    },
+    
+    set(target, key, value, receiver) {
+      console.log(`设置了属性: ${key} = ${value}`) // 触发更新
+      
+      // 4. 触发更新逻辑
+      const result = Reflect.set(target, key, value, receiver)
+      return result
+    }
+  })
+}
+```
+
+**5.Proxy优缺点**
+
+**优点**
+
+> **A. 解决了数组响应式的难题**
+> Vue 2 中修改 `arr[0] = 1` 无效，必须用 `Vue.set`。
+> Vue 3 中直接修改数组索引或 `length`，Proxy 都能拦截到，从而触发更新。
+>
+> **B. 解决了动态属性添加的难题**
+> Vue 2 中给对象添加新属性 `obj.newProp = 1` 无效，必须用 `Vue.set`。
+> Vue 3 中直接添加 `obj.newProp = 1`，Proxy 的 `set` 拦截器会立即捕获，无需额外 API。
+>
+> **C. 惰性代理（性能优化）**
+>
+> - **Vue 2**：初始化时，无论数据多深，都会递归把所有属性转成响应式。如果数据量大但实际只用了很少一部分，非常浪费性能。
+> - **Vue 3**：初始化时只代理第一层。只有当你真正访问了 `obj.a.b` 时，Vue 才会去代理 `a` 和 `b`。这大大减少了初始化的时间。
+
+**缺点**
+
+> - **浏览器兼容性**：`Proxy` 是 ES6 标准，不支持 IE 浏览器。这也是 Vue 3 宣布放弃支持 IE11 的主要原因之一。
+
+## 虚拟 DOM
+
+**1.Vue2与Vue3变化**
+
+Vue 2 的虚拟 DOM 机制在初始化时需要遍历整个树，比较时采用全量 Diff，性能在某些场景下仍有瓶颈。Vue 3 通过 **“编译时优化”** 和 **“运行时优化”** 结合，大幅提升了性能。
+
+主要体现在以下三个点：
+
+**A. 静态提升**
+
+- **Vue 2**：每次重新渲染时，即使内容没变，静态的节点（如 `<div>static text</div>`）也会被重新创建，然后丢弃旧的。
+- **Vue 3**：编译器会将不参与更新的静态节点提升到渲染函数外部。这意味着**静态节点只创建一次**，后续渲染直接复用。
+
+**B. Patch Flags（补丁标记）**
+
+- **原理**：在编译阶段，Vue 3 会给动态节点打上“标签”。比如，如果一个节点只有 `class` 会变，就标记 `CLASS`；只有文本会变，就标记 `TEXT`。
+- **优势**：在 Diff 算法比对时，Vue 3 只会对比标记为“动态”的部分，完全跳过静态属性的比较，极大减少了运行时的计算量。
+
+**C. Block Tree（块级树）**
+
+- **原理**：Vue 3 将模板基于动态节点切分成一个个 `Block`。每个 `Block` 内部只收集动态节点的数组。
+- **优势**：在进行全量 Diff 时，不需要遍历整个 VNode 树，只需要遍历 `Block` 内部的动态节点数组即可。这在模板越大、静态内容越多时，性能提升越明显。
 
 # 高级
 
