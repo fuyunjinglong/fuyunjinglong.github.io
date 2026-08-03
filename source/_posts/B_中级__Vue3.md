@@ -456,7 +456,309 @@ Vue 2 的虚拟 DOM 机制在初始化时需要遍历整个树，比较时采用
 
 # 高级
 
+## $forceUpdate原理
 
+**1.定义**
+
+> `$forceUpdate` 的底层原理是**手动调用组件实例上的渲染副作用函数（`instance.update`）**，从而强制触发当前组件的重新渲染（即重新执行 `render` 函数生成新的虚拟 DOM，并进行 patch 比对），但这个过程**不会深度强制更新子组件**。
+
+**2.核心原理**
+
+在 Vue3 的源码中，组件挂载时通过 `setupRenderEffect` 建立了渲染副作用（基于 `ReactiveEffect`）。`$forceUpdate` 的实现非常简练，核心步骤如下：
+
+> 1. **获取组件实例**：首先获取当前组件的实例 `instance`。
+> 2. **调用 `update` 函数**：直接执行 `instance.update()`。
+> 3. **副作用执行**：`instance.update` 实际上是 `ReactiveEffect` 包装后的函数。调用它相当于直接绕过响应式系统的依赖追踪，强制重新执行组件的渲染函数 `renderComponentRoot`。
+> 4. **DOM 比对与更新**：重新执行渲染函数会生成新的 VNode（虚拟节点），随后 Vue 的 `patch` 逻辑会对比新旧 VNode，最终只将变化的部分更新到真实 DOM 上。
+
+**3.Vue2与Vue3区别**
+
+> 1. **底层实现不同**：
+>    - Vue2 是通过调用 `vm._watcher.update()`（触发 Watcher 的 update 方法），将渲染 Watcher 加入异步队列。
+>    - Vue3 是通过调用 `instance.update()`（触发 `ReactiveEffect` 的执行），同样会被 `scheduler` 调度到微任务队列中，但底层 API 完全重写。
+> 2. **更新范围一致**：无论是 Vue2 还是 Vue3，`$forceUpdate` **都只针对当前组件**，不会强制更新子组件。如果子组件需要更新，必须依赖子组件自身的响应式数据变化，或者子组件自身调用 `$forceUpdate`。
+
+**4.使用场景**
+
+> 1. **非响应式数据绑定**：在复杂逻辑中，绑定了未经过 `reactive` 或 `ref` 包装的普通 JavaScript 对象/数组（如直接操作了 `window` 对象上的某些属性，或使用了第三方库的对象实例）。
+> 2. **深层对象解构丢失响应式**：不慎对响应式对象进行解构导致丢失响应式，但又不想重构代码时，作为临时补救措施。
+> 3. **强烈不建议**使用 `$forceUpdate`。它的出现通常意味着代码设计存在缺陷（违背了 Vue 响应式数据驱动的核心理念）
+
+**5.面试**
+
+> Q:**为什么 `$forceUpdate` 不会触发 `created/mounted` 等生命周期钩子？**
+>
+> A:因为 `$forceUpdate` 触发的是组件的 `patch` 阶段（更新阶段），它只重新执行 `render` 函数并比对 DOM，而不会重新执行 `setup` 或 `created/mounted` 这些初始化阶段的逻辑。在更新阶段只会触发 `beforeUpdate` 和 `updated` 生命周期。
+
+## nextTick原理
+
+**1.定义**
+
+> `nextTick` 的原理是**利用微任务（Microtask）队列异步执行回调**。它将传入的回调函数收集到一个数组中，并在当前同步代码执行完毕后，通过 `Promise.resolve().then()` 将其放入微任务队列中统一批量执行，从而确保回调在 DOM 更新完成之后触发。
+
+**2.核心原理**
+
+Vue 的数据更新是异步的。当响应式数据发生变化时，Vue 不会立刻渲染 DOM，而是将渲染副作用函数（`component.update`）推入一个队列（`queueJob`）中，并在下一个微任务中批量执行。`nextTick` 正是配合这一机制的核心 API。
+
+> (注：Vue3 对源码做了高度精简优化，直接复用 Promise 的链式调用机制，不再像 Vue2 那样维护一个复杂的降级数组。)
+
+Vue3 源码（`packages/runtime-core/src/scheduler.ts`）中的核心步骤如下：
+
+> 1. **维护闭包队列**：内部维护了一个 `callbacks` 数组，用来存放所有通过 `nextTick` 传入的回调函数。
+> 2. **触发微任务**：当第一次调用 `nextTick` 时，会创建一个 `Promise` 对象，并通过 `Promise.resolve().then()` 将清空 `callbacks` 数组的函数（`flushCallbacks`）放入微任务队列中。
+> 3. **收集回调**：将当前调用 `nextTick` 传入的回调函数 `push` 到 `callbacks` 数组中。
+> 4. **批量执行**：当当前主线程的同步代码执行完毕后，微任务队列中的 `flushCallbacks` 被执行，它会遍历并依次执行 `callbacks` 中的所有回调，然后清空数组。
+> 5. **DOM 更新的先后顺序**：Vue3 中组件的更新逻辑（`queueJob`）也是通过 `nextTick` 调度的。因为 JavaScript 是单线程执行，只要在调用 `nextTick` 之前修改了数据，组件的渲染更新任务就会先被推入微任务队列，随后用户传给 `nextTick` 的回调也会被推入微任务队列。**这就保证了用户的回调始终在组件 DOM 更新之后执行。**
+
+**3.Vue2与Vue3区别**
+
+> 1. **异步策略降级不同**：
+>    - Vue2 内部有一套复杂的降级机制：`Promise`（微任务） -> `MutationObserver`（微任务） -> `setImmediate`（宏任务） -> `setTimeout`（宏任务）。主要是为了兼容不支持微任务的旧环境（如 IE）。
+>    - Vue3 直接抛弃了 IE 兼容，全面拥抱现代浏览器，直接使用原生 `Promise`（微任务），不再需要复杂的降级处理，源码更轻量。
+> 2. **队列维护方式不同**：Vue3 借助 `Promise.then` 的天然特性实现链式调用，而不再像 Vue2 那样显式维护一个 `callbacks` 数组并手动遍历。
+
+**4.面试**
+
+> Q:**为什么 Vue 的数据更新和 DOM 更新要是异步的？**
+>
+> A:为了性能优化。如果每次响应式数据修改都同步触发组件重新渲染和 patch，在一个大型组件中，如果在一个方法里连续修改 10 个数据，就会导致 10 次无意义的 DOM 比对和重排/重绘。通过异步队列合并更新，Vue 可以将这些操作合并到一次微任务中执行，极大提升了渲染性能。
+
+## Vue Router原理
+
+**一.定义**
+
+> Vue3 的 Vue Router（v4 版本）相较于 Vue2（v3 版本），**底层全面拥抱 Composition API 与 Promise，在外层 API 上从“类构造函数”转变为“函数式编程”，废弃了通配符 `\*` 和 `next()` 回调，并在状态管理上深度融合了 Vue3 的响应式系统（`reactive`）**。
+
+**二.Vue2与Vue3区别**
+
+**1.初始化方式与模式定义**
+
+Vue3 废弃了 `new VueRouter()` 的实例化方式，改用函数式创建，并将路由模式从字符串配置改为了具体的 history 对象。
+
+```js
+// Vue2 (v3)
+const router = new VueRouter({
+  mode: 'history', // 字符串 'history' 或 'hash'
+  routes: [...]
+})
+
+// Vue3 (v4)
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
+const router = createRouter({
+  history: createWebHistory(), // 使用函数创建 history 实例
+  routes: [...]
+})
+```
+
+**2. 导航守卫：移除 `next()`，全面 Promise 化**
+
+Vue3 的导航守卫不再强制依赖 `next()` 函数来控制流程，而是通过**返回值**（返回 `false`、路由地址或 Promise）来决定导航。这解决了 Vue2 中容易忘记调用 `next()` 导致路由卡死的痛点。
+
+```js
+// Vue2
+router.beforeEach((to, from, next) => {
+  if (!isLogin) next('/login')
+  else next() // 必须调用
+})
+
+// Vue3
+router.beforeEach((to, from) => {
+  if (!isLogin) return '/login' // 直接 return，或者 return false
+  // 返回 undefined 或 true 表示继续
+})
+```
+
+**3. 动态路由匹配：移除通配符 `*`**
+
+Vue2 支持使用 `*` 作为通配符兜底，Vue3 出于类型推导和路由优先级解析的性能考虑，**彻底移除了通配符 `\*`**，必须使用正则参数 `:pathMatch(.*)*` 来代替。
+
+```js
+// Vue2
+{ path: '*', component: NotFound }
+
+// Vue3
+{ path: '/:pathMatch(.*)*', component: NotFound }
+```
+
+**4. 组件内获取路由**
+
+Vue3 移除了 `this`，推崇在 `setup` 中使用 Composition API 获取路由。
+
+```js
+// Vue2
+this.$router.push('/login')
+this.$route.params.id
+
+// Vue3
+import { useRouter, useRoute } from 'vue-router'
+const router = useRouter() // router 是路由实例，用于跳转
+const route = useRoute()   // route 是响应式路由对象，用于获取参数
+router.push('/login')
+```
+
+**5.底层原理差异**
+
+> 1. 响应式系统对接不同：
+>    - **Vue2**：Router 底层通过 `Vue.util.defineReactive` 劫持 `_route` 属性，通过在根组件的 `beforeCreate` 钩子中执行 `this._router.init(this)` 来挂载依赖。
+>    - **Vue3**：Router 底层通过 `reactive` 包裹当前路由状态，并利用 Vue3 的依赖注入系统（`provide` / `inject`）将 `router` 和 `currentRoute` 暴露给全局。`<router-view>` 内部通过 `inject` 获取响应式的 `currentRoute`，当路由变化时触发组件重新渲染。
+> 2. 路由匹配引擎升级：
+>    - **Vue2**：底层依赖 `path-to-regexp` 库的旧版本，支持通配符但解析复杂。
+>    - **Vue3**：升级了路由匹配算法，对路径的优先级和参数提取进行了更严格的类型检查和优化，更易于 Tree-shaking。
+
+## Pinia(Vuex4)原理
+
+**一.Vuex 3 与Vuex 4区别**
+
+> 1. **响应式底层不同**：
+>    - Vuex 3 基于 Vue2 的 `Object.defineProperty` 实现数据劫持，新增属性需用 `Vue.set`。
+>    - Vuex 4 基于 Vue3 的 `Proxy` 实现，直接修改或新增 State 下的属性也能自动触发响应式更新，不再需要 `Vue.set`。
+> 2. **安装与挂载方式不同**：
+>    - Vuex 3 通过 `new Vue({ store })` 将 Store 绑定到根组件实例上。
+>    - Vuex 4 改为通过 `app.use(store)` 结合 `provide/inject` 机制注入，更契合 Vue3 的组合式 API 生态。
+> 3. **TS 支持与解构**：Vuex 4 增强了 TypeScript 的类型推导，但由于其本质依然是 `this` 指向的单一 Store 实例，直接解构 `State` 或 `Getters` 依然会**丢失响应式**，需使用 `computed` 包裹。
+
+**二.Pinia 与Vuex 4区别**
+
+**1.定义**
+
+> Pinia 是 Vue 团队官方推荐的新一代状态管理库（Vue3 的默认首选）。与 Vuex 4 相比，Pinia **移除了 Mutations 概念，采用扁平化去中心化的 Store 架构，天生支持 TypeScript 和 Composition API，且在体积和心智负担上大幅减小**。
+
+**2.核心区别**
+
+> **1.架构设计：去中心化 vs 单一状态树**
+>
+> - **Vuex 4**：采用单一 Store 树，必须通过 `modules` 将状态分割成不同模块，且需要繁琐的 `namespaced: true` 来避免命名冲突。获取状态时需层层层级访问（如 `store.state.user.profile.name`）。
+> - **Pinia**：没有模块嵌套概念，每个 Store 都是独立平行的实体。你可以定义任意多个独立的 Store，直接按需引入调用，天然实现了代码分割和 Tree-shaking。
+>
+> **2.核心概念：移除 Mutations**
+>
+> - **Vuex 4**：遵循严格的同步/异步分离设计。修改 State 必须通过 `Mutations`（同步），处理异步逻辑必须通过 `Actions`（异步）。
+> - **Pinia**：**彻底废弃了 Mutations**。无论是同步还是异步操作，都直接在 `Actions` 中完成，并且可以直接在 Action 内部修改 State（无需 commit）。
+>
+> **3.TypeScript 支持**
+>
+> - **Vuex 4**：由于 Vue2 历史包袱和自身架构设计，Vuex 4 的 TS 类型推导非常繁琐，往往需要大量类型声明文件（如 `ModuleTree` 等），且 IDE 自动补全体验较差。
+> - **Pinia**：从底层设计就完全基于 TS 编写，拥有完美的类型推导。开发者几乎不需要手写任何类型声明，Store 中的 State、Getters、Actions 都能获得精准的 IDE 提示。
+>
+> **4. API 风格：Options API vs Setup 函数**
+>
+> - **Vuex 4**：依然延续 Options 对象写法（`state: () => ({})`, `mutations: {}`, `actions: {}`）。
+> - **Pinia**：除了支持 Options 风格，**核心推荐使用 Setup 函数风格**（类似组件的 `setup`）。你可以直接使用 `ref`、`computed` 来定义状态和计算属性，甚至可以在 Store 中直接使用其他 Vue3 Composition API（如 `watch`）。
+
+```js
+// ====== Vuex 4 写法 ======
+const store = {
+  state: () => ({ count: 0 }),
+  mutations: { increment(state) { state.count++ } },
+  actions: { asyncIncrement({ commit }) { setTimeout(() => commit('increment'), 1000) } }
+}
+// 组件中使用
+this.$store.dispatch('asyncIncrement')
+const count = computed(() => this.$store.state.count)
+
+// ====== Pinia 写法 (Setup 风格) ======
+export const useCounterStore = defineStore('counter', () => {
+  const count = ref(0)
+  function increment() { count.value++ }
+  function asyncIncrement() { setTimeout(increment, 1000) }
+  return { count, increment, asyncIncrement }
+})
+// 组件中使用
+const counterStore = useCounterStore()
+counterStore.asyncIncrement() // 直接解构调用也不会丢失响应式（见下方避坑）
+```
+
+**三.底层原理**
+
+**1.定义**
+
+> Pinia 的底层原理本质上是 **Vue3 响应式系统（`reactive`/`ref`/`computed`）+ 依赖注入（`provide`/`inject`）+ 延迟挂载（`effectScope`）** 的结合体。它通过 `defineStore` 闭包缓存配置，在组件首次调用 `useStore` 时才真正实例化 Store，并利用 `effectScope` 独立管理 Store 的响应式副作用，使其不受组件销毁的影响。
+
+**2.核心原理**
+
+Pinia 的核心源码非常精炼，主要分为两个阶段：**创建 Pinia 实例（全局注册）** 和 **定义/使用 Store（按需实例化）**。
+
+1. 创建 Pinia 实例 (`createPinia`)
+
+当执行 `createPinia()` 时，Pinia 会在内部创建一个全局的 Vue `effectScope`（副作用作用域）和一个用于缓存所有 Store 的 Map（`_s`）。
+
+2. 定义 Store (`defineStore`)
+
+`defineStore` 并不会立即执行传入的 Setup 函数或 Options，而是返回一个 `useStore` 钩子函数。它利用闭包缓存了 `id` 和 `setup` 函数。
+
+3. 使用 Store (`useStore`) 的核心逻辑
+
+当组件内部调用 `useStore()` 时，这是核心的**懒加载（按需实例化）**逻辑：
+
+> 1. **依赖注入获取 Pinia**：通过 `inject('pinia')` 获取全局的 Pinia 实例。
+> 2. **缓存检查**：检查 `pinia._s` 中是否已经存在当前 `id` 的 Store。如果存在，直接返回缓存（实现单例模式）。
+> 3. 首次实例化：如果不存在，则进入创建流程：
+>    - **Setup 模式**：将 Store 当作组件的 `setup` 函数，在 `pinia._e` (全局 effectScope) 中运行它，从而得到 `ref`、`computed` 和函数。这些响应式数据因为是在全局作用域中创建的，**不会随组件卸载而销毁**。
+>    - **Options 模式**：如果传入的是对象，Pinia 会在内部将其转换为 Setup 函数（类似于 Vuex 的处理逻辑），再用 `reactive` 包装 `state`，用 `computed` 包装 `getters`。
+
+**手写pinia**
+
+```js
+import { effectScope, reactive, inject } from 'vue'
+
+// 1. 创建全局实例
+function createPinia() {
+  const scope = effectScope(true) 
+  const state = scope.run(() => reactive({}))
+  const pinia = {
+    _s: new Map(), // 缓存 Store 实例的 Map: { key: store }
+    _a: app,       // Vue 应用实例
+    state,         // 全局响应式 state
+    install(app) {
+      app.provide('pinia', pinia) // 通过 provide 注入全局
+      app.config.globalProperties.$pinia = pinia
+    }
+  }
+  return pinia
+}
+
+// 2. 定义 Store
+function defineStore(id, setup) {
+  // 返回一个闭包函数，按需执行
+  return function useStore() {
+    const pinia = inject('pinia')
+    
+    // 单例缓存：有则直接取
+    if (!pinia._s.has(id)) {
+      // 首次调用时，在全局作用域中执行 setup
+      const store = pinia._e.run(() => setup())
+      pinia._s.set(id, store) // 存入缓存
+    }
+    return pinia._s.get(id)
+  }
+}
+```
+
+**四.关键机制**
+
+> 1. 为什么 Pinia 不需要 `Mutation`？
+>    - 在 Vuex 中，为了保证状态变更可追踪，强制走 `Mutation` 同步修改。
+>    - 在 Pinia 中，State 本质上是通过 `reactive` 代理的对象。直接修改 `state.xxx = yyy`，Vue3 的 Proxy 拦截器会自动触发依赖更新。Pinia 内部集成了 `$patch` 方法，除了直接赋值，你可以通过 `$patch` 函数式修改，这同样会被 Vue DevTools 捕获，从而实现了无需 Mutation 的状态追踪。
+> 2. `effectScope` 的作用（核心考点）：
+>    - 如果在组件 A 的 `setup` 中直接写 `const count = ref(0)`，当组件 A 卸载时，`count` 的响应式依赖会被垃圾回收。
+>    - Pinia 将 Store 的创建逻辑放在全局的 `effectScope` 中执行，相当于脱离了组件树的生命周期。因此，无论哪个组件首次触发 Store 创建，即使该组件销毁，Store 内部的 `computed` 和 `watch` 等副作用依然全局存活。
+> 3. `storeToRefs` 的原理：
+>    - 直接解构 Store（如 `const { count } = useStore()`）会丢失响应式。
+>    - `storeToRefs` 内部遍历 Store 的属性，只对 `state` 和 `getters`（即 `ref` 和 `computed`）调用 `toRefs` 进行转换，而忽略 `actions`（普通函数），从而保证解构后仍具响应式。
+
+**五.面试**
+
+> Q:**解构响应式丢失问题?**
+>
+> A:在 Pinia 中，虽然直接解构 Store 实例的方法不会丢失上下文，但**直接解构 State 依然会丢失响应式**。必须使用 Pinia 专属 API `storeToRefs` 来解构 State 和 Getters（不能用 Vue3 的 `toRefs`，因为 `toRefs` 会把 Actions 也变成无意义的 ref 对象）。
+>
+> Q:**Pinia 为什么不需要像 Vuex 那样在严格模式下禁止直接修改 State？**
+>
+> A:因为 Pinia 的设计理念是简洁直观。在 Pinia 中，虽然你可以直接通过 `store.count++` 修改 State，但这并不会破坏状态追踪机制。Pinia 底层依然是基于 Vue3 的 `reactive` 或 `ref` 实现的，任何形式的修改都能被 DevTools 捕获到。它鼓励开发者将修改逻辑统一放在 Actions 中更多是为了**代码组织规范和复用**，而不是像 Vuex 那样出于**底层机制的强制约束**。
+>
+> Q:**Pinia 是如何实现 Store 之间的互相调用的？**
+>
+> A:因为所有 Store 实例最终都被缓存在 `pinia._s` 这个 Map 中。当 Store A 需要调用 Store B 时，Store A 只需要在自身的 `setup` 执行期间，直接调用 `useStoreB()`。由于 `useStoreB` 内部会去全局 `pinia._s` 中查找缓存，此时如果 B 还没创建会先创建 B，然后返回 B 的实例。由于它们都在同一个全局 `effectScope` 下，因此可以安全地互相访问和建立依赖。
 
 # 入门
 
