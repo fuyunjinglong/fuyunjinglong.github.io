@@ -633,6 +633,79 @@ const Parent = () => {
 >
 > - **特点**：组件解耦，但数据流向不清晰，难以调试，一般慎用。
 
+## 路由
+
+一、定义
+
+> React Router（React 路由）是 React 生态中最常用的标准路由库，它通过管理 URL 与组件 UI 之间的同步，实现了单页应用（SPA）中的页面跳转和状态保持，而不会触发页面整体刷新。
+
+**二、核心原理**
+
+> React Router 的本质是利用 **History API**（如 `pushState`、`replaceState`）监听 URL 的变化，维护一个历史记录栈。当 URL 发生变化时，路由库会根据配置的规则匹配到对应的 React 组件并将其渲染到页面上。
+
+**三、核心组件与 API**
+
+| 特性         | React Router v5                                    | React Router v6                                     |
+| :----------- | :------------------------------------------------- | :-------------------------------------------------- |
+| **路由匹配** | 使用 `<Switch>`，支持 `exact` 精确匹配             | 使用 `<Routes>`，**默认精确匹配**，不再需要 `exact` |
+| **嵌套路由** | 需要在父组件中手动写 `<Route path="/child" ... />` | 支持相对路径，使用 `<Outlet>` 占位符，配置更扁平化  |
+| **跳转方式** | `<Link to="/">` 或 `useHistory()` hook             | `<Link to="/">` 或 **`useNavigate()`** hook         |
+| **代码体积** | 较大                                               | 更小，内部重构提升了性能                            |
+
+**常用组件与 Hook (v6)**
+
+> 1. **`<BrowserRouter>`**：最外层容器，使用 HTML5 History API。
+> 2. `<Routes>` & `<Route>`：
+>    - `<Routes>` 类似于 v5 的 `Switch`，用于包裹路由规则。
+>    - `<Route>` 用于定义路径和组件的映射关系。
+> 3. `<Link>` & `<NavLink>`：
+>    - `<Link to="/home">`：生成无刷新的 a 标签。
+>    - `<NavLink>`：增加了 activeClassName，用于做导航的高亮显示。
+> 4. **`<Outlet>`**：用于嵌套路由的父组件中，表示子路由渲染的位置。
+> 5. **`useNavigate`**：替代 v5 的 `useHistory`，用于编程式导航（跳转、后退）。
+> 6. **`useParams`**：用于获取动态路由参数（如 `/user/:id` 中的 id）。
+
+**四、路由模式**
+
+**1.BrowserRouter (推荐)**
+
+> - **原理**：使用 HTML5 `pushState` API。
+> - **URL 表现**：`http://example.com/user/id`（干净，看起来像真 URL）。
+> - **缺点**：刷新页面时，服务器必须配置返回 `index.html`，否则会报 404 错误。
+> - **场景**：大多数 Web 应用。
+
+**2.HashRouter**
+
+> - **原理**：使用 URL 的 `hash` 部分（`#`）。
+> - **URL 表现**：`http://example.com/#/user/id` 。
+> - **优点**：不需要服务器配置，兼容性好。
+> - **缺点**：URL 不美观，SEO 不友好（虽然 SPA 本身 SEO 就弱）。
+> - **场景**：老旧服务器、简单的静态页面托管（如 GitHub Pages）。
+
+**五、路由传参**
+
+**1.Params (动态路由参数)**
+
+> - **定义**：`<Route path="/user/:id" element={<User />} />`
+> - **获取**：`const { id } = useParams();`
+> - **特点**：参数必填，刷新页面参数不丢失。
+
+**2.Search (查询字符串)**
+
+> - **定义**：`/user?id=123&name=tom`
+> - **获取**：`const [searchParams] = useSearchParams();` 类似于 URLSearchParams。
+> - **特点**：适合可选参数，刷新页面参数不丢失。
+
+**3.State (隐式传参)**
+
+> - **定义**：`navigate('/detail', { state: { id: 123 } });` 或 `<Link to="/detail" state={{ id: 123 }} />`
+> - **获取**：`const location = useLocation(); location.state.id`
+> - **特点**：URL 不可见，安全性稍好，但**刷新页面后数据会丢失**。
+
+**六、路由守卫**
+
+React Router v6 **没有**像 Vue Router 那样内置的 `beforeEach` 钩子。通常通过 **高阶组件 (Wrapper)** 或 **条件渲染** 来实现。
+
 ## 按需加载
 
 **一、定义**
@@ -674,8 +747,8 @@ const App = () => (
 
 **2. 运行时层面：React.lazy 与 Suspense 的配合**
 
-> - **`React.lazy`**：这是一个高阶组件，它接收一个 Promise 类型的函数。在组件首次渲染时，React 会“暂停”渲染，等待 Promise resolve（即 Chunk 加载完成）。
-> - **`Suspense`**：React 16.6 引入的机制。当子组件（Lazy 组件）处于 Pending 状态时，Suspense 会捕获这个状态，并渲染 `fallback` 属性中的内容（如 Loading 动画）。
+> - **React.lazy**：这是一个高阶组件，它接收一个 Promise 类型的函数。在组件首次渲染时，React 会“暂停”渲染，等待 Promise resolve（即 Chunk 加载完成）。
+> - **Suspense**：React 16.6 引入的机制。当子组件（Lazy 组件）处于 Pending 状态时，Suspense 会捕获这个状态，并渲染 `fallback` 属性中的内容（如 Loading 动画）。
 > - **加载完成**：Promise resolve 后，React 会重新触发渲染，此时 Lazy 组件已拥有实际代码，正常渲染。
 
 **四、进阶**
@@ -1024,6 +1097,152 @@ React 是通过一个**数组**或者**链表**来维护 Hooks 的状态的。
 
 # 中级
 
+## 高阶组件 (HOC)、受控组件 与 非受控组件
+
+> 在实际开发中，我主要使用 **受控组件**，因为它更符合 React 的数据驱动思想，便于维护和调试。只有在处理文件上传或者某些特定的性能优化场景下，才会考虑使用 **非受控组件**。对于逻辑复用，以前我可能写过 **HOC**，但在新项目中，我更倾向于使用 **Hooks** 来替代 HOC，以避免组件层级嵌套过深。
+
+**一. React 高阶组件**
+
+**1.定义**
+
+> 高阶组件是参数为组件，返回值为新组件的函数。它本质上是一个**装饰器模式**的应用，用于复用组件逻辑。
+
+**2.核心原理**
+
+> HOC 不是 React API 的一部分，而是一种基于 React 组合特性的设计模式。
+
+**3.常见使用场景**
+
+> 1. **权限控制**：根据用户权限决定渲染组件还是重定向。
+> 2. **代码复用**：抽离通用的业务逻辑（如日志记录、数据获取）。
+> 3. **Props 增强**：为被包裹组件注入特定的 props。
+> 4. **渲染劫持**：由 HOC 控制渲染结果，甚至修改 React 元素树。
+
+**4.注意**
+
+> 1. **不要在 render 方法中使用 HOC**：每次 render 都会重新创建新组件，导致原组件卸载、状态丢失。
+> 2. **必须复制静态方法**：HOC 返回新组件，会丢失原组件的静态方法（如 `WrappedComponent.staticMethod`）。可以使用 `hoist-non-react-statics` 库解决。
+> 3. **Refs 不会被传递**：Refs 会被透传到最外层容器，需要使用 `React.forwardRef` 进行转发。
+> 4. **Props 命名冲突**：如果 HOC 注入的 props 与组件原有 props 重名，会覆盖原有 props。
+> 5. 虽然 HOC 依然有用，但现在更推荐使用 Hooks 来复用逻辑，因为 Hooks 不会导致组件层级嵌套（“包装地狱”），且代码更直观。
+
+**二. React 受控组件**
+
+**1.定义**
+
+> 在 React 中，表单元素（如 `<input>`、`<select>`）的值由 React 的 **State** 来控制，并且其变化通过事件处理器更新 State 的组件，称为受控组件。
+
+**2.核心原理**
+
+> - **单一数据源**：表单数据的唯一来源是组件的 State。
+> - **可预测性**：UI 是 State 的函数，输入内容受 React 严格控制。
+> - **实时交互**：通常配合 `onChange` 事件实时更新状态。
+
+**3.优缺点**
+
+> - 优点：
+>   - 可以即时验证用户输入（如长度限制、格式校验）。
+>   - 可以根据输入条件禁用/启用按钮。
+>   - 强制统一的数据流，便于调试。
+> - 缺点：
+>   - 每次输入都会触发 `setState` 和组件重新渲染，对于极其复杂的表单可能存在性能瓶颈（通常可忽略，或通过 `useMemo` 优化）。
+
+**三. React 非受控组件**
+
+**1.定义**
+
+> 表单元素的值由 DOM 本身处理，而不是由 React 的 State 控制。通常使用 **Ref** 来从 DOM 中获取表单数据的组件，称为非受控组件。
+
+**2.核心原理**
+
+> - **数据源是 DOM**：类似于传统的 HTML 表单行为。
+> - **按需获取**：只有在需要的时候（如点击提交）才去读取值。
+> - **使用 defaultValue**：使用 `defaultValue` 而不是 `value` 来设置初始值。
+
+**3.使用场景**
+
+> - 处理文件上传（`<input type="file" />` 只能是非受控的）。
+> - 集成第三方非 React 库（如 jQuery 插件、Datepicker）。
+> - 极其简单的表单，不想编写繁琐的 `onChange` 逻辑。
+> - 为了性能优化（避免输入时的频繁渲染）。
+
+**四. 对比**
+
+| 维度           | 受控组件                         | 非受控组件                       |
+| :------------- | :------------------------------- | :------------------------------- |
+| **数据源**     | React State                      | DOM                              |
+| **获取值方式** | `state.value`                    | `ref.current.value`              |
+| **事件处理**   | 必须 (`onChange`)                | 可选 (通常在提交时处理)          |
+| **实时验证**   | 容易实现                         | 较难实现                         |
+| **代码量**     | 较多（需写 handler）             | 较少                             |
+| **推荐场景**   | 大部分表单场景、需校验、动态表单 | 文件上传、简单表单、集成第三方库 |
+
+## React-Router-Dom原理
+
+**1.定义**
+
+> `react-router-dom` 是 React 官方推荐的标准路由库。它是 `react-router` 的 Web 版本绑定，专门用于在 React 应用中实现**客户端路由**（Client-side Routing），即在单页应用（SPA）中通过 URL 的变化来渲染不同的组件，而不会引起页面的整体刷新。
+
+**2.核心作用**
+
+它的主要作用是管理视图与 URL 的同步。
+
+> - **声明式路由**：允许像编写 UI 组件一样配置路由（例如 `<Route path="/" element={<Home />} />`），代码更直观。
+> - **页面无刷新跳转**：通过 `Link` 或 `useNavigate` 切换 URL 时，只更新变化的部分组件，提升用户体验和应用性能。
+> - **路由参数管理**：方便地获取 URL 中的查询参数和路径参数。
+> - **权限控制**：结合路由配置实现登录拦截（路由守卫）等功能。
+
+**3.核心 API** 
+
+`react-router-dom` 的 API 主要分为三类：**路由器组件**、**路由匹配组件**和**导航组件/Hooks**。
+
+**路由器容器**
+
+> - `<BrowserRouter>`：使用 HTML5 History API（最常用，URL 更美观）。
+> - `<HashRouter>`：使用 URL 的 hash 部分（如 `/#/about`），兼容性更好。
+
+**路由匹配**
+
+> - `<Routes>`：类似于 v5 的 `Switch`，用于包裹一组路由，内部只会渲染第一个匹配到的路由。
+> - `<Route>`：定义路径与组件的对应关系。
+
+**导航与 Hooks**
+
+> - `<Link>` / `<NavLink>`：生成跳转链接，`NavLink` 支持样式激活状态。
+> - `useNavigate()`：编程式导航（替代了 v5 的 `useHistory`）。
+> - `useParams()`：获取动态路由参数（如 `/user/:id` 中的 id）。
+> - `useLocation()`：获取当前 location 对象（包含 pathname, search 等）。
+> - `<Outlet />`：用于嵌套路由，渲染子路由的组件位置。
+
+**4.核心原理**
+
+其原理主要由三个层面组成：
+
+1.History 管理（底层驱动）
+
+> - 依赖于 HTML5 的 `History API`（如 `pushState`、`replaceState`）来改变 URL 而不刷新页面。
+> - 内部维护了一个 history 对象，监听 URL 的变化（`popstate` 事件）。当 URL 改变时，history 对象会更新并通知上层。
+
+2.Context 状态共享（数据流转）
+
+> - `BrowserRouter`（或 `HashRouter`）组件作为最外层的 Provider，通过 React Context 创建了一个全局的路由上下文。
+> - 它将当前的 `location`（路径信息）、`navigate`（跳转方法）等状态放入 Context 中。
+> - 所有子组件（如 `Link`、`useNavigate`）都通过 `useContext` 消费这些数据，从而感知路由变化。
+
+3.路由匹配与渲染（UI 展示）
+
+> - `Routes` 组件会从 Context 中获取当前的 `location`。
+> - 它遍历所有的 `Route` 子组件，将 `location.pathname` 与 `Route` 的 `path` 属性进行匹配。
+> - 匹配成功后，渲染对应的 `element` 组件；匹配失败则渲染 `null` 或默认的 `404` 组件。
+
+**简易源码级流程**
+
+> 1. `Router` 组件挂载时，创建一个 history 对象并监听 `popstate` 事件。
+> 2. 当用户点击 `Link` 或调用 `navigate` 时，调用 history 的 `push` 方法修改 URL。
+> 3. URL 变化触发监听回调，更新 `Router` 内部的 State（`location`）。
+> 4. State 更新触发 React 重新渲染。
+> 5. `Routes` 组件重新执行，根据最新的 `location` 计算出哪个 `Route` 应该显示。”
+
 ## 虚拟DOM
 
 **一、定义**
@@ -1204,6 +1423,26 @@ React 16引入 **Fiber架构** 后：
 
 > 1. **数据结构改变**：虚拟DOM树变成了链表结构（`child`, `sibling`, `return` 指针）。
 > 2. **任务拆分**：Diff过程变成了**可中断的“增量渲染”**。React利用浏览器的空闲时间执行Diff，如果有高优先级任务（如用户输入），会暂停Diff，优先响应用户交互，从而解决了大型应用的交互卡顿问题。
+
+## 性能优化
+
+**一.定义**
+
+> React 性能优化的核心原则只有两个：**减少不必要的渲染** 和 **减少计算量**。React 的调和过程是昂贵的，我们的目标是控制 React 在数据变化时，只更新该更新的部分。
+
+**二.具体层面**
+
+**1.组件渲染层面**
+
+> 首先使用 `React.memo` 避免子组件无意义的重渲染，配合 `useCallback` 和 `useMemo` 来稳定 props 的引用，防止因内联函数或对象导致的缓存失效。特别注意列表渲染时不要用 `index` 做 key。
+
+**2.状态管理层面**
+
+> 遵循 State 最小化原则，避免将所有状态提升导致全局渲染。对于 Context，我会根据业务维度进行拆分，防止单一 Context 变更引发大面积组件重渲染。
+
+**3.工程化与体验层面**
+
+> 利用 `React.lazy` 和 `Suspense` 进行路由级代码分割，减少首屏加载时间。在 React 18 中，我会使用 `useTransition` 来处理繁重的计算任务，保证 UI 的响应性不被阻塞。
 
 # 用了Vue-两天学会React(实战)
 
