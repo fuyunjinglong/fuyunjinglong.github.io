@@ -570,6 +570,64 @@ const Parent = () => {
 > - **React 17 及之前**：只有在 React 管理的事件（合成事件、生命周期）中才是异步批量更新；在原生事件、`setTimeout` 中是同步更新。
 > - **React 18 (Automatic Batching)**：引入了自动批处理机制。无论在 `setTimeout`、`Promise`、原生事件还是 React 合成事件中，`setState` **默认都是异步批量更新**。这统一了行为，进一步提升了性能。
 
+**六、setState不能立刻获取值，怎么办**
+
+**1.方案一：类组件**
+
+1.使用回调函数（推荐，即时获取）
+
+> - `setState` 接受第二个参数，这是一个回调函数，它会在状态更新且 DOM 渲染完成后执行。
+
+```js
+    this.setState({ count: this.state.count + 1 }, () => {
+      // 这里可以获取到最新的 state
+      console.log(this.state.count); 
+    });
+```
+
+2.生命周期函数 `componentDidUpdate`
+
+> - 如果需要在每次更新后做通用处理，可以在生命周期中监听。
+
+```js
+    componentDidUpdate(prevProps, prevState) {
+      if (this.state.count !== prevState.count) {
+        console.log('count 更新了：', this.state.count);
+      }
+    }
+```
+
+**2.方案二：函数组件 Hooks（推荐）**
+
+在 Hooks 中，`setXxx` 不再支持回调函数，需要使用 `useEffect` 来监听变化。
+
+1.使用 `useEffect` 监听状态变化
+
+> - **适用场景**：响应状态的变化，执行副作用（如发请求、操作 DOM）。
+
+```js
+    const [count, setCount] = useState(0);
+    useEffect(() => {
+      // 这里的 count 是最新的
+      console.log('count 变化了：', count);
+    }, [count]); // 依赖数组中填入 count
+```
+
+2.特殊情况：如何在同一个函数中获取旧值并正确更新？
+
+> - 如果你遇到的问题是“更新后的值总是滞后一步”（闭包陷阱），是因为你依赖了旧的快照。解决方法是使用**函数式更新**。
+
+```js
+    // ❌ 错误写法：如果快速点击多次，count 会因为闭包导致计算错误
+    setCount(count + 1); 
+    // ✅ 正确写法：传入一个函数，参数 prevCount 永远是最新的 state
+    setCount(prevCount => prevCount + 1);
+```
+
+
+
+
+
 ## 组件通信
 
 **一、定义**
@@ -1097,6 +1155,61 @@ React 是通过一个**数组**或者**链表**来维护 Hooks 的状态的。
 
 # 中级
 
+## Flux 与 MVC
+
+**1. MVC 模式**
+
+> MVC（Model-View-Controller）是一种经典的软件架构模式，它将应用分为三个核心部分：**模型**（数据）、**视图**（UI）和 **控制器**（业务逻辑），旨在实现关注点分离。
+
+**在 React/传统 Web 中的问题**
+
+虽然 MVC 在后端或简单的前端应用中表现良好，但在复杂的 React 单页应用（SPA）中，它面临一个致命的问题：**双向数据流带来的混乱**。
+
+Facebook 团队在开发聊天功能时发现，由于 MVC 的双向绑定，消息状态经常出现不同步的 Bug，且难以排查，这正是催生 Flux 架构的直接原因。
+
+> - **双向数据流**：用户操作 View -> 更新 Model -> Model 变更 -> 自动更新 View。
+> - **级联更新**：当一个 Model 发生变化时，可能触发依赖它的多个 View 更新，而这些 View 的变更又可能触发其他 Model 的变化。
+> - **维护噩梦**：在复杂应用中，数据流变得交错纵横（面条式代码）。当一个 Bug 出现时，开发者很难追踪是哪个 View 改变了哪个 Model，导致数据流不可预测。
+
+**2. Flux 架构**
+
+> Flux 是 Facebook 提出的一种应用架构模式，它强制使用**单向数据流**来解决 MVC 的复杂性，非常适合 React 的组件化开发。
+
+**核心四要素**
+
+Flux 不是具体的库（虽然官方有 `flux` 库），而是一种模式。它包含四个主要部分：
+
+> 1. **Action（动作）**：描述发生了什么（如：`{ type: 'ADD_TODO', text: 'Learn Flux' }`）。它是数据的载体。
+> 2. **Dispatcher（派发器）**：中央枢纽。它是单例，负责接收所有的 Action，并将它们分发给所有的 Store。
+> 3. **Store（存储器）**：管理应用的状态和业务逻辑。它监听 Dispatcher，当接收到相关 Action 时更新 State。
+> 4. **View（视图）**：React 组件。它从 Store 获取数据并渲染，同时用户交互会产生新的 Action。
+
+**核心特点**
+
+> - **单向数据流**：数据只能沿着一个方向流动，没有回环。
+> - **可预测性**：任何一个状态改变，都可以通过追踪 Action 的来源来还原，极易调试。
+> - **Store 独立性**：Store 之间不能直接通信，必须通过 Dispatcher 传递 Action。
+
+**3.对比**
+
+| 维度           | MVC                              | Flux                                              |
+| :------------- | :------------------------------- | :------------------------------------------------ |
+| **数据流向**   | **双向/循环**（View <-> Model）  | **单向**（Action -> Dispatcher -> Store -> View） |
+| **可预测性**   | 低（复杂场景下难以追踪数据来源） | 高（数据流清晰，每一个 Action 都是记录）          |
+| **控制器角色** | 有明确的 Controller              | 弱化 Controller，主要由 Dispatcher 承担调度       |
+| **组件依赖**   | View 与 Model 往往是多对多依赖   | View 仅依赖 Store，Store 之间不直接依赖           |
+| **适用场景**   | 简单的 CRUD 应用，后端渲染       | 复杂的交互式单页应用（SPA）                       |
+
+**Flux 与 Redux 的关系**
+
+> Redux 是 Flux 架构思想的一种**实现**，但做了简化和改进：
+>
+> 1. **去掉了 Dispatcher**：Flux 有一个中央 Dispatcher，而 Redux 让每个 Store（Redux 中只有一个 Store）直接接收 Action。
+> 2. **单一 Store**：Flux 允许多个 Store，Redux 只有唯一的一个 Store。
+> 3. **纯函数 Reducer**：Flux 的 Store 更新逻辑通常是命令式的，Redux 引入了函数式编程的 Reducer（纯函数），使得状态变更逻辑更易测试和回溯。
+
+
+
 ## 高阶组件 (HOC)、受控组件 与 非受控组件
 
 > 在实际开发中，我主要使用 **受控组件**，因为它更符合 React 的数据驱动思想，便于维护和调试。只有在处理文件上传或者某些特定的性能优化场景下，才会考虑使用 **非受控组件**。对于逻辑复用，以前我可能写过 **HOC**，但在新项目中，我更倾向于使用 **Hooks** 来替代 HOC，以避免组件层级嵌套过深。
@@ -1354,6 +1467,178 @@ React的Diff算法设计基于以下三个核心假设（也称为“降低复�
 > - **React 16 及之前**：事件委托绑定在 `document` 对象上。这导致如果页面中混用了 jQuery 等原生库，可能会出现事件冲突（因为 `document` 也是原生事件的根）。
 > - React 17 及之后：事件委托绑定在渲染树的根 DOM 容器上（通常是div#root）。
 >   - **优点**：解决了多版本 React 共存的问题，也减少了与原生事件的冲突概率。
+
+## Redux原理
+
+**一、定义**
+
+> Redux 是一个基于 Flux 思想的可预测状态容器，它通过**单一数据源**、**只读 State** 和**纯函数 Reducer** 三大原则来管理状态。它主要用于管理跨组件、跨页面的全局状态，确保状态的变化是可追踪、可预测的。
+
+**最佳实践**
+
+> 在 React 项目中，我通常配合 `react-redux` 使用，通过 `useSelector` 和 `useDispatch` 连接组件。对于异步逻辑，我会使用 `redux-thunk` 或 `redux-saga` 中间件。
+>
+> 不过，我也注意到传统 Redux 写起来比较繁琐。现在的项目中，我首选 **Redux Toolkit (RTK)**，它利用 `createSlice` 和 `Immer` 大幅简化了不可变数据的写法，是官方目前推荐的 Redux 开发方式。对于非常小型的项目，我也会权衡是否直接使用 React Context API 来替代 Redux。
+
+**二、三大核心原则**
+
+**1.单一数据源**
+
+> - 整个应用的 state 只存储在**唯一**的一个 Store 对象树中。
+> - 这使得调试、持久化（如本地存储）和服务器端渲染变得容易。
+
+**2.State 是只读的**
+
+> - 唯一改变 state 的方法是触发 **Action**。
+> - Action 是一个普通的 JavaScript 对象（如 `{ type: 'ADD_TODO', text: 'Go shopping' }`）。
+> - 这保证了 View 或网络回调都不能直接修改数据，所有修改都被集中化处理。
+
+**3.使用纯函数来执行修改**
+
+> - 为了描述 action 如何改变 state tree，你需要编写 **Reducers**。
+> - Reducer 是一个纯函数：`(previousState, action) => newState`。它接收旧的 state 和 action，返回新的 state。
+
+**三、React-Redux（连接层）**
+
+Redux 本身是框架无关的，要在 React 中使用，需要 `react-redux` 库。
+
+**核心 API**
+
+> 1. `<Provider>`：
+>    - 包裹在应用最外层，利用 React Context 将 Store 注入到整个组件树中。
+> 2. `useSelector` (Hooks)：
+>    - 用于从 Store 中读取状态。
+>    - 内部会自动优化，仅当 selector 返回的值发生变化时才触发重渲染。
+> 3. `useDispatch` (Hooks)：
+>    - 用于获取 `dispatch` 函数，从而触发 Action。
+
+**四、中间件**
+
+中间件提供的是位于 action 被发起之后，到达 reducer 之前的**扩展点**。主要用于处理异步逻辑或副作用。
+
+> - **redux-thunk**：允许 Action 是一个函数（而不只是对象）。在这个函数里可以进行异步操作（如 Ajax 请求），完成后再手动 `dispatch` 一个普通的 action。
+> - **redux-saga**：使用 ES6 的 Generator 特性，将异步逻辑写得更像同步代码，便于处理复杂的异步流。
+> - **redux-observable**：使用 RxJS 处理异步流。
+> - **redux-logger**：用于在控制台打印每次 action 和 state 的变化，便于调试。
+
+**中间件的原理**
+
+中间件的本质是对 `store.dispatch` 方法的**增强（重写）**。它使用了**洋葱模型**和**柯里化**的技术。
+
+> **核心思想：柯里化与链式调用**
+>
+> Redux 中间件的签名遵循以下柯里化形式：
+>
+> const middleware = store => next => action => {  *// 中间件逻辑*  next(action); *// 传递给下一个中间件或 Reducer* };
+>
+> - **`store`**：包含 getState, dispatch 的引用。
+> - **`next`**：下一个中间件的 dispatch 函数（或者是原生的 dispatch）。
+> - **`action`**：当前 dispatch 的 action。
+>
+> 
+>
+> **洋葱模型 执行流程**
+>
+> 当我们使用 `applyMiddleware` 挂载多个中间件时，它们会被组合成一个链。Action 像穿针引线一样穿过每个中间件。
+>
+> 1. **外层入**：Action 进入第一个中间件 -> 第二个中间件 -> …
+> 2. **执行核心**：到达最底层的 Store，State 更新。
+> 3. **内层出**：从内层中间件返回结果 -> … -> 第一个中间件返回结果。
+>
+> 
+>
+> **redux-thunk 的原理**
+>
+> `redux-thunk` 是最简单的异步中间件，它的源码极其精简，非常适合面试时手写。
+>
+> - 如果是**对象**（同步 action）：直接传给下一个中间件。
+>
+> - 如果是**函数**（异步 action）：执行这个函数，并把 `dispatch` 和 `getState` 传给它。
+>
+>   ```js
+>   const thunk = ({ dispatch, getState }) => next => action => {
+>     // 如果 action 是函数，执行它
+>     if (typeof action === 'function') {
+>       return action(dispatch, getState);
+>     }
+>     // 否则，默认处理（传给下一个中间件或 Reducer）
+>     return next(action);
+>   };
+>   ```
+
+**五、进阶-现代 Redux (Redux Toolkit)** 
+
+背景：传统的 Redux 写法繁琐，且容易在 Reducer 中因忘记展开运算符而修改了原对象。
+
+**Redux Toolkit (RTK)** 是官方现在推荐的标准写法，它解决了原始 Redux 的痛点：
+
+> 1. **简化配置**：`configureStore` 自动集成了 Redux DevTools、Thunk 中间件和序列化检查。
+> 2. **简化 Reducers (Immer)**：引入了 `createSlice`，内部使用 `Immer` 库。**允许我们在 Reducer 中直接修改 state（如 `state.value = 1`）**，Immer 会在底层自动生成不可变的新状态，极大减少了代码量。
+> 3. **不复用样板代码**：不再需要手写 switch-case 语句或 action creators。
+
+**六、优缺点**
+
+**优点**
+
+> - **可预测**：状态的变化清晰可追踪，配合 Time-travel Debugging（时光旅行调试）极其强大。
+> - **解耦**：组件与状态逻辑分离，代码结构清晰。
+> - **生态丰富**：中间件、DevTools 非常成熟。
+
+**缺点**
+
+> - **概念繁琐**：对于简单的应用，学习成本和代码量过大。
+> - **样板代码**：如果不使用 Redux Toolkit，需要写大量的 Action、Reducer、Type 定义。
+
+## Redux 与 Vuex 
+
+**1.定义**
+
+> Redux 和 Vuex 虽然都源自 Flux 架构，但设计哲学截然不同，这主要是为了适配各自的框架底层机制。
+
+**Redux** 基于 **函数式编程**，强调 **数据的不可变性** 和 **纯函数 Reducer**，这种显式的数据变更让 React 的 diff 算法能高效工作，也极其便于调试。
+
+**Vuex** 基于 **Vue 的响应式系统**，强调 **显式的 Mutation** 但数据本身是 **可变** 的，利用 Vue 的 Proxy 能力自动通知组件更新。Vuex 还特意区分了 `Action`（异步）和 `Mutation`（同步），这在规范上比 Redux 的统一 Action 更加明确。
+
+简而言之，**Redux 像是一个严格的记账员**，每一笔账都记在新本子上；**Vuex 像是一个智能管家**，修改数据后自动把事情办好，但必须按照规定的流程来修改。
+
+**2.核心对比**
+
+| 维度                | Redux (React)                                              | Vuex (Vue)                                                   |
+| :------------------ | :--------------------------------------------------------- | :----------------------------------------------------------- |
+| **底层数据机制**    | **普通 JS 对象**，不支持自动响应式更新，依赖浅比较。       | **响应式对象** (Vue 2: `Object.defineProperty` / Vue 3: `Proxy`)，自动通知依赖更新。 |
+| **修改 State 方式** | **不可变**。必须返回新对象 (如 `...state, { count: 1 }`)。 | **可变**。直接修改属性 (如 `state.count = 1`)，因为 Proxy 拦截到了修改操作。 |
+| **异步处理**        | 统一由 **Action** 处理，通过中间件 拦截。                  | **Action** 处理异步逻辑，然后调用 **Mutation** 修改状态。    |
+| **代码风格**        | 函数式编程，Reducer 是纯函数。                             | 面向对象/配置式，区分 Modules, State, Getters, Mutations, Actions。 |
+| **调试能力**        | 强大。由于是纯函数和不可变数据，可以轻松实现 Time-Travel。 | 较强。通过 Mutation 记录实现，但因为数据是可变的，回滚功能相对复杂。 |
+
+**3.为什么设计会有差异**
+
+**React 为什么推崇不可变数据？**
+React 的 `setState` 或 Hooks 的更新机制依赖于**前后值的引用比较**。如果你直接修改了对象的属性，引用地址没变，React 就不知道数据变了，界面不会更新。因此，Redux 必须配合 React 的这个特性，强制返回新引用。
+
+**Vue 为什么推崇可变数据？**
+Vue 的核心是**依赖收集**。Vue 的响应式系统会自动拦截对象的 `get` 和 `set` 操作。当你修改 `state.count = 1` 时，Vue 知道哪个组件用了它，并自动去更新那个组件。因此，在 Vuex 中直接修改变量不仅符合直觉，而且性能极高。
+
+**4.Redux 的设计思想：纯粹与可预测**
+
+Redux 的设计深受**函数式编程** 影响，核心思想是 **“数据的不可变性”** 和 **“显式的状态变更”**。
+
+> 1. **单一数据源**：整个应用的 state 存储在一个单一的 object tree 中。
+> 2. **State 是只读的**：唯一修改 state 的方式是触发 **Action**（一个描述发生什么的普通对象）。这保证了 View 和网络请求都不能直接修改状态。
+> 3. 使用纯函数执行修改：通过Reducer（纯函数）来计算新状态。
+>    - **设计哲学**：`reducer(previousState, action) => newState`。
+>    - **不可变数据**：Redux 强制要求每次修改都返回一个新的对象引用，而不是修改原对象。这使得 React 能够极其高效地进行浅比较来决定是否重渲染，也使得“时光旅行调试”成为可能。
+> 4. **核心流程**：View -> dispatch(Action) -> Middleware -> Reducer -> Store (New State) -> View
+
+**5.Vuex 的设计思想：响应式与约定**
+
+Vuex 是专门为 **Vue.js** 设计的状态管理库，它深度融合了 Vue 的**响应式系统**。
+
+> 1. **响应式的 State**：Vuex 的 state 也就是一个 Vue 的 `data` 对象。当 state 变化时，依赖该 state 的组件会自动更新。
+> 2. **显式地修改状态**：虽然 Vuex 内部也是响应式的，但它强制要求通过 **Mutation** 修改状态，以便 DevTools 追踪变化。
+> 3. 同步/异步分离：Vuex 强制将同步操作放在Mutation中，将异步操作放在Action中。
+>    - **设计哲学**：`Action` (异步) -> `commit` -> `Mutation` (同步修改) -> `State`。
+> 4. **核心流程**：View -> dispatch(Action) (异步) -> commit(Mutation) (同步) -> State (Vue 响应式更新) -> View
 
 ## Difff算法
 
