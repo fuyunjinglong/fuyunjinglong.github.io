@@ -355,7 +355,26 @@ Rust 工具链、Serverless、AI 辅助编程
 - Q: 前端部署到 CDN 后，用户还是看到旧版本怎么办？
   - A: 这是缓存问题。构建时文件名必须带 Hash（如 `app.a1b2.js`），HTML 文件不带 Hash。这样更新后 HTML 指向新的 JS 文件，自动绕过缓存。如果没生效，可能需要配置 CDN 的缓存策略或主动刷新缓存。
 
+## dependencies 和 devDependencies
 
+**1.定义**
+
+> **一句话结论**：dependencies 是**运行时**依赖，devDependencies 是**开发/构建时**依赖
+
+**2.核心区别**
+
+| 维度                                                         | dependencies                            | devDependencies                             |
+| ------------------------------------------------------------ | --------------------------------------- | ------------------------------------------- |
+| 用途                                                         | 项目**运行时**需要                      | 只在**开发/构建**阶段需要                   |
+| 典型包                                                       | vue、react、axios、lodash、element-plus | vite、webpack、eslint、typescript、prettier |
+| 生产环境 `npm install --production`（或 `NODE_ENV=production`） | ✅ 会安装                                | ❌ 不安装                                    |
+| 判断标准                                                     | 打包产物中**包含**它的代码              | 打包产物中**不包含**                        |
+
+**重点**
+
+> - 你项目的 `dependencies` 和 `devDependencies` 在**你自己项目里**都会被安装
+> - 区别体现在**你的包被别人安装时**：如果你的项目是个 npm 包，别人 `npm install 你的包` 时，只会自动安装你的 `dependencies`，**不会**安装你的 `devDependencies`
+> - 所以：作为库作者，把运行时依赖写进 `devDependencies` 会导致使用者装不到必要的包 → 报错
 
 # 中级
 

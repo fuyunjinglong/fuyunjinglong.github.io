@@ -551,6 +551,52 @@ console.log(child.bar); // 输出 2，因为 receiver 保证了 this 指向 chil
 
 ## 手写 Promise
 
+**极简代码**
+
+> **状态机 + 回调数组 + then 返回新 Promise**
+>
+> - **状态机**：`pending → fulfilled`，一去不回头（`if (this.status !== 'pending') return`）
+> - **异步支持**：executor 里还没 resolve 时，then 的回调先存进数组，resolve 时再执行（发布订阅）
+> - **链式调用**：then 返回**新的** MyPromise
+> - **返回值拆包**：回调返回值如果是 promise，就 `.then(resolve)` 等它；否则直接 resolve
+
+```js
+// 这版省略了 reject/catch/thenable 兼容等细节。需要的话，加上一个 rejected 状态和 onRejected 队列即可，逻辑完全对称
+class MyPromise {
+  constructor(executor) {
+    this.status = 'pending'
+    this.value = undefined
+    this.callbacks = []   // pending 时先把回调存起来
+
+    const resolve = (value) => {
+      if (this.status !== 'pending') return  // 状态不可逆
+      this.status = 'fulfilled'
+      this.value = value
+      this.callbacks.forEach(cb => cb())     // 出结果了，执行存的回调
+    }
+
+    executor(resolve)
+  }
+
+  then(onFulfilled) {
+    // 核心：返回新 Promise，实现链式调用
+    return new MyPromise((resolve) => {
+      const handle = () => {
+        queueMicrotask(() => {               // 模拟微任务
+          const x = onFulfilled(this.value)  // 执行回调拿到返回值
+          // 返回值如果是 promise 就等它，否则直接透传
+          x instanceof MyPromise ? x.then(resolve) : resolve(x)
+        })
+      }
+
+      this.status === 'pending'
+        ? this.callbacks.push(handle)  // 异步：先存
+        : handle()                     // 同步：直接跑
+    })
+  }
+}
+```
+
 **核心：**
 
 > 1. **核心状态机**（状态与值的维护）

@@ -66,6 +66,14 @@ toc: true # 是否启用内容索引
 > - **网络层（跨省运输调度）：** 系统规划路线，从杭州发往北京，决定走航空还是陆运（IP路由）。
 > - **网络接口层（货车/飞机司机）：** 实际开车或者开飞机，在两个相邻的站点之间搬运包裹（MAC地址转发）。
 
+## Socket/TCP/HTTP/WebSocket/RPC
+
+> - Socket：只是tcp/ip协议中的一个套接字
+> - TCP：面向连接的、可靠的、基于字节流的传输层协议
+> - Http：超文本传输协议。短连接，无状态协议
+> - WebSocket：长连接，服务端主动推送协议
+> - RPC：远程调用方式，具体协议如grpc、Thrift 
+
 ## Cookies、SessionStorage和LocalStorage
 
 **定义**
@@ -226,6 +234,13 @@ TCP 是**面向连接的、可靠的、基于字节流**的传输层通信协议
 > 3. 运维与监控层：
 >    - 实施日志集中管理（SIEM），对异常的高频请求、5xx错误激增等进行实时告警。
 >    - 建立应急响应机制，一旦发现Web应用被攻破，能快速止损并溯源。”
+
+## 重定向与转发
+
+一句话:重定向时浏览器上的网址改变;转发是浏览器上的网址不变
+
+- 重定向是客户端行为,转发是服务器行为
+- 重定向是两次request,请求转发是一次request
 
 ## HTTP常见的状态码
 
@@ -456,6 +471,8 @@ WebSocket 是一种在单个 TCP 连接上进行**全双工**通信的协议。�
 
 **一、Http缓存**
 
+![image-20230325081435596](/img/image-20230325081435596.png)
+
 HTTP 缓存主要是针对 HTML、CSS、JS、图片等静态资源的缓存。它分为**强缓存**和**协商缓存**。
 
 **1. 强缓存**
@@ -515,247 +532,5 @@ HTTP 缓存主要是针对 HTML、CSS、JS、图片等静态资源的缓存。�
 
 
 
-# 基础篇
 
-## Socket/TCP/HTTP/WebSocket/RPC 是什么？
-
-> - Socket：只是tcp/ip协议中的一个套接字
-> - TCP：面向连接的、可靠的、基于字节流的传输层协议
-> - Http：超文本传输协议。短连接，无状态协议
-> - WebSocket：长连接，服务端主动推送协议
-> - RPC：远程调用方式，具体协议如grpc、Thrift 
-
-# IP篇
-
-网络层作用：**实现主机与主机之间的通信，也叫点对点（end to end）通信**
-
-# 网络缓存-浏览器缓存
-
-## Cookie
-
-**Cookie机制**
-
-> `Cookie`是解决HTTP无状态性的有效手段，服务器可以设置或读取`Cookie`中所包含的信息。
->
-> 当用户登录后，服务器会发送包含登录凭据的`Cookie`到用户浏览器客户端，而浏览器对该`Cookie`进行某种形式的存储（内存或硬盘）。
->
-> 用户再次访问该网站时，浏览器会发送该`Cookie`（Cookie未到期时）到服务器，服务器对该凭据进行验证，合法时使用户不必输入用户名和密码就可以直接登录。
-
-**Cookie工作过程**
-
-> 1. 客户端发送一个请求给服务器
-> 2. 服务器发送一个`HttpResponse响应`给客户端，其中包含`Set-Cookie`的头部
-> 3. 客户端保存cookie，之后向服务器发送请求时，HttpRequest请求中会包含一个Cookie的头部
-> 4. 服务器返回响应数据
-
-## Session
-
-**Session机制**
-
-Session的工作机制离不开Cookie：在cookie中有一个键名为sessionId，值为Session的id。对于不支持cookie的手机端，可以采用URL重写携带sessionId。
-
-> 当客户端请求创建一个session时，服务端会先检查客户端的请求里面有没有带着session标识-sessionId。
->
-> 如果有，则说明服务器以前已为此客户端创建过session，于是就根据这个sessionId把session检索出来。
->
-> 如果客户端请求中不包含sessionId，则为客户端创建一个session并且生成一个与这个session相关联的sessionId。 这个sessionId将被在本次响应中返回给客户端保存。
-
-**WebStoreage**
-
-包括：sessionStorage 和 localStorage
-
-> - sessionStorage 和 localStorage 不会自动把数据发给服务器，仅在本地保存。
-> - sessionStorage 和 localStorage可以达到 5M 或更大。
-> - sessionStorage 数据在当前浏览器窗口关闭后自动删除。
-> - localStorage 存储持久数据，浏览器关闭后数据不丢失除非主动删除数据；
-
-**WebSql/indexDB**
-
-前端数据库有WebSql和IndexDB，其中WebSql被规范废弃，他们都有大约50MB的最大容量，可以理解为localStorage的加强版。
-
-## Application Cache
-
-## 应用缓存-manifest即HTML5的离线缓存
-
-通过manifest文件来注册被缓存的静态资源，已经被废弃，因为他的设计有些不合理的地方，他在缓存静态文件的同时，也会默认缓存html文件。这导致页面的更新只能通过manifest文件中的版本号来决定。所以，应用缓存只适合那种常年不变化的静态网站。如此的不方便，也是被废弃的重要原因。
-
-**定义**
-
-在用户没有与因特网连接时，可以正常访问站点或应用
-
-**原理**
-
-HTML5离线缓存是基于manifest(缓存清单文件，后缀名为.appcache)的缓存机制，通过这个文件上的清单解析存储离线资源，就像cookie一样被存在本地，之后当处于离线状态时，就直接使用离线存储的资源进行页面的展示。
-
-好处：
-
-- 离线浏览，不再需要网络
-- 速度快，已缓存的资源加载更快
-- 减轻服务器压力，用户无需网络请求缓存资源
-
-**使用**
-
-1. h5头部标签引入manifest属性，值为manifest清单文件
-2. 在manifest清单文件中编写离线存储的资源
-3. 操作window.applicationCache进行缓存数据处理
-
-manifest清单文件：
-
-```
-CACHE MANIFEST
-#v0.11
-CACHE: // 需要缓存的
-js/app.js
-css/style.css
-NETWORK: // 不缓存的
-resourse/logo.png
-FALLBACK: // 网络失败时的替换页面
-//offline.html
-```
-
-window.applicationCache.status的属性值如下：
-
-- 0：（UNCACHED）无缓，代表没有与当前页面相关的缓存资源；
-- 1：（IDLE）闲置，代表应用缓存未得到更新；
-- 2：（CHECKING）检查中，正在下载描述文件，并检查有无更新；
-- 3：（DOWNLOADING）下载中，应用缓存正在下载描述文件中的资源；
-- 4：（UPDATEREADY）更新完成，所有资源下载完毕；
-- 5：（）废弃，即应用缓存的描述文件不存在了，因此页面无法在访问应用缓存；
-
-**更新缓存时机**
-
-1. 用户清空浏览器缓存；
-2. manifest文件被修改；
-3. 由程序来更新应用缓存；
-
-**h5缓存与浏览器缓存区别**
-
-- 离线缓存是针对整个应用，但是浏览器缓存是针对单个文件；
-- 离线缓存断网了还可以继续访问，浏览器缓存不行；
-- 离线缓存可以主动通知浏览器更新；
-
-## 应用缓存-PWA即Servie Worker
-
-PWA全称是渐进式网络应用，PWA也运用了manifest文件，不同于manifest简单的将文件通过是否缓存进行分类，PWA用manifest构建了自己的APP骨架，并运用Servie Worker来控制缓存。
-
-PWA即Progressive Web Apps。谷歌给以Service Worker API为核心的实现web应用取名PWA即渐进式增强WEB应用。有点类似移动端小程序一样，在web上运行，不需要独立安装的web微应用。
-
-**PWA**
-
-PWA全称Progressive Web Apps（渐进式WebApp），是通过现代API来构建和增强的，这些API提供了与原生App相似的能力、可靠性、可安装性，而且具备一套代码即可触达任何人、任何地方、任何设备。PWA同时具备这三大特性，这也让PWA的应用体验更接近原生。
-
-三大特性：
-
-- 功能性（capable）
-- 可靠性（reliable）
-- 可安装性（installable）
-
-功能性
-
-Web App当今时代已经具备了丰富的功能，你可以基于 `WebRTC` 开发一个视频聊天工具，可以使用 `Geolocation API` 开发一个地图软件，也可以使用 `Notification API` 来给你的APP推送消息，让用户可以在APP之外接收到通知。你也可以使用 `WebGL` 和 `WebVR` 来虚拟化这些场景。通过 `Web Assembly`，你可以步入其他生态，比如：C和C++等，给Web生态带来更多能力。
-
-可靠性
-
-可靠的App需要对网络无依赖。用户会期望在弱网或者无网络的情况下打开App。他们期望看到上次他们加载的内容，就像是音频或者视频播放到某个特定时间点，即使网络连接困难，还是要保持可靠和可用。如果请求失败了，比起默默地失败或者崩溃，给用户合理的提示才是最佳。
-
-可安装性
-
-安装好的PWA应用可以在一个独立的窗口启动，而不用在浏览器中。它们也可以从主页、docks或者任务栏启动。
-
-小结
-
-PWA的核心还是WebApp，通过渐进式增强，新的功能被现代浏览器实现。通过使用 `service worker` 和 `app manifest`，可以让你的WebApp具备可靠性和可安装性。如果浏览器不支持这些功能，你的网站的核心功能也不受影响。
-
-如果说一个30M的原生App换成PWA，可能只有3M不到。另外，PWA的应用的可触达性是继承了WebApp的，可以通过搜索引擎让触达更多用户，或者通过分享的方式。最后，PWA的应用可随时更新，无需用户下载安装。
-
-**Service Worker**
-
-什么是Service Worker
-
-Service Worker是一项比较新的Web技术，是Chromium团队在吸收了ChromePackaged App的Event Page机制，同时吸取了HTML5 AppCache标准失败的教训之后，提出一套新的W3C规范，旨在提高WebApp的离线缓存能力，缩小WebApp与NativeApp之间差距。
-
-Service Worker从英文翻译过来就是一个服务工人，服务于前端页面的后台线程，基于Web Worker实现。有着独立的js运行环境，分担、协助前端页面完成前端开发者分配的需要在后台悄悄执行的任务。基于它可以实现拦截和处理网络请求、消息推送、静默更新、事件同步等服务。
-
-应用场景
-
-1、离线缓存：可以将H5应用中不变化的资源或者很少变化的资源长久的存储在用户端，提升加载速度、降低流量消耗、降低服务器压力。如中重度的H5游戏、框架数据独立的web资讯客户端、web邮件客户端等
-
-2、消息推送：激活沉睡的用户，推送即时消息、公告通知，激发更新等。如web资讯客户端、web即时通讯工具、h5游戏等运营产品。
-
-3、事件同步：确保web端产生的任务即使在用户关闭了web页面也可以顺利完成。如web邮件客户端、web即时通讯工具等。
-
-4、定时同步：周期性的触发Service Worker脚本中的定时同步事件，可借助它提前刷新缓存内容。如web资讯客户端。
-
-## **往返缓存-BFCache**
-
-往返缓存又称为BFCache，是浏览器在前进后退按钮上为了提升历史页面的渲染速度的一种策略。BFCache会缓存所有的DOM结构，但是问题在于，一些页面开始时进行的上报或者请求可能会被影响。这个问题现在主要会出现在微信h5的开发中。
-
-# 网络缓存-http缓存
-
-**强制缓存优先于协商缓存进行，若强制缓存(Expires和Cache-Control)生效则直接使用缓存，若不生效则进行协商缓存(Last-Modified / If-Modified-Since和Etag / If-None-Match)，协商缓存由服务器决定是否使用缓存，若协商缓存失效，那么代表该请求的缓存失效，返回200，重新返回资源和缓存标识，再存入浏览器缓存中；生效则返回304**
-
-**分为两大类：**
-
-> - 强缓存
->   - Pragma
->   - Cache-Control
->   - Expires
-> - 协商缓存
->   - ETag/If-None-Match
->   - Last-Modified/If-Modified-Since
-
-**Http请求流程图**
-
-![image-20230325081435596](/img/image-20230325081435596.png)
-
-**强制缓存：重点关注1即缓存是否过期**
-
-强缓存一般存在Disk Cache硬盘和 Memory Cache内存中。
-
-关键参数
-
-> - Expires
->   - 缓存过期时间。HTTP1.0的产物，会将浏览器的Expires 时间与服务器系统时间对比，Expires=max-age + 请求时间。
-> - Cache-Control
->   - max-age：表示缓存内容将在xxx秒后失效
->   - no-cache：不使用强缓存(走协商缓存)，需要与服务器验证缓存是否新鲜
->   - no-store：禁止使用所有缓存（包括协商缓存），每次都向服务器请求最新的资源
->   - private：专用于个人的缓存，中间代理、CDN 等不能缓存此响应
->   - public：响应可以被中间代理、CDN 等缓存
->   - must-revalidate：在缓存过期前可以使用，过期后必须向服务器验证
-> - Pragma 
->   - Pragma 只有一个属性值，就是 no-cache,不使用强缓存
-
-强缓存生效条件:当条件1,2,3都成立，才会执行强缓存部分
-
-> 1. Cache-Control值为max-age
-> 2. max-age>0
-> 3. 当前 date < 上次请求时的date + max-age
-
-注：如果HTTP为1.0时，则用expires判断是否过期，如果HTTP为1.1及其以上时，则查看cache-control
-
-**协商缓存：询问服务器资源是否修改**
-
-关键参数
-
-> - ETag/If-None-Match
->   - 值是一串 hash 码，代表的是一个资源的标识符，当服务端的文件变化的时候，它的 hash 码会随之改变。
->   - 适用于秒级以下修改频率的文件，优先级更高
-> - Last-Modified/If-Modified-Since
->   - 代表的是文件的最后修改时间，前后两者比较时间，有效时间为1s以上
-
-协商缓存生效条件:两种值只要有一对值的前后相同，即生效协商缓存
-
-**缓存策略：**
-
-- 不常变化的资源，Cache-Control: max-age=31536000；
-- 经常变化的资源，Cache-Control: no-cache
-- 比较敏感的资源，Cache-Control: max-age=600
-
-# 重定向与请求转发的区别
-
-一句话:重定向时浏览器上的网址改变;转发是浏览器上的网址不变
-
-- 重定向是客户端行为,转发是服务器行为
-- 重定向是两次request,请求转发是一次request
 
