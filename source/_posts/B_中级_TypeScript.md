@@ -39,25 +39,42 @@ toc: true # 是否启用内容索引入门
 > - **智能提示**：补全、跳转、重构更可靠
 > - **类型即文档**：利于团队协作
 
-## TS 有哪些基础类型
+## TS 的基础类型
 
-```js
-let n: number = 1;
-let s: string = 'hello';
-let b: boolean = true;
-let arr: number[] = [1, 2, 3];
-let tuple: [string, number] = ['age', 18]; // 元组：固定长度、每位类型可不同
-let id: string | number = 1;               // 联合类型
-let dir: 'up' | 'down' = 'up';             // 字面量类型
+**一、定义**
 
-// 四个特殊类型（重点）
-let a: any;     // 任意类型，关闭检查（少用）
-let u: unknown; // 更安全的 any，用前必须收窄
-let v: void;    // 函数无返回值
-let ne: never;  // 永不存在的值（抛错、死循环）
-```
+按统一维度（类型本身的性质）分四类：
 
-## any 和 unknown 的区别
+| 类别        | 类型                                                         | 判断标准                                   |
+| ----------- | ------------------------------------------------------------ | ------------------------------------------ |
+| ① 原始类型  | `string` `number` `boolean` `bigint` `symbol` `null` `undefined` | 对应单个原始值                             |
+| ② 特殊类型  | `any` `unknown` `never` `void`                               | 类型系统的“元类型”，描述检查行为而非具体值 |
+| ③ 结构类型  | 数组 `T[]` 元组 `[A, B]` 对象 `{...}` 函数 `(a) => b`        | 描述值的"形状"                             |
+| ④ 组合/推导 | 联合 `A | B` 交叉 `A & B` 字面量 `'success'`                 | 由已有类型**运算或收窄**得到               |
+
+**二、具体细节**
+
+**特殊类型**
+
+> - **enum（枚举）**：给一组命名常量赋予友好名称，是 TypeScript 相对 JavaScript 新增的类型typescriptlang.org
+> - **unknown**：类型安全的 `any`，任何值都能赋给它，但使用前必须收窄
+> - **never**：表示永远不会发生的值（如抛出异常或死循环的函数返回值）
+> - **void**：表示"没有返回值"，常用于函数
+> - **any**：关闭类型检查的"逃生舱口"，可以对它做任何操作
+
+**结构类型**
+
+> - **Array（数组）**：写法为 `number[]` 或 `Array<number>`，注意 `[number]` 是元组而非数组typescriptlang.org
+> - **Tuple（元组）**：长度和每个元素类型都固定的数组，如 `[string, number]`typescriptlang.org
+> - **Object（对象）**：用对象字面量形式描述属性和类型，如 `{ name: string; id: number }`
+> - **Function（函数）**：通过箭头语法描述参数与返回值类型，如 `(a: string) => void`typescriptlang
+
+**组合/推导**
+
+> - **Union（联合类型）**：`string | number` 表示值可以是二者之一
+> - **Literal（字面量类型）**：如 `"left" | "right"`，把值精确限定在几个字面量内
+
+## any 和 unknown
 
 **一、定义**
 
@@ -73,7 +90,7 @@ if (typeof u === 'string') {
 }
 ```
 
-## void 和 never 的区别
+## void 和 never
 
 **一、定义**
 
@@ -99,7 +116,7 @@ function area(s: Shape) {
 }
 ```
 
-## interface 和 type 的区别
+## interface 和 type
 
 **一、定义**
 
@@ -115,7 +132,7 @@ function area(s: Shape) {
 | 重复定义 | ✅ 自动声明合并 | ❌ 报错                       |
 | 扩展方式 | `extends`      | `&` 交叉                     |
 
-## 什么是类型推论？什么时候必须手动标注？
+## 类型推论
 
 **一、推论**
 
@@ -128,7 +145,7 @@ let count = 0;       // 推断为 number
 const name = 'Tom';  // const 推断为字面量类型 'Tom'
 ```
 
-**二、手动**
+**二、必须手动标注**
 
 **必须显式标注的场景：**
 
@@ -142,7 +159,7 @@ let list: string[] = [];          // ③ 空数组等推断不出预期类型
 
 > **实践**：入口标注（参数、返回值），中间靠推论。
 
-## 什么是类型断言？有什么风险？
+## 类型断言
 
 **一、定义**
 
@@ -163,7 +180,7 @@ const num = 123 as unknown as string; // 双重断言绕过检查
 num.toUpperCase(); // ❌ 运行时崩溃
 ```
 
-## 联合类型使用时要注意什么
+## 联合类型要注意什么
 
 **一、定义**
 
@@ -180,7 +197,7 @@ function format(x: string | number) {
 }
 ```
 
-## 可选属性 ? 和只读属性 readonly 怎么用？
+## 可选属性 ? 和readonly
 
 **一、定义**
 
@@ -198,7 +215,7 @@ interface User {
 u.createdAt = new Date(); // ❌ 报错
 ```
 
-## tsconfig.json 有哪些常用配置？
+## tsconfig.json常用配置
 
 **一、定义**
 
@@ -225,7 +242,7 @@ u.createdAt = new Date(); // ❌ 报错
 
 # 中级
 
-## 泛型是什么？解决什么问题？
+## 泛型是什么
 
 **一、定义**
 
@@ -260,7 +277,7 @@ getProp({ name: 'Tom' }, 'age'); // ❌ 编译期报错
 
 > `request<T>` 请求封装、`Promise<T>`、泛型组件。
 
-## 常用工具类型有哪些？手写几个实现
+## 常用工具类型
 
 **一、定义**
 
@@ -290,7 +307,7 @@ type MyReturnType<T extends (...args: any) => any> =
 type MyOmit<T, K extends keyof T> = MyPick<T, MyExclude<keyof T, K>>; // 组合拳
 ```
 
-## 什么是条件类型和 infer？什么是分布式条件类型？
+## 条件类型和 infer
 
 **一、定义**
 
@@ -315,7 +332,7 @@ type Awaited<T> = T extends Promise<infer V> ? Awaited<V> : T; // 递归版
 type R2 = Awaited<Promise<Promise<number>>>; // number
 ```
 
-## 什么是类型收窄？有哪些方式？
+## 类型收窄
 
 **一、定义**
 
@@ -348,7 +365,7 @@ function isFish(pet: Fish | Bird): pet is Fish {
 }
 ```
 
-## keyof typeof 联合使用是什么意思？
+## keyof 和 typeof 联合使用
 
 **一、定义**
 
@@ -371,7 +388,7 @@ handle(STATUS.SUCCESS); // ✅
 handle(99);             // ❌ 编译期拦截
 ```
 
-## 声明文件（.d.ts）和 declare 有什么用？
+## 声明文件（.d.ts）和 declare
 
 **一、定义**
 
@@ -400,7 +417,7 @@ declare global {
 }
 ```
 
-## 枚举有什么坑？现代替代方案是什么？
+## 枚举
 
 **一、定义**
 
@@ -426,7 +443,7 @@ const Status = { Loading: 'LOADING', Success: 'SUCCESS' } as const;
 type Status = typeof Status[keyof typeof Status]; // 'LOADING' | 'SUCCESS'
 ```
 
-## strictNullChecks 开启后如何处理空值？
+## strictNullChecks 开启后如何处理空值
 
 **一、定义**
 
@@ -450,12 +467,12 @@ if (user !== null) user.name;
 user!.name;
 ```
 
-## 在 React 中如何正确使用 TypeScript？
+## React 如何正确使用 TS
 
 > - **Props → 事件 → Hooks → 泛型组件**
 > - **加分**：`React.FC` 现在不推荐——隐式 children、泛型支持差。
 
-## 动态 key 的对象类型怎么定义？
+## 动态key的对象类型怎么定义
 
 **结论**：能用 `Record<K extends keyof any, V>` 限定范围，就不要用纯 `string` 索引。
 
@@ -481,7 +498,7 @@ type Config = {
 
 # 高级
 
-## TS 的类型兼容是结构化的还是名义的？有什么隐患？
+## 类型兼容是结构化的还是名义
 
 **一、定义**
 
@@ -512,7 +529,7 @@ type OrderId = Brand<string, 'OrderId'>;
 const uid2: UserId = someOrderId; // ❌ 现在拦截了
 ```
 
-## 协变与逆变是什么？
+## 协变与逆变
 
 **一、定义**
 
@@ -536,7 +553,7 @@ const h: HandleDog = (a: Animal) => {}; // ✅ 参数逆变：能处理父类的
 // 反向赋值不安全：只能处理 Dog 的函数被传入普通 Animal 会崩
 ```
 
-## 什么是类型擦除？由此推导出哪些工程事实？
+## 类型擦除
 
 **一、定义**
 
@@ -585,7 +602,7 @@ function merge<T>(base: T, patch: DeepPartial<T>): T {
 }
 ```
 
-## 用类型体操操作元组和字符串（模板字面量类型）
+## 类型体操操作元组和字符串
 
 **一、定义**
 
@@ -614,7 +631,7 @@ type ExtractParams<T extends string> =
 type Params = ExtractParams<'/user/:id/post/:postId'>; // 'id' | 'postId'
 ```
 
-## 装饰器原理？如何实现简易依赖注入？
+## 装饰器原理
 
 **一、定义**
 
@@ -628,7 +645,7 @@ type Params = ExtractParams<'/user/:id/post/:postId'>; // 'id' | 'postId'
 二、代码
 
 ```js
-// 简易 IoC（NestJS 原理）
+// 简易 IoC依赖注入（NestJS 原理）
 const container = new Map<string, any>();
 
 function Injectable(): ClassDecorator {
@@ -653,7 +670,7 @@ class UserService {
 }
 ```
 
-## 如何实现端到端类型安全？
+## 端到端类型安全
 
 **一、定义**
 
@@ -681,7 +698,7 @@ function parseUser(raw: unknown): User {
 }
 ```
 
-## 路径别名为什么 IDE 识别但运行报错？
+## 路径别名运行报错
 
 **一、定义**
 
@@ -709,7 +726,7 @@ function parseUser(raw: unknown): User {
 resolve: { alias: { '@': '/src' } }
 ```
 
-## 如何为大型存量 JS 项目做 TS 迁移？
+## 存量 JS 项目做 TS 迁移
 
 **一、定义**
 
@@ -731,7 +748,7 @@ resolve: { alias: { '@': '/src' } }
         CI 加 tsc --noEmit 卡口
 ```
 
-## 类型体操的能力边界和正确的工程态度是什么？
+## 类型体操的能力边界
 
 **能力清单 → 边界问题 → 态度总结**
 
@@ -751,184 +768,14 @@ resolve: { alias: { '@': '/src' } }
 > - 当类型复杂到“看不懂报错”时，宁可简化类型或用少量断言
 > - **可维护性 > 类型完备性**；运行时正确靠 zod 补位，而非把所有约束塞进类型层
 
-
-
-
-
-# 初识TS
-
-
-
-TS最核心功能是类型检查和代码提示，只增加一点学习成本，Vue3本身就是用TS重构的,Vue3有较好的TS支持，越是大型复杂的项目，越是有必要。它是 JavaScript 的一个超集，而且本质上向这个语言添加了可选的静态类型和基于类的面向对象编程。
-
-## Typescript 简介
-
-- ECMAScript 的超集 (stage 3)
-- 编译期的类型检查
-- 不引入额外开销（零依赖，不扩展 js 语法，不侵入运行时）
-- 编译出通用的、易读的 js 代码
-
-## 为什么使用 Typescript
-
-- 增加了代码的可读性和可维护性
-- 减少运行时错误，写出的代码更加安全，减少 BUG
-- 享受到代码提示带来的好处
-- 重构神器
-
-## 为什么你非常不适应 TypeScript
-
-**前言**
-
-在群里看到一些问题和言论：为什么你们这么喜欢“类型体操”？为什么我根本学不下去 TypeScript？我最讨厌那些做类型体操的了；为什么我学了没过多久马上又忘了？
-
-有感于这些问题，我想从最简单的一个角度来切入介绍一下 TypeScript，并向大家介绍并不是只要是个类型运算就是体操。并在文中介绍一种基本思想作为你使用类型系统的基本指引。
-
-**引子**
-
-我将从一个相对简单的 API 的设计过程中阐述关于类型的故事。在这里我们可以假设我们现在是一个工具的开发者，然后我们需要设计一个 API 用于从对象中拿取指定的一些 key 作为一个新的对象返回给外面使用。
-
-*垃圾 TypeScript*
-
-一个人说：我才不用什么破类型，我写代码就是要没有类型，我就是要随心所欲的写。然后写下了这段代码。
-
-```typescript
-typescript
-
-declare function pick(target: any, ...keys: any): any
-```
-
-他的用户默默的写下了这段代码：
-
-```typescript
-typescript
-
-pick(undefined, 'a', 1).b
-```
-
-写完运行，发现问题大条了，控制台一堆报错，接口数据也提交不上去了，怎么办呢？
-
-*刚学 TypeScript*
-
-一个人说：稍微检查一下传入类型就好了，别让人给我乱传参数就行。
-
-```typescript
-typescript
-
-declare function pick(target: Record<string, unknown>, ...keys: string[]): unknown
-```
-
-很好，上面的问题便不复存在了，API 也是基本可用的了。但是！当对象复杂的时候，以及字段并不是短单词长度的时候就会发现了一个没解决的问题。
-
-```typescript
-typescript
-
-pick({ abcdefghijkl: '123' }, 'abcdefghikjl')
-```
-
-从肉眼角度上，我们很难发现这前后的不一致，所以我们为什么要让调用方的用户自己去 check 自己的字段有没有写对呢？
-
-*不就 TypeScript*
-
-一个人说：这还不简单，用个泛型加 keyof 不就行了。
-
-```typescript
-typescriptdeclare function pick<
-  T extends Record<string, unknown>
->(target: T, ...keys: (keyof T)[]): unknown
-```
-
-我们又进一步解决的上面的问题，但是！还是有着相似的问题，虽然我们不用检查 keys 是不是传入的是一个正确的值了，但是我们实际上对返回的值也存在一个类似的问题。
-
-```typescript
-typescript
-
-pick({ abcdefghijkl: '123' }, 'abcdefghijkl').abcdefghikjl
-```
-
-- 一点小小的拓展
-
-  在这里我们看起来似乎是一个很简单的功能，但实际上蕴含着一个比较重要的信息。
-
-  为什么我们之前的方式都拿不到用户传入进来的类型信息呢？是有原因的，当我们设计的 API 的时候，前面的角度是从，如何校验类型方向进行的思考。
-
-  而这里是尝试去通过约定好的一种规则，通过 TypeScript 的隐式类型推断获得到传入的类型，再通过约定的规则转化出一种新的类型约束来对用户的输入进行限制。
-
-*算算 TypeScript*
-
-一个人说：好办，算出来一个新的类型就好了。
-
-```typescript
-typescriptdeclare function pick<
-  T extends Record<string, unknown>,
-  Keys extends keyof T
->(target: T, ...keys: Keys[]): {
-  [K in Keys]: T[K]
-}
-```
-
-到这里已经是对类型的作用有了基础的了解了，能写出来符合开发者所能接受的类型相对友好的代码了。我们可以再来思考一些更特殊的情况：
-
-```typescript
-typescript// 输入了重复的 key
-pick({ a: '' }, 'a', 'a')
-```
-
-*完美 TypeScript*
-
-到这里，我们便是初步开始了类型“体操”。但是在本篇里，我们不去分析它。
-
-```typescript
-typescriptexport type L2T<L, LAlias = L, LAlias2 = L> = [L] extends [never]
-  ? []
-  : L extends infer LItem
-    ? [LItem?, ...L2T<Exclude<LAlias2, LItem>, LAlias>]
-    : never
-
-declare function pick<
-  T extends Record<string, unknown>,
-  Keys extends L2T<keyof T>
->(target: T, ...keys: Keys): Pick<T, Keys[number] & keyof T>
-
-const x0 = pick({ a: '1', b: '2' }, 'a')
-console.log(x0.a)
-// @ts-expect-error
-console.log(x0.b)
-
-const x1 = pick({ a: '1', b: '2' }, 'a', 'a')
-//                                  ^^^^^^^^
-// TS2345: Argument of type '["a", "a"]' is not assignable to parameter of type '["a"?, "b"?] | ["b"?, "a"?]'.
-//   Type '["a", "a"]' is not assignable to type '["a"?, "b"?]'.
-//     Type at position 1 in source is not compatible with type at position 1 in target.
-//       Type '"a"' is not assignable to type '"b"'.
-```
-
-一个相对来说比较完美的 pick 函数便完成了。
-
-**总结**
-
-我们再来回到我们的标题吧，从我对大多数人的观察来说，很多的人开始来使用 TypeScript 有几种原因：
-
-- 看到大佬们都在玩，所以自己也想来“玩”，然后为了过类型校验而去写
-- 看到一些成熟的项目在使用 TypeScript ，想参与贡献，参与过程中为了让类型通过而想办法去解决类型报错
-- 公司整体技术栈采用的是 TypeScript ，要用 TypeScript 进行业务编写，从而为了过类型检查和 review 而去解决类型问题
-
-诸如此类的问题还有很多，我将这种都划分为「为了解决类型检查的问题」而进行的类型编程，这也是大多数人为什么非常不适应 TypeScript，甚至不喜欢他的一个原因。这其实对学习 TypeScript 并不是一个很好的思路，在这里我觉得我们需要站在设计者的角度去对类型系统进行思考。我觉得有以下几个角度：
-
-- 类型检查到位
-- 类型提示友好
-- 类型检查严格
-- 扩展性十足
-
-我们如果站在这几个角度对我们的 API 进行设计，我们可以发现，开发者能够很轻松的将他们需要的代码编写出来，而尽量不用去翻阅文档，查找 example。
-
-希望通过我的这篇分享，大家能对 TypeScript 多一些理解，并参与到生态中来，守护我们的 JavaScript。
-
-
-
 # TS类型体操
 
 - [TS类型体操1](https://juejin.cn/post/7073070819219505166)
 - [TS类型体操2](https://juejin.cn/post/7077464587313872932)
+
+**一、定义**
+
+> 利用 TS 类型系统（泛型、infer、条件、映射类型）写复杂类型计算。业务上用于：封装通用工具类型、组件 props 自动推导、接口响应自动生成类型；不要过度写复杂体操，会增加编译负担、可读性变差。
 
 
 
