@@ -1,6 +1,6 @@
 ---
 title: TypeScript
-date: 2024-01-01 07:33:16
+date: 2002-06-01 07:33:16
 categories:
 - B_中级
 toc: true # 是否启用内容索引入门
@@ -26,6 +26,8 @@ toc: true # 是否启用内容索引入门
 [深入理解 TypeScript](https://github.com/jkchao/typescript-book-chinese)
 
 # 初级
+
+> 🏆 **高频常考 TOP**：interface 和 type ⭐⭐⭐⭐⭐ | any 和 unknown ⭐⭐⭐⭐⭐ | TS 的基础类型 ⭐⭐⭐⭐⭐ | 类型断言 ⭐⭐⭐⭐ | void 和 never ⭐⭐⭐⭐ | 联合类型要注意什么 ⭐⭐⭐⭐
 
 ## TypeScript 是什么
 
@@ -241,6 +243,8 @@ u.createdAt = new Date(); // ❌ 报错
 ```
 
 # 中级
+
+> 🏆 **高频常考 TOP**：泛型是什么 ⭐⭐⭐⭐⭐ | 常用工具类型 ⭐⭐⭐⭐⭐ | 类型收窄 ⭐⭐⭐⭐⭐ | 条件类型和 infer ⭐⭐⭐⭐ | strictNullChecks 开启后如何处理空值 ⭐⭐⭐⭐ | keyof 和 typeof 联合使用 ⭐⭐⭐⭐
 
 ## 泛型是什么
 
@@ -497,6 +501,8 @@ type Config = {
 
 
 # 高级
+
+> 🏆 **高频常考 TOP**：类型兼容是结构化的还是名义 ⭐⭐⭐⭐⭐ | 类型擦除 ⭐⭐⭐⭐⭐ | 协变与逆变 ⭐⭐⭐⭐ | 手写递归工具类型：DeepPartial / DeepReadonly ⭐⭐⭐⭐ | 端到端类型安全 ⭐⭐⭐⭐
 
 ## 类型兼容是结构化的还是名义
 

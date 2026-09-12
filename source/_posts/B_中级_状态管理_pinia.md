@@ -1,6 +1,6 @@
 ---
 title: 状态管理_pinia
-date: 2023-01-01 08:33:16
+date: 2002-01-01 08:33:16
 categories:
 - B_中级
 toc: true # 是否启用内容索引
