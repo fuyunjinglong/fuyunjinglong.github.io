@@ -1,18 +1,87 @@
 ---
 title: 多端_移动端
-date: 2022-05-10 06:33:16
+date: 2004-01-10 06:33:16
 categories:
-- I_多端
+- B_中级
 toc: true # 是否启用内容索引
 ---
 
-**参考**
-
-> - [Flutter学习仓库](https://github.com/chinabrant/flutter_study)
-> - [Github Flutter源码仓库](https://github.com/flutter/flutter)
-> - [Flutter中文网](https://flutterchina.club/)
-
 # 初级
+
+## 移动端适配
+
+**一、定义**
+
+> **让同一套页面，在不同尺寸、不同 DPR（设备像素比）的手机上，呈现比例一致的布局和视觉。
+>
+> 适配要解决两个问题：**布局等比缩放 + 高清细节还原**。
+
+**基础概念**
+
+> - **物理像素**：屏幕实际渲染的最小发光点
+> - **逻辑像素（CSS 像素）**：我们写代码用的 px
+> - **DPR = 物理像素 / 逻辑像素**，iPhone 3 是 1，普通 retina 屏是 2、3
+
+**二、主流方案**
+
+| 方案                          | 原理                                                         | 优点                                     | 缺点                                                         |
+| ----------------------------- | ------------------------------------------------------------ | ---------------------------------------- | ------------------------------------------------------------ |
+| **rem 布局（flexible）**      | 设置 `html { font-size }`，元素用 rem 单位，随屏幕宽度等比缩放 | 兼容性好，方案成熟                       | 需要换算（用 postcss 插件解决）；`1rem ≠ 屏幕宽`，不好直观估算 |
+| **vw / vh 布局**              | 1vw = 屏幕宽度 1%，直接用 vw 写样式                          | 原生单位、无 JS、换算直观                | 兼容性依赖较新浏览器（现在基本无压力）；字号无法随用户设置变化 |
+| **rem + vw 混合（主流推荐）** | `html { font-size: calc(100vw / 设计稿份数) }`，元素仍用 rem | 纯 CSS 实现等比缩放，rem 语义清晰        | —                                                            |
+| **% / flex / grid 弹性布局**  | 弹性伸缩，不做等比缩放                                       | 内容自适应，信息类页面（新闻、后台）最佳 | 视觉还原度低，不适合强视觉设计稿                             |
+| **媒体查询 @media**           | 断点切换样式                                                 | 简单可控                                 | 断点有限，粒度粗                                             |
+| **viewport 缩放**             | 动态改 `meta viewport` 的 `scale` 整页缩放                   | 整页 100% 还原设计稿                     | 文字会被缩糊、交互坐标易错位，维护差，不推荐                 |
+
+**px，em，rem**
+
+px时屏幕上显示像素的基本单位。em是一个相对大小，相当于父元素的font-size的百分比大小(如果使用的话，要一层层计算，太复杂)。rem也是相对大小，是相对于根元素的font-size。
+
+每次开发框架时，开发只需要动态调整UI给的设计稿即可，即designWidth。然后如果高保真图片是500px的宽度，就写5rem。
+
+```js
+const designWidth = 750; // 设计稿宽度(每次开发框架时，开发只需要动态调整UI给的设计稿即可)
+const baseFontSize = 100; // 基准 font-size
+const clientWidth = docEl.clientWidth; // 当前屏幕宽度
+// 一般设计稿宽度：750px -> 对应 html { font-size: 100px}即1rem=100px，100px只是方便计算，如果高保真图片是200px的宽度，就可以写2rem，实际是2rem*100px=200px
+// 那么如果在小屏幕上375px -> 对应 html { font-size: 50px}即1rem=50px,如果高保真图片是200px的宽度，就可以写2rem，实际是2rem*50px=100px.刚好实现了等比例放缩，缩小一般。
+document.documentElement.style.fontSize = (clientWidth/designWidth)*baseFontSize+'px'
+```
+
+**三、代码**
+
+**（以 375 设计稿为例）**
+
+```css
+/* 方案：rem + vw 混合，postcss-pxtorem 自动换算 */
+html {
+  font-size: 16px; /* 兜底 */
+}
+/* 375 宽设计稿分 10 份，1rem = 37.5px */
+@supports (font-size: 1vw) {
+  html { font-size: 10vw; } /* = 37.5px */
+}
+```
+
+```js
+// postcss.config.js
+module.exports = {
+  plugins: {
+    'postcss-pxtorem': {
+      rootValue: 37.5,   // 设计稿宽度 / 10
+      propList: ['*'],
+      selectorBlackList: ['.no-rem'], // 某些不需要缩放的元素
+    }
+  }
+}
+```
+
+**四、进阶**
+
+> - flexible 旧方案里动态改 viewport `scale` 的做法已被淘宝官方废弃，改用纯 vw/rem
+> - **字体不一定要用 rem**：正文建议用固定 px 或 clamp，避免大屏手机字超大；标题用 rem 等比
+> - **1px 边框问题**单独处理（见下题）
+> - 用户可能改系统字号，rem 方案下可用 `text-size-adjust` 控制
 
 ## meta viewport 的作用
 
@@ -584,118 +653,6 @@ this.setData({ list: newList });
 this.setData({ 'list[2].status': 1 });
 ```
 
-
-
-### 移动端H5 实现秒开
-
-**一、定义**
-
-> 秒开 = 让用户在 1s 内看到可交互页面，是加载优化 + 缓存体系 + 预测机制的综合工程。
-
-**二、方案体系**
-
-```js
-┌─ 静态资源 ── 离线包（提前下发 zip + 增量更新 + 签名校验）
-├─ 接口数据 ── 数据预取（点击前预测用户行为，提前请求）
-├─ 渲染层  ── 骨架屏直出 / SSR / 客户端预渲染
-├─ 网络   ── HTTPDNS + 链路复用
-└─ 兜底   ── 离线包版本降级、异常上报
-```
-
-**三、原理**
-
-> 离线包让静态资源走本地，省去网络请求；数据预取让接口请求与页面跳转**并行**而非串行。
-
-**加分项**
-
-> - 增量更新算法（diff 下载，节省流量）
-> - 离线包的**拦截机制**（Native 拦截 URL 请求映射到本地文件）
-> - 秒开率的统计口径（LCP or 自定义首屏标记）
-
-
-
-
-
-
-
-
-
-# 移动端适配怎么解决
-
-参考
-
-- [2022 年移动端适配方案指南 — 全网最新最全](https://juejin.cn/post/7046169975706353701#heading-20)
-- [响应式设计 - 理解设备像素、设备独立像素和 css 像素](https://link.juejin.cn?target=https%3A%2F%2Fwww.jianshu.com%2Fp%2F6b1f94bfa263)
-- [移动前端开发之viewport的深入理解](https://link.juejin.cn?target=https%3A%2F%2Fwww.cnblogs.com%2F2050%2Fp%2F3877280.html)
-- [使用 Flexible 实现手淘 H5 页面的终端适配](https://link.juejin.cn?target=https%3A%2F%2Fgithub.com%2Famfe%2Farticle%2Fissues%2F17)
-- [VW: 是时候放弃 REM 布局了](https://link.juejin.cn?target=https%3A%2F%2Fwww.jianshu.com%2Fp%2Fe8ae1c3861dc)
-- [lib-flexible](https://link.juejin.cn?target=https%3A%2F%2Fgithub.com%2Famfe%2Flib-flexible)
-- [postcss-px-to-viewport](https://link.juejin.cn?target=https%3A%2F%2Fgithub.com%2Fevrone%2Fpostcss-px-to-viewport)
-- [网页适配 iPhoneX](https://link.juejin.cn?target=https%3A%2F%2Faotu.io%2Fnotes%2F2017%2F11%2F27%2Fiphonex%2Findex.html)
-
-方案如下：
-
-> 1. meta viewport视口
-> 2. 图片适配
-> 3. 媒体查询
-> 4. 动态rem方案
-
-**1.meta viewport视口**
-
-大多数PC网页的宽度为980px，如果不做移动端适配，文字会缩小的很小。device-width表示等于设备宽度，不写的化就变成默认的980了。initial-scale缩放比例为1。
-
-```html
-<head>
-<meta names="viewport"content="width=device-width,initial-scale=1.0"
-<title>测试</title>
-</head>
-```
-
-**2.图片适配**
-
-使用img{max-width:100%}，而不是img{width:100%}。后者在容器大于图片时，图片会无线拉伸。前者最大显示自身图片那么大。
-
-**3.媒体查询**
-
-```
-@media screen and（min-width:1200px）{
- body{
-  background-color:red;
- }
-}
-```
-
-**4.动态rem方案**
-
-px，em，rem有什么不同？
-
-px时屏幕上显示像素的基本单位。em是一个相对大小，相当于父元素的font-size的百分比大小(如果使用的话，要一层层计算，太复杂)。rem也是相对大小，是相对于根元素的font-size。
-
-每次开发框架时，开发只需要动态调整UI给的设计稿即可，即designWidth。然后如果高保真图片是500px的宽度，就写5rem。
-
-```js
-const designWidth = 750; // 设计稿宽度(每次开发框架时，开发只需要动态调整UI给的设计稿即可)
-const baseFontSize = 100; // 基准 font-size
-const clientWidth = docEl.clientWidth; // 当前屏幕宽度
-// 一般设计稿宽度：750px -> 对应 html { font-size: 100px}即1rem=100px，100px只是方便计算，如果高保真图片是200px的宽度，就可以写2rem，实际是2rem*100px=200px
-// 那么如果在小屏幕上375px -> 对应 html { font-size: 50px}即1rem=50px,如果高保真图片是200px的宽度，就可以写2rem，实际是2rem*50px=100px.刚好实现了等比例放缩，缩小一般。
-document.documentElement.style.fontSize = (clientWidth/designWidth)*baseFontSize+'px'
-```
-
-优缺点比较
-
-> 优点：
->
-> 1. **完美等比缩放**：在任何尺寸的屏幕下，页面的视觉效果比例完全一致，不会出现布局错乱。
-> 2. **兼容性好**：rem 单位兼容到 Android 2.1 / iOS 4.1，在几年前是万能解法。
-> 3. **开发体验好**：配合构建工具，开发者可以继续在 CSS 里写 `px`，无感知地使用 rem。
->
-> 缺点（也是现在逐渐被替代的原因）：
->
-> 1. **依赖 JS**：必须加载一段 JS 脚本，如果 JS 被阻塞，页面可能会闪烁或错乱。
-> 2. **字体不够优雅**：等比缩放意味着在小屏手机上字体变得很小（可能低于 12px 影响阅读），在大屏手机上字体会变得超大。现代网页更希望大屏看更多内容，而不是单纯的放大。
-> 3. **1px 边框问题**：由于 rem 是等比缩放，在 2倍/3倍 屏幕上，写 `0.01rem` 渲染出来的物理像素可能不是真正的 1px，导致边框看起来变粗。
-
 # React Native
 
 **参考**
@@ -703,6 +660,12 @@ document.documentElement.style.fontSize = (clientWidth/designWidth)*baseFontSize
 - [react native入门到实战](https://www.bilibili.com/video/BV1Pt4y1n7bD/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 
 # Flutter
+
+**参考**
+
+> - [Flutter学习仓库](https://github.com/chinabrant/flutter_study)
+> - [Github Flutter源码仓库](https://github.com/flutter/flutter)
+> - [Flutter中文网](https://flutterchina.club/)
 
 ## 1.Flutter是什么?
 
