@@ -8,9 +8,617 @@ toc: true # 是否启用内容索引
 
 **参考**
 
-- [Flutter学习仓库](https://github.com/chinabrant/flutter_study)
-- [Github Flutter源码仓库](https://github.com/flutter/flutter)
-- [Flutter中文网](https://flutterchina.club/)
+> - [Flutter学习仓库](https://github.com/chinabrant/flutter_study)
+> - [Github Flutter源码仓库](https://github.com/flutter/flutter)
+> - [Flutter中文网](https://flutterchina.club/)
+
+# 初级
+
+## meta viewport 的作用
+
+**一、定义**
+
+> viewport 控制页面在移动浏览器中的可视区域和缩放行为。
+
+**二、原理**
+
+> 手机浏览器默认 viewport 宽度为 980px，页面会被整体缩小显示，字太小需要手动缩放。
+
+**三、解决方案**
+
+> - `width=device-width`：宽度等于设备宽度
+> - `initial-scale`：初始缩放比例
+> - `user-scalable=no`：禁止用户缩放（注意无障碍问题）
+
+```js
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+```
+
+## 1px 边框问题
+
+**一、定义**
+
+> 由于 DPR（设备像素比）> 1，CSS 的 1px 被渲染成 2~3 物理像素，视觉上偏粗。
+
+**二、原理**
+
+> iPhone 的 DPR 为 2 或 3，`1px` 逻辑像素对应多个物理像素。
+
+**三、解决方案**
+
+> 方案对比：scaleY 只适合单边框；viewport 缩放最彻底但需 JS 动态计算；`border-image` / `box-shadow` 有缺陷，已少用。
+
+```
+/* 方案1：伪元素 + transform 缩放（主流） */
+.border-1px::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: #ccc;
+  transform: scaleY(0.5);
+  transform-origin: 0 0;
+}
+
+<!-- 方案2：viewport 缩放（配合 rem 布局） -->
+<meta name="viewport" content="width=device-width, initial-scale=0.5">
+```
+
+## 点击 300ms 延迟的原因
+
+**一、定义**
+
+> 早期移动浏览器为区分“单击”和“双击缩放”，点击后等待 300ms 判断是否双击。
+
+**二、解决方案**
+
+> 1. 声明 viewport（现代浏览器自动取消延迟）✅
+> 2. `fastclick` 库 —— **原理**：在 `touchend` 时 `preventDefault()` 阻止默认事件，并手动派发 click
+
+**三、优劣对比**
+
+> fastclick 现已不常用，但它的原理仍是高频追问点。
+
+## rem / vw 适配方案
+
+**一、定义**
+
+> rem 和 vw 都是相对单位，用于实现移动端等比自适应布局。
+
+**二、定义**
+
+> - `rem`：相对根元素 `font-size`，通过 JS 动态设置根字号实现缩放
+> - `vw`：视口宽度的 1%，纯 CSS 无 JS
+
+**三、解决方案**
+
+```js
+// rem 方案：1rem = 屏宽 / 10
+document.documentElement.style.fontSize = 
+document.documentElement.clientWidth / 10 + 'px';
+```
+
+```css
+/* vw 方案：设计稿 375px，元素 40px，用 postcss-px-to-viewport 自动转换 */
+.el { width: calc(40 / 375 * 100vw); }
+```
+
+**四、优劣对比**：
+
+| 方案 | 优点           | 缺点                       |
+| ---- | -------------- | -------------------------- |
+| rem  | 兼容性好       | 依赖 JS，有闪屏/精度问题   |
+| vw   | 纯 CSS、精度高 | 老设备不支持（现在可忽略） |
+
+**加分项**：阿里 flexible 方案已官方宣布过时，现在主流是 `vw + postcss`。
+
+## 触摸事件
+
+**一、定义**
+
+> 核心触摸事件有 `touchstart / touchmove / touchend / touchcancel`。
+
+**二、原理**
+
+事件对象包含三个触摸点列表：
+
+> - `touches`：屏幕上所有触摸点
+> - `targetTouches`：目标元素上的触摸点
+> - `changedTouches`：触发本次事件的触摸点（**touchend 时只有它能拿到信息**）
+
+**加分项**：`touchcancel` 的触发场景（来电、系统手势打断）；滑动/捏合手势需基于 touch 事件自行计算。
+
+## 软键盘弹起问题
+
+**一、定义**
+
+> 软键盘会遮挡输入框，或导致 fixed 元素错位。
+
+**二、原理**
+
+> iOS 键盘弹起**不改变窗口高度**（页面整体被推上去），Android 会**压缩视口高度**，行为不一致。
+
+**三、解决方案**
+
+```js
+// 输入框被遮挡：聚焦时滚动到可视区
+input.addEventListener('focus', () => {
+  setTimeout(() => input.scrollIntoView({ block: 'center' }), 300);
+});
+
+// iOS 键盘收起后底部留白：失焦时手动滚回
+input.addEventListener('blur', () => window.scrollTo(0, 0));
+```
+
+**加分项**：`VisualViewport API` 是较新的标准方案，可精确获取键盘弹出后的可视区域。
+
+## 点击穿透
+
+**一、定义**
+
+> 上层元素在 touch 事件中消失后，300ms 内的 click 落到了下层元素上。
+
+**二、原理**
+
+> 典型场景 —— “touchstart 关闭蒙层 → 浏览器又派发 click → 命中蒙层下方的按钮”。
+
+**三、解决方案**
+
+> 1. 蒙层关闭统一用 `click` 事件
+> 2. 在 touchend 中调用 `e.preventDefault()`
+> 3. 下层按钮延迟绑定事件
+
+## 图片适配不同 DPR 屏幕
+
+**一、定义**
+
+> 根据 DPR 加载 1x/2x/3x 图，避免模糊或浪费流量。
+
+**二、解决方案**
+
+```js
+<img src="img@1x.png" 
+     srcset="img@2x.png 2x, img@3x.png 3x" alt="">
+
+<picture>
+  <source media="(min-resolution: 3dppx)" srcset="img@3x.png">
+  <source media="(min-resolution: 2dppx)" srcset="img@2x.png">
+  <img src="img@1x.png" alt="">
+</picture>
+```
+
+**加分项**：WebP 体积减少 25%+；CDN 图片服务动态裁剪。
+
+## safe-area 适配
+
+**一、定义**
+
+> iPhone X 之后的刘海屏和底部指示条需要避让，否则内容被遮挡。
+
+**二、解决方案**
+
+```js
+<meta name="viewport" content="viewport-fit=cover">
+```
+
+```css
+padding-bottom: constant(safe-area-inset-bottom); /* iOS 11.0-11.2 */
+padding-bottom: env(safe-area-inset-bottom);      /* iOS 11.2+ */
+```
+
+**加分项**：四个方向的 `safe-area-inset-*`，吸底按钮的适配实践。
+
+## 常用布局
+
+**一、定义**
+
+> 主流方案为 flex 为主、grid 为辅、rem/vw 控制尺寸。
+
+**二、解决方案**
+
+> - **Flex**：解决绝大多数一维布局场景
+> - **Grid**：九宫格、复杂二维布局
+> - **移动端特殊处理**：文本溢出省略、sticky 吸顶、`flex: 1` 的兼容写法
+
+**加分项**：能说出 iOS Safari 上 flex 的一些兼容 bug（如 flex-basis 百分比问题）。
+
+# 中级
+
+## 性能优化
+
+**一、加载层**
+
+> - 路由懒加载、代码分割
+> - 图片懒加载 + WebP + CDN 裁剪
+> - 骨架屏替代 loading
+> - HTTP 强缓存/协商缓存 + Service Worker
+
+**二、渲染层**
+
+> - 动画只用 `transform/opacity`
+> - 长列表虚拟滚动
+> - scroll/input 防抖节流
+
+**三、资源层**
+
+> - 中文字体子集化
+> - 组件库按需引入
+
+**加分项**：结合 Lighthouse 数据量化，说出优化前后对比（如首屏 3s → 1.2s）。
+
+## 图片懒加载原理
+
+**一、定义**
+
+> 延迟加载视口外图片，节省流量、加快首屏。
+
+**二、解决方案**
+
+```js
+// IntersectionObserver（推荐）
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const img = entry.target;
+      img.src = img.dataset.src;
+      observer.unobserve(img);
+    }
+  });
+}, { rootMargin: '100px' }); // 提前 100px 预加载
+
+document.querySelectorAll('img[data-src]').forEach(img => observer.observe(img));
+```
+
+**三、方案对比**
+
+> scroll + `getBoundingClientRect`（需节流，兼容旧浏览器）vs IntersectionObserver（性能好，主流）。
+
+**加分项**：原生 `loading="lazy"`；Chrome 的动态阈值策略（离视口越近阈值越小）。
+
+## 滚动卡顿
+
+**一、定义**
+
+> - 长列表 DOM 过多
+> - scroll 事件频繁触发重排
+> - 大图、复杂样式重绘开销大
+
+**二、解决方案**
+
+> - scroll 回调节流 + `requestAnimationFrame`
+> - **虚拟列表**：只渲染可视区 + 上下缓冲区 DOM
+
+```css
+/* GPU 加速 */
+.animated { transform: translateZ(0); will-change: transform; }
+/* iOS 惯性滚动 */
+.scroll-box { -webkit-overflow-scrolling: touch; }
+```
+
+**加分项**：能讲虚拟列表实现原理（绝对定位 + transform 位移补偿 + 动态高度场景处理）。
+
+## JSBridge是什么
+
+**一、定义**
+
+> JSBridge 是 H5 与原生之间的通信桥梁，实现双向调用。
+
+**二、原理**
+
+**H5 → Native**
+
+> 1. URL Scheme 拦截（`jsbridge://method?params`）
+> 2. **注入 API**（主流）：iOS 的 `window.webkit.messageHandlers`、Android 的 `addJavascriptInterface`
+
+**Native → H5**
+
+> - iOS：`evaluateJavaScript`
+> - Android：`evaluateJavascript / loadUrl`
+
+**加分项**：回调机制（callbackId 映射表）、Native 未注入完成时的消息队列、URL 白名单安全校验。
+
+## 兼容问题
+
+| 问题                                | 解决方案                      |
+| ----------------------------------- | ----------------------------- |
+| iOS `new Date('2024-01-01')` 为 NaN | 格式改为 `2024/01/01`         |
+| iOS 输入框内阴影                    | `-webkit-appearance: none`    |
+| 音视频自动播放被禁                  | 首次 touchstart 后触发 play() |
+| 软键盘导致 fixed 错位               | 改 absolute 布局 + 内部滚动   |
+| iOS 橡皮筋效果                      | `overscroll-behavior: none`   |
+| 长按弹出系统菜单                    | `-webkit-touch-callout: none` |
+
+**加分项**：使用 `browserslist + autoprefixer` 自动处理前缀；维护兼容性问题清单文档。
+
+## 动画推荐 transform 而不是 top/left
+
+**一、定义**
+
+> - `top/left` 触发 **layout → paint → composite** 全流程
+> - `transform` 只触发 **composite**，由合成器线程处理，不阻塞主线程
+
+**二、代码**
+
+```css
+/* ❌ 每帧重排 */
+@keyframes move { to { left: 100px; } }
+/* ✅ 仅合成 */
+@keyframes move { to { transform: translateX(100px); } }
+```
+
+**加分项**：能画出浏览器渲染流水线；`will-change` 滥用会增加内存；CSS 合成动画即使 JS 阻塞也不掉帧。
+
+## 真机调试
+
+**一、定义**
+
+> 1. **iOS**：Safari 开发模式 + 数据线
+> 2. **Android**：Chrome + `chrome://inspect`
+> 3. **vconsole / eruda**：页面内嵌调试面板（生产环境记得关闭）
+> 4. **Charles / Whistle**：抓包、mock 数据、断点
+> 5. **微信**：微信开发者工具 Remote Debug
+
+**加分项**：Whistle 的 mock 与代理实践、HTTPS 抓包证书配置。
+
+## 下拉刷新和上拉加载
+
+**一、定义**
+
+> 基于 touch 事件监听手势，配合位移和状态机实现。
+
+**二、原理**
+
+> - 下拉刷新：`touchmove` 中计算位移（顶部时才生效）→ 释放后超过阈值触发刷新动画 → 数据回来后复位
+> - 上拉加载：监听 scroll，滚动到底部（`scrollTop + clientHeight >= scrollHeight - buffer`）时请求下一页
+
+**三、代码**
+
+```js
+// 阻止 iOS 橡皮筋干扰，touchmove 时用 transform 跟随手指
+// 注意 Three 点：位移系数（0.5 阻尼感）、状态锁（防止重复请求）、touchcancel 兜底
+```
+
+**加分项**：提到直接使用成熟方案（better-scroll、vant-list），并说出自己实现时踩过的坑（如 iOS 橡皮筋导致的误触发）。
+
+# 高级
+
+## 输入 URL 到移动端页面渲染完成
+
+**网络层**
+
+> DNS → TCP → TLS → HTTP。移动端特点：**弱网环境**，需要考虑 DNS 劫持（HTTPDNS）、连接复用（HTTP/2、QUIC）。
+
+**渲染层**
+
+> 解析 HTML 构建 DOM → CSSOM → 渲染树 → Layout → Paint → Composite。移动端特点：**合成层爆炸会导致内存暴涨**（低端安卓机直接崩溃），需控制 `will-change` 和层数量。
+
+**加分项**：能延伸到 **CRP（关键渲染路径）优化** —— 关键 CSS 内联、JS 异步化（async/defer）、资源优先级控制；以及移动端特有的**离线包 + 预加载**体系（美团/阿里方案）。
+
+## 首屏秒开/弱网
+
+**一、定义**
+
+> 先定义指标 —— LCP < 2.5s，用 `web-vitals` + 上报体系建立监控看板。
+
+**二、分层优化**
+
+| 层级   | 手段                                                         | 关键词     |
+| ------ | ------------------------------------------------------------ | ---------- |
+| 网络层 | CDN、HTTP/2多路复用、QUIC（抗丢包）、HTTPDNS(解决 DNS 劫持和解析慢)、域名收敛 | 快         |
+| 资源层 | 代码分割、Tree Shaking、Brotli、图片 WebP/AVIF、增量更新、数据压缩（Protobuf 替代 JSON） | 小         |
+| 渲染层 | SSR / 预渲染、关键 CSS 内联、骨架屏                          | 早见       |
+| 缓存层 | Service Worker 离线缓存、端内离线包                          | 不重复请求 |
+| 预测层 | 预加载下一页资源（用户意图预测）                             | 抢跑       |
+
+ 弱网场景补充（问弱网时加这部分）
+
+- 请求：超时设置 + **指数退避重试**
+- 兜底：缓存数据优先展示、失败降级
+- 体验：弱网提示、接口合并减少请求次数
+- 测试：Charles 限速模拟弱网
+
+**三、具体作答**
+
+> - 问**秒开** → 五层框架 + 重点讲离线包和数据预取
+>
+>   能给出量化结果（“首屏从 3.2s 优化到 1.4s，转化率提升 x%”）；提到大厂的 **秒开方案**（离线包 + 数据预取 + 骨架屏直出）
+>
+> - 问**弱网优化** → 简略带过五层 + 重点讲重试/兜底/降级
+>
+>   能讲**弱网模拟测试**（Charles 限速、iOS Network Link Conditioner）；以及大厂的**多通道并发请求**（同接口多 IP 同时请求，取最快返回）。
+
+## 虚拟列表
+
+**一、定义**
+
+> 只渲染可视区 + 缓冲区的 DOM，用总高度撑开滚动容器，模拟出完整列表。
+
+**二、原理**
+
+> 核心三要素：
+> 1. 总容器高度 = itemHeight × total（撑开滚动条）
+> 2. 可视区绝对定位，transform: translateY(起始偏移) 
+> 3. 监听 scroll，计算 startIndex / endIndex，只渲染这个区间
+
+**三、不定高场景（难点）**
+
+> - **预估高度**：先按预估渲染，渲染后缓存真实高度（`getBoundingClientRect`）
+> - 滚动时用**缓存的高度数组**二分查找定位 startIndex
+> - 高度更新后修正总高度和偏移量，可能产生**滚动抖动**，需做偏移补偿
+
+**四、方案对比**
+
+> 自研 vs `react-window` / `vue-virtual-scroller`。
+
+**加分项**：提到 scroll 分帧渲染、IntersectionObserver 判断可见性、以及 DOM 回收导致的白屏闪烁问题（缓冲区 + 快速滚动兜底 loading）。
+
+## PWA 的核心能力
+
+**一、定义**
+
+> PWA 让 Web 应用具备接近原生的体验，核心是离线、推送、可安装。
+
+**二、原理**
+
+> 1. **Service Worker**：独立于主线程的代理脚本，可拦截请求实现缓存策略
+> 2. **Manifest**：定义应用名、图标、启动方式，实现“添加到主屏幕”
+> 3. **Push + Notification**：消息推送能力
+
+**三、缓存策略**
+
+```js
+// Cache First：静态资源
+// Network First：接口数据
+// Stale While Revalidate：允许旧内容 + 后台更新（常用）
+```
+
+**四、最佳实践**
+
+> - SW 作用域限制、HTTPS 强制要求
+> - **SW 更新问题**：旧 SW 缓存导致页面不更新（需 `skipWaiting` + 版本管理）
+> - iOS 对 PWA 支持残缺（推送 iOS 16.4+ 才支持）
+
+**加分项**：能对比 PWA 与小程序、Hybrid 的架构取舍。
+
+## Hybrid选型 
+
+**一、定义**
+
+| 维度     | H5     | Hybrid | RN        | Flutter  | 原生 |
+| -------- | ------ | ------ | --------- | -------- | ---- |
+| 体验     | 一般   | 一般   | 较好      | 接近原生 | 最好 |
+| 开发效率 | 最高   | 高     | 高        | 高       | 低   |
+| 动态化   | ✅ 天然 | ✅      | ✅（热更） | 部分支持 | ❌    |
+| 性能     | 弱     | 弱     | 中        | 强       | 强   |
+
+**二、选型原则**
+
+> - 强交互/高性能页面（首页信息流、动画）→ 原生 / Flutter
+> - 运营活动、频繁变更的业务 → H5（动态化优先）
+> - 中等复杂度业务页 → RN
+
+**加分项**：能讲自研 **Hybrid 容器设计** —— 离线包机制、JSBridge 协议设计、H5 与原生页面路由互通、灰度发布与兜底降级策略。
+
+## 移动端监控体系
+
+**一、定义**
+
+> 监控体系 = 数据采集 + 上报 + 分析 + 告警，移动端需额外关注性能与异常。
+
+**二、方案设计**
+
+**采集维度**
+
+> - **异常监控**：JS 错误（`window.onerror`、`unhandledrejection`）、接口错误、**资源加载失败**
+> - **性能监控**：FP/FCP/LCP、接口耗时、卡顿（长任务检测 `PerformanceObserver`）
+> - **行为监控**：PV/UV、用户行为回溯（录屏）
+
+**上报策略（移动端特色）**
+
+> - `sendBeacon` / img 打点，页面卸载时数据不丢
+> - **采样上报 + 批量上报**，减少弱网下请求开销
+> - 本地缓存失败数据，下次启动补报
+
+**告警与归因**
+
+> 错误聚类（source-map 还原）、阈值告警、版本对比。
+
+**加分项**：sourcemap 管理、错误聚合指纹算法、用户行为栈还原定位问题路径。
+
+## 排查内存泄漏
+
+**一、定义**
+
+> 1. **未清除的定时器 / 事件监听**（尤其 `resize/scroll`、SW 全局监听）
+> 2. 闭包持有大对象
+> 3. 全局变量累积
+> 4. **单页应用路由切换**：组件销毁未清理副作用（最大来源）
+> 5. 游离 DOM 引用
+
+**二、排查方法**
+
+> Chrome DevTools → Performance 面板录制 → 观察内存曲线（JS Heap 持续上涨）
+> → Memory 面板 Heap Snapshot → 三次快照对比 → 查 Retained Size / Detached DOM
+
+**加分项**：能演示“Detached DOM”定位过程；提到 `WeakMap/WeakRef` 减少强引用；团队层面用 ESLint 规则（如 hooks 依赖检查）预防。
+
+## 小程序与 H5
+
+**一、定义**
+
+小程序是双线程架构，逻辑和渲染分离、Native 通信，**目的是安全和性能隔离**。代价是通信有开销，所以开发中要合并 setData、减少数据量。此外微信的 Skyline 引擎正用原生渲染替代 WebView。
+
+> H5 的逻辑和渲染都在 WebView 一个线程里；小程序把**逻辑层和渲染层分开**，通过 Native 层通信。
+
+**二、核心差异**
+
+**1.线程模型不同**
+
+> H5：   JS + 渲染 都在 WebView（同一个线程）
+> 小程序：逻辑层(JSCore) + 渲染层(WebView) 分离，Native 中转
+
+**2. JS 能力不同**
+
+|          | H5       | 小程序               |
+| -------- | -------- | -------------------- |
+| 操作 DOM | ✅ 可以   | ❌ 不行，只能 setData |
+| 运行环境 | 浏览器   | 微信客户端           |
+| 页面跳转 | 自己控制 | Native 接管          |
+
+**三、双线程的意义**
+
+> **1. 安全**：逻辑层拿不到 DOM/BOM，微信能完全管控页面内容和跳转，审核才有效。
+>
+> **2. 性能**：JS 再卡也不会阻塞页面渲染。
+
+**四、代价与优化**
+
+通信要经过 Native，有开销，所以：
+
+```js
+// ❌ 频繁调用
+this.setData({ list: newList });
+
+// ✅ 合并 + 精准更新
+this.setData({ 'list[2].status': 1 });
+```
+
+
+
+### 移动端H5 实现秒开
+
+**一、定义**
+
+> 秒开 = 让用户在 1s 内看到可交互页面，是加载优化 + 缓存体系 + 预测机制的综合工程。
+
+**二、方案体系**
+
+```js
+┌─ 静态资源 ── 离线包（提前下发 zip + 增量更新 + 签名校验）
+├─ 接口数据 ── 数据预取（点击前预测用户行为，提前请求）
+├─ 渲染层  ── 骨架屏直出 / SSR / 客户端预渲染
+├─ 网络   ── HTTPDNS + 链路复用
+└─ 兜底   ── 离线包版本降级、异常上报
+```
+
+**三、原理**
+
+> 离线包让静态资源走本地，省去网络请求；数据预取让接口请求与页面跳转**并行**而非串行。
+
+**加分项**
+
+> - 增量更新算法（diff 下载，节省流量）
+> - 离线包的**拦截机制**（Native 拦截 URL 请求映射到本地文件）
+> - 秒开率的统计口径（LCP or 自定义首屏标记）
+
+
+
+
+
+
+
+
 
 # 移动端适配怎么解决
 

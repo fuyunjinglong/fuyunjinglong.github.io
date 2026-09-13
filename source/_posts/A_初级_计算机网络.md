@@ -353,8 +353,17 @@ HTTP/3 进行了颠覆性重构，底层放弃了 TCP，转而使用基于 UDP �
 
 分为两大阶段：
 
-- 网络阶段：浏览器解析 URL → DNS 域名解析 → 建立 TCP 连接（HTTPS 时进行 TLS 握手）→ 发送 HTTP 请求 → 服务器处理并返回响应；
-- 渲染阶段：浏览器解析 HTML 构建 DOM → 解析 CSS 构建 CSSOM → 合并生成渲染树 → 布局（Layout，计算位置与尺寸）→ 绘制（Paint）→ 合成（Composite），最终呈现到屏幕。过程中 JS 的执行会阻塞 DOM 解析，CSS 的解析会阻塞首次渲染。
+- 网络阶段
+
+  > DNS → TCP → TLS → HTTP。
+  >
+  > 浏览器解析 URL → DNS 域名解析 → 建立 TCP 连接（HTTPS 时进行 TLS 握手）→ 发送 HTTP 请求 → 服务器处理并返回响应；
+
+- 渲染阶段
+
+  > 解析 HTML 构建 DOM → CSSOM → 渲染树 → Layout → Paint → Composite。
+  >
+  > 浏览器解析 HTML 构建 DOM → 解析 CSS 构建 CSSOM → 合并生成渲染树 → 布局（Layout，计算位置与尺寸）→ 绘制（Paint）→ 合成（Composite），最终呈现到屏幕。过程中 JS 的执行会阻塞 DOM 解析，CSS 的解析会阻塞首次渲染。
 
 > **服务端处理（关键）**：请求首先到达 **Nginx 反向代理**。Nginx 负责静态资源直接返回、负载均衡、SSL 卸载等；动态请求则转发给后端应用服务器（如 Node.js/Java）处理业务逻辑，完成后返回给 Nginx，由 Nginx 统一进行压缩、加响应头后回传。
 
