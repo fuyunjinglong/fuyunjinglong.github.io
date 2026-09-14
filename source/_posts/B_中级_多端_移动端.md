@@ -6,13 +6,34 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
+# 大纲
+
+**参考**
+
+移动端H5主要以 vue3+vant 为主
+
+> - [3 天吃透 Vue3+Vite+Vant 移动开发的新特性-video](https://www.bilibili.com/video/BV1TU4y177UG?vd_source=bd4c7d99d71adf64d6e88c65370e0247&spm_id_from=333.788.videopod.episodes)
+> - [vue3.2+vite+vant 企业实战项目 仿马蜂窝 旅游 H5-video](https://www.bilibili.com/video/BV1LV4y1z7zY?vd_source=bd4c7d99d71adf64d6e88c65370e0247&spm_id_from=333.788.videopod.episodes)
+> - Vue3+Vite+Vant-UI 开发双端招聘 APP-video
+> - 基于 Vue3.2+TypeScript 《医疗问诊》项目课程-video
+
+跨端 APP：Flutter、React Native、UniApp
+
+> - Flutter 从入门到进阶 实战携程网 App-video-mk
+> - Dart Flutter 入门实战基础视频教程-video
+> - SpringBoot+Uniapp 实战开发全新仿抖音短视频 App-video-mk
+> - React Native 从入门到实战 打造高质量上线 App-video-mk
+> - React Native+TypeScript 仿喜马拉雅开发 App-video-mk
+
+
+
 # 初级
 
 ## 移动端适配
 
 **一、定义**
 
-> **让同一套页面，在不同尺寸、不同 DPR（设备像素比）的手机上，呈现比例一致的布局和视觉。
+> 让同一套页面，在不同尺寸、不同 DPR（设备像素比）的手机上，呈现比例一致的布局和视觉。
 >
 > 适配要解决两个问题：**布局等比缩放 + 高清细节还原**。
 

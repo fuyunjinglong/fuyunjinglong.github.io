@@ -6,9 +6,13 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
+# 大纲
+
 **参考**
 
 > - [Electron+TS+Vue3](https://www.bilibili.com/video/BV13BopYvEHc/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+> - [禹神：一小时快速上手 Electron](https://www.bilibili.com/video/BV1sE421N7M5/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+> - [Electron 入门到精通](https://www.bilibili.com/video/BV1xd4y1J7dB/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 
 # 初级
 

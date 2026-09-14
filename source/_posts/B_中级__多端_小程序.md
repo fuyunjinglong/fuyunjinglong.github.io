@@ -6,6 +6,23 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
+
+
+# 大纲
+
+**参考**
+
+WXML 原生、UniApp、taro 支持 vue
+
+> - Taro3+Mysql+Express 开发企业级出行全栈项目 -video
+> - 掌握 Taro 多端框架 快速上手小程序/H5 开发-video
+> - 扫码点餐微信小程序云开发，uniapp，vue，nodejs 带后台管理-video
+> - SpringBoot2.X + Vue + UniAPP，全栈开发医疗小程序-video-mk
+
+微信公众号：WeRoBot、Flask-WeChat、Tornado-WeRoBot、django-weixin
+
+> - 微信公众号开发课程-video
+
 # 初级
 
 ## 小程序的文件类型

@@ -59,3 +59,1803 @@ Monorepo 不是银弹，它用“仓库体积”和“工具复杂度”换取�
 
 # 高级
 
+
+
+
+
+# 大纲
+
+> - [Vue3+TS+monorepo，搭建自己的组件库-珠峰-video](https://www.bilibili.com/video/BV1LTB4YqE43/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+> - [高仿ElementPlus-从0到1打造企业级UI组件库-video](https://www.bilibili.com/video/BV1SnBKYTEx1?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247&p=39)
+> - [【手把手带你手搓组件库】从零实现 ElementPlus (项目搭建)-vdieo](https://www.bilibili.com/video/BV1dw4m1y7m5/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+> - [前端组件库开发-video](https://www.bilibili.com/video/BV1NyfhYnEPu?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+
+# 组件库开发的难点
+
+在之前一般使用`yarn workspace`+`lerna`来实现`monorepo`，如今`pnpm`的[workspace](https://link.juejin.cn/?target=https%3A%2F%2Fpnpm.io%2Fzh%2Fworkspaces)成为主流。
+
+1. 数据通信：Vue 组件之间的数据通信可以使用 props、emit、provide/inject 等方式实现。但是，对于复杂的组件结构和组件之间的数据交互，数据通信可能会比较困难。
+2. 组件复杂度和扩展性：当组件的结构和逻辑变得复杂时，开发和维护组件就变得更加困难。需要通过合理的组件拆分、代码抽象和模块化等方式来降低组件的复杂度，提高可读性和可维护性。如拆分子组件，slot插槽扩展
+3. 生命周期和钩子函数：Vue 组件有很多生命周期函数和钩子函数，需要熟悉它们的执行顺序和作用，以便在组件开发过程中能够正确地处理组件的状态和行为。
+4. 性能优化：当组件的渲染次数过多、数据量过大时，会影响应用的性能。需要通过组件懒加载、异步渲染、缓存数据等方式来优化组件的性能，提高应用的响应速度。
+
+# 大厂基本用pnpm + monorepo 做项目工程化架构
+
+思考
+
+> • 【初中级】你的过往项目中,项目和工程化架构有没有做过,有没有了解过 monorepo 架构方案?
+>
+> • 【中高级】组件库、脚手架、业务系统工程化基于 monorepo 架构设计有什么实践经验,请详细说明
+>
+> • 【专家级】有没有了解过字节、阿里等中大厂前端基于 monorepo 工程架构最佳实践,举例说明
+
+**一句话:通过中心化思想解决依赖复用问题。**
+
+## 传统架构与monorepo架构比较-初级
+
+传统架构
+
+> - 独立项目结构,所有项目都是分开的 github 仓
+>
+> - 技术栈独立
+>
+> - 规范化、自动化相关处理是项目间割裂
+>
+> - 依赖管理,版本很难统一管理
+>
+> - 部署,docker、docker compose,自动化脚本很难形成统一
+
+monorepo架构
+
+> - 混合项目结构,所有相关的工程形成子包进行管理
+>
+> - 技术栈高度统一,(团队基建项目、业务项目、子服务,技术栈)
+>
+> - 规范化、自动化、流程化项目间共享
+>
+> - 依赖管理,版本统一管理
+>
+> - 部署,docker、docker compose,自动化脚本统一部署流程
+
+monoremo的架构方案
+
+> - 包管理,**pnpm workspace**、yarn workspace、lerna
+>
+> - 构建缓存
+>
+> - 增量构建：nx、**turbo**
+
+pnpm优势
+
+> - 链接机制：通过软链接方式引用依赖
+>
+> - 缓存机制,寻址
+>
+> - 原生支持 workspace
+>
+> - 磁盘占用少
+
+## 从传统架构到Monorepo架构的演进-初级
+
+> 阶段1:传统架构基础痛点(主要矛盾)
+>
+> - 代码先集中化,将多个关联项目统一到一个 github 仓库
+>
+> - 工具引入,pnpm workspace
+>
+> - CI/CD 重构
+>
+> 阶段2:具体 monorepo 架构
+>
+> - 公共模块抽离
+> - pnpm、turbo 解决子包与主包关系
+>
+> 阶段3:自动化构建流程优化
+>
+> - 打包方案,**vite**、webpack, rollup、parcel、**tsup**、esbuild、swc、rolldown
+>
+> - 构建流程优化,依赖关系(循环依赖引用)、哪些包需要前置构建
+>
+> - 发布,npm publish（基建包发布基建子包）、docker 镜像(业务包发布业务系统)
+>
+> - 监控和测试
+
+总结
+
+> 主导了工程化架构的重构工作,基于 pnpm workspace 统一化工程组织,统一自动化、流程、规范化相关内容,子包管理更清晰。基于 tsup构建团队基建包、vite 构建业务包,业务架构我主导通过微前端机制来实现,统一化主应用与子应用状态管理细节
+
+## 实际项目中的代码实践-中级
+
+> - 组件库,工具库、图表库,脚手架,基建类形态的基建项目
+> - 业务系统一类的业务项目
+> - 服务端架构
+
+## 大厂中优秀代码实践-高级
+
+如vue3,ant-design,element-plus等
+
+# vite pnpm monorepo-基建库-缺打包
+
+参考
+
+> - [前端组件库开发-video](https://www.bilibili.com/video/BV1NyfhYnEPu?spm_id_from=333.788.player.switch&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+> - [前端组件库开发-文档](https://songyipan.github.io/song-blog/componentDocs/)
+> - [个人组件库地址-github](https://github.com/fuyunjinglong/web-pnpm-monorepo-component)
+
+## 安装pnpm
+
+> npm install pnpm-g #全局安装pnpm
+>
+> pnpm i
+
+## **初始化项目**
+
+新建项目名称web-pnpm-monorepo-component
+
+>    - docs // 文档
+>    - components // 组件
+>    - examples// 样例
+
+## **建立工作区**
+
+根目录下新建pnpm-workspace.yaml,内容是
+
+```
+packages:
+  - "examples"
+  - "packages/*"
+  - "docs"
+```
+
+## **建立UI组件库包**
+
+在 packages 目录里面新建三个文件夹：
+
+- components ：存放组件的包
+- utils：工具包
+- hooks：钩子函数包
+
+分别进入以上三个包中执行`pnpm init`命令初始化，并修改packages.json中name为*"name"*: "@lw-ui/components",以此类推
+
+## **修改组件库调用方**
+
+在根目录下packages.json，新增以下内容，然后执行pnpm i。安装完成后就可以在项目中使用这些包了
+
+```
+"devDependencies": {
+    "@lw-ui/hooks": "workspace:*",
+    "@lw-ui/components": "workspace:*",
+    "@lw-ui/utils": "workspace:*"
+  }
+```
+
+## **构建核心组件目录**
+
+在 components 中创建一个 button，目录为
+
+```
+packages:
+  - components:
+      - button:
+         -src:
+           - style
+           - index.vue
+         - index.js
+```
+
+button/index.vue
+
+```
+<script setup>
+defineOptions({
+  name: "LWButton",
+});
+</script>
+
+<template>
+  <button>
+    <span>
+      <slot>button-lw</slot>
+    </span>
+  </button>
+</template>
+```
+
+## **按需加载并导出组件**
+
+在 utils 下新建 install.js
+
+```
+export const componentsInstall = (components) => {
+  components.install = (app) => {
+    app.component(components.name, components);
+  };
+
+  return components;
+};
+```
+
+在 utils 下新建 index.js
+
+```
+export * from "./install";
+```
+
+这个函数其实就是接受一个组件，给组件添加 install 函数，这个 install 函数接收 app 对象，app 对象会调用 component 函数注册全局组件。
+
+在 button/index.js 中增加如下代码：
+
+```
+import { componentsInstall } from "@lw-ui/utils";
+import Button from "./src/index.vue";
+
+// 提供按需加载的方式
+export const LWButton = componentsInstall(Button);
+// 将组件导出
+export default LWButton;
+```
+
+在 components 文件里面新增一个 index.js ,作为组件库的入口文件
+
+```
+export * from "./button/index";
+```
+
+## 全局注册导出组件
+
+在 packages 下面新建一个文件 components.js
+
+```
+import { LWButton } from "./components/button/index";
+export default [LWButton];
+```
+
+在 packages 下面新建 index.js，代码如下：
+
+```
+// 按需 引入组件
+export * from "./components/index";
+
+import components from "./components";
+
+export const install = (app) => {
+  if (install.installed) return;
+  console.log("install", components);
+  components.forEach((component) => app.use(component));
+};
+
+export default install;
+```
+
+## **初始化演示库(example)**
+
+在根目录下执行`npm create vite examples`，采用vue+js,执行npm i,npm run dev启动项目
+
+在 examples 中的 main.js 中引入，测试一下全局注册
+
+```
+import { createApp } from "vue";
+import "./style.css";
+import App from "./App.vue";
+import LWUI from "../../packages";
+
+const app = createApp(App);
+app.use(LWUI);
+app.mount("#app");
+```
+
+在App.vue代码：
+
+```
+<template>
+  <LWButton></LWButton>
+</template>
+```
+
+## 组件开发阶段二-BEM
+
+**什么是BEM规范**
+
+BEM（Block、Element、Modifier）是 CSS 命名规范。Bem 是块（block）、元素（element）、修饰符（modifier）的简写。其实真是使用起来不只是这三个词，而是还有其他的，比如：块（block）、元素（element）、修饰符（modifier）、状态（state）、主题（theme）、主题元素（theme element）、主题修饰符（theme modifier）、主题状态（theme state）等。这里我来举一个例子。比如有如下卡片结构：
+
+```
+<div class="sb-card-v2 sb-card-v2--theme_dark">
+  <h2 class="sb-card-v2__title">卡片标题</h2>
+  <p class="sb-card-v2__content">卡片内容</p>
+</div>
+
+<div class="sb-card-v2 sb-card-v2--theme_light">
+  <h2 class="sb-card-v2__title">卡片标题</h2>
+  <p class="sb-card-v2__content">卡片内容</p>
+</div>
+```
+
+以上代码中 sb-card-v2 是块，其中 v2 是 blockSuffix，这个 blockSuffix 是为了解决 block 重复的问题，比如有另一个 block 也是 sb-card-v2，那么就会有冲突，所以需要添加后缀。`sb-card-v2__title` 和 `sb-card-v2__content` 是块 `sb-card-v2` 的元素，这里的 title 和 content 是 element。`sb-card-v2--theme_dark` 和 `sb-card-v2--theme_light` 是块 `sb-card-v2` 的修饰符,这里的 dark 和 light 是 modifier，后面的 light 和 dark 就是 modifier 的值。
+
+**创建生成 BEM 命名的工具**
+
+创建 hooks/index.js 用来导出所有的 hooks，然后创建 hooks/useNamespace/useNamespace.js 用来导出 useNamespace useNamespace 函数用来创建 BEM 命名。具体代码如下:
+
+```
+export const defaultNamespace = "LW";
+
+export const useNamespace = (blocks) => {
+  const namespace = defaultNamespace;
+
+  const block = (blockSuffix) => {
+    return _bem(namespace, blocks, blockSuffix, "", "", "");
+  };
+
+  const element = (element) =>
+    element ? _bem(namespace, blocks, "", element, "", "") : "";
+
+  const modifier = (modifier, value) =>
+    modifier ? _bem(namespace, blocks, "", "", modifier, value) : "";
+
+  const is = (activeName, active) =>
+    activeName && active ? `is-${activeName}` : "";
+
+  return {
+    namespace,
+    block,
+    element,
+    modifier,
+    is,
+  };
+};
+
+const _bem = (
+  namespace,
+  block,
+  blockSuffix,
+  element,
+  modifier,
+  modifierValue
+) => {
+  let cls = `${namespace}-${block}`;
+  blockSuffix && (cls += `-${blockSuffix}`);
+  element && (cls += `__${element}`);
+  modifier && (cls += `--${modifier}`);
+  modifierValue && (cls += `_${modifierValue}`);
+
+  return cls;
+};
+```
+
+以上代码看上去很复杂其实一点也不简单（一点也不难），我带大家分解一下。
+
+- `export const defaultNamespace = "x";`: 这段代码其实就是创建了一个默认的组件名前缀，比如 elementUI 组件库的前缀是 el，里面的每一个组件都是 el-xxx 的形式，比如 el-button，el-input，el-card 等等。
+- `_bem`:这个函数就是用来创建 bem 命名的，它接收 6 个参数，第一个参数是组件名前缀，第二个参数是块名，第三个参数是块的后缀，第四个参数是元素名，第五个参数是修饰符名，第六个参数是修饰符的值，这个函数是不暴露的。
+- `useNamespace`: 这个函数就是用来创建 bem 命名的，它接收一个参数，这个参数就是块名，这个函数返回一个对象，对象中有四个方法，分别是 block，element，modifier，is。
+- `block`: 这个函数就是用来创建块的，它接收一个参数，这个参数就是块的后缀，这个函数返回一个 bem 命名。
+- `element`: 这个函数就是用来创建元素的，它接收一个参数，这个参数就是元素的名字，这个函数返回一个 bem 命名。
+- `modifier`: 这个函数就是用来创建修饰符的，它接收两个参数，第一个参数就是修饰符的名字，第二个参数就是修饰符的值，这个函数返回一个 bem 命名。
+- `is`: 这个函数就是用来创建状态的，它接收两个参数，第一个参数就是状态的名字，第二个参数就是状态的值，这个函数返回一个 bem 命名。这个函数后面会用到这里先不做演示。
+
+最后在 hooks/index.js 中导出 useNamespace
+
+```js
+export * from "./useNamespace/useNamespace";
+```
+
+**使用 BEM 规范**
+
+在 button/index.vue 引入hook。代码如下：
+
+```
+<script setup>
+import { computed } from "vue";
+import { useNamespace } from "@lw-ui/hooks";
+defineOptions({
+  name: "LWButton",
+});
+// 调用一下userNamespace
+const ns = useNamespace("button");
+
+console.log(ns.block()); // x-button
+console.log(ns.element("content")); // x-button__content
+console.log(ns.modifier("size", "small")); // x-button--size_small
+console.log(ns.is("disabled", true)); // is-disabled
+const butonClass = computed(() => [ns.block(), ns.modifier("size", "small")]);
+</script>
+
+<template>
+  <button :class="butonClass">
+    <span>
+      <slot>buttonxx</slot>
+    </span>
+  </button>
+</template>
+```
+
+通过以上在`butonClass="[ns.block(),ns.modifier("size", "small")]"` 来使用 BEM 规范,这时候 button 这个按钮就会加上 class，值比如 `LW-button--size_small`。
+
+## 组件开发阶段二-button开发
+
+**创建基础样式**
+
+创建文件，theme/src/index.scss，接着创建 theme/src/LW-button.scss。在 LW-button.scss 中写一下基础样式:
+
+```
+.lw-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  min-width: 80px;
+  padding: 0 16px;
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid #e6e6e6;
+
+  box-sizing: border-box;
+  line-height: 1;
+  color: #4e5159;
+  text-align: center;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: 0.3s;
+
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+
+  //   去掉按钮点击的默认样式和边框线
+  &:focus {
+    outline: none;
+    border: none;
+  }
+  span {
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+  }
+}
+```
+
+在 index.scss,引入
+
+```
+@use "./lw-button.scss";
+```
+
+在 example 中的 main.js引入,注意要先在theme执行pnpm init并修改name的名称
+
+```
+import "@lw-ui/theme/src/index.scss";
+```
+
+**添加按钮类型**
+
+在lw-button.scss引入
+
+```
+.lw-button {
+  // 省略其他样式
+  //   添加不同类型样式
+  &-- {
+    &default {
+      border-color: #e3e5f1;
+
+      &:hover {
+        background-color: #6e96ff;
+        color: white;
+        border-color: #6e96ff;
+      }
+    }
+    &success {
+      background-color: #67c23a;
+      color: white;
+      border-color: #67c23a;
+
+      &:hover {
+        background-color: #a2d380;
+        color: white;
+        border-color: #a2d380;
+      }
+    }
+
+    &danger {
+      background-color: #f56c6c;
+      color: white;
+      border-color: #f56c6c;
+      &:hover {
+        background-color: #f78989;
+        color: white;
+        border-color: #f78989;
+      }
+    }
+
+    &warning {
+      background-color: #e6a23c;
+      color: white;
+      border-color: #e6a23c;
+      &:hover {
+        background-color: #ebb563;
+        color: white;
+        border-color: #ebb563;
+      }
+    }
+
+    &primary {
+      background-color: #409eff;
+      color: white;
+      border-color: #409eff;
+      &:hover {
+        background-color: #66b1ff;
+        color: white;
+        border-color: #66b1ff;
+      }
+    }
+  }
+}
+
+```
+
+在button/index.vue引入
+
+```
+const props = defineProps({
+  type: {
+    type: String,
+    default: "default",
+  },
+});
+
+const butonClass = computed(() => [
+  ns.block(),
+  ns.modifier("size", "small"),
+  ns.modifier(props.type),
+]);
+<button :class="butonClass"></button>
+```
+
+最后
+
+- `ns.block()`：这个就是我们之前在 x-button.scss 中定义的 .x-button 这个类名，就是我们最终要渲染的按钮。
+- `ns.modifier(type)`：这个最终生成的是 .x-button-default 这个类名，就是我们根据不同的 type 来设置不同的样式。如果传递的 type 是 danger，那么最终生成的就是 .x-button-danger 这个类名。
+
+**圆角按钮**
+
+```
+ ns.is('round', round)
+```
+
+```
+.lw-button {
+  // 省略其他样式
+  &.is-round {
+    border-radius: 100px;
+  }
+}
+```
+
+**禁用按钮**
+
+```
+ns.is('disabled', disabled)
+```
+
+```
+.lw-button {
+  // 省略其他样式
+
+  // 添加禁用样式
+  &.is-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    &,
+    &:hover,
+    &:active,
+    &:focus {
+      border-color: #e3e5f1;
+    }
+  }
+}
+```
+
+**尺寸按钮**
+
+```
+ns.modifier('size', size)
+```
+
+```
+.lw-button {
+  // 省略其他代码....
+  &-- {
+    // 省略其他代码....
+    &size {
+      &_ {
+        &small {
+          padding: 0 10px;
+          font-size: 12px;
+          height: 24px;
+          border-radius: 10px;
+        }
+
+        &large {
+          height: 40px;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}
+```
+
+# vite pnpm monorepo基建库-珠峰
+
+参考
+
+> - [vue3+TS 搭建自己的组件库-video](https://www.bilibili.com/video/BV1LTB4YqE43/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
+> - [前端组件库开发-文档](https://juejin.cn/post/7288597387798904866#heading-5)
+> - 个人组件库地址-github
+
+## 搭建monorepo环境
+
+> pnpm init 
+>
+> pnpm install vue typescript -D 
+
+使用 pnpm必须要建立.npmrc文件,`shamefully-hoist = true`，否则安装的模块无法放置到node_modules 目录下
+
+> pnpm tsc --init // 初始化ts配置文件tsconfig.json
+
+```json
+{
+  "compilerOptions": {
+    "module": "ESNext", // 打包模块类型ESNext
+    "declaration": true, // 默认不要声明文件
+    "noImplicitThis": true, // 支持类型不标注可以默认any
+    "removeComments": true, //删除注释
+    "moduleResolution": "node10", // 按照node模块来解析
+    "esModuleInterop": true, // 支持es6,commonjs模块
+    "jsx": "preserve", // jsx 不转
+    "noLib": false, //不处理类库
+    "target": "es6", // 遵循es6版本
+    "sourceMap": true,
+    "lib": [
+      //编译时用的库
+      "ESNext",
+      "DOM"
+    ],
+    "allowSyntheticDefaultImports": true, //允许没有导出的模块中导入
+    "experimentalDecorators": true, // 装饰器语法
+    "forceConsistentCasingInFileNames": true, // 强制区分大小写
+    "resolveJsonModule": true, // 解析json模块
+    "strict": true, //是否启动严格模式
+    "skipLibCheck": true, // 跳过类库检测
+    "exclude": [
+      //排除掉哪些类库
+      "node_modules",
+      "**/__test__",
+      "dist/**"
+    ]
+  }
+}
+```
+
+## **建立工作区**
+
+根目录下新建pnpm-workspace.yaml,内容是
+
+```
+packages:
+  - "examples"
+  - "packages/*"
+  - "docs"
+```
+
+## 修改组件调用方
+
+在根目录下packages.json，新增以下内容，然后执行pnpm i。
+
+>  *"devDependencies"*: {
+>
+>  *"@lw-ui/components"*: "workspace:*",
+>
+>  *"@lw-ui/theme-chalk"*: "workspace:*",
+>
+>  *"@lw-ui/utils"*: "workspace:*"
+>
+>  }
+
+## 初始化演示库(play)
+
+> 根目录执行
+>
+> pnpm create vite play --template vue-ts ，然后pnpm i,pnpm run dev
+
+创建vue文件类型声明（可能最新版vite不再需要声明）
+
+> 根目录下typings\vue-shim.d.ts
+>
+> *// 用于标记识别后缀vue文件*
+>
+> declare *module* "*.vue" {
+>
+> import type { DefineComponent } from "vue";
+>
+> *// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types*
+>
+> *const* component: DefineComponent<{}, {}, *any*>;
+>
+> export default component;
+>
+> }
+
+为了在根目录也能将play演示库跑起来，设置package.json
+
+>  *"dev:play"*: "pnpm -C play dev" // 执行根目录下的play目录中package.json中dev脚本命令
+
+## 组件开发阶段二-BEM（同上）
+
+## 组件开发阶段二-button开发
+
+
+
+# vite pnpm monorepo业务库
+
+**初始化**
+
+> 根目录初始化：pnpm init
+
+> 创建packages目录，目录下执行：npm init vite vue-demo1(创建多个项目vue-demo2，vue-demo3)
+
+> 根目录修改package.json文件，把子目录的依赖复制过来
+
+```
+{
+  "name": "web-vue3-pnpm-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev:vue-demo1": "vite packages/vue-demo1",// 修改启动命令
+    "dev:vue-demo2": "vite packages/vue-demo2",
+    "dev:vue-demo3": "vite packages/vue-demo3"
+  },
+  "dependencies": {
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/tsconfig": "^0.7.0",
+    "typescript": "~5.7.2",
+    "vite": "^6.2.0",
+    "vue-tsc": "^2.2.4"
+  },
+  "license": "ISC"
+}
+```
+
+> 子目录项目修改package.json
+
+```
+{
+  "name": "vue-demo1",
+  "private": true,
+  "version": "1.0.0"
+}
+```
+
+> 创建pnpm-workspace.yaml 文件，用来声明对应的工作区
+
+```
+packages:
+  - "packages/*"
+```
+
+> 启动项目：pnpm run dev:vue-demo1
+
+**安装全局依赖**
+
+>  pnpm i lodash -D -w  // D是开发环境依赖 -w是全局
+
+**安装局部依赖**
+
+> pnpm i element-plus --filter vue-demo1 // 只在项目vue-demo1安装依赖，--filter 或者 -F
+>
+> 也可以在vue-demo1目录下安装：pnpm i unplugin-vue-components unplugin-auto-import -D -w
+
+# 组件-个人实践
+
+## 高质量组件
+
+- 组件何时拆分
+- 拆分出组件文件
+- 用hooks抽离组件逻辑
+
+**组件何时拆分**
+
+> 拆分的组件要保持功能单一。即组件内部代码的代码都只跟这个功能相关；
+>
+> 组件要保持较低的耦合度，不要与组件外部产生过多的交互。如组件内部不要依赖过多的外部变量，父子组件的交互不要搞得太复杂等等。
+>
+> 用组件名准确描述这个组件的功能。就像函数那样，可以让人不用关心组件细节，就大概知道这个组件是干嘛的。如果起名比较困难，考虑下是不是这个组件的功能并不单一。
+
+**拆分出组件文件**
+
+本人更推荐统一放入到component文件夹下。
+
+> 1. 如果只是被页面内的组件复用，就放到页面文件夹下。
+> 2. 如果只是在当前业务场景下的不同页面复用，就放到当前业务模块的文件夹下。
+> 3. 如果可以在不同业务场景间通用，就放到最顶层的公共文件夹，或者考虑做成组件库。
+
+```
+homePage // 存放当前页面的文件夹
+    |-- components // 存放当前页面组件的文件夹
+        |-- componentA // 存放当前页面的组成部分A的文件夹
+            |-- index.(vue|tsx) // 组件A
+            |-- AChild1.(vue|tsx) // 组件a的组成部分1
+            |-- AChild2.(vue|tsx) // 组件a的组成部分2
+            |-- ACommon.(vue|tsx) // 只在componentA内部复用的组件
+        |-- ComponentB.(vue|tsx) // 当前页面的组成部分B
+        |-- Common.(vue|tsx) // 组件A和组件B里复用的组件
+    |-- index.(vue|tsx) // 当前页面
+```
+
+**用hooks抽离组件逻辑**
+
+- 方式三：参考大崔哥的新写法(直接赋值引用)--强烈推荐
+- 方式四：参考大崔哥的新写法(返回值引用)
+
+## 在公司开发组件库(Vue3+vite)
+
+**提供方**
+
+src\components\exportCom\test\Test.vue
+
+```
+<template>
+  <div class="Test">
+    <div>{{ list }}</div>
+  </div>
+</template>
+<script setup>
+import { ref, onMounted } from 'vue';
+const props = defineProps(['comParams']);
+const list = ref([]);
+onMounted(() => {
+  init();
+});
+async function init() {
+  list.value = props.comParams;
+}
+</script>
+
+
+```
+
+src\components\exportCom\index.js
+
+```
+import Test from '@/components/exportCom/test/Test.vue';
+export const comps = {
+  Test,
+};
+
+const compAbility = {
+  ...comps,
+};
+
+window.compAbility = compAbility;
+export default compAbility;
+```
+
+vite.comp.js
+
+```
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import { fileURLToPath, URL } from 'node:url';
+import basicSsl from '@vitejs/plugin-basic-ssl';
+import path from 'path';
+import AutoImport from 'unplugin-auto-import/vite';
+import Components from 'unplugin-vue-components/vite';
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+const resolveFile = function (filePath) {
+  return path.join(__dirname, filePath);
+};
+
+export default defineConfig(({ command, mode, ssrBuild }) => {
+  return {
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+      },
+    },
+    plugins: [
+      basicSsl(),
+      vue(),
+      AutoImport({
+        resolvers: [ElementPlusResolver()],
+      }),
+      Components({
+        resolvers: [ElementPlusResolver()],
+      }),
+    ],
+    build: {
+      sourcemap: true,
+      rollupOptions: {
+        input: resolveFile('./src/components/exportCom/index.js'),
+        external: ['vue', 'vue-router', 'pinia', 'element-plus'],
+        output: {
+          dir: 'dist',
+          name: 'compAbility',
+          entryFileNames: 'compAbility.js',
+          globals: {
+            vue: 'Vue',
+            'vue-router': 'VueRouter',
+            pinia: 'pinia',
+            'element-plus': 'ElementPlus',
+          },
+          format: 'iife',
+        },
+      },
+    },
+  };
+});
+```
+
+package.json
+
+```
+"build": "vite build --config vite.comp.js",
+```
+
+**调用方**
+
+src\hooks\useRemoteAsynCom.ts
+
+```
+import { defineAsyncComponent } from 'vue';
+
+function getMSJsUrl() {
+  return 'xx/compAbility.js';
+}
+
+export const loadJs = (url: string) => {
+  return new Promise((resolve, reject) => {
+    const headerJs = document.createElement('script');
+    headerJs.src = url;
+    document.body.append(headerJs);
+    headerJs.onload = function () {
+      resolve(null);
+    };
+    headerJs.onerror = function () {
+      reject();
+    };
+  });
+};
+
+export const resolveComp = (compPromise, comp, compName) => {
+  // 加载js完成后，异步导出组件，compPromise是组件的jsPromise,comp是组件js定义的全局变量，compName是最终的组件名称
+  return window[compPromise].then(() => {
+    const res = window[comp][compName];
+    res.name = compName;
+    return res;
+  });
+};
+export const useComps = () => {
+  const Test = defineAsyncComponent(() => resolveComp('marketSharePromise', 'compAbility', 'Test'));
+  return { Test };
+};
+
+// 加载js组件
+if (!window.marketSharePromise) {
+  window.marketSharePromise = loadJs(getMSJsUrl());
+}
+```
+
+src\view\home\Home.vue
+
+```
+<template>
+  <div class="home">
+    <div>首页</div>
+    <Test :comParams="comParams"></Test>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, reactive, toRefs, computed, onMounted } from 'vue';
+// import Test from '@/components/exportCom/test/Test.vue';
+import { useComps } from '@/hooks/useRemoteAsynCom.ts';
+
+const { Test } = useComps();
+const a = ref('这是测试');
+const comParams = reactive({ name: 'xxx' });
+</script>
+```
+
+# 前端组件设计原则
+
+> 原文地址：[Front end component design principles](https://engineering.carsguide.com.au/front-end-component-design-principles-55c5963998c9)
+>
+> 文中示例代码：[传送门](https://github.com/sichenguo/blog/tree/master/src/translation/Front%20end%20component%20design%20principles)
+
+1) 层次结构和 UML 类图
+
+2) 扁平化、面向数据的 state/props
+
+3) 更加纯粹的 State 变化
+
+4) 低耦合
+
+5) 辅助代码分离
+
+6) 提炼精华
+
+7) 及时模块化
+
+8) 集中/统一的状态管理
+
+## 前言
+
+我在最近的工作中开始使用 Vue 进行开发，但是我在上一家公司积累了三年以上 React 开发经验。虽然在两种不同的前端框架之间进行切换确实需要学习很多，但是二者之间在很多基础概念、设计思路上是相通的。其中之一就是组件设计，包括组件层次结构设计以及组件各自的职责划分。
+
+组件是大多数现代前端框架的基本概念之一，在 React 和 Vue 以及 Ember 和 Mithril 等框架中均有所体现。组件通常是由一串标记语言组成的集合，通常还包含一些逻辑和样式。它们被创建的目的就是作为可复用的模块去构建我们的应用程序。
+
+类似于传统 OOP 语言中 class 的设计，在设计组件的时候需要考虑到很多方面，以便它们可以很好的复用，组合，分离和低耦合，但是功能可以比较稳定的实现，即使是在超出实际测试用例范围的情况下。这样的设计说起来容易做起来却很难，因为现实中我们往往没有足够的时间按照最优的方式去做。
+
+## 方法
+
+在本文中，我想介绍一些组件相关的设计概念，在进行前端开发时应该考虑这些概念。我认为最好的方法是给每个概念一个简洁精炼的名字，然后逐一解释每个概念是什么以及为什么重要，对于比较抽象概念的会举一些例子来帮助理解。
+
+以下这个列表并不是不全面也不完整，但我注意到的只有 8 件事情值得一提，对于那些已经可以编写基本组件但想要提高他们的技术设计技能的人来说。所以这是列表：
+以下列举的这个列表仅仅是是我注意到的 8 个方面，当然组件设计还有其他一些方面。在此我只是列举出来我认为值得一提的。
+
+对于已经掌握基本的组件设计并且想要提高自身的组件设计能力的开发者，我认为以下 8  项是我认为值得去注意的，当然这并不是组件设计的全部。
+
+1. 层次结构和 UML 类图
+2. 扁平化、面向数据的 state/props
+3. 更加纯粹的 State 变化
+4. 低耦合
+5. 辅助代码分离
+6. 提炼精华
+7. 及时模块化
+8. 集中/统一的状态管理
+
+请注意，代码示例可能有一些小问题或有点人为设计。但是它们并不复杂，只是想通过这些例子来帮助更好的理解概念。
+
+## 层次结构和类图
+
+应用内的组件共同形成树结构， 而在设计过程中将组件树可视化展示可以帮助你全面了解应用程序的布局。一个比较好的展示这些的办法就是组件图。
+
+UML 中有一个在 OOP 类设计中经常使用的类型，称为 UML 类图。类图中显示了类属性、方法、访问修饰符、类与其他类的关系等。虽然 OOP 类设计和前端组件设计差异很大，但是通过图解辅助设计的方法值得参考。对于前端组件，该图表可以显示：
+
+- State
+- Props
+- Methods
+- 与其他组件的关系（ Relationship to other components ）
+
+因此，让我们看一下下面这个基础表组件的组件层次图，该组件的渲染对象是一个数组。该组件的功能包括显示总行数、标题行和一些数据行，以及在单击其单元格标题格时对该列进行排序。在它的 props 中，它将传递列列表（具有属性名称和该属性的人类可读版本），然后传递数据数组。我们可以添加一个可选的'on row click'功能来进行测试。
+
+![img](https://cdn-images-1.medium.com/max/1600/0*BpUkUiLupqoBO3ux)
+
+虽然这样的事情可能看起来有点多，但是它具有许多优点，并且在大型应用程序开发设计中所需要的。这样会带来的一个比较重要的问题是它会需要你在开始 codeing 之前就需要考虑到具体细节的实现，例如每个组件需要什么类型的数据，需要实现哪些方法，所需的状态属性等等。
+
+一旦你对如何构建一个组件（或一组组件）的整体有大概的思路，就会很容易认为当自己真正开始编码实现时，它会如自己所期望的按部就班的完成，但事实上往往会出现一些预料之外的事情， 当然你肯定不希望会因此去重构之前的某些部分，或者忍受初始设想中的缺点并因此扰乱你的代码思路。而这些类图的以下优点可以帮助你有效的规避以上问题，优点如下：
+
+1. 一个易于理解的组件组成和关联视图
+2. 一个易于理解的应用程序 UI 层次结构的概述
+3. 一个结构数据层次及其流动方式的视图
+4. 一个组件功能职责的快照
+5. 便于使用图表软件创建
+
+顺带一提，上图并不是基于某些官方标准，比如 UML 类图，它是我基本上创建的一套表达规则。例如，在 props 、方法的参数和返回值的数据类型定义声明都是基于 Typescript 语法。我还没有找到书写前端组件类图的官方标准，可能是由于前端 Javascript 开发的相对较新且生态系统不够完善所致，但如果有人知道主流标准，请在回复中告诉我！
+
+## 扁平的，面向数据的 state/props
+
+在 state 和 props 频繁被 watch 和 update 的情况下，如果你有使用嵌套数据，那么你的性能可能会受到影响，尤其是在以下场景中，例如一些因为浅对于而触发的重新渲染；在涉及 immutability 的库中，比如 React，你必须创建状态的副本而不是像在 Vue 中那样直接更改它们，并且使用嵌套数据这样做可能会创建笨拙，丑陋的代码。
+
+![img](https://qiniu-image.qtshe.com/20190124carbon.png)
+
+即使使用展开运算符，这种写法也并不够优雅。扁平 props 也可以很好地清除组件正在使用的数据值。如果你传给组件一个对象但是你并不能清楚的知道对象内部的属性值，所以找出**实际需要**的数据值是来自组件具体的属性值则是额外的工作。但如果 props 足够扁平化，那么起码会方便使用和维护。
+
+![img](https://qiniu-image.qtshe.com/20190124carbon-1.png)
+
+state / props 还应该只包含组件渲染所需的数据。You shouldn’t store entire components in the state/props and render straight from there.
+
+（此外，对于数据繁重的应用程序，数据规范化可以带来巨大的好处，除了扁平化之外，你可能还需要考虑一些别的优化方法）。
+
+## 更加纯粹的 State 变化
+
+对 state 的更改通常应该响应某种事件，例如用户单击按钮或 API 的响应。此外它们不应该因为别的 state 的变化而做出响应，因为 state 之间这种关联可能会导致难以理解和维护的组件行为。state 变化应该没有副作用。
+
+如果你滥用`watch`而不是有限考虑以上原则，那么在 Vue 的使用中就可能由此引发的问题。我们来看一个基本的 Vue 示例。我正在研究一个从 API 获取一些数据并将其呈现给表的组件，其中排序，过滤等功能都是后端完成的，因此前端需要做的就是 watch 所有搜索参数，并在其变化时触发 API 调用。其中一个需要 watch 的值是“zone”，这是一个过滤器。当更改时，我们想要使用过滤后的值重新获取服务端数据。watcher 如下：
+
+![img](https://qiniu-image.qtshe.com/20190124carbon-2.png)
+
+你会发现一些奇怪的东西。如果他们超出了结果的第一页，我们重置页码然后结束？这似乎不对,如果它们不在第一页上，我们应该重置分页并触发 API 调用，对吧？为什么我们只在第 1 页上重新获取数据？实际上原因是这样养，让我们来看下完整的 watch：
+
+![img](https://qiniu-image.qtshe.com/20190124carbon-3.png)
+
+当分页改变时，应用首先会通过 pagination 的处理函数重新获取数据。因此，如果我们改变了分页，我们并不需要去关注数据更新这段逻辑。
+
+让我们一下来考虑以下流程：如果当前页面超出了第 1 页并且更改了 zone，而这个变化会触发另一个状态（pagination）发生变化，进而触发 pagination 的观察者重新请求数据。这样并不是预料之中的行为，而且产生的代码也不够直观。
+
+解决方案是改变页码这个行为的事件处理函数（不是观察者，用户更改页面的实际处理函数）应该更改页面值**并**触发 API 调用请求数据。这也将消除对观察者的需求。通过这样的设置，直接从其他地方改变分页状态也不会导致重新获取数据的副作用。
+
+虽然这个例子**非常**简单，但不难看出将更复杂的状态更改关联在一起会产生令人难以理解的代码，这些代码不仅不可扩展并且是调试的噩梦。
+
+## 松耦合
+
+组件的核心思想是它们是可复用的,为此要求它们必须具有功能性和完整性。“耦合”是指实体彼此依赖的术语。松散耦合的实体应该能够独立运行，而不依赖于其他模块。就前端组件而言，耦合的主要部分是组件的功能依赖于其父级及其传递的 props 的多少，以及内部使用的子组件（当然还有引用的部分，如第三方模块或用户脚本）。
+
+紧密耦合的组件往往更不容易被复用，当它们作为特定父组件的子项时，就很难正常工作，当父组件的一个子组件或一系列子组件只能在该父组件才能够正常发挥作用时，就会使得代码写的很冗余。因为父子组件别过度的关联在一起了。
+
+在设计组件时，你应该考虑到更加通用的使用场景，而不仅仅只是为了满足最开始某个特定场景的需求。虽然一般来说组件最初都是出于特定目的进行设计，但没关系，如果在设计它们站在更高的角度去看待，那么很多组件将具有更好的适用性。
+
+让我们看一个简单的 React 示例，你想在写出一个带有一个 logo 的链接列表，通过连接可以访问特定的网站。最开始的设计可能是并没有跟内容合理的进行解耦。下面是最初的版本：
+
+![img](https://qiniu-image.qtshe.com/20190124carbon-4.png)
+
+虽然这这样会满足预期的使用场景，但却很难被复用。如果你想要更改链接地址该怎么办？你必须重新复制一份相同代码，并且手动去替换链接地址。而且， 如果你要去实现一个用户可以更改连接的功能，那么意味着不可能将代码写“死”，也不能期望用户去手动修改代码，那么让我们来看一下复用性更高的组件应该如何设计：
+
+![img](https://qiniu-image.qtshe.com/20190124carbon-5.png)
+
+在这里我们可以看到，虽然它的原始链接和 logo 具有默认值，但我们可以通过 props 传入的值去覆盖掉默认值。让我们来看一下它在实际中的使用：
+
+![img](https://qiniu-image.qtshe.com/20190124carbon-6.png)
+
+并不需要重新编写新的组件！如果我们解决上文中用户可以自定义链接的使用场景，可以考虑动态构建链接数组。此外，虽然在这个具体的例子中没有解决，但我们仍然可以注意到这个组件没有与任何特定的父/子组件建立密切关联。它可以在任何需要的地方呈现。改进后的组件明显比最初版本具有更好的复用性。
+
+如果不是要设计需要服务于特定的一次性场景的组件，那么设计组件的最终目标是让它与父组件松散耦合，呈现更好的复用性，而不是受限于特定的上下文环境。
+
+## 辅助代码分离
+
+这个可能不那么的偏理论，但我仍然认为这很重要。与你的代码库打交道是软件工程的一部分，有时一些基本的组织原则可以使事情变得更加顺畅。在长时间与代码相处的过程中，即使改变一个很小的习惯也可以产生很大的不同。其中一个有效的原则就是将辅助代码分离出来放在特定的地方，这样你在处理组件时就不必考虑这些。以下列举一些方面：
+
+- 配置代码
+- 假数据
+- 大量非技术说明文档
+
+因为在尝试处理组件的核心代码时，你不希望看到与技术无关的一些说明（因为会多滚动几下鼠标滚轮甚至打断思路）。在处理组件时，你希望它们尽可能通用且可重用。查看与组件当前上下文相关的特定信息可能会使得设计出来的组件不易与具体业务解耦。
+
+## 提炼精华
+
+虽然这样做起来可能具有挑战性，但开发组件的一个好方法是使它们包含渲染它们所需的最小 Javascript。一些无关紧要的东西，比如数据获取，数据整理或事件处理逻辑，理想情况下应该将通用的部分移入外部 js 或或者放在共同的祖先中。
+
+单独从组件分的“视图”部分来看，即你看到的内容（html 和 样式）。其中的 Javascript 仅用于帮助渲染视图，*可能*还有一些针对特定组件的逻辑（例如在其他地方使用时）。除此之外的任何事情，例如 API 调用，数值的格式化（例如货币或时间）或跨组件复用的数据，都可以移动外部的 js 文件中。让我们看一下 Vue 中的一个简单示例，使用嵌套列表组件。我们可以先看下下面这个有问题的版本。
+
+这是第一个层级：
+
+![img](https://qiniu-image.qtshe.com/20190124carbon-7.png)
+
+这是嵌套列表组件：
+
+![img](https://qiniu-image.qtshe.com/20190124carbon-8.png)
+
+在这里我们可以看到此列表的两个层级都具有外部依赖关系，最上层导引入外部 js 文件中的函数和 JSON 文件的数据，嵌套组件连接到 Vuex 存储并使用 axios 发送请求。它们还具有仅适用于当前场景的嵌入功能（最上层中源数据处理和嵌套列表的中度 click 时间的特定响应功能）。
+
+虽然这里采用了一些很好的通用设计技术，例如将通用的 数据处理方法移动到外部脚本而不是直接将函数写死，但这样仍然不具备很高的复用性。如果我们是从 API 的响应中获取数据，但是这个数据跟我们期望的数据结构或者类型不同的时候要怎么办？或者我们期望单击嵌套项时有不同的行为？在遇到这些需求的场景下，这个组件无法被别的组件直接引用并根据实际需求改变自身的特性。
+
+让我们看看我们是否可以通过提升数据并将事件处理作为 props 传递来解决这个问题，这样组件就可以简单地呈现数据而不会封装任何其他逻辑。
+
+这是列表的新顶级：
+
+![img](https://qiniu-image.qtshe.com/20190124carbon-9.png)
+
+而新的第二级：
+
+![img](https://qiniu-image.qtshe.com/20190124carbon-10.png)
+
+使用这个新列表，我们可以获得想要的数据，并定义了嵌套列表的 onClick 处理函数，以便在父级中传入任何我们想要的操作，然后将它们作为 props 传递给顶级组件。这样，我们可以将导入和逻辑留给单个根组件，所以不需要为了能够在新的场景下使用去重新再实现一个类似组件。
+
+有关此主题的简短文章可以在[这里](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0)找到。它由 Redux 的作者 Dan Abramov 编写，虽然是用 React 举例说明。但是组件设计的思想是通用的。
+
+## 及时模块化
+
+我们在实际进行组件抽离工作的时候，需要考虑到不要过度的组件化，诚然将大块代码变成松散耦合且可用的部分是很好的实践，但是并不是所有的页面结构（HTML 部分）都需要被抽离成组件，也不是所有的逻辑部分都需要被抽出到组件外部。
+
+在决定是否将代码分开时，无论是 Javascript 逻辑还是抽离为新的组件，都需要考虑以下几点。同样，这个列表并不完整，只是为了让你了解需要考虑的各种事项。（记住，仅仅因为它不满足一个条件并不意味着它不会满足其他条件，所以在做出决定之前要考虑所有条件）：
+
+1. **是否有足够的页面结构/逻辑来保证它？**
+   如果它只是几行代码，那么最终可能会创建更多的代码来分隔它，而不仅仅是将代码放入其中。
+2. **代码重复（或可能重复）？**
+   如果某些东西只使用一次，并且服务于一个不太可能在其他地方使用的特定用例，那么将它嵌入其中可能会更好。如果需要，你可以随时将其分开（但不要在需要做这些工作的时候将此作为偷懒的借口）。
+3. **它会减少需要书写的模板吗？**
+   例如，假设你想要一个带有特定样式的 div 属性结构和一些静态内容/功能的组件，其中一些可变内容嵌套在内部。通过创建可重用的包装器（与 React 的 HOC 或 Vue 的 slot 一样），你可以在创建这些组件的多个实例时减少模板代码，因为你不需要重新再写外部的包装代码。
+4. **性能会收到影响吗？**
+   更改 state/props 会导致重新渲染，当发生这种情况时，你需要的是 只是重新去渲染经过 diff 之后得到的相关元素节点。在较大的、关联很紧密的组件中，你可能会发现状态更改会导致在不需要它的许多地方重新呈现，这时应用的性能就可能会开始受到影响。
+5. **你是否会在测试代码的所有部分时遇到问题？**
+   我们总是希望能够进行充分的测试，比如对于一个组件，我们会期望它的正常工作不依赖特定的用例（上下文），并且所有 Javascript 逻辑都按预期工作。当元素具有某个特定假设的上下文或者分别将一大堆逻辑嵌入到单个函数中时，这样将会很难满足我们的期望。如果测试的组件是具有比较大模板和样式的单个巨型组件，那么组件的渲染测试也会很难进行。
+6. **你是否有一个明确的理由？**
+   在分割代码时，你应该考虑它究竟实现了什么。这是否允许更松散的耦合？我是否打破了一个逻辑上有意义的独立实体？这个代码是否真的可能在其他地方被重复使用？如果你不能清楚地回答这个问题，那最好先不要进行组件抽离。因为这样可能导致一些问题（比如拆解掉原本某些潜在的耦合关系）。
+7. **这些好处是否超过了成本？**
+   分离代码不可避免地需要时间和精力，其数量根据具体情况而变化，并且在最终做出此决定时会有许多因素（例如此列表中列举出来的一些）。一般来说，进行一些对抽象的成本和收益研究可以帮助更快更准确去做出是否需要组件化的决策。最后，我提到了这一点，因为如果我们过分关注优势，就很容易忘记达成目标所需要做的努力，所以在做出决定以前需要权衡这两个方面。
+
+## 集中/统一的状态管理
+
+许多大型应用程序使用 Redux 或 Vuex 等状态管理工具（或者具有类似 React 中的 Context API 状态共享设置）。这意味着他们从 store 获得 props 而不是通过父级传递。在考虑组件的可重用性时，你不仅要考虑直接的父级中传递而来的 props，还要考虑 从 store 中获取到的 props。如果你在另一个项目中使用该组件，则需要在 store 中使用这些值。或许其他项目根本不使用集中存储工具，你必须将其转换为从父级中进行 props 传递 的形式。
+
+由于将组件挂接到 store（或上下文）很容易并且无论组件的层次结构位置如何都可以完成，因此很容易在 store 和 web 应用的组件之间快速创建大量紧密耦合（不关心组件所处的层级）。通常将组件与 store 进行关联只需简单几行代码。但是请注意一点，虽然这种连接（耦合）更方便，但它的含义并没有什么不同，你也需要考虑尽量符合如同在使用父级传递方式时的要点。
+
+## 最后的想法
+
+最后，我想简要提醒以上这些组件设计的原则，或者你之前阅读过一些最佳实践在实际中的应用。虽然你应该尽力维护良好的设计，不要为了包装 JIRA ticket 或取消一个上拉请求而有损代码完整性，同时总是把理论置于现实世界结果之上的人也往往会让他们的工作受到影响。大型软件项目有许多活动部分，软件工程的许多方面与编码没有特别的关系，但仍然是不可或缺的，例如遵守最后期限和处理非技术期望。
+
+虽然充分的准备很重要，应该成为任何专业软件设计的一部分，但在现实世界中，切实的结果才是最为重要的。当你被雇用来实际创造一些东西时，如果在最后期限到来之前，你有的只是一个如何构建完美产品的惊人**计划**，但却没有实际的成果，你的雇主可能不会太高兴吧？此外，软件工程中的东西很少完全按计划进行，因此过度具体的计划往往会在时间使用方面得到适得其反的效果。
+
+此外，组件规划和设计的概念也适用于组件重构。虽然用了 50 年的时间来计划一切令人难以忍受的细节，然后从一开始就完美地编写它就会很好，回到现实世界，当你的关键时刻到来时你可能会发现自己设计组件并以不太理想的方式编写代码。然而，一旦压力得到缓解并且你有时间，那么返回并重构早期没有理想构建的代码总是一个好主意，这样它就可以作为向前发展的坚实基础。
+
+在一天结束时，虽然你的直接责任可能是“编写代码”，但你不应忽视你的最终目标，即建立一些东西。创建产品。为了产生一些你可以引以为豪的东西并帮助别人，即使它在技术上并不完美，永远记得找到一个平衡点。不幸的是，在一周内每天 8 小时盯着眼前的代码会使得眼界和角度变得更为“狭窄”，这个时候你需要的你是退后一步，确保你不要为了一颗树而失去整个森林。
+
+# 组件封装原则
+
+## Vue的组件系统
+
+Vue组件的API主要包含三部分：prop、event、slot
+
+- [props](https://link.juejin.cn?target=https%3A%2F%2Fcn.vuejs.org%2Fv2%2Fguide%2Fcomponents-props.html) 表示组件接收的参数，最好用对象的写法，这样可以针对每个属性设置类型、默认值或自定义校验属性的值，此外还可以通过type、validator等方式对输入进行验证
+- [slot](https://link.juejin.cn?target=https%3A%2F%2Fcn.vuejs.org%2Fv2%2Fguide%2Fcomponents-slots.html)可以给组件动态插入一些内容或组件，是实现高阶组件的重要途径；当需要多个插槽时，可以使用具名slot
+- [event](https://link.juejin.cn?target=https%3A%2F%2Fcn.vuejs.org%2Fv2%2Fguide%2Fcomponents.html%23%E7%9B%91%E5%90%AC%E5%AD%90%E7%BB%84%E4%BB%B6%E4%BA%8B%E4%BB%B6)是子组件向父组件传递消息的重要途径
+
+**单向数据流**
+
+单向数据流是Vue组件一个非常明显的特征，不应该在子组件中直接修改props的值
+
+- 如果传递的prop仅仅用作展示，不涉及修改，则在模板中直接使用即可
+- 如果需要对prop的值进行转化然后展示，则应该使用computed计算属性
+- 如果prop的值用作初始化，应该定义一个子组件的data属性并将prop作为其初始值
+
+## 基本原则
+
+1、单一原则：负责单一的页面渲染
+
+2、多重职责：负责多重职责，获取数据，复用逻辑，页面渲染等
+
+3、明确接受参数：必选，非必选，参数尽量设置以_开头，避免变量重复
+
+4、可扩展：需求变动能够及时调整，不影响之前代码
+
+5、代码逻辑清晰
+
+6、封装的组件必须具有高性能，低耦合的特性
+
+7、组件具有单一职责：封装业务组件或者基础组件，如果不能给这个组件起一个有意义的名字，证明这个组件承担的职责可能不够单一，需要继续抽组件，直到它可以是一个独立的组件即可。
+
+## 维护性扩展性
+
+1：活用组件继承
+2：活用slot
+3：使用props灵活表现界面元素
+4：父子拆分
+
+## 协作性
+
+1：使用computed对props进行二次封装
+2：css使用BEM命名
+3：事件以handle开头
+4：私有方法以_开头著名
+5：对外暴露类似html空间的原生属性来贴近原生行为
+6：常量使用const声明
+
+# 组件封装的注意点
+
+## 制定规范
+
+规范的制定应该考虑css命名的统一，比如类库mint-ui样式前缀统一为mint-，iview的样式前缀统一为ivu-{componentname}。这样用户在解决样式覆盖等问题的时候，能够一目了然的知道是哪里出了问题。
+
+另一个需要考虑的是组件对外暴露的方法名或者属性名的统一以及方法名传参顺序的一致性等，在方法和属性的命名上应该考虑兼容性，避免有歧义或者与原生属性冲突。比如有确定和取消按钮的组件，一些定义暴露的方法名为oncancel(instance,cb),onconfirm(instance,cb)
+
+另外开发者在组件开发中不要炫技，不要过分设计，不要给用户预留彩蛋‘惊喜’，如果团队想给库增加feature，请给用户选择的权利，否则开源项目的信任度会大打折扣，参考antd企业级UI框架的圣诞节事件，HoHoHo~
+
+回顾：今早一到公司，就发现群里有人说 antd 组件的样式变了，所有的`Button`组件都被加上了雪花，接着就看到 GitHub 上的 [issue](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fant-design%2Fant-design%2Fissues%2F13098)，几乎所有前端相关的群都在讨论这件事。
+
+## 高内聚、低耦合及集中的数据管理
+
+高内聚低耦合是判断设计好坏的标准，很多开发人员在组件封装过程中，设计的组件能够满足使用，但是组件的独立性不高，组件和组件之间的耦合性又不合理，当组件的使用场景变化时又得需要对组件进行改造。开发者在开发组件中应避免组件间相互依赖、共用状态等导致的逻辑理不清，糅合在一起形成一堆乱麻的情形。
+
+举个栗子：
+
+```
+<!--公共蒙层-->
+<r-popup v-model="visible" position="bottom" zIndex="900">
+    <div class="r-birth-age_wrapper">
+    <!--出生日期选择，操作区(取消、确认、tab切换)在组件内部封装，弹出动效单独处理-->
+      <birthPicker
+        :attrs="birthAttrsData"
+        v-show="tabIndex == 0"
+        @tabClick="tabClick"
+        @onconfirm="birthConfirm"
+        @change="birthChange"
+        @cancel="cancel('birth')"
+      ></birthPicker>
+      <!--年龄选择，操作区(取消、确认、tab切换)在组件内部封装，弹出动效单独处理-->
+      <agePicker
+        :attrs="ageAttrsData"
+        v-show="tabIndex == 1"
+        @tabClick="tabClick"
+        @confirm="ageConfirm"
+        @cancel="cancel('age')"
+        @change="ageChange"
+      ></agePicker>
+    </div>
+  </r-popup>
+  
+  tabClick (index) {
+      this.initbirthData = {
+        value: this.birthAttrsData.value,
+        text: this.birthAttrsData.text
+      }
+      this.initAgeData = {
+        value: this.ageAttrsData.value,
+        text: this.ageAttrsData.text
+      }
+      if (index === 0) {
+        if (this.birthObj) {
+          this.birthAttrsData.value = this.birthObj.value
+          this.birthAttrsData.text = this.birthObj.text
+        }
+      } else {
+        if (this.ageObj) {
+          this.ageAttrsData.value = this.ageObj.value
+          this.ageAttrsData.text = this.ageObj.text
+        }
+      }
+      setTimeout(() => {
+        this.tabIndex = index
+      }, 0)
+    },
+cancel (type) {
+      //重置列表选择数据为组件初始化数据
+      if (this.tabIndex != this.initTabIndex) {
+        if (type == 'birth' && this.tabIndex == 0 && this.initAgeData) {
+          this.tabIndex = 1
+          this.ageAttrsData.value = this.initAgeData.value
+          this.ageAttrsData.text = this.initAgeData.text
+        } else if (type == 'age' && this.tabIndex == 1 && this.initbirthData) {
+          this.tabIndex = 0
+          this.birthAttrsData.value = this.initbirthData.value
+          this.birthAttrsData.text = this.initbirthData.text
+        }
+      }
+     
+        this.$emit('cancel')
+          },
+    birthChange (year, month, day) {
+    //根据选择的出生日期，计算用户年龄，修改年龄数据
+    ......
+    this.ageObj = {
+        value: `XXXX-01-01`,
+        text: `Y周岁`
+      }
+    },
+    ageChange (obj) {
+        //根据选择的年龄计算，修改出生日期数据
+      this.birthObj = {
+        value: obj.value,
+        text: obj.value
+      }
+    },
+    birthConfirm (obj, val, el) {
+        //浮层消失等操作后
+        ......
+        this.$emit('confirm', arguments[0].value, arguments[0].value)
+    },
+    ageConfirm () { 
+    //浮层消失等操作后
+    ......
+        this.$emit('confirm', arguments[2].text, arguments[2].value)
+    }
+
+```
+
+从dom结构和事件逻辑上看，两个子类型组件内部完成了各自逻辑封装，每个组件有自己的操作区和选择区，组件的初始化数据和暴露的事件也基本保持了一致。但是细看，会发现很多问题：
+
+1）数据管理不集中：组件的数据可以分为初始化数据（未操作过的初始化数据或用户上次点击确认时暴露出的数据）、出生日期和年龄tab切换或滚动选择时的临时数据（只要不点击确认按钮，这份数据就一直保存用户当前操作值）、暴露出的数据（点击确认按钮后的数据露出）。原设计中数据是分开管理的，数据的状态分散在多个事件、多个变量中，当tab点击后，birthObj、ageOb及birthAttrsData、ageAttrsData相互作用，相互影响，如果其中一个数据计算出错，那么出生日期和年龄都存在不一致的可能性。
+
+2）事件管理的不集中：组件的操作区放在了每个子类型组件中，子类型组件再通过事件往父组件进行事件传递，父组件中对子类型触发的事件处理函数是独立处理单个变量的，如果需要排查问题，那么需要在组件事件中层层排查，耗时耗力。
+
+3）dom结构过于松散：组件的蒙层及动效分别放到了每个子类型组件中，操作区结构也很分散，dom的深度及复杂度就增加了。
+
+改进后的代码设计：
+
+dom结构： 蒙层和内容区合并、操作区整合、子类型组件事件统一、事件传参保持一致
+
+改造后：
+
+```
+<div v-if="visible" class="r-birth-age-wrap">
+    <div class="r-birth-age-cliper" ref="cliper" @touchmove.stop.prevent></div>
+    <div class="r-birth-age-content" ref="content">
+      <div class="r-birth-age-head">
+        <div class="r-birth-age-head-cancel" @click="doCancel">取消</div>
+        <ul class="r-birth-age-head-button">
+          <li :class="{ active: tabIndex == 0 }" @click="tabClick(0)">出生日期</li>
+          <li :class="{ active: tabIndex == 1 }" @click="tabClick(1)">年龄</li>
+        </ul>
+        <div class="r-birth-age-head-confirm" @click="doConfirm">确认</div>
+      </div>
+      <birthPicker
+        v-if="tabIndex == 0"
+        :attrs="birthAttrs"
+        @input="doChange(...arguments, 0)"
+      ></birthPicker>
+
+      <agePicker
+        class="r-birth-age-body"
+        ref="agepicker"
+        :slots="ageSlots"
+        v-if="tabIndex == 1"
+        @input="doChange(...arguments, 1)"
+      ></agePicker>
+    </div>
+  </div>
+
+tabClick(index) {
+      //点击出生日期，把年龄的值带过来；点击年龄时，把出生日期对应的值带过来
+      if (index == 0) {
+        this.setBirthDate(this.valueMaps.birthValue)
+      } else {
+        this.setAgeSlots(this.valueMaps.ageValue)
+      }
+      this.$nextTick(() => {
+        this.tabIndex = index
+      })
+    },
+    doChange(param, tabIdx) {
+      //生日
+      if (tabIdx == 0) {
+        //传参param为出生日期,如'2019-12-29'，进行年龄计算后，保存临时值
+        ......
+        this.valueMaps = {
+          ageText,
+          ageValue,
+          birthText,
+          birthValue
+        }
+      } else {
+        //传参param为年龄值，如{text: '7周岁',value: '2013-01-01'}，取value做出生日期，保存临时值
+        ......
+        this.valueMaps = {
+          ageText,
+          ageValue,
+          birthText，
+          birthValue
+        }
+      }
+    },
+    doConfirm() {
+      this.addCloseAnimation()
+      ......
+      this.visible = false
+      this.$emit('confirm',Object.assign(this.valueMaps, {
+              tabIndex: this.tabIndex
+          })
+      )
+    },
+    doCancel() {
+      this.addCloseAnimation()
+        this.visible = false
+        this.$emit('cancel')
+    }
+
+```
+
+## 辅助代码分离
+
+组件库的组件经过合理粒度划分后，每个组件都包含代码（结构+样式+逻辑控制）、文档、例子、单元测试等内容
+
+### **单元测试**
+
+不管是常用的karma+mocha+chai进行的vue单元测试还是Jest+enzyme配合的react单元测试，其单元测试均须覆盖初始化组件、初始化组件的属性、访问组件的数据、调用组件的方法、组件的事件触发、组件内元素的查找等过程。以Vue单元测试为例，其核心是通过@vue/test-utils提供的方法，将组件进行实例化，对渲染后的html输出进行上述验证，以下一段代码示例Vue组件单元测试的各个过程。
+
+```
+import { mount } from '@vue/test-utils'
+
+//组件：初始计数count为0，button点击后计数count+1的计数器
+import Counter from './counter'   
+
+describe('Counter', () => {
+  // 组件初始化，可以传属性值propsData
+  const wrapper = mount(Counter)
+
+  // 组件渲染结果检验
+  it('has a button', () => {
+    expect(wrapper.contains('button')).toBe(true)
+  })
+  
+  //模拟用户交互
+  it('button click should increment the count', () => {
+      //访问组件的数据
+      expect(wrapper.vm.count).toBe(0)
+      //组件内元素查找
+      const button = wrapper.find('button')
+      //组件的事件触发
+      button.trigger('click')
+      expect(wrapper.vm.count).toBe(1)
+    })
+})
+```
+
+### **文档的产出**
+
+在组件库的开发过程中，开发者经常面对两个问题：
+
+1）实例化组件以便于调试
+
+2）为组件生成文档便于使用者了解组件的使用，文档内容包括了组件的引入、组件使用场景demo及源码、组件的[props、events、slots、methods]说明等。
+
+### 打包发布及版本升级
+
+组件库的发布过程比较简单，配置好package.json文件，执行npm publish即可。这里需要注意的是版本管理。
+
+建议给发布脚本传版本参数，通过脚本修改package.json里version字段；如修改一些issues后进行的小的发版，次版本号或修正版本号需要改变，建议通过发布脚本先获取npm仓库中最新的版本号后，根据版本号递增规则，修改package.json里的version字段后发布。
+
+## 理解 value 与 defaultValue
+
+defaultValue 属性用于设置组件初始值，之后组件内部触发的值的改变，不会受到这个属性的影响，当父级组件触发 render 后，组件的值应当重新被赋予 defaultValue。
+
+value 是受控属性，也用来设置值，但除了可以设置初始值（优先级比 defaultValue 高）之外，还应满足只要设置了 value，组件内部就无法修改状态的要求，这个组件的状态只能由父级授予并控制，所以叫受控属性。
+
+value 与 defaultValue 不应该同时存在，最好做一下检查。
+
+## render 函数中最小化代码逻辑
+
+React 的宗旨是希望通过修改状态来修改渲染内容，尽量不要在 render 函数中编写过多的业务逻辑和判断语句，最好将能抽离成状态的放在 `state` 中，在 `componentWillReceiveProps` 中改变它
+
+## [通用前端组件](https://juejin.cn/post/6844903847874265101#heading-4)
+
+# 2.组件库通用设计方案
+
+## 分散维护 VS 集中维护
+
+问题:组件库的代码放在一起，还是分散在各个仓库？
+
+Antd 、Material-UI、 React-UI 采用集中式管理等等。
+
+**集中管理**
+
+优点：方便组件统一管理，开发时不需要在多个仓库之间切换，而且预览效果只需运行跟项目，而不是为每个组件开启一个端口进行预览。
+
+缺点：
+
+- 引用默认是载入全部，虽然可以通过配置方式避免，（Antd 还提供了 webpack 插件做这个事情），但安装时必须全量。
+- 无法对每个组件做更细粒度的版本控制。
+- 协作开发困难，每个人都要搭建一套全环境，提 pr 也具有不少难度
+
+**分散管理**
+
+优点：对比集中管理的缺点。
+
+缺点：
+
+无法在同一个项目中观察全局，修改组件后引发的连带风险无法观察，组件之间引用需要发布或者 mock，不直观，甚至组件之间的版本关联、依赖分析都没法有效进行管理。
+
+Fit 组件库在设计时，**分散部署+集中维护**。
+
+- 建立根项目 Root，用来做整体容器，顺便还可以当对外网站
+- 建立 Group，并在其中建立多个组件仓库
+- 开发时只要用到项目 Root，根据依赖文件编写脚本自动拉取每个仓库中的内容
+- 主要负责人拉取全部子项目仓库，子组件维护者只需要下载对应组件
+- 发布时独立发布每个组件
+- 管理时，统一管理所有组件
+
+## package 版本统一
+
+组件的依赖版本号需要统一，比如 fit-input ,fit-checkbox,fit-auto-complete 都依赖了 lodash，但因为先后开发时隔久远，安装时分别依赖了 2.x 3.x 4.x，当别人一起使用你最新版的时候，就会无辜的额外增加了两个 lodash 文件大小。
+
+React 的版本都不可靠，之前就遇到过一半组件留在 0.14.x ，一半新组件装了 15.x 的情况，直接导致了线上编译后项目出错，因为多个 React 组件不能同时兼容。
+
+因为项目开发时组件在一起，使统一版本号成为可能。我们将所有依赖到的组件都安装在 Root 项目中，每个组件的 package.json 由脚本自动生成，这个脚本需要静态扫描每个组件的 Import 或 require 语法，分析到依赖的模块后，使用根目录的版本号，填写在组件的 package.json 中，核心代码如下：
+
+![image-20220424070908759](/img/image-20220424070908759.png)
+
+先收集每个组件中的依赖， 如果在根目录的 package.json 中找到了，就使用根目录的版本号。
+
+完整代码仓库：https://github.com/fex-team/fit/blob/master/scripts/module-manage/utils/upgrade-dependencies.js
+
+## 依赖联动
+
+依赖联动是指，fit-button 更新了代码，如果 fit-table 依赖了 fit-button，那么其也要发布一个版本，更新 fit-button 依赖的版本号。
+
+除了依赖第三方模块，组件之间可能也有依赖，如果将模块分散维护，想更新一下依赖模块都需要发布+下载，非常消耗时间，而且依赖联动根本没法做。集中维护使用 webpack 的 alias 方案，在 typescript 找不到引用，总之不想找麻烦就不能写 hack 的代码。
+
+回到 Fit 组件库结构，因为所有组件都被下载到了 Root 仓库下，因此组件之间的引用也自然而然的使用了相对路径，这样组件更新麻烦的问题迎刃而解，唯一需要注意的是，发布后，将所有引入非本组件目录的引用，替换成为 npm 名称，例如：
+
+```
+// 源码的内容
+import Button from '../../../button'
+// 发布时，通过编译脚本替换为
+import Button from 'fit-button'
+```
+
+依赖联动，需要在发布时，扫描所有组件，找出所有有更新的组件，并生成一项依赖配置，最后将所有更新、或者被依赖的组件统一升级版本号加入发布队列。
+
+依赖联动主要考虑到，主模块的连带升级，如果由于依赖模块小版本改动造成，那么依赖模块升级小版本其实为了 fix bug。如果业务模块升级了这个主模块，就要强制升级依赖模块到最新版解决那个 bug，如果以 ^ 打头就不强制了，不过这只是一种希望修复bug的方案，对灵活性有一定影响。
+
+对与B的不兼容升级，对A来说发一个patch就可以，因为A对B兼容了，B不直接暴露给用户，就算用户安装了B模块，不需要升级版本，可以两个版本B模块共存。
+
+# 3.组件库常用方式
+
+## 独立化组件+私有 npm 仓库
+
+> 项目外部组件化,企业内部私有npm仓库+本地跨项目包引用
+
+优
+
+- 私有包托管在内部服务器或者单独的服务器上
+- 对于下载，发布，有对应的权限管理
+
+劣（npm link能适当缓减本地联调压力）
+
+- 版本号过多，版本号传递过程中的繁琐
+- 组件库与项目间调试困难
+- 需要规范的组件化开发与npm包管理学习成本
+
+## monorepo
+
+> 在一个项目仓库 (repo) 中管理多个模块/包 (package)，不同于常见的每个模块建一个 repo
+
+- 区分子项目依赖和公有依赖
+- 体积大，重复依赖 ，考验团队
+
+## github/@dependencies
+
+将组件代码托管在git上，利用git搭建内部私有库。
+
+同方案1，便易搭建但版本管理较差
+
+参考：
+
+[组件设计方案]: https://segmentfault.com/a/1190000022000712
+
+# 4.组件库管理方案
+
+- npm公共管理方式
+- 私有仓库管理：Npm 私库、Git Subtree
+- Lerna进阶工具
+
+**npm私仓**
+
+优点：
+
+1. 和日常npm install操作相同，简单易用
+
+2. 一次架设成本，后续直接使用即可，人员更换及人员水平变动没有影响
+
+3. 组件修改发布后，所有项目都能使用，并且可以指定版本
+
+缺点
+
+1. 日常开发不便，需要将组件更新发布任何项目更新组件版本后才能看到效果
+
+**Git Subtree**
+
+优点
+
+1. 跟git的多人协作同理，关联后一个项目更新所有项目都可以收到推送
+
+2. 无需更改现有工程目录
+
+3. 组件更新所见即所得，调试效果拉满
+
+ 缺点
+
+1. 多人协作，多项目关联，随意性较高，可能改本项目无意间影响了所有项目，因此使用必须给所有成员做培训说明
+2. 需要一定git相关知识，并且命令较长相对复杂
+
+**Lerna进阶工具**
+
+作为组件库使用方，我希望能在在历史项目里按需去引入某一个或几个组件，然后，也希望在新项目能够以合包的形式引入（效率考量）。另外，我也希望在未来一些迭代研发的项目中，如果没有集中的研发投入而需要去独立维护部分的组件时，我可以仅升级其中一个组件，而不用升级合包导致所有东西都升级了
+
+所以我们采用的分包的开发模式（Monorepo），分包的解决方案用的是 Lerna 这一个比较成熟的第三方解决方案。
+
+按照这个思路，每一个组件都是一个子包，每个子包有自己的独立版本，然后根据一定的逻辑把部分子包合起来，合并成一个 Bundle（合包），比如说 main，合包也有自己的独立版本。
+
+# 5.组件库维护经验
+
+最早、最彻底的把后端模块思维引入到前端，所以 React 组件生态迅速壮大。
+
+## 分散部署 VS 集中维护
+
+到底把组件库的代码放在一起，还是分散在各个仓库？
+
+调查发现 Antd 是将所有组件都写入一个项目中，这样方便组件统一管理，开发时不需要在多个仓库之间切换，而且预览效果只需运行跟项目，而不是为每个组件开启一个端口进行预览。
+
+但是集中管理有一些弊端。
+
+- 引用默认是载入全部，虽然可以通过配置方式避免，（Antd 还提供了 webpack 插件做这个事情），但安装时必须全量。
+- 无法对每个组件做更细粒度的版本控制。
+- 协作开发困难，每个人都要搭建一套全环境，提 pr 也具有不少难度。
+
+分散维护的弊端更明显，无法在同一个项目中观察全局，修改组件后引发的连带风险无法观察，组件之间引用需要发布或者 mock，不直观，甚至组件之间的版本关联、依赖分析都没法有效进行管理。
+
+最后采用了两者结合的方案，分散部署+集中维护的折中方式：
+
+- 建立根项目 Root，用来做整体容器，顺便还可以当对外网站
+- 建立 Group，并在其中建立多个组件仓库
+- 开发时只要用到项目 Root，根据依赖文件编写脚本自动拉取每个仓库中的内容
+- 主要负责人拉取全部子项目仓库，子组件维护者只需要下载对应组件
+- 发布时独立发布每个组件
+- 管理时，统一管理所有组件
+
+## package 版本统一
+
+ React 的版本都不可靠，之前就遇到过一半组件留在 0.14.x ，一半新组件装了 15.x 的情况，直接导致了线上编译后项目出错，因为多个 React 组件不能同时兼容，这只是不能并存的其中一个例子。
+
+因为项目开发时组件在一起，使统一版本号成为可能。我们将所有依赖到的组件都安装在 Root 项目中，每个组件的 package.json 由脚本自动生成，这个脚本需要静态扫描每个组件的 Import 或 require 语法，分析到依赖的模块后，使用根目录的版本号，填写在组件的 package.json 中。
+
+先收集每个组件中的依赖， 如果在根目录的 package.json 中找到了，就使用根目录的版本号。
+
+## 依赖联动
+
+依赖联动是指，fit-button 更新了代码，如果 fit-table 依赖了 fit-button，那么其也要发布一个版本，更新 fit-button 依赖的版本号。
+
+因为所有组件都被下载到了 Root 仓库下，因此组件之间的引用也自然而然的使用了相对路径，这样组件更新麻烦的问题迎刃而解，唯一需要注意的是，发布后，将所有引入非本组件目录的引用，替换成为 npm 名称，例如：
+
+```
+// 源码的内容
+import Button from '../../../button'
+// 发布时，通过编译脚本替换为
+import Button from 'fit-button'
+```
+
+依赖联动，需要在发布时，扫描所有组件，找出所有有更新的组件，并生成一项依赖配置，最后将所有更新、或者被依赖的组件统一升级版本号加入发布队列。
+
+# 6.组件库开发的三大关键点
+
+## 整体架构设计
+
+- 单包架构
+- 多包架构
+
+**单包架构**
+
+如Antd，所有的组件看成一个整体，一起打包发布。这叫做**单包架构**
+
+- **优点**：它最大的优点是可以通过相对路径实现组件与组件的引用，公共代码之间的引用。
+- **缺点**：缺点就是组件完全耦合在了一起，必须把它作为一个整体统一发包。就算只改一个组件的一个非常小的功能，都要对整个包发布更新。
+
+**多包架构**
+
+每个组件彼此独立，单独打包发布，单个仓库多个包，统一维护单独管理。多包架构在业界称之为 "Monorepo"。
+
+Lerna针对包之间有依赖的场景做了一些特殊优化，开发模式下，它会把所有存在依赖关系的包通过软链的形式连在一起，就可以很方便的本地开发联调
+
+```
+├── lerna.json
+ ├── package.json
+ └── packages/ # 这里将存放所有子 repo 目录
+    ├── project_1/  # 组件1的包
+    │   ├── index.js
+    │   ├── node_modules/
+    │   └── package.json
+    ├── project_2/   # 组件2的包
+    │   ├── index.js
+    │   ├── node_module/
+    │   └── package.json
+    ...
+```
+
+- **优点**：它最大的优势是组件发布灵活，并且天然支持按需使用，
+- **缺点**：缺点就是组件与组件之间物理隔离。对于相互依赖，公共代码抽象等场景，就只能通过NPM包引用的方式来实现。
+
+## 基础技术能力
+
+**构建能力**
+
+选择Webpack，Rollup Glup Grunt..... 构建组件库推荐Rollup， 构建项目推荐Webpack. 这里需要特别注意产物的格式要求，像我们常用的cjs, esm,umd格式。
+
+你的组件考虑支持 node环境， 像需要支持ssr, 你就需要打包出 cjs格式
+
+你的组件考虑支持 `<script >` 标签引用，, 你就需要打包出 umd格式
+
+比如说：
+
+- 组件库Bable的配置是否与项目中Babel的配置重复
+- 依赖包是打包到产物中，还是使用项目中的依赖包。如:lodash, moment...
+- 依赖包的样式是否打包到产物中以及Polyfill的配置
+
+**文档**
+
+你需要提供一个可以实时运行的文档服务。 包括支持静态内容的展示，以及可以查看源码的实施运行效果，这方面有很多优秀的开源库,比如 StoryBook&Styleguidist，Docz
+
+## 对外文档服务
+
+1. 可能是纯静态资源
+2. 配到的CI怎么搭建
