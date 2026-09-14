@@ -1,3 +1,8 @@
+<%
+  var sortedCategories = site.categories.toArray().sort(function(a, b){
+    return a.name.localeCompare(b.name, 'en', { sensitivity: 'base' });
+  });
+%>
 <main class="main" role="main">
   <article class="article article-categories article-type-list" itemscope="">
     <header class="article-header">
@@ -6,7 +11,7 @@
       <nav role="navigation" id="nav-main" class="okayNav">
         <ul>
           <li><a href="<%= config.root %>categories"><%= __('nav.all') %></a></li>
-          <% site.categories.each(function(item){ %>
+          <% sortedCategories.forEach(function(item){ %>
           <li><a href="<%= config.root %><%= item.path %>"><%= item.name %></a></li>
           <% }) %>
         </ul>
@@ -14,7 +19,7 @@
     </header>
     <!-- /header -->
     <div class="article-body">
-      <% site.categories.each(function(item){ %>
+      <% sortedCategories.forEach(function(item){ %>
       <div class="panel panel-default b-no">
         <div class="panel-heading" role="tab">
           <h3 class="panel-title">
