@@ -8,6 +8,7 @@ toc: true # 是否启用内容索引
 
 **参考**
 
+> - [Vue3+ & Vue-CLI3+开发生态圈资讯-地表最强](https://github.com/vue3/vue3-News)
 > - [我要成为海贼王的男人-Vue3最全宇宙入口](https://github.com/vue3/vue3-News#%E6%88%91%E6%98%AF%E8%A6%81%E6%88%90%E4%B8%BA%E6%B5%B7%E8%B4%BC%E7%8E%8B%E7%9A%84%E7%94%B7%E4%BA%BA)
 > - [Vue3+TS快速上手-尚硅谷-video](https://www.bilibili.com/video/BV1ra4y1H7ih/?p=2&spm_id_from=pageDriver&vd_source=bd4c7d99d71adf64d6e88c65370e0247)
 > - [Vue3+TS快速上手-尚硅谷](https://24kcs.github.io/vue3_study/)

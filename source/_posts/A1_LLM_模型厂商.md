@@ -1,14 +1,14 @@
 ---
-title: LLM_国内外大模型1
-date: 2025-11-23 06:33:16
+title: 模型厂商
+date: 2001-01-01 06:33:16
 categories:
 - A1_LLM
 toc: true # 是否启用内容索引
 ---
 
-**参考**
+# **大纲**
 
-- [吕阿华的AIGC学习手册](https://www.zhihu.com/column/c_1722279897676951552)
+> - [模型最新动态](https://www.zhihu.com/column/c_1722279897676951552)
 
 # 大模型简单比较
 
