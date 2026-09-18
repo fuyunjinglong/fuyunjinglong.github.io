@@ -1,6 +1,6 @@
 ---
-title: LLM_SKILL
-date: 2026-4-12 06:33:16
+title: SKILL
+date: 2003-01-01 06:33:16
 categories:
 - A1_LLM
 toc: true # 是否启用内容索引
