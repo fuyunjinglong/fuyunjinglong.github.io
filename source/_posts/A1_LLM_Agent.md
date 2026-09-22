@@ -8,90 +8,86 @@ toc: true # 是否启用内容索引
 
 # Agent厂商
 
-**选型建议**
+## 选型建议
 
-> - **个人写作/资料研究**：国内首选智谱 AutoGLM、Kimi；国外首选 Perplexity、Manus Free、ChatGPT 免费层。
-> - **自媒体/电商内容与客服机器人**：扣子 Coze（分发到抖音/微信）、腾讯元器、文心智能体。
-> - **开发者做 RAG 与工作流**：自部署选 Dify（国内）/ n8n（国外）/ LangGraph（代码向）；中文生态优先 Dify + Qwen-Agent。
-> - **编程 Agent**：轻度用 Cursor Pro、Claude Code Pro；重度/团队上 Devin 或 Claude Max。
-> - **企业级落地**：M365 生态选 Copilot Studio，CRM 场景选 Agentforce，知识管理选 Glean，传统行业跨系统自动化选实在 Agent，阿里云体系选百炼/AgentCore，百度体系选千帆 AppBuilder。
+> - **零成本个人/小团队入门**：国内选 Dify 或 FastGPT 自部署 + 硅基流动 2000 万免费 Token；国外选 LangChain + AutoGPT + Gemini API 免费层ucloud.cn+1
+> - **业务人员快速做 Bot**：国内扣子 SaaS 免费版够用，国外 ChatGPT GPTs 最简单，但需订阅 Pluscsdn.net+1
+> - **企业私有化部署**：国内 Dify/毕昇/MaxKB 开源自部署；国外 AutoGen/LangGraph 开源 + 云服务volcengine.com+1
+> - **大型企业开箱即用**：国内阿里百炼/百度千帆；国外 Salesforce Agentforce、ServiceNow Now Assist、Microsoft Copilot Studio
 
-## 国内
+## 国内-完全免费/开源
 
-**完全免费 / 开源(仅需自备算力/API Key)**
+| 产品/项目                    | 使用场景                                      | 使用门槛与获取方式                                           |
+| ---------------------------- | --------------------------------------------- | ------------------------------------------------------------ |
+| **Dify 社区版**              | 企业知识库问答、RAG 应用、复杂工作流编排      | 开源免费，Docker 一键部署，需自备大模型 API；中文文档完善    |
+| **FastGPT**                  | 知识库问答、自动化数据预处理、Flow 可视化编排 | 开源免费（GitHub 20k+ Star），Docker 自部署，OpenAI 兼容 API |
+| **MetaGPT**                  | 多角色协作模拟软件开发全流程、报告撰写        | 开源免费，pip 安装即可，需自行接入 LLM API                   |
+| **AgentScope**（阿里）       | 多智能体对话/协作应用研发                     | 开源，Python 框架，面向开发者                                |
+| **毕昇 BISHENG**             | 文档审核、报告生成、企业级多 Agent 协作       | 开源免费，支持私有化部署与 RBAC 权限                         |
+| **JoyAgent-JDGenie**（京东） | 零售场景智能客服、自动生成 PPT/报表           | 开源，`pip install joyagent-jdgenie` 即用，内置零售模板      |
+| **MaxKB**                    | 企业级知识库智能问答                          | 开源免费，5 分钟 Docker 部署，零代码嵌入                     |
+| **扣子 Coze Studio 开源版**  | 低代码 Bot 搭建、插件编排                     | 核心引擎已开源，可自部署；SaaS 版另算                        |
 
-| 产品                                                        | 核心定位                                                     | 使用门槛               | 免费情况                                                 | 典型场景                                   |
-| ----------------------------------------------------------- | ------------------------------------------------------------ | ---------------------- | -------------------------------------------------------- | ------------------------------------------ |
-| **Dify**（langgenius/dify）                                 | 低代码 LLM 应用 + Agent 开发平台，支持 50+ 模型、RAG、可视化编排 | 低（Docker 一键部署）  | Apache 2.0，自部署完全免费zooz.com                       | 企业内部知识库问答、客服 Agent、RAG 应用   |
-| **Qwen-Agent**（QwenLM/Qwen-Agent）                         | 通义千问官方 Agent 框架，内置代码解释器、搜索、RAG 工具      | 中（Python，pip 安装） | 开源免费，可接 DashScope API 或本地 vLLM/Ollamaiaiol.com | 长文档分析、代码助手、中文 Agent 应用      |
-| **AgentScope**（阿里通义实验室）                            | Actor 模型多 Agent 分布式框架，原生支持 MCP + A2A 协议       | 中高（分布式工程化）   | Apache 2.0，GitHub 31.7k 星agentlist.top                 | 多 Agent 协作系统、Agent-as-Service 部署   |
-| **MetaGPT**（DeepWisdom）                                   | 多角色协作框架，模拟产品经理/架构师/工程师协作               | 中高                   | 开源免费csdn.net                                         | 软件工程全流程自动化、辩论模拟、供应链协同 |
-| **FastGPT**                                                 | 国内流行的开源知识库问答 + 工作流平台                        | 低                     | 开源可自部署                                             | 中小企业知识库、RAG 客服                   |
-| **ChatDev**（面壁智能）                                     | 软件公司模拟多 Agent 开发框架                                | 中                     | 开源                                                     | 研究、原型级软件开发演示                   |
-| NoWorries (无事) ，WorkAny， QwenPaw ，DeepThink / MyAgents |                                                              |                        |                                                          |                                            |
+## 国内-提供免费额度
 
-**免费额度**
+| 产品/项目                      | 使用场景                              | 使用门槛与获取方式                                           |
+| ------------------------------ | ------------------------------------- | ------------------------------------------------------------ |
+| **扣子 Coze（SaaS 版）**       | 零代码 Bot 搭建、发布到飞书/微信/抖音 | 网页直接用，个人免费版 0 元，DeepSeek-R1 每日 20 条、V3 每日 50 条免费；专业版 39.9 元/月起 |
+| **腾讯元器（WorkBuddy）**      | 微信生态 Bot、公众号/企微智能体       | 个人基础版免费，新用户送 5000 积分，每日签到可领；企业版付费 |
+| **文心智能体**（百度）         | 知识问答、客服 Bot、一键发布到公众号  | 平台免费，接入文心 + DeepSeek-R1，token 按量计费             |
+| **阿里云百炼**                 | Agent、RAG、工作流搭建                | 新客 7000 万 Tokens（90 天）、Qwen-turbo 永久免费，平台免费、按 token 计费 |
+| **硅基流动 SiliconFlow**       | 多模型调用、DeepSeek/GLM Agent 底座   | 注册送 2000 万永久 Tokens，无需实名，OpenAI 兼容ucloud.cn+1  |
+| **智谱清言 GLM-4-Flash**       | 个人助手、轻量 Agent 开发             | 网页版免费使用，GLM-4-Flash API 永久免费hqwc.cn              |
+| **腾讯 CodeBuddy / TRAE IDE**  | AI 编程助手                           | 免费用户每日赠送积分（TRAE 新用户送 4000 积分）sunyazhou.com |
+| **Kimi 智能体**（月之暗面）    |                                       |                                                              |
+| **天工 SkyAgents**（昆仑万维） |                                       |                                                              |
 
-| 产品                           | 核心定位                                                     | 使用门槛             | 免费情况                                                     | 典型场景                                         |
-| ------------------------------ | ------------------------------------------------------------ | -------------------- | ------------------------------------------------------------ | ------------------------------------------------ |
-| **扣子 Coze**（字节）          | 零代码 Agent 搭建平台，1 万+ 插件生态                        | 低（拖拽式，零代码） | 基础功能免费，专业版/高级模型付费，月活已超 200 万ai-indeed.com | 新媒体内容、电商客服、抖音/微信/飞书分发csdn.net |
-| **智谱清言 AutoGLM**           | 基于自研 GLM-4/沉思模型的执行型 Agent，能边推理边浏览数十网页生成报告 | 低（网页/App）       | 个人使用免费，API 按调用计费csdn.net                         | 深度调研、长报告撰写、学术润色、法律文书         |
-| **Kimi 智能体**（月之暗面）    | 200 万字长文本 Agent，深度分析长文档                         | 低                   | 免费为主，付费会员增值toutiao.com                            | 律师卷宗分析、研报提炼、长文档问答               |
-| **腾讯元器**                   | 微信/QQ 生态 Agent，支持 3D 数字人                           | 低                   | 免费                                                         | 微信客服、教育陪练、社交场景分发betteryeah.com   |
-| **文心智能体平台**（百度）     | 依托文心大模型 + 搜索/地图生态                               | 低（零代码）         | 免费                                                         | 电商导购、本地生活、企业内部知识问答toutiao.com  |
-| **通义千问 / 夸克 App**        | 阿里 C 端全能助手 + Agent 应用                               | 低                   | 免费                                                         | 办公写作、学习辅导、旅行规划等日常任务           |
-| **天工 SkyAgents**（昆仑万维） | PPT/表格/网页多格式生成                                      | 低                   | 免费                                                         | 办公汇报、市场分析、论文初稿toutiao.com          |
-| **WorkBuddy**                  |                                                              |                      |                                                              |                                                  |
+## 国内-完全商业收费/企业定制
 
-**商业收费定制**
+| 产品/项目                | 使用场景                                | 使用门槛与获取方式                                   |
+| ------------------------ | --------------------------------------- | ---------------------------------------------------- |
+| **阿里云百炼企业版**     | 大型企业 Agent 落地、私有化部署         | 按调用 token 计费 + 企业套餐，需商务对接csdn.net     |
+| **百度千帆·文心企业版**  | 政务/国企 Agent、知识图谱问答、信创适配 | 企业套餐付费，需企业资质，支持私有化一体机csdn.net+1 |
+| **腾讯云大模型知识引擎** | 企业微信生态 Agent、私域运营            | 企业版付费，深度打通微信/企微csdn.net                |
+| **智谱 AI 企业服务**     | 金融/政务行业 Agent 定制                | 按项目报价，提供 AutoGLM 商业授权sunyazhou.com       |
+| **火山方舟（字节）**     | 豆包系列 Agent 企业落地、多模态应用     | 按量计费，企业客户商务对接ucloud.cn                  |
+| **扣子企业版**           | 组织级 Agent 统一管理、权限与数据治理   | 企业旗舰版 8980 元/月起，含积分池chooseai.net        |
 
-| 产品                          | 核心定位                                            | 使用门槛           | 收费模式                                              | 典型场景                                           |
-| ----------------------------- | --------------------------------------------------- | ------------------ | ----------------------------------------------------- | -------------------------------------------------- |
-| **实在 Agent**（实在智能）    | TARS 模型 + 屏幕理解，无需 API 即可操作任意软件系统 | 中（企业实施为主） | 企业版订阅/私有化定制，已服务 4000+ 企业ai-indeed.com | 财务、政务、金融、制造等跨系统自动化"数字员工"     |
-| **百度智能云千帆 AppBuilder** | 企业级 Agent 开发 + 模型托管                        | 中                 | 按调用量/席位计费csdn.net                             | 企业客服、知识管理、对数据安全要求高的行业         |
-| **阿里云百炼 / AgentCore**    | Qwen 模型 + 企业 Agent 构建/部署/治理平台           | 中                 | 按模型 Token 与服务实例计费c-sharpcorner.com          | 多 Agent 业务工作流、DBA/数据 Agent 等企业级 Agent |
-| **腾讯云智能体开发平台**      | RAG + 多 Agent 协同架构                             | 中                 | 云服务订阅                                            | 客服对话、Excel/数据库自然语言查询ai-indeed.com    |
-| **京东云言犀**                | 电商基因的智能体平台                                | 中                 | 企业版收费                                            | 电商导购、营销、供应链客服                         |
-| **火山引擎 HiAgent**          | 字节企业版 Agent 平台（与 Coze 互补）               | 中                 | 私有化/订阅                                           | 大中型企业内部 Agent 中台                          |
-| **迈富时 AI-Agentforce**      | 营销垂类智能体中台                                  | 中                 | SaaS 订阅                                             | 获客、销售、CRM 自动化csdn.net                     |
+## 国外-完全免费/开源
 
-## 国外
+| 产品/项目                     | 使用场景                            | 使用门槛与获取方式                                           |
+| ----------------------------- | ----------------------------------- | ------------------------------------------------------------ |
+| **AutoGPT**                   | 全自主任务执行、探索性自动化        | 开源（GitHub 182k+ Star），需 Python 环境 + 自备 LLM APIgithub.com |
+| **LangChain / LangGraph**     | 复杂状态工作流、生产级 Agent 应用   | MIT 开源免费，Python SDK，托管版 LangGraph Platform 另付费csdn.net+1 |
+| **CrewAI**                    | 角色分工多 Agent 协作（调研、报告） | MIT 开源，pip 安装，企业托管版另付费csdn.net+1               |
+| **AutoGen（微软）**           | 多 Agent 对话协作、企业工作流自动化 | MIT 开源，微软官方维护，需自备模型 APIcsdn.net+1             |
+| **OpenHands（原 OpenDevin）** | 自主编程 Agent、代码任务自动化      | 开源，GitHub 获取，Docker 部署                               |
+| **AgentGPT**                  | 零代码自主智能体、原型验证          | 开源，`docker run -p 3000:3000 reworkd/agentgpt` 一键启动2048ai.net |
+| **LlamaIndex Agent**          | 私有文档问答、RAG Agent             | 开源免费，Python 包，需自备 LLM2048ai.net                    |
 
-**完全免费 / 开源(仅需自备算力/API Key)**
+## 国外-提供免费额度
 
-| 产品                          | 核心定位                                                | 使用门槛                 | 免费情况                     | 典型场景                                        |
-| ----------------------------- | ------------------------------------------------------- | ------------------------ | ---------------------------- | ----------------------------------------------- |
-| **LangChain / LangGraph**     | 事实标准 LLM 编排框架，LangGraph 支持有状态图与人在回路 | 中高                     | MIT 开源appsinsight.co       | 复杂 Agent 工作流、RAG、多步推理                |
-| **Microsoft AutoGen**         | 事件驱动多 Agent 对话编排                               | 中高                     | MIT 开源appsinsight.co       | 团队模拟、多 Agent 协作研究                     |
-| **CrewAI**                    | 角色化多 Agent 协作框架                                 | 中                       | 开源appsinsight.co           | 团队角色分工型任务（如写作小组、研究小组）      |
-| **n8n**                       | 400+ 节点的可视化工作流平台，原生集成 AI Agent          | 低中（自部署 Fair-code） | 自部署免费，云版收费zooz.com | DevOps 自动化、API 集成、AI 工作流编排          |
-| **OpenHands（原 OpenDevin）** | 开源编程 Agent，对标 Devin                              | 中                       | MIT 开源bitcot.com           | 软件开发辅助、Issue 自动修复                    |
-| **AutoGPT / BabyAGI**         | 自主任务循环早期代表                                    | 中                       | 开源                         | 学习/原型验证（生产慎用，易循环）appsinsight.co |
-| **Semantic Kernel**（微软）   | 跨平台企业集成 SDK（C#/Python）                         | 中                       | MIT 开源                     | .NET/Azure 生态企业集成bitcot.com               |
+| 产品/项目                             | 使用场景                          | 使用门槛与获取方式                                           |
+| ------------------------------------- | --------------------------------- | ------------------------------------------------------------ |
+| **ChatGPT（GPTs + Tasks）**           | 个人定制助手、定时任务            | 网页免费层 GPT-4o Mini 无限用，GPT-4o 约 80 条/3 小时；Plus 20 美元/月解锁 GPTs 创建与 Taskshqwc.cn |
+| **Claude（Projects + Computer Use）** | 长文档分析、编程 Agent、桌面操作  | 网页有免费额度，Pro 20 美元/月解锁更多；Claude Code 需订阅2048ai.net |
+| **Gemini（Google）**                  | 长上下文问答、轻量 Agent          | 网页免费层 Flash 模型可用，API 免费层 Gemini 2.5 Flash 每日 250 次请求hqwc.cn |
+| **Manus**                             | 全自主任务交付（报告、网站、PPT） | 免费层每日 300 积分；Pro 20 美元/月起（4000 积分/月），复杂任务可能烧 500-900 积分opentools.ai+1 |
+| **Grok（xAI）**                       | X 平台内 AI 对话、轻 Agent        | X 免费用户每日有消息上限hqwc.cn                              |
+| **Zapier Agents**                     | SaaS 串联 + AI 自动化             | 有免费额度起步，Pro 79 美元/月（1000 次 AI run）tinycommand.com |
+| **Lindy**                             | 团队 AI 同事、跨工具自动化        | 7 天免费试用，之后 Plus/Pro/Max 按席位订阅lindy.ai+1         |
 
-**免费额度**
+## 国外-完全商业收费/企业定制
 
-| 产品                                  | 核心定位                                 | 使用门槛 | 免费情况                                                     | 典型场景                                                    |
-| ------------------------------------- | ---------------------------------------- | -------- | ------------------------------------------------------------ | ----------------------------------------------------------- |
-| **ChatGPT**（含 GPTs、ChatGPT Agent） | 通用对话 + 自主任务执行 Agent            | 低       | 免费层有限额，Plus $20/月，Pro$200/月                        | 通用助手、深度研究、数据分析                                |
-| **Claude.ai / Claude Code**           | Anthropic 长文本 + 编程 Agent（含 MCP）  | 低中     | 免费层有限，Pro $20/月、Max$100/$200/月finout.io             | 编程 Agent、长文档处理、MCP 工具调用                        |
-| **Cursor**                            | AI 编程 IDE + 自主编程 Agent             | 中       | 免费层有限，Pro $20/月cursor.com                             | 代码生成、PR 评审、并行 Agent 构建                          |
-| **Manus**（Butterfly Effect）         | 通用自主 Agent，云端沙箱异步执行多步任务 | 低       | Free 每日 300 credits + 注册 1000，Pro $20–$200/月leadion.ai+1 | 竞品调研报告、网站搭建、长任务研究（GAIA L1 86.5%）hokai.io |
-| **Perplexity**                        | 搜索增强问答 + 深度研究 Agent            | 低       | 免费层有限，Pro $20/月                                       | 资料检索、带引用的研究报告                                  |
-| **Zapier Agents**                     | 工作流自动化 + AI Agent                  | 低       | 免费层 100 任务/月，付费 $20 起                              | 跨应用自动化、销售线索处理                                  |
-| **Relevance AI**                      | 低代码 AI Agent 团队搭建                 | 低       | 免费层，付费 $19 起                                          | 销售/市场 Agent 团队                                        |
-
-**商业收费定制**
-
-| 产品                               | 核心定位                                                     | 使用门槛       | 收费模式                                                     | 典型场景                                                     |
-| ---------------------------------- | ------------------------------------------------------------ | -------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **Devin**（Cognition）             | 自主编程 Agent，端到端承接工程任务                           | 中（工程团队） | Free/$20 Pro/$200 Max/$500 Team（250 ACU/月）cognition.com+1 | 代码迁移、on-call 处理、PR 修复，与 GitHub/Linear/Slack 集成devin.ai |
-| **Glean**                          | 企业级 Work AI + Agent 平台，连接 Slack/Drive/Jira/Salesforce 等 | 中（企业部署） | 约 $50+/用户/月，100 席起gosearch.ai                         | 企业知识搜索、员工 Agent、权限感知 RAGglean.com              |
-| **Microsoft Copilot Studio**       | M365 生态低代码 Agent 平台                                   | 中             | $30/用户/月 +$200/25,000 messages 消息包microsoft.com        | Teams/SharePoint 内的客服、流程 Agent                        |
-| **Google Vertex AI Agent Builder** | 云原生 Agent 构建 + Gemini 模型托管                          | 中高           | 按用量计费（训练节点约 $21.25/小时起）lindy.ai               | 多模态企业 Agent、GCP 用户生产级部署                         |
-| **AWS Bedrock Agents**             | 云厂商托管 Agent 服务                                        | 中高           | 按调用量计费                                                 | AWS 生态企业 Agent、多模型接入                               |
-| **Salesforce Agentforce**          | CRM 场景 Agent 平台                                          | 中             | $2/对话 或 Flex Credits 按动作计费salesforce.com+1           | 客服/销售/营销 Agent，与 Salesforce 数据原生打通             |
-| **Intercom Fin**                   | 客服 AI Agent SaaS                                           | 低             | 按解决量计费                                                 | SaaS 客服自动化                                              |
+| 产品/项目                             | 使用场景                                       | 使用门槛与获取方式                                           |
+| ------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------ |
+| **Salesforce Agentforce**             | 销售/客服/营销 Agentic CRM                     | 约 0.1 美元/动作 或 2 美元/次会话，按用户许可约 125 美元/月起；中型团队落地成本 1.5 万-10 万+ 美元/年enjo.ai+1 |
+| **ServiceNow Now Assist / AI Agents** | ITSM/CSM/HRSD 内部服务自动化                   | 未公开定价，第三方估算 70-200 美元/用户/月 + AI 消耗计费，需已有 ServiceNow 平台getmacha.com |
+| **Microsoft Copilot Studio**          | M365 生态 Agent 搭建（Teams/Excel/SharePoint） | 按 Microsoft 365 许可订阅，无独立免费层，少量试用csdn.net    |
+| **OpenAI Agents Platform**            | 生产级 Agent SDK、代码开发                     | 框架开源，但按 GPT-4o/5 调用量计费（约 12 美元/千次查询），企业套餐另议csdn.net |
+| **Intercom Fin**                      | 客服 Agent、按结果计费                         | 约 0.99 美元/次成功解决，叠加席位订阅费comparebiztech.com    |
+| **CrewAI 企业托管版**                 | 企业级多 Agent 平台服务                        | 开源框架免费，企业托管/定制服务付费csdn.net                  |
+| **Google ADK + Vertex AI**            | 多模态 Agent、GCP 企业级部署                   | 云服务按使用量计费，需 GCP 账户csdn.net                      |
 
 # Agent
 
