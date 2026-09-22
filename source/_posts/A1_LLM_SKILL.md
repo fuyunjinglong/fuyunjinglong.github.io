@@ -6,13 +6,15 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# SKILL
+# 初级
 
-## 定义
+## SKILL入门
+
+**一、定义**
 
 > 每个 Skill 的核心是一个 Markdown 文件，头部是 **YAML Frontmatter**(机器读)，正文是自然语言指令(模型读)。规范允许的 frontmatter 字段包括 `name`、`description`、`license`、`allowed-tools`、`metadata`、`compatibility`
 
-## 目录结构
+**二、目录结构**
 
 ```
 my-skill/
@@ -29,7 +31,7 @@ my-skill/
 
 ```
 
-**SKILL.md**  
+**三、SKILL.md**  
 
 1.单一功能
 
@@ -102,36 +104,37 @@ description: Office 文档处理工具集：创建/编辑 Excel、转换 PDF、�
 - 处理前先备份原文件为 .bak
 ```
 
+## SKILL的原则
+
+- 单一职责：一个skill只做一个事情
+- 描述清晰：自然语言明确输入输出
+- 可组合：与其他skill可自由搭配使用
+
+# 中级
+
 ## 三级加载机制
 
 这是 Skills 架构的核心创新，解决"装很多技能但不爆上下文"的问题：
 
-| 层级          | 加载内容                                | 时机                           | 典型开销             |
-| ------------- | --------------------------------------- | ------------------------------ | -------------------- |
-| **L1 元数据** | name + description                      | 启动时全部加载进 system prompt | 每个技能约几十 token |
-| **L2 正文**   | SKILL.md 的完整指令                     | 任务匹配到描述时才读           | 数百至数千 token     |
-| **L3 资源**   | scripts/、references/、assets/ 中的文件 | 指令中明确指向时才读取/执行    | 按需，无上限         |
+| 层级          | 功能     | 加载内容                                | 时机                           | 典型开销             |
+| ------------- | -------- | --------------------------------------- | ------------------------------ | -------------------- |
+| **L1 元数据** | 意图匹配 | name + description                      | 启动时全部加载进 system prompt | 每个技能约几十 token |
+| **L2 正文**   | 读取手册 | SKILL.md 的完整指令                     | 任务匹配到描述时才读           | 数百至数千 token     |
+| **L3 资源**   | 按需执行 | scripts/、references/、assets/ 中的文件 | 指令中明确指向时才读取/执行    | 按需，无上限         |
 
 启动时 Agent 只扫描所有技能的 frontmatter(几十 token/个)，装 100 个技能可能也只占几千 token;真正干活时才把对应 SKILL.md 全文读入上下文，再根据指令去调脚本、读参考文件。这就是为什么"技能商店"能装几十万技能而不会撑爆模型。
 
-# 使用Trae集成skill
+## 重要参数
 
-- 打开Trae，右上角齿轮设置，左侧的规则和技能，技能中添加github下载的项目，zip即可。注意最好是按照项目维度添加，不要全局。
-- 使用：输入“用张雪峰的技能，告诉我学校和专业选哪个好？”使用张雪峰的技能。如果不使用，则直接右上角新建对话即可。
+**YOLO/Bypass 模式**
 
-# skill
+加载与执行跳过权限确认，比如删除文件，不再提示，直接删除
 
-## 女娲.skill
 
-参考
 
-- https://github.com/fuyunjinglong/LLM-SKILL/tree/nvwa-skill
-- https://github.com/alchaincyf/nuwa-skill
+# 高级
 
-## 张雪峰.skill
+# SKILL合集
 
-参考
-
-- https://github.com/fuyunjinglong/LLM-SKILL/tree/zhangxuefeng-skill
-- https://github.com/alchaincyf/zhangxuefeng-skill
+- [女娲.skill](https://github.com/alchaincyf/nuwa-skill)
 
