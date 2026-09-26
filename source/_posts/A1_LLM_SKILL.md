@@ -1,6 +1,6 @@
 ---
 title: SKILL
-date: 2003-01-01 06:33:16
+date: 2004-01-01 06:33:16
 categories:
 - A1_LLM
 toc: true # 是否启用内容索引
@@ -17,40 +17,44 @@ toc: true # 是否启用内容索引
 **二、目录结构**
 
 ```
-my-skill/
+meeting-skill/
 ├── SKILL.md              # 必需：元数据 + 主指令
 ├── scripts/
 │   ├── extract.py        # 可执行脚本（Python/Bash 等）
-│   └── ocr.py
 ├── references/
 │   ├── table_rules.md    # 补充文档，只在需要时读
-│   └── api_details.md
 ├── assets/
-│   └── template.docx     # 模板、静态资源
-└── LICENSE
-
+│   └── template.json     # 模板、静态资源、json
+│   └── config.json       # 模板、静态资源、json
+└── README.md             # 调用示例
 ```
 
-**三、SKILL.md**  
+**三、SKILL.md书写**
 
 1.单一功能
 
 ```js
 ---
-name: pdf-processor
-description: 提取 PDF 中的表格和文本，用于数据处理任务。当用户需要解析 PDF 文件时使用。
-allowed-tools: Read, Write, Bash
+name: meeting-skill
+description: 会议总结助手。当用户需要用到会议总结助手时使用。
 ---
 
-# PDF 处理流程
+# 会议总结助手
+## 总结会议内容
+按照时间，人物，地点，内容进行总结输出
+样例：
 
-## 步骤
-1. 先检查 PDF 是否加密，若加密则提示用户提供密码
-2. 使用 pdfplumber 提取文本（脚本见 scripts/extract.py）
-3. 表格结构复杂时，参考 references/table_rules.md 中的规则
+> 输入：会议总结助手，总结会议内容：张三2026年9月23日在公司楼下聚众闹事
+>
+> 输出：
+>
+> - 时间：2026年9月23日
+> - 地点：公司楼下
+> - 人物：张三
+> - 内容：聚众闹事
 
-## 注意事项
-- 扫描件需先 OCR，调用 scripts/ocr.py
+如果需要上传文件，则执行上传脚本。调用方式：
+python script/upload.py
 ```
 
 2.多功能-分节
@@ -104,7 +108,36 @@ description: Office 文档处理工具集：创建/编辑 Excel、转换 PDF、�
 - 处理前先备份原文件为 .bak
 ```
 
-## SKILL的原则
+**四、SKILL.md调用**
+
+> - 事先可以执行：skills或技能列表。看下技能是否被识别到了。
+> - 项目级有些.trae是必须的，是为了IDE能自动识别skill。否则调用时，需要显性引入skill根目录。
+
+| 调用方式       | 样例                                                         | 缺点            |
+| -------------- | ------------------------------------------------------------ | --------------- |
+| 自动选择       | Qoder。比如：会议总结助手，总结会议内容：张三xx              | 关键字唤起skill |
+| 显式调用(推荐) | Trae。采用#或/或@。比如：GUI中，#meeting-skill 。CLI中，/meeting-skill | 无需明显关键词  |
+
+
+
+## SKILL的4大级别
+
+**一、定义**
+
+> 主流skill 划分为四个级别：**企业级、用户级（个人级）、项目级、插件级**
+
+**二、比较**
+
+| 级别                 | 存放位置（典型）                                             | 作用范围               | 加载优先级                             | 典型用途                                                     |
+| -------------------- | ------------------------------------------------------------ | ---------------------- | -------------------------------------- | ------------------------------------------------------------ |
+| **企业级**           | 企业统一注册表 / 托管路径（如 `~/.agent/cache/org-skills/`） | 组织内所有用户与项目   | **最高**（强制基线，不可被下级覆盖）   | 安全合规、代码规范、内部 API 约定等强制统一的 SOP            |
+| **用户级（个人级）** | `~/.claude/skills/`、`~/.copilot/skills/` 或 `~/.agents/skills/` | 当前用户的**所有项目** | 次高（可覆盖项目和插件，不能覆盖企业） | 个人工作流偏好、常用写作/测试/调试套路，不提交 Git           |
+| **项目级**           | `{project}/.claude/skills/`、`.github/skills/` 等            | 仅当前项目             | 中等（可覆盖插件，被企业和个人覆盖）   | 项目专属的部署流程、测试规范、code review 清单，随 Git 提交团队共享 |
+| **插件级**           | 随插件包安装（`<plugin>/skills/...`）                        | 启用该插件的所有项目   | **最低**（可被所有上级覆盖）           | 第三方能力补充，如 Atlassian、Figma、Stripe 等官方分发的技能包 |
+
+# 中级
+
+## SKILL编写原则
 
 **好的skill**
 
@@ -120,9 +153,7 @@ description: Office 文档处理工具集：创建/编辑 Excel、转换 PDF、�
 > - 造接口：定义清晰的json或md输出格式
 > - 复盘优化：重构skill
 
-# 中级
-
-## 渐进式加载机制
+## 渐进式加披露
 
 这是 Skills 架构的核心创新，解决"装很多技能但不爆上下文"的问题：
 
@@ -134,17 +165,11 @@ description: Office 文档处理工具集：创建/编辑 Excel、转换 PDF、�
 
 启动时 Agent 只扫描所有技能的 frontmatter(几十 token/个)，装 100 个技能可能也只占几千 token;真正干活时才把对应 SKILL.md 全文读入上下文，再根据指令去调脚本、读参考文件。这就是为什么"技能商店"能装几十万技能而不会撑爆模型。
 
-## 重要参数
-
-**YOLO/Bypass 模式**
-
-加载与执行跳过权限确认，比如删除文件，不再提示，直接删除
-
 
 
 # 高级
 
-# SKILL合集
+## 经典SKILL合集
 
-- [女娲.skill](https://github.com/alchaincyf/nuwa-skill)
+> - [女娲.skill](https://github.com/alchaincyf/nuwa-skill)
 
