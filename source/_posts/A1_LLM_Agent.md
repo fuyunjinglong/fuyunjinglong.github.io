@@ -139,6 +139,38 @@ toc: true # 是否启用内容索引
 
 # 高级
 
+# 智泊-Agent开发
+
+## 环境准备
+
+**Gradio**
+
+> 安装 pip install gradio
+>
+> 查看版本 pip show gradio
+
+test.py
+
+```python
+import gradio as gr
+
+def greet(name):
+    res = "Hello," + name
+    length = len(res)
+    return res,length
+
+demo = gr.Interface(
+    fn=greet,            # 要包装的函数
+    inputs=["text"],     # 输入类型：文本框 
+    outputs=["text","number"]  # 输出类型：文本和长度
+)
+demo.launch()
+```
+
+chat.py
+
+
+
 # Agent
 
 ## 定义
