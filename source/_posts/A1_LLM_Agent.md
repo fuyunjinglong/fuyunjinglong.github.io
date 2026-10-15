@@ -145,29 +145,68 @@ toc: true # 是否启用内容索引
 
 **Gradio**
 
-> 安装 pip install gradio
+> 定义：方便用界面展示调用大模型的结果
+
+> 安装 pip install gradio openai
 >
 > 查看版本 pip show gradio
 
 test.py
 
 ```python
+# 步骤1：导入 gradio 库
 import gradio as gr
 
+# 步骤2：定义处理函数，拼接问候语并计算长度
 def greet(name):
     res = "Hello," + name
     length = len(res)
     return res,length
 
+# 步骤3：创建界面，绑定函数与输入输出类型
 demo = gr.Interface(
     fn=greet,            # 要包装的函数
-    inputs=["text"],     # 输入类型：文本框 
+    inputs=["text"],     # 输入类型：文本框
     outputs=["text","number"]  # 输出类型：文本和长度
 )
+
+# 步骤4：启动 Web 服务
 demo.launch()
 ```
 
 chat.py
+
+```python
+import gradio as gr  # 步骤 1：导入 gradio 网页界面库
+from openai import OpenAI  # DeepSeek 兼容 OpenAI 协议，复用其 SDK
+
+# 步骤 2：创建 DeepSeek 客户端（密钥建议改用环境变量）
+# https://platform.deepseek.com/api_keys
+client = OpenAI(api_key="sk-28e63a85283342b6882d967b8fd4a7ea", base_url="https://api.deepseek.com")
+
+# 步骤 3：聊天回调函数（message=本次输入，history=历史对话）
+def chat(message, history):
+    # 3.1 拼接历史消息和本次输入
+    messages = history + [{"role": "user", "content": message}]
+    # 3.2 调用模型，取出回复文本并返回
+    return client.chat.completions.create(
+        model="deepseek-chat", messages=messages
+    ).choices[0].message.content
+
+# 步骤 4：启动界面，访问 http://127.0.0.1:7860 对话
+gr.ChatInterface(fn=chat).launch()
+```
+
+## 提示词工程
+
+> 是最简单的**RAG雏形**
+
+```
+prompt = fn(instruction指示,content内容或样例,query问题)
+instruction = "根据上下文回答问题，如果不确定，则回答不确定"
+content = "当前是AI爆炸的新时代"
+query = "qwen是什么"
+```
 
 
 
