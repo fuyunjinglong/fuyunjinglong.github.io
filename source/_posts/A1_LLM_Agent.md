@@ -6,6 +6,11 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
+# 参考
+
+> - [吴恩达大佬-AI入门](https://datawhalechina.github.io/llm-cookbook/#/)
+> - 
+
 # 初级
 
 ## Agent厂商
@@ -225,7 +230,7 @@ query = "qwen是什么"
 > - **工具（Tools）**：函数调用、浏览器、代码执行、检索
 > - **动作（Action）**：执行
 
-## 开发范式
+## 理论的开发范式
 
 https://zhuanlan.zhihu.com/p/2044794782246073710
 
@@ -278,7 +283,322 @@ https://zhuanlan.zhihu.com/p/2044794782246073710
 | Reflection & Critique（反思与批判） |                          | 反思和激励驱动智能体 |
 | Evaluation（评估）                  |                          | 通过模拟用户交互评估 |
 
-## 开发框架
+## 开发选型及范式
+
+### 三大基建
+
+> - MCP协议
+> - A2A协议
+> - Context Engineering 理念普及
+
+**MCP协议（Model Context Protocol）**
+
+> - 定义：由Anthropic在2024年底提出的标准化协议，定义了大模型与外部工具和数据源的交互标准
+> - 重要性：可将其理解为Agent工具调用领域的USB接口。
+> - 历史对比：
+>   - MCP之前：每个框架都有自己的工具接口定义方式，工具跨框架使用需要重写
+>   - 2026年现状：十个主流框架中至少八个已原生支持MCP
+> - 影响：工具生态壁垒正在消失，MCP标准封装的工具几乎可在任何框架中直接使用。工具支持数量不再是选框架的
+>   关键维度。
+
+**A2A协议(Agent to Agent Protocol）**
+
+> - 定义：由Google在2025年提出的协议，定义了不同框架构建的Agent之间的通信方式
+> - 解决的问题：
+>   - MCP解决Agent如何使用工具
+>   - A2A解决Agent如何与其他Agent通信
+> - 支持现状：
+>   - 原生支持：Microsoft Agent Framework、Google ADK、AgentScope
+>   - 社区插件支持：CrewAI、LangGraph
+> - 发展趋势：Agent生态正在从框架孤岛走向互操作网络，尽管采纳周期较长，但方向确定。
+
+**Context Engineering 理念普及**
+
+> - 定义：2025年兴起的新共识-仅做PromptEngineering已不够，需要进行Context Engineering。
+> - 核心要求：精心管理送进大模型上下文窗口的信息质量和结构。主要包括Instructions、Knowledge、Tools。
+> - 技术影响：推动了框架在以下方面的创新
+>   - 记忆压缩
+>   - 上下文过滤
+>   - 动态工具选择
+
+### 五大架构范式
+
+**范式一：图状态机**
+
+> - 代表框架：LangGraph
+> - 核心哲学：少抽象，多控制
+> - 核心原理：Node节点、Edge边、State状态
+> - 设计理念：提供最基础的构建块，让开发者自行搭建任意复杂的执行图。灵感来自Google
+> - 特点：
+>   - 不做任何架构决策预设
+>   - 不预设Agent的思考和协作方式
+>   - 开发者需要自行设计状态模式、编排逻辑、错误处理
+> - 官方理念：“当我们必须在易用性和生产就绪性之间做取舍时，我们选择了生产就绪性。
+> - 优势：
+>   - 灵活性极高
+>   - 内置checkpointer支持状态持久化
+>   - 支持时间旅行调试
+>   - 内置interrupt函数支持人工审批
+>   - token级流式传输，零额外开销
+> - 应用场景：
+>   - Klarna：客户服务Agent
+>   - Vodafone：数据工程AI助手
+>   - Replit：代码生成工作流编排
+> - 能力评分：
+>   - 多Agent编排：⭐⭐⭐⭐⭐
+>   - 生产部署成熟度：⭐⭐⭐⭐⭐
+>   - 生态丰富程度：可观测性：⭐⭐⭐⭐⭐
+>   - 灵活可定制性：⭐⭐⭐⭐⭐
+>   - 上手难度：⭐⭐
+> - 定位：Agent框架中的Linux-—强大，但需要技术深度。
+
+**范式二：角色驱动**
+
+> - 代表框架CrewAI
+>
+> - 核心哲学：像组建真实团队一样组建Agent团队
+>
+> - 核心概念：
+>
+>   - Role（角色）
+>   - Goal（目标）
+>   - Backstory（背景故事）
+>
+> - 使用流程：
+>
+>   1. 定义角色
+>   2. 分配任务
+>   3. 启动团队
+>
+> - 技术特点：
+>
+>   - 完全独立于Langchain，从零构建
+>   - 无外部依赖
+>   - 提供两种编排方式：
+>     - Crews：强调自主协作，Agent可自主委派任务
+>     - Flows：提供事件驱动的精确控制路径
+>
+> - 社区规模：45900+GitHubstars，超过10万开发者通过官方课程完成认证
+>
+> - 能力评分
+>
+>   - 上手难度：⭐⭐⭐⭐⭐
+>   - API稳定性：⭐⭐⭐
+>   - 底层控制力：⭐⭐⭐
+>   - 复杂逻辑表达：⭐⭐⭐
+>
+> - 适用场景：
+>
+>   ✅️内容创作管线
+>   ✅️市场调研
+>   ✅️快速原型开发
+>
+> - 不适用场景：
+>
+>   ❌️极致状态控制的金融交易系统
+>   ❌️需要精确错误恢复的长时间运行工作流
+
+**范式三：事件驱动**
+代表框架：LlamaIndex、AgentScope
+LlamaIndex
+
+> - 核心理念：数据是Agent智能的基石
+> - 核心优势：
+>   - 数据层有300多个连接器
+>   - LlamaParse文档解析引擎支持130+文件格式
+>   - 支持复杂嵌套表格和手写笔记解析
+>   - 编排层使用Workflows1.0：事件驱动、异步优先、步骤化执行
+> - 应用场景：
+>   - 私募基金：复杂金融文档处理
+>   - 保险公司：保单分析
+>   - 制造业：技术规格书洞察提取
+> - 市场地位：数据密集型Agent领域的护城河极深，几乎没有替代品。
+
+AgentScope
+
+> - 来源：阿里巴巴通义实验室
+> - 核心理念：透明可控
+> - 独特优势：
+>   1. 内置模型微调支持，可直接在框架内做Agent强化学习微调
+>   2. Python+java双版本
+>   3. 原生适配国内生态（通义干问、阿里云函数计算、钉钉）
+
+**范式四SDK封装**
+
+代表框架：OpepAI Agents SDK、PydanticAI
+
+OpenAI Agents SDK
+
+> - 核心概念：仅包含三个核心概念
+>   - Agent
+>   - Handoff
+>   - Guardrail
+> - 核心创新：Handoff机制，Agent完成任务后可将控制权移交给更合适的Agent。
+> - 技术优势：
+>   - 上手门槛极低：5行代码即可启动
+>   - 与OpenAI生态深度集成
+>   - 原生支持RealtimeVoiceAgent，包括中断检测、实时流式语音
+> - 局限性：
+>   - 缺乏持久化执行和检查点机制
+>   - 编排模式有限
+>   - 不支持并行和循环
+
+PydanticAI
+
+> - 核心理念：把FastAPI的体验带给Agent开发
+> - 核心优势：
+>   - 所有输入输出通过Pydantic模型验证
+>   - 结构化输出自动解析
+>   - 失败自动重试
+>   - 支持25+模型提供商，切换模型无需重写业务逻辑
+>   - 内置TestMode和mock工具，支持确定性测试
+> - 行业评价：可能成为类型安全Agent基础设施层的事实标准
+
+**范式五：低代码平台**
+
+> - 代表框架：Dify
+> - 核心数据：131,000+GitHubstars，全球排名第51位
+> - 技术特点：
+>   - 非Python库，是完整的Web平台
+>   - 提供拖搜式工作流编辑器
+>   - 支持模型管理、知识库管理
+>   - API一键发布、日志监控
+>   - 全在浏览器中操作，非技术人员也能使用
+> - 应用场景：
+>   - Maersk（全球航运巨头）
+>   - Novartis（制药公司)
+> - 商业进展：2026年3月完成3000万美元Pre-A轮融资，估值1.8亿美元
+> - 核心价值：让AI应用开发民主化
+> - 局限性：灵活性受限于可视化编辑器的表达能力
+
+**另外两大企业级框架**
+
+Microsoft Agent Framework
+
+> - 背景：2025年10月，微软宣布合并AutoGen和SemanticKernel
+> - 合并背景：
+>   - AutoGen：学术界最前沿的多Agent研究框架（50,400+stars）
+>   - SemanticKernel：企业级稳定的AI编排引擎（21,000+sstars）
+> - 技术优势：
+>   1. 唯一同时原生支持.NET和Python的主流框架
+>   2. 原生支持A2A、AG-UI、MCP三大标准
+>   3. 与AzureAIFoundry深度集成
+> - 发展状态：2026年2月达到Release candidate状态，预计2026年Q1未发布
+
+GoogleADK
+
+> - 技术特点：多语言路线，同时覆盖Python、TypeScript，Java、Go也在开发中
+> - Agent类型：
+>   - LlmAgent：智能推理
+>   - SequentialAgent:顺序编排
+>   - ParallelAgent:并行编排
+>   - LoopAgent:循环编排
+>   - BaseAgent:自定义扩展
+> - 云集成：与VertexAI和CloudRun原生集成
+> - 局限性：框架仍为0.×版本，社区规模不及Langchain
+
+### **五步法选型**
+
+**第一步：技术栈匹配**
+
+> - NET/C#技术栈→Microsoft Agent Framework
+> - Java技术栈→Gooqle ADK或AgentScope Java版
+> - Typescript全栈→OpenAI Agents SDKJS/TS版 或 LangGraph.js
+> - 多语言混合团队→Google ADK
+> - 纯Python团队→选择最多
+
+**第二步：场景匹配**
+
+> - 数据密集型RAG/文档问答→LlamaIndex
+> - 角色化多Agent协作→CrewAI
+> - 复杂有状态工作流→LangGraph
+> - 决速原型/MVP→CrewAI或OpenAI Agents SDK
+> - 企业低代码平台→Dify
+> - 国内企业私有化部署→AgentScope或Dify
+
+**第三步：云平台匹配**
+
+> - Azure→Microsoft Agent Framework
+> - GoogleCloud→Google ADK
+> - 阿里云→AgentScope
+> - 自托管/私有化→Dify
+> - 无特定偏好→根据场景选择
+
+**第四步：模型偏好匹配**
+
+> - 深度依赖OpenAI→OpenAI Agents SDK
+> - 依赖Gemini→GoogleADK
+> - 使用国内模型→Agentscope或Dify
+> - 追求模型无关性→PydanticAI（支持25+提供商）
+
+**第五步：成本分析**
+
+> 1. 开源与生产可用性的差异
+>    许多框架在GitHub上免费，但进入生产环境时往往伴随着隐性成本。
+>
+>    - LangGraph:开源免费，但生产部署几乎必须使用付费的LangGraph Platform以获得状态持久化等关键能力。
+>    - LlamaIndex:核心库免费，但其核心优势—高质量文档解析依赖付费的LlamaParse服务。
+>    - Dify：开源版功能有限，企业级功能（如SSO、高级日志）需购买商业版或承担高昂的自行维护成本
+>    - Microsoft/Google框架：虽然框架本身免费，但深度绑定各自云服务的付费组件，迁移成本高。
+>    - PydanticAI:隐性成本最低，无强制绑定的付费平台，是真正轻量的选择。
+>
+> 2. 运行时的Token经济学
+>    架构选型直接决定了Token的消耗效率，低效的框架可能成为预算的黑洞”
+>
+>    - 警惕Token黑洞”：根据2026年的最新数据，类似Openclaw等第三方框架因上下文管理低效（如频繁的心跳
+>
+>      机制、重复计算），可能导致API调用量是原生框架的数倍。Anthropic已切断此类订阅套利通道，强制按量付
+>
+>      费，使得低效框架的成本风险剧增。
+>
+>    - 架构选型影响：
+>
+>      - 图状态机（LangGraph）：控制力最强，可精细化裁剪上下文，Token利用率最高，
+>      - 角色驱动（CrewAI）：自主协作可能导致冗余对话，Token消耗相对不可控。
+>
+>    - 端云协同趋势：对于高频、重复性任务（如客服、数据录入），可考虑AgentComputer或Tiny Box等本地化
+>
+>      部署方案。通过一次性硬件投入（约1-2万元）替代持续的Token支出，可将长期TCO（总拥有成本）降低
+>
+>      90%以上。
+
+### **未来趋势**
+
+**行业趋势**
+
+> 1. 框架数量减少：微软合并AutoGen和SemanticKernel，预示未来框架数量将继续减少
+> 2. 核心能力模块化：LlamaIndex将Workflows独立，反映核心能力可独立复用的趋势
+> 3. 多模态成为标配：语音和视觉正在成为Agent的基本要求
+> 4. 国内生态发展：Dify和AgentScope展现国内框架的独特优势
+
+**对三类人群的建议**
+
+1.独立开发者和技术探索者
+
+> - 推荐路径：从PydanticAI或OpenAI Agents SDK起步
+> - 优势：学习曲线最平缓，能最快建立Agent开发的核心认知
+> - 进阶方案：需要复杂编排时再使用LangGraph
+
+2.初创公司技术团队
+
+> - 推荐路径：用CrewAI快速验证想法做原型
+> - 生产方案：验证通过后迁移到LangGraph做生产系统
+> - 备选方案：考虑Agno的全栈方案，一站式解决从原型到部署
+
+3.大型企业技术委员会
+云战略优先
+
+> - Azure→微软框架
+> - GoogleCloud→Google框架
+> - 多云混合→LangGraph+Dify组合
+
+技术考量：
+
+> 1. 优先考虑MCP和A2A协议支持
+> 2. 确保未来的互操作能力
+> 3. 建立长期技术路线图
+
+
 
 ## 生产部署
 

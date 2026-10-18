@@ -291,6 +291,8 @@ C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\
 5.点点li
 - 风格1
 - 风格2
+6.emoji
+https://www.emojiall.com/zh-hans/sub-categories/F11
 ```
 
 **高级**
