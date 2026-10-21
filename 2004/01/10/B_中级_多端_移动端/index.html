@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>多端_移动端  </title>
+  <meta name="description" content="大纲参考 移动端H5主要以 vue3+vant 为主   3 天吃透 Vue3+Vite+Vant 移动开发的新特性-video vue3.2+vite+vant 企业实战项目 仿马蜂窝 旅游 H5-video Vue3+Vite+Vant-UI 开发双端招聘 APP-video 基于 Vue3.2+TypeScript 《医疗问诊》项目课程-video   跨端 APP：Flutter、Reac">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多端_移动端">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="大纲参考 移动端H5主要以 vue3+vant 为主   3 天吃透 Vue3+Vite+Vant 移动开发的新特性-video vue3.2+vite+vant 企业实战项目 仿马蜂窝 旅游 H5-video Vue3+Vite+Vant-UI 开发双端招聘 APP-video 基于 Vue3.2+TypeScript 《医疗问诊》项目课程-video   跨端 APP：Flutter、Reac">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220510071129446.png">
+<meta property="article:published_time" content="2004-01-09T22:33:16.000Z">
+<meta property="article:modified_time" content="2026-09-14T11:25:49.325Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/image-20220510071129446.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A1-LLM/">A1_LLM</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E5%88%9D%E7%BA%A7/">A_初级</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-%E4%B8%AD%E7%BA%A7/">B_中级</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E9%AB%98%E7%BA%A7/">C_高级</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E8%A7%84%E5%88%92/">D_规划</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/04/">四月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/01/">一月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2098/01/">一月 2098</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">七月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">一月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/03/">三月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/02/">二月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/01/">一月 2004</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/06/">六月 2003</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/01/">一月 2003</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/06/">六月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/02/">二月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/01/">一月 2002</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/06/">六月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/03/">三月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/02/">二月 2001</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/01/">一月 2001</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/06/">六月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/03/">三月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/02/">二月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/01/">一月 2000</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/04/04/%E6%A8%A1%E6%9D%BFX/" class="title">模板X</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-04-04T00:33:16.000Z" itemprop="datePublished">2099-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/03/29/Z_%E5%90%8E%E7%AB%AF_Java/" class="title">Java</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-03-28T23:33:16.000Z" itemprop="datePublished">2099-03-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/01/01/G_%E5%85%B6%E4%BB%96_%E4%B9%A6%E5%8D%95/" class="title">书单</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-01-01T00:33:16.000Z" itemprop="datePublished">2099-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A1-LLM/">A1_LLM</a>
+              </p>
+              <p class="item-title">
+                <a href="/2098/01/01/A1_LLM_windows%E5%AE%89%E8%A3%85%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="title">LLM_windows安装大模型</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2097-12-31T22:33:16.000Z" itemprop="datePublished">2098-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2026/07/18/Test%20copy/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2026-07-18T02:11:18.292Z" itemprop="datePublished">2026-07-18</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%A7%E7%BA%B2"><span class="toc-number">1.</span> <span class="toc-text">大纲</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9D%E7%BA%A7"><span class="toc-number">2.</span> <span class="toc-text">初级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D"><span class="toc-number">2.1.</span> <span class="toc-text">移动端适配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#meta-viewport-%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">2.2.</span> <span class="toc-text">meta viewport 的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1px-%E8%BE%B9%E6%A1%86%E9%97%AE%E9%A2%98"><span class="toc-number">2.3.</span> <span class="toc-text">1px 边框问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%82%B9%E5%87%BB-300ms-%E5%BB%B6%E8%BF%9F%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-number">2.4.</span> <span class="toc-text">点击 300ms 延迟的原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rem-vw-%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88"><span class="toc-number">2.5.</span> <span class="toc-text">rem &#x2F; vw 适配方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A6%E6%91%B8%E4%BA%8B%E4%BB%B6"><span class="toc-number">2.6.</span> <span class="toc-text">触摸事件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AF%E9%94%AE%E7%9B%98%E5%BC%B9%E8%B5%B7%E9%97%AE%E9%A2%98"><span class="toc-number">2.7.</span> <span class="toc-text">软键盘弹起问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%82%B9%E5%87%BB%E7%A9%BF%E9%80%8F"><span class="toc-number">2.8.</span> <span class="toc-text">点击穿透</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E9%80%82%E9%85%8D%E4%B8%8D%E5%90%8C-DPR-%E5%B1%8F%E5%B9%95"><span class="toc-number">2.9.</span> <span class="toc-text">图片适配不同 DPR 屏幕</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#safe-area-%E9%80%82%E9%85%8D"><span class="toc-number">2.10.</span> <span class="toc-text">safe-area 适配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%B8%83%E5%B1%80"><span class="toc-number">2.11.</span> <span class="toc-text">常用布局</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%AD%E7%BA%A7"><span class="toc-number">3.</span> <span class="toc-text">中级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-number">3.1.</span> <span class="toc-text">性能优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E6%87%92%E5%8A%A0%E8%BD%BD%E5%8E%9F%E7%90%86"><span class="toc-number">3.2.</span> <span class="toc-text">图片懒加载原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BB%9A%E5%8A%A8%E5%8D%A1%E9%A1%BF"><span class="toc-number">3.3.</span> <span class="toc-text">滚动卡顿</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JSBridge%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">3.4.</span> <span class="toc-text">JSBridge是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%BC%E5%AE%B9%E9%97%AE%E9%A2%98"><span class="toc-number">3.5.</span> <span class="toc-text">兼容问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E7%94%BB%E6%8E%A8%E8%8D%90-transform-%E8%80%8C%E4%B8%8D%E6%98%AF-top-left"><span class="toc-number">3.6.</span> <span class="toc-text">动画推荐 transform 而不是 top&#x2F;left</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9C%9F%E6%9C%BA%E8%B0%83%E8%AF%95"><span class="toc-number">3.7.</span> <span class="toc-text">真机调试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E6%8B%89%E5%88%B7%E6%96%B0%E5%92%8C%E4%B8%8A%E6%8B%89%E5%8A%A0%E8%BD%BD"><span class="toc-number">3.8.</span> <span class="toc-text">下拉刷新和上拉加载</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7"><span class="toc-number">4.</span> <span class="toc-text">高级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%85%A5-URL-%E5%88%B0%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%A1%B5%E9%9D%A2%E6%B8%B2%E6%9F%93%E5%AE%8C%E6%88%90"><span class="toc-number">4.1.</span> <span class="toc-text">输入 URL 到移动端页面渲染完成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A6%96%E5%B1%8F%E7%A7%92%E5%BC%80-%E5%BC%B1%E7%BD%91"><span class="toc-number">4.2.</span> <span class="toc-text">首屏秒开&#x2F;弱网</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%88%97%E8%A1%A8"><span class="toc-number">4.3.</span> <span class="toc-text">虚拟列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PWA-%E7%9A%84%E6%A0%B8%E5%BF%83%E8%83%BD%E5%8A%9B"><span class="toc-number">4.4.</span> <span class="toc-text">PWA 的核心能力</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hybrid%E9%80%89%E5%9E%8B"><span class="toc-number">4.5.</span> <span class="toc-text">Hybrid选型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%AF%E7%9B%91%E6%8E%A7%E4%BD%93%E7%B3%BB"><span class="toc-number">4.6.</span> <span class="toc-text">移动端监控体系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%92%E6%9F%A5%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F"><span class="toc-number">4.7.</span> <span class="toc-text">排查内存泄漏</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8E-H5"><span class="toc-number">4.8.</span> <span class="toc-text">小程序与 H5</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#React-Native"><span class="toc-number">5.</span> <span class="toc-text">React Native</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Flutter"><span class="toc-number">6.</span> <span class="toc-text">Flutter</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Flutter%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">6.1.</span> <span class="toc-text">1.Flutter是什么?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Flutter%E4%BC%98%E5%8A%BF"><span class="toc-number">6.2.</span> <span class="toc-text">2.Flutter优势</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%A0%B8%E5%BF%83%E6%A8%A1%E5%9D%97"><span class="toc-number">6.3.</span> <span class="toc-text">3.核心模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%B8%80%E5%88%87%E7%9A%86%E4%B8%BAwidget"><span class="toc-number">6.4.</span> <span class="toc-text">4.一切皆为widget</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Flutter%E4%B8%8EReact-Native%E3%80%81Weex%E6%AF%94%E8%BE%83"><span class="toc-number">6.5.</span> <span class="toc-text">5.Flutter与React Native、Weex比较</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-B_中级_多端_移动端" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      多端_移动端
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/" class="article-date">
+	  <time datetime="2004-01-09T22:33:16.000Z" itemprop="datePublished">2004-01-10</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/B-%E4%B8%AD%E7%BA%A7/">B_中级</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h1><p><strong>参考</strong></p>
+<p>移动端H5主要以 vue3+vant 为主</p>
+<blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1TU4y177UG?vd_source=bd4c7d99d71adf64d6e88c65370e0247&spm_id_from=333.788.videopod.episodes">3 天吃透 Vue3+Vite+Vant 移动开发的新特性-video</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1LV4y1z7zY?vd_source=bd4c7d99d71adf64d6e88c65370e0247&spm_id_from=333.788.videopod.episodes">vue3.2+vite+vant 企业实战项目 仿马蜂窝 旅游 H5-video</a></li>
+<li>Vue3+Vite+Vant-UI 开发双端招聘 APP-video</li>
+<li>基于 Vue3.2+TypeScript 《医疗问诊》项目课程-video</li>
+</ul>
+</blockquote>
+<p>跨端 APP：Flutter、React Native、UniApp</p>
+<blockquote>
+<ul>
+<li>Flutter 从入门到进阶 实战携程网 App-video-mk</li>
+<li>Dart Flutter 入门实战基础视频教程-video</li>
+<li>SpringBoot+Uniapp 实战开发全新仿抖音短视频 App-video-mk</li>
+<li>React Native 从入门到实战 打造高质量上线 App-video-mk</li>
+<li>React Native+TypeScript 仿喜马拉雅开发 App-video-mk</li>
+</ul>
+</blockquote>
+<h1 id="初级"><a href="#初级" class="headerlink" title="初级"></a>初级</h1><h2 id="移动端适配"><a href="#移动端适配" class="headerlink" title="移动端适配"></a>移动端适配</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>让同一套页面，在不同尺寸、不同 DPR（设备像素比）的手机上，呈现比例一致的布局和视觉。</p>
+<p>适配要解决两个问题：<strong>布局等比缩放 + 高清细节还原</strong>。</p>
+</blockquote>
+<p><strong>基础概念</strong></p>
+<blockquote>
+<ul>
+<li><strong>物理像素</strong>：屏幕实际渲染的最小发光点</li>
+<li><strong>逻辑像素（CSS 像素）</strong>：我们写代码用的 px</li>
+<li><strong>DPR = 物理像素 / 逻辑像素</strong>，iPhone 3 是 1，普通 retina 屏是 2、3</li>
+</ul>
+</blockquote>
+<p><strong>二、主流方案</strong></p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>原理</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>rem 布局（flexible）</strong></td>
+<td>设置 <code>html &#123; font-size &#125;</code>，元素用 rem 单位，随屏幕宽度等比缩放</td>
+<td>兼容性好，方案成熟</td>
+<td>需要换算（用 postcss 插件解决）；<code>1rem ≠ 屏幕宽</code>，不好直观估算</td>
+</tr>
+<tr>
+<td><strong>vw / vh 布局</strong></td>
+<td>1vw = 屏幕宽度 1%，直接用 vw 写样式</td>
+<td>原生单位、无 JS、换算直观</td>
+<td>兼容性依赖较新浏览器（现在基本无压力）；字号无法随用户设置变化</td>
+</tr>
+<tr>
+<td><strong>rem + vw 混合（主流推荐）</strong></td>
+<td><code>html &#123; font-size: calc(100vw / 设计稿份数) &#125;</code>，元素仍用 rem</td>
+<td>纯 CSS 实现等比缩放，rem 语义清晰</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>% / flex / grid 弹性布局</strong></td>
+<td>弹性伸缩，不做等比缩放</td>
+<td>内容自适应，信息类页面（新闻、后台）最佳</td>
+<td>视觉还原度低，不适合强视觉设计稿</td>
+</tr>
+<tr>
+<td><strong>媒体查询 @media</strong></td>
+<td>断点切换样式</td>
+<td>简单可控</td>
+<td>断点有限，粒度粗</td>
+</tr>
+<tr>
+<td><strong>viewport 缩放</strong></td>
+<td>动态改 <code>meta viewport</code> 的 <code>scale</code> 整页缩放</td>
+<td>整页 100% 还原设计稿</td>
+<td>文字会被缩糊、交互坐标易错位，维护差，不推荐</td>
+</tr>
+</tbody></table>
+<p><strong>px，em，rem</strong></p>
+<p>px时屏幕上显示像素的基本单位。em是一个相对大小，相当于父元素的font-size的百分比大小(如果使用的话，要一层层计算，太复杂)。rem也是相对大小，是相对于根元素的font-size。</p>
+<p>每次开发框架时，开发只需要动态调整UI给的设计稿即可，即designWidth。然后如果高保真图片是500px的宽度，就写5rem。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> designWidth = <span class="number">750</span>; <span class="comment">// 设计稿宽度(每次开发框架时，开发只需要动态调整UI给的设计稿即可)</span></span><br><span class="line"><span class="keyword">const</span> baseFontSize = <span class="number">100</span>; <span class="comment">// 基准 font-size</span></span><br><span class="line"><span class="keyword">const</span> clientWidth = docEl.<span class="property">clientWidth</span>; <span class="comment">// 当前屏幕宽度</span></span><br><span class="line"><span class="comment">// 一般设计稿宽度：750px -&gt; 对应 html &#123; font-size: 100px&#125;即1rem=100px，100px只是方便计算，如果高保真图片是200px的宽度，就可以写2rem，实际是2rem*100px=200px</span></span><br><span class="line"><span class="comment">// 那么如果在小屏幕上375px -&gt; 对应 html &#123; font-size: 50px&#125;即1rem=50px,如果高保真图片是200px的宽度，就可以写2rem，实际是2rem*50px=100px.刚好实现了等比例放缩，缩小一般。</span></span><br><span class="line"><span class="variable language_">document</span>.<span class="property">documentElement</span>.<span class="property">style</span>.<span class="property">fontSize</span> = (clientWidth/designWidth)*baseFontSize+<span class="string">&#x27;px&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>三、代码</strong></p>
+<p><strong>（以 375 设计稿为例）</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 方案：rem + vw 混合，postcss-pxtorem 自动换算 */</span></span><br><span class="line"><span class="selector-tag">html</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">16px</span>; <span class="comment">/* 兜底 */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 375 宽设计稿分 10 份，1rem = 37.5px */</span></span><br><span class="line"><span class="keyword">@supports</span> (<span class="attribute">font-size</span>: <span class="number">1vw</span>) &#123;</span><br><span class="line">  <span class="selector-tag">html</span> &#123; <span class="attribute">font-size</span>: <span class="number">10vw</span>; &#125; <span class="comment">/* = 37.5px */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// postcss.config.js</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">plugins</span>: &#123;</span><br><span class="line">    <span class="string">&#x27;postcss-pxtorem&#x27;</span>: &#123;</span><br><span class="line">      <span class="attr">rootValue</span>: <span class="number">37.5</span>,   <span class="comment">// 设计稿宽度 / 10</span></span><br><span class="line">      <span class="attr">propList</span>: [<span class="string">&#x27;*&#x27;</span>],</span><br><span class="line">      <span class="attr">selectorBlackList</span>: [<span class="string">&#x27;.no-rem&#x27;</span>], <span class="comment">// 某些不需要缩放的元素</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>四、进阶</strong></p>
+<blockquote>
+<ul>
+<li>flexible 旧方案里动态改 viewport <code>scale</code> 的做法已被淘宝官方废弃，改用纯 vw/rem</li>
+<li><strong>字体不一定要用 rem</strong>：正文建议用固定 px 或 clamp，避免大屏手机字超大；标题用 rem 等比</li>
+<li><strong>1px 边框问题</strong>单独处理（见下题）</li>
+<li>用户可能改系统字号，rem 方案下可用 <code>text-size-adjust</code> 控制</li>
+</ul>
+</blockquote>
+<h2 id="meta-viewport-的作用"><a href="#meta-viewport-的作用" class="headerlink" title="meta viewport 的作用"></a>meta viewport 的作用</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>viewport 控制页面在移动浏览器中的可视区域和缩放行为。</p>
+</blockquote>
+<p><strong>二、原理</strong></p>
+<blockquote>
+<p>手机浏览器默认 viewport 宽度为 980px，页面会被整体缩小显示，字太小需要手动缩放。</p>
+</blockquote>
+<p><strong>三、解决方案</strong></p>
+<blockquote>
+<ul>
+<li><code>width=device-width</code>：宽度等于设备宽度</li>
+<li><code>initial-scale</code>：初始缩放比例</li>
+<li><code>user-scalable=no</code>：禁止用户缩放（注意无障碍问题）</li>
+</ul>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name=<span class="string">&quot;viewport&quot;</span> content=<span class="string">&quot;width=device-width, initial-scale=1.0, user-scalable=no&quot;</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1px-边框问题"><a href="#1px-边框问题" class="headerlink" title="1px 边框问题"></a>1px 边框问题</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>由于 DPR（设备像素比）&gt; 1，CSS 的 1px 被渲染成 2~3 物理像素，视觉上偏粗。</p>
+</blockquote>
+<p><strong>二、原理</strong></p>
+<blockquote>
+<p>iPhone 的 DPR 为 2 或 3，<code>1px</code> 逻辑像素对应多个物理像素。</p>
+</blockquote>
+<p><strong>三、解决方案</strong></p>
+<blockquote>
+<p>方案对比：scaleY 只适合单边框；viewport 缩放最彻底但需 JS 动态计算；<code>border-image</code> / <code>box-shadow</code> 有缺陷，已少用。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/* 方案1：伪元素 + transform 缩放（主流） */</span><br><span class="line">.border-1px::after &#123;</span><br><span class="line">  content: &#x27;&#x27;;</span><br><span class="line">  position: absolute;</span><br><span class="line">  left: 0; bottom: 0;</span><br><span class="line">  width: 100%;</span><br><span class="line">  height: 1px;</span><br><span class="line">  background: #ccc;</span><br><span class="line">  transform: scaleY(0.5);</span><br><span class="line">  transform-origin: 0 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;!-- 方案2：viewport 缩放（配合 rem 布局） --&gt;</span><br><span class="line">&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=0.5&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="点击-300ms-延迟的原因"><a href="#点击-300ms-延迟的原因" class="headerlink" title="点击 300ms 延迟的原因"></a>点击 300ms 延迟的原因</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>早期移动浏览器为区分“单击”和“双击缩放”，点击后等待 300ms 判断是否双击。</p>
+</blockquote>
+<p><strong>二、解决方案</strong></p>
+<blockquote>
+<ol>
+<li>声明 viewport（现代浏览器自动取消延迟）✅</li>
+<li><code>fastclick</code> 库 —— <strong>原理</strong>：在 <code>touchend</code> 时 <code>preventDefault()</code> 阻止默认事件，并手动派发 click</li>
+</ol>
+</blockquote>
+<p><strong>三、优劣对比</strong></p>
+<blockquote>
+<p>fastclick 现已不常用，但它的原理仍是高频追问点。</p>
+</blockquote>
+<h2 id="rem-vw-适配方案"><a href="#rem-vw-适配方案" class="headerlink" title="rem / vw 适配方案"></a>rem / vw 适配方案</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>rem 和 vw 都是相对单位，用于实现移动端等比自适应布局。</p>
+</blockquote>
+<p><strong>二、定义</strong></p>
+<blockquote>
+<ul>
+<li><code>rem</code>：相对根元素 <code>font-size</code>，通过 JS 动态设置根字号实现缩放</li>
+<li><code>vw</code>：视口宽度的 1%，纯 CSS 无 JS</li>
+</ul>
+</blockquote>
+<p><strong>三、解决方案</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// rem 方案：1rem = 屏宽 / 10</span></span><br><span class="line"><span class="variable language_">document</span>.<span class="property">documentElement</span>.<span class="property">style</span>.<span class="property">fontSize</span> = </span><br><span class="line"><span class="variable language_">document</span>.<span class="property">documentElement</span>.<span class="property">clientWidth</span> / <span class="number">10</span> + <span class="string">&#x27;px&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* vw 方案：设计稿 375px，元素 40px，用 postcss-px-to-viewport 自动转换 */</span></span><br><span class="line"><span class="selector-class">.el</span> &#123; <span class="attribute">width</span>: <span class="built_in">calc</span>(<span class="number">40</span> / <span class="number">375</span> * <span class="number">100vw</span>); &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>四、优劣对比</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>rem</td>
+<td>兼容性好</td>
+<td>依赖 JS，有闪屏/精度问题</td>
+</tr>
+<tr>
+<td>vw</td>
+<td>纯 CSS、精度高</td>
+<td>老设备不支持（现在可忽略）</td>
+</tr>
+</tbody></table>
+<p><strong>加分项</strong>：阿里 flexible 方案已官方宣布过时，现在主流是 <code>vw + postcss</code>。</p>
+<h2 id="触摸事件"><a href="#触摸事件" class="headerlink" title="触摸事件"></a>触摸事件</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>核心触摸事件有 <code>touchstart / touchmove / touchend / touchcancel</code>。</p>
+</blockquote>
+<p><strong>二、原理</strong></p>
+<p>事件对象包含三个触摸点列表：</p>
+<blockquote>
+<ul>
+<li><code>touches</code>：屏幕上所有触摸点</li>
+<li><code>targetTouches</code>：目标元素上的触摸点</li>
+<li><code>changedTouches</code>：触发本次事件的触摸点（<strong>touchend 时只有它能拿到信息</strong>）</li>
+</ul>
+</blockquote>
+<p><strong>加分项</strong>：<code>touchcancel</code> 的触发场景（来电、系统手势打断）；滑动/捏合手势需基于 touch 事件自行计算。</p>
+<h2 id="软键盘弹起问题"><a href="#软键盘弹起问题" class="headerlink" title="软键盘弹起问题"></a>软键盘弹起问题</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>软键盘会遮挡输入框，或导致 fixed 元素错位。</p>
+</blockquote>
+<p><strong>二、原理</strong></p>
+<blockquote>
+<p>iOS 键盘弹起<strong>不改变窗口高度</strong>（页面整体被推上去），Android 会<strong>压缩视口高度</strong>，行为不一致。</p>
+</blockquote>
+<p><strong>三、解决方案</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 输入框被遮挡：聚焦时滚动到可视区</span></span><br><span class="line">input.<span class="title function_">addEventListener</span>(<span class="string">&#x27;focus&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> input.<span class="title function_">scrollIntoView</span>(&#123; <span class="attr">block</span>: <span class="string">&#x27;center&#x27;</span> &#125;), <span class="number">300</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// iOS 键盘收起后底部留白：失焦时手动滚回</span></span><br><span class="line">input.<span class="title function_">addEventListener</span>(<span class="string">&#x27;blur&#x27;</span>, <span class="function">() =&gt;</span> <span class="variable language_">window</span>.<span class="title function_">scrollTo</span>(<span class="number">0</span>, <span class="number">0</span>));</span><br></pre></td></tr></table></figure>
+
+<p><strong>加分项</strong>：<code>VisualViewport API</code> 是较新的标准方案，可精确获取键盘弹出后的可视区域。</p>
+<h2 id="点击穿透"><a href="#点击穿透" class="headerlink" title="点击穿透"></a>点击穿透</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>上层元素在 touch 事件中消失后，300ms 内的 click 落到了下层元素上。</p>
+</blockquote>
+<p><strong>二、原理</strong></p>
+<blockquote>
+<p>典型场景 —— “touchstart 关闭蒙层 → 浏览器又派发 click → 命中蒙层下方的按钮”。</p>
+</blockquote>
+<p><strong>三、解决方案</strong></p>
+<blockquote>
+<ol>
+<li>蒙层关闭统一用 <code>click</code> 事件</li>
+<li>在 touchend 中调用 <code>e.preventDefault()</code></li>
+<li>下层按钮延迟绑定事件</li>
+</ol>
+</blockquote>
+<h2 id="图片适配不同-DPR-屏幕"><a href="#图片适配不同-DPR-屏幕" class="headerlink" title="图片适配不同 DPR 屏幕"></a>图片适配不同 DPR 屏幕</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>根据 DPR 加载 1x/2x/3x 图，避免模糊或浪费流量。</p>
+</blockquote>
+<p><strong>二、解决方案</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=<span class="string">&quot;img@1x.png&quot;</span> </span><br><span class="line">     srcset=<span class="string">&quot;img@2x.png 2x, img@3x.png 3x&quot;</span> alt=<span class="string">&quot;&quot;</span>&gt;</span><br><span class="line"></span><br><span class="line">&lt;picture&gt;</span><br><span class="line">  &lt;source media=&quot;(min-resolution: 3dppx)&quot; srcset=&quot;img@3x.png&quot;&gt;</span><br><span class="line">  &lt;source media=&quot;(min-resolution: 2dppx)&quot; srcset=&quot;img@2x.png&quot;&gt;</span><br><span class="line">  &lt;img src=&quot;img@1x.png&quot; alt=&quot;&quot;&gt;</span><br><span class="line">&lt;/picture&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>加分项</strong>：WebP 体积减少 25%+；CDN 图片服务动态裁剪。</p>
+<h2 id="safe-area-适配"><a href="#safe-area-适配" class="headerlink" title="safe-area 适配"></a>safe-area 适配</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>iPhone X 之后的刘海屏和底部指示条需要避让，否则内容被遮挡。</p>
+</blockquote>
+<p><strong>二、解决方案</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name=<span class="string">&quot;viewport&quot;</span> content=<span class="string">&quot;viewport-fit=cover&quot;</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">padding-bottom</span>: <span class="built_in">constant</span>(safe-area-inset-bottom); <span class="comment">/* iOS 11.0-11.2 */</span></span><br><span class="line"><span class="attribute">padding-bottom</span>: <span class="built_in">env</span>(safe-area-inset-bottom);      <span class="comment">/* iOS 11.2+ */</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>加分项</strong>：四个方向的 <code>safe-area-inset-*</code>，吸底按钮的适配实践。</p>
+<h2 id="常用布局"><a href="#常用布局" class="headerlink" title="常用布局"></a>常用布局</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>主流方案为 flex 为主、grid 为辅、rem/vw 控制尺寸。</p>
+</blockquote>
+<p><strong>二、解决方案</strong></p>
+<blockquote>
+<ul>
+<li><strong>Flex</strong>：解决绝大多数一维布局场景</li>
+<li><strong>Grid</strong>：九宫格、复杂二维布局</li>
+<li><strong>移动端特殊处理</strong>：文本溢出省略、sticky 吸顶、<code>flex: 1</code> 的兼容写法</li>
+</ul>
+</blockquote>
+<p><strong>加分项</strong>：能说出 iOS Safari 上 flex 的一些兼容 bug（如 flex-basis 百分比问题）。</p>
+<h1 id="中级"><a href="#中级" class="headerlink" title="中级"></a>中级</h1><h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><p><strong>一、加载层</strong></p>
+<blockquote>
+<ul>
+<li>路由懒加载、代码分割</li>
+<li>图片懒加载 + WebP + CDN 裁剪</li>
+<li>骨架屏替代 loading</li>
+<li>HTTP 强缓存/协商缓存 + Service Worker</li>
+</ul>
+</blockquote>
+<p><strong>二、渲染层</strong></p>
+<blockquote>
+<ul>
+<li>动画只用 <code>transform/opacity</code></li>
+<li>长列表虚拟滚动</li>
+<li>scroll/input 防抖节流</li>
+</ul>
+</blockquote>
+<p><strong>三、资源层</strong></p>
+<blockquote>
+<ul>
+<li>中文字体子集化</li>
+<li>组件库按需引入</li>
+</ul>
+</blockquote>
+<p><strong>加分项</strong>：结合 Lighthouse 数据量化，说出优化前后对比（如首屏 3s → 1.2s）。</p>
+<h2 id="图片懒加载原理"><a href="#图片懒加载原理" class="headerlink" title="图片懒加载原理"></a>图片懒加载原理</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>延迟加载视口外图片，节省流量、加快首屏。</p>
+</blockquote>
+<p><strong>二、解决方案</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// IntersectionObserver（推荐）</span></span><br><span class="line"><span class="keyword">const</span> observer = <span class="keyword">new</span> <span class="title class_">IntersectionObserver</span>(<span class="function">(<span class="params">entries</span>) =&gt;</span> &#123;</span><br><span class="line">  entries.<span class="title function_">forEach</span>(<span class="function"><span class="params">entry</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (entry.<span class="property">isIntersecting</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> img = entry.<span class="property">target</span>;</span><br><span class="line">      img.<span class="property">src</span> = img.<span class="property">dataset</span>.<span class="property">src</span>;</span><br><span class="line">      observer.<span class="title function_">unobserve</span>(img);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;, &#123; <span class="attr">rootMargin</span>: <span class="string">&#x27;100px&#x27;</span> &#125;); <span class="comment">// 提前 100px 预加载</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">querySelectorAll</span>(<span class="string">&#x27;img[data-src]&#x27;</span>).<span class="title function_">forEach</span>(<span class="function"><span class="params">img</span> =&gt;</span> observer.<span class="title function_">observe</span>(img));</span><br></pre></td></tr></table></figure>
+
+<p><strong>三、方案对比</strong></p>
+<blockquote>
+<p>scroll + <code>getBoundingClientRect</code>（需节流，兼容旧浏览器）vs IntersectionObserver（性能好，主流）。</p>
+</blockquote>
+<p><strong>加分项</strong>：原生 <code>loading=&quot;lazy&quot;</code>；Chrome 的动态阈值策略（离视口越近阈值越小）。</p>
+<h2 id="滚动卡顿"><a href="#滚动卡顿" class="headerlink" title="滚动卡顿"></a>滚动卡顿</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<ul>
+<li>长列表 DOM 过多</li>
+<li>scroll 事件频繁触发重排</li>
+<li>大图、复杂样式重绘开销大</li>
+</ul>
+</blockquote>
+<p><strong>二、解决方案</strong></p>
+<blockquote>
+<ul>
+<li>scroll 回调节流 + <code>requestAnimationFrame</code></li>
+<li><strong>虚拟列表</strong>：只渲染可视区 + 上下缓冲区 DOM</li>
+</ul>
+</blockquote>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* GPU 加速 */</span></span><br><span class="line"><span class="selector-class">.animated</span> &#123; <span class="attribute">transform</span>: <span class="built_in">translateZ</span>(<span class="number">0</span>); <span class="attribute">will-change</span>: transform; &#125;</span><br><span class="line"><span class="comment">/* iOS 惯性滚动 */</span></span><br><span class="line"><span class="selector-class">.scroll-box</span> &#123; -webkit-<span class="attribute">overflow</span>-scrolling: touch; &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>加分项</strong>：能讲虚拟列表实现原理（绝对定位 + transform 位移补偿 + 动态高度场景处理）。</p>
+<h2 id="JSBridge是什么"><a href="#JSBridge是什么" class="headerlink" title="JSBridge是什么"></a>JSBridge是什么</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>JSBridge 是 H5 与原生之间的通信桥梁，实现双向调用。</p>
+</blockquote>
+<p><strong>二、原理</strong></p>
+<p><strong>H5 → Native</strong></p>
+<blockquote>
+<ol>
+<li>URL Scheme 拦截（<code>jsbridge://method?params</code>）</li>
+<li><strong>注入 API</strong>（主流）：iOS 的 <code>window.webkit.messageHandlers</code>、Android 的 <code>addJavascriptInterface</code></li>
+</ol>
+</blockquote>
+<p><strong>Native → H5</strong></p>
+<blockquote>
+<ul>
+<li>iOS：<code>evaluateJavaScript</code></li>
+<li>Android：<code>evaluateJavascript / loadUrl</code></li>
+</ul>
+</blockquote>
+<p><strong>加分项</strong>：回调机制（callbackId 映射表）、Native 未注入完成时的消息队列、URL 白名单安全校验。</p>
+<h2 id="兼容问题"><a href="#兼容问题" class="headerlink" title="兼容问题"></a>兼容问题</h2><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>解决方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>iOS <code>new Date(&#39;2024-01-01&#39;)</code> 为 NaN</td>
+<td>格式改为 <code>2024/01/01</code></td>
+</tr>
+<tr>
+<td>iOS 输入框内阴影</td>
+<td><code>-webkit-appearance: none</code></td>
+</tr>
+<tr>
+<td>音视频自动播放被禁</td>
+<td>首次 touchstart 后触发 play()</td>
+</tr>
+<tr>
+<td>软键盘导致 fixed 错位</td>
+<td>改 absolute 布局 + 内部滚动</td>
+</tr>
+<tr>
+<td>iOS 橡皮筋效果</td>
+<td><code>overscroll-behavior: none</code></td>
+</tr>
+<tr>
+<td>长按弹出系统菜单</td>
+<td><code>-webkit-touch-callout: none</code></td>
+</tr>
+</tbody></table>
+<p><strong>加分项</strong>：使用 <code>browserslist + autoprefixer</code> 自动处理前缀；维护兼容性问题清单文档。</p>
+<h2 id="动画推荐-transform-而不是-top-left"><a href="#动画推荐-transform-而不是-top-left" class="headerlink" title="动画推荐 transform 而不是 top/left"></a>动画推荐 transform 而不是 top/left</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<ul>
+<li><code>top/left</code> 触发 <strong>layout → paint → composite</strong> 全流程</li>
+<li><code>transform</code> 只触发 <strong>composite</strong>，由合成器线程处理，不阻塞主线程</li>
+</ul>
+</blockquote>
+<p><strong>二、代码</strong></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* ❌ 每帧重排 */</span></span><br><span class="line"><span class="keyword">@keyframes</span> move &#123; <span class="selector-tag">to</span> &#123; <span class="attribute">left</span>: <span class="number">100px</span>; &#125; &#125;</span><br><span class="line"><span class="comment">/* ✅ 仅合成 */</span></span><br><span class="line"><span class="keyword">@keyframes</span> move &#123; <span class="selector-tag">to</span> &#123; <span class="attribute">transform</span>: <span class="built_in">translateX</span>(<span class="number">100px</span>); &#125; &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>加分项</strong>：能画出浏览器渲染流水线；<code>will-change</code> 滥用会增加内存；CSS 合成动画即使 JS 阻塞也不掉帧。</p>
+<h2 id="真机调试"><a href="#真机调试" class="headerlink" title="真机调试"></a>真机调试</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<ol>
+<li><strong>iOS</strong>：Safari 开发模式 + 数据线</li>
+<li><strong>Android</strong>：Chrome + <code>chrome://inspect</code></li>
+<li><strong>vconsole / eruda</strong>：页面内嵌调试面板（生产环境记得关闭）</li>
+<li><strong>Charles / Whistle</strong>：抓包、mock 数据、断点</li>
+<li><strong>微信</strong>：微信开发者工具 Remote Debug</li>
+</ol>
+</blockquote>
+<p><strong>加分项</strong>：Whistle 的 mock 与代理实践、HTTPS 抓包证书配置。</p>
+<h2 id="下拉刷新和上拉加载"><a href="#下拉刷新和上拉加载" class="headerlink" title="下拉刷新和上拉加载"></a>下拉刷新和上拉加载</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>基于 touch 事件监听手势，配合位移和状态机实现。</p>
+</blockquote>
+<p><strong>二、原理</strong></p>
+<blockquote>
+<ul>
+<li>下拉刷新：<code>touchmove</code> 中计算位移（顶部时才生效）→ 释放后超过阈值触发刷新动画 → 数据回来后复位</li>
+<li>上拉加载：监听 scroll，滚动到底部（<code>scrollTop + clientHeight &gt;= scrollHeight - buffer</code>）时请求下一页</li>
+</ul>
+</blockquote>
+<p><strong>三、代码</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 阻止 iOS 橡皮筋干扰，touchmove 时用 transform 跟随手指</span></span><br><span class="line"><span class="comment">// 注意 Three 点：位移系数（0.5 阻尼感）、状态锁（防止重复请求）、touchcancel 兜底</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>加分项</strong>：提到直接使用成熟方案（better-scroll、vant-list），并说出自己实现时踩过的坑（如 iOS 橡皮筋导致的误触发）。</p>
+<h1 id="高级"><a href="#高级" class="headerlink" title="高级"></a>高级</h1><h2 id="输入-URL-到移动端页面渲染完成"><a href="#输入-URL-到移动端页面渲染完成" class="headerlink" title="输入 URL 到移动端页面渲染完成"></a>输入 URL 到移动端页面渲染完成</h2><p><strong>网络层</strong></p>
+<blockquote>
+<p>DNS → TCP → TLS → HTTP。移动端特点：<strong>弱网环境</strong>，需要考虑 DNS 劫持（HTTPDNS）、连接复用（HTTP/2、QUIC）。</p>
+</blockquote>
+<p><strong>渲染层</strong></p>
+<blockquote>
+<p>解析 HTML 构建 DOM → CSSOM → 渲染树 → Layout → Paint → Composite。移动端特点：<strong>合成层爆炸会导致内存暴涨</strong>（低端安卓机直接崩溃），需控制 <code>will-change</code> 和层数量。</p>
+</blockquote>
+<p><strong>加分项</strong>：能延伸到 <strong>CRP（关键渲染路径）优化</strong> —— 关键 CSS 内联、JS 异步化（async/defer）、资源优先级控制；以及移动端特有的<strong>离线包 + 预加载</strong>体系（美团/阿里方案）。</p>
+<h2 id="首屏秒开-弱网"><a href="#首屏秒开-弱网" class="headerlink" title="首屏秒开/弱网"></a>首屏秒开/弱网</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>先定义指标 —— LCP &lt; 2.5s，用 <code>web-vitals</code> + 上报体系建立监控看板。</p>
+</blockquote>
+<p><strong>二、分层优化</strong></p>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>手段</th>
+<th>关键词</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>网络层</td>
+<td>CDN、HTTP/2多路复用、QUIC（抗丢包）、HTTPDNS(解决 DNS 劫持和解析慢)、域名收敛</td>
+<td>快</td>
+</tr>
+<tr>
+<td>资源层</td>
+<td>代码分割、Tree Shaking、Brotli、图片 WebP/AVIF、增量更新、数据压缩（Protobuf 替代 JSON）</td>
+<td>小</td>
+</tr>
+<tr>
+<td>渲染层</td>
+<td>SSR / 预渲染、关键 CSS 内联、骨架屏</td>
+<td>早见</td>
+</tr>
+<tr>
+<td>缓存层</td>
+<td>Service Worker 离线缓存、端内离线包</td>
+<td>不重复请求</td>
+</tr>
+<tr>
+<td>预测层</td>
+<td>预加载下一页资源（用户意图预测）</td>
+<td>抢跑</td>
+</tr>
+</tbody></table>
+<p> 弱网场景补充（问弱网时加这部分）</p>
+<ul>
+<li>请求：超时设置 + <strong>指数退避重试</strong></li>
+<li>兜底：缓存数据优先展示、失败降级</li>
+<li>体验：弱网提示、接口合并减少请求次数</li>
+<li>测试：Charles 限速模拟弱网</li>
+</ul>
+<p><strong>三、具体作答</strong></p>
+<blockquote>
+<ul>
+<li><p>问<strong>秒开</strong> → 五层框架 + 重点讲离线包和数据预取</p>
+<p>能给出量化结果（“首屏从 3.2s 优化到 1.4s，转化率提升 x%”）；提到大厂的 <strong>秒开方案</strong>（离线包 + 数据预取 + 骨架屏直出）</p>
+</li>
+<li><p>问<strong>弱网优化</strong> → 简略带过五层 + 重点讲重试/兜底/降级</p>
+<p>能讲<strong>弱网模拟测试</strong>（Charles 限速、iOS Network Link Conditioner）；以及大厂的<strong>多通道并发请求</strong>（同接口多 IP 同时请求，取最快返回）。</p>
+</li>
+</ul>
+</blockquote>
+<h2 id="虚拟列表"><a href="#虚拟列表" class="headerlink" title="虚拟列表"></a>虚拟列表</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>只渲染可视区 + 缓冲区的 DOM，用总高度撑开滚动容器，模拟出完整列表。</p>
+</blockquote>
+<p><strong>二、原理</strong></p>
+<blockquote>
+<p>核心三要素：</p>
+<ol>
+<li>总容器高度 = itemHeight × total（撑开滚动条）</li>
+<li>可视区绝对定位，transform: translateY(起始偏移) </li>
+<li>监听 scroll，计算 startIndex / endIndex，只渲染这个区间</li>
+</ol>
+</blockquote>
+<p><strong>三、不定高场景（难点）</strong></p>
+<blockquote>
+<ul>
+<li><strong>预估高度</strong>：先按预估渲染，渲染后缓存真实高度（<code>getBoundingClientRect</code>）</li>
+<li>滚动时用<strong>缓存的高度数组</strong>二分查找定位 startIndex</li>
+<li>高度更新后修正总高度和偏移量，可能产生<strong>滚动抖动</strong>，需做偏移补偿</li>
+</ul>
+</blockquote>
+<p><strong>四、方案对比</strong></p>
+<blockquote>
+<p>自研 vs <code>react-window</code> / <code>vue-virtual-scroller</code>。</p>
+</blockquote>
+<p><strong>加分项</strong>：提到 scroll 分帧渲染、IntersectionObserver 判断可见性、以及 DOM 回收导致的白屏闪烁问题（缓冲区 + 快速滚动兜底 loading）。</p>
+<h2 id="PWA-的核心能力"><a href="#PWA-的核心能力" class="headerlink" title="PWA 的核心能力"></a>PWA 的核心能力</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>PWA 让 Web 应用具备接近原生的体验，核心是离线、推送、可安装。</p>
+</blockquote>
+<p><strong>二、原理</strong></p>
+<blockquote>
+<ol>
+<li><strong>Service Worker</strong>：独立于主线程的代理脚本，可拦截请求实现缓存策略</li>
+<li><strong>Manifest</strong>：定义应用名、图标、启动方式，实现“添加到主屏幕”</li>
+<li><strong>Push + Notification</strong>：消息推送能力</li>
+</ol>
+</blockquote>
+<p><strong>三、缓存策略</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Cache First：静态资源</span></span><br><span class="line"><span class="comment">// Network First：接口数据</span></span><br><span class="line"><span class="comment">// Stale While Revalidate：允许旧内容 + 后台更新（常用）</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>四、最佳实践</strong></p>
+<blockquote>
+<ul>
+<li>SW 作用域限制、HTTPS 强制要求</li>
+<li><strong>SW 更新问题</strong>：旧 SW 缓存导致页面不更新（需 <code>skipWaiting</code> + 版本管理）</li>
+<li>iOS 对 PWA 支持残缺（推送 iOS 16.4+ 才支持）</li>
+</ul>
+</blockquote>
+<p><strong>加分项</strong>：能对比 PWA 与小程序、Hybrid 的架构取舍。</p>
+<h2 id="Hybrid选型"><a href="#Hybrid选型" class="headerlink" title="Hybrid选型"></a>Hybrid选型</h2><p><strong>一、定义</strong></p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>H5</th>
+<th>Hybrid</th>
+<th>RN</th>
+<th>Flutter</th>
+<th>原生</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>体验</td>
+<td>一般</td>
+<td>一般</td>
+<td>较好</td>
+<td>接近原生</td>
+<td>最好</td>
+</tr>
+<tr>
+<td>开发效率</td>
+<td>最高</td>
+<td>高</td>
+<td>高</td>
+<td>高</td>
+<td>低</td>
+</tr>
+<tr>
+<td>动态化</td>
+<td>✅ 天然</td>
+<td>✅</td>
+<td>✅（热更）</td>
+<td>部分支持</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>性能</td>
+<td>弱</td>
+<td>弱</td>
+<td>中</td>
+<td>强</td>
+<td>强</td>
+</tr>
+</tbody></table>
+<p><strong>二、选型原则</strong></p>
+<blockquote>
+<ul>
+<li>强交互/高性能页面（首页信息流、动画）→ 原生 / Flutter</li>
+<li>运营活动、频繁变更的业务 → H5（动态化优先）</li>
+<li>中等复杂度业务页 → RN</li>
+</ul>
+</blockquote>
+<p><strong>加分项</strong>：能讲自研 <strong>Hybrid 容器设计</strong> —— 离线包机制、JSBridge 协议设计、H5 与原生页面路由互通、灰度发布与兜底降级策略。</p>
+<h2 id="移动端监控体系"><a href="#移动端监控体系" class="headerlink" title="移动端监控体系"></a>移动端监控体系</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>监控体系 = 数据采集 + 上报 + 分析 + 告警，移动端需额外关注性能与异常。</p>
+</blockquote>
+<p><strong>二、方案设计</strong></p>
+<p><strong>采集维度</strong></p>
+<blockquote>
+<ul>
+<li><strong>异常监控</strong>：JS 错误（<code>window.onerror</code>、<code>unhandledrejection</code>）、接口错误、<strong>资源加载失败</strong></li>
+<li><strong>性能监控</strong>：FP/FCP/LCP、接口耗时、卡顿（长任务检测 <code>PerformanceObserver</code>）</li>
+<li><strong>行为监控</strong>：PV/UV、用户行为回溯（录屏）</li>
+</ul>
+</blockquote>
+<p><strong>上报策略（移动端特色）</strong></p>
+<blockquote>
+<ul>
+<li><code>sendBeacon</code> / img 打点，页面卸载时数据不丢</li>
+<li><strong>采样上报 + 批量上报</strong>，减少弱网下请求开销</li>
+<li>本地缓存失败数据，下次启动补报</li>
+</ul>
+</blockquote>
+<p><strong>告警与归因</strong></p>
+<blockquote>
+<p>错误聚类（source-map 还原）、阈值告警、版本对比。</p>
+</blockquote>
+<p><strong>加分项</strong>：sourcemap 管理、错误聚合指纹算法、用户行为栈还原定位问题路径。</p>
+<h2 id="排查内存泄漏"><a href="#排查内存泄漏" class="headerlink" title="排查内存泄漏"></a>排查内存泄漏</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<ol>
+<li><strong>未清除的定时器 / 事件监听</strong>（尤其 <code>resize/scroll</code>、SW 全局监听）</li>
+<li>闭包持有大对象</li>
+<li>全局变量累积</li>
+<li><strong>单页应用路由切换</strong>：组件销毁未清理副作用（最大来源）</li>
+<li>游离 DOM 引用</li>
+</ol>
+</blockquote>
+<p><strong>二、排查方法</strong></p>
+<blockquote>
+<p>Chrome DevTools → Performance 面板录制 → 观察内存曲线（JS Heap 持续上涨）<br>→ Memory 面板 Heap Snapshot → 三次快照对比 → 查 Retained Size / Detached DOM</p>
+</blockquote>
+<p><strong>加分项</strong>：能演示“Detached DOM”定位过程；提到 <code>WeakMap/WeakRef</code> 减少强引用；团队层面用 ESLint 规则（如 hooks 依赖检查）预防。</p>
+<h2 id="小程序与-H5"><a href="#小程序与-H5" class="headerlink" title="小程序与 H5"></a>小程序与 H5</h2><p><strong>一、定义</strong></p>
+<p>小程序是双线程架构，逻辑和渲染分离、Native 通信，<strong>目的是安全和性能隔离</strong>。代价是通信有开销，所以开发中要合并 setData、减少数据量。此外微信的 Skyline 引擎正用原生渲染替代 WebView。</p>
+<blockquote>
+<p>H5 的逻辑和渲染都在 WebView 一个线程里；小程序把<strong>逻辑层和渲染层分开</strong>，通过 Native 层通信。</p>
+</blockquote>
+<p><strong>二、核心差异</strong></p>
+<p><strong>1.线程模型不同</strong></p>
+<blockquote>
+<p>H5：   JS + 渲染 都在 WebView（同一个线程）<br>小程序：逻辑层(JSCore) + 渲染层(WebView) 分离，Native 中转</p>
+</blockquote>
+<p><strong>2. JS 能力不同</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>H5</th>
+<th>小程序</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>操作 DOM</td>
+<td>✅ 可以</td>
+<td>❌ 不行，只能 setData</td>
+</tr>
+<tr>
+<td>运行环境</td>
+<td>浏览器</td>
+<td>微信客户端</td>
+</tr>
+<tr>
+<td>页面跳转</td>
+<td>自己控制</td>
+<td>Native 接管</td>
+</tr>
+</tbody></table>
+<p><strong>三、双线程的意义</strong></p>
+<blockquote>
+<p><strong>1. 安全</strong>：逻辑层拿不到 DOM/BOM，微信能完全管控页面内容和跳转，审核才有效。</p>
+<p><strong>2. 性能</strong>：JS 再卡也不会阻塞页面渲染。</p>
+</blockquote>
+<p><strong>四、代价与优化</strong></p>
+<p>通信要经过 Native，有开销，所以：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ❌ 频繁调用</span></span><br><span class="line"><span class="variable language_">this</span>.<span class="title function_">setData</span>(&#123; <span class="attr">list</span>: newList &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// ✅ 合并 + 精准更新</span></span><br><span class="line"><span class="variable language_">this</span>.<span class="title function_">setData</span>(&#123; <span class="string">&#x27;list[2].status&#x27;</span>: <span class="number">1</span> &#125;);</span><br></pre></td></tr></table></figure>
+
+<h1 id="React-Native"><a href="#React-Native" class="headerlink" title="React Native"></a>React Native</h1><p><strong>参考</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Pt4y1n7bD/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247">react native入门到实战</a></li>
+</ul>
+<h1 id="Flutter"><a href="#Flutter" class="headerlink" title="Flutter"></a>Flutter</h1><p><strong>参考</strong></p>
+<blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/chinabrant/flutter_study">Flutter学习仓库</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter">Github Flutter源码仓库</a></li>
+<li><a target="_blank" rel="noopener" href="https://flutterchina.club/">Flutter中文网</a></li>
+</ul>
+</blockquote>
+<h2 id="1-Flutter是什么"><a href="#1-Flutter是什么" class="headerlink" title="1.Flutter是什么?"></a>1.Flutter是什么?</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://flutter.dev/">Flutter官网</a></li>
+</ul>
+<p>Flutter是一款移动应用程序SDK，一份代码可以同时生成iOS和Android两个高性能、高保真的应用程序。</p>
+<p>Flutter诞生过程：</p>
+<ul>
+<li>2017 年 Google I/O 大会上，Google 首次推出了一款新的用于创建跨平台、高性能的移动应用框架——Flutter。</li>
+<li>2018年2月，Flutter发布了第一个Beta版本，同年五月， 在2018年Google I/O 大会上，Flutter 更新到了 beta 3 版本。</li>
+<li>2018年6月，Flutter发布了首个预览版本，这意味着 Flutter 进入了正式版（1.0）发布前的最后阶段。</li>
+</ul>
+<h2 id="2-Flutter优势"><a href="#2-Flutter优势" class="headerlink" title="2.Flutter优势"></a>2.Flutter优势</h2><ul>
+<li>提高开发效率<ul>
+<li>同一份代码开发iOS和Android</li>
+<li>用更少的代码做更多的事情</li>
+<li>轻松迭代<ul>
+<li>在应用程序运行时更改代码并重新加载（通过热重载）</li>
+<li>修复崩溃并继续从应用程序停止的地方进行调试</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>创建美观，高度定制的用户体验<ul>
+<li>受益于使用Flutter框架提供的丰富的Material Design和Cupertino（iOS风格）的widget</li>
+<li>实现定制、美观、品牌驱动的设计，而不受原生控件的限制</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-核心模块"><a href="#3-核心模块" class="headerlink" title="3.核心模块"></a>3.核心模块</h2><img src="/img/image-20220510071129446.png" alt="image-20220510071129446" style="zoom:67%;" />
+
+<p>Flutter包括一个现代的响应式框架、一个2D渲染引擎、现成的widget和开发工具。</p>
+<p><strong>跨平台自绘引擎</strong></p>
+<p>Flutter与其他用于构建App的大多数框架不同，因为Flutter既不使用WebView，也不使用平台（Android、iOS等）的原生控件。相反，Flutter使用自己的高性能渲染引擎来绘制Widget。这样不仅可以保证在Android和iOS平台上UI的一致性，而且也可以避免对原生控件依赖而带来的限制及高昂的维护成本。</p>
+<p>Flutter使用Skia作为其2D渲染引擎，Skia是Google的一个2D图形处理函数库，包含字型、坐标转换以及点阵图都有高效能且简洁的表现，Skia是跨平台的，并提供了非常友好的API，目前Google Chrome浏览器和Android均采用Skia作为其绘图引擎，值得一提的是，由于Android系统已经内置了Skia，所以Flutter在打包APK（Android应用安装包）时，不需要再将Skia打入APK中，但iOS系统并未内置Skia，所以构建iPA时，也必须将Skia一起打包，这也是为什么Flutter APP的Android应用安装包比iOS应用安装包小的主要原因。</p>
+<p><strong>高性能</strong></p>
+<p>Flutter采用GPU渲染技术，Flutter编写的应用是可以达到120fps（每秒传输帧数），这也就是说，它完全可以胜任游戏的制作，而我们常说的RN的性能只能达到60fps，这也算是Flutter的一个超高竞争力，官方宣称Flutter甚至会超过原生性能。</p>
+<p>Flutter高性能主要靠两点来保证：</p>
+<ul>
+<li>首先，Flutter App采用Dart语言开发，Dart在JIT（即时编译）模式下，速度与JavaScript基本持平；而且Dart还支持AOT（提前编译）模式，当以AOT模式运行时，JavaScript便远远追不上了。速度的提升对高帧率下的视图数据计算很有帮助。</li>
+<li>其次，Flutter使用自己的渲染引擎来绘制UI，布局数据等由Dart语言直接控制，所以在布局过程中不需要像RN那样通过JavaScriptCore在JavaScript和原生之间进行通信，这在一些滑动和拖动的场景下具有明显优势，因为在滑动和拖动过程中往往都会引起布局发生变化，所以JavaScript需要和原生之间不停的同步布局信息，这和在浏览器中要JavaScript频繁操作DOM所带来的问题是相同的，都会带来比较可观的性能开销。</li>
+</ul>
+<p><strong>为什么Flutter采用Dart语言开发？</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6870286147541696525">为什么 Flutter 选择了 Dart 语言</a></li>
+</ul>
+<p>介绍两个概念：JIT和AOT。</p>
+<p>目前，程序主要有两种运行方式：静态编译和动态解释。</p>
+<ul>
+<li>静态编译：静态编译的程序在执行前全部被翻译为机器码，通常将这种类型称为AOT（Ahead of time）即“提前编译”；</li>
+<li>动态解释：动态解释的程序是在执行中一句一句边翻译边运行的，通常将这种类型称为JIT（Just-in-time）即“即时编译”。</li>
+</ul>
+<p>AOT程序的典型代表是用C/C++开发的应用，它们必须在执行前编译成机器码，而JIT的代表则非常多，如JavaScript、Python等，事实上，所有脚本语言都支持JIT模式。但值得一提的是JIT和AOT指的是程序运行方式，它们和编程语言并非强关联，有些语言既可以以JIT方式运行也可以以AOT方式运行，如Java、Python，它们可以在第一次执行时编译成中间字节码，然后在之后执行时可以直接执行字节码，也许有人会说，中间字节码并非机器码，在程序执行时仍然需要动态将字节码转为机器码，是的，不过通常我们区分是否为AOT的标准就是看代码在执行之前是否需要编译，只要需要编译，无论其编译产物是字节码还是机器码，都属于AOT。</p>
+<p>Dart和JavaScript比较：</p>
+<ol>
+<li>开发效率高</li>
+</ol>
+<ul>
+<li>基于JIT的快速开发周期：Flutter在开发阶段采用JIT模式，这样就避免了每次改动都要进行编译，极大的节省了开发时间；（Dart运行时支持）</li>
+<li>基于AOT的发布包：Flutter在发布时可以通过AOT生成高效的ARM代码以保证应用性能，而JavaScript则不具有这个能力。（编译器支持）</li>
+</ul>
+<ol>
+<li><p>高性能</p>
+<p>Flutter旨在提供流畅、高保真的UI体验。为了实现这一点，Flutter需要能够在每个动画帧中运行大量的代码，这意味着需要一种既能提供高性能的语言，又不会出现丢帧的周期性暂停，而Dart支持AOT，在这一点上可以做的比JavaScript更好。</p>
+</li>
+<li><p>快速内存分配</p>
+<p>Flutter框架使用函数式流，这使得它在很大程度上依赖于底层的内存分配器。因此，拥有一个能够有效的处理琐碎任务的内存分配器将显得十分重要，如果Dart语言缺乏此功能，Flutter将无法有效地工作。当然Chrome V8的JavaScript引擎在内存分配上也已经做的很好了，事实上Dart开发团队的很多成员都是来自Chrome团队的，所以在内存分配上Dart并不能作为超越JavaScript的优势，但对于Flutter来说，它需要这样的特性，而Dart也正好满足而已。</p>
+</li>
+<li><p>类型安全</p>
+<p>由于Dart是类型安全的语言，支持静态类型检测，所以可以在编译前发现一些类型的错误，并排除潜在问题，这一点对于前端开发者来说可能会更具有吸引力。与之不同的，JavaScript是一个弱类型语言，也因此前端社区出现了很多给JavaScript代码添加静态类型检测的扩展语言和工具，如：微软的TypeScript以及Facebook的Flow。相比之下，Dart本身就支持静态类型，就是它的一个重要优势。</p>
+</li>
+<li><p>Dart团队的支持</p>
+<p>由于有Dart团队的积极投入，Flutter团队可以获得更多、更方便的支持，正如Flutter官网所诉：“我们正与Dart社区进行密切合作，以改进Dart在Flutter中的使用。例如，当我们最初使用Dart时，该语言并没有提供生成原生二进制文件的工具链（工具链对于实现可预测的高性能具有很大的帮助），但是现在它实现了，因为Dart团队专门为Flutter构建了它。同样，Dart VM之前已经针对吞吐量进行了优化，但团队现在正在优化VM的延迟时间，这对于Flutter的工作负载更为重要。”</p>
+</li>
+</ol>
+<h2 id="4-一切皆为widget"><a href="#4-一切皆为widget" class="headerlink" title="4.一切皆为widget"></a>4.一切皆为widget</h2><p>Widget是Flutter应用程序用户界面的基本构建块。每个Widget都是用户界面一部分的不可变声明。 与其他将视图、控制器、布局和其他属性分离的框架不同，Flutter具有一致的统一对象模型：widget。</p>
+<p>Widget可以被定义为:</p>
+<ul>
+<li>一个结构元素（如按钮或菜单）</li>
+<li>一个文本样式元素（如字体或颜色方案）</li>
+<li>布局的一个方面（如填充）</li>
+<li>等等…</li>
+</ul>
+<h2 id="5-Flutter与React-Native、Weex比较"><a href="#5-Flutter与React-Native、Weex比较" class="headerlink" title="5.Flutter与React Native、Weex比较"></a>5.Flutter与React Native、Weex比较</h2><p>React Native、Weex等一直存在一个问题，就是性能跟原生App存在很大的差异</p>
+<p><strong>原生app</strong></p>
+<p>苹果2008年发布iOS，Google 2009年发布Android，它们的SDK是基于两种不同的编程语言Objective-C 和 Jave.现在又有了Swift和Kotlin。</p>
+<p><strong>WebViews</strong></p>
+<p>最早的跨平台方案是基于JaveScript 和 WebView的，像PhoneGap、Cordova、Ionic等。</p>
+<p><strong>React Native</strong></p>
+<p>RN不仅桥接系统服务，也将系统UI也桥接到了JaveScript中，这样写出来的UI最终也会渲染成原生的控件。</p>
+<p><strong>Flutter</strong></p>
+<p>Flutter使用Dart语言开发，Dart可以被编译（AOT）成不同平台的本地代码，让Flutter可以直接和平台通讯而不需要一个中间的桥接过程，从而提高了性能。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/" title="多端_移动端" target="_blank" rel="external">https://fuyunjinglong.github.io/2004/01/10/B_中级_多端_移动端/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/" title="多端_小程序"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2004/01/01/A1_LLM_SKILL/" title="SKILL"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <!-- <script src="//cdn.jsdelivr.net/npm/valine"></script> -->
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

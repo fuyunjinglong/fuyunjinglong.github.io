@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>WebAssembly和Rust  </title>
+  <meta name="description" content="WebAssembly一、定义  WebAssembly（常缩写为 Wasm）是一种安全、可移植、接近原生执行效率的二进制指令格式，最初为了让 C&#x2F;C++&#x2F;Rust 等语言能高效地在浏览器中运行，同时也被设计成可在浏览器之外的各种环境运行的可移植“编译目标”。  二、本质   二进制指令格式：采用紧凑的二进制编码，体积小、加载快，适合网络传输。 面向栈的虚拟机：WebAssembly 的执行模型是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WebAssembly和Rust">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2001/02/01/G_%E5%85%B6%E4%BB%96_WebAssembly%E5%92%8CRust/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="WebAssembly一、定义  WebAssembly（常缩写为 Wasm）是一种安全、可移植、接近原生执行效率的二进制指令格式，最初为了让 C&#x2F;C++&#x2F;Rust 等语言能高效地在浏览器中运行，同时也被设计成可在浏览器之外的各种环境运行的可移植“编译目标”。  二、本质   二进制指令格式：采用紧凑的二进制编码，体积小、加载快，适合网络传输。 面向栈的虚拟机：WebAssembly 的执行模型是">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2001-02-01T00:33:16.000Z">
+<meta property="article:modified_time" content="2026-09-16T11:01:44.966Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2001/02/01/G_%E5%85%B6%E4%BB%96_WebAssembly%E5%92%8CRust/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A1-LLM/">A1_LLM</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E5%88%9D%E7%BA%A7/">A_初级</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-%E4%B8%AD%E7%BA%A7/">B_中级</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E9%AB%98%E7%BA%A7/">C_高级</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E8%A7%84%E5%88%92/">D_规划</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/04/">四月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/01/">一月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2098/01/">一月 2098</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">七月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">一月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/03/">三月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/02/">二月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/01/">一月 2004</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/06/">六月 2003</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/01/">一月 2003</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/06/">六月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/02/">二月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/01/">一月 2002</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/06/">六月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/03/">三月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/02/">二月 2001</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/01/">一月 2001</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/06/">六月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/03/">三月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/02/">二月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/01/">一月 2000</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/04/04/%E6%A8%A1%E6%9D%BFX/" class="title">模板X</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-04-04T00:33:16.000Z" itemprop="datePublished">2099-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/03/29/Z_%E5%90%8E%E7%AB%AF_Java/" class="title">Java</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-03-28T23:33:16.000Z" itemprop="datePublished">2099-03-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/01/01/G_%E5%85%B6%E4%BB%96_%E4%B9%A6%E5%8D%95/" class="title">书单</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-01-01T00:33:16.000Z" itemprop="datePublished">2099-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A1-LLM/">A1_LLM</a>
+              </p>
+              <p class="item-title">
+                <a href="/2098/01/01/A1_LLM_windows%E5%AE%89%E8%A3%85%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="title">LLM_windows安装大模型</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2097-12-31T22:33:16.000Z" itemprop="datePublished">2098-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2026/07/18/Test%20copy/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2026-07-18T02:11:18.292Z" itemprop="datePublished">2026-07-18</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#WebAssembly"><span class="toc-number">1.</span> <span class="toc-text">WebAssembly</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Rust"><span class="toc-number">2.</span> <span class="toc-text">Rust</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-G_其他_WebAssembly和Rust" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      WebAssembly和Rust
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2001/02/01/G_%E5%85%B6%E4%BB%96_WebAssembly%E5%92%8CRust/" class="article-date">
+	  <time datetime="2001-02-01T00:33:16.000Z" itemprop="datePublished">2001-02-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2001/02/01/G_%E5%85%B6%E4%BB%96_WebAssembly%E5%92%8CRust/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="WebAssembly"><a href="#WebAssembly" class="headerlink" title="WebAssembly"></a>WebAssembly</h1><p><strong>一、定义</strong></p>
+<blockquote>
+<p>WebAssembly（常缩写为 Wasm）是一种安全、可移植、接近原生执行效率的二进制指令格式，最初为了让 C/C++/Rust 等语言能高效地在浏览器中运行，同时也被设计成可在浏览器之外的各种环境运行的可移植“编译目标”。</p>
+</blockquote>
+<p><strong>二、本质</strong></p>
+<blockquote>
+<ul>
+<li>二进制指令格式：采用紧凑的二进制编码，体积小、加载快，适合网络传输。</li>
+<li>面向栈的虚拟机：WebAssembly 的执行模型是面向栈的虚拟机（类似于一种抽象的汇编语言），不绑定任何特定的高级语言或硬件架构。</li>
+<li>“编译目标”：大多数开发者不会直接手写 WebAssembly，而是把 C/C++/Rust/C#/Go 等语言编译成 .wasm 文件，然后在浏览器或运行时里加载执行</li>
+</ul>
+</blockquote>
+<p><strong>三、使用场景</strong></p>
+<blockquote>
+<ul>
+<li>游戏、3D/物理模拟、图形处理等需要大量计算与渲染的应用。</li>
+<li>图像/视频处理、音频/信号处理、编解码、加密与安全计算等。</li>
+<li>科学计算、数据分析、CAD/CAE 等工程类软件的 Web 化。</li>
+<li>将现有的 C/C++/Rust 等生态库移植到 Web 上复用，减少重写成本</li>
+</ul>
+</blockquote>
+<p><strong>四、设计目的</strong></p>
+<blockquote>
+<ul>
+<li>安全与沙盒：代码在内存安全、受控的沙盒环境中运行，防止数据损坏或安全漏洞；在网页中会遵守同源策略与权限策略。</li>
+<li>接近原生性能：利用现代硬件的共性能力，通过 JIT/AOT 等方式高效执行。</li>
+<li>可移植与平台无关：一份 .wasm 可以跨不同操作系统、CPU 架构与设备运行（从浏览器到服务器到边缘设备）。</li>
+<li>紧凑表示与快速加载：二进制格式小，可流式解码与编译，提升首屏或启动体验。</li>
+<li>语言中立与开放标准：不偏向任何一种语言或对象模型；在 W3C 社区组和工作组的公开流程下演进，主要浏览器厂商参与其中。</li>
+<li>Web 平台兼容性：与 JavaScript 在同一语义宇宙中运行，可以相互调用；仍通过浏览器 Web API 去访问 DOM/网络/存储等能力，保持 Web 平台的安全模型与版本化演进方式。</li>
+</ul>
+</blockquote>
+<p><strong>五、浏览器里如何使用</strong></p>
+<blockquote>
+<ul>
+<li>用支持的语言（如 C/C++/Rust/C#/Go）编写算法或核心逻辑。</li>
+<li>编译为 .wasm 二进制模块（常用工具链如 Emscripten、wasm-pack 等）。</li>
+<li>网页中的 JavaScript 通过 WebAssembly JavaScript API 加载并实例化 .wasm，然后调用其导出的函数完成计算密集任务。</li>
+</ul>
+</blockquote>
+<p><strong>六、与JS关系</strong></p>
+<blockquote>
+<ul>
+<li>不是替代，而是互补：JS 继续负责 UI、交互、调用 Web API 等，Wasm 承担 CPU 密集型或已有高性能库的计算任务。</li>
+<li>JS 与 Wasm 可以相互调用、共享内存，实现灵活的集成方案。</li>
+</ul>
+</blockquote>
+<p><strong>七、最佳实践</strong></p>
+<blockquote>
+<ul>
+<li>从语言与工具链入手：Rust（wasm-pack）、C/C++（Emscripten）、AssemblyScript/其他 .NET、Go 等生态都有成熟路径。</li>
+<li>掌握 JS 与 Wasm 的互操作基础：如何传递数值、如何在“线性内存”中搬移数据、如何减少跨边界调用开销。</li>
+<li>关注工具与调试：浏览器的开发者工具中查看 .wasm 的文本形式、断点调试、性能分析等。</li>
+</ul>
+</blockquote>
+<h1 id="Rust"><a href="#Rust" class="headerlink" title="Rust"></a>Rust</h1><p><strong>一、定义</strong></p>
+<blockquote>
+<p>Rust 是一门<strong>专注于安全、性能和并发的系统编程语言</strong>，由 Mozilla 员工 Graydon Hoare 于 2006 年作为私人项目启动，2009 年获得 Mozilla 赞助，2015 年 5 月正式发布 1.0 稳定版本。它通过独特的”所有权系统”（Ownership）和”借用检查器”（Borrow Checker），在不依赖垃圾回收机制（GC）的前提下，保证了内存安全和线程安全</p>
+</blockquote>
+<p><strong>二、核心特性</strong></p>
+<blockquote>
+<ul>
+<li><strong>高性能</strong>：Rust 速度惊人且内存利用率极高，没有运行时和垃圾回收，能够胜任对性能要求极高的服务，可以运行在嵌入式设备上，并能轻松与其他语言集成。</li>
+<li><strong>可靠性</strong>：丰富的类型系统和所有权模型保证了内存安全和线程安全，能在<strong>编译期</strong>就消除大量常见的 Bug（如空指针、缓冲区溢出、数据竞争等）。</li>
+<li><strong>生产力</strong>：拥有完善的文档、友好的编译器和清晰的错误提示信息，集成了包管理器 Cargo、构建工具、代码格式化工具 rustfmt 等一流工具链</li>
+</ul>
+</blockquote>
+<p><strong>三、应用场景</strong></p>
+<blockquote>
+<ul>
+<li><strong>命令行工具（CLI）</strong>：利用强大的生态快速构建可分发的命令行应用</li>
+<li><strong>WebAssembly</strong>：为 JavaScript 应用提供高性能模块</li>
+<li><strong>网络服务</strong>：可预测的性能、极低的资源占用、坚如磐石的可靠性</li>
+<li><strong>嵌入式系统</strong>：在资源受限的设备上获得底层控制能力，同时保留高层语言的便利性</li>
+</ul>
+</blockquote>
+<p>工业界的实际应用</p>
+<blockquote>
+<p>全球已有数百家公司在生产环境中使用 Rust，许多知名软件都在其中——例如 <strong>Firefox、Dropbox、Cloudflare</strong>。它也被应用于 Windows 内核、Linux 内核、Chromium 浏览器、AWS S3 核心存储服务等项目中；微软宣布将在 2030 年前用 Rust 重写 Windows 和 Azure 的全部 C/C++ 代码，已完成约 36000 行 Windows 内核代码的重构</p>
+</blockquote>
+<p><strong>四、设计哲学</strong></p>
+<blockquote>
+<p>Rust 是一门静态强类型的多范式语言，语法上与 C++ 相似（花括号代码块、相同的控制流关键字），但深层设计更接近函数式语言（如 Haskell），几乎函数体的每个部分都是表达式。它强调三个关键点：<strong>安全、内存布局控制、并发</strong>，旨在优雅地解决高并发和高安全性系统的问题github.io+1。</p>
+<p>其最独特的设计是<strong>借用检查器</strong>——编译器会在编译期间追踪程序中所有引用的对象生命周期，从而在不需要垃圾回收器的情况下同时保证内存安全和防止数据竞争</p>
+</blockquote>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2001/02/01/G_%E5%85%B6%E4%BB%96_WebAssembly%E5%92%8CRust/" title="WebAssembly和Rust" target="_blank" rel="external">https://fuyunjinglong.github.io/2001/02/01/G_其他_WebAssembly和Rust/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2001/03/01/G_%E5%85%B6%E4%BB%96_%E8%BE%B9%E7%BC%98%E8%AE%A1%E7%AE%97%E9%83%A8%E7%BD%B2/" title="边缘计算部署"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2001/02/01/A1_LLM_AI%E5%B7%A5%E5%85%B7%E5%AF%BC%E8%88%AA/" title="AI工具导航"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <!-- <script src="//cdn.jsdelivr.net/npm/valine"></script> -->
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

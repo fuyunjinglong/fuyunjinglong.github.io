@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>多端_小程序  </title>
+  <meta name="description" content="大纲参考 WXML 原生、UniApp、taro 支持 vue   Taro3+Mysql+Express 开发企业级出行全栈项目 -video 掌握 Taro 多端框架 快速上手小程序&#x2F;H5 开发-video 扫码点餐微信小程序云开发，uniapp，vue，nodejs 带后台管理-video SpringBoot2.X + Vue + UniAPP，全栈开发医疗小程序-video-mk   微">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多端_小程序">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="大纲参考 WXML 原生、UniApp、taro 支持 vue   Taro3+Mysql+Express 开发企业级出行全栈项目 -video 掌握 Taro 多端框架 快速上手小程序&#x2F;H5 开发-video 扫码点餐微信小程序云开发，uniapp，vue，nodejs 带后台管理-video SpringBoot2.X + Vue + UniAPP，全栈开发医疗小程序-video-mk   微">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2004-01-31T22:33:16.000Z">
+<meta property="article:modified_time" content="2026-09-14T11:28:26.549Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A1-LLM/">A1_LLM</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E5%88%9D%E7%BA%A7/">A_初级</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-%E4%B8%AD%E7%BA%A7/">B_中级</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E9%AB%98%E7%BA%A7/">C_高级</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E8%A7%84%E5%88%92/">D_规划</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/04/">四月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/01/">一月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2098/01/">一月 2098</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">七月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">一月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/03/">三月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/02/">二月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/01/">一月 2004</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/06/">六月 2003</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/01/">一月 2003</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/06/">六月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/02/">二月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/01/">一月 2002</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/06/">六月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/03/">三月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/02/">二月 2001</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/01/">一月 2001</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/06/">六月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/03/">三月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/02/">二月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/01/">一月 2000</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/04/04/%E6%A8%A1%E6%9D%BFX/" class="title">模板X</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-04-04T00:33:16.000Z" itemprop="datePublished">2099-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/03/29/Z_%E5%90%8E%E7%AB%AF_Java/" class="title">Java</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-03-28T23:33:16.000Z" itemprop="datePublished">2099-03-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/01/01/G_%E5%85%B6%E4%BB%96_%E4%B9%A6%E5%8D%95/" class="title">书单</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-01-01T00:33:16.000Z" itemprop="datePublished">2099-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A1-LLM/">A1_LLM</a>
+              </p>
+              <p class="item-title">
+                <a href="/2098/01/01/A1_LLM_windows%E5%AE%89%E8%A3%85%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="title">LLM_windows安装大模型</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2097-12-31T22:33:16.000Z" itemprop="datePublished">2098-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2026/07/18/Test%20copy/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2026-07-18T02:11:18.292Z" itemprop="datePublished">2026-07-18</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%A7%E7%BA%B2"><span class="toc-number">1.</span> <span class="toc-text">大纲</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9D%E7%BA%A7"><span class="toc-number">2.</span> <span class="toc-text">初级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.1.</span> <span class="toc-text">小程序的文件类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WXSS-%E5%92%8C-CSS"><span class="toc-number">2.2.</span> <span class="toc-text">WXSS 和 CSS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">2.3.</span> <span class="toc-text">生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B5%E9%9D%A2%E9%97%B4%E4%BC%A0%E9%80%92%E6%95%B0%E6%8D%AE"><span class="toc-number">2.4.</span> <span class="toc-text">页面间传递数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bindtap-%E5%92%8C-catchtap-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">2.5.</span> <span class="toc-text">bindtap 和 catchtap 的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E6%8B%89%E5%88%B7%E6%96%B0"><span class="toc-number">2.6.</span> <span class="toc-text">下拉刷新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E6%A0%B7%E5%BC%8F%E9%9A%94%E7%A6%BB"><span class="toc-number">2.7.</span> <span class="toc-text">自定义组件样式隔离</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E5%AE%BD%E9%AB%98%E6%AF%94%E4%BE%8B%E4%BF%9D%E6%8C%81%E4%B8%8D%E5%8F%98"><span class="toc-number">2.8.</span> <span class="toc-text">图片宽高比例保持不变</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%AD%E7%BA%A7"><span class="toc-number">3.</span> <span class="toc-text">中级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B"><span class="toc-number">3.1.</span> <span class="toc-text">微信支付业务流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89-navigationBar"><span class="toc-number">3.2.</span> <span class="toc-text">自定义 navigationBar</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%9C%A8%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%8EVue%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">3.3.</span> <span class="toc-text">双向绑定在小程序与Vue的区别</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7"><span class="toc-number">4.</span> <span class="toc-text">高级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%BA%E4%BB%80%E4%B9%88%E8%83%BD%E5%8D%B3%E7%94%A8%E5%8D%B3%E8%B5%B0"><span class="toc-number">4.1.</span> <span class="toc-text">小程序为什么能即用即走</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%BC%98%E5%8A%A3%E5%8A%BF"><span class="toc-number">4.2.</span> <span class="toc-text">小程序的优劣势</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E5%8D%87%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BA%94%E7%94%A8%E9%80%9F%E5%BA%A6"><span class="toc-number">4.3.</span> <span class="toc-text">提升小程序应用速度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-number">4.4.</span> <span class="toc-text">小程序的原理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Taro"><span class="toc-number">5.</span> <span class="toc-text">Taro</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#UniApp"><span class="toc-number">6.</span> <span class="toc-text">UniApp</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Taro%E4%B8%8EUniApp%E5%AF%B9%E6%AF%94"><span class="toc-number">7.</span> <span class="toc-text">Taro与UniApp对比</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-B_中级__多端_小程序" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      多端_小程序
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/" class="article-date">
+	  <time datetime="2004-01-31T22:33:16.000Z" itemprop="datePublished">2004-02-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/B-%E4%B8%AD%E7%BA%A7/">B_中级</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h1><p><strong>参考</strong></p>
+<p>WXML 原生、UniApp、taro 支持 vue</p>
+<blockquote>
+<ul>
+<li>Taro3+Mysql+Express 开发企业级出行全栈项目 -video</li>
+<li>掌握 Taro 多端框架 快速上手小程序/H5 开发-video</li>
+<li>扫码点餐微信小程序云开发，uniapp，vue，nodejs 带后台管理-video</li>
+<li>SpringBoot2.X + Vue + UniAPP，全栈开发医疗小程序-video-mk</li>
+</ul>
+</blockquote>
+<p>微信公众号：WeRoBot、Flask-WeChat、Tornado-WeRoBot、django-weixin</p>
+<blockquote>
+<ul>
+<li>微信公众号开发课程-video</li>
+</ul>
+</blockquote>
+<h1 id="初级"><a href="#初级" class="headerlink" title="初级"></a>初级</h1><h2 id="小程序的文件类型"><a href="#小程序的文件类型" class="headerlink" title="小程序的文件类型"></a>小程序的文件类型</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>它采用了四类核心文件类型来构成一个完整的页面：<code>.json</code>（配置）、<code>.wxml</code>（结构）、<code>.wxss</code>（样式）和 <code>.js</code>（逻辑）。这种设计遵循了关注点分离的原则，同时便于底层进行编译和安全管控。</p>
+</blockquote>
+<p><strong>二、 核心文件类型</strong></p>
+<p><strong>1. <code>.json</code> 配置文件</strong></p>
+<blockquote>
+<ul>
+<li><strong>作用</strong>：用于静态配置，决定页面或整个应用的外在表现和路由。</li>
+<li><strong>分类</strong>：<ul>
+<li>全局配置 (app.json)：配置所有页面路径、窗口全局表现（navigationBarTitleText 等）、底部 TabBar、网络超时时间等。</li>
+<li>页面配置 (如 index.json)：只能配置当前页面的窗口表现，会覆盖全局配置。还可以在此声明引入的第三方组件（<code>usingComponents</code>）。</li>
+</ul>
+</li>
+<li><strong>注意</strong>：json 文件不能写注释，且必须是严格的 JSON 格式（键需双引号，不能有多余逗号）。</li>
+</ul>
+</blockquote>
+<p><strong>2. <code>.wxml</code> 模板文件</strong></p>
+<blockquote>
+<ul>
+<li><strong>作用</strong>：类似于 Web 中的 HTML，负责构建页面的结构。</li>
+<li>核心特点：<ul>
+<li><strong>标签不同</strong>：不使用传统的 <code>div</code>、<code>span</code> 等，而是使用小程序内置组件，如 <code>view</code>、<code>text</code>、<code>image</code>、<code>button</code> 等。</li>
+<li><strong>指令不同</strong>：使用 <code>wx:if</code>、<code>wx:for</code> 等指令进行条件渲染和列表渲染，替代了传统的 JS DOM 操作。</li>
+<li><strong>数据绑定</strong>：通过 Mustache 语法（双大括号）进行数据绑定，接收逻辑层 <code>data</code> 中的数据。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><strong>3. <code>.wxss</code> 样式文件</strong></p>
+<blockquote>
+<ul>
+<li><strong>作用</strong>：类似于 Web 中的 CSS，负责页面的样式描述。</li>
+<li>核心特点：<ul>
+<li>**新增尺寸单位 <code>rpx</code>**：响应式像素，解决了不同屏幕分辨率下的适配问题。小程序底层会自动将 <code>rpx</code> 换算成 <code>px</code>。</li>
+<li><strong>样式隔离</strong>：提供了组件样式隔离机制，如在自定义组件中可以通过配置 <code>styleIsolation</code> 防止样式互相污染。</li>
+<li><strong>全局与局部</strong>：<code>app.wxss</code> 为全局样式，页面 <code>.wxss</code> 会覆盖全局样式，且只对当前页面生效。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><strong>4. <code>.js</code> 逻辑文件</strong></p>
+<blockquote>
+<ul>
+<li><strong>作用</strong>：处理业务逻辑、网络请求、用户交互响应等。</li>
+<li>核心特点：<ul>
+<li><strong>生命周期</strong>：通过 <code>Page()</code> 或 <code>Component()</code> 注册页面/组件时，需配置 <code>onLoad</code>、<code>onShow</code>、<code>onReady</code> 等生命周期函数。</li>
+<li><strong>数据更新</strong>：由于双线程架构，JS 层不能直接操作 DOM，必须通过调用 <code>this.setData()</code> 方法，将数据从逻辑层发送到视图层，触发 UI 更新。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>实际开发中还会高频使用以下类型：</p>
+<blockquote>
+<ol>
+<li><code>.wxs</code> (WeiXin Script)：<ul>
+<li>小程序特有的脚本语言，<strong>运行在视图层（WebView）中</strong>。</li>
+<li><strong>应用场景</strong>：在 WXML 中处理一些简单的逻辑（如格式化日期、过滤数据），由于不涉及跨线程通信，它在处理高频交互事件（如拖拽、滚动监听）时性能远优于 JS 文件中的函数。</li>
+</ul>
+</li>
+<li>自定义组件文件：<ul>
+<li>小程序支持将一组文件（json、wxml、wxss、js）封装成一个自定义组件。在页面的 json 文件中通过 <code>usingComponents</code> 注册后，即可在 WXML 中像使用内置组件一样使用它。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<p><strong>三、与传统 Web 前端的对比</strong></p>
+<p>做了很多<strong>约束和增强</strong></p>
+<blockquote>
+<ol>
+<li><strong>结构上</strong>：禁用了 DOM API，强制使用 WXML 的数据绑定和指令，从源头杜绝了 XSS 攻击，并方便底层将其编译为虚拟 DOM。</li>
+<li><strong>样式上</strong>：引入 <code>rpx</code> 适配多端，强化了组件级样式隔离。</li>
+<li><strong>逻辑上</strong>：严格规范了数据流的单向更新机制（<code>setData</code>），牺牲了一部分灵活性，换取了双线程下的安全和可控。</li>
+</ol>
+</blockquote>
+<h2 id="WXSS-和-CSS"><a href="#WXSS-和-CSS" class="headerlink" title="WXSS 和 CSS"></a>WXSS 和 CSS</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>WXSS（WeiXin Style Sheets）在语法基础上与传统 Web 的 CSS 保持一致，但为了适配小程序的<strong>双线程架构</strong>、<strong>多端设备屏幕差异</strong>以及<strong>组件化开发体系</strong>，微信团队对 CSS 进行了<strong>扩展和约束</strong>。核心的区别主要体现在四个方面：尺寸单位、样式隔离、选择器限制以及底层编译机制。</p>
+</blockquote>
+<p><strong>二、核心差异</strong></p>
+<p><strong>1. 新增了响应式尺寸单位 <code>rpx</code>（核心考点）</strong></p>
+<blockquote>
+<ul>
+<li><strong>传统 CSS</strong>：主要依赖 <code>px</code>、<code>em</code>、<code>rem</code>、<code>vw/vh</code>。在进行移动端适配时，通常需要借助 <code>rem</code> 或手写媒体查询，依赖开发者手动计算或配置 <code>flexible.js</code>。</li>
+<li>小程序 WXSS：底层内置了rpx（responsive pixel）。<ul>
+<li><strong>原理</strong>：规定任何屏幕的宽度都固定为 <code>750rpx</code>。小程序底层在渲染时，会根据当前设备的屏幕宽度自动进行 <code>rpx</code> 到 <code>px</code> 的换算。</li>
+<li><strong>优势</strong>：开发者无需再关心设备分辨率，只要设计师按照 <code>750px</code> 宽度出图，前端直接将设计稿上的 <code>px</code> 数值除以 <code>2</code>（或者按照 1:1 对应）写为 <code>rpx</code> 即可完美自适应。彻底免除了手写适配逻辑的痛苦。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><strong>2. 强大的组件样式隔离机制</strong></p>
+<blockquote>
+<ul>
+<li><strong>传统 CSS</strong>：全局作用域，样式极易互相污染。为了解决污染，前端界演进出了 BEM 命名规范、CSS Modules、Vue 的 <code>scoped</code> 等方案。</li>
+<li>小程序 WXSS：原生内置了样式隔离。在自定义组件的Component构造器中，可通过options.styleIsolation配置隔离模式：<ul>
+<li><code>isolated</code>（默认）：组件内外样式互不影响，最安全。</li>
+<li><code>apply-shared</code>：页面 wxss 可以影响组件，但组件不影响页面。</li>
+<li><code>shared</code>：双向互相影响。</li>
+<li>这种机制从底层框架级别杜绝了组件间的样式耦合。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><strong>3. 选择器支持的限制（性能考量）</strong></p>
+<blockquote>
+<ul>
+<li><strong>传统 CSS</strong>：支持所有复杂的选择器，包括 <code>*</code> 通配符、属性选择器 <code>[attr=val]</code>、各种伪类伪元素等。</li>
+<li>小程序 WXSS：为了保证视图层渲染性能，做了大量裁剪。<ul>
+<li>**不支持通配符 <code>\*</code>**：因为通配符会遍历所有节点，在小程序的 WebView 渲染层会引起巨大的性能开销。</li>
+<li>不支持属性选择器，伪类支持也非常有限（仅支持 <code>::before</code> 和 <code>::after</code>）。</li>
+<li>建议且常用的只有：类选择器、ID 选择器、元素选择器以及后代选择器。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><strong>4. 全局与局部样式的天然划分</strong></p>
+<blockquote>
+<ul>
+<li><strong>传统 CSS</strong>：通常靠页面入口的引入顺序来区分全局与局部。</li>
+<li>小程序 WXSS：在工程结构上天然划分。<ul>
+<li><code>app.wxss</code>：全局样式，作用于所有页面。</li>
+<li><code>page.wxss</code>：页面级样式，只作用于当前页面，且优先级高于全局样式。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><strong>三、 底层编译与运行机制</strong></p>
+<blockquote>
+<ol>
+<li><strong>编译转换</strong>：在代码上传或编译阶段，小程序工具会将 WXSS 编译为纯 CSS。其中，所有的 <code>rpx</code> 单位会被动态计算成对应的 <code>px</code> 数值（例如在 iPhone 6 上，<code>1rpx = 0.5px</code>）。</li>
+<li><strong>注入机制</strong>：生成的 CSS 最终会被注入到运行视图层（WebView）的 <code>&lt;style&gt;</code> 标签中。由于小程序视图层和逻辑层分离，样式的解析和渲染完全在视图线程独立完成，不会阻塞逻辑层的 JS 运算。</li>
+</ol>
+</blockquote>
+<p><strong>四、实战经验</strong></p>
+<blockquote>
+<p>WXSS 本质上是微信团队针对移动端和小程序架构量身定制的“<strong>受限且增强版 CSS</strong>”。它通过 <code>rpx</code> 解决了适配痛点，通过 <code>styleIsolation</code> 解决了工程化样式污染问题，通过限制选择器保证了渲染性能。</p>
+<p>在实际开发中，我的经验是：**布局尺寸尽量使用 <code>rpx</code> 保证流式适配，但字体大小（font-size）和边框（border）通常还是使用 <code>px</code>**，防止在大屏设备上字体过大或边框过粗导致视觉变形。同时，严格遵循组件样式隔离，避免使用深层级的后代选择器穿透。</p>
+</blockquote>
+<h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>生命周期主要分为三个层级：<strong>应用级生命周期、页面级生命周期以及组件级生命周期</strong>。它们共同决定了小程序从初始化、前台后台切换、页面加载渲染到销毁的整个运行流程。</p>
+</blockquote>
+<p><strong>二、核心概念</strong></p>
+<p><strong>1.App 应用级生命周期（全局唯一）</strong></p>
+<p>定义在 <code>app.js</code> 中，主要管理小程序的全局状态和前后台切换：</p>
+<blockquote>
+<ul>
+<li><code>onLaunch</code>：初始化完成时触发，<strong>全局只触发一次</strong>。常用于获取用户登录凭证、检查小程序更新、获取设备信息等。</li>
+<li><code>onShow</code>：小程序启动，或从后台进入前台时触发。常用于重置全局数据、恢复音视频播放等。</li>
+<li><code>onHide</code>：小程序从前台进入后台时触发。常用于暂停音视频播放、停止定时器、保存当前状态等。</li>
+<li><code>onError</code>：小程序发生脚本错误或 API 调用失败时触发。常用于全局错误上报和日志收集。</li>
+</ul>
+</blockquote>
+<p><strong>2.Page 页面级生命周期</strong></p>
+<p>定义在页面的 <code>.js</code> 文件中，主要管理页面的加载、渲染和销毁：</p>
+<blockquote>
+<ul>
+<li><code>onLoad</code>：页面加载时触发，<strong>一个页面只会调用一次</strong>。常用于获取路由参数（<code>options</code>）、发起首次网络请求。</li>
+<li><code>onShow</code>：页面显示时触发，包括从其他页面返回当前页。常用于刷新页面数据、更新视图状态。</li>
+<li><code>onReady</code>：页面初次渲染完成时触发。常用于获取节点信息（类似 Vue 的 <code>mounted</code>），执行动画操作。</li>
+<li><code>onHide</code>：页面隐藏/被覆盖时触发。常用于暂停页面级的轮询或动画。</li>
+<li><code>onUnload</code>：页面卸载时触发（如 <code>navigateBack</code> 或 <code>redirectTo</code>）。常用于销毁定时器、解绑事件监听、释放内存。</li>
+</ul>
+</blockquote>
+<p><strong>3.Component 组件级生命周期（扩展深度）</strong></p>
+<p>如果面试官追问组件，可补充：</p>
+<blockquote>
+<ul>
+<li><code>created</code>：组件实例进入内存。此时不能调用 <code>this.setData</code>，常用于获取自定义属性。</li>
+<li><code>attached</code>：组件挂载到页面节点。可以开始调用 <code>this.setData</code>。</li>
+<li><code>ready</code>：组件布局完成。</li>
+<li><code>detached</code>：组件被移除。常用于清理工作。</li>
+</ul>
+</blockquote>
+<p><strong>三、执行顺序</strong></p>
+<p>在实际开发中，理清它们的执行顺序非常重要。以<strong>小程序冷启动进入首页 A</strong> 为例，执行顺序如下：</p>
+<blockquote>
+<ol>
+<li><code>App.onLaunch</code> (应用初始化)</li>
+<li><code>App.onShow</code> (应用进入前台)</li>
+<li><code>Page A.onLoad</code> (页面A加载)</li>
+<li><code>Page A.onShow</code> (页面A显示)</li>
+<li><code>Page A.onReady</code> (页面A初次渲染完成)</li>
+</ol>
+</blockquote>
+<p>如果从页面 A <code>navigateTo</code> 到页面 B，此时 A 被 B 覆盖，顺序为：</p>
+<blockquote>
+<p><code>Page B.onLoad</code> -&gt; <code>Page B.onShow</code> -&gt; <code>Page B.onReady</code> -&gt; <code>Page A.onHide</code></p>
+</blockquote>
+<p><strong>四、进阶</strong></p>
+<p>1.在面试中，我通常会对比 <code>onLoad</code> 和 <code>onShow</code>：</p>
+<blockquote>
+<ul>
+<li><code>onLoad</code> 只执行一次，适合做一次性初始化操作；</li>
+<li><code>onShow</code> 每次页面展示都会执行，适合做数据刷新。如果我们在 <code>onShow</code> 里发请求，一定要做好节流和防抖，避免频繁请求接口。</li>
+</ul>
+</blockquote>
+<p>2.内存泄漏</p>
+<blockquote>
+<p>在 <code>onLoad</code> 或 <code>onShow</code> 中开启的定时器，必须在 <code>onUnload</code> 或 <code>onHide</code> 中清理，否则容易导致内存泄漏。</p>
+</blockquote>
+<p>3.异步回调与销毁竞态</p>
+<blockquote>
+<p>在 <code>onLoad</code> 中发起的异步请求，如果回调时页面已经 <code>onUnload</code>（比如用户快速返回），此时调用 <code>this.setData</code> 会报错或引发性能问题，建议在回调中判断页面是否已销毁。</p>
+</blockquote>
+<p>4.首页白屏优化</p>
+<blockquote>
+<p>不要在 <code>App.onLaunch</code> 中放过多耗时的同步逻辑，否则会阻塞 <code>Page.onLoad</code> 导致首页白屏过久。</p>
+</blockquote>
+<p>5.用的是 Taro 或 uni-app 等跨端框架</p>
+<blockquote>
+<p>在跨端框架中，通常会将小程序的生命周期映射到 React/Vue 的生命周期中，比如 Taro 把 <code>onLoad</code> 映射为组件的 <code>componentWillMount</code>，把 <code>onShow</code> 映射为 <code>componentDidShow</code>。</p>
+</blockquote>
+<h2 id="页面间传递数据"><a href="#页面间传递数据" class="headerlink" title="页面间传递数据"></a>页面间传递数据</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>根据<strong>数据流向（向前传还是向后传）</strong>、<strong>数据量大小</strong>以及<strong>是否需要持久化</strong>来选择最合适的技术方案。常见的传递方式主要分为五种：URL 参数传参、页面栈直接操作、EventChannel 事件通道、全局状态（globalData/Storage）以及状态管理库。</p>
+</blockquote>
+<p><strong>二、核心传递方式</strong></p>
+<p><strong>1. URL 参数传参（最基础，正向传递）</strong></p>
+<blockquote>
+<ul>
+<li><strong>适用场景</strong>：向下一个页面传递少量、非敏感的简单数据。</li>
+<li><strong>实现方式</strong>：在 <code>wx.navigateTo</code> 的 URL 中拼接 query 参数。目标页面在 <code>onLoad(options)</code> 生命周期中接收。</li>
+<li><strong>局限性</strong>：只能正向传递，且 URL 长度有限制，无法直接传递复杂对象（需先 <code>JSON.stringify</code>，接收后再 <code>JSON.parse</code>）。</li>
+</ul>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// A页面跳转</span></span><br><span class="line">wx.<span class="title function_">navigateTo</span>(&#123; <span class="attr">url</span>: <span class="string">&#x27;/pages/detail/detail?id=1&amp;name=test&#x27;</span> &#125;);</span><br><span class="line"><span class="comment">// B页面接收</span></span><br><span class="line"><span class="title function_">onLoad</span>(<span class="params">options</span>) &#123; <span class="variable language_">console</span>.<span class="title function_">log</span>(options.<span class="property">id</span>, options.<span class="property">name</span>); &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. 页面栈直接操作（常用，逆向传递）</strong></p>
+<blockquote>
+<ul>
+<li><strong>适用场景</strong>：从子页面（如详情页、表单填写页）返回上一页，并携带数据回传（如刷新列表）。</li>
+<li><strong>实现方式</strong>：通过 <code>getCurrentPages()</code> 获取当前页面栈实例，通常取倒数第二个元素即为上一页，然后直接调用上一页的 <code>setData</code> 或自定义方法。</li>
+<li><strong>局限性</strong>：属于强耦合的写法，如果页面层级发生变动可能会报错；且不符合严谨的数据流单向原则，但在轻量级场景下最实用。</li>
+</ul>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// B页面返回A页面</span></span><br><span class="line"><span class="keyword">const</span> pages = <span class="title function_">getCurrentPages</span>();</span><br><span class="line"><span class="keyword">const</span> prevPage = pages[pages.<span class="property">length</span> - <span class="number">2</span>];</span><br><span class="line">prevPage.<span class="title function_">setData</span>(&#123; <span class="attr">newListData</span>: [...] &#125;); <span class="comment">// 直接回写数据</span></span><br><span class="line">wx.<span class="title function_">navigateBack</span>();</span><br></pre></td></tr></table></figure>
+
+<p><strong>3. EventChannel 事件通道（正规，逆向传递）</strong></p>
+<blockquote>
+<ul>
+<li><strong>适用场景</strong>：同样用于向上一页面传递数据，但比页面栈更规范、解耦更好。</li>
+<li><strong>实现方式</strong>：在 <code>wx.navigateTo</code> 时会被解析为一个 <code>EventChannel</code>，在上一页监听事件，在下一页触发事件。</li>
+</ul>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// A页面：监听</span></span><br><span class="line">wx.<span class="title function_">navigateTo</span>(&#123;</span><br><span class="line">  <span class="attr">url</span>: <span class="string">&#x27;/pages/detail/detail&#x27;</span>,</span><br><span class="line">  <span class="attr">events</span>: &#123;</span><br><span class="line">    <span class="attr">updateData</span>: <span class="keyword">function</span>(<span class="params">data</span>) &#123; <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;收到B页数据&#x27;</span>, data); &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// B页面：触发</span></span><br><span class="line"><span class="keyword">const</span> eventChannel = <span class="variable language_">this</span>.<span class="title function_">getOpenerEventChannel</span>();</span><br><span class="line">eventChannel.<span class="title function_">emit</span>(<span class="string">&#x27;updateData&#x27;</span>, &#123; <span class="attr">id</span>: <span class="number">123</span> &#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>4. 全局状态 globalData 与 Storage（跨页面/跨层级传递）</strong></p>
+<blockquote>
+<ul>
+<li><strong>适用场景</strong>：多层级穿透传递（如 A -&gt; B -&gt; C），或者全局共享状态（如用户信息、主题色）。</li>
+<li><strong>globalData</strong>：在 <code>app.js</code> 中定义 <code>globalData</code>，各页面通过 <code>getApp().globalData</code> 读写。适合存内存级临时数据，但无响应式效果，改了数据需手动 <code>setData</code> 触发视图更新。</li>
+<li><strong>Storage</strong>：通过 <code>wx.setStorageSync</code> / <code>wx.getStorageSync</code>。适合需要持久化（如用户登录态 Token），容量限制为 10MB。不适合存大量数据或复杂对象，因为序列化耗性能。</li>
+</ul>
+</blockquote>
+<p><strong>5. 状态管理库（复杂应用必备）</strong></p>
+<blockquote>
+<ul>
+<li><strong>适用场景</strong>：大型小程序，多页面频繁共享状态（如购物车数据全局同步）。</li>
+<li><strong>实现方式</strong>：使用 <code>mobx-miniprogram</code> 或 <code>redux</code> 结合小程序的 <code>behaviors</code> 或 <code>store</code> 注入。实现数据响应式，任意页面修改 Store 数据，所有关联页面自动更新。</li>
+</ul>
+</blockquote>
+<p><strong>三、选型建议</strong></p>
+<p>在实际工程中，我通常会封装一个统一的导航跳转方法，内部集成 URL 参数解析和页面栈的安全获取校验，防止因层级问题导致的报错，提升代码的健壮性。</p>
+<blockquote>
+<ol>
+<li><strong>简单的正向传参</strong>，首选 <strong>URL 拼接</strong>。</li>
+<li><strong>返回上一页回传数据</strong>，轻量级场景用 <strong><code>getCurrentPages()</code></strong> 直接改数据，如果追求规范解耦则用 <strong>EventChannel</strong>。</li>
+<li><strong>多页面共享或持久化</strong>，如登录态用 <strong>Storage</strong>，临时全局状态用 <strong>globalData</strong>。</li>
+<li><strong>重度状态驱动的业务</strong>，引入 <strong>状态管理库</strong> 统一维护。</li>
+</ol>
+</blockquote>
+<p><strong>四、面试</strong></p>
+<p>对比</p>
+<blockquote>
+<ul>
+<li>wx.navigateTo()：保留当前页面，跳转到应用内的某个页面。但是不能跳到tabbar页面</li>
+<li>wx.redirectTo()：关闭当前页面，跳转到应用内的某个页面。但是不允许跳转到tabbar页面</li>
+<li>wx.switchTab()：跳转到tabBar页面，并关闭其他所有非tabBar页面</li>
+<li>wx.navigateBack()：关闭当前页面，返回上一页面或多级页面。可通过getcurrentPagesO获取当前的贝面</li>
+<li>栈，决定需要返回几层</li>
+<li>wx.reLaunch()：关闭所有页面，打开到应用内的某个页面</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>Q：<code>wx.navigateTo</code> 和 <code>wx.redirectTo</code> <strong>在路由栈表现上有什么区别？传参会有影响吗？</strong></p>
+<p>A： <code>navigateTo</code> 会保留当前页面，跳转到新页面，新页面可以通过 <code>EventChannel</code> 或 <code>getCurrentPages()</code> 获取上一页实例并传参；<code>redirectTo</code> 是关闭当前页面，跳转到新页面，当前页面已出栈，所以无法使用 <code>EventChannel</code> 向前传参，只能使用 <code>globalData</code> 或 <code>Storage</code>。</p>
+<p>Q：<strong>URL 传参时如果包含特殊字符（如 <code>&amp;</code> 或 <code>=</code>）怎么办？</strong></p>
+<p>A：需要对参数值进行 URL 编码。传递前使用 <code>encodeURIComponent()</code> 编码，接收时在 <code>onLoad</code> 中使用 <code>decodeURIComponent()</code> 解码，防止参数解析错误。</p>
+<p>Q：<strong>除了 <code>EventChannel</code>，还有其他方法向上一页传参吗？</strong></p>
+<p>A：可以使用 <code>getCurrentPages()</code> 获取当前页面栈，直接拿到上一页的实例对象，然后修改上一页的 <code>data</code> 或调用上一页的方法。代码类似：<code>const pages = getCurrentPages(); const prevPage = pages[pages.length - 2]; prevPage.setData(&#123; foo: &#39;bar&#39; &#125;)</code>。但在小程序官方规范中，更推荐使用 <code>EventChannel</code>。</p>
+</blockquote>
+<h2 id="bindtap-和-catchtap-的区别"><a href="#bindtap-和-catchtap-的区别" class="headerlink" title="bindtap 和 catchtap 的区别"></a>bindtap 和 catchtap 的区别</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p><code>bindtap</code> 和 <code>catchtap</code> 都是小程序中用来绑定点击事件的属性，它们的核心区别在于<strong>对事件冒泡的处理机制不同</strong>：<code>bindtap</code> 会触发事件冒泡，而 <code>catchtap</code> 会阻止事件冒泡。</p>
+</blockquote>
+<p><strong>二、最佳实践</strong></p>
+<blockquote>
+<ol>
+<li><strong>避免滥用 catchtap</strong>：不要为了图省事到处用 <code>catchtap</code>，这可能会阻止某些全局组件（如弹出层外部点击关闭）的正常冒泡。只在确实需要阻断父子元素事件冲突时使用。</li>
+<li><strong>弹窗遮罩层场景</strong>：遮罩层和内部弹窗通常都需要绑定点击关闭事件。如果用户点击内部弹窗，不希望遮罩层关闭，此时内部弹窗的 <code>view</code> 必须使用 <code>catchtap</code> 阻断冒泡，遮罩层用 <code>bindtap</code> 触发关闭。</li>
+</ol>
+</blockquote>
+<p><strong>三、面试</strong></p>
+<blockquote>
+<p>Q：既然说到 <code>data-\*</code> 传参，如果数据量很大，这种传参方式有什么问题吗？</p>
+<p>A:<em><code>data-\*</code> 传参本质上是将数据挂载到 DOM 节点上，如果数据量极大，会加重渲染层的内存负担。另外，在逻辑层和渲染层通信时，序列化和反序列化的成本也很高。所以对于大数据量传参，通常不建议存在 dataset 里，而是推荐通过公共状态管理（如全局 globalData 或状态库）或者通过路由参数来传递。</em></p>
+</blockquote>
+<h2 id="下拉刷新"><a href="#下拉刷新" class="headerlink" title="下拉刷新"></a>下拉刷新</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>主要有三种方式：<strong>原生页面级配置、程序化 API 触发，以及基于 <code>scroll-view</code> 的自定义下拉刷新</strong>。日常开发中最常用的是第一种原生配置，它最轻量且体验最好。</p>
+</blockquote>
+<p><strong>二、核心方案</strong></p>
+<p><strong>1.原生页面级配置（最常用，全局/页面级）</strong></p>
+<p>分为两步：配置开关 + 处理生命周期</p>
+<blockquote>
+<ul>
+<li><strong>第一步，开启配置</strong>：在页面的 <code>.json</code> 配置文件中添加 <code>&quot;enablePullDownRefresh&quot;: true</code>（也可以在 <code>app.json</code> 的 <code>window</code> 选项中全局开启）。</li>
+<li><strong>第二步，监听事件</strong>：在页面的 <code>.js</code> 文件中重写 <code>onPullDownRefresh</code> 生命周期函数。当用户完成下拉手势时，会触发该函数，在这里执行重新拉取数据的逻辑。</li>
+<li><strong>第三步，停止动画</strong>：数据请求完成后，<strong>必须</strong>手动调用 <code>wx.stopPullDownRefresh()</code> 来收起下拉刷新的动画，否则会一直转圈卡住。</li>
+</ul>
+</blockquote>
+<p><strong>2.程序化 API 触发（适用于无手势交互的场景）</strong></p>
+<blockquote>
+<ul>
+<li>通过调用 <code>wx.startPullDownRefresh()</code> 可以主动触发下拉刷新动画并触发 <code>onPullDownRefresh</code> 回调。</li>
+<li><strong>应用场景</strong>：常用于页面首次进入时的骨架屏加载，或者在网络超时后，用户点击“重试”按钮时主动触发刷新。</li>
+</ul>
+</blockquote>
+<p><strong>3.基于 <code>scroll-view</code> 的自定义下拉刷新（适用于局部或特殊 UI 需求）</strong></p>
+<blockquote>
+<ul>
+<li>如果页面是局部滚动（如嵌套 swiper），或者设计师要求一套非常炫酷的自定义下拉动画（比如一个小球弹跳），原生下拉刷新无法满足。</li>
+<li><strong>实现方式</strong>：使用 <code>&lt;scroll-view&gt;</code> 组件，开启 <code>refresher-enabled=&quot;&#123;&#123;true&#125;&#125;&quot;</code> 属性，监听 <code>bindrefresherrefresh</code> 事件，并通过 <code>refresher-triggered</code> 控制动画关闭状态。这种方式可以完全自定义下拉区域的 UI。</li>
+</ul>
+</blockquote>
+<p><strong>三、进阶</strong></p>
+<blockquote>
+<ol>
+<li><strong>忘记停止动画</strong>：这是新手常犯的错误，如果请求是异步的，没有在 <code>.finally()</code> 或回调中调用 <code>wx.stopPullDownRefresh()</code>，下拉动画会一直存在。</li>
+<li><strong>样式不显示问题</strong>：有时开启了 <code>enablePullDownRefresh</code> 但看不到三个点点的动画，通常是因为背景色和动画颜色冲突。需要在 json 中配置 <code>&quot;backgroundTextStyle&quot;: &quot;dark&quot;</code> 或 <code>&quot;light&quot;</code> 来适配背景。</li>
+<li><strong>局部滚动冲突</strong>：如果页面高度超出一屏且使用的是<strong>局部滚动</strong>布局，原生页面级下拉刷新会失效。此时必须使用 <code>scroll-view</code> 的 <code>refresher-enabled</code> 方案，而不能用页面级的下拉刷新。</li>
+<li><strong>防抖与节流</strong>：避免用户连续疯狂下拉导致发起多次重复请求，可以在请求前加一个 <code>isLoading</code> 锁。</li>
+<li>项目使用的是 <strong>Taro 或 uni-app</strong>，底层会将小程序的 <code>onPullDownRefresh</code> 映射为 React 的 <code>usePullDownRefresh</code> Hook 或 Vue 的页面生命周期钩子，但底层调用的依然是上述小程序原生能力。</li>
+<li>如果在首页有一个固定的导航栏，下拉刷新时导航栏也跟着一起下拉了怎么办？“这种场景下原生页面级下拉刷新难以处理局部分离。我会改用 <code>scroll-view</code> 将导航栏放在 scroll-view 外部，列表放在内部，通过 <code>refresher-enabled</code> 实现仅列表区域的局部下拉刷新，从而实现导航栏固定的效果。”</li>
+</ol>
+</blockquote>
+<h2 id="自定义组件样式隔离"><a href="#自定义组件样式隔离" class="headerlink" title="自定义组件样式隔离"></a>自定义组件样式隔离</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>自定义组件的样式隔离是通过在 <code>Component</code> 构造器的 <code>options</code> 配置中设置 <code>styleIsolation</code> 属性来实现的。它主要提供了 <strong><code>isolated</code>、<code>apply-shared</code>、<code>shared</code></strong> 三种隔离模式，用来控制组件内外样式相互影响的范围。</p>
+</blockquote>
+<p><strong>二、三种隔离模式</strong></p>
+<blockquote>
+<ul>
+<li><code>isolated</code>（默认：完全隔离）<ul>
+<li><strong>特性</strong>：组件内外的样式互不影响。页面样式不会影响组件内部，组件内部样式也不会影响外部页面。</li>
+<li><strong>表现</strong>：只有组件中写在 <code>addGlobalClass: true</code>（旧基础库的写法）或者通过 <code>externalClasses</code> 外部样式类传入的样式才能生效。</li>
+</ul>
+</li>
+<li><code>apply-shared</code>（单向共享：页面影响组件）<ul>
+<li><strong>特性</strong>：页面（<code>Page</code>）的 <code>wxss</code> 样式会<strong>影响到</strong>自定义组件内部，但组件内部的样式<strong>不会影响</strong>到外部页面。</li>
+<li><strong>应用场景</strong>：这是日常业务开发中最常用的模式。比如页面定义了主题色（<code>.primary-color</code>），希望直接在自定义组件的按钮上也能使用该类名，就可以开启此模式。</li>
+</ul>
+</li>
+<li><code>shared</code>（双向共享：互相影响）<ul>
+<li><strong>特性</strong>：页面样式会影响组件，组件样式也会影响页面（甚至同一页面中其他配置为 <code>shared</code> 或 <code>apply-shared</code> 的组件）。</li>
+<li><strong>应用场景</strong>：极少使用，通常用于设计极其基础的全局基础组件（如UI库的根容器），需要组件内部定义的样式能反向污染页面。<strong>一般不建议轻易使用，容易引发样式冲突</strong>。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><strong>三、外部样式类与样式透传</strong></p>
+<p>除了配置隔离模式，小程序还提供了更精确的样式穿透控制：</p>
+<blockquote>
+<ol>
+<li><strong>外部样式类（<code>externalClasses</code>）</strong>：组件内部声明 <code>externalClasses: [&#39;my-class&#39;]</code>，在组件节点上传入 <code>&lt;comp my-class=&quot;theme-red&quot;&gt;</code>，这样可以在不打破样式隔离的情况下，让外部精确控制组件内部某个节点的样式。</li>
+<li><strong>页面样式隔离（页面配置）</strong>：除了组件，<code>Page</code> 也可以在 <code>.json</code> 中配置 <code>styleIsolation</code>，控制页面样式是否隔离。</li>
+</ol>
+</blockquote>
+<p><strong>四、进阶</strong></p>
+<blockquote>
+<p><strong>（1）为什么默认要 <code>isolated</code>？</strong><br>小程序组件化的核心诉求就是<strong>高内聚低耦合</strong>。如果默认不隔离，由于小程序的 WXSS 最终都会合并到同一个渲染层 Webview 中执行，全局样式很容易意外污染组件内部，导致 UI 错乱。</p>
+<p><strong>（2）踩坑点：标签选择器穿透</strong><br>有一个大坑是：即使开启了 <code>isolated</code> 完全隔离模式，组件内部仍然可以使用<strong>标签选择器</strong>（如 <code>view &#123; color: red &#125;</code>）。由于小程序底层的实现机制，标签选择器是<strong>无法被隔离</strong>的，它会污染到整个页面的所有 <code>view</code> 标签。<br><strong>最佳实践</strong>：在组件内部编写样式时，<strong>绝对不要使用标签选择器</strong>，必须使用 class 选择器（<code>.container</code>），否则会引起诡异的样式污染问题。</p>
+<p><strong>（3）跨端框架的差异</strong><br>如果使用 Taro 或 uni-app，由于它们底层将 React/Vue 的样式编译处理过，通常默认会启用类似 CSS Modules 的局部作用域，开发者较少直接感知小程序原生的 <code>styleIsolation</code>，但底层原理依然受此机制约束。</p>
+<p>(4)既然 <code>apply-shared</code> 可以让页面样式影响组件，那如果我只想让页面传入一个特定的样式类名，不想暴露组件内部结构，用哪种方案更好？</p>
+<p><em>我会优先使用 <code>externalClasses</code> 外部样式类。因为 <code>apply-shared</code> 是一种粗粒度的单向敞开，页面中所有符合选择器的样式都会塞进去；而 <code>externalClasses</code> 是一种细粒度的契约，组件内部明确声明哪个节点需要外部样式，这样更加安全可控，符合黑盒组件的设计原则。</em></p>
+</blockquote>
+<h2 id="图片宽高比例保持不变"><a href="#图片宽高比例保持不变" class="headerlink" title="图片宽高比例保持不变"></a>图片宽高比例保持不变</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>主要有两种思路：一是优先使用小程序 <code>&lt;image&gt;</code> 组件自带的 <code>mode</code> 属性；二是通过 CSS 现代属性 <code>aspect-ratio</code> 或经典的 <code>padding-bottom</code> Hack 来控制容器比例。</p>
+</blockquote>
+<p><strong>二、具体实现</strong></p>
+<p><strong>1.使用 <code>&lt;image&gt;</code> 组件的 <code>mode</code> 属性（最推荐）</strong></p>
+<p>小程序的 <code>&lt;image&gt;</code> 组件提供了一个非常方便的 <code>mode</code> 属性，专门用来处理图片的缩放和裁剪。保持比例不变常用的值有：</p>
+<blockquote>
+<ul>
+<li><strong><code>widthFix</code><strong>：宽度不变，高度自动变化，保持原图宽高比不变。</strong>（最常用于列表页、详情页等宽度自适应，高度按比例撑开的场景）</strong></li>
+<li><strong><code>aspectFit</code><strong>：保持纵横比缩放图片，使图片的长边能完全显示出来。也就是说，可以完整地将图片显示出来，但容器可能会有留白。</strong>（常用于商品主图预览、查看大图场景）</strong></li>
+<li><strong><code>aspectFill</code><strong>：保持纵横比缩放图片，只保证图片的短边能完全显示出来。也就是说，图片通常只在水平或垂直方向是完整的，另一个方向将会截取。</strong>（常用于头像、缩略图场景，保证容器填满不留白）</strong></li>
+</ul>
+</blockquote>
+<p><strong>2.使用 CSS <code>aspect-ratio</code> 属性（现代 CSS 方案）</strong></p>
+<p>如果是通过 <code>background-image</code> 设置背景图，或者想要严格控制容器的比例，可以使用 CSS3 的 <code>aspect-ratio</code> 属性。目前小程序的基础库版本普遍已经支持该属性，代码整洁度最高。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.img-box</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  aspect-ratio: <span class="number">16</span> / <span class="number">9</span>; <span class="comment">/* 保持16:9比例 */</span></span><br><span class="line">  <span class="comment">/* 如果是背景图 */</span></span><br><span class="line">  <span class="attribute">background-image</span>: <span class="built_in">url</span>(<span class="string">...</span>);</span><br><span class="line">  <span class="attribute">background-size</span>: cover;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.使用 <code>padding-bottom</code> 百分比 Hack（经典兼容方案）</strong></p>
+<p>如果遇到极低版本基础库不支持 <code>aspect-ratio</code>，可以利用 <code>padding-bottom</code> 或 <code>padding-top</code> 的百分比是相对于父元素宽度计算的特性来实现固定比例。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">padding-bottom</span>: <span class="number">56.25%</span>; <span class="comment">/* 16:9 比例，即 9/16 = 0.5625 */</span></span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.container</span> image &#123;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>三、面试</p>
+<blockquote>
+<p>Q：<strong>widthFix为什么会导致页面抖动？如何解决？</strong></p>
+<p>A：因为图片加载前高度未知，加载完成后高度撑开会导致下方元素位移。解决方案是：后端在接口中返回图片的宽高比（如 <code>width/height</code>），前端在渲染前通过计算或直接给容器设定一个初始的 <code>padding-bottom</code> 占位，等图片加载完成后再恢复。</p>
+<p>Q：<strong>mode=’scaleToFill’ 是什么效果？</strong></p>
+<p>A：这是 <code>&lt;image&gt;</code> 组件的默认值，不保持纵横比，拉伸图片使其完全填满容器，会导致图片变形。一般不推荐使用。</p>
+</blockquote>
+<h1 id="中级"><a href="#中级" class="headerlink" title="中级"></a>中级</h1><h2 id="微信支付业务流程"><a href="#微信支付业务流程" class="headerlink" title="微信支付业务流程"></a>微信支付业务流程</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>核心流程包括<strong>“三端协同”</strong>：小程序前端负责发起支付和感知用户操作，业务后端负责创建订单和生成预支付参数，微信服务器负责统一下单和资金扣减。整个流程的关键在于保证订单的闭环和安全校验。</p>
+</blockquote>
+<blockquote>
+<p>用户点击支付<code>➔</code>前端请求后端<code>➔</code>后端请求微信下单<code>➔</code>微信返回 prepay_id<code>➔</code>后端签名返回前端<code>➔</code>前端调 wx.requestPayment<code>➔</code>用户支付<code>➔</code>微信异步通知后端<code>➔</code>前端轮询后端状态</p>
+</blockquote>
+<p><strong>二、核心流程</strong></p>
+<p>以标准的 JSAPI 支付（小程序支付）为例，分为以下几步：</p>
+<p><strong>第一阶段：统一下单与参数生成（前端 -&gt; 后端 -&gt; 微信）</strong></p>
+<blockquote>
+<ol>
+<li><strong>前端发起请求</strong>：用户在小程序点击“去支付”，前端将商品信息（如商品 ID、购买数量）传给业务后端。</li>
+<li><strong>后端创建订单</strong>：业务后端校验库存、金额，在本地数据库生成一条未支付状态的订单记录（获取业务订单号 <code>out_trade_no</code>）。</li>
+<li><strong>后端调用微信 API</strong>：业务后端携带订单号、金额、<code>openid</code> 等参数，调用微信服务器的<strong>【统一下单接口】</strong>。</li>
+<li><strong>微信返回预支付参数</strong>：微信服务器校验通过后，返回预支付交易会话标识 <code>prepay_id</code>。后端使用 <code>prepay_id</code> 加上时间戳、随机字符串等，按微信规则生成**前端支付签名 <code>paySign</code>**，并将这些参数返回给小程序前端。</li>
+</ol>
+</blockquote>
+<p><strong>第二阶段：前端唤起支付（前端 -&gt; 微信）</strong></p>
+<blockquote>
+<ol start="5">
+<li><strong>前端唤起支付弹窗</strong>：前端收到后端返回的参数后，调用小程序原生 API <code>wx.requestPayment</code>，传入 <code>timeStamp</code>、<code>nonceStr</code>、<code>package</code>（<code>prepay_id</code>）、<code>signType</code>、<code>paySign</code>。</li>
+<li><strong>用户输入密码支付</strong>：此时微信弹出支付界面，用户确认指纹或密码。前端进入 <code>wx.requestPayment</code> 的回调等待状态</li>
+</ol>
+</blockquote>
+<p><strong>第三阶段：支付结果闭环（微信 -&gt; 后端 -&gt; 前端）</strong></p>
+<blockquote>
+<ol start="7">
+<li><strong>微信异步回调后端</strong>：用户支付成功后，微信服务器会<strong>异步</strong>向业务后端的回调接口发送支付结果通知。后端需验证签名，确认无误后，将本地订单状态更新为“已支付”，并给微信返回成功应答（防重入）。</li>
+<li><strong>前端获取结果展示</strong>：前端通过 <code>wx.requestPayment</code> 的 <code>success</code> 或 <code>fail</code> 回调获取同步结果。<strong>注意：前端的成功回调不能作为最终扣款成功的唯一依据</strong>，必须结合后端状态。前端通常在 <code>success</code> 后轮询后端接口，确认订单真正变为“已支付”后，再跳转到“支付成功”页面。</li>
+</ol>
+</blockquote>
+<p><strong>三、进阶</strong></p>
+<blockquote>
+<ol>
+<li><strong>以前端同步回调为准（致命坑）</strong>：<code>wx.requestPayment</code> 的 <code>success</code> 回调只代表“用户输入密码且微信客户端返回成功”，可能存在网络延迟导致后端还没收到微信异步通知。<strong>绝对不能在前端回调里直接判定业务成功</strong>，必须轮询后端接口确认。</li>
+<li><strong>后端回调的幂等性</strong>：微信的异步通知可能会重复发送（比如后端没及时回复 ACK）。业务后端的回调接口必须做好<strong>幂等性处理</strong>，防止重复发货或重复更新状态。</li>
+<li><strong>金额单位防坑</strong>：微信支付的所有金额单位都是<strong>分</strong>，而前端展示和后端业务计算经常用<strong>元</strong>，在调用统一下单接口时必须做好转换，且最好用整数分，避免浮点数精度问题。</li>
+<li><strong>体验优化</strong>：如果用户支付中途退出（<code>fail</code> 回调），前端不要直接跳转失败页，而是提示“支付未完成，可重新支付”，并保留订单状态，方便用户再次拉起支付。</li>
+</ol>
+</blockquote>
+<h2 id="自定义-navigationBar"><a href="#自定义-navigationBar" class="headerlink" title="自定义 navigationBar"></a>自定义 navigationBar</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>核心思路是：<strong>关闭原生导航栏 -&gt; 动态获取系统状态栏和胶囊按钮的尺寸 -&gt; 计算出自定义导航栏的真实高度 -&gt; 编写自定义组件进行渲染并占位</strong>。</p>
+</blockquote>
+<p>整个过程中最大的难点在于<strong>多机型（如刘海屏、Android 各种屏幕）的尺寸适配</strong>，尤其是如何与右上角固定的原生胶囊按钮在视觉上保持对齐。</p>
+<p><strong>二、核心步骤</strong></p>
+<p><strong>1. 开启自定义导航栏配置</strong></p>
+<p>在页面的 <code>.json</code> 配置文件中（或 <code>app.json</code> 全局配置），将 <code>navigationStyle</code> 设置为 <code>custom</code>。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;navigationStyle&quot;</span><span class="punctuation">:</span> <span class="string">&quot;custom&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><em>注：设置后，原生顶部导航栏会消失，但右上角胶囊按钮（返回、首页、关闭）依然会原生渲染在屏幕右上角。</em></p>
+<p><strong>2. 获取系统尺寸数据（核心难点）</strong></p>
+<p>为了适配所有机型，必须在 JS 中动态获取两个关键数据：</p>
+<blockquote>
+<ul>
+<li><strong>状态栏高度（StatusBarHeight）</strong>：通过 <code>wx.getWindowInfo()</code> 或 <code>wx.getSystemInfoSync()</code> 获取 <code>statusBarHeight</code>。这部分不同机型差异极大（如 iPhone X 以上的刘海屏较大）。</li>
+<li><strong>胶囊按钮尺寸（MenuButton）</strong>：通过 <code>wx.getMenuButtonBoundingClientRect()</code> 获取胶囊按钮的 <code>top</code>、<code>bottom</code>、<code>height</code>、<code>width</code>。</li>
+</ul>
+</blockquote>
+<p><strong>3. 计算导航栏总高度</strong></p>
+<p>获取到数据后，进行关键计算。导航栏的总高度不能写死，通常的计算逻辑是：</p>
+<blockquote>
+<ul>
+<li><strong>导航栏内容区高度</strong> = (胶囊按钮上边距 - 状态栏高度) * 2 + 胶囊按钮高度</li>
+<li><strong>导航栏总高度</strong> = 状态栏高度 + 导航栏内容区高度<br><em>说明：这样计算能保证我们的标题/Logo 与右上角胶囊按钮在垂直方向上绝对居中对齐。</em></li>
+</ul>
+</blockquote>
+<p><strong>4. 布局实现与占位</strong></p>
+<p>在 WXML 和 WXSS 中构建结构：</p>
+<blockquote>
+<ul>
+<li>通常使用 <code>fixed</code> 定位将自定义导航栏固定在顶部。</li>
+<li><strong>关键点</strong>：由于使用了 <code>fixed</code> 脱离文档流，页面下方内容会被导航栏遮挡。必须加一个与导航栏高度相等的占位元素（如空的 <code>view</code>），或者给页面容器设置 <code>padding-top</code> 为导航栏总高度。</li>
+</ul>
+</blockquote>
+<p><strong>三、进阶</strong></p>
+<p>有几个容易踩坑的细节：</p>
+<p><strong>1.生命周期时序问题</strong></p>
+<blockquote>
+<p><code>wx.getMenuButtonBoundingClientRect()</code> 有时在 <code>onLoad</code> 中获取会存在时延导致获取不到。为了确保数据准确，我通常会在 <code>onReady</code> 或使用 <code>setTimeout</code> 中稍作延迟获取，或者将其封装为全局方法在 <code>App.js</code> 的 <code>onLaunch</code> 中提前异步获取并缓存。</p>
+</blockquote>
+<p><strong>2.下拉刷新的适配问题</strong></p>
+<blockquote>
+<p>开启自定义导航栏后，原生的下拉刷新起点会发生变化（可能在屏幕最顶端）。可以通过配置 <code>pageBackgroundColorTop</code> 或者使用自定义的滚动容器配合 <code>scroll-view</code> 的 <code>refresher</code> 属性来实现完全自定义的下拉刷新效果。</p>
+</blockquote>
+<p><strong>3.返回首页与多端兼容</strong></p>
+<blockquote>
+<ul>
+<li>当页面是第一个页面时，胶囊按钮左侧没有“&lt;”返回箭头，需要在自定义导航栏左侧添加“返回首页”的逻辑（<code>wx.switchTab</code> 或 <code>wx.reLaunch</code>）。</li>
+<li>如果是开发支付宝/抖音小程序，他们的 API 不同，如果是跨端框架（如 uni-app/Taro），建议使用框架封装的 <code>getMenuButtonBoundingClientRect</code> 保证一致性。</li>
+</ul>
+</blockquote>
+<p><strong>四、实战经验</strong></p>
+<blockquote>
+<p>综上所述，自定义 navigationBar 的本质是<strong>放弃原生 UI，通过 API 计算做绝对定位的还原与增强</strong>。</p>
+<p>在工程化实践中，我不会在每个页面重复写这段逻辑。我会将其抽离为一个<strong>全局的 <code>custom-navbar</code> 自定义组件</strong>。在组件内部处理所有的尺寸计算、返回按钮逻辑、背景色渐变逻辑，并通过 <code>properties</code> 暴露 <code>title</code>、<code>bgColor</code> 等属性供各个页面复用。这样既保证了 UI 的一致性，又极大地降低了页面的维护成本。</p>
+</blockquote>
+<h2 id="双向绑定在小程序与Vue的区别"><a href="#双向绑定在小程序与Vue的区别" class="headerlink" title="双向绑定在小程序与Vue的区别"></a>双向绑定在小程序与Vue的区别</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p><strong>Vue 是基于数据劫持和单线程的响应式系统，而小程序是基于跨线程通信和语法糖封装的双线程模型</strong>。</p>
+</blockquote>
+<p><strong>二、核心区别</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">维度</th>
+<th align="left">Vue 双向绑定</th>
+<th align="left">小程序双向绑定</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>核心原理</strong></td>
+<td align="left">数据劫持 + 依赖收集</td>
+<td align="left">事件回调 + <code>setData</code> (语法糖)</td>
+</tr>
+<tr>
+<td align="left"><strong>线程模型</strong></td>
+<td align="left">单线程 (同进程)</td>
+<td align="left">双线程 (跨进程通信)</td>
+</tr>
+<tr>
+<td align="left"><strong>数据驱动方式</strong></td>
+<td align="left">数据改变自动触发 DOM 更新</td>
+<td align="left">必须通过 <code>setData</code> 跨线程驱动</td>
+</tr>
+<tr>
+<td align="left"><strong>灵活性</strong></td>
+<td align="left">高（支持修饰符、计算属性等）</td>
+<td align="left">低（受限，无修饰符）</td>
+</tr>
+<tr>
+<td align="left"><strong>性能瓶颈</strong></td>
+<td align="left">DOM Diff 与重绘</td>
+<td align="left">跨线程通信开销与序列化</td>
+</tr>
+</tbody></table>
+<p><strong>1. 底层实现机制不同</strong></p>
+<blockquote>
+<ul>
+<li><strong>Vue 的实现</strong>：基于<strong>数据劫持 + 发布订阅模式</strong>。Vue 2 利用 <code>Object.defineProperty</code>，Vue 3 利用 <code>Proxy</code> 拦截数据的读写。当用户修改输入框时，触发 input 事件改变数据，数据的 Setter 拦截到变化后，通知依赖该数据的 Watcher，进而触发虚拟 DOM 的 Diff 和真实 DOM 的更新。整个过程在同一进程内完成。</li>
+<li><strong>小程序的实现</strong>：本质是<strong>单向数据流 + 事件回调的语法糖</strong>。小程序底层并没有对 <code>data</code> 对象进行数据劫持。当使用 <code>model:value</code> 时，小程序底层帮我们做了两件事：一是将数据渲染到视图；二是监听输入事件，自动调用 <code>this.setData</code> 将新值传回逻辑层。数据变化的触发力来自 <code>setData</code>。</li>
+</ul>
+</blockquote>
+<p><strong>2. 线程模型与通信开销不同</strong></p>
+<blockquote>
+<ul>
+<li><strong>Vue（单线程）</strong>：逻辑层和视图层都在浏览器的 JS 引擎和渲染引擎中，数据更新是在同一内存空间中完成的，通信开销极小，速度极快。</li>
+<li><strong>小程序（双线程）</strong>：逻辑层运行在 JsCore/V8 中，视图层运行在 WebView 中。双向绑定的数据发生变化时，逻辑层必须将数据<strong>序列化为字符串</strong>，通过 Native 层的 JSBridge <strong>跨线程</strong>传递给视图层，视图层再进行渲染。这就带来了不可忽视的通信开销。</li>
+</ul>
+</blockquote>
+<p><strong>3. 语法灵活性与限制不同</strong></p>
+<blockquote>
+<ul>
+<li>**Vue 的 <code>v-model</code>**：极其灵活。可以绑定计算属性、支持修饰符（如 <code>.lazy</code>、<code>.trim</code>、<code>.number</code>），可以绑定动态组件，甚至能在自定义指令中深度定制双向绑定逻辑。</li>
+<li>**小程序的 <code>model:value</code>**：相对受限。它是语法糖，不支持修饰符；虽然支持多级路径绑定（如 <code>model:value=&quot;&#123;&#123;obj.a&#125;&#125;&quot;</code>），但不支持复杂的表达式或函数过滤；在自定义组件上使用时，子组件必须主动触发 <code>bind:update:propName</code> 事件才能完成双向绑定。</li>
+</ul>
+</blockquote>
+<p><strong>4. 性能瓶颈与优化方向不同</strong></p>
+<blockquote>
+<ul>
+<li><strong>Vue</strong>：性能瓶颈主要在于大列表的虚拟 DOM Diff 计算和浏览器的重排重绘。优化方向是 <code>v-if</code>/<code>v-show</code> 选择、<code>key</code> 的设置、组件缓存等。</li>
+<li><strong>小程序</strong>：性能瓶颈主要在于<strong>频繁的跨线程通信</strong>。在输入框高频输入时，如果每次输入都触发 <code>setData</code>（即使使用了 <code>model:value</code>），会导致 JSBridge 线程通信堵塞，引起输入卡顿。优化方向是做防抖、使用运行在视图层的 WXS 处理高频事件，或只 <code>setData</code> 变化的局部数据。</li>
+</ul>
+</blockquote>
+<p><strong>三、进阶</strong></p>
+<blockquote>
+<p>综上所述，Vue 的双向绑定是一种<strong>底层级别的响应式设计</strong>，旨在消除开发者对 DOM 的操作；而小程序的双向绑定是对<strong>双线程单向数据流的一种上层封装</strong>。</p>
+<p>小程序之所以不直接照搬 Vue 的数据劫持，是因为双线程架构下逻辑层根本没有 DOM 可以直接操作，劫持数据也无法直接通知到另一个线程的 WebView 去更新 UI，必须老老实实走 <code>setData</code> 桥接。这种设计虽然带来了语法上的便利，但也要求我们在开发高频交互场景时，必须清楚底层的跨线程代价，不能盲目依赖双向绑定，而应结合防抖或 WXS 技术进行优化。</p>
+</blockquote>
+<h1 id="高级"><a href="#高级" class="headerlink" title="高级"></a>高级</h1><h2 id="小程序为什么能即用即走"><a href="#小程序为什么能即用即走" class="headerlink" title="小程序为什么能即用即走"></a>小程序为什么能即用即走</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>本质是<strong>依托微信宿主环境的沙箱隔离 + 代码包预下载缓存 + 双线程运行架构</strong>三者协同，绕过了传统 App 的下载安装环节，又通过预加载机制规避了 H5 的运行时加载开销，从而实现接近原生的秒开体验。</p>
+<p>一套组合拳：<strong>代码包机制让小程序轻量到无需安装，预下载与缓存让它具备秒开能力，双线程架构又保证了运行时的流畅度</strong>。本质上是把传统 App 的’安装’成本前置到了微信宿主里，把 H5 的’运行时加载’成本后置到了预下载环节，从而在用户体验和资源开销间找到了平衡。</p>
+</blockquote>
+<p><strong>二、具体细节</strong></p>
+<p><strong>1.无需安装：宿主沙箱与代码包机制（”即用”的基础）</strong></p>
+<blockquote>
+<ul>
+<li><strong>宿主环境承载</strong>：小程序并不独立存在，而是运行在微信这个超级 App 内部。微信客户端已经内置了小程序的基础运行时（包括 JSCore 引擎、基础库、组件渲染框架等），开发者提交的小程序本质上只是一个<strong>代码包</strong>（WXML、WXSS、JS 等资源），主包限制在 2MB 以内，分包可扩展到 20MB。用户无需下载完整的安装包，进入时只需拉取这份轻量代码包即可。</li>
+<li><strong>沙箱隔离</strong>：每个小程序运行在独立的沙箱环境中，拥有独立的 V8/JSCore 执行上下文和文件系统，互不干扰。这种隔离既保障了安全，也使得小程序的”卸载”变成了简单的缓存清理，不会污染宿主系统</li>
+</ul>
+</blockquote>
+<p><strong>2.启动加速：预下载 + 预初始化 + 缓存复用（”秒开”的关键）</strong></p>
+<blockquote>
+<ul>
+<li><strong>代码包预下载</strong>：微信会基于用户行为预测，在用户点击之前就在后台静默下载小程序代码包并缓存到本地。用户再次进入时直接从本地读取，几乎零网络开销。</li>
+<li><strong>逻辑层预初始化</strong>：微信 Native 端可能预先启动一个通用的 Service 环境（逻辑层运行容器），用户点击后只需将 JS 代码注入预热好的环境执行，省去了完整的 JS 引擎初始化过程。</li>
+<li><strong>热启动保活</strong>：小程序退出后，其运行实例在一段时间内会被保活。再次打开时直接复用已有的环境，实现应用级”秒开”，而 H5 往往面临状态丢失和页面重载。</li>
+<li><strong>页面与组件预加载</strong>：非首页的关键页面可在后台提前完成 WXML/WXSS 解析和静态 JS 加载，跳转时页面已就绪.</li>
+</ul>
+</blockquote>
+<p><strong>3.双线程架构：逻辑与渲染分离（流畅运行的保障）</strong></p>
+<blockquote>
+<ul>
+<li><strong>架构设计</strong>：小程序采用<strong>双线程模型</strong>——逻辑层运行在 JSCore 中负责业务逻辑，视图层运行在 WebView 中负责界面渲染，两者通过 Native 层的 JSBridge 异步通信。</li>
+<li><strong>性能优势</strong>：JS 执行不阻塞 UI 渲染，避免了传统 H5 中脚本卡顿导致页面假死的问题；同时 JS 无法直接操作 DOM，强制数据驱动开发，从根源上杜绝了 XSS 风险。</li>
+<li><strong>原生组件加持</strong>：<code>&lt;video&gt;</code>、<code>&lt;map&gt;</code> 等复杂组件脱离 WebView 直接由 Native 渲染，进一步提升了交互流畅度，接近原生体验。</li>
+</ul>
+</blockquote>
+<p><strong>三、面试</strong></p>
+<blockquote>
+<p>Q：<strong>双线程模型为什么 setData 频繁调用会卡顿？如何优化？</strong></p>
+<p>A：因为双线程之间数据需要序列化为字符串，通过 Native 层中转传输，频繁 setData 会导致通信队列阻塞。优化方案：合并多次 setData 为一次、使用路径语法精准定位变更数据（如 <code>list[10-20]</code>）、对高频事件（scroll）做防抖节流</p>
+<p>Q：<strong>小程序和 H5 的本质区别是什么？为什么小程序比 H5 快？</strong></p>
+<p>A：核心区别有三点：一是架构上小程序是双线程隔离，H5 是单线程；二是能力上小程序通过 JSBridge 能调用原生硬件（蓝牙、NFC 等），H5 受浏览器沙箱限制；三是启动上小程序有代码包预下载和离线缓存，H5 需要运行时逐个请求资源，所以小程序在冷启动和热启动上都优于 H5</p>
+<p>Q：<strong>既然代码包有缓存，那用户怎么拿到最新版本的小程序？</strong></p>
+<p>A：小程序采用版本控制与差分更新机制。启动时微信会检查代码包版本，若有更新则在后台下载新版本，但本次启动仍使用本地缓存版本，下次冷启动时才生效。开发者可通过 <code>wx.getUpdateManager()</code> 主动检测并提示用户重启应用新版本。</p>
+</blockquote>
+<h2 id="小程序的优劣势"><a href="#小程序的优劣势" class="headerlink" title="小程序的优劣势"></a>小程序的优劣势</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>核心优势在于<strong>“依托超级 App 生态、获客成本低、体验接近原生”</strong>；而它的劣势主要受限于<strong>“双线程架构带来的性能瓶颈、包体积限制以及受制于平台规则”</strong>。它本质上是一种在 Web 和原生 App 之间的折中态产物。</p>
+</blockquote>
+<p><strong>二、优势</strong></p>
+<p><strong>1.用户体验好，触达成本低（获客优势）</strong></p>
+<blockquote>
+<ul>
+<li><strong>免下载、免安装</strong>：用户即点即用，用完即走，使用门槛极低，极大提高了转化率。</li>
+<li><strong>社交裂变容易</strong>：依托微信等超级 App 的社交关系链，通过分享卡片、群聊等极易实现裂变式传播，获客成本远低于原生 App。</li>
+</ul>
+</blockquote>
+<p><strong>2.开发与维护成本低（研发优势）</strong></p>
+<blockquote>
+<ul>
+<li><strong>跨平台能力</strong>：一套代码可以同时在 iOS 和 Android 两端运行，甚至通过跨端框架（如 Taro、uni-app）还能兼容 H5 和其他小程序。</li>
+<li><strong>发版速度快</strong>：支持热更新，无需走冗长的 App Store / Android 应用市场审核流程（仅需平台方小程序后台审核），修复 Bug 和上线新功能极快。</li>
+</ul>
+</blockquote>
+<p><strong>3.原生能力强（技术优势）</strong></p>
+<blockquote>
+<ul>
+<li>相比普通 Web 页面受限于浏览器沙盒，小程序可以通过原生桥调用大量系统级能力（如蓝牙、定位、文件系统、生物认证等），体验更接近原生 App。</li>
+</ul>
+</blockquote>
+<p><strong>三、劣势</strong></p>
+<p><strong>1.性能瓶颈与架构限制（技术劣势）</strong></p>
+<blockquote>
+<ul>
+<li><strong>双线程通信开销</strong>：逻辑层（JS Core）和渲染层（WebView）分离，<code>setData</code> 跨线程通信耗时，导致处理高频动画、长列表滚动等复杂交互时性能不如原生 App 甚至部分优化的 H5。</li>
+<li><strong>包体积限制</strong>：为了保证秒开体验，小程序对代码包体积有严格限制（主包通常 2M，总包通常 20M+），无法承载过重的大型业务。</li>
+</ul>
+</blockquote>
+<p><strong>2.生态封闭与规则限制（业务劣势）</strong></p>
+<blockquote>
+<ul>
+<li><strong>受制于宿主平台</strong>：小程序的流量入口、审核规则、支付体系（如必须用微信支付）完全受控于宿主 App，存在“卡脖子”风险。</li>
+<li><strong>多端差异化</strong>：如果使用原生语法开发微信小程序，难以直接迁移到支付宝、抖音等平台；即使使用 Taro 等跨端框架，也需处理多端 API 差异的坑。</li>
+</ul>
+</blockquote>
+<p><strong>3.用户留存率低（运营劣势）</strong></p>
+<blockquote>
+<ul>
+<li>由于“用完即走”的属性，用户往往通过群聊或扫码进入，用完即退，缺乏常驻桌面的入口，导致用户召回成本高、留存率通常低于原生 App。</li>
+</ul>
+</blockquote>
+<p><strong>四、场景选型</strong></p>
+<p>通常会对比三种方案：</p>
+<blockquote>
+<ol>
+<li><strong>原生 App</strong>：适合<strong>重度交互、高频使用、需极高性能或沉淀核心资产</strong>的业务（如大型游戏、短视频主端）。</li>
+<li><strong>H5</strong>：适合<strong>强外部传播、弱原生能力依赖、对加载速度要求不极端</strong>的营销活动页。</li>
+<li><strong>小程序</strong>：适合<strong>需要社交裂变、用到一定原生能力、追求比 H5 更好体验的轻量级服务</strong>（如电商购物、点餐、出行服务）。</li>
+</ol>
+</blockquote>
+<h2 id="提升小程序应用速度"><a href="#提升小程序应用速度" class="headerlink" title="提升小程序应用速度"></a>提升小程序应用速度</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>主要围绕<strong>“代码包更小、首屏渲染更早、网络请求更快、线程通信更少”</strong>四个核心维度展开</p>
+</blockquote>
+<p><strong>二、核心方法</strong></p>
+<p><strong>1.体积与加载优化（减小主包，加快下载）</strong></p>
+<blockquote>
+<ul>
+<li><strong>分包加载（<code>subPackages</code>）</strong>：将非首屏页面放入分包，按需加载。主包体积越小，冷启动下载越快。</li>
+<li><strong>分包预下载（<code>preloadRule</code>）</strong>：在用户进入某分包页面<em>之前</em>，利用空闲时间提前下载分包，实现“无感加载”。</li>
+<li><strong>按需注入（<code>lazyCodeLoading</code>）</strong>：在 <code>app.json</code> 中配置 <code>&quot;lazyCodeLoading&quot;: &quot;requiredComponents&quot;</code>，未使用的组件代码不注入，大幅减少启动耗时。</li>
+</ul>
+</blockquote>
+<p><strong>2.首屏渲染优化（减少白屏时间）</strong></p>
+<blockquote>
+<ul>
+<li><strong>初始渲染缓存（<code>initialRenderingCache</code>）</strong>：在页面或组件配置中开启。下次启动时，直接展示上次的缓存 UI，同步发起请求更新，有效消除冷启动白屏。</li>
+<li><strong>骨架屏</strong>：在数据未到达前展示页面骨架，提升用户体感速度。</li>
+<li><strong>避免 <code>onLoad</code> 同步阻塞</strong>：<code>onLoad</code> 中只做必要逻辑，复杂逻辑延后到 <code>onReady</code> 或通过 <code>setTimeout</code> 异步执行，不阻塞渲染层</li>
+</ul>
+</blockquote>
+<p><strong>3.网络请求优化（提前与并发）</strong></p>
+<blockquote>
+<ul>
+<li><strong>数据预拉取（<code>prefetch</code>） / 周期性更新</strong>：利用底层能力，在小程序冷启动时，框架发起请求的同时，底层提前拉取首屏业务数据，减少等待时间。</li>
+<li><strong>合理使用缓存</strong>：将不常变更的首屏数据存入 <code>Storage</code>，先渲染缓存数据，再异步请求最新数据覆盖（类似 Vue 的 SSR 思想）。</li>
+</ul>
+</blockquote>
+<p><strong>4.渲染与通信优化（双线程模型特性）</strong></p>
+<blockquote>
+<ul>
+<li><strong>精简 setData</strong>：小程序逻辑层与渲染层分离，<code>setData</code> 是跨线程通信。最佳实践是：合并多次 <code>setData</code> 为一次；只传递变化的字段（如 <code>this.setData(&#123;&#39;list[0].name&#39;: &#39;abc&#39;&#125;)</code>），避免全量更新。</li>
+<li><strong>使用 pureDataPattern</strong>：将仅用于逻辑处理、不需要渲染的数据设为纯数据字段，避免无意义的 <code>setData</code> 传输。</li>
+</ul>
+</blockquote>
+<p><strong>三、场景化应用：冷启动首屏流程</strong></p>
+<p>在实际开发中，我会将这些方法组合使用。以首页冷启动为例：</p>
+<blockquote>
+<ol>
+<li>用户点击小程序，底层开始下载<strong>精简后的主包</strong>（体积优化）。</li>
+<li>同时框架底层发起<strong>预拉取请求</strong>获取首屏数据（网络优化）。</li>
+<li>页面加载，立即展示<strong>初始渲染缓存 UI</strong> 和骨架屏（渲染优化）。</li>
+<li>预拉取数据返回后，通过<strong>合并的 <code>setData</code></strong> 更新视图，完成首屏可见。</li>
+</ol>
+</blockquote>
+<p><strong>四、底层原理</strong></p>
+<blockquote>
+<p>这些优化手段的本质是为了应对小程序的<strong>双线程模型</strong>（逻辑层 JS Core 与渲染层 Webview）。启动慢的原因通常是主包下载耗时、JS 代码注入解析耗时，以及跨线程通信耗时。比如优化 <code>setData</code>，就是为了减少数据序列化、跨线程传输和 DOM Diff 的开销；开启按需注入，就是为了减少启动时解析无用 JS 的 CPU 开销。</p>
+<p>setData原理：<em>setData 会将数据从 JS Core 序列化为字符串，通过 JSBridge 传给 Webview，Webview 反序列化后进行 DOM Diff 再渲染，所以高频或大数据量的 setData 会引发性能瓶颈。</em></p>
+</blockquote>
+<p><strong>五、进阶</strong></p>
+<blockquote>
+<ol>
+<li><strong>初始缓存数据陈旧问题</strong>：使用初始渲染缓存时，如果业务数据变化快，用户会先看到旧数据再闪烁变新数据。最佳实践是在占位图或某些不敏感的 UI 上使用，或者在请求返回后做好过渡动画。</li>
+<li><strong>过度预下载</strong>：分包预下载如果配置过多，会占用网络带宽和内存，反而拖慢主包的加载，需要根据用户实际路径合理规划。</li>
+<li><strong>基础库版本兼容</strong>：如 <code>lazyCodeLoading</code> 需要基础库 2.11.1 及以上，使用时需做好版本降级或兼容提示。</li>
+</ol>
+</blockquote>
+<h2 id="小程序的原理"><a href="#小程序的原理" class="headerlink" title="小程序的原理"></a>小程序的原理</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>小程序的运行原理，其核心设计思想是<strong>双线程架构</strong>。小程序将<strong>视图层</strong>和<strong>逻辑层</strong>进行了分离，两者在不同的线程中运行，通过微信客户端（Native）作为桥接进行通信。</p>
+</blockquote>
+<p><strong>二、核心架构</strong></p>
+<p><strong>1. 视图层（View Layer）</strong></p>
+<blockquote>
+<ul>
+<li><strong>运行环境</strong>：由 WebView 负责渲染。如果有多个页面，会使用多个 WebView 实例。</li>
+<li><strong>主要职责</strong>：解析 WXML、WXSS 进行 DOM 树的构建和页面渲染。</li>
+<li><strong>特点</strong>：视图层只能负责纯粹的 UI 展示，不能直接调用业务逻辑数据，必须等待逻辑层通过 <code>setData</code> 传递过来。</li>
+</ul>
+</blockquote>
+<p><strong>2. 逻辑层（Logic Layer）</strong></p>
+<blockquote>
+<ul>
+<li><strong>运行环境</strong>：在 JsCore（iOS）或 V8（Android）中运行，运行环境由原生提供，<strong>没有浏览器对象模型（没有 BOM/DOM API）</strong>。</li>
+<li><strong>主要职责</strong>：执行 JS 业务逻辑、处理网络请求、数据处理等。</li>
+<li><strong>特点</strong>：由于隔离了 DOM API，逻辑层无法直接操作 UI，这就强制开发者不能通过 JS 操作节点去改变视图。</li>
+</ul>
+</blockquote>
+<p><strong>3. 原生层（Native Layer）</strong></p>
+<blockquote>
+<ul>
+<li><strong>职责</strong>：作为视图层和逻辑层之间的<strong>通信桥梁</strong>，同时提供底层的 API 能力（如定位、摄像头、文件系统等）。</li>
+<li><strong>机制</strong>逻辑层和视图层的通信，必须通过 Native 层的 JSBridge 进行转发，<strong>不允许直接跨线程通信</strong>。</li>
+</ul>
+</blockquote>
+<p><strong>三、通信与渲染机制</strong></p>
+<p>主要分为首次渲染和更新渲染：</p>
+<p><strong>1.首次渲染</strong></p>
+<blockquote>
+<ul>
+<li>逻辑层通过 <code>App</code> 和 <code>Page</code> 的生命周期获取初始数据。</li>
+<li>逻辑层将初始数据通过 <code>JSBridge</code> 传递给视图层。</li>
+<li>视图层结合 WXML 和数据生成虚拟 DOM，进而转换为真实 DOM 进行首次渲染。</li>
+</ul>
+</blockquote>
+<p><strong>2.数据更新（<code>setData</code> 机制）</strong></p>
+<blockquote>
+<ul>
+<li>开发者在逻辑层调用 <code>this.setData</code>。</li>
+<li>逻辑层将 <code>data</code> 与原 <code>data</code> 进行 Diff 对比，将<strong>变化的部分数据</strong>序列化为字符串。</li>
+<li>通过 <code>JSBridge</code> 跨线程将数据传递给视图层。</li>
+<li>视图层接收到数据后，结合虚拟 DOM 进行局部更新，重新渲染对应的组件。</li>
+<li><em>注：由于通信需要跨线程且涉及序列化，所以 <code>setData</code> 传递大量数据或频繁调用会导致性能瓶颈。</em></li>
+</ul>
+</blockquote>
+<p><strong>四、设计初衷与优势</strong></p>
+<p>小程序之所以放弃传统的 Web 单线程模型，采用双线程架构，主要出于以下考量：</p>
+<blockquote>
+<ol>
+<li><strong>安全管控（核心原因）</strong>：传统 Web 中，开发者可以使用 DOM API 动态生成 script 标签、执行外部脚本，存在安全隐患。小程序剥离了 DOM/BOM API，意味着开发者无法随意操作 DOM，所有页面的结构必须经过 WXML 编译，有效防止了 XSS 攻击和恶意跳转，方便微信统一管控。</li>
+<li><strong>性能体验</strong>：逻辑层不阻塞视图层。在 Web 中，如果 JS 执行耗时任务会导致页面卡顿（白屏）。双线程模型下，JS 的计算和 UI 的渲染互不干扰，保证了页面滚动的流畅度。</li>
+<li><strong>多端一致性</strong>：通过中间的 Native 桥接和一套自定义的 WXML/WXSS 编译机制，抹平了不同平台（iOS/Android/开发者工具）的浏览器内核差异，保证渲染一致性。</li>
+</ol>
+</blockquote>
+<h1 id="Taro"><a href="#Taro" class="headerlink" title="Taro"></a>Taro</h1><p><strong>参考</strong></p>
+<ul>
+<li>Taro3+Mysql+Express开发企业级出行全栈项目-video</li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1kVHkzFEVL?spm_id_from=333.788.videopod.episodes&vd_source=bd4c7d99d71adf64d6e88c65370e0247">Taro+RN</a></li>
+</ul>
+<h1 id="UniApp"><a href="#UniApp" class="headerlink" title="UniApp"></a>UniApp</h1><h1 id="Taro与UniApp对比"><a href="#Taro与UniApp对比" class="headerlink" title="Taro与UniApp对比"></a>Taro与UniApp对比</h1><p>Taro一个通用翻译官，以React为主导，同时支持Vue,强调工程化和跨端一致性，与React Native深度绑定，更适合需要长期演进、追求极致性能和复杂工程治理的项目。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>UniApp</th>
+<th>Taro</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>技术栈定位</td>
+<td>Vue专属跨端框架</td>
+<td>跨端统一框架，React主导</td>
+</tr>
+<tr>
+<td>多端覆盖</td>
+<td>小程序、H5、鸿蒙等</td>
+<td>小程序、H5、鸿蒙等</td>
+</tr>
+<tr>
+<td>开发体验</td>
+<td>学习曲线平滑、社区强</td>
+<td>工程化更强，TypeScript友好</td>
+</tr>
+<tr>
+<td>性能与原生能力</td>
+<td>App-plus原生引擎+插件</td>
+<td>React Native+原生桥接</td>
+</tr>
+<tr>
+<td>生态与国际化</td>
+<td>国内服务适配强</td>
+<td>React/RN 全球生态广</td>
+</tr>
+<tr>
+<td>团队门槛</td>
+<td>vue零门槛</td>
+<td>React团队更自然</td>
+</tr>
+<tr>
+<td>治理与扩展</td>
+<td>快速集成即插即用</td>
+<td>模块工程与中间层治理</td>
+</tr>
+<tr>
+<td>适用阶段</td>
+<td>0-2年入口型应用</td>
+<td>3-5年复杂移动产品</td>
+</tr>
+<tr>
+<td>AI集成</td>
+<td>端侧集成简易，轻量场景</td>
+<td>混合原生与端侧推理，长线优化</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/" title="多端_小程序" target="_blank" rel="external">https://fuyunjinglong.github.io/2004/02/01/B_中级__多端_小程序/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/" title="多端_桌面端"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/" title="多端_移动端"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <!-- <script src="//cdn.jsdelivr.net/npm/valine"></script> -->
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

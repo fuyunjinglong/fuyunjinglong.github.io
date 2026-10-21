@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>多端_桌面端  </title>
+  <meta name="description" content="大纲参考   Electron+TS+Vue3 禹神：一小时快速上手 Electron Electron 入门到精通   初级Electron是什么一、定义  Electron 是一个使用 Web 技术构建跨平台桌面应用的框架，由 GitHub 开源（前身是 Atom Editor 的 shell）。  二、底层原理 底层可以概括为三层：   Chromium：提供渲染引擎，负责界面绘制，支持所有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多端_桌面端">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="大纲参考   Electron+TS+Vue3 禹神：一小时快速上手 Electron Electron 入门到精通   初级Electron是什么一、定义  Electron 是一个使用 Web 技术构建跨平台桌面应用的框架，由 GitHub 开源（前身是 Atom Editor 的 shell）。  二、底层原理 底层可以概括为三层：   Chromium：提供渲染引擎，负责界面绘制，支持所有">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2004-02-29T22:33:16.000Z">
+<meta property="article:modified_time" content="2026-09-14T11:26:35.924Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A1-LLM/">A1_LLM</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E5%88%9D%E7%BA%A7/">A_初级</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-%E4%B8%AD%E7%BA%A7/">B_中级</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E9%AB%98%E7%BA%A7/">C_高级</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E8%A7%84%E5%88%92/">D_规划</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/04/">四月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/01/">一月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2098/01/">一月 2098</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">七月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">一月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/03/">三月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/02/">二月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/01/">一月 2004</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/06/">六月 2003</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/01/">一月 2003</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/06/">六月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/02/">二月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/01/">一月 2002</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/06/">六月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/03/">三月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/02/">二月 2001</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/01/">一月 2001</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/06/">六月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/03/">三月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/02/">二月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/01/">一月 2000</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/04/04/%E6%A8%A1%E6%9D%BFX/" class="title">模板X</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-04-04T00:33:16.000Z" itemprop="datePublished">2099-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/03/29/Z_%E5%90%8E%E7%AB%AF_Java/" class="title">Java</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-03-28T23:33:16.000Z" itemprop="datePublished">2099-03-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/01/01/G_%E5%85%B6%E4%BB%96_%E4%B9%A6%E5%8D%95/" class="title">书单</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-01-01T00:33:16.000Z" itemprop="datePublished">2099-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A1-LLM/">A1_LLM</a>
+              </p>
+              <p class="item-title">
+                <a href="/2098/01/01/A1_LLM_windows%E5%AE%89%E8%A3%85%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="title">LLM_windows安装大模型</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2097-12-31T22:33:16.000Z" itemprop="datePublished">2098-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2026/07/18/Test%20copy/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2026-07-18T02:11:18.292Z" itemprop="datePublished">2026-07-18</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%A7%E7%BA%B2"><span class="toc-number">1.</span> <span class="toc-text">大纲</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9D%E7%BA%A7"><span class="toc-number">2.</span> <span class="toc-text">初级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Electron%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">2.1.</span> <span class="toc-text">Electron是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E8%BF%9B%E7%A8%8B%E5%92%8C%E6%B8%B2%E6%9F%93%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.2.</span> <span class="toc-text">主进程和渲染进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E7%9A%84%E5%85%A5%E5%8F%A3%E6%96%87%E4%BB%B6"><span class="toc-number">2.3.</span> <span class="toc-text">应用的入口文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E4%BA%8B%E4%BB%B6"><span class="toc-number">2.4.</span> <span class="toc-text">应用生命周期事件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%9F%BA%E7%A1%80%E7%AA%97%E5%8F%A3"><span class="toc-number">2.5.</span> <span class="toc-text">创建基础窗口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#preload-js-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">2.6.</span> <span class="toc-text">preload.js 是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%87%E4%BB%B6%E9%80%89%E6%8B%A9%E6%A1%86%E5%92%8C%E6%B6%88%E6%81%AF%E5%BC%B9%E7%AA%97"><span class="toc-number">2.7.</span> <span class="toc-text">实现文件选择框和消息弹窗</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E8%BF%9B%E7%A8%8B%E6%97%A0%E6%B3%95%E7%9B%B4%E6%8E%A5%E8%AE%BF%E9%97%AE-Node-js-API"><span class="toc-number">2.8.</span> <span class="toc-text">渲染进程无法直接访问 Node.js API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Electron-%E5%92%8C-NW-js"><span class="toc-number">2.9.</span> <span class="toc-text">Electron 和 NW.js</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Electron-%E6%94%AF%E6%8C%81%E7%9A%84URL%E5%8D%8F%E8%AE%AE"><span class="toc-number">2.9.1.</span> <span class="toc-text">Electron 支持的URL协议</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%AD%E7%BA%A7"><span class="toc-number">3.</span> <span class="toc-text">中级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ipcRenderer-send%E3%80%81ipcRenderer-invoke%E3%80%81ipcMain-handle"><span class="toc-number">3.1.</span> <span class="toc-text">ipcRenderer.send、ipcRenderer.invoke、ipcMain.handle</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#contextBridge%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">3.2.</span> <span class="toc-text">contextBridge是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1"><span class="toc-number">3.3.</span> <span class="toc-text">渲染进程通信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1%E6%B8%B2%E6%9F%93%E8%BF%9B%E7%A8%8B"><span class="toc-number">3.4.</span> <span class="toc-text">主进程通信渲染进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%8D%95%E5%AE%9E%E4%BE%8B%E9%94%81"><span class="toc-number">3.5.</span> <span class="toc-text">实现单实例锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#electron-builder-%E5%92%8C-electron-forge"><span class="toc-number">3.6.</span> <span class="toc-text">electron-builder 和 electron-forge</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Electron%E8%87%AA%E5%8A%A8%E6%9B%B4%E6%96%B0"><span class="toc-number">3.7.</span> <span class="toc-text">Electron自动更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E7%B3%BB%E7%BB%9F%E6%89%98%E7%9B%98%E3%80%81%E5%85%A8%E5%B1%80%E5%BF%AB%E6%8D%B7%E9%94%AE%E5%92%8C%E6%97%A0%E8%BE%B9%E6%A1%86%E7%AA%97%E5%8F%A3"><span class="toc-number">3.8.</span> <span class="toc-text">实现系统托盘、全局快捷键和无边框窗口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%AE%89%E5%85%A8%E9%A3%8E%E9%99%A9"><span class="toc-number">3.9.</span> <span class="toc-text">常见安全风险</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7"><span class="toc-number">4.</span> <span class="toc-text">高级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E8%BF%87%E9%AB%98"><span class="toc-number">4.1.</span> <span class="toc-text">内存过高</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%99%BD%E5%B1%8F%E9%97%AE%E9%A2%98"><span class="toc-number">4.2.</span> <span class="toc-text">白屏问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#V8-snapshots-%E5%BF%AB%E7%85%A7-%E6%9C%BA%E5%88%B6"><span class="toc-number">4.3.</span> <span class="toc-text">V8 snapshots(快照)机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ASAR-%E5%BD%92%E6%A1%A3%E6%96%87%E4%BB%B6"><span class="toc-number">4.4.</span> <span class="toc-text">ASAR 归档文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93"><span class="toc-number">4.5.</span> <span class="toc-text">大文件传输</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E6%88%90%E5%8E%9F%E7%94%9F%E6%A8%A1%E5%9D%97"><span class="toc-number">4.6.</span> <span class="toc-text">集成原生模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E8%BF%9B%E7%A8%8B%E5%B4%A9%E6%BA%83%E6%8E%92%E6%9F%A5"><span class="toc-number">4.7.</span> <span class="toc-text">渲染进程崩溃排查</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E6%BA%90%E7%A0%81%E4%BF%9D%E6%8A%A4"><span class="toc-number">4.8.</span> <span class="toc-text">应用源码保护</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%93%E5%8C%85%E4%BD%93%E7%A7%AF%E4%BC%98%E5%8C%96"><span class="toc-number">4.9.</span> <span class="toc-text">打包体积优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%94%AF%E6%8C%81%E5%A4%9A%E7%AA%97%E5%8F%A3%E3%80%81%E5%A4%9A%E4%B8%BB%E9%A2%98%E3%80%81%E5%8F%AF%E7%A6%BB%E7%BA%BF%E7%9A%84%E6%A1%8C%E9%9D%A2%E7%AB%AF%E6%9E%B6%E6%9E%84"><span class="toc-number">4.10.</span> <span class="toc-text">设计支持多窗口、多主题、可离线的桌面端架构</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-B_中级_多端_桌面端" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      多端_桌面端
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/" class="article-date">
+	  <time datetime="2004-02-29T22:33:16.000Z" itemprop="datePublished">2004-03-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/B-%E4%B8%AD%E7%BA%A7/">B_中级</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h1><p><strong>参考</strong></p>
+<blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV13BopYvEHc/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247">Electron+TS+Vue3</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1sE421N7M5/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247">禹神：一小时快速上手 Electron</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1xd4y1J7dB/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247">Electron 入门到精通</a></li>
+</ul>
+</blockquote>
+<h1 id="初级"><a href="#初级" class="headerlink" title="初级"></a>初级</h1><h2 id="Electron是什么"><a href="#Electron是什么" class="headerlink" title="Electron是什么"></a>Electron是什么</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>Electron 是一个使用 Web 技术构建跨平台桌面应用的框架，由 GitHub 开源（前身是 Atom Editor 的 shell）。</p>
+</blockquote>
+<p><strong>二、底层原理</strong></p>
+<p>底层可以概括为三层：</p>
+<blockquote>
+<ul>
+<li><strong>Chromium</strong>：提供渲染引擎，负责界面绘制，支持所有现代 Web 特性；</li>
+<li><strong>Node.js</strong>：提供系统能力，比如文件读写、网络、调用操作系统 API；</li>
+<li><strong>原生 API 适配层</strong>：Electron 自己封装的一层，把不同操作系统（Windows/macOS/Linux）的原生能力（窗口、托盘、对话框、菜单）统一成一套 JS API。</li>
+</ul>
+</blockquote>
+<p><strong>三、优缺点</strong></p>
+<blockquote>
+<ul>
+<li>优点：一套代码跑三端，前端技术栈零成本迁移</li>
+<li>缺点：每个应用都内嵌一个完整 Chromium，所以内存和包体积偏大</li>
+</ul>
+</blockquote>
+<h2 id="主进程和渲染进程"><a href="#主进程和渲染进程" class="headerlink" title="主进程和渲染进程"></a>主进程和渲染进程</h2><p><strong>一、定义</strong></p>
+<p>通俗理解：主进程像“管家”，渲染进程像“一个个住户”，住户之间不能直接串门，有事要经过管家中转——这句话自然引出后面的 IPC 通信话题。</p>
+<blockquote>
+<ul>
+<li><strong>主进程</strong>：一个 Electron 应用<strong>有且只有一个</strong>主进程，它是应用的入口。职责包括：创建和管理窗口（<code>BrowserWindow</code>）、管理应用生命周期（<code>app</code> 模块）、访问所有 Node.js API 和操作系统原生 API（托盘、菜单、对话框）。</li>
+<li><strong>渲染进程</strong>：每个 <code>BrowserWindow</code> 对应一个独立的渲染进程。职责就是渲染页面、跑前端逻辑。它默认运行在沙箱中，<strong>出于安全考虑不开放 Node.js 能力</strong>（<code>nodeIntegration: false</code>）。</li>
+</ul>
+</blockquote>
+<h2 id="应用的入口文件"><a href="#应用的入口文件" class="headerlink" title="应用的入口文件"></a>应用的入口文件</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>入口在 <code>package.json</code> 的 <code>main</code> 字段指定，比如 <code>&quot;main&quot;: &quot;dist/main/index.js&quot;</code>。Electron 启动时先加载这个文件，进入主进程；主进程在 <code>app.on(&#39;ready&#39;)</code> 之后才能创建窗口。</p>
+</blockquote>
+<p>工程化实践：一般项目会把主进程代码和渲染进程代码分开打包（主进程用 rollup/esbuild，渲染进程用 webpack/vite），<code>main</code> 指向的是构建产物而不是源码。</p>
+<h2 id="应用生命周期事件"><a href="#应用生命周期事件" class="headerlink" title="应用生命周期事件"></a>应用生命周期事件</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<ul>
+<li><code>ready</code>：初始化完成，<strong>只有在这个事件之后才能创建窗口</strong>；</li>
+<li><code>window-all-closed</code>：所有窗口关闭后触发。注意平台差异——macOS 上应用通常保持运行（点 dock 图标可重新激活），Windows/Linux 上一般直接 <code>app.quit()</code>；</li>
+<li><code>activate</code>：macOS 特有，点击 Dock 图标且无窗口时触发，通常在这里重建窗口；</li>
+<li><code>before-quit</code> → <code>will-quit</code> → <code>quit</code>：退出流程的三个阶段，<code>before-quit</code> 适合做保存数据的兜底逻辑，<code>quit</code> 之后进程就结束了。</li>
+</ul>
+</blockquote>
+<p><strong>加分点</strong>：主动提到 <code>window-all-closed</code> 的跨平台分支处理，这是真实项目中一定会写的代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">on</span>(<span class="string">&#x27;window-all-closed&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (process.<span class="property">platform</span> !== <span class="string">&#x27;darwin&#x27;</span>) app.<span class="title function_">quit</span>()</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建基础窗口"><a href="#创建基础窗口" class="headerlink" title="创建基础窗口"></a>创建基础窗口</h2><p><strong>一、最常用的配置项</strong></p>
+<blockquote>
+<ul>
+<li><code>width</code> / <code>height</code>：尺寸；</li>
+<li><code>show: false</code>：<strong>先创建不显示</strong>，配合 <code>ready-to-show</code> 事件再 <code>show()</code>，避免白屏——这是高频考点，一定要提；</li>
+<li><code>frame: false</code> / <code>titleBarStyle</code>：自定义标题栏；</li>
+<li><code>webPreferences</code>：安全相关配置，<code>preload</code> 脚本路径、<code>nodeIntegration</code>、<code>contextIsolation</code> 都在这里设置。</li>
+</ul>
+</blockquote>
+<p><strong>二、代码</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> win = <span class="keyword">new</span> <span class="title class_">BrowserWindow</span>(&#123;</span><br><span class="line">  <span class="attr">width</span>: <span class="number">1200</span>,</span><br><span class="line">  <span class="attr">height</span>: <span class="number">800</span>,</span><br><span class="line">  <span class="attr">show</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">webPreferences</span>: &#123;</span><br><span class="line">    <span class="attr">preload</span>: path.<span class="title function_">join</span>(__dirname, <span class="string">&#x27;preload.js&#x27;</span>),</span><br><span class="line">    <span class="attr">contextIsolation</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">nodeIntegration</span>: <span class="literal">false</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">win.<span class="title function_">once</span>(<span class="string">&#x27;ready-to-show&#x27;</span>, <span class="function">() =&gt;</span> win.<span class="title function_">show</span>())</span><br><span class="line">win.<span class="title function_">loadFile</span>(<span class="string">&#x27;index.html&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="preload-js-是什么"><a href="#preload-js-是什么" class="headerlink" title="preload.js 是什么"></a><code>preload.js</code> 是什么</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>preload 是一个在<strong>渲染进程中、但在页面内容加载之前</strong>运行的脚本。它的定位是“桥梁”：渲染进程本身没有 Node 能力，preload 有<strong>部分</strong>受控的 Node 能力，它可以把需要的功能通过 <code>contextBridge</code> 暴露给页面使用。</p>
+</blockquote>
+<p><strong>二、解决的三个问题</strong></p>
+<blockquote>
+<ol>
+<li>安全问题——页面代码拿不到完整的 Node API，只能用 preload 明确暴露的白名单 API；</li>
+<li>能力问题——渲染进程需要读文件、调系统接口时有了合法通道；</li>
+<li>解耦问题——前端代码不直接依赖 Electron 特有 API，方便同一套代码复用到 Web 端。</li>
+</ol>
+</blockquote>
+<h2 id="实现文件选择框和消息弹窗"><a href="#实现文件选择框和消息弹窗" class="headerlink" title="实现文件选择框和消息弹窗"></a>实现文件选择框和消息弹窗</h2><p><strong>一、定义</strong></p>
+<p><code>dialog</code> 是主进程模块，常用方法：</p>
+<blockquote>
+<ul>
+<li><code>dialog.showOpenDialog()</code>：文件/目录选择，返回选中的路径数组；</li>
+<li><code>dialog.showSaveDialog()</code>：另存为；</li>
+<li><code>dialog.showMessageBox()</code>：原生消息框，支持按钮、图标、勾选项；</li>
+<li><code>dialog.showMessageBoxSync()</code>：同步版本，会阻塞，慎用。</li>
+</ul>
+</blockquote>
+<p><strong>二、实践</strong></p>
+<p>举一个典型场景：前端点“导出”→ IPC 到主进程 → <code>showSaveDialog</code> 拿路径 → 写文件 → 返回结果。</p>
+<blockquote>
+<ul>
+<li>一是这些方法都是<strong>主进程</strong>的，渲染进程要用必须走 IPC；</li>
+<li>二是现代 API 都返回 Promise（旧版 callback 风格已废弃）。</li>
+</ul>
+</blockquote>
+<h2 id="渲染进程无法直接访问-Node-js-API"><a href="#渲染进程无法直接访问-Node-js-API" class="headerlink" title="渲染进程无法直接访问 Node.js API"></a>渲染进程无法直接访问 Node.js API</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>渲染进程本质上就是跑着一个 Chromium 页面，页面上加载的任何 JS（包括第三方脚本、被 XSS 注入的脚本）都有执行权。如果开放 <code>nodeIntegration</code>，恶意脚本就能直接：</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;child_process&#x27;</span>).<span class="title function_">exec</span>(<span class="string">&#x27;rm -rf /&#x27;</span>)  <span class="comment">// 远程代码执行 RCE</span></span><br><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>).<span class="title function_">unlinkSync</span>(...)              <span class="comment">// 删文件</span></span><br></pre></td></tr></table></figure>
+
+<p>所以 Electron 从 v5 开始把 <code>nodeIntegration</code> 默认改为 <code>false</code>，渲染进程运行在沙箱里。需要系统能力就走 preload + <code>contextBridge</code> 的白名单通道。答题时主动说出 “RCE（远程代码执行）”这个术语，表明你理解的是风险本质而不只是配置项。</p>
+<h2 id="Electron-和-NW-js"><a href="#Electron-和-NW-js" class="headerlink" title="Electron 和 NW.js"></a>Electron 和 NW.js</h2><p><strong>一、定义</strong></p>
+<p>两者都是“Chromium + Node”的混合框架，核心差异有三点：</p>
+<blockquote>
+<ol>
+<li><strong>进程模型不同</strong>：NW.js 里每个页面可以直接获得 Node 上下文，没有明确的主进程概念；Electron 有严格的 主/渲染 进程分离和 IPC 机制，安全边界更清晰；</li>
+<li><strong>安全默认值不同</strong>：Electron 默认关闭 Node 集成，NW.js 历史上默认开放；</li>
+<li><strong>生态和维护</strong>：Electron 由 GitHub/Microsoft 维护，VS Code、Slack、Figma、飞书、钉钉都在用，社区和工具链（builder、updater、Sentry 集成）远比 NW.js 成熟。</li>
+</ol>
+</blockquote>
+<h3 id="Electron-支持的URL协议"><a href="#Electron-支持的URL协议" class="headerlink" title="Electron 支持的URL协议"></a>Electron 支持的URL协议</h3><p><strong>一、定义</strong></p>
+<blockquote>
+<ul>
+<li>加载本地文件：<code>win.loadFile(&#39;index.html&#39;)</code>，底层走 <code>file://</code> 协议，注意打包后路径要基于 <code>__dirname</code> 或 <code>app.getAppPath()</code> 拼接；</li>
+<li>加载远程地址：<code>win.loadURL(&#39;https://xxx.com&#39;)</code>，适合“套壳”型应用 ；</li>
+<li><strong>自定义协议</strong>：用 <code>protocol.registerFileProtocol</code>（新版是 <code>protocol.handle</code>）注册如 <code>app://</code>，配合 SPA 的 history 路由可以避免 <code>file://</code> 下相对路径和路由问题，<strong>生产环境打包（尤其是 asar + hash 路由）的最佳实践</strong>。</li>
+</ul>
+</blockquote>
+<p>加分点：提一句自定义协议还能配合 <code>standard: true</code> 让其支持 fetch、Service Worker 等 Web 特性。</p>
+<h1 id="中级"><a href="#中级" class="headerlink" title="中级"></a>中级</h1><h2 id="ipcRenderer-send、ipcRenderer-invoke、ipcMain-handle"><a href="#ipcRenderer-send、ipcRenderer-invoke、ipcMain-handle" class="headerlink" title="ipcRenderer.send、ipcRenderer.invoke、ipcMain.handle"></a><code>ipcRenderer.send</code>、<code>ipcRenderer.invoke</code>、<code>ipcMain.handle</code></h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>IPC 三种通信模式的辨析</p>
+</blockquote>
+<p><strong>二、具体解析</strong></p>
+<p><strong>1.单向发送：<code>ipcRenderer.send</code> + <code>ipcMain.on</code></strong></p>
+<blockquote>
+<p>渲染进程发消息给主进程，不关心返回值。适合“通知型”场景，比如上报埋点、打开开发者工具。返回值需要主进程再 <code>webContents.send</code> 回来，流程绕。</p>
+</blockquote>
+<p><strong>2.双向异步：<code>ipcRenderer.invoke</code> + <code>ipcMain.handle</code>（推荐）</strong></p>
+<blockquote>
+<p>invoke 返回 Promise，直接拿到主进程的处理结果，是现代 Electron 的标准写法：</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// preload</span></span><br><span class="line">contextBridge.<span class="title function_">exposeInMainWorld</span>(<span class="string">&#x27;api&#x27;</span>, &#123;</span><br><span class="line">  <span class="attr">readFile</span>: <span class="function">(<span class="params">p</span>) =&gt;</span> ipcRenderer.<span class="title function_">invoke</span>(<span class="string">&#x27;read-file&#x27;</span>, p),</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// main</span></span><br><span class="line">ipcMain.<span class="title function_">handle</span>(<span class="string">&#x27;read-file&#x27;</span>, <span class="keyword">async</span> (e, p) =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">await</span> fs.<span class="property">promises</span>.<span class="title function_">readFile</span>(p, <span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.主进程主动推送：<code>webContents.send</code> + <code>ipcRenderer.on</code></strong></p>
+<blockquote>
+<p>主进程 → 渲染进程的推送，适合事件订阅型场景：下载进度、系统通知、后端长连接消息转发到窗口。</p>
+</blockquote>
+<p><strong>加分点</strong>：总结一句话——“请求-响应用 invoke，事件通知用 send/on，主进程推送用 webContents.send”</p>
+<h2 id="contextBridge是什么"><a href="#contextBridge是什么" class="headerlink" title="contextBridge是什么"></a><code>contextBridge</code>是什么</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>旧时代很多应用直接在渲染进程开 <code>nodeIntegration</code>，页面里就能 <code>require(&#39;fs&#39;)</code>。一旦页面加载了远程内容或被 XSS，恶意脚本就拥有了系统级权限（RCE）。</p>
+</blockquote>
+<p><strong>二、具体解析</strong></p>
+<blockquote>
+<p><strong><code>contextIsolation: true</code>（默认开启）</strong>：把 preload 脚本和页面 JS 隔离在<strong>两个独立的 JS 上下文</strong>里。页面代码改写原型链、篡改全局对象都影响不到 preload，反之亦然。</p>
+<p>**<code>contextBridge.exposeInMainWorld</code>**：在隔离的前提下，由 preload 显式地向页面暴露一个受控的 API 对象：</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// preload.js</span></span><br><span class="line">contextBridge.<span class="title function_">exposeInMainWorld</span>(<span class="string">&#x27;desktop&#x27;</span>, &#123;</span><br><span class="line">  <span class="attr">saveFile</span>: <span class="function">(<span class="params">content</span>) =&gt;</span> ipcRenderer.<span class="title function_">invoke</span>(<span class="string">&#x27;save-file&#x27;</span>, content),</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// 页面里只能用 window.desktop.saveFile()，拿不到 ipcRenderer 本身</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>关键原则</strong>：暴露的是“能力”而不是“原语”——比如暴露 <code>saveFile(content)</code> 这个具体方法，而不是把 <code>ipcRenderer</code> 整个对象交给页面。否则页面就能用你的通道发任意 IPC 消息，隔离形同虚设。</p>
+<h2 id="渲染进程通信"><a href="#渲染进程通信" class="headerlink" title="渲染进程通信"></a>渲染进程通信</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>渲染进程是相互隔离的，没有直接的通信 API。</p>
+</blockquote>
+<p><strong>二、三种方式</strong></p>
+<p><strong>1.主进程中转（最常用）</strong></p>
+<blockquote>
+<p>窗口 A 发消息到主进程，主进程拿到目标窗口的 <code>webContents</code> 再转发给窗口 B。实现简单、便于在主进程做权限控制和消息审计。</p>
+</blockquote>
+<p><strong>2.<code>MessagePort</code>（<code>MessageChannelMain</code>）</strong></p>
+<blockquote>
+<p>主进程创建一对 port，分别分发给两个窗口，之后两个窗口<strong>直连通信</strong>，不再经过主进程。适合高频、大数据量传输（port 走结构化克隆但不经过主进程中转，性能更好）。</p>
+</blockquote>
+<p><strong>3.<code>localStorage</code> / <code>BroadcastChannel</code></strong></p>
+<blockquote>
+<p>仅同源窗口可用，简单但能力弱，只适合状态同步类的小数据。</p>
+</blockquote>
+<p><strong>加分点</strong>：说清楚为什么不建议“能直连就直连”——主进程中转虽然多一跳，但它是天然的消息总线，便于统一做路由、日志、权限管理，架构上更可维护。</p>
+<h2 id="主进程通信渲染进程"><a href="#主进程通信渲染进程" class="headerlink" title="主进程通信渲染进程"></a>主进程通信渲染进程</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>核心 API 是 <code>webContents.send(channel, ...args)</code></p>
+</blockquote>
+<p><strong>二、代码</strong></p>
+<p>典型场景：下载进度、自动更新状态、系统主题变化（<code>nativeTheme</code>）、托盘点击事件转发。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// main</span><br><span class="line">mainWindow.webContents.send(&#x27;download-progress&#x27;, &#123; id, percent &#125;)</span><br><span class="line"></span><br><span class="line">// preload</span><br><span class="line">contextBridge.exposeInMainWorld(&#x27;desktop&#x27;, &#123;</span><br><span class="line">  onDownloadProgress: (cb) =&gt; &#123;</span><br><span class="line">    ipcRenderer.on(&#x27;download-progress&#x27;, (_e, data) =&gt; cb(data))</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>三、进阶</strong></p>
+<blockquote>
+<ol>
+<li>窗口可能已被销毁，send 前要判断 <code>win.isDestroyed()</code>；</li>
+<li>建议在 preload 里封装成订阅函数（如上），并返回一个取消订阅函数，避免页面组件卸载后监听器泄漏。</li>
+</ol>
+</blockquote>
+<h2 id="实现单实例锁"><a href="#实现单实例锁" class="headerlink" title="实现单实例锁"></a>实现单实例锁</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>用 <code>app.requestSingleInstanceLock()</code></p>
+</blockquote>
+<p><strong>二、代码</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> gotTheLock = app.<span class="title function_">requestSingleInstanceLock</span>()</span><br><span class="line"><span class="keyword">if</span> (!gotTheLock) &#123;</span><br><span class="line">  app.<span class="title function_">quit</span>()  <span class="comment">// 拿不到锁说明已有实例在运行，直接退出</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  app.<span class="title function_">on</span>(<span class="string">&#x27;second-instance&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 用户再次启动时，把已有窗口拉到前台</span></span><br><span class="line">    <span class="keyword">if</span> (mainWindow) &#123;</span><br><span class="line">      <span class="keyword">if</span> (mainWindow.<span class="title function_">isMinimized</span>()) mainWindow.<span class="title function_">restore</span>()</span><br><span class="line">      mainWindow.<span class="title function_">focus</span>()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>三、原理</strong></p>
+<blockquote>
+<p>操作系统层面创建全局锁（Windows 上是命名互斥量），第一个实例拿到锁，后续实例拿锁失败。<code>second-instance</code> 事件还会带上启动参数，可以做“点击协议链接唤起已有实例”的功能（配合 <code>setAsDefaultProtocolClient</code> 注册自定义协议）。</p>
+</blockquote>
+<h2 id="electron-builder-和-electron-forge"><a href="#electron-builder-和-electron-forge" class="headerlink" title="electron-builder 和 electron-forge"></a><code>electron-builder</code> 和 <code>electron-forge</code></h2><p><strong>一、定义</strong></p>
+<p><strong>electron-forge</strong></p>
+<blockquote>
+<ul>
+<li>Electron 官方出品，与 Electron 版本同步维护；</li>
+<li>配置基于 webpack/vite 模板，开发体验好（<code>forge start</code>）；</li>
+<li>打包能力相对基础，适合中小型项目。</li>
+</ul>
+</blockquote>
+<p><strong>electron-builder</strong></p>
+<blockquote>
+<ul>
+<li>社区最流行，功能更全：内置自动更新（配合 electron-updater）、多平台目标（nsis / dmg / AppImage / snap）、代码签名、差量更新；</li>
+<li>配置集中在 <code>package.json</code> 或 <code>electron-builder.yml</code>，声明式；</li>
+<li>对原生模块（<code>asarUnpack</code>、按平台重建）的处理更成熟。</li>
+</ul>
+</blockquote>
+<p><strong>二、技术选型</strong></p>
+<blockquote>
+<p>需要成熟的多平台分发 + 自动更新，选 electron-builder（目前工业界主流）；新项目想要官方长期支持和更现代的开发体验，可以评估 forge。</p>
+</blockquote>
+<h2 id="Electron自动更新"><a href="#Electron自动更新" class="headerlink" title="Electron自动更新"></a>Electron自动更新</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p><strong>基本流程</strong>（以 electron-updater 为例）</p>
+<ol>
+<li>应用启动后（或定时）调用 <code>autoUpdater.checkForUpdates()</code>，请求更新服务器上的 <code>latest.yml</code>（记录最新版本号和文件哈希）；</li>
+<li>与本地版本比对，有新版则下载安装包；</li>
+<li>下载完成发出 <code>update-downloaded</code> 事件，UI 提示用户重启；</li>
+<li>调用 <code>autoUpdater.quitAndInstall()</code>，退出并安装新版本。</li>
+</ol>
+</blockquote>
+<p><strong>二、代码</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">autoUpdater.<span class="title function_">checkForUpdates</span>()</span><br><span class="line">autoUpdater.<span class="title function_">on</span>(<span class="string">&#x27;update-downloaded&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  dialog.<span class="title function_">showMessageBox</span>(&#123; <span class="attr">message</span>: <span class="string">&#x27;新版本已就绪，是否重启安装？&#x27;</span> &#125;)</span><br><span class="line">    .<span class="title function_">then</span>(<span class="function">() =&gt;</span> autoUpdater.<span class="title function_">quitAndInstall</span>())</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>三、进阶</strong></p>
+<blockquote>
+<ul>
+<li>差量更新：electron-updater 在 Windows 的 nsis 目标下支持 blockmap 差量下载，只下载变更块，大幅节省流量；</li>
+<li>平台差异：macOS 必须代码签名才能更新，否则签名校验失败；Linux 上 AppImage 支持替换更新；</li>
+<li>服务端方案：可以自建静态文件服务（最简），也可以用 GitHub Releases、Hazel、或商用方案如 Electron Auto Update 服务。</li>
+</ul>
+</blockquote>
+<h2 id="实现系统托盘、全局快捷键和无边框窗口"><a href="#实现系统托盘、全局快捷键和无边框窗口" class="headerlink" title="实现系统托盘、全局快捷键和无边框窗口"></a>实现系统托盘、全局快捷键和无边框窗口</h2><p><strong>一、托盘</strong></p>
+<p>注意：Tray 实例要挂到全局变量，否则会被 GC 回收导致托盘消失——这是个经典坑。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> tray = <span class="keyword">new</span> <span class="title class_">Tray</span>(icon)</span><br><span class="line">tray.<span class="title function_">setToolTip</span>(<span class="string">&#x27;我的应用&#x27;</span>)</span><br><span class="line">tray.<span class="title function_">setContextMenu</span>(<span class="title class_">Menu</span>.<span class="title function_">buildFromTemplate</span>([</span><br><span class="line">  &#123; <span class="attr">label</span>: <span class="string">&#x27;显示主窗口&#x27;</span>, <span class="attr">click</span>: <span class="function">() =&gt;</span> win.<span class="title function_">show</span>() &#125;,</span><br><span class="line">  &#123; <span class="attr">label</span>: <span class="string">&#x27;退出&#x27;</span>, <span class="attr">click</span>: <span class="function">() =&gt;</span> app.<span class="title function_">quit</span>() &#125;,</span><br><span class="line">]))</span><br><span class="line">tray.<span class="title function_">on</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">() =&gt;</span> win.<span class="title function_">isVisible</span>() ? win.<span class="title function_">hide</span>() : win.<span class="title function_">show</span>())</span><br></pre></td></tr></table></figure>
+
+<p><strong>二、全局快捷键</strong></p>
+<blockquote>
+<p><code>globalShortcut.register(&#39;CommandOrControl+Shift+X&#39;, callback)</code>，是<strong>系统级</strong>的，应用失焦也生效，注册失败要处理返回值；退出时 <code>globalShortcut.unregisterAll()</code>。</p>
+</blockquote>
+<p><strong>三、无边框窗口</strong></p>
+<p><code>frame: false</code> 去掉系统标题栏，然后：</p>
+<blockquote>
+<ul>
+<li>拖拽区域：CSS 里加 <code>-webkit-app-region: drag</code>，按钮加 <code>no-drag</code>；</li>
+<li>最小化/最大化/关闭：用 <code>win.minimize()</code> 等 API 自己实现一套窗口控制按钮；</li>
+<li>macOS 可用 <code>titleBarStyle: &#39;hiddenInset&#39;</code> 保留交通灯按钮，体验更好。</li>
+</ul>
+</blockquote>
+<h2 id="常见安全风险"><a href="#常见安全风险" class="headerlink" title="常见安全风险"></a>常见安全风险</h2><p> Electron 官方安全清单：</p>
+<blockquote>
+<ol>
+<li>**关闭 <code>nodeIntegration</code>**：防止页面直接获得 Node 能力（RCE 风险）；</li>
+<li>**开启 <code>contextIsolation</code>**：隔离 preload 和页面上下文；</li>
+<li>**开启 <code>sandbox: true</code>**：渲染进程沙箱化，即使被攻破也拿不到系统能力；</li>
+<li>**禁用 <code>webSecurity: false</code>**：这个开关绝不能为了绕跨域而打开，等于裸奔；</li>
+<li><strong>不加载远程内容</strong>：如果必须加载（如内嵌网页），用 <code>&lt;webview&gt;</code> 隔离或单独的无 Node 沙箱窗口，并配置 CSP（Content-Security-Policy）；</li>
+<li><strong>校验窗口导航</strong>：监听 <code>webContents.on(&#39;will-navigate&#39;)</code> 和 <code>setWindowOpenHandler</code>，禁止页面任意跳转到未知 URL（防止点击劫持把窗口导航到钓鱼页）；</li>
+<li><strong>IPC 输入校验</strong>：<code>ipcMain.handle</code> 收到的参数来自渲染进程，<strong>不可信</strong>，路径、命令类参数必须校验（比如防止传 <code>../../etc/passwd</code> 做路径穿越）；</li>
+<li><strong>限制 <code>ipcRenderer</code> 暴露面</strong>：contextBridge 只暴露具名方法，不暴露原语对象。</li>
+</ol>
+</blockquote>
+<h1 id="高级"><a href="#高级" class="headerlink" title="高级"></a>高级</h1><h2 id="内存过高"><a href="#内存过高" class="headerlink" title="内存过高"></a>内存过高</h2><p>一、定义</p>
+<blockquote>
+<p>先说内存高的<strong>结构性原因</strong>：每个 Electron 应用都内嵌一个完整 Chromium，主进程 + 每个渲染进程 + GPU 进程 + Utility 进程，一启动就是几百 MB 的基础盘，这不是“泄漏”而是架构成本。</p>
+</blockquote>
+<p><strong>二、优化手段</strong></p>
+<p>比如“我们把多窗口架构改成 BrowserView 单窗口后，内存从 600MB 降到 250MB”，体现实战经验。</p>
+<p><strong>1.进程层</strong></p>
+<blockquote>
+<ul>
+<li>能单窗口就不要多窗口；需要多视图时用 <code>BrowserView</code> / <code>WebContentsView</code> 复用一个窗口的容器，而不是开多个 <code>BrowserWindow</code>；</li>
+<li>隐藏窗口不等于释放内存，长时间不用的视图可以 <code>webContents.setBackgroundThrottling</code> 降频，或干脆销毁重建；</li>
+<li>v28+ 可以用 <code>webContents.forcefullyCrashRenderer()</code> / 挂起策略回收僵尸渲染进程。</li>
+</ul>
+</blockquote>
+<p><strong>2.渲染层</strong></p>
+<blockquote>
+<ul>
+<li>长列表用虚拟滚动，DOM 节点控制在几千以内；</li>
+<li>及时解绑事件监听器、清理定时器，尤其 IPC 监听器（<code>ipcRenderer.removeAllListeners</code>）；</li>
+<li>图片资源按需加载、及时 <code>src</code> 置空释放解码后的位图内存。</li>
+</ul>
+</blockquote>
+<p><strong>3.排查工具</strong></p>
+<blockquote>
+<ul>
+<li>主进程：<code>process.memoryUsage()</code> 定时采样上报；</li>
+<li>渲染进程：Chrome DevTools 的 Memory 面板做堆快照对比（三次快照法定位增长对象）；</li>
+<li>Electron 自带的 <code>process.getProcessMemoryInfo()</code> 可以看各子进程分别占多少。</li>
+</ul>
+</blockquote>
+<h2 id="白屏问题"><a href="#白屏问题" class="headerlink" title="白屏问题"></a>白屏问题</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>白屏的根因：窗口 <code>show()</code> 之后渲染进程还要加载 HTML → 执行 JS → 发请求 → 渲染完成，这段时间用户看到的就是白屏。</p>
+</blockquote>
+<p><strong>二、优化手段</strong></p>
+<p><strong>衡量指标</strong>：用 <code>app.on(&#39;ready&#39;)</code> 和 <code>did-finish-load</code> 的时间差、以及 <code>webContents.on(&#39;did-finish-load&#39;)</code> 时间戳上报，建立启动耗时的监控基线。</p>
+<p><strong>1.窗口层优化（最立竿见影）</strong></p>
+<blockquote>
+<ul>
+<li><code>show: false</code> + 监听 <code>ready-to-show</code> 再显示——窗口首次绘制完成才出现，用户感知不到白屏；</li>
+<li>白屏兜底：给 <code>BrowserWindow</code> 设置 <code>backgroundColor</code>（用品牌底色代替纯白），即使慢也不刺眼。</li>
+</ul>
+</blockquote>
+<p><strong>2.加载层优化</strong></p>
+<blockquote>
+<ul>
+<li>渲染资源走本地而不是远程 URL，远程 HTML 首屏完全取决于网络；</li>
+<li>渲染层代码做路由懒加载 + 代码分割，首屏只加载必要 chunk；</li>
+<li>主进程避免在启动阶段做同步 IO（同步读配置、同步校验都推迟到 <code>did-finish-load</code> 之后）；</li>
+<li>V8 快照 / 字节码预编译可以减少 JS 解析时间（引出下一题）。</li>
+</ul>
+</blockquote>
+<p><strong>3.时序优化</strong></p>
+<blockquote>
+<ul>
+<li>非核心能力（自动更新检查、崩溃上报初始化、数据同步）全部延后到首帧之后异步执行；</li>
+<li>主进程窗口创建和渲染进程资源加载是并行的，尽量让 <code>app.ready</code> 到窗口显示的关键路径上只做必要的事。</li>
+</ul>
+</blockquote>
+<h2 id="V8-snapshots-快照-机制"><a href="#V8-snapshots-快照-机制" class="headerlink" title="V8 snapshots(快照)机制"></a>V8 snapshots(快照)机制</h2><p><strong>一、原理</strong></p>
+<blockquote>
+<p>V8 执行 JS 分几步——解析源码生成 AST → 编译为字节码 → 解释执行/优化。对于一大段“启动时就要初始化”的代码，每次冷启动都重复解析编译，很浪费时间。</p>
+</blockquote>
+<p><strong>二、V8 snapshot 的思路</strong></p>
+<blockquote>
+<p><strong>把某个时刻堆内存的完整状态（对象、上下文、编译结果）序列化到文件，下次启动直接反序列化恢复堆</strong>，跳过解析和编译阶段。</p>
+</blockquote>
+<p><strong>三、在 Electron 中的应用</strong></p>
+<blockquote>
+<ol>
+<li><strong>Electron 自身已经内置</strong>：Electron 的启动快照让它内部初始化更快，这部分不用你做；</li>
+<li><strong>业务代码可用 <code>node --snapshot-blob</code> / <code>v8.startupSnapshot</code> API</strong>：把主进程的模块初始化代码做成快照，在 <code>buildSnapshot</code> 阶段执行一次初始化，运行时直接恢复；</li>
+<li><strong>字节码预编译</strong>（相关方案）：用 <code>bytenode</code> 把 JS 编译成 V8 字节码（<code>.jsc</code>），启动时省去源码解析，同时兼做源码保护。</li>
+</ol>
+</blockquote>
+<p><strong>四、局限</strong></p>
+<blockquote>
+<p>快照不适合包含 I/O 副作用或依赖运行时环境的代码；快照文件会增大包体积；跨 V8 版本不兼容，升级 Electron 需要重新生成。能主动讲清“快照 ≠ 加密”这一点很加分。</p>
+</blockquote>
+<h2 id="ASAR-归档文件"><a href="#ASAR-归档文件" class="headerlink" title="ASAR 归档文件"></a>ASAR 归档文件</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>ASAR 是 Electron 自定义的归档格式（类似 tar），把整个应用源码打成一个 <code>.asar</code> 文件，随应用分发。</p>
+</blockquote>
+<p><strong>二、原理</strong></p>
+<blockquote>
+<p>它不是压缩格式，本质是一个<strong>带索引的拼接文件</strong>——文件头部是 JSON 格式的目录索引（记录每个文件的偏移量和大小），后面依次拼接所有文件内容。运行时 Electron 给 Node 的 <code>fs</code> 模块打了补丁：当路径指向 <code>.asar</code> 内部时，拦截 <code>readFile</code>/<code>exists</code> 等调用，按索引从大文件中切片读取，让代码“感觉”自己在一个正常目录里。</p>
+</blockquote>
+<p><strong>三、安全局限（关键点）</strong></p>
+<blockquote>
+<ol>
+<li><strong>ASAR 是明文的，不是加密</strong>：<code>npx asar extract app.asar ./src</code> 一行命令就能完整解出全部源码——所以它解决的是“打包分发”问题，不解决“代码保护”问题；</li>
+<li><strong>可被篡改</strong>：攻击者解包、修改、重新打包后，应用照样运行；</li>
+<li>缓解手段：<ul>
+<li><code>EnableEmbeddedAsarIntegrityValidation</code>（macOS/Windows 支持）：启动时校验 ASAR 的哈希，被篡改则拒绝运行；</li>
+<li>配合代码签名，让篡改后的包无法通过系统签名验证；</li>
+<li>真正的源码保护要用 V8 字节码（引出第 8 题）。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h2 id="大文件传输"><a href="#大文件传输" class="headerlink" title="大文件传输"></a>大文件传输</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>IPC 跨进程传数据走 Chromium 的 Mojo 机制，JS 对象需要经过<strong>结构化克隆序列化 → 跨进程传输 → 反序列化</strong>。</p>
+</blockquote>
+<p><strong>二、问题</strong></p>
+<p>对于大对象，这条链路的代价是三重的：</p>
+<blockquote>
+<ol>
+<li>序列化和反序列化各产生一份临时大对象，堆内存瞬间翻倍；</li>
+<li>主进程是单线程的，大序列化会阻塞主进程事件循环，<strong>拖慢所有窗口</strong>；</li>
+<li>GC 压力陡增，频繁 Full GC 导致全局卡顿。多个窗口高频传大数据时，就是所谓的“IPC 风暴”，最终可能 OOM。</li>
+</ol>
+</blockquote>
+<p><strong>三、优化方案</strong></p>
+<blockquote>
+<ol>
+<li><strong>不传内容，传引用</strong>：文件类数据只通过 IPC 传<strong>路径</strong>，主进程直接用 Node fs 读写，这是最重要的一条；</li>
+<li><strong>传 Buffer/TypedArray 而不是 JSON</strong>：二进制数据序列化开销远小于 JSON 字符串；</li>
+<li><strong>高频小数据合并</strong>：进度条类消息不要每次 tick 都发，做节流合并（比如 100ms 聚合一次）；</li>
+<li>大数据绕过 IPC：<ul>
+<li>共享内存：<code>SharedArrayBuffer</code> 配合 <code>MessagePort</code> 可实现近零拷贝传输；</li>
+<li>本地中转：主进程把大数据写到临时文件 / 本地 HTTP 服务，渲染进程自己去读；</li>
+</ul>
+</li>
+<li><strong>Web Worker 处理</strong>：渲染进程收到数据后的解析工作放到 Worker，不阻塞 UI 线程。</li>
+</ol>
+</blockquote>
+<h2 id="集成原生模块"><a href="#集成原生模块" class="headerlink" title="集成原生模块"></a>集成原生模块</h2><p><strong>一、定义</strong></p>
+<p>原生模块（如 better-sqlite3）</p>
+<blockquote>
+<p>Electron 内置的 Node 版本和你系统装的 Node <strong>版本不一致，ABI（二进制接口）不同</strong>。用 npm 直接装的原生模块（C++ 编译的 <code>.node</code> 文件）是按系统 Node 的 ABI 编译的，放进 Electron 里直接 require 会报 “NODE_MODULE_VERSION mismatch”。</p>
+</blockquote>
+<p><strong>标准解决流程</strong></p>
+<blockquote>
+<ol>
+<li>安装 <code>@electron/rebuild</code>；</li>
+<li>执行 <code>electron-rebuild -f -w better-sqlite3</code>，针对 Electron 的 ABI 重新编译该模块；</li>
+<li>打包时注意：<code>.node</code> 二进制文件<strong>不能进 asar</strong>（asar 里无法被 dlopen 加载），要用 <code>asarUnpack</code> 配置解压到 <code>app.asar.unpacked</code>；</li>
+<li>CI 多平台构建时，需要在对应平台的机器/容器上编译（mac 需要 Xcode、win 需要 VS Build Tools、linux 需要 gcc），或使用 <code>prebuild</code> 预编译产物。</li>
+</ol>
+</blockquote>
+<p><strong>二、N-API 的优势（核心加分点）</strong></p>
+<blockquote>
+<ul>
+<li>旧方案（NAN）直接绑定 V8 内部 API，V8 一升级就崩，所以必须针对每个 Electron 版本重编；</li>
+<li><strong>N-API 是 Node 官方提供的稳定 ABI 层</strong>，原生模块面向 N-API 编译后，<strong>与具体的 V8/Node 版本解耦</strong>——只要 Node 大版本兼容，无需重编，Electron 升级成本低得多；</li>
+<li>选择原生库时优先选基于 N-API / node-addon-api 的实现，这是工程选型的关键判断。</li>
+</ul>
+</blockquote>
+<h2 id="渲染进程崩溃排查"><a href="#渲染进程崩溃排查" class="headerlink" title="渲染进程崩溃排查"></a>渲染进程崩溃排查</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<ul>
+<li><strong>JS 层异常</strong>：渲染进程未捕获的 Promise rejection / 抛错，页面白屏但进程还在；</li>
+<li><strong>进程级崩溃</strong>：渲染进程真挂了（原生模块崩溃、OOM、GPU 问题），窗口完全失去响应。</li>
+</ul>
+</blockquote>
+<p><strong>二、监控与兜底方案</strong></p>
+<p><strong>1.渲染进程异常捕获</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;error&#x27;</span>, handler)</span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;unhandledrejection&#x27;</span>, handler)</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.主进程感知渲染进程崩溃</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">win.<span class="property">webContents</span>.<span class="title function_">on</span>(<span class="string">&#x27;render-process-gone&#x27;</span>, <span class="function">(<span class="params">e, details</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// details.reason: crashed / oom / killed...</span></span><br><span class="line">  <span class="title function_">report</span>(details)</span><br><span class="line">  <span class="comment">// 兜底：提示用户并 reload，或重建窗口</span></span><br><span class="line">&#125;)</span><br><span class="line">win.<span class="property">webContents</span>.<span class="title function_">on</span>(<span class="string">&#x27;unresponsive&#x27;</span>, <span class="function">() =&gt;</span> &#123; <span class="comment">/* 卡死上报 */</span> &#125;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>3.系统级崩溃上报</strong></p>
+<blockquote>
+<p><code>crashReporter.start(&#123; submitURL &#125;)</code>，它基于 Chromium 的 Crashpad/Breakpad，能捕获 Native 层崩溃并生成 minidump 上传。</p>
+</blockquote>
+<p><strong>4.接入 Sentry</strong></p>
+<blockquote>
+<p>Electron 有官方 SDK（<code>@sentry/electron</code>），同时覆盖主进程、渲染进程和 native crash 三层，能拿到崩溃时的 breadcrumbs 和堆栈。</p>
+</blockquote>
+<p><strong>5.自愈策略</strong></p>
+<blockquote>
+<p><code>render-process-gone</code> 后按 <code>reason</code> 分级处理——普通 crashed 直接 <code>reload()</code>；连续崩溃（如 3 次）则清缓存或降级到安全模式。能说出“自愈 + 崩溃率看板”这套完整思路，就是生产级答案。</p>
+</blockquote>
+<h2 id="应用源码保护"><a href="#应用源码保护" class="headerlink" title="应用源码保护"></a>应用源码保护</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>Electron 应用是“源码分发”模式，即使打包了 asar，用户机器上就躺着全部代码，需要防两类人——普通用户解包看代码、攻击者篡改重打包（破解 license）。</p>
+</blockquote>
+<p><strong>二、保护手段</strong></p>
+<p>没有银弹，实战是“字节码 + 混淆 + 原生模块关键逻辑 + fuses”的组合拳，安全级别按商业价值定投入。</p>
+<p><strong>1.ASAR + 完整性校验</strong>：只防篡改不防阅读</p>
+<p><strong>2.V8 字节码</strong></p>
+<blockquote>
+<ul>
+<li><strong>原理</strong>：用 <code>bytenode</code> 等工具把 JS 源码预编译成 V8 字节码（<code>.jsc</code>），分发字节码而删除源码。字节码是 V8 的中间表示，逆向难度远高于明文 JS，且运行时跳过解析、加载更快；</li>
+<li><strong>局限</strong>（要主动说）：字节码<strong>不是加密</strong>，逆向工具可以还原出可读性较差的等效代码；<strong>与 V8 版本强绑定</strong>，Electron 每次升级 V8 都要重新编译；不支持 eval/new Function 类动态执行。</li>
+</ul>
+</blockquote>
+<p><strong>3.其他加固手段</strong></p>
+<blockquote>
+<ul>
+<li>代码混淆（javascript-obfuscator）对关键业务逻辑增加逆向成本；</li>
+<li>主进程侧做 license 校验的核心逻辑（密钥永远不下发到渲染层）；</li>
+<li>敏感计算放原生模块（C++ 编译成 <code>.node</code>，逆向成本最高）；</li>
+<li>开启 Electron fuses（如 <code>RunAsNode</code> 关闭）防止攻击者用自定义 Node 入口绕过你的逻辑。</li>
+</ul>
+</blockquote>
+<h2 id="打包体积优化"><a href="#打包体积优化" class="headerlink" title="打包体积优化"></a>打包体积优化</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>Electron 应用 = 你的业务代码 + <strong>一整个 Chromium + Node.js 运行时</strong>。光运行时解压后就 200MB 左右（每个平台一份），这是架构性成本，任何“轻量 Electron”说法都改变不了这个下限。</p>
+</blockquote>
+<p><strong>二、优化手段</strong></p>
+<blockquote>
+<ol>
+<li><strong>用 electron-builder 的默认行为</strong>：它只打包 <code>dependencies</code>，devDependencies 自动排除——所以构建工具、类型库必须放 devDependencies，这是最常见的“胖包”原因；</li>
+<li><strong>文件粒度裁剪</strong>：<code>files</code> 配置只打包必要的构建产物，排除 sourcemap、测试文件、文档；</li>
+<li><strong>按平台裁剪原生模块</strong>：<code>npm rebuild</code> + 平台过滤，别把三平台的 <code>.node</code> 都打进去；</li>
+<li><strong>排除不必要的二进制</strong>：如 <code>electron-builder</code> 的 <code>asarUnpack</code> 滥用、重复的 icon 资源；</li>
+<li><strong>压缩选项</strong>：<code>compression: maximum</code>（牺牲打包时间换体积）、nsis 用 LZMA 压缩，安装包可小 30%+；</li>
+<li><strong>渲染层做包体分析</strong>：<code>webpack-bundle-analyzer</code> 找出大依赖，做按需引入和代码分割；</li>
+<li><strong>激进方案</strong>：裁剪 Chromium 本身（Electron 源码级定制，去掉不需要的特性和多语言资源），收益大但维护成本极高，只有大团队做得起——能说出这条及其代价，说明你对方案边界有清醒认识。</li>
+</ol>
+</blockquote>
+<h2 id="设计支持多窗口、多主题、可离线的桌面端架构"><a href="#设计支持多窗口、多主题、可离线的桌面端架构" class="headerlink" title="设计支持多窗口、多主题、可离线的桌面端架构"></a>设计支持多窗口、多主题、可离线的桌面端架构</h2><p><strong>一、可复用的框架</strong></p>
+<p>决策的原则——“主进程管状态、渲染进程管视图、IPC 协议类型化、数据单点写”</p>
+<p><strong>1.进程职责分层</strong></p>
+<blockquote>
+<ul>
+<li><strong>主进程 = 状态与系统的唯一可信源</strong>：窗口管理、生命周期、系统能力（托盘/通知/文件）、数据持久化的统一入口；</li>
+<li><strong>渲染进程 = 纯 UI</strong>：每个窗口是一个独立 SPA，不直接接触系统资源，一切能力通过 preload 暴露的白名单 API；</li>
+<li><strong>公共逻辑层</strong>：业务核心逻辑抽成与平台无关的包（不依赖 electron），主进程和渲染进程都能引用，同时保证这套逻辑可以复用到 Web 版。</li>
+</ul>
+</blockquote>
+<p> <strong>2.IPC 架构</strong></p>
+<blockquote>
+<p>设计一个统一的 <strong>IPC 路由层</strong>——主进程注册带命名空间的 handler（如 <code>db:query</code>、<code>file:save</code>），统一做参数校验、日志、错误码规范；preload 按模块封装 <code>exposeInMainWorld</code>，渲染层看到的是一组类型安全的 API（用 TypeScript 定义共享的 IPC 协议类型，主/渲染两端共用一份类型文件）。</p>
+</blockquote>
+<p><strong>3.多窗口策略</strong></p>
+<blockquote>
+<p>主窗口承载主要业务，弹窗类场景评估用 <code>BrowserWindow</code> 还是 <code>BrowserView</code>/同窗口内路由（省内存）；窗口间通信统一走主进程消息总线，主进程做路由和权限控制；窗口关闭时走统一的清理协议（注销 IPC 监听、上报状态）。</p>
+</blockquote>
+<p><strong>4.数据与离线</strong></p>
+<blockquote>
+<ul>
+<li>结构化数据用 SQLite（better-sqlite3，主进程独占读写，渲染进程只能通过 IPC 查询——避免多进程并发写库的锁问题）；</li>
+<li>离线优先：渲染层用本地缓存 + 队列化写操作，网络恢复后同步；Service Worker 缓存静态资源；</li>
+<li>数据同步冲突用时间戳/版本号做 last-write-wins 或 CRDT，按业务定。</li>
+</ul>
+</blockquote>
+<p><strong>5.主题与配置</strong></p>
+<blockquote>
+<p>跟随系统主题监听主进程 <code>nativeTheme</code> 事件广播到所有窗口；用户主题存 SQLite/本地配置文件，主进程启动时下发，保证多窗口主题一致。</p>
+</blockquote>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/" title="多端_桌面端" target="_blank" rel="external">https://fuyunjinglong.github.io/2004/03/01/B_中级_多端_桌面端/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2016/01/01/A_%E5%88%9D%E7%BA%A7_Html/" title="Html"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/" title="多端_小程序"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <!-- <script src="//cdn.jsdelivr.net/npm/valine"></script> -->
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

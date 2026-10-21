@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>大纲  </title>
+  <meta name="description" content="interview-临时一、定义 二、代码   agent开发(智泊-agent-p12)  https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV13ZcizVEJG?spm_id_from&#x3D;333.788.player.player_end_recommend_autoplay&amp;vd_source&#x3D;bd4c7d99d71adf64d6e88c65370e0247&amp;t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大纲">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2000/01/01/A0_%E9%9D%A2%E8%AF%95_%E5%A4%A7%E7%BA%B2/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="interview-临时一、定义 二、代码   agent开发(智泊-agent-p12)  https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV13ZcizVEJG?spm_id_from&#x3D;333.788.player.player_end_recommend_autoplay&amp;vd_source&#x3D;bd4c7d99d71adf64d6e88c65370e0247&amp;t">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="1999-12-31T22:33:16.000Z">
+<meta property="article:modified_time" content="2026-10-18T02:37:55.374Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2000/01/01/A0_%E9%9D%A2%E8%AF%95_%E5%A4%A7%E7%BA%B2/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A1-LLM/">A1_LLM</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E5%88%9D%E7%BA%A7/">A_初级</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-%E4%B8%AD%E7%BA%A7/">B_中级</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E9%AB%98%E7%BA%A7/">C_高级</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E8%A7%84%E5%88%92/">D_规划</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/04/">四月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/01/">一月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2098/01/">一月 2098</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">七月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">一月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/03/">三月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/02/">二月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/01/">一月 2004</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/06/">六月 2003</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/01/">一月 2003</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/06/">六月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/02/">二月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/01/">一月 2002</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/06/">六月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/03/">三月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/02/">二月 2001</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/01/">一月 2001</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/06/">六月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/03/">三月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/02/">二月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/01/">一月 2000</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/04/04/%E6%A8%A1%E6%9D%BFX/" class="title">模板X</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-04-04T00:33:16.000Z" itemprop="datePublished">2099-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/03/29/Z_%E5%90%8E%E7%AB%AF_Java/" class="title">Java</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-03-28T23:33:16.000Z" itemprop="datePublished">2099-03-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/01/01/G_%E5%85%B6%E4%BB%96_%E4%B9%A6%E5%8D%95/" class="title">书单</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-01-01T00:33:16.000Z" itemprop="datePublished">2099-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A1-LLM/">A1_LLM</a>
+              </p>
+              <p class="item-title">
+                <a href="/2098/01/01/A1_LLM_windows%E5%AE%89%E8%A3%85%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="title">LLM_windows安装大模型</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2097-12-31T22:33:16.000Z" itemprop="datePublished">2098-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2026/07/18/Test%20copy/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2026-07-18T02:11:18.292Z" itemprop="datePublished">2026-07-18</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#interview-%E4%B8%B4%E6%97%B6"><span class="toc-number">1.</span> <span class="toc-text">interview-临时</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#web%E5%89%8D%E7%AB%AF%E5%AF%BC%E8%88%AA"><span class="toc-number">2.</span> <span class="toc-text">web前端导航</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2%E6%8F%90%E7%A4%BA%E8%AF%8D"><span class="toc-number">3.</span> <span class="toc-text">搜索提示词</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9D%E7%BA%A7"><span class="toc-number">4.</span> <span class="toc-text">初级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#H5"><span class="toc-number">4.1.</span> <span class="toc-text">H5</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS"><span class="toc-number">4.2.</span> <span class="toc-text">CSS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ES6"><span class="toc-number">4.3.</span> <span class="toc-text">ES6</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JS"><span class="toc-number">4.4.</span> <span class="toc-text">JS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C"><span class="toc-number">4.5.</span> <span class="toc-text">计算机网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95"><span class="toc-number">4.6.</span> <span class="toc-text">数据结构与算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#git%E5%8D%8F%E4%BD%9C-Husky-lint-staged"><span class="toc-number">4.7.</span> <span class="toc-text">git协作(Husky+lint-staged)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%AD%E7%BA%A7"><span class="toc-number">5.</span> <span class="toc-text">中级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue2"><span class="toc-number">5.1.</span> <span class="toc-text">Vue2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue3"><span class="toc-number">5.2.</span> <span class="toc-text">Vue3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#React"><span class="toc-number">5.3.</span> <span class="toc-text">React</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86-pinia"><span class="toc-number">5.4.</span> <span class="toc-text">状态管理-pinia</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TypeScript"><span class="toc-number">5.5.</span> <span class="toc-text">TypeScript</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Taiwind-CSS"><span class="toc-number">5.6.</span> <span class="toc-text">Taiwind CSS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Headless-UI%E7%BB%84%E4%BB%B6%E5%BA%93"><span class="toc-number">5.7.</span> <span class="toc-text">Headless UI组件库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%AB%AF-%E7%A7%BB%E5%8A%A8%E7%AB%AF"><span class="toc-number">5.8.</span> <span class="toc-text">多端-移动端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%AB%AF-%E5%B0%8F%E7%A8%8B%E5%BA%8F-Taro"><span class="toc-number">5.9.</span> <span class="toc-text">多端-小程序-Taro</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%AB%AF-%E6%A1%8C%E9%9D%A2%E7%AB%AF-Electron"><span class="toc-number">5.10.</span> <span class="toc-text">多端-桌面端-Electron</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7"><span class="toc-number">6.</span> <span class="toc-text">高级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#AI%E5%BC%80%E5%8F%91"><span class="toc-number">6.1.</span> <span class="toc-text">AI开发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96"><span class="toc-number">6.2.</span> <span class="toc-text">前端工程化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NodeJS"><span class="toc-number">6.3.</span> <span class="toc-text">NodeJS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-number">6.4.</span> <span class="toc-text">性能优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">6.5.</span> <span class="toc-text">其他</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-A0_面试_大纲" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      大纲
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2000/01/01/A0_%E9%9D%A2%E8%AF%95_%E5%A4%A7%E7%BA%B2/" class="article-date">
+	  <time datetime="1999-12-31T22:33:16.000Z" itemprop="datePublished">2000-01-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2000/01/01/A0_%E9%9D%A2%E8%AF%95_%E5%A4%A7%E7%BA%B2/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="interview-临时"><a href="#interview-临时" class="headerlink" title="interview-临时"></a>interview-临时</h1><p><strong>一、定义</strong></p>
+<p><strong>二、代码</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> agent开发(智泊-agent-p12)</li>
+<li><input disabled="" type="checkbox"> <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV13ZcizVEJG?spm_id_from=333.788.player.player_end_recommend_autoplay&amp;vd_source=bd4c7d99d71adf64d6e88c65370e0247&amp;trackid=web_related_0.router-related-2589621-jb4mv.1792290111386.329">https://www.bilibili.com/video/BV13ZcizVEJG?spm_id_from=333.788.player.player_end_recommend_autoplay&amp;vd_source=bd4c7d99d71adf64d6e88c65370e0247&amp;trackid=web_related_0.router-related-2589621-jb4mv.1792290111386.329</a></li>
+<li><input disabled="" type="checkbox"> 2024年前端简历（node.js，ts,react，Flutter、Rn，微前端，低代码，小程序，移动端，ssr）</li>
+<li><input disabled="" type="checkbox"> 面试突击-千峰-22</li>
+<li><input disabled="" type="checkbox"> TypeScript入门</li>
+<li><input disabled="" type="checkbox"> 多端-小程序-Taro</li>
+<li><input disabled="" type="checkbox"> 多端-桌面端Electron</li>
+<li><input disabled="" type="checkbox"> NodeJS入门</li>
+<li><input disabled="" type="checkbox"> 服务端渲染</li>
+<li><input disabled="" type="checkbox"> vue2源码:Vue2.js源码全方位深入解析-黄轶-第1章 准备工作(本地2-6)</li>
+<li><input disabled="" type="checkbox"> vue3源码:催学社-Vue3源码实战课(本地02)</li>
+<li><input disabled="" type="checkbox"> 2025年聚客大模型第四期-27-DeepSeek原理与应用</li>
+<li><input disabled="" type="checkbox"> <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1yD4y127vy/?spm_id_from=333.999.0.0&vd_source=bd4c7d99d71adf64d6e88c65370e0247">JS数据结构与算法(函数式)-coderwhy-video</a>(01集合)</li>
+<li><input disabled="" type="checkbox"> <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Ef4y1T7Qi/?p=2&vd_source=bd4c7d99d71adf64d6e88c65370e0247">Java数据结构与算法-video或03-算法数据结构体系学习班本地</a>(p0可忽略)</li>
+<li><input disabled="" type="checkbox"> <a target="_blank" rel="noopener" href="https://yinuo-ai.com/practice/codex/open-guide/">https://yinuo-ai.com/practice/codex/open-guide/</a></li>
+</ul>
+<p><strong>CodeGeeX</strong></p>
+<blockquote>
+<ol>
+<li>CodeGeeX入门介绍&amp;基础功能使用演示： <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Gy6WYaEhD/?spm_id_from=333.337.search-card.all.click&vd_source=219cda0ed2078d85b2a381413c18d1b8">鱼C-小甲鱼</a>【B站百万粉丝up主】、 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Aw411h7Ae/?spm_id_from=333.999.0.0&vd_source=219cda0ed2078d85b2a381413c18d1b8">程序员鱼皮</a>【百万粉丝博主】 、 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1G14y1r7Qd/?spm_id_from=333.337.search-card.all.click&vd_source=219cda0ed2078d85b2a381413c18d1b8">秋叶aaaki</a>【B站百万粉丝博主】</li>
+<li>CodeGeeX高级技巧与实战： <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Hz421k7AJ/?spm_id_from=333.337.search-card.all.click&vd_source=bd4c7d99d71adf64d6e88c65370e0247">程序员小山与Bug</a> 1、 2、 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Mj411676S/?spm_id_from=333.788.player.player_end_recommend_autoplay&vd_source=219cda0ed2078d85b2a381413c18d1b8">技术胖</a>、 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1wS421o7Md/?spm_id_from=333.337.search-card.all.click&vd_source=219cda0ed2078d85b2a381413c18d1b8">玄离199</a>、 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV13N4y1976U/?spm_id_from=333.337.search-card.all.click&vd_source=219cda0ed2078d85b2a381413c18d1b8">epcdiy</a>、 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1ES421R7TD/?spm_id_from=333.337.search-card.all.click&vd_source=219cda0ed2078d85b2a381413c18d1b8">我是阿众</a></li>
+<li>用CodeGeeX魔改游戏： <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Xw4m1v7YV/?spm_id_from=333.337.search-card.all.click&vd_source=219cda0ed2078d85b2a381413c18d1b8">鱼C-小师妹</a> 1、2</li>
+<li>后端工程师如何使用CodeGeeX： <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1fF411U7Vs/?spm_id_from=333.337.search-card.all.click&vd_source=219cda0ed2078d85b2a381413c18d1b8">御风大世界</a> 1、2、 <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1GmBeYHEvH/?spm_id_from=333.999.0.0&vd_source=219cda0ed2078d85b2a381413c18d1b8">AI进化论-花生</a></li>
+<li>用CodeGeeX本地模式实现本地大模型部署，离线使用AI智能编程助手： <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1pn4y1f7yY/?spm_id_from=333.337.search-card.all.click&vd_source=219cda0ed2078d85b2a381413c18d1b8">改BUG的TOM学长</a></li>
+<li>用CodeGeeX写React Hooks 前端开发： <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1kc411D7F9/?spm_id_from=333.337.search-card.all.click&vd_source=219cda0ed2078d85b2a381413c18d1b8">吴悠讲编程</a></li>
+<li>用CodeGeeX快速实现基于 Vue3 的记账应用开发： <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Me411o7WJ/?spm_id_from=333.337.search-card.all.click&vd_source=219cda0ed2078d85b2a381413c18d1b8">阿崔cxr</a></li>
+<li>用CodeGeeX挑战高难度算法题： <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Be411f72W/?spm_id_from=333.337.search-card.all.click&vd_source=219cda0ed2078d85b2a381413c18d1b8">公子龙龙龙</a></li>
+<li>用CodeGeeX实现项目级辅助编程： <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1A8UoY8EuF/?spm_id_from=333.337.search-card.all.click&vd_source=219cda0ed2078d85b2a381413c18d1b8">完整分析整个项目</a>、<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1GmBeYHEvH/?spm_id_from=333.337.search-card.all.click&vd_source=219cda0ed2078d85b2a381413c18d1b8">一键生成项目地图</a>、<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1b4421U7be/?spm_id_from=333.337.search-card.all.click&vd_source=219cda0ed2078d85b2a381413c18d1b8">项目级的上下文分析</a></li>
+</ol>
+</blockquote>
+<h1 id="web前端导航"><a href="#web前端导航" class="headerlink" title="web前端导航"></a>web前端导航</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://nav.poetries.top/">前端导航</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.coderutil.com/">程序员盒子</a></li>
+<li><a target="_blank" rel="noopener" href="https://ife.baidu.com/encyclopedia/readme1.html">前端技术学园</a></li>
+<li><a target="_blank" rel="noopener" href="https://webjike.com/web.html#row-1">小呆导航</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.alloyteam.com/nav/">Web前端导航</a></li>
+<li><a target="_blank" rel="noopener" href="https://lee.js.org/My-Nav/FrontEnd/#/Index">前端小社区</a></li>
+<li><a target="_blank" rel="noopener" href="https://docschina.org/">印记中文</a></li>
+</ul>
+<p>【👍 4695】<a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903673009553416">2018前端面试总结，看完弄懂，工资少说加3K | 掘金技术征文</a></p>
+<h1 id="搜索提示词"><a href="#搜索提示词" class="headerlink" title="搜索提示词"></a>搜索提示词</h1><blockquote>
+<p>按照前端面试答题模板，移动端高频经典常考面试题。<br>按照初级、中级、高级分类，每个分类最多10个题目，不一定非要10个哈。</p>
+<p>按照初中高划分，在当前附件中，挑选最高頻常考的题目，只列出题目，不要回答和解析。是最高频经典常考题，不是所有题目</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>初级<ul>
+<li>H5</li>
+<li>CSS</li>
+<li>ES6</li>
+<li>JS</li>
+<li>计算机网络</li>
+<li>数据结构与算法</li>
+<li>git</li>
+</ul>
+</li>
+<li>中级<ul>
+<li>Vue2</li>
+<li>Vue3</li>
+<li>React</li>
+<li>Pinia</li>
+<li>TypeScript</li>
+<li>Taiwind CSS</li>
+<li>Headless UI组件库</li>
+<li>多端-移动端</li>
+<li>多端-小程序</li>
+<li>多端-桌面端</li>
+</ul>
+</li>
+<li>高级<ul>
+<li>AI开发</li>
+<li>前端工程化</li>
+<li>NodeJS</li>
+<li>性能优化</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h1 id="初级"><a href="#初级" class="headerlink" title="初级"></a>初级</h1><h2 id="H5"><a href="#H5" class="headerlink" title="H5"></a>H5</h2><ul>
+<li><a target="_blank" href="/2016/01/01/A_%E5%88%9D%E7%BA%A7_Html/#iframe有哪些优缺点？">[初级]-iframe 内嵌框架缺点</a></li>
+<li><a target="_blank" href="/2016/01/01/A_%E5%88%9D%E7%BA%A7_Html/#Html语义化">[初级]-html语义化是什么</a></li>
+<li><a target="_blank" href="/2020/06/01/C_%E9%AB%98%E7%BA%A7_%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/#从输入url到渲染完成整个过程">[中级]-从输入url到渲染完成整个过程</a></li>
+<li><a target="_blank" href="/2020/06/01/C_%E9%AB%98%E7%BA%A7_%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/#浏览器的渲染原理">[中级]-浏览器的渲染原理</a></li>
+<li><a target="_blank" href="/2016/01/01/A_%E5%88%9D%E7%BA%A7_Html/#浏览器内核的理解">[中级]-浏览器内核的理解</a></li>
+</ul>
+<h2 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h2><ul>
+<li><a target="_blank" href="/2017/01/01/A_%E5%88%9D%E7%BA%A7_CSS/#CSS3有哪些新特性？">[初级]-CSS3 有哪些新特性 ?</a></li>
+<li><a target="_blank" href="/2017/01/01/A_%E5%88%9D%E7%BA%A7_CSS/#CSS常用3种引入方式">[初级]-CSS 常用3种引入方式</a></li>
+<li><a target="_blank" href="/2017/01/01/A_%E5%88%9D%E7%BA%A7_CSS/#CSS盒子模型">[初级]-盒子模型</a></li>
+<li><a target="_blank" href="/2017/01/01/A_%E5%88%9D%E7%BA%A7_CSS/#CSS选择器及优先级">[初级]-CSS选择器及优先级</a></li>
+<li><a target="_blank" href="/2017/01/01/A_%E5%88%9D%E7%BA%A7_CSS/#清除浮动">[初级]-清除浮动</a></li>
+<li><a target="_blank" href="/2017/01/01/A_%E5%88%9D%E7%BA%A7_CSS/#Sass-和-SCSS区别">[初级]-Sass 和 SCSS区别</a></li>
+<li><a target="_blank" href="/2017/01/01/A_%E5%88%9D%E7%BA%A7_CSS/#transform，transition，animation区别">[初级]-transform，transition，animation区别</a></li>
+<li><a target="_blank" href="/2017/01/01/A_%E5%88%9D%E7%BA%A7_CSS/#元素水平垂直居中">[初级]-元素水平垂直居中</a></li>
+<li><a target="_blank" href="/2017/01/01/A_%E5%88%9D%E7%BA%A7_CSS/#两边固定100px-中间自适应，如何三栏布局">[初级]-两边固定100px，中间自适应，如何三栏布局</a></li>
+<li><a target="_blank" href="/2017/01/01/A_%E5%88%9D%E7%BA%A7_CSS/#页面样式导入link和-import区别">[初级]-页面样式导入link 和 @import 区别</a></li>
+<li><a target="_blank" href="/2017/01/01/A_%E5%88%9D%E7%BA%A7_CSS/#回流和重绘">[中级]-回流和重绘</a></li>
+<li><a target="_blank" href="/2017/01/01/A_%E5%88%9D%E7%BA%A7_CSS/#外边距折叠">[中级]-外边距折叠</a></li>
+<li><a target="_blank" href="/2017/01/01/A_%E5%88%9D%E7%BA%A7_CSS/#flex-1代表什么，用于什么场景">[中级]-flex=1代表什么</a></li>
+<li><a target="_blank" href="/2017/01/01/A_%E5%88%9D%E7%BA%A7_CSS/#BFC">[中级]-对BFC规范的理解</a></li>
+<li><a target="_blank" href="/2017/01/01/A_%E5%88%9D%E7%BA%A7_CSS/#canvas与svg的区别？">[中级]-canvas 与 svg 的区别 ？</a></li>
+<li><a target="_blank" href="/2017/01/01/A_%E5%88%9D%E7%BA%A7_CSS/#伪类和伪元素">[中级]-伪类与伪元素</a></li>
+</ul>
+<h2 id="ES6"><a href="#ES6" class="headerlink" title="ES6"></a>ES6</h2><ul>
+<li><a target="_blank" href="/2018/12/31/A_%E5%88%9D%E7%BA%A7_JS_ES6/#ES6-2015-ES17-2026-新特性">[初级]-ES6-ES17新特性</a></li>
+<li><a target="_blank" href="/2018/12/31/A_%E5%88%9D%E7%BA%A7_JS_ES6/#for-循环中的var-let-const">[初级]-for 循环中的var/let/const</a></li>
+<li><a target="_blank" href="/2018/12/31/A_%E5%88%9D%E7%BA%A7_JS_ES6/#for…in、for…of和forEach">[初级]-for…in、for…of和forEach的区别</a></li>
+<li><a target="_blank" href="/2018/12/31/A_%E5%88%9D%E7%BA%A7_JS_ES6/#Symbol、Map、Set三种常用的数据类型">[初级]-Symbol、Map、Set</a></li>
+<li><a target="_blank" href="/2018/12/31/A_%E5%88%9D%E7%BA%A7_JS_ES6/#模块化规范">[初级]-模块化规范</a></li>
+<li><a target="_blank" href="/2018/12/31/A_%E5%88%9D%E7%BA%A7_JS_ES6/#ES5和ES6函数默认值的区别">[初级]-ES5和ES6函数默认值的区别</a></li>
+<li><a target="_blank" href="/2018/12/31/A_%E5%88%9D%E7%BA%A7_JS_ES6/#ES5和ES6继承的区别">[初级]-ES5和ES6继承的区别</a></li>
+<li><a target="_blank" href="/2018/12/31/A_%E5%88%9D%E7%BA%A7_JS_ES6/#Generator-函数">[中级]-Generator函数</a></li>
+<li><a target="_blank" href="/2018/12/31/A_%E5%88%9D%E7%BA%A7_JS_ES6/#async函数">[中级]-async函数</a></li>
+<li><a target="_blank" href="/2018/12/31/A_%E5%88%9D%E7%BA%A7_JS_ES6/#Promise-A-规范">[高级]-Promise的理解</a></li>
+<li><a target="_blank" href="/2018/12/31/A_%E5%88%9D%E7%BA%A7_JS_ES6/#手写-Promise">[高级]-手写-Promise</a></li>
+</ul>
+<h2 id="JS"><a href="#JS" class="headerlink" title="JS"></a>JS</h2><ul>
+<li><a target="_blank" href="/2018/01/01/A_%E5%88%9D%E7%BA%A7_JS/#数据类型">[初级]-数据类型</a></li>
+<li><a target="_blank" href="/2018/01/01/A_%E5%88%9D%E7%BA%A7_JS/#类型判断">[初级]-类型判断</a></li>
+<li><a target="_blank" href="/2018/01/01/A_%E5%88%9D%E7%BA%A7_JS/#判断空对象">[初级]-判断空对象</a></li>
+<li><a target="_blank" href="/2018/01/01/A_%E5%88%9D%E7%BA%A7_JS/#数据请求">[初级]-数据请求</a></li>
+<li><a target="_blank" href="/2018/01/01/A_%E5%88%9D%E7%BA%A7_JS/#跨域和同源策略">[初级]-跨域和同源策略</a></li>
+<li><a target="_blank" href="/2018/01/01/A_%E5%88%9D%E7%BA%A7_JS/#async和defer有什么区别">[初级]-async和defer有什么区别</a></li>
+<li><a target="_blank" href="/2018/01/01/A_%E5%88%9D%E7%BA%A7_JS/#防抖和节流">[中级]-手写-防抖和节流有什么区别</a></li>
+<li><a target="_blank" href="/2018/01/01/A_%E5%88%9D%E7%BA%A7_JS/#手写-深浅拷贝">[中级]-手写-深浅拷贝</a></li>
+<li><a target="_blank" href="/2018/01/01/A_%E5%88%9D%E7%BA%A7_JS/#手写-setTimeout实现setInterval">[中级]-手写-setTimeout实现setInterval</a></li>
+<li><a target="_blank" href="/2018/01/01/A_%E5%88%9D%E7%BA%A7_JS/#手写-发布订阅">[中级]-手写-发布订阅</a></li>
+<li><a target="_blank" href="/2018/01/01/A_%E5%88%9D%E7%BA%A7_JS/#柯里化">[中级]-柯里化是什么</a></li>
+<li><a target="_blank" href="/2018/01/01/A_%E5%88%9D%E7%BA%A7_JS/#垃圾回收">[中级]-垃圾回收</a></li>
+<li><a target="_blank" href="/2018/01/01/A_%E5%88%9D%E7%BA%A7_JS/#内存溢出和内存泄漏">[中级]-内存泄露</a></li>
+<li><a target="_blank" href="/2018/01/01/A_%E5%88%9D%E7%BA%A7_JS/#前端登录鉴权如何实现？">[高级]-前端登录鉴权如何实现？</a></li>
+<li><a target="_blank" href="/2018/01/01/A_%E5%88%9D%E7%BA%A7_JS/#函数式编程">[高级]-函数式编程</a></li>
+<li><a target="_blank" href="/2018/02/01/A_%E5%88%9D%E7%BA%A7_JS_%E4%B8%89%E5%BA%A7%E5%A4%A7%E5%B1%B1/#三大山-原型和原型链">[三大山-原型和原型链]-原型的理解</a></li>
+<li><a target="_blank" href="/2018/02/01/A_%E5%88%9D%E7%BA%A7_JS_%E4%B8%89%E5%BA%A7%E5%A4%A7%E5%B1%B1/#instanceof操作符">[三大山-原型和原型链]-instanceof操作符</a></li>
+<li><a target="_blank" href="/2018/02/01/A_%E5%88%9D%E7%BA%A7_JS_%E4%B8%89%E5%BA%A7%E5%A4%A7%E5%B1%B1/#Object-create操作符">[三大山-原型和原型链]-Object-create操作符</a></li>
+<li><a target="_blank" href="/2018/02/01/A_%E5%88%9D%E7%BA%A7_JS_%E4%B8%89%E5%BA%A7%E5%A4%A7%E5%B1%B1/#new操作符">[三大山-原型和原型链]-new操作符</a></li>
+<li><a target="_blank" href="/2018/02/01/A_%E5%88%9D%E7%BA%A7_JS_%E4%B8%89%E5%BA%A7%E5%A4%A7%E5%B1%B1/#JS的5种继承方式">[三大山-原型和原型链]-JS的5种继承方式</a></li>
+<li><a target="_blank" href="/2018/02/01/A_%E5%88%9D%E7%BA%A7_JS_%E4%B8%89%E5%BA%A7%E5%A4%A7%E5%B1%B1/#彻底搞懂this">[三大山-原型和原型链]-为什么要有 this？</a></li>
+<li><a target="_blank" href="/2018/02/01/A_%E5%88%9D%E7%BA%A7_JS_%E4%B8%89%E5%BA%A7%E5%A4%A7%E5%B1%B1/#call、apply、bind-的区别">[三大山-原型和原型链]-call、apply、bind-的区别</a></li>
+<li><a target="_blank" href="/2018/02/01/A_%E5%88%9D%E7%BA%A7_JS_%E4%B8%89%E5%BA%A7%E5%A4%A7%E5%B1%B1/#闭包">[三大山-作用域和闭包]-开发中哪些场景用到闭包</a></li>
+<li><a target="_blank" href="/2018/02/01/A_%E5%88%9D%E7%BA%A7_JS_%E4%B8%89%E5%BA%A7%E5%A4%A7%E5%B1%B1/#JS异步编程六大方案">[三大山-异步和单线程]-异步编程方案</a></li>
+<li><a target="_blank" href="/2018/02/01/A_%E5%88%9D%E7%BA%A7_JS_%E4%B8%89%E5%BA%A7%E5%A4%A7%E5%B1%B1/#消息队列和事件循环">[三大山-异步和单线程]-事件循环</a></li>
+</ul>
+<h2 id="计算机网络"><a href="#计算机网络" class="headerlink" title="计算机网络"></a>计算机网络</h2><ul>
+<li><a target="_blank" href="/2019/01/01/A_%E5%88%9D%E7%BA%A7_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/#网络模型-4层">[初级]-网络模型(4层)</a></li>
+<li><a target="_blank" href="/2019/01/01/A_%E5%88%9D%E7%BA%A7_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/#Cookies、SessionStorage和LocalStorage">[初级]-Cookies、SessionStorage和LocalStorage</a></li>
+<li><a target="_blank" href="/2019/01/01/A_%E5%88%9D%E7%BA%A7_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/#HTTP常见的状态码">[初级]-HTTP常见的状态码</a></li>
+<li><a target="_blank" href="/2019/01/01/A_%E5%88%9D%E7%BA%A7_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/#Web漏洞攻防">[初级]-Web漏洞攻防</a></li>
+<li><a target="_blank" href="/2019/01/01/A_%E5%88%9D%E7%BA%A7_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/#HTTP-1、HTTP-2、HTTP-3">[初级]-HTTP-1、HTTP-2、HTTP-3</a></li>
+<li><a target="_blank" href="/2019/01/01/A_%E5%88%9D%E7%BA%A7_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/#TCP是什么-3次握手4次挥手">[初级]-TCP是什么(3次握手4次挥手)</a></li>
+<li><a target="_blank" href="/2019/01/01/A_%E5%88%9D%E7%BA%A7_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/#从输入URL到页面渲染完成过程">[中级]-从输入URL到页面渲染完成过程</a></li>
+<li><a target="_blank" href="/2019/01/01/A_%E5%88%9D%E7%BA%A7_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/#彻底搞懂Https">[中级]-彻底搞懂Https</a></li>
+<li><a target="_blank" href="/2019/01/01/A_%E5%88%9D%E7%BA%A7_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/#RPC是什么">[中级]-RPC是什么</a></li>
+<li><a target="_blank" href="/2019/01/01/A_%E5%88%9D%E7%BA%A7_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/#WebSocket是什么">[中级]-WebSocket是什么</a></li>
+<li><a target="_blank" href="/2019/01/01/A_%E5%88%9D%E7%BA%A7_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/#TCP-拆包粘包">[中级]-TCP 拆包粘包</a></li>
+<li><a target="_blank" href="/2019/01/01/A_%E5%88%9D%E7%BA%A7_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/#前端缓存">[高级]-前端缓存</a></li>
+</ul>
+<h2 id="数据结构与算法"><a href="#数据结构与算法" class="headerlink" title="数据结构与算法"></a>数据结构与算法</h2><ul>
+<li><a target="_blank" href="#大纲">数据结构_JavaScript-刷题</a></li>
+<li><a target="_blank" href="#大纲">数据结构_左神</a></li>
+<li><a target="_blank" href="#大纲">数据结构_JavaScript</a></li>
+</ul>
+<h2 id="git协作-Husky-lint-staged"><a href="#git协作-Husky-lint-staged" class="headerlink" title="git协作(Husky+lint-staged)"></a>git协作(Husky+lint-staged)</h2><ul>
+<li><a target="_blank" href="/2021/09/06/A_%E5%88%9D%E7%BA%A7_Git/#Husky-lint-staged">[初级]-Husky + lint-staged</a></li>
+<li><a target="_blank" href="/2021/09/06/A_%E5%88%9D%E7%BA%A7_Git/#Git-的工作流程">[初级]-Git的工作流程</a></li>
+<li><a target="_blank" href="/2021/09/06/A_%E5%88%9D%E7%BA%A7_Git/#Git-提交规范">[初级]-Git提交规范</a></li>
+<li><a target="_blank" href="/2021/09/06/A_%E5%88%9D%E7%BA%A7_Git/#Git-分支管理策略">[初级]-Git 分支管理策略</a></li>
+<li><a target="_blank" href="/2021/09/06/A_%E5%88%9D%E7%BA%A7_Git/#Git-最常用命令">[初级]-Git 最常用命令</a></li>
+<li><a target="_blank" href="/2021/09/06/A_%E5%88%9D%E7%BA%A7_Git/#Git-解决代码冲突">[初级]-Git解决代码冲突</a></li>
+<li><a target="_blank" href="/2021/09/06/A_%E5%88%9D%E7%BA%A7_Git/#git-add和-git-stash的区别">[初级]-git add 和 git stash的区别</a></li>
+<li><a target="_blank" href="/2021/09/06/A_%E5%88%9D%E7%BA%A7_Git/#git-pull-和-git-fetch-的区别">[初级]-git pull 和 git fetch的区别</a></li>
+<li><a target="_blank" href="/2021/09/06/A_%E5%88%9D%E7%BA%A7_Git/#git-merge-和-git-rebase-的区别">[初级]-git merge 和 git rebase的区别</a></li>
+<li><a target="_blank" href="/2021/09/06/A_%E5%88%9D%E7%BA%A7_Git/#git-reset-和-git-revert-的区别">[中级]-git reset 和 git revert 的区别</a></li>
+<li><a target="_blank" href="/2021/09/06/A_%E5%88%9D%E7%BA%A7_Git/#git-reset-–hard-误删代码，如何找回">[高级]-git reset –hard 误删代码，如何找回</a></li>
+<li><a target="_blank" href="/2021/09/06/A_%E5%88%9D%E7%BA%A7_Git/#git-rebase-i-的作用">[高级]-git rebase -i的作用</a></li>
+<li><a target="_blank" href="/2021/09/06/A_%E5%88%9D%E7%BA%A7_Git/#线上Bug，如何在海量提交中快速定位引入点">[高级]-线上Bug，如何在海量提交中快速定位引入点</a></li>
+<li><a target="_blank" href="/2021/09/06/A_%E5%88%9D%E7%BA%A7_Git/#不用-rebase，如何合并本地已推送到远程的多个零碎-Commit">[高级]-不用rebase，如何合并本地已推送到远程的多个零碎Commit</a></li>
+</ul>
+<h1 id="中级"><a href="#中级" class="headerlink" title="中级"></a>中级</h1><h2 id="Vue2"><a href="#Vue2" class="headerlink" title="Vue2"></a>Vue2</h2><ul>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#MVC-MVP-MVVM">初级_MVC-MVP-MVVM</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#生命周期">初级_生命周期</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#自定义指令">初级_自定义指令</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#自定义过滤器">初级_自定义过滤器</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#常用修饰符">初级_常用修饰符</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#Vue-Router的-params-与-query">初级_Vue-Router的-params-与-query</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#keep-alive">初级_keep-alive</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#路由模式-Hash-与-History">初级_路由模式-Hash-与-History</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#router与-route区别">初级_router与-route区别</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#路由守卫">初级_路由守卫</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#插槽">初级_插槽</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#computed-和-watch">初级_computed-和-watch</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#组件的data是函数，而根组件是对象">初级_组件的data是函数</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#组件通信">初级_组件通信</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#单向数据流与双向数据绑定">中级_单向数据流与双向数据绑定</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#Object-defineProperty">中级_Object-defineProperty</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#虚拟-DOM">中级_虚拟-DOM</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#forceUpdate原理">高级_forceUpdate原理</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#nextTick原理">高级_nextTick原理</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#Vue-Router原理">高级_Vue-Router原理</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#Vuex原理">高级_Vuex原理</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#template-编译过程">高级_template-编译过程</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#Diff算法">高级_Diff算法</a></li>
+<li><a target="_blank" href="/2000/01/01/B_%E4%B8%AD%E7%BA%A7_Vue2/#Vue2性能优化">高级_Vue2性能优化</a></li>
+</ul>
+<h2 id="Vue3"><a href="#Vue3" class="headerlink" title="Vue3"></a>Vue3</h2><ul>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#ref-和-reactive">初级_ref 和 reactive</a></li>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#自定义指令">初级_自定义指令</a></li>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#自定义过滤器">初级_自定义过滤器</a></li>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#常用修饰符">初级_常用修饰符</a></li>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#keep-alive">初级_keep-alive</a></li>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#检测路由动态变化">初级_检测路由动态变化</a></li>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#router-link上v-slot">初级_router-link上v-slot</a></li>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#插槽">初级_插槽</a></li>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#Watch-vs-WatchEffect">初级_Watch vs WatchEffect</a></li>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#组件通信">初级_组件通信</a></li>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#双向数据绑定">中级_双向数据绑定</a></li>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#Proxy">中级_Proxy</a></li>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#虚拟-DOM">中级_虚拟 DOM</a></li>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#forceUpdate原理">高级_forceUpdate原理</a></li>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#nextTick原理">高级_nextTick原理</a></li>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#Vue-Router原理">高级_Vue-Router原理</a></li>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#Pinia-Vuex4-原理">高级_Pinia-Vuex4原理</a></li>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#template-编译过程">高级_template 编译过程</a></li>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#Diff算法">高级_Diff算法</a></li>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#Vue3性能优化">高级_Vue3性能优化</a></li>
+<li><a target="_blank" href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/#Hooks">高级_Hooks</a></li>
+</ul>
+<h2 id="React"><a href="#React" class="headerlink" title="React"></a>React</h2><ul>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#JSX是什么">初级_JSX是什么</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#渲染一个组件的过程">初级_渲染一个组件的过程</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#生命周期">初级_生命周期</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#组件通信">初级_组件通信</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#类组件与函数组件的区别">初级_类组件与函数组件的区别</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#重新渲染render的情况">初级_重新渲染render的情况</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#避免渲染render的情况">初级_避免渲染render的情况</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#props与state的区别">初级_props与state的区别</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#setState是什么">初级_setState是什么</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#路由">初级_路由</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#按需加载">初级_按需加载</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#Props的应用验证">初级_Props的应用验证</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#Hooks">初级_Hooks</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#Hooks与Render-Props与HOC-高阶组件">初级_Hooks与Render-Props-与HOC-高阶组件</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#StrictMode-严格模式">中级_StrictMode-严格模式</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#React的Immutable">中级_React的Immutable</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#Flux-与-MVC">中级_Flux 与 MVC</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#高阶组件-HOC-、受控组件-与-非受控组件">中级_高阶组件-HOC、受控组件 与 非受控组件</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#React-Router-Dom原理">中级_React-Router-Dom原理</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#虚拟DOM">中级_虚拟DOM</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#事件绑定原理">高级_事件绑定原理</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#Redux原理">高级_Redux原理</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#Redux-与-Vuex">高级_Redux 与 Vuex</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#Redux-与-Mobx">高级_Redux 与 Mobx</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#Difff算法">高级_Difff算法</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#类组件和函数组件的性能优化">高级_类组件 和 函数组件的性能优化</a></li>
+<li><a target="_blank" href="/2001/06/01/B_%E4%B8%AD%E7%BA%A7_React/#性能优化">高级_性能优化</a></li>
+</ul>
+<h2 id="状态管理-pinia"><a href="#状态管理-pinia" class="headerlink" title="状态管理-pinia"></a>状态管理-pinia</h2><ul>
+<li><a target="_blank" href="/2002/01/01/B_%E4%B8%AD%E7%BA%A7_%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86_pinia/#什么是-Pinia？">初级_什么是Pinia？</a></li>
+<li><a target="_blank" href="/2002/01/01/B_%E4%B8%AD%E7%BA%A7_%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86_pinia/#Pinia-和-Vuex-的区别？">初级_Pinia 和 Vuex 的区别？</a></li>
+<li><a target="_blank" href="/2002/01/01/B_%E4%B8%AD%E7%BA%A7_%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86_pinia/#Pinia-的三大核心概念">初级_Pinia 的三大核心概念</a></li>
+<li><a target="_blank" href="/2002/01/01/B_%E4%B8%AD%E7%BA%A7_%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86_pinia/#如何在组件中解构使用-Pinia？">初级_如何在组件中解构使用 Pinia？</a></li>
+<li><a target="_blank" href="/2002/01/01/B_%E4%B8%AD%E7%BA%A7_%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86_pinia/#Pinia-如何实现数据持久化？">初级_Pinia 如何实现数据持久化？</a></li>
+<li><a target="_blank" href="/2002/01/01/B_%E4%B8%AD%E7%BA%A7_%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86_pinia/#Pinia-支持多-Store-吗？Store-之间如何通信？">初级_Pinia 支持多 Store 吗？Store 之间如何通信？</a></li>
+<li><a target="_blank" href="/2002/01/01/B_%E4%B8%AD%E7%BA%A7_%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86_pinia/#在什么场景下应该使用-Pinia？">初级_在什么场景下应该使用 Pinia？</a></li>
+<li><a target="_blank" href="/2002/01/01/B_%E4%B8%AD%E7%BA%A7_%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86_pinia/#Pinia-的底层原理是什么？">高级_Pinia 的底层原理是什么？</a></li>
+</ul>
+<h2 id="TypeScript"><a href="#TypeScript" class="headerlink" title="TypeScript"></a>TypeScript</h2><ul>
+<li><a target="_blank" href="/2002/06/01/B_%E4%B8%AD%E7%BA%A7_TypeScript/#TypeScript-是什么">初级_TypeScript 是什么</a></li>
+<li><a target="_blank" href="/2002/06/01/B_%E4%B8%AD%E7%BA%A7_TypeScript/#TS-的基础类型">初级_TS 的基础类型</a></li>
+<li><a target="_blank" href="/2002/06/01/B_%E4%B8%AD%E7%BA%A7_TypeScript/#any-和-unknown">初级_any 和 unknown</a></li>
+<li><a target="_blank" href="/2002/06/01/B_%E4%B8%AD%E7%BA%A7_TypeScript/#void-和-never">初级_void 和 never</a></li>
+<li><a target="_blank" href="/2002/06/01/B_%E4%B8%AD%E7%BA%A7_TypeScript/#interface-和-type">初级_interface 和type</a></li>
+<li><a target="_blank" href="/2002/06/01/B_%E4%B8%AD%E7%BA%A7_TypeScript/#类型断言">初级_类型断言</a></li>
+<li><a target="_blank" href="/2002/06/01/B_%E4%B8%AD%E7%BA%A7_TypeScript/#联合类型要注意什么">初级_联合类型要注意什么</a></li>
+<li><a target="_blank" href="/2002/06/01/B_%E4%B8%AD%E7%BA%A7_TypeScript/#泛型是什么">中级_泛型是什么</a></li>
+<li><a target="_blank" href="/2002/06/01/B_%E4%B8%AD%E7%BA%A7_TypeScript/#常用工具类型">中级_常用工具类型</a></li>
+<li><a target="_blank" href="/2002/06/01/B_%E4%B8%AD%E7%BA%A7_TypeScript/#条件类型和-infer">中级_条件类型和 infer</a></li>
+<li><a target="_blank" href="/2002/06/01/B_%E4%B8%AD%E7%BA%A7_TypeScript/#类型收窄">中级_类型收窄</a></li>
+<li><a target="_blank" href="/2002/06/01/B_%E4%B8%AD%E7%BA%A7_TypeScript/#keyof-和-typeof-联合使用">中级_keyof 和 typeof 联合使用</a></li>
+<li><a target="_blank" href="/2002/06/01/B_%E4%B8%AD%E7%BA%A7_TypeScript/#strictNullChecks-开启后如何处理空值">中级_strictNullChecks 开启后如何处理空值</a></li>
+<li><a target="_blank" href="/2002/06/01/B_%E4%B8%AD%E7%BA%A7_TypeScript/#类型兼容是结构化的还是名义">高级_类型兼容是结构化的还是名义</a></li>
+<li><a target="_blank" href="/2002/06/01/B_%E4%B8%AD%E7%BA%A7_TypeScript/#协变与逆变">高级_协变与逆变</a></li>
+<li><a target="_blank" href="/2002/06/01/B_%E4%B8%AD%E7%BA%A7_TypeScript/#类型擦除">高级_类型擦除</a></li>
+<li><a target="_blank" href="/2002/06/01/B_%E4%B8%AD%E7%BA%A7_TypeScript/#手写递归工具类型：DeepPartial-DeepReadonly">高级_手写递归工具类型：DeepPartial / DeepReadonly</a></li>
+<li><a target="_blank" href="/2002/06/01/B_%E4%B8%AD%E7%BA%A7_TypeScript/#端到端类型安全">高级_端到端类型安全</a></li>
+</ul>
+<h2 id="Taiwind-CSS"><a href="#Taiwind-CSS" class="headerlink" title="Taiwind CSS"></a>Taiwind CSS</h2><ul>
+<li><a target="_blank" href="/2003/01/01/B_%E4%B8%AD%E7%BA%A7_CSS_Taiwind/#Tailwind-CSS是什么">初级_Tailwind CSS是什么</a></li>
+<li><a target="_blank" href="/2003/01/01/B_%E4%B8%AD%E7%BA%A7_CSS_Taiwind/#Utility-First（实用优先）理念">初级_Utility-First（实用优先）理念</a></li>
+<li><a target="_blank" href="/2003/01/01/B_%E4%B8%AD%E7%BA%A7_CSS_Taiwind/#使用响应式设计">初级_使用响应式设计</a></li>
+<li><a target="_blank" href="/2003/01/01/B_%E4%B8%AD%E7%BA%A7_CSS_Taiwind/#状态修饰符">初级_状态修饰符</a></li>
+<li><a target="_blank" href="/2003/01/01/B_%E4%B8%AD%E7%BA%A7_CSS_Taiwind/#使用自定义值">初级_使用自定义值</a></li>
+<li><a target="_blank" href="/2003/01/01/B_%E4%B8%AD%E7%BA%A7_CSS_Taiwind/#主题配置">中级_主题配置</a></li>
+<li><a target="_blank" href="/2003/01/01/B_%E4%B8%AD%E7%BA%A7_CSS_Taiwind/#实现深色模式">中级_实现深色模式</a></li>
+<li><a target="_blank" href="/2003/01/01/B_%E4%B8%AD%E7%BA%A7_CSS_Taiwind/#动态拼接-Tailwind-类名">中级_动态拼接 Tailwind 类名</a></li>
+<li><a target="_blank" href="/2003/01/01/B_%E4%B8%AD%E7%BA%A7_CSS_Taiwind/#content-配置项">中级_content 配置项</a></li>
+<li><a target="_blank" href="/2003/01/01/B_%E4%B8%AD%E7%BA%A7_CSS_Taiwind/#group-和-group-hover-修饰符">中级_group 和 group-hover 修饰符</a></li>
+<li><a target="_blank" href="/2003/01/01/B_%E4%B8%AD%E7%BA%A7_CSS_Taiwind/#JIT引擎原理">高级_JIT引擎原理</a></li>
+<li><a target="_blank" href="/2003/01/01/B_%E4%B8%AD%E7%BA%A7_CSS_Taiwind/#优化生产环境构建体积">高级_优化生产环境构建体积</a></li>
+<li><a target="_blank" href="/2003/01/01/B_%E4%B8%AD%E7%BA%A7_CSS_Taiwind/#是Tailwind-CSS-与-CSS-in-JS">高级_Tailwind CSS 与 CSS-in-JS</a></li>
+<li><a target="_blank" href="/2003/01/01/B_%E4%B8%AD%E7%BA%A7_CSS_Taiwind/#样式污染和全局样式冲突">高级_样式污染和全局样式冲突</a></li>
+</ul>
+<h2 id="Headless-UI组件库"><a href="#Headless-UI组件库" class="headerlink" title="Headless UI组件库"></a>Headless UI组件库</h2><ul>
+<li><a target="_blank" href="/2003/06/01/B_%E4%B8%AD%E7%BA%A7_Headless%20UI/#Headless-UI是什么">初级_Headless UI是什么</a></li>
+<li><a target="_blank" href="/2003/06/01/B_%E4%B8%AD%E7%BA%A7_Headless%20UI/#Headless-UI优点">初级_Headless UI优点</a></li>
+<li><a target="_blank" href="/2003/06/01/B_%E4%B8%AD%E7%BA%A7_Headless%20UI/#状态是如何暴露">初级_状态是如何暴露</a></li>
+<li><a target="_blank" href="/2003/06/01/B_%E4%B8%AD%E7%BA%A7_Headless%20UI/#处理无障碍访问">中级_处理无障碍访问</a></li>
+<li><a target="_blank" href="/2003/06/01/B_%E4%B8%AD%E7%BA%A7_Headless%20UI/#Prop-Getters-模式">中级_Prop Getters 模式</a></li>
+<li><a target="_blank" href="/2003/06/01/B_%E4%B8%AD%E7%BA%A7_Headless%20UI/#自定义-Dropdown-组件">中级_自定义Dropdown 组件</a></li>
+<li><a target="_blank" href="/2003/06/01/B_%E4%B8%AD%E7%BA%A7_Headless%20UI/#设计Toast（通知）组件">高级_设计Toast（通知）组件</a></li>
+<li><a target="_blank" href="/2003/06/01/B_%E4%B8%AD%E7%BA%A7_Headless%20UI/#无头库按需渲染和性能优化">高级_无头库按需渲染和性能优化</a></li>
+<li><a target="_blank" href="/2003/06/01/B_%E4%B8%AD%E7%BA%A7_Headless%20UI/#在-SSR的挑战">高级_在 SSR的挑战</a></li>
+</ul>
+<h2 id="多端-移动端"><a href="#多端-移动端" class="headerlink" title="多端-移动端"></a>多端-移动端</h2><ul>
+<li><a target="_blank" href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#移动端适配">初级_移动端适配</a></li>
+<li><a target="_blank" href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#meta-viewport-的作用">初级_meta viewport 的作用</a></li>
+<li><a target="_blank" href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#1px-边框问题">初级_1px 边框问题</a></li>
+<li><a target="_blank" href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#点击-300ms-延迟的原因">初级_点击 300ms 延迟的原因</a></li>
+<li><a target="_blank" href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#触摸事件">初级_触摸事件</a></li>
+<li><a target="_blank" href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#点击穿透">初级_点击穿透</a></li>
+<li><a target="_blank" href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#性能优化">中级_性能优化</a></li>
+<li><a target="_blank" href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#图片懒加载原理">中级_图片懒加载原理</a></li>
+<li><a target="_blank" href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#滚动卡顿">中级_滚动卡顿</a></li>
+<li><a target="_blank" href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#JSBridge是什么">中级_JSBridge是什么</a></li>
+<li><a target="_blank" href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#动画推荐-transform-而不是-top-left">中级_动画推荐 transform 而不是top/left</a></li>
+<li><a target="_blank" href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#兼容问题">中级_兼容问题</a></li>
+<li><a target="_blank" href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#输入-URL-到移动端页面渲染完成">高级_输入 URL 到移动端页面渲染完成</a></li>
+<li><a target="_blank" href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#首屏秒开-弱网">高级_首屏秒开/弱网</a></li>
+<li><a target="_blank" href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#虚拟列表">高级_虚拟列表</a></li>
+<li><a target="_blank" href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#PWA-的核心能力">高级_PWA 的核心能力</a></li>
+<li><a target="_blank" href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#Hybrid选型">高级_Hybrid选型</a></li>
+<li><a target="_blank" href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#移动端监控体系">高级_移动端监控体系</a></li>
+<li><a target="_blank" href="/2004/01/10/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E7%A7%BB%E5%8A%A8%E7%AB%AF/#排查内存泄漏">高级_排查内存泄漏</a></li>
+</ul>
+<h2 id="多端-小程序-Taro"><a href="#多端-小程序-Taro" class="headerlink" title="多端-小程序-Taro"></a>多端-小程序-Taro</h2><ul>
+<li><a target="_blank" href="/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/#小程序的文件类型">初级_小程序的文件类型</a></li>
+<li><a target="_blank" href="/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/#WXSS-和-CSS">初级_WXSS 和 CSS</a></li>
+<li><a target="_blank" href="/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/#生命周期">初级_生命周期</a></li>
+<li><a target="_blank" href="/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/#页面间传递数据">初级_页面间传递数据</a></li>
+<li><a target="_blank" href="/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/#bindtap-和-catchtap-的区别">初级_bindtap 和 catchtap 的区别</a></li>
+<li><a target="_blank" href="/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/#下拉刷新">初级_下拉刷新</a></li>
+<li><a target="_blank" href="/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/#自定义组件样式隔离">初级_自定义组件样式隔离</a></li>
+<li><a target="_blank" href="/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/#图片宽高比例保持不变">初级_图片宽高比例保持不变</a></li>
+<li><a target="_blank" href="/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/#微信支付业务流程">中级_微信支付业务流程</a></li>
+<li><a target="_blank" href="/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/#自定义-navigationBar">中级_自定义navigationBar</a></li>
+<li><a target="_blank" href="/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/#双向绑定在小程序与Vue的区别">中级_双向绑定在小程序与Vue的区别</a></li>
+<li><a target="_blank" href="/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/#小程序为什么能即用即走">高级_小程序为什么能即用即走</a></li>
+<li><a target="_blank" href="/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/#小程序的优劣势">高级_小程序的优劣势</a></li>
+<li><a target="_blank" href="/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/#提升小程序应用速度">高级_提升小程序应用速度</a></li>
+<li><a target="_blank" href="/2004/02/01/B_%E4%B8%AD%E7%BA%A7__%E5%A4%9A%E7%AB%AF_%E5%B0%8F%E7%A8%8B%E5%BA%8F/#小程序的原理">高级_小程序的原理</a></li>
+</ul>
+<h2 id="多端-桌面端-Electron"><a href="#多端-桌面端-Electron" class="headerlink" title="多端-桌面端-Electron"></a>多端-桌面端-Electron</h2><ul>
+<li><a target="_blank" href="/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/#Electron是什么">初级_Electron是什么</a></li>
+<li><a target="_blank" href="/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/#主进程和渲染进程">初级_主进程和渲染进程</a></li>
+<li><a target="_blank" href="/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/#应用生命周期事件">初级_应用生命周期事件</a></li>
+<li><a target="_blank" href="/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/#preload-js-是什么">初级_preload js 是什么</a></li>
+<li><a target="_blank" href="/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/#渲染进程无法直接访问-Node-js-API">初级_渲染进程无法直接访问 Node js API</a></li>
+<li><a target="_blank" href="/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/#ipcRenderer-send、ipcRenderer-invoke、ipcMain-handle">中级_ipcRenderer.send、ipcRenderer.invoke、ipcMain.handle</a></li>
+<li><a target="_blank" href="/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/#contextBridge是什么">中级_contextBridge是什么</a></li>
+<li><a target="_blank" href="/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/#常见安全风险">中级_常见安全风险</a></li>
+<li><a target="_blank" href="/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/#渲染进程通信">中级_渲染进程通信</a></li>
+<li><a target="_blank" href="/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/#Electron自动更新">中级_Electron自动更新</a></li>
+<li><a target="_blank" href="/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/#内存过高">高级_内存过高</a></li>
+<li><a target="_blank" href="/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/#白屏问题">高级_白屏问题</a></li>
+<li><a target="_blank" href="/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/#ASAR-归档文件">高级_ASAR 归档文件</a></li>
+<li><a target="_blank" href="/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/#集成原生模块">高级_集成原生模块</a></li>
+<li><a target="_blank" href="/2004/03/01/B_%E4%B8%AD%E7%BA%A7_%E5%A4%9A%E7%AB%AF_%E6%A1%8C%E9%9D%A2%E7%AB%AF/#大文件传输">高级_大文件传输</a></li>
+</ul>
+<h1 id="高级"><a href="#高级" class="headerlink" title="高级"></a>高级</h1><h2 id="AI开发"><a href="#AI开发" class="headerlink" title="AI开发"></a>AI开发</h2><h2 id="前端工程化"><a href="#前端工程化" class="headerlink" title="前端工程化"></a>前端工程化</h2><ul>
+<li><a target="_blank" href="/2021/01/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/#前端架构演进">[初级]-前端架构演进</a></li>
+<li><a target="_blank" href="/2021/01/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/#前端工程化是什么">[初级]-前端工程化是什么</a></li>
+<li><a target="_blank" href="/2021/01/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/#主流构建工具">[初级]-主流构建工具</a></li>
+<li><a target="_blank" href="/2021/01/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/#组件化-微前端">[初级]-组件化_微前端</a></li>
+<li><a target="_blank" href="/2021/01/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/#自动化-低代码">[初级]-自动化_低代码</a></li>
+<li><a target="_blank" href="/2021/01/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/#自动化-CI-CD">[初级]-自动化_CI/CD</a></li>
+<li><a target="_blank" href="/2021/01/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/#dependencies-和-devDependencies">[初级]-dependencies 和 devDependencies</a></li>
+<li><a target="_blank" href="/2021/01/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/#技术选型">[中级]-技术选型</a></li>
+<li><a target="_blank" href="/2021/02/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_webpack/#Webpack是什么">[中级]-Webpack是什么</a></li>
+<li><a target="_blank" href="/2021/02/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_webpack/#Webpack-的打包原理">[中级]-Webpack 的打包原理</a></li>
+<li><a target="_blank" href="/2021/02/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_webpack/#Webpack-Loader机制">[中级]-Webpack Loader机制</a></li>
+<li><a target="_blank" href="/2021/02/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_webpack/#Webpack-Plugin机制">[中级]-Webpack Plugin机制</a></li>
+<li><a target="_blank" href="/2021/03/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_Vite/#Vite是什么">[中级]-Vite是什么</a></li>
+<li><a target="_blank" href="/2021/03/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_Vite/#Vite的工作流和冷启动">[中级]-Vite的工作流和冷启动</a></li>
+<li><a target="_blank" href="/2021/03/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_Vite/#Vite-开发环境启动快">[中级]-Vite 开发环境启动快</a></li>
+<li><a target="_blank" href="/2021/03/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_Vite/#Vite-生产用-Rollup-打包，而不用-esbuild">[中级]-Vite-生产用Rollup打包，而不用esbuild</a></li>
+<li><a target="_blank" href="/2021/03/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_Vite/#Vite-的插件机制">[中级]-Vite 的插件机制</a></li>
+<li><a target="_blank" href="/2021/04/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_Monorepo/#Monorepo是什么">[中级]-Monorepo是什么</a></li>
+<li><a target="_blank" href="/2021/01/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/#SPA和MPA">[高级]-SPA和MPA</a></li>
+<li><a target="_blank" href="/2021/02/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_webpack/#Webpack-的分包策略">[高级]-Webpack 的分包策略</a></li>
+<li><a target="_blank" href="/2021/02/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_webpack/#Webpack-优化策略">[高级]-Webpack 优化策略</a></li>
+<li><a target="_blank" href="/2021/02/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_webpack/#Tree-Shaking是什么">[高级]-Tree Shaking是什么</a></li>
+<li><a target="_blank" href="/2021/03/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_Vite/#Vite-优化策略">[高级]-Vite 优化策略</a></li>
+<li><a target="_blank" href="/2021/03/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_Vite/#Vite-的-HMR更快">[高级]-Vite 的HMR更快</a></li>
+</ul>
+<h2 id="NodeJS"><a href="#NodeJS" class="headerlink" title="NodeJS"></a>NodeJS</h2><ul>
+<li><a target="_blank" href="/2022/01/01/C_%E9%AB%98%E7%BA%A7_NodeJS/#NodeJS是什么">[初级]-NodeJS是什么</a></li>
+<li><a target="_blank" href="/2022/01/01/C_%E9%AB%98%E7%BA%A7_NodeJS/#NodeJS的事件循环机制">[中级]-NodeJS的事件循环机制</a></li>
+<li><a target="_blank" href="/2022/01/01/C_%E9%AB%98%E7%BA%A7_NodeJS/#NodeJS的多进程模型">[中级]-NodeJS的多进程模型</a></li>
+<li><a target="_blank" href="/2022/01/01/C_%E9%AB%98%E7%BA%A7_NodeJS/#Koa-与-Express-的区别">[中级]-Koa与Express的区别</a></li>
+<li><a target="_blank" href="/2022/01/01/C_%E9%AB%98%E7%BA%A7_NodeJS/#SSR服务端渲染">[高级]-SSR服务端渲染</a></li>
+<li><a target="_blank" href="/2022/01/01/C_%E9%AB%98%E7%BA%A7_NodeJS/#SSR-Nuxt-js-和-Next-js">[高级]-SSR Nuxt-js和Next-js</a></li>
+</ul>
+<h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><ul>
+<li><a target="_blank" href="/2020/06/01/C_%E9%AB%98%E7%BA%A7_%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/#性能优化-最新">性能优化</a></li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li><a target="_blank" href="/2001/01/01/G_%E5%85%B6%E4%BB%96_%E5%85%A8%E9%93%BE%E8%B7%AF%E7%9B%91%E6%8E%A7(SDK%E8%AE%BE%E8%AE%A1)/#">全链路监控(SDK设计)</a></li>
+<li><a target="_blank" href="/2001/02/01/G_%E5%85%B6%E4%BB%96_WebAssembly%E5%92%8CRust/#">WebAssembly 和 Rust</a></li>
+<li><a target="_blank" href="/2001/03/01/G_%E5%85%B6%E4%BB%96_%E8%BE%B9%E7%BC%98%E8%AE%A1%E7%AE%97%E9%83%A8%E7%BD%B2/#">边缘计算部署</a></li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2000/01/01/A0_%E9%9D%A2%E8%AF%95_%E5%A4%A7%E7%BA%B2/" title="大纲" target="_blank" rel="external">https://fuyunjinglong.github.io/2000/01/01/A0_面试_大纲/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2000/01/01/G_%E5%85%B6%E4%BB%96_%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" title="工程实践"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2000/01/01/A1_LLM_%E5%A4%A7%E7%BA%B2/" title="大纲"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <!-- <script src="//cdn.jsdelivr.net/npm/valine"></script> -->
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

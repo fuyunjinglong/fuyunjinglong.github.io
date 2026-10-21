@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>前端工程化  </title>
+  <meta name="description" content="初级前端架构演进1.定义 前端经历了从‘无架构’的页面开发，到‘前后端分离’的工程化开发，再到如今‘全栈化、智能化’的架构体系的过程。这个演进过程大体可以分为四个关键阶段。 2.核心阶段 第一阶段：后端主导时代 - MPA (Web 1.0)  技术栈： 静态 HTML + CSS，后端模板引擎。 特征： 所有内容由后端在服务器拼接好 HTML，浏览器只负责展示。前端也就是“切图仔”。 解决的问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端工程化">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2021/01/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="初级前端架构演进1.定义 前端经历了从‘无架构’的页面开发，到‘前后端分离’的工程化开发，再到如今‘全栈化、智能化’的架构体系的过程。这个演进过程大体可以分为四个关键阶段。 2.核心阶段 第一阶段：后端主导时代 - MPA (Web 1.0)  技术栈： 静态 HTML + CSS，后端模板引擎。 特征： 所有内容由后端在服务器拼接好 HTML，浏览器只负责展示。前端也就是“切图仔”。 解决的问题">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-31T22:33:16.000Z">
+<meta property="article:modified_time" content="2026-08-31T12:14:58.359Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2021/01/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A1-LLM/">A1_LLM</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E5%88%9D%E7%BA%A7/">A_初级</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-%E4%B8%AD%E7%BA%A7/">B_中级</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E9%AB%98%E7%BA%A7/">C_高级</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E8%A7%84%E5%88%92/">D_规划</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/04/">四月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/01/">一月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2098/01/">一月 2098</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">七月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">一月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/03/">三月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/02/">二月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/01/">一月 2004</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/06/">六月 2003</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/01/">一月 2003</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/06/">六月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/02/">二月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/01/">一月 2002</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/06/">六月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/03/">三月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/02/">二月 2001</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/01/">一月 2001</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/06/">六月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/03/">三月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/02/">二月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/01/">一月 2000</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/04/04/%E6%A8%A1%E6%9D%BFX/" class="title">模板X</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-04-04T00:33:16.000Z" itemprop="datePublished">2099-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/03/29/Z_%E5%90%8E%E7%AB%AF_Java/" class="title">Java</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-03-28T23:33:16.000Z" itemprop="datePublished">2099-03-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/01/01/G_%E5%85%B6%E4%BB%96_%E4%B9%A6%E5%8D%95/" class="title">书单</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-01-01T00:33:16.000Z" itemprop="datePublished">2099-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A1-LLM/">A1_LLM</a>
+              </p>
+              <p class="item-title">
+                <a href="/2098/01/01/A1_LLM_windows%E5%AE%89%E8%A3%85%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="title">LLM_windows安装大模型</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2097-12-31T22:33:16.000Z" itemprop="datePublished">2098-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2026/07/18/Test%20copy/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2026-07-18T02:11:18.292Z" itemprop="datePublished">2026-07-18</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9D%E7%BA%A7"><span class="toc-number">1.</span> <span class="toc-text">初级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B"><span class="toc-number">1.1.</span> <span class="toc-text">前端架构演进</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">1.2.</span> <span class="toc-text">前端工程化是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E6%B5%81%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7"><span class="toc-number">1.3.</span> <span class="toc-text">主流构建工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6%E5%8C%96-%E5%BE%AE%E5%89%8D%E7%AB%AF"><span class="toc-number">1.4.</span> <span class="toc-text">组件化_微前端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%8C%96-%E4%BD%8E%E4%BB%A3%E7%A0%81"><span class="toc-number">1.5.</span> <span class="toc-text">自动化_低代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%8C%96-CI-CD"><span class="toc-number">1.6.</span> <span class="toc-text">自动化_CI&#x2F;CD</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dependencies-%E5%92%8C-devDependencies"><span class="toc-number">1.7.</span> <span class="toc-text">dependencies 和 devDependencies</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%AD%E7%BA%A7"><span class="toc-number">2.</span> <span class="toc-text">中级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B"><span class="toc-number">2.1.</span> <span class="toc-text">技术选型</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7"><span class="toc-number">3.</span> <span class="toc-text">高级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SPA%E5%92%8CMPA"><span class="toc-number">3.1.</span> <span class="toc-text">SPA和MPA</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-C_高级_前端工程化" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      前端工程化
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/01/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/" class="article-date">
+	  <time datetime="2020-12-31T22:33:16.000Z" itemprop="datePublished">2021-01-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/C-%E9%AB%98%E7%BA%A7/">C_高级</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/01/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="初级"><a href="#初级" class="headerlink" title="初级"></a>初级</h1><h2 id="前端架构演进"><a href="#前端架构演进" class="headerlink" title="前端架构演进"></a>前端架构演进</h2><p><strong>1.定义</strong></p>
+<p>前端经历了从<strong>‘无架构’的页面开发</strong>，到<strong>‘前后端分离’的工程化开发</strong>，再到如今<strong>‘全栈化、智能化’的架构体系</strong>的过程。这个演进过程大体可以分为四个关键阶段。</p>
+<p><strong>2.核心阶段</strong></p>
+<p><strong>第一阶段：后端主导时代 - MPA (Web 1.0)</strong></p>
+<ul>
+<li><strong>技术栈：</strong> 静态 HTML + CSS，后端模板引擎。</li>
+<li><strong>特征：</strong> 所有内容由后端在服务器拼接好 HTML，浏览器只负责展示。前端也就是“切图仔”。</li>
+<li><strong>解决的问题：</strong> 简单、直接，兼容性好。</li>
+<li><strong>遗留的痛点：</strong> 交互体验差，每次操作都要刷新页面；前端与后端代码高度耦合，前端无法独立开发。</li>
+</ul>
+<p><strong>第二阶段：前后端分离与 AJAX 时代 - SPA 萌芽</strong></p>
+<ul>
+<li><strong>技术栈：</strong> jQuery, AJAX, MVC 框架 (Backbone.js, AngularJS 1.x)。</li>
+<li><strong>特征：</strong> <strong>AJAX</strong> 的出现是转折点。页面不再整体刷新，而是异步请求数据局部更新。前端开始负责复杂的逻辑处理，<strong>前后端彻底分离</strong>，通过 JSON 接口交互。</li>
+<li><strong>解决的问题：</strong> 体验提升，前端拥有了独立的控制权。</li>
+<li><strong>遗留的痛点：</strong> 虽然 DOM 操作被封装，但依然频繁操作 DOM，随着应用变大，代码变得难以维护，容易变成“意大利面条式代码”。</li>
+</ul>
+<p><strong>第三阶段：现代框架与组件化时代 - MVVM</strong></p>
+<ul>
+<li><strong>技术栈：</strong> <strong>React, Vue, Angular</strong>，Virtual DOM，Webpack。</li>
+<li><strong>特征：</strong> 引入了<strong>组件化</strong>思想和<strong>数据驱动视图</strong>（MVVM 模式）。我们不再直接操作 DOM，而是通过修改 State，由框架自动更新视图。工程化工具兴起。</li>
+<li><strong>解决的问题：</strong> 极大地提升了开发效率和代码可维护性，使得开发超大型应用（单页应用 SPA）成为可能。</li>
+<li><strong>遗留的痛点：</strong> <strong>首屏加载慢</strong>（需要下载大量 JS）、<strong>SEO 不友好</strong>（爬虫看不到内容）。单页应用变得过于臃肿。</li>
+</ul>
+<p><strong>第四阶段：工程化、全栈化与新时代</strong></p>
+<ul>
+<li><strong>技术栈：</strong> <strong>Next.js/Nuxt.js (SSR)</strong>, <strong>TypeScript</strong>, <strong>微前端</strong>, <strong>Serverless</strong>, <strong>Rust 工具链</strong>。</li>
+<li>特征：<ul>
+<li><strong>渲染回归：</strong> 为了解决性能和 SEO，SSR（服务端渲染）回归，结合了首屏快和交互好的优点。</li>
+<li><strong>类型安全：</strong> TypeScript 成为标配，解决了大型项目协作的类型约束问题。</li>
+<li><strong>架构解耦：</strong> 微前端解决了巨石应用问题，允许不同团队独立部署。</li>
+<li><strong>性能极致：</strong> 开始使用 Rspack/Turbopack 等 Rust 语言编写的高性能构建工具。</li>
+</ul>
+</li>
+<li><strong>解决的问题：</strong> 兼顾了高性能、高可维护性和大规模团队协作。</li>
+</ul>
+<p><strong>3.驱动演进的核心动力</strong></p>
+<p>三个核心驱动力：</p>
+<blockquote>
+<ol>
+<li><strong>用户体验 (UX)：</strong> 从‘跳转刷新’到‘无刷新’，再到‘秒开首屏’，始终追求更接近 Native 的体验。</li>
+<li><strong>业务复杂度：</strong> 从简单的展示页变成复杂的操作系统（SaaS），迫使架构必须从‘过程式’转向‘组件化、模块化’。</li>
+<li><strong>开发效率：</strong> 为了应对日益复杂的业务，必须通过自动化工具链和抽象框架，让开发者‘做更少的事，产出更多的价值’。</li>
+</ol>
+</blockquote>
+<p><strong>4.未来展望</strong></p>
+<p><strong>有最好的架构，只有最适合业务阶段的架构</strong></p>
+<blockquote>
+<ul>
+<li>对于简单的活动页，传统的 MPA 或轻量级 SSR（如 Nuxt）可能比复杂的 React SPA 更高效。</li>
+<li>对于复杂的后台系统，SPA + 微前端是首选。</li>
+</ul>
+</blockquote>
+<p><strong>关于未来趋势：</strong><br>我认为前端架构正在向<strong>‘Server Components’（服务端组件）</strong> 和 <strong>‘AI 辅助开发’</strong> 演进。<br>React Server Components 允许我们在服务端和客户端之间无缝穿梭组件，进一步减少客户端 JS 体积；<br>而 AI 正在改变编码方式，未来前端架构师的价值将更多体现在<strong>设计体系、复杂逻辑编排和架构决策</strong>上，而非简单的写页面代码。</p>
+<h2 id="前端工程化是什么"><a href="#前端工程化是什么" class="headerlink" title="前端工程化是什么"></a>前端工程化是什么</h2><p><strong>按照项目的生命周期来分配：</strong></p>
+<ul>
+<li>需求评审：技术选型</li>
+<li>开发前：统一规范</li>
+<li>开发中：模块化、组件化</li>
+<li>开发完：测试</li>
+<li>编译：构建工具</li>
+<li>部署：自动化部署</li>
+<li>上线后：性能监控</li>
+<li>发现问题：性能优化</li>
+<li>项目迭代：重构</li>
+<li>项目巨型化：微服务</li>
+<li>无服务架构升级：Serverless </li>
+</ul>
+<blockquote>
+<ul>
+<li><strong>本质</strong>：将软件工程的思想、规范和工具引入前端开发。</li>
+<li><strong>目标</strong>：降本增效（提高开发效率、降低维护成本、保证代码质量）。</li>
+<li><strong>定位</strong>：它不是单一的工具，而是一个贯穿“开发 -&gt; 构建 -&gt; 测试 -&gt; 部署 -&gt; 监控”的全生命周期体系。</li>
+</ul>
+</blockquote>
+<p><strong>四大核心维度</strong></p>
+<blockquote>
+<ol>
+<li><strong>模块化</strong>（JS/CSS/资源的模块化管理）：基础，让代码结构清晰。</li>
+<li><strong>组件化</strong>（UI/逻辑复用）：手段，极大提升了开发效率。</li>
+<li><strong>规范化</strong>（ESLint/Prettier/Git Commit 规范）：保障，确保了多人协作的质量。</li>
+<li><strong>自动化</strong>（构建、部署、测试流程自动化）：目标，释放了生产力。</li>
+</ol>
+</blockquote>
+<p><strong>1.模块化</strong></p>
+<blockquote>
+<ul>
+<li><strong>JS 模块化：</strong> 我们经历了从 <code>IIFE</code>、<code>AMD/RequireJS</code>、<code>CommonJS</code> 到现在的 <code>ES6 Modules (ESM)</code> 的演变。目前通过 <code>import/export</code> 配合构建工具，我们可以清晰地管理代码依赖，实现按需加载。 Monorepo（多包管理）处理多项目模块共享。</li>
+<li><strong>CSS 模块化：</strong> 为了解决 CSS 全局污染的问题，我通常会使用 CSS Modules、CSS-in-JS（如 styled-components）或者 CSS 预处理器（如 Sass/Less）的嵌套和 <code>@import</code> 特性，将样式与组件绑定，实现样式的局部化。</li>
+<li><strong>资源模块化：</strong> 在 Webpack 或 Vite 的配置下，图片、字体等非代码资源也被视为模块。我们可以直接在 JS 中 <code>import</code> 图片，构建工具会自动处理其引用路径、压缩甚至 Base64 转换，这让资源管理变得更加统一和高效。”</li>
+</ul>
+</blockquote>
+<p><strong>2.组件化</strong></p>
+<blockquote>
+<ul>
+<li><strong>UI 组件复用：</strong> 我们会基于基础 UI 库（如 Ant Design 或 Element Plus）进行二次封装，沉淀符合公司设计规范的业务通用组件，比如特定的搜索表单、弹窗组合或复杂表格，避免重复造轮子。</li>
+<li><strong>逻辑复用：</strong> 除了 UI，我也很关注逻辑的复用。在 React 中，我会使用 Hooks（如自定义 Hook）抽取公共逻辑（如权限控制、请求封装）；在 Vue 中则会使用 Composables。</li>
+<li><strong>组件设计原则：</strong> 我遵循‘高内聚、低耦合’的原则，确保组件通过 Props 传入数据，通过 Events 抛出事件，保持组件的纯净性和独立性，这样无论在哪个页面复用都能保持稳定。比如微前端。</li>
+</ul>
+</blockquote>
+<p><strong>3.规范化</strong></p>
+<blockquote>
+<ul>
+<li><strong>代码风格：</strong> 我使用 <strong>ESLint</strong> 配合 <strong>Prettier</strong>。ESLint 负责检查潜在的代码错误（如未使用的变量），Prettier 负责统一格式（如单引号、分号）。两者配合可以彻底解决‘谁写的代码格式不一样’这种争论。</li>
+<li><strong>Git 提交规范：</strong> 我们引入了 <strong>Commitlint</strong> 和 <strong>Husky</strong>。在 <code>pre-commit</code> 钩子中运行 Lint 检查，在 <code>commit-msg</code> 钩子中检查提交信息格式（如 <code>feat: add new feature</code>），这保证了代码历史的清晰和可追溯性。</li>
+<li><strong>目录结构规范：</strong> 项目通常采用统一的目录结构（如按功能模块划分或按技术类型划分），并制定统一的变量命名和注释规范，让新人能快速上手项目。</li>
+</ul>
+</blockquote>
+<p><strong>4.自动化</strong></p>
+<blockquote>
+<ul>
+<li><strong>构建自动化：</strong> 利用 Webpack 或 Vite，自动化完成代码转译（Babel）、压缩、Tree-shaking、代码分割等操作，无需人工干预。</li>
+<li><strong>测试自动化：</strong> 引入单元测试框架（如 Jest 或 Vitest），编写核心逻辑的测试用例，并在每次提交时自动运行，防止回归 Bug。</li>
+<li><strong>部署自动化（CI/CD）：</strong> 我配置过 GitHub Actions 或 Jenkins 流水线。当代码合并到主分支时，自动触发构建、将产物推送到 CDN/服务器，并自动发送钉钉/飞书通知。整个过程实现了‘一键发布’，极大地降低了上线风险和人力成本。比如低代码。</li>
+</ul>
+</blockquote>
+<p><strong>其他</strong></p>
+<p>Rust 工具链、Serverless、AI 辅助编程</p>
+<h2 id="主流构建工具"><a href="#主流构建工具" class="headerlink" title="主流构建工具"></a>主流构建工具</h2><p><strong>速记口诀</strong></p>
+<blockquote>
+<ul>
+<li><strong>Webpack</strong>：大而全，生态强，先打包后启动，适合大项目维护。</li>
+<li><strong>Vite</strong>：快而新，开发爽，利用原生 ESM，生产环境用 Rollup。</li>
+<li><strong>Rollup</strong>：小而净，打包库，Tree-shaking 最优，产物体积最小。</li>
+</ul>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="left">对比维度</th>
+<th align="left"><strong>Webpack</strong></th>
+<th align="left"><strong>Vite</strong></th>
+<th align="left"><strong>Rollup</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>核心定位</strong></td>
+<td align="left">功能全面的<strong>应用打包器</strong></td>
+<td align="left">下一代前端<strong>开发构建工具</strong></td>
+<td align="left">基于 ESM 的<strong>类库打包器</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>开发环境原理</strong></td>
+<td align="left"><strong>先打包，后启动</strong>。 从入口递归分析依赖，编译打包成 Bundle 后再启动服务器。</td>
+<td align="left">**No Bundle (不打包)**。 利用浏览器原生 ESM，按需编译，只编译当前页面用到的文件。</td>
+<td align="left">主要面向生产环境打包，开发环境支持较弱（通常需配合插件）。</td>
+</tr>
+<tr>
+<td align="left"><strong>构建速度</strong></td>
+<td align="left"><strong>较慢</strong>。 冷启动和热更新随项目体积增加而变慢（全量打包）。</td>
+<td align="left"><strong>极快</strong>。 秒级启动，热更新毫秒级响应（利用 esbuild + 按需编译）。</td>
+<td align="left"><strong>较快</strong>。 专注于生产打包，编译速度优于 Webpack，但不如 Vite 的开发模式。</td>
+</tr>
+<tr>
+<td align="left"><strong>生产环境打包</strong></td>
+<td align="left">自带强大的打包能力。</td>
+<td align="left">使用 <strong>Rollup</strong> 进行打包。 继承了 Rollup 优秀的代码分割和压缩能力。</td>
+<td align="left">自身核心功能，产物干净、体积小。</td>
+</tr>
+<tr>
+<td align="left"><strong>Tree-shaking</strong></td>
+<td align="left">支持良好，但在复杂场景下配置相对繁琐。</td>
+<td align="left">优秀（得益于 Rollup）。</td>
+<td align="left"><strong>最佳</strong>。 基于 ES 模块静态分析，死代码消除最彻底。</td>
+</tr>
+<tr>
+<td align="left"><strong>生态与扩展</strong></td>
+<td align="left"><strong>生态最强</strong>。 Loader 和 Plugin 极其丰富，能处理任何类型资源（CSS/Img/TS等）。</td>
+<td align="left"><strong>生态新兴</strong>。 兼容 Rollup 插件，社区发展极快，主流框架已全面支持。</td>
+<td align="left"><strong>生态适中</strong>。 插件机制简洁，适合处理纯 JS/TS 逻辑，资源处理需插件支持。</td>
+</tr>
+<tr>
+<td align="left"><strong>代码分割</strong></td>
+<td align="left">支持非常完善，支持动态 Import、模块联邦等高级特性。</td>
+<td align="left">支持（继承自 Rollup）。</td>
+<td align="left">支持，配置简单，天然适合 ESM。</td>
+</tr>
+<tr>
+<td align="left"><strong>主要缺点</strong></td>
+<td align="left">配置复杂；大型项目开发体验差（启动慢、热更新卡顿）。</td>
+<td align="left">生产环境与开发环境机制不同可能产生差异；老旧项目迁移成本。</td>
+<td align="left">对应用开发支持不足（如 HMR、CSS 处理较弱），不适合构建复杂 SPA 应用。</td>
+</tr>
+<tr>
+<td align="left"><strong>最佳适用场景</strong></td>
+<td align="left"><strong>复杂的企业级应用</strong>、遗留项目维护、需要极强兼容性的项目。</td>
+<td align="left"><strong>绝大多数新项目</strong>、Vue/React 快速原型开发、追求开发体验的项目。</td>
+<td align="left"><strong>第三方库开发</strong>（如组件库、工具函数库）、框架源码打包。</td>
+</tr>
+</tbody></table>
+<h2 id="组件化-微前端"><a href="#组件化-微前端" class="headerlink" title="组件化_微前端"></a>组件化_微前端</h2><p><strong>1.定义</strong></p>
+<p>“微前端是一种架构风格，它的核心思想是将<strong>巨石前端应用拆解为多个可独立开发、独立部署、独立运行的小型子应用</strong>。<br>如果说组件化是对 UI 的拆解，那么微前端就是对<strong>应用的拆解</strong>。它主要解决了随着业务复杂度增加，团队协作困难、技术栈无法升级、构建部署缓慢等‘工程化’难题。</p>
+<p><strong>2.核心难点与原理</strong></p>
+<p>前端主要面临三大核心挑战：</p>
+<blockquote>
+<ol>
+<li>路由与子应用加载：<ul>
+<li>需要有一个<strong>基座应用</strong>，监听路由变化。</li>
+<li>当路由匹配到某个子应用的规则时，动态加载该子应用的资源（JS/CSS），并初始化；当路由离开时，卸载子应用。</li>
+</ul>
+</li>
+<li>JS 隔离（沙箱机制）：<ul>
+<li>为了防止子应用修改全局变量（如 <code>window</code>）污染其他应用或基座，需要做沙箱隔离。</li>
+<li>常见的方案有：<strong>快照沙箱</strong>（记录运行前后状态差值，适用于单实例）、<strong>代理沙箱</strong>（使用 ES6 Proxy 拦截操作，目前主流方案）。</li>
+</ul>
+</li>
+<li>CSS 隔离：<ul>
+<li>防止样式互相覆盖。</li>
+<li>常见方案有：<strong>Shadow DOM</strong>（浏览器原生隔离，但兼容性或某些场景受限）、<strong>Scoped CSS</strong>（类似 Vue 的样式 scoped，编译时添加选择器前缀）、<strong>CSS Namespace</strong>（约定前缀）。</li>
+</ul>
+</li>
+<li>应用间通信：<ul>
+<li>基座与子应用、子应用之间需要数据共享。</li>
+<li>常见方式：<strong>自定义事件</strong>（EventEmitter）、<strong>全局状态管理</strong>（如 Redux 共享 store）、<strong>URL 参数</strong>、<strong>LocalStorage/SessionStorage</strong>。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<p><strong>3.主流技术方案选型</strong></p>
+<blockquote>
+<ol>
+<li>基于 Single-SPA 的生态（推荐：qiankun）：<ul>
+<li><strong>特点：</strong> 阿里开源，基于 Single-SPA 封装，开箱即用。它解决了 HTML Entry（直接解析 HTML 入口文件）、JS 沙箱和样式隔离的问题。</li>
+<li><strong>适用：</strong> 大多数中后台管理系统的微前端改造，技术栈无关性强。</li>
+</ul>
+</li>
+<li>Webpack Module Federation（模块联邦）：<ul>
+<li><strong>特点：</strong> Webpack 5 原生支持。它允许一个应用动态加载另一个应用的代码模块，实现代码的按需加载和共享依赖。</li>
+<li><strong>适用：</strong> 技术栈统一（如都是 React 或 Webpack）的场景，拆分粒度更细，没有额外的沙箱开销。</li>
+</ul>
+</li>
+<li>iframe 方案：<ul>
+<li><strong>特点：</strong> 浏览器原生支持，隔离性最好（JS/CSS 完全隔离）。</li>
+<li><strong>缺点：</strong> 性能差、URL 不同步、弹窗遮罩问题、全屏适应困难。</li>
+<li><strong>适用：</strong> 快期集成老旧第三方页面，对隔离性要求极高且对交互体验要求不高的场景。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<p><strong>4.实战经验（STAR 法则）</strong></p>
+<p><em>这是拿 Offer 的关键，讲述一个真实的改造故事。</em></p>
+<p>“<strong>背景：</strong> 在我之前负责的<strong>SaaS 运营平台</strong>项目中，随着业务线扩张，单体应用变得非常臃肿，构建一次需要 10 分钟，且不同业务线（订单、营销、用户）分别由不同团队维护，经常出现代码冲突和互相覆盖样式的问题。</p>
+<p><strong>任务：</strong> 我主导了项目的微前端改造，目标是实现各业务线<strong>独立开发、独立部署</strong>，并提升构建速度。</p>
+<p><strong>行动：</strong></p>
+<ul>
+<li><strong>基座搭建：</strong> 我选择了 <strong>qiankun</strong> 作为基座框架，搭建了主应用，负责导航栏、权限控制和路由分发。</li>
+<li><strong>子应用拆分：</strong> 将巨石应用拆分为‘订单中心’、‘营销中心’等 4 个子应用。</li>
+<li><strong>技术升级：</strong> 允许‘营销中心’的新功能使用 Vue 3 开发，而旧模块保持 Vue 2，通过 qiankun 的 <code>loadMicroApp</code> 加载，实现了技术栈的平滑升级。</li>
+<li><strong>优化处理：</strong> 针对预加载性能问题，我配置了 <code>prefetch</code> 策略，在主应用空闲时预加载子应用资源，提升了首屏加载体验。同时设计了全局通信总线，统一处理用户登录态信息。</li>
+</ul>
+<p><strong>结果：</strong> 改造完成后，各业务线构建时间从 10 分钟降低至 <strong>2 分钟</strong>以内，彻底解决了代码冲突问题，新业务线的接入效率提升了 **50%**。</p>
+<p><strong>5.优缺点</strong></p>
+<blockquote>
+<ul>
+<li>优点：技术栈无关、独立部署、提升团队并行开发效率</li>
+<li>缺点：性能略有损耗（需要加载多个运行时）、调试变得复杂（跨应用调试困难）、共享状态管理复杂。</li>
+</ul>
+</blockquote>
+<p>微前端不是银弹，不应为了用而用。它最适合<strong>中大型复杂后台系统</strong>或者<strong>需要整合遗留系统</strong>的场景。在选择方案时，我会优先评估团队技术栈和隔离性需求，如果是 React 技术栈为主且追求性能，我会倾向 Module Federation；如果是异构技术栈整合，qiankun 是更稳妥的选择。</p>
+<p><strong>💡 面试高分小抄（备忘录）</strong></p>
+<ul>
+<li>Q: qiankun 的沙箱是怎么实现的？<ul>
+<li>A: 在支持 Proxy 的环境下，使用 <strong>Proxy 沙箱</strong>，创建一个假的 <code>window</code> 对象代理子应用的读写。在不支持的环境下（如旧浏览器），降级使用 <strong>快照沙箱</strong>，在应用挂载前记录 <code>window</code> 状态，卸载时恢复。</li>
+</ul>
+</li>
+<li>Q: 子应用之间怎么跳转？<ul>
+<li>A: 通常由<strong>主应用</strong>统一管理路由。子应用内部跳转使用 <code>history.pushState</code>，并通过全局通信通知主应用更新侧边栏高亮。或者使用 qiankun 提供的 <code>history</code> 模式，由主应用接管路由变化。</li>
+</ul>
+</li>
+<li>Q: 微前端和 Monorepo 的区别？<ul>
+<li>A: Monorepo 是<strong>代码仓库管理策略</strong>，侧重于代码组织和依赖共享；微前端是<strong>应用运行架构</strong>，侧重于页面集成和运行时隔离。两者可以结合使用：代码放在 Monorepo 管理，构建产物作为微前端应用部署。</li>
+</ul>
+</li>
+</ul>
+<h2 id="自动化-低代码"><a href="#自动化-低代码" class="headerlink" title="自动化_低代码"></a>自动化_低代码</h2><p><strong>1.定义</strong></p>
+<p>低代码是一种<strong>可视化、模型驱动</strong>的应用开发平台。在前端工程化的范畴里，它是<strong>自动化和平台化</strong>的极致体现。<br>它的核心思想是：通过可视化拖拽配置 UI，通过编写 JSON 协议描述业务逻辑，再由渲染引擎将其转换为真实的代码运行。本质上，它是在<strong>前端开发之上再做一层抽象</strong>，将‘写代码’降维成‘配置数据’，从而实现非开发人员也能参与构建页面，极大提升研发效率。</p>
+<p><strong>2.核心架构与技术实现</strong></p>
+<p>四个核心部分组成：</p>
+<blockquote>
+<ol>
+<li>可视化编辑器：<ul>
+<li>这是用户操作的界面。核心难点在于实现拖拽交互，我通常会使用 HTML5 原生 Drag &amp; Drop API 或库（如 <code>react-dnd</code>）。</li>
+<li>它包含组件面板、画布和属性配置面板。用户在画布上的操作（增删改查）会实时映射到数据模型上。</li>
+</ul>
+</li>
+<li>DSL（领域特定语言）/ 描述协议：<ul>
+<li>这是低代码平台的<strong>核心灵魂</strong>。我们需要定义一套标准化的 JSON Schema 来描述页面结构。</li>
+<li>比如，描述一个按钮，DSL 可能是：<code>&#123; component: &#39;Button&#39;, props: &#123; type: &#39;primary&#39;, text: &#39;提交&#39; &#125;, events: &#123; onClick: &#39;handleSubmit&#39; &#125; &#125;</code>。</li>
+<li>DSL 的设计决定了平台的扩展能力，通常需要支持组件嵌套、表达式绑定、循环/条件渲染等。</li>
+</ul>
+</li>
+<li>渲染引擎：<ul>
+<li>负责将 DSL 解析并渲染为真实的视图。</li>
+<li><strong>实现方式：</strong> 一般采用<strong>动态组件加载</strong>技术。在 React 中，可以通过 <code>componentMap</code> 映射字符串到真实组件，然后递归渲染 DSL 树。为了性能优化，常配合 <code>React.memo</code> 或虚拟滚动。</li>
+</ul>
+</li>
+<li>物料系统：<ul>
+<li>即组件库。低代码平台必须提供丰富的基础组件（原子组件）和业务组件（分子组件）。</li>
+<li>这里的组件不仅要包含 UI，还需要包含一份 <strong>Setter 配置器</strong>，告诉编辑器这个组件有哪些属性可以配置（如 Input 组件有 placeholder、disabled 等）。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<p><strong>3.核心难点与解决方案</strong></p>
+<p>主要面临三个挑战：</p>
+<blockquote>
+<ol>
+<li>逻辑编排的表达：<ul>
+<li>拖拽 UI 容易，但处理复杂逻辑（如接口请求、数据联动）很难。</li>
+<li><strong>方案：</strong> 我会引入<strong>逻辑编排面板</strong>或<strong>表达式引擎</strong>（如 JSON Logic Form）。通过连线的方式定义 <code>Trigger</code>（触发器） -&gt; <code>Action</code>（动作，如发请求、赋值、弹窗），实现非代码化的逻辑控制。</li>
+</ul>
+</li>
+<li>自定义能力的扩展：<ul>
+<li>标准组件无法满足所有需求，平台必须有逃生机制。</li>
+<li><strong>方案：</strong> 提供<strong>自定义插槽</strong>或<strong>在线编码</strong>功能，允许用户在特定位置注入原生 JS/Vue/React 代码，保证灵活性不被限制。</li>
+</ul>
+</li>
+<li>数据来源与状态管理：<ul>
+<li>页面数据从哪来？变量如何维护？</li>
+<li><strong>方案：</strong> 设计一套全局的数据上下文，支持定义变量、接口数据源，并建立数据与组件属性的双向绑定机制。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<p><strong>4.实战经验（STAR 法则）</strong></p>
+<p><strong>背景：</strong> 我之前所在的公司的<strong>营销运营团队</strong>，每次搞大促活动都需要开发大量的 H5 落地页。这些页面结构相似（头图、表单、商品列表），但样式多变，开发团队不仅沦为“填题机器”，还经常因为修改文案反复发布。<br><strong>任务：</strong> 我主导搭建了一套<strong>营销活动搭建平台</strong>，目标是将运营人员从提需求排期的模式，转变为自助搭建，研发效率提升 80%。<br><strong>行动：</strong></p>
+<ul>
+<li><strong>DSL 设计：</strong> 设计了一套基于 JSON 的页面描述协议，支持绝对布局和流式布局切换，以适应运营复杂的视觉设计。</li>
+<li><strong>组件沉淀：</strong> 封装了 20+ 个营销专用组件（如倒计时、抽奖转盘、裂变分享），并为每个组件编写了详细的 Setter 配置面板。</li>
+<li><strong>逻辑编排：</strong> 针对活动常见的‘提交表单 -&gt; 弹窗提示 -&gt; 跳转’流程，封装了标准的生命周期钩子和动作链，支持运营配置接口地址。</li>
+<li><strong>出码能力：</strong> 考虑到 SEO 和极端性能需求，我还实现了‘源码导出’功能，将 DSL 编译成标准的 Vue3 项目代码，支持二次开发。<br><strong>结果：</strong> 平台上线后，90% 的常规活动页由运营在 30 分钟内独立完成，前端团队只需维护平台本身和少量高定制活动，研发资源释放出来专注于核心业务迭代。</li>
+</ul>
+<p><strong>5.优缺点</strong></p>
+<blockquote>
+<ul>
+<li>优点：极致的提效、降低门槛、统一交付标准</li>
+<li>缺点：不仅没有消灭复杂度，反而将复杂度转移到了平台开发上；且在处理高交互、复杂算法的场景时，灵活性不如手写代码。</li>
+</ul>
+</blockquote>
+<p>低代码不是要取代前端开发，而是<strong>将前端的能力产品化、服务化</strong>。<br>未来我认为低代码会与 <strong>AI 结合（AIGC）</strong>，比如通过自然语言描述直接生成 DSL，甚至生成组件代码，这将是前端工程化 2.0 的重要方向。</p>
+<p><strong>💡 面试高分小抄（备忘录）</strong></p>
+<p>如果面试官追问，可以这样答：</p>
+<ul>
+<li>Q: 页面 DSL 是存在服务端还是本地？<ul>
+<li>A: 通常存在服务端数据库。渲染时，前端通过 API 获取 JSON，然后动态渲染。为了性能，可以配合 CDN 缓存。</li>
+</ul>
+</li>
+<li>Q: 如何处理低代码页面的性能？<ul>
+<li>A: 1. 按需加载组件；2. 图片懒加载；3. 产物的代码分割；4. 如果是静态页面，可以预渲染为纯 HTML。</li>
+</ul>
+</li>
+<li>Q: 拖拽时，为什么有时候位置对不上？<ul>
+<li>A: 这涉及到坐标转换。鼠标事件在屏幕上的坐标需要转换为画布内的相对坐标，特别是在有缩放、滚动条或者嵌套组件的情况下，计算逻辑要非常严谨。可以使用 <code>getBoundingClientRect</code> 进行精确计算。</li>
+</ul>
+</li>
+</ul>
+<h2 id="自动化-CI-CD"><a href="#自动化-CI-CD" class="headerlink" title="自动化_CI/CD"></a>自动化_CI/CD</h2><p><strong>1.定义</strong></p>
+<p><strong>CI/CD</strong> 指的是 <strong>Continuous Integration（持续集成）</strong> 和 <strong>Continuous Deployment/Delivery（持续部署/交付）</strong>。<br>简单来说，它是一套<strong>自动化的流水线</strong>。</p>
+<p><strong>2.核心流程与阶段</strong></p>
+<p>前端 CI/CD 的流水线通常分为三个主要阶段：</p>
+<blockquote>
+<ol>
+<li><strong>持续集成（CI 阶段 - 质量把控）：</strong><ul>
+<li><strong>触发：</strong> 开发者 Push 代码或发起 Pull Request (PR) 时触发。</li>
+<li><strong>Lint &amp; Check：</strong> 自动运行 ESLint、Prettier、Stylelint，确保代码风格统一。</li>
+<li><strong>单元测试：</strong> 自动运行 Jest 或 Vitest 测试用例，保证逻辑正确。通常配置 <code>git hook</code>，如果测试不通过，禁止合并代码。</li>
+<li><strong>Build（构建）：</strong> 运行 <code>npm run build</code>，生成最终的静态资源（HTML/JS/CSS）。这是最耗时的步骤。</li>
+</ul>
+</li>
+<li><strong>持续交付/部署（CD 阶段 - 自动化发布）：</strong><ul>
+<li><strong>产物上传：</strong> 将构建生成的 <code>dist</code> 目录上传到对象存储（如阿里云 OSS、AWS S3）或文件服务器。</li>
+<li><strong>CDN 刷新：</strong> 触发 CDN 节点的缓存刷新，让用户访问到最新版本。</li>
+<li><strong>服务器部署（如 Node.js 中间层）：</strong> 如果是 SSR 服务，需要通过 SSH 连接到服务器，拉取最新镜像/代码，重启 PM2 或 Docker 容器。</li>
+</ul>
+</li>
+<li><strong>通知与反馈：</strong><ul>
+<li>部署成功或失败后，通过钉钉、飞书、Slack 机器人发送消息通知团队。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<p><strong>3.主流工具与技术选型</strong></p>
+<p>主流的 CI/CD 工具主要分为两类：</p>
+<p><strong>作为前端开发者，我更倾向于使用 GitHub Actions 或 Vercel，因为它们更轻量、更贴合前端生态。</strong></p>
+<blockquote>
+<ol>
+<li><strong>SaaS 服务（推荐）：</strong><ul>
+<li><strong>GitHub Actions：</strong> 我目前最常用的。它与 GitHub 代码仓库深度集成，配置文件（<code>.yml</code>）直接放在项目代码中，开箱即用，社区有大量现成的 <code>actions</code> 可以复用。</li>
+<li><strong>GitLab CI：</strong> 配合 GitLab 使用，功能强大，适合企业内网自建代码库的场景。</li>
+<li><strong>Vercel / Netlify：</strong> 针对前端优化的平台，甚至不需要写配置文件，只要关联 GitHub 就能自动实现 CI/CD 和预览环境，体验极佳。</li>
+</ul>
+</li>
+<li><strong>自托管：</strong><ul>
+<li><strong>Jenkins：</strong> 老牌工具，插件生态极其丰富，但配置复杂（XML 或 Groovy），维护成本高，适合大型传统企业的复杂流水线。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<p><strong>4.实战经验（STAR 法则）</strong></p>
+<p><strong>背景：</strong> 在之前的团队中，我们的部署流程非常原始。前端打包完成后，需要手动登录 FTP/SFTP 工具，把 <code>dist</code> 文件夹拖拽上传，偶尔还会出现文件遗漏或者覆盖错误，导致线上报错。而且谁在什么时候发了版，完全没有记录。<br><strong>任务：</strong> 我负责搭建一套基于 GitHub Actions 的自动化 CI/CD 流水线，实现‘提交即部署’。<br><strong>行动：</strong></p>
+<ul>
+<li><strong>编写 Workflow：</strong> 创建了 <code>.github/workflows/deploy.yml</code>，配置了 <code>node:16</code> 环境。</li>
+<li><strong>缓存优化：</strong> 配置了 <code>actions/cache</code> 缓存 <code>node_modules</code>，将每次构建时间从 3 分钟缩短到 40 秒。</li>
+<li><strong>环境管理：</strong> 利用 GitHub 的 <code>Secrets</code> 功能管理不同环境的敏感变量（如 API_KEY、OSS 密钥），确保安全性。</li>
+<li><strong>自动化脚本：</strong> 编写脚本，在构建完成后自动调用阿里云 OSS 的 SDK 上传文件，并自动刷新 CDN 缓存。<br><strong>结果：</strong> 实现了开发人员提交代码到 <code>main</code> 分支后，<strong>5 分钟内</strong>自动完成线上环境的更新。彻底消除了手动上传的人为错误，且每次部署都有详细的构建日志可追溯。</li>
+</ul>
+<p><strong>5.优缺点</strong></p>
+<blockquote>
+<ul>
+<li><strong>回滚策略：</strong> 因为每次构建都有唯一的版本号或 Commit ID，一旦线上出问题，可以一键回滚到上一个版本的构建产物。</li>
+<li><strong>灰度发布：</strong> 可以结合 Nginx 或网关配置，通过 CI/CD 部署新版本到一部分服务器，观察无误后再全量发布。</li>
+<li><strong>自动化测试：</strong> 将 E2E（端到端测试，如 Cypress/Playwright）接入 CI 流程，确保发布前核心流程（如下单、登录）无故障。</li>
+</ul>
+</blockquote>
+<p><strong>💡 面试高分小抄（备忘录）</strong></p>
+<p>如果面试官追问细节，可以这样答：</p>
+<ul>
+<li>Q: CI/CD 中如何优化构建速度？<ul>
+<li>A: 1. 缓存 <code>node_modules</code>；2. 使用并行构建；3. 使用更快的包管理器（pnpm &gt; yarn &gt; npm）；4. 缓存 Webpack 的构建缓存。</li>
+</ul>
+</li>
+<li>Q: 如何区分开发环境、测试环境和生产环境？<ul>
+<li>A: 通常通过 <strong>Git 分支</strong> 或 <strong>Workflow 的输入参数</strong> 来触发不同的 Job。例如 <code>dev</code> 分支触发部署到测试环境，<code>main</code> 分支触发部署到生产环境。环境变量通过 CI 平台的 Secrets 注入。</li>
+</ul>
+</li>
+<li>Q: 前端部署到 CDN 后，用户还是看到旧版本怎么办？<ul>
+<li>A: 这是缓存问题。构建时文件名必须带 Hash（如 <code>app.a1b2.js</code>），HTML 文件不带 Hash。这样更新后 HTML 指向新的 JS 文件，自动绕过缓存。如果没生效，可能需要配置 CDN 的缓存策略或主动刷新缓存。</li>
+</ul>
+</li>
+</ul>
+<h2 id="dependencies-和-devDependencies"><a href="#dependencies-和-devDependencies" class="headerlink" title="dependencies 和 devDependencies"></a>dependencies 和 devDependencies</h2><p><strong>1.定义</strong></p>
+<blockquote>
+<p><strong>一句话结论</strong>：dependencies 是<strong>运行时</strong>依赖，devDependencies 是<strong>开发/构建时</strong>依赖</p>
+</blockquote>
+<p><strong>2.核心区别</strong></p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>dependencies</th>
+<th>devDependencies</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>用途</td>
+<td>项目<strong>运行时</strong>需要</td>
+<td>只在<strong>开发/构建</strong>阶段需要</td>
+</tr>
+<tr>
+<td>典型包</td>
+<td>vue、react、axios、lodash、element-plus</td>
+<td>vite、webpack、eslint、typescript、prettier</td>
+</tr>
+<tr>
+<td>生产环境 <code>npm install --production</code>（或 <code>NODE_ENV=production</code>）</td>
+<td>✅ 会安装</td>
+<td>❌ 不安装</td>
+</tr>
+<tr>
+<td>判断标准</td>
+<td>打包产物中<strong>包含</strong>它的代码</td>
+<td>打包产物中<strong>不包含</strong></td>
+</tr>
+</tbody></table>
+<p><strong>重点</strong></p>
+<blockquote>
+<ul>
+<li>你项目的 <code>dependencies</code> 和 <code>devDependencies</code> 在<strong>你自己项目里</strong>都会被安装</li>
+<li>区别体现在<strong>你的包被别人安装时</strong>：如果你的项目是个 npm 包，别人 <code>npm install 你的包</code> 时，只会自动安装你的 <code>dependencies</code>，<strong>不会</strong>安装你的 <code>devDependencies</code></li>
+<li>所以：作为库作者，把运行时依赖写进 <code>devDependencies</code> 会导致使用者装不到必要的包 → 报错</li>
+</ul>
+</blockquote>
+<h1 id="中级"><a href="#中级" class="headerlink" title="中级"></a>中级</h1><h2 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h2><ul>
+<li>可控性</li>
+<li>稳定性</li>
+<li>适用性</li>
+<li>易用性</li>
+</ul>
+<p><strong>可控性</strong></p>
+<p>可控，就是指如果这门技术因为 BUG 对项目造成了影响，团队中有人能够解决它，而不是等待官方修复。作为技术团队的负责人，一定要是能够兜底的那个人。如果团队解决不了，你必须能够解决。比如魔改vue,react</p>
+<p><strong>稳定性</strong></p>
+<p>稳定性，表示一门技术更新迭代比较稳定，不会有特别大的修改，比较靠谱。即使有，也很容易做到向后兼容（迁移简单、成本小）。</p>
+<p>有两个很典型的反例，那就是 Angular 和 python。例如 python2 升级到 python3，除了语法、API 不兼容之外，python3 的各个版本之间也有差异，直到现在才逐渐稳定下来。</p>
+<p>稳定性判断：</p>
+<blockquote>
+<ol>
+<li>社区是否活跃、配套插件是否丰富。</li>
+<li>是否经常维护，可以通过 git commit 查看。</li>
+<li>官方文档是否齐全。</li>
+<li>更新是稳定、小步的迭代，而不是非常激进的更新。</li>
+</ol>
+</blockquote>
+<p><strong>适用性</strong></p>
+<p>适用性，是指需要根据业务场景和团队成员来选择技术。</p>
+<p>适用性判断：</p>
+<blockquote>
+<ol>
+<li>业务的生命周期：短期js，长期推荐ts</li>
+<li>业务的兼容性：ios,android，iot,不能有死机、白屏、卡顿</li>
+<li>团队成员：选择约束性比较强的技术是一个更好的选择，如ts(不会就去学)。要用长远的眼光来为团队考虑，太过自由的技术，往往会造成灾难。</li>
+</ol>
+</blockquote>
+<p><strong>易用性</strong></p>
+<p>学习曲线相对平缓，而不是陡峭的</p>
+<h1 id="高级"><a href="#高级" class="headerlink" title="高级"></a>高级</h1><h2 id="SPA和MPA"><a href="#SPA和MPA" class="headerlink" title="SPA和MPA"></a>SPA和MPA</h2><p><strong>1.定义</strong></p>
+<p><strong>SPA (Single Page Application)</strong> 单页应用，是指只有一个 HTML 页面的应用。通过动态重写当前页面与用户交互，而不是从服务器重新加载整个页面。经典的技术栈有 React、Vue 等，利用 <strong>History API</strong> 或 <strong>Hash</strong> 进行路由管理。</p>
+<p><strong>MPA (Multi-Page Application)</strong> 多页应用，是指应用由多个独立的 HTML 页面组成，每次页面跳转都需要浏览器向服务器发起新的请求，返回新的 HTML。这是传统的 Web 模式，如早期的 JSP、PHP 页面，或者现在的企业官网、电商详情页。</p>
+<p><strong>2.核心区别</strong></p>
+<p>有四个维度的本质区别：</p>
+<blockquote>
+<ol>
+<li><strong>页面切换与刷新机制：</strong><ul>
+<li><strong>SPA：</strong> 点击路由链接时，<strong>不会刷新页面</strong>。它通过 JS 监听 URL 变化，卸载旧组件、挂载新组件，只更新局部 DOM，体验接近原生 App。</li>
+<li><strong>MPA：</strong> 每次跳转都会<strong>刷新浏览器</strong>，白屏 reloading，会有明显的页面切换感。</li>
+</ul>
+</li>
+<li><strong>资源加载与性能：</strong><ul>
+<li><strong>SPA：</strong> 首屏加载较慢（需要加载所有的 JS/CSS 框架和路由），但在首屏之后的操作极其流畅（资源已缓存，只请求数据）。</li>
+<li><strong>MPA：</strong> 首屏加载快（只加载当前页面的资源），但页面跳转时需要重新请求 HTML 和资源，依赖网络环境，体验不连贯。</li>
+</ul>
+</li>
+<li><strong>路由管理：</strong><ul>
+<li><strong>SPA：</strong> 使用<strong>前端路由</strong>（Client-side Routing），路由变化由 JS 拦截处理，不经过后端（需配置 Nginx 支持 fallback）。</li>
+<li><strong>MPA：</strong> 使用<strong>后端路由</strong>（Server-side Routing），每个 URL 对应服务器上的一个具体文件路径。</li>
+</ul>
+</li>
+<li><strong>SEO (搜索引擎优化)：</strong><ul>
+<li><strong>SPA：</strong> 传统 SPA 对 SEO 不友好。因为源码只有一个空的 <code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code>，内容是 JS 动态渲染的，爬虫难以抓取。（<em>注：现在通过 SSR（服务端渲染）如 Next.js/Nuxt.js 已解决此问题</em>）。</li>
+<li><strong>MPA：</strong> 天然 SEO 友好，HTML 内容直接在服务器生成，爬虫能直接解析文本。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<p><strong>3.优缺点</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">维度</th>
+<th align="left">SPA (单页应用)</th>
+<th align="left">MPA (多页应用)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>用户体验</strong></td>
+<td align="left">极佳，无刷新，交互流畅，有转场动画</td>
+<td align="left">一般，有白屏刷新，交互有割裂感</td>
+</tr>
+<tr>
+<td align="left"><strong>首屏速度</strong></td>
+<td align="left">较慢（需加载框架包），需 Code Splitting 优化</td>
+<td align="left">较快（按需加载页面）</td>
+</tr>
+<tr>
+<td align="left"><strong>SEO 支持</strong></td>
+<td align="left">较差（需 SSR/预渲染辅助）</td>
+<td align="left">极好（原生支持）</td>
+</tr>
+<tr>
+<td align="left"><strong>开发复杂度</strong></td>
+<td align="left">高（需管理状态、路由、内存泄漏）</td>
+<td align="left">低（页面间相对独立，逻辑解耦）</td>
+</tr>
+<tr>
+<td align="left"><strong>维护成本</strong></td>
+<td align="left">前端维护一套代码，后端只提供 API</td>
+<td align="left">前后端可能耦合（传统模式），或者维护多个页面</td>
+</tr>
+</tbody></table>
+<p><strong>4.实战场景与选型（STAR 法则）</strong></p>
+<p>根据业务形态来选型：</p>
+<p><strong>场景一：中后台管理系统</strong></p>
+<ul>
+<li><strong>选择：</strong> <strong>SPA</strong>。</li>
+<li><strong>理由：</strong> 后台系统对 SEO 无要求，但对交互体验要求极高（如表单筛选、Tab 切换、数据可视化）。SPA 一次加载，后续操作无刷新，能极大提升操作员的效率。</li>
+</ul>
+<p><strong>场景二：电商营销活动页/企业官网</strong></p>
+<ul>
+<li><strong>选择：</strong> <strong>MPA</strong> 或 **SSR (Next.js/Nuxt)**。</li>
+<li><strong>理由：</strong> 这类页面需要极高的 SEO 曝光度（让搜索引擎搜到商品），且首屏加载速度直接影响跳出率。如果用传统 SPA，首屏慢且搜不到，得不偿失。如果是复杂的营销页，甚至会使用多页面架构来隔离每个活动的代码，避免单个页面过于臃肿。</li>
+</ul>
+<p><strong>场景三：混合架构（实战进阶）</strong></p>
+<ul>
+<li>在<strong>C端大型应用</strong>中，我们通常会结合两者。例如，首页使用 SSR（服务端渲染）保证 SEO 和首屏速度；登录后的用户中心使用 SPA（客户端渲染）保证交互体验。或者结合 <strong>微前端</strong>，将不同业务线拆分为不同的子应用，子应用内部是 SPA，但整体通过基座加载，实现技术栈隔离。</li>
+</ul>
+<p><strong>5.总结</strong></p>
+<blockquote>
+<ul>
+<li>如果追求<strong>极致的交互体验</strong>和<strong>应用的整体感</strong>，选 <strong>SPA</strong>。</li>
+<li>如果追求<strong>SEO</strong>、<strong>首屏极快</strong>或者<strong>内容展示类</strong>网站，选 <strong>MPA</strong> 或 <strong>SSR</strong>。</li>
+</ul>
+</blockquote>
+<p><strong>未来的趋势：</strong><br>界限正在变得模糊。现在的现代框架（如 Next.js、Remix）推崇 <strong>SSR + hydration（注水）</strong> 或 <strong>ISR（增量静态再生）</strong> 模式。这实际上是利用了 MPA 的首屏优势（服务端直出 HTML），结合了 SPA 的交互优势（客户端接管后续交互），是前端工程化在性能与体验上的最佳平衡点。</p>
+<p><strong>💡 面试追问（高分防守）</strong></p>
+<ul>
+<li>Q: SPA 如何解决首屏加载慢的问题？<ul>
+<li>A: 1. 路由懒加载；2. Tree-shaking 去除无用代码；3. 开启 Gzip/Brotli 压缩；4. 使用 CDN 加速静态资源；5. 预渲染（Prerendering）针对特定路由生成静态 HTML。</li>
+</ul>
+</li>
+<li>Q: SPA 的前端路由原理是什么？<ul>
+<li>A: 主要有两种模式：<ul>
+<li><strong>Hash 模式：</strong> 监听 <code>hashchange</code> 事件，URL 带 <code>#</code>，兼容性好，不美观。</li>
+<li><strong>History 模式：</strong> 利用 HTML5 History API (<code>pushState</code>, <code>replaceState</code>)，监听 <code>popstate</code> 事件，URL 美观，但需要后端配合配置 Nginx <code>try_files</code>，否则刷新会 404。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Q: SPA 如何处理内存泄漏？<ul>
+<li>A: 因为页面不刷新，组件卸载时必须手动解绑事件监听器、清除定时器、销毁全局状态订阅，这也是 SPA 相比 MPA 更需要开发者注意的一点。</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2021/01/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/" title="前端工程化" target="_blank" rel="external">https://fuyunjinglong.github.io/2021/01/01/C_高级_前端工程化/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/02/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_webpack/" title="前端工程化_webpack"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/06/01/C_%E9%AB%98%E7%BA%A7_%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" title="性能优化"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <!-- <script src="//cdn.jsdelivr.net/npm/valine"></script> -->
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

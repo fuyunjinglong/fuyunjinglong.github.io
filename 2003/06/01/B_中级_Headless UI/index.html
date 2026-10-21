@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Headless UI  </title>
+  <meta name="description" content="初级Headless UI是什么一、定义  Headless UI 是一种只提供组件逻辑和行为（如状态管理、无障碍访问、键盘交互），而不提供任何具体样式（HTML结构&#x2F;CSS）的组件库。  二、与传统的 UI 组件库(如 Ant Design、Element UI)区别   传统组件库：提供“逻辑 + 样式 + DOM结构”，开箱即用，但定制化困难，容易产生“长得一样”的网站，覆盖样式时容易引发权">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Headless UI">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2003/06/01/B_%E4%B8%AD%E7%BA%A7_Headless%20UI/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="初级Headless UI是什么一、定义  Headless UI 是一种只提供组件逻辑和行为（如状态管理、无障碍访问、键盘交互），而不提供任何具体样式（HTML结构&#x2F;CSS）的组件库。  二、与传统的 UI 组件库(如 Ant Design、Element UI)区别   传统组件库：提供“逻辑 + 样式 + DOM结构”，开箱即用，但定制化困难，容易产生“长得一样”的网站，覆盖样式时容易引发权">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2003-06-01T00:33:16.000Z">
+<meta property="article:modified_time" content="2026-09-12T07:12:09.754Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2003/06/01/B_%E4%B8%AD%E7%BA%A7_Headless%20UI/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A1-LLM/">A1_LLM</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E5%88%9D%E7%BA%A7/">A_初级</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-%E4%B8%AD%E7%BA%A7/">B_中级</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E9%AB%98%E7%BA%A7/">C_高级</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E8%A7%84%E5%88%92/">D_规划</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/04/">四月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/01/">一月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2098/01/">一月 2098</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">七月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">一月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/03/">三月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/02/">二月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/01/">一月 2004</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/06/">六月 2003</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/01/">一月 2003</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/06/">六月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/02/">二月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/01/">一月 2002</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/06/">六月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/03/">三月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/02/">二月 2001</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/01/">一月 2001</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/06/">六月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/03/">三月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/02/">二月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/01/">一月 2000</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/04/04/%E6%A8%A1%E6%9D%BFX/" class="title">模板X</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-04-04T00:33:16.000Z" itemprop="datePublished">2099-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/03/29/Z_%E5%90%8E%E7%AB%AF_Java/" class="title">Java</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-03-28T23:33:16.000Z" itemprop="datePublished">2099-03-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/01/01/G_%E5%85%B6%E4%BB%96_%E4%B9%A6%E5%8D%95/" class="title">书单</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-01-01T00:33:16.000Z" itemprop="datePublished">2099-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A1-LLM/">A1_LLM</a>
+              </p>
+              <p class="item-title">
+                <a href="/2098/01/01/A1_LLM_windows%E5%AE%89%E8%A3%85%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="title">LLM_windows安装大模型</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2097-12-31T22:33:16.000Z" itemprop="datePublished">2098-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2026/07/18/Test%20copy/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2026-07-18T02:11:18.292Z" itemprop="datePublished">2026-07-18</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9D%E7%BA%A7"><span class="toc-number">1.</span> <span class="toc-text">初级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Headless-UI%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">1.1.</span> <span class="toc-text">Headless UI是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Headless-UI%E4%BC%98%E7%82%B9"><span class="toc-number">1.2.</span> <span class="toc-text">Headless UI优点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E6%98%AF%E5%A6%82%E4%BD%95%E6%9A%B4%E9%9C%B2"><span class="toc-number">1.3.</span> <span class="toc-text">状态是如何暴露</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E8%A1%8C%E7%9A%84-Headless-UI-%E5%BA%93"><span class="toc-number">1.4.</span> <span class="toc-text">流行的 Headless UI 库</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%AD%E7%BA%A7"><span class="toc-number">2.</span> <span class="toc-text">中级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E6%97%A0%E9%9A%9C%E7%A2%8D%E8%AE%BF%E9%97%AE"><span class="toc-number">2.1.</span> <span class="toc-text">处理无障碍访问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Prop-Getters-%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.2.</span> <span class="toc-text">Prop Getters 模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89-Dropdown-%E7%BB%84%E4%BB%B6"><span class="toc-number">2.3.</span> <span class="toc-text">自定义 Dropdown 组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E7%9A%84%E9%94%AE%E7%9B%98%E5%AF%BC%E8%88%AA"><span class="toc-number">2.4.</span> <span class="toc-text">复杂的键盘导航</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7"><span class="toc-number">3.</span> <span class="toc-text">高级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1Toast%EF%BC%88%E9%80%9A%E7%9F%A5%EF%BC%89%E7%BB%84%E4%BB%B6"><span class="toc-number">3.1.</span> <span class="toc-text">设计Toast（通知）组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E5%A4%B4%E5%BA%93%E6%8C%89%E9%9C%80%E6%B8%B2%E6%9F%93%E5%92%8C%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-number">3.2.</span> <span class="toc-text">无头库按需渲染和性能优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8-SSR%E7%9A%84%E6%8C%91%E6%88%98"><span class="toc-number">3.3.</span> <span class="toc-text">在 SSR的挑战</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Compound-Components-%E5%A4%8D%E5%90%88%E7%BB%84%E4%BB%B6-%E6%A8%A1%E5%BC%8F%E4%B8%8E-Headless-UI"><span class="toc-number">3.4.</span> <span class="toc-text">Compound Components(复合组件)模式与 Headless UI</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-B_中级_Headless UI" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Headless UI
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2003/06/01/B_%E4%B8%AD%E7%BA%A7_Headless%20UI/" class="article-date">
+	  <time datetime="2003-06-01T00:33:16.000Z" itemprop="datePublished">2003-06-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/B-%E4%B8%AD%E7%BA%A7/">B_中级</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2003/06/01/B_%E4%B8%AD%E7%BA%A7_Headless%20UI/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="初级"><a href="#初级" class="headerlink" title="初级"></a>初级</h1><h2 id="Headless-UI是什么"><a href="#Headless-UI是什么" class="headerlink" title="Headless UI是什么"></a>Headless UI是什么</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>Headless UI 是一种只提供组件逻辑和行为（如状态管理、无障碍访问、键盘交互），而不提供任何具体样式（HTML结构/CSS）的组件库。</p>
+</blockquote>
+<p><strong>二、与传统的 UI 组件库(如 Ant Design、Element UI)区别</strong></p>
+<blockquote>
+<ul>
+<li><strong>传统组件库</strong>：提供“逻辑 + 样式 + DOM结构”，开箱即用，但定制化困难，容易产生“长得一样”的网站，覆盖样式时容易引发权重冲突。</li>
+<li><strong>Headless UI</strong>：提供“逻辑 + a11y支持”，不提供样式。开发者完全掌控DOM结构和样式，适合结合 Tailwind CSS 等原子化CSS实现高度定制化的UI。如 Tailwind Labs 的 <code>@headlessui/react</code> 或 React Aria。</li>
+</ul>
+</blockquote>
+<h2 id="Headless-UI优点"><a href="#Headless-UI优点" class="headerlink" title="Headless UI优点"></a>Headless UI优点</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<ul>
+<li><strong>样式自由度</strong>：彻底解耦了逻辑与表现，开发者可以使用任意CSS方案（Tailwind, styled-components, CSS Modules），不会受到组件库默认主题的限制。</li>
+<li><strong>无障碍访问</strong>：实现复杂的 WAI-ARIA 标准非常耗时且容易出错，Headless UI 在底层处理了焦点管理、<code>aria-*</code> 属性和键盘事件，保证了组件的基础可用性。</li>
+<li><strong>避免样式覆盖地狱</strong>：传统库修改内部样式经常需要使用 <code>!important</code> 或深层选择器，Headless UI 没有样式，避免了这些问题。</li>
+</ul>
+</blockquote>
+<h2 id="状态是如何暴露"><a href="#状态是如何暴露" class="headerlink" title="状态是如何暴露"></a>状态是如何暴露</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>组件通信模式（Render Props vs Hooks）</p>
+</blockquote>
+<p><strong>二、主要有两种常见模式</strong></p>
+<p>Hooks 模式比 Render Props 模式更灵活，且能避免 JSX 嵌套地狱（如 React Aria 和 downshift 的演进）。</p>
+<blockquote>
+<ul>
+<li><strong>Render Props 模式</strong>：通过子组件传递一个函数，函数参数包含当前状态和操作方法。</li>
+<li><strong>Custom Hooks 模式</strong>：将逻辑抽离为 Hook，开发者自己组装 DOM。</li>
+</ul>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Render Props 模式</span></span><br><span class="line">&lt;<span class="title class_">Menu</span>&gt;</span><br><span class="line">  &#123;<span class="function">(<span class="params">&#123; open &#125;</span>) =&gt;</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">button</span>&gt;</span>&#123;open ? &#x27;关闭&#x27; : &#x27;打开&#x27;&#125;<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line">  )&#125;</span><br><span class="line">&lt;/<span class="title class_">Menu</span>&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Custom Hooks 模式</span></span><br><span class="line"> <span class="keyword">const</span> &#123; open, getToggleProps &#125; = <span class="title function_">useToggle</span>();</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">button</span> &#123;<span class="attr">...getToggleProps</span>()&#125;&gt;</span>&#123;open ? &#x27;关闭&#x27; : &#x27;打开&#x27;&#125;<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="流行的-Headless-UI-库"><a href="#流行的-Headless-UI-库" class="headerlink" title="流行的 Headless UI 库"></a>流行的 Headless UI 库</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<ul>
+<li><strong>@headlessui/react</strong>：由 Tailwind CSS 团队开发，主要配合 Tailwind 使用。</li>
+<li><strong>React Aria</strong>：由 Adobe 开源，专注于无障碍访问和复杂交互逻辑，Hooks化程度最高。</li>
+<li>**TanStack Table (React Table)**：无头表格库的绝对霸主。</li>
+<li><strong>Downshift</strong>：专注于 Autocomplete、Combobox、Select 等输入型组件的无头库。</li>
+</ul>
+</blockquote>
+<h1 id="中级"><a href="#中级" class="headerlink" title="中级"></a>中级</h1><h2 id="处理无障碍访问"><a href="#处理无障碍访问" class="headerlink" title="处理无障碍访问"></a>处理无障碍访问</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>a11y规范在无头库中的落地实践。</p>
+</blockquote>
+<p><strong>二、具体实践</strong></p>
+<p>在 Dialog 中，Headless UI 会自动处理以下 a11y 细节：</p>
+<blockquote>
+<ol>
+<li><strong>焦点陷阱</strong>：当弹窗打开时，焦点会被限制在弹窗内部，防止用户通过 Tab 键聚焦到背景的隐藏元素。</li>
+<li><strong>焦点恢复</strong>：弹窗关闭后，焦点自动恢复到触发弹窗打开的元素（如打开按钮）上。</li>
+<li><strong>ARIA 属性</strong>：自动添加 <code>role=&quot;dialog&quot;</code> 和 <code>aria-modal=&quot;true&quot;</code>，并将弹窗标题与 <code>aria-labelledby</code> 绑定。</li>
+<li><strong>滚动锁定</strong>：通常还会锁定 <code>body</code> 的滚动，防止背景内容滚动。</li>
+</ol>
+</blockquote>
+<h2 id="Prop-Getters-模式"><a href="#Prop-Getters-模式" class="headerlink" title="Prop Getters 模式"></a>Prop Getters 模式</h2><p><strong>一、定义</strong></p>
+<p>对无头库底层 API 设计模式的理解。</p>
+<blockquote>
+<p>Prop Getters 是一种返回包含事件监听器、Aria属性等配置对象的函数，如 <code>getInputProps()</code>, <code>getToggleButtonProps()</code>。</p>
+</blockquote>
+<p><strong>二、为什么使用</strong></p>
+<blockquote>
+<ul>
+<li>如果直接展开对象（如 <code>&lt;input &#123;...props&#125; /&gt;</code>），当开发者需要监听同样的 <code>onChange</code> 时，会覆盖库的默认逻辑。</li>
+<li>使用 Prop Getters，库内部可以通过合并函数将开发者传入的事件处理函数与库自身的事件处理函数合并执行。</li>
+</ul>
+</blockquote>
+<h2 id="自定义-Dropdown-组件"><a href="#自定义-Dropdown-组件" class="headerlink" title="自定义 Dropdown 组件"></a>自定义 Dropdown 组件</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>Headless UI+Tailwind CSS 实现自定义Dropdown 组件</p>
+</blockquote>
+<p><strong>二、代码</strong></p>
+<p>以 <code>@headlessui/react</code> 为例，结构如下：</p>
+<p><strong>【解析】</strong> <code>Menu</code> 管理状态，<code>Menu.Button</code> 触发，<code>Menu.Items</code> 展示，<code>Menu.Item</code> 提供选中态，样式完全由 Tailwind 类名接管。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Menu</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@headlessui/react&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Dropdown</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">Menu</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Menu.Button</span> <span class="attr">className</span>=<span class="string">&quot;px-4 py-2 bg-blue-500 text-white rounded&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        选项</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">Menu.Button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Menu.Items</span> <span class="attr">className</span>=<span class="string">&quot;mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">Menu.Item</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          &#123;(&#123; active &#125;) =&gt; (</span></span><br><span class="line"><span class="language-xml">            <span class="tag">&lt;<span class="name">a</span> <span class="attr">className</span>=<span class="string">&#123;</span>`$&#123;<span class="attr">active</span> ? &#x27;<span class="attr">bg-blue-100</span>&#x27; <span class="attr">:</span> &#x27;&#x27;&#125; <span class="attr">block</span> <span class="attr">px-4</span> <span class="attr">py-2</span>`&#125; <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span>编辑<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          )&#125;</span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">Menu.Item</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">Menu.Items</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">Menu</span>&gt;</span></span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="复杂的键盘导航"><a href="#复杂的键盘导航" class="headerlink" title="复杂的键盘导航"></a>复杂的键盘导航</h2><p><strong>一、定义</strong></p>
+<p>组件交互逻辑的控制。</p>
+<p>Headless UI 库内部维护了一套键盘事件处理器。例如在 Combobox 或 Listbox 中：</p>
+<blockquote>
+<ul>
+<li>监听 <code>ArrowDown</code> / <code>ArrowUp</code> 移动高亮项的索引。</li>
+<li>监听 <code>Home</code> / <code>End</code> 跳转到首项或末项。</li>
+<li>监听 <code>Enter</code> / <code>Space</code> 选中当前项。</li>
+<li>监听 <code>Escape</code> 关闭弹层。</li>
+</ul>
+</blockquote>
+<p>开发者只需将这些事件处理函数通过 Prop Getters 绑定到对应的 DOM 元素上，无需自己手写复杂的 <code>keydown</code> 逻辑。</p>
+<h1 id="高级"><a href="#高级" class="headerlink" title="高级"></a>高级</h1><h2 id="设计Toast（通知）组件"><a href="#设计Toast（通知）组件" class="headerlink" title="设计Toast（通知）组件"></a>设计Toast（通知）组件</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>偏命令式的无头组件设计、状态管理架构。</p>
+</blockquote>
+<p><strong>二、实现</strong></p>
+<p>Toast 与常规表单组件不同，通常是命令式触发的。设计思路如下：</p>
+<blockquote>
+<ol>
+<li><strong>状态管理引擎</strong>：创建一个单例的 ToastStore，维护一个队列（数组）。</li>
+<li><strong>命令式 API</strong>：暴露 <code>toast.show()</code>, <code>toast.error()</code> 等方法，内部更新 Store。</li>
+<li><strong>渲染层</strong>：提供 <code>&lt;ToastContainer /&gt;</code> 组件，它订阅 Store 的变化，并通过 React Portal 渲染到 <code>document.body</code>。</li>
+<li><strong>无头化</strong>：<code>ToastContainer</code> 不提供样式，而是提供类似 <code>toastList.map(t =&gt; render(t))</code> 的 Render Props，让用户自定义 Toast 的外观，并处理入场/出场动画状态。</li>
+</ol>
+</blockquote>
+<h2 id="无头库按需渲染和性能优化"><a href="#无头库按需渲染和性能优化" class="headerlink" title="无头库按需渲染和性能优化"></a>无头库按需渲染和性能优化</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>无头库(如 表格库TanStack Table)在海量数据下的性能瓶颈处理。</p>
+</blockquote>
+<p><strong>二、实现</strong></p>
+<blockquote>
+<ol>
+<li><strong>状态与视图解耦</strong>：TanStack Table 将状态维护在内存实例中，只有当开发者调用 <code>row.getCell()</code> 时才去计算具体的单元格值，不强制要求一次性生成完整 VDOM。</li>
+<li><strong>虚拟化集成</strong>：无头库本身不渲染 DOM，因此可以完美对接如 <code>react-virtual</code> 等虚拟列表库。开发者只把可见区域的 Rows 渲染出来。</li>
+<li><strong>选择器记忆化</strong>：利用 <code>useMemo</code> 确保只有当相关 state（如排序字段、当前页码）变化时，才重新计算派生数据（如过滤后的行、分页后的行）。</li>
+<li><strong>不可变数据流</strong>：保证传入的数据引用未变时不触发重计算。</li>
+</ol>
+</blockquote>
+<h2 id="在-SSR的挑战"><a href="#在-SSR的挑战" class="headerlink" title="在 SSR的挑战"></a>在 SSR的挑战</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>同构应用中的无头库表现。</p>
+</blockquote>
+<p><strong>二、挑战</strong></p>
+<blockquote>
+<p>SSR 时没有真实的 DOM，因此涉及 DOM 测量（如 <code>getBoundingClientRect</code> 用于定位 Popover/浮层）、焦点管理、<code>window</code> 对象访问等逻辑都会报错或在服务端和客户端产生水合不匹配。</p>
+</blockquote>
+<p><strong>三、解决方案</strong></p>
+<blockquote>
+<ol>
+<li><strong>状态延迟初始化</strong>：在组件挂载前，浮层定位相关的状态保持默认值，在 <code>useEffect</code>（客户端执行）中再计算真实坐标。</li>
+<li><strong>环境检测</strong>：内部封装 <code>isClient</code> 判断，SSR 阶段跳过 <code>addEventListener</code> 等副作用。</li>
+<li><strong>浮层方案替代</strong>：使用基于 CSS 的浮层方案（如 CSS Anchor Positioning 或纯依赖视口的 Fixed 定位）替代依赖 JS 宽高计算的绝对定位，减少 SSR 阶段的计算量。</li>
+</ol>
+</blockquote>
+<h2 id="Compound-Components-复合组件-模式与-Headless-UI"><a href="#Compound-Components-复合组件-模式与-Headless-UI" class="headerlink" title="Compound Components(复合组件)模式与 Headless UI"></a>Compound Components(复合组件)模式与 Headless UI</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p> 组件设计模式的高阶认知。</p>
+</blockquote>
+<p><strong>二、具体解析</strong></p>
+<blockquote>
+<ul>
+<li><strong>复合组件模式</strong>：通过 <code>Context</code> 共享状态，允许开发者以声明式的方式组装子组件（如 <code>&lt;Select&gt;&lt;Select.Trigger/&gt;&lt;Select.Option/&gt;&lt;/Select&gt;</code>）。</li>
+<li><strong>关系</strong>：Headless UI 通常以复合组件的形式呈现（如 <code>@headlessui/react</code>）。复合组件负责管理内部状态和 Context 分发，而 Headless 理念负责保证这些组件不自带任何 CSS。</li>
+<li><strong>配合优势</strong>：这种结合既提供了极佳的 API 语义化体验，又保留了完全的样式定制权，同时内部通过 Context 传递状态和 a11y 属性，避免了 Prop Drilling（属性透传）的繁琐。</li>
+</ul>
+</blockquote>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2003/06/01/B_%E4%B8%AD%E7%BA%A7_Headless%20UI/" title="Headless UI" target="_blank" rel="external">https://fuyunjinglong.github.io/2003/06/01/B_中级_Headless UI/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2004/01/01/A1_LLM_SKILL/" title="SKILL"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2003/01/01/B_%E4%B8%AD%E7%BA%A7_CSS_Taiwind/" title="CSS_Taiwind"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <!-- <script src="//cdn.jsdelivr.net/npm/valine"></script> -->
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

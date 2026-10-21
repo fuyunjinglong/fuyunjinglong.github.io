@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>前端工程化_Vite  </title>
+  <meta name="description" content="初级Vite是什么1.定义 Vite 是一种新型前端构建工具，它利用浏览器原生 ES 模块（ESM）在开发阶段提供极速的冷启动和按需编译，并在生产环境使用 Rollup 进行打包优化。 2.核心原理 Vite 的工作机制严格区分为开发环境和生产环境：   开发环境（No-Bundle 机制）： 按需编译：Vite 启动时不做任何打包，直接启动服务器。当浏览器请求某个模块时，Vite 服务器拦截请求">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端工程化_Vite">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2021/03/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_Vite/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="初级Vite是什么1.定义 Vite 是一种新型前端构建工具，它利用浏览器原生 ES 模块（ESM）在开发阶段提供极速的冷启动和按需编译，并在生产环境使用 Rollup 进行打包优化。 2.核心原理 Vite 的工作机制严格区分为开发环境和生产环境：   开发环境（No-Bundle 机制）： 按需编译：Vite 启动时不做任何打包，直接启动服务器。当浏览器请求某个模块时，Vite 服务器拦截请求">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-02-28T22:33:16.000Z">
+<meta property="article:modified_time" content="2026-07-19T10:51:42.496Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2021/03/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_Vite/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A1-LLM/">A1_LLM</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E5%88%9D%E7%BA%A7/">A_初级</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-%E4%B8%AD%E7%BA%A7/">B_中级</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E9%AB%98%E7%BA%A7/">C_高级</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E8%A7%84%E5%88%92/">D_规划</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/04/">四月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/01/">一月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2098/01/">一月 2098</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">七月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">一月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/03/">三月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/02/">二月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/01/">一月 2004</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/06/">六月 2003</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/01/">一月 2003</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/06/">六月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/02/">二月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/01/">一月 2002</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/06/">六月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/03/">三月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/02/">二月 2001</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/01/">一月 2001</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/06/">六月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/03/">三月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/02/">二月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/01/">一月 2000</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/04/04/%E6%A8%A1%E6%9D%BFX/" class="title">模板X</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-04-04T00:33:16.000Z" itemprop="datePublished">2099-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/03/29/Z_%E5%90%8E%E7%AB%AF_Java/" class="title">Java</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-03-28T23:33:16.000Z" itemprop="datePublished">2099-03-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/01/01/G_%E5%85%B6%E4%BB%96_%E4%B9%A6%E5%8D%95/" class="title">书单</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-01-01T00:33:16.000Z" itemprop="datePublished">2099-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A1-LLM/">A1_LLM</a>
+              </p>
+              <p class="item-title">
+                <a href="/2098/01/01/A1_LLM_windows%E5%AE%89%E8%A3%85%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="title">LLM_windows安装大模型</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2097-12-31T22:33:16.000Z" itemprop="datePublished">2098-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2026/07/18/Test%20copy/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2026-07-18T02:11:18.292Z" itemprop="datePublished">2026-07-18</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9D%E7%BA%A7"><span class="toc-number">1.</span> <span class="toc-text">初级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Vite%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">1.1.</span> <span class="toc-text">Vite是什么</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%AD%E7%BA%A7"><span class="toc-number">2.</span> <span class="toc-text">中级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Vite%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E5%92%8C%E5%86%B7%E5%90%AF%E5%8A%A8"><span class="toc-number">2.1.</span> <span class="toc-text">Vite的工作流和冷启动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vite-%E7%9A%84%E4%BE%9D%E8%B5%96%E9%A2%84%E6%9E%84%E5%BB%BA"><span class="toc-number">2.2.</span> <span class="toc-text">Vite 的依赖预构建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vite-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%90%AF%E5%8A%A8%E5%BF%AB"><span class="toc-number">2.3.</span> <span class="toc-text">Vite 开发环境启动快</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vite-%E7%94%9F%E4%BA%A7%E7%94%A8-Rollup-%E6%89%93%E5%8C%85%EF%BC%8C%E8%80%8C%E4%B8%8D%E7%94%A8-esbuild"><span class="toc-number">2.4.</span> <span class="toc-text">Vite 生产用 Rollup 打包，而不用 esbuild</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vite-%E7%9A%84%E6%8F%92%E4%BB%B6%E6%9C%BA%E5%88%B6"><span class="toc-number">2.5.</span> <span class="toc-text">Vite 的插件机制</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7"><span class="toc-number">3.</span> <span class="toc-text">高级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Vite-%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5"><span class="toc-number">3.1.</span> <span class="toc-text">Vite 优化策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vite-%E7%9A%84-HMR%E6%9B%B4%E5%BF%AB"><span class="toc-number">3.2.</span> <span class="toc-text">Vite 的 HMR更快</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-C_高级_前端工程化_Vite" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      前端工程化_Vite
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2021/03/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_Vite/" class="article-date">
+	  <time datetime="2021-02-28T22:33:16.000Z" itemprop="datePublished">2021-03-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/C-%E9%AB%98%E7%BA%A7/">C_高级</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2021/03/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_Vite/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="初级"><a href="#初级" class="headerlink" title="初级"></a><strong>初级</strong></h1><h2 id="Vite是什么"><a href="#Vite是什么" class="headerlink" title="Vite是什么"></a>Vite是什么</h2><p><strong>1.定义</strong></p>
+<p>Vite 是一种新型前端构建工具，它利用浏览器原生 ES 模块（ESM）在开发阶段提供极速的冷启动和按需编译，并在生产环境使用 Rollup 进行打包优化。</p>
+<p><strong>2.核心原理</strong></p>
+<p>Vite 的工作机制严格区分为开发环境和生产环境：</p>
+<blockquote>
+<ul>
+<li>开发环境（No-Bundle 机制）：<ul>
+<li><strong>按需编译</strong>：Vite 启动时不做任何打包，直接启动服务器。当浏览器请求某个模块时，Vite 服务器拦截请求，将该文件即时编译（如 TS 转 JS、Vue 转 JS）并返回。</li>
+<li><strong>依赖预构建</strong>：对于 <code>node_modules</code> 中的第三方库（很多是 CommonJS 格式），Vite 在首次启动时使用 esbuild 将它们转换为 ESM 格式并进行缓存，后续直接复用。因为 esbuild 极快，所以这一步几乎无感。</li>
+</ul>
+</li>
+<li>生产环境：<ul>
+<li>虽然开发环境利用了原生 ESM，但在生产环境中如果直接加载大量 ESM 模块会导致瀑布流请求，且原生 ESM 对 Tree Shaking 支持不完善。因此，Vite 生产环境依然依托 <strong>Rollup</strong> 进行代码分割、摇树优化和压缩打包。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><strong>3.对比延伸</strong></p>
+<p>面试官常会追问：<strong>Vite 和 Webpack 的核心区别是什么？</strong></p>
+<ul>
+<li><strong>启动速度</strong>：Webpack 开发时需要先全量构建打包出一个 bundle 再启动服务器，项目越大启动越慢；Vite 启动时只启动一个服务器，启动时间与项目规模无关，几乎秒开。</li>
+<li><strong>HMR（热更新）速度</strong>：Webpack 改动文件后需要重新编译受影响的模块和 chunk；Vite 只需让浏览器重新请求修改过的那个单一模块，HMR 速度始终保持毫秒级。</li>
+<li><strong>局限与生态</strong>：Vite 强依赖 ESM 生态，对于个别老旧的、深度绑定 CommonJS 的第三方库可能存在兼容问题；且其生产环境依赖 Rollup，虽然打包质量高，但在高度定制化插件能力上不如 Webpack 丰富。</li>
+</ul>
+<p><strong>4.总结</strong></p>
+<p>Vite 通过开发环境“不打包”和“按需编译”的核心理念，利用浏览器原生 ESM 能力，彻底解决了传统构建工具冷启动慢的痛点。配合 esbuild 的极速预构建和 Rollup 的可靠生产打包，Vite 在开发体验和产物质量之间找到了极佳的平衡，已成为现代前端工程化最主流的选择之一。</p>
+<h1 id="中级"><a href="#中级" class="headerlink" title="中级"></a>中级</h1><h2 id="Vite的工作流和冷启动"><a href="#Vite的工作流和冷启动" class="headerlink" title="Vite的工作流和冷启动"></a>Vite的工作流和冷启动</h2><p><strong>一、 Vite 的整体工作流</strong></p>
+<ol>
+<li>开发环境工作流：<ul>
+<li>Vite 启动一个基于 Node.js 的本地开发服务。</li>
+<li>当浏览器请求 HTML 时，Vite 拦截其中的 <code>&lt;script type=&quot;module&quot;&gt;</code> 请求。</li>
+<li>对于第三方依赖，返回预构建后的 ESM 格式文件；对于业务源码，Vite 在内存中进行实时编译（如 TS 转 JS、Vue SFC 拆解），然后将编译后的原生 ESM 模块返回给浏览器。</li>
+</ul>
+</li>
+<li>生产环境工作流：<ul>
+<li>由于浏览器原生 ESM 在生产环境会产生大量网络请求，且无法进行有效的 Tree-shaking，Vite 在打包时切换回传统模式。</li>
+<li>调用底层的 Rollup 进行模块打包、Tree-shaking、代码分割和压缩，最终输出部署到 CDN 的静态资源。</li>
+</ul>
+</li>
+</ol>
+<p><strong>二、 Vite 冷启动全流程</strong></p>
+<p>传统 Webpack 冷启动时需要遍历整个项目的依赖树并打包，项目越大越慢。而 Vite 的冷启动主要经历以下几个核心阶段：</p>
+<ol>
+<li>极速启动服务（无打包阶段）：<ul>
+<li>Vite 执行 <code>npm run dev</code> 时，几乎瞬间就能启动本地 HTTP 服务，因为此时它<strong>完全没有</strong>去解析和打包项目业务代码。</li>
+</ul>
+</li>
+<li>入口扫描与依赖预构建：<ul>
+<li>服务启动后，Vite 会利用内置的 esbuild 扫描入口 HTML 文件，找到所有的 <code>&lt;script type=&quot;module&quot;&gt;</code> 及其静态 import 语句，借此找出项目用到的第三方依赖（如 Vue、Lodash）。</li>
+<li>预构建的目的：<ul>
+<li><strong>格式转换：</strong> 将 CommonJS/UMD 格式的依赖转为浏览器支持的 ESM 格式。</li>
+<li><strong>减少请求：</strong> 将包含大量内部模块的依赖（如 lodash-es）合并成单个文件，避免浏览器发起几百个网络请求。</li>
+</ul>
+</li>
+<li>esbuild 使用 Go 编写，速度比传统的 Babel/Webpack 快 10-100 倍，预构建结果会缓存在 <code>node_modules/.vite</code> 中，二次启动直接复用缓存。</li>
+</ul>
+</li>
+<li>浏览器按需请求与实时编译：<ul>
+<li>冷启动完成，浏览器加载页面时，才开始按需加载模块。</li>
+<li>当浏览器请求 <code>main.ts</code> 时，Vite 的开发服务拦截该请求，在内存中使用 esbuild/Rollup 对源码进行 AST 转换（如剥离类型、编译 JSX）。</li>
+<li>如果 <code>main.ts</code> import 了 <code>App.vue</code>，Vite 会将单文件组件拆解为 Template、Script、Style 三个独立的请求模块返回给浏览器。</li>
+</ul>
+</li>
+<li>延迟编译特性：<ul>
+<li>只有当前页面路由需要用到的模块才会被编译。即使用户写了 1000 个页面，只要首屏只用到 10 个，冷启动阶段就只会处理这 10 个页面的依赖。</li>
+</ul>
+</li>
+</ol>
+<p><strong>总结</strong></p>
+<p>Vite 的冷启动之所以能做到毫秒级，是因为它巧妙地利用了<strong>浏览器原生 ESM 的加载机制</strong>，将传统打包工具“<strong>自上而下全量打包</strong>”的负担，转移成了“<strong>浏览器按需发起请求，服务端即时编译</strong>”的轻量级交互。配合 esbuild 极速的预构建能力，彻底解决了大型项目冷启动慢的痛点。</p>
+<p>不过这种架构也并非完美，它带来了一些新挑战：比如开发环境因为大量模块请求，强依赖浏览器的网络并发能力（通常需要配合 HTTP/2）；同时，开发环境用 esbuild 编译，生产环境用 Rollup 打包，偶尔会存在“开发没问题，线上报错”的一致性问题。但整体来看，Vite 的这种工作流创新是对前端开发体验的一次巨大提升，也是目前前端构建工具演进的主流方向。</p>
+<p><strong>💡 面试技巧提示：</strong><br>如果面试官追问 <em>“Vite 是如何处理 <code>.vue</code> 文件的？”</em><br>你可以顺势回答：<strong>“Vite 内置了插件机制，当拦截到 <code>.vue</code> 的请求时，<code>@vitejs/plugin-vue</code> 插件会介入，将 SFC 解析成一个 JavaScript 模块，这个模块里包含了 <code>render</code> 函数，并附带了对 <code>template</code> 和 <code>style</code> 的额外 <code>import</code> 请求（如 <code>App.vue?type=template</code>）。浏览器拿到这个 JS 后，会再次发起新的请求去获取编译后的模板和样式，从而实现了 SFC 的按需拆解和热更新。”</strong> 这能直接证明你对 Vite 的插件机制和请求拦截有深入的理解。</p>
+<h2 id="Vite-的依赖预构建"><a href="#Vite-的依赖预构建" class="headerlink" title="Vite 的依赖预构建"></a>Vite 的依赖预构建</h2><p><strong>1.定义</strong></p>
+<p>依赖预构建是指 Vite 在首次启动开发服务器时，使用 esbuild 将 <code>node_modules</code> 中的第三方依赖打包成 ESM 格式并缓存到本地，以解决格式兼容和浏览器请求瀑布流问题。</p>
+<p><strong>2.核心原理</strong></p>
+<ul>
+<li><strong>格式转换（CJS to ESM）</strong>：很多第三方库（如 React）发布的是 CommonJS 或 UMD 格式，浏览器原生 ESM 无法直接 import，必须先转换为 ESM。</li>
+<li><strong>减少请求瀑布流</strong>：像 <code>lodash-es</code> 这样的库，内部包含几百个互相引用的小文件。如果不预构建，浏览器加载时会发出几百个嵌套的网络请求。Vite 通过 esbuild 将它们打包成单个文件，大幅减少请求数。</li>
+<li><strong>缓存复用</strong>：预构建的产物会被缓存到 <code>node_modules/.vite</code> 目录下。只要依赖版本没变，二次启动直接复用缓存，不再重新构建。</li>
+</ul>
+<h2 id="Vite-开发环境启动快"><a href="#Vite-开发环境启动快" class="headerlink" title="Vite 开发环境启动快"></a>Vite 开发环境启动快</h2><p><strong>1.定义</strong></p>
+<p>Vite 开发环境极速的核心原因在于，它放弃了传统的“先打包再启动”模式，转而利用浏览器原生的 ES 模块（ESM）能力，实现了“不打包、按需编译”。</p>
+<p><strong>2.核心原理</strong></p>
+<ul>
+<li><strong>No-Bundle 机制</strong>：Webpack 在启动时会从入口文件出发，递归构建完整的模块依赖图并打包成 Bundle，项目越大越慢。而 Vite 启动时只启动一个静态服务器，不进行任何打包操作。</li>
+<li><strong>按需编译</strong>：当浏览器通过 <code>&lt;script type=&quot;module&quot;&gt;</code> 请求某个模块时，Vite 服务器才拦截请求并即时编译（如将 TS 转为 JS、Vue SFC 转为 JS）后返回。</li>
+<li><strong>esbuild 加速</strong>：Vite 内部使用 Go 语言编写的 esbuild 来进行 TS/JSX 语法转化，速度比传统的 Babel 快几十倍。</li>
+</ul>
+<h2 id="Vite-生产用-Rollup-打包，而不用-esbuild"><a href="#Vite-生产用-Rollup-打包，而不用-esbuild" class="headerlink" title="Vite 生产用 Rollup 打包，而不用 esbuild"></a>Vite 生产用 Rollup 打包，而不用 esbuild</h2><p><strong>1.定义</strong></p>
+<p>Vite 在生产环境选择 Rollup 而非 esbuild，是因为 Rollup 在代码分割、Tree Shaking 深度和插件生态成熟度上，更符合生产环境对产物体积和优化的严苛要求。</p>
+<p><strong>2.核心原理</strong></p>
+<ul>
+<li><strong>代码分割能力</strong>：虽然 esbuild 极快，但它的代码分割能力目前还不够成熟和完善。而生产环境通常需要复杂的分包策略（如异步加载、提取 Vendor），Rollup 在这方面是业界标杆。</li>
+<li><strong>Tree Shaking 深度</strong>：Rollup 的静态分析能力非常强大，能剔除更深层次的死代码，产物体积更小。</li>
+<li><strong>生态与插件</strong>：Rollup 拥有大量成熟的输出优化插件，Vite 官方也内置了诸多基于 Rollup 机制的插件来处理 CSS 抽离、静态资源处理等。</li>
+</ul>
+<p>Vite 官方团队目前正在开发基于 Rust 的打包工具 <strong>Rolldown</strong>，未来计划用它替换掉 Rollup，以统一开发和生产环境的打包底层，彻底解决 Rollup 在超大型项目中打包速度较慢的问题。</p>
+<h2 id="Vite-的插件机制"><a href="#Vite-的插件机制" class="headerlink" title="Vite 的插件机制"></a>Vite 的插件机制</h2><p><strong>1.定义</strong></p>
+<p>Vite 的插件本质上是一个包含各种生命周期钩子的 JavaScript 对象，它基于 Rollup 的插件接口设计，并扩展了 Vite 独有的环境钩子，能够同时兼容大部分 Rollup 插件。</p>
+<p><strong>2.核心原理</strong></p>
+<ul>
+<li><strong>Rollup 插件兼容</strong>：Vite 在生产环境直接使用 Rollup 打包，因此 Vite 插件完全兼容 Rollup 的标准钩子（如 <code>resolveId</code>、<code>load</code>、<code>transform</code>）。</li>
+<li><strong>Vite 专属钩子</strong>：为了处理开发环境的服务器逻辑，Vite 扩展了特有的钩子，例如 <code>config</code>（修改 Vite 配置）、<code>configureServer</code>（配置开发服务器，常用于写中间件）、<code>transformIndexHtml</code>（转换入口 HTML）。</li>
+</ul>
+<p><strong>3.代码示例</strong></p>
+<p>手写Vite 插件，用于在开发服务器上添加一个自定义路由：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// vite-plugin-my-custom.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">myCustomPlugin</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;vite-plugin-my-custom&#x27;</span>, <span class="comment">// 必填，插件名称</span></span><br><span class="line">    <span class="comment">// Vite 独有钩子：配置开发服务器</span></span><br><span class="line">    <span class="title function_">configureServer</span>(<span class="params">server</span>) &#123;</span><br><span class="line">      server.<span class="property">middlewares</span>.<span class="title function_">use</span>(<span class="string">&#x27;/my-api&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">        res.<span class="title function_">end</span>(<span class="string">&#x27;Hello from custom Vite plugin!&#x27;</span>);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// Rollup 通用钩子：转换代码</span></span><br><span class="line">    <span class="title function_">transform</span>(<span class="params">code, id</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (id.<span class="title function_">endsWith</span>(<span class="string">&#x27;.js&#x27;</span>)) &#123;</span><br><span class="line">        <span class="comment">// 对 JS 代码进行某种转换</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> code;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>4.对比延伸</strong></p>
+<ul>
+<li><strong>复杂度</strong>：Webpack 插件基于 <code>Tapable</code> 事件流，高度耦合于 <code>Compiler</code> 和 <code>Compilation</code> 对象，学习曲线陡峭；Vite 插件则是扁平化的对象配置，钩子名即生命周期，更直观易懂。</li>
+<li><strong>生态复用</strong>：Webpack 插件只能用于 Webpack；而 Vite 可以直接复用大量现成的 Rollup 插件，生态融合度很高。</li>
+</ul>
+<p><strong>5.总结</strong></p>
+<p>Vite 的插件机制巧妙地在 Rollup 坚实的基础上做了扩展，既保证了生产打包的通用性，又满足了开发服务器的定制需求。相比 Webpack，它的设计更加现代、扁平、易于理解。</p>
+<h1 id="高级"><a href="#高级" class="headerlink" title="高级"></a>高级</h1><h2 id="Vite-优化策略"><a href="#Vite-优化策略" class="headerlink" title="Vite 优化策略"></a>Vite 优化策略</h2><p>Vite 的核心优化理念是<strong>“在开发环境利用原生 ESM 和 esbuild 实现极速启动，在生产环境利用 Rollup 实现高质量的代码打包”</strong>。</p>
+<p>在实际项目中，Vite的优化策略主要分为三个维度：<strong>开发阶段的构建优化</strong>、<strong>生产环境的打包优化</strong>，以及<strong>工程化配置优化</strong>。</p>
+<p><strong>一、 开发阶段的优化（为什么 Vite 启动快）</strong></p>
+<ol>
+<li>依赖预构建：<ul>
+<li>Vite 在启动时会使用 <strong>esbuild</strong>（基于 Go 语言编写，速度极快）将项目中的第三方依赖（CommonJS/UMD 格式）打包成 ESM 格式。</li>
+<li>这不仅减少了网络请求次数，还将依赖缓存在 <code>node_modules/.vite</code> 目录下，二次启动几乎零耗时。</li>
+</ul>
+</li>
+<li>源码按需编译：<ul>
+<li>与 Webpack 需要将所有模块打包成一个 Bundle 不同，Vite 直接利用浏览器原生 ESM 支持。</li>
+<li>只有浏览器请求某个模块时，Vite 才在服务端对该模块进行编译（Transform）。这避免了随着项目增大导致的冷启动时间线性增长。</li>
+</ul>
+</li>
+<li>精准的模块热替换（HMR）：<ul>
+<li>Vite 通过 ESM 的导入关系图，能精确计算出需要失效的模块边界。修改某个组件时，只重新编译并替换该组件及其关联模块，不会让整个页面状态丢失，大幅提升开发体验。</li>
+</ul>
+</li>
+</ol>
+<p><strong>二、 生产环境的打包优化（如何提升线上性能）</strong></p>
+<ol>
+<li>基于 Rollup 的 Tree-shaking：<ul>
+<li>Vite 生产环境使用 Rollup 进行打包，原生支持极其完善的 Tree-shaking，能够自动剔除未使用的代码，减小最终包体积。</li>
+</ul>
+</li>
+<li>代码分割：<ul>
+<li>Vite 会自动进行代码分割，例如将动态导入（<code>import()</code>）的模块拆分成单独的 chunk。</li>
+<li><strong>手动优化：</strong> 可以通过 <code>build.rollupOptions.output.manualChunks</code> 配置，将第三方库（如 Vue、React、Lodash）单独拆分，利用浏览器缓存，避免业务代码变动导致第三方库重复加载。</li>
+</ul>
+</li>
+<li>CSS 代码分割与压缩：<ul>
+<li>Vite 会自动提取异步组件中的 CSS 到单独文件，并在生产环境使用 esbuild 进行压缩，减少主包体积。</li>
+</ul>
+</li>
+<li>静态资源处理：<ul>
+<li>通过 <code>build.assetsInlineLimit</code> 配置（默认 4096 字节），将小尺寸图片直接转为 Base64 内联到 JS/CSS 中，减少 HTTP 请求。</li>
+</ul>
+</li>
+</ol>
+<p><strong>三、 工程化配置层面的优化（实际项目中的进阶操作）</strong></p>
+<ol>
+<li>细化预构建配置：<ul>
+<li>在 <code>vite.config.js</code> 中通过 <code>optimizeDeps.include</code> 主动声明需要预构建的包，避免在开发过程中因遇到新依赖而触发“重新预构建”导致页面卡顿。</li>
+</ul>
+</li>
+<li>CDN 外部化：<ul>
+<li>对于体积大且不常变动的库（如 Vue、Echarts），可以通过 <code>rollupOptions.external</code> 将其外置，并在 HTML 中通过 CDN 引入，极大降低服务端打包压力和客户端下载体积。</li>
+</ul>
+</li>
+<li>组件与 API 按需引入：<ul>
+<li>结合 <code>unplugin-vue-components</code> 和 <code>unplugin-auto-import</code> 插件，实现 UI 组件库（如 Element Plus、Vant）和 Vue API 的自动按需引入，无需手动写 <code>import</code>。</li>
+</ul>
+</li>
+<li>开启 Gzip / Brotli 压缩：<ul>
+<li>使用 <code>vite-plugin-compression</code> 插件，在打包时生成 <code>.gz</code> 或 <code>.br</code> 文件，配合 Nginx 开启静态压缩，大幅减少网络传输体积。</li>
+</ul>
+</li>
+<li>图片资源优化：<ul>
+<li>使用 <code>vite-plugin-imagemin</code> 对项目中的图片进行无损压缩，或者升级使用 WebP 等现代图片格式。</li>
+</ul>
+</li>
+</ol>
+<p><strong>总结</strong></p>
+<p>Vite 通过底层架构的改变，解决了 Webpack 时代的冷启动慢和 HMR 性能瓶颈问题。<br>在实际项目落地时，除了 Vite 提供开箱即用的默认优化外，<strong>作为开发者，我们重点要关注 <code>optimizeDeps</code> 的预构建微调、<code>manualChunks</code> 的代码分割策略，以及结合 CDN 和压缩插件进行深度体积优化</strong>。<br>另外，虽然 Vite 很快，但在大型项目中，我们还需要结合 SWC 或 Babel 的定制化插件来处理特定的语法兼容问题，这也是目前 Vite 构建体系下的一个延伸优化方向。</p>
+<p><strong>💡 面试技巧提示：</strong><br>如果面试官追问 <em>“Vite 开发环境用 esbuild，生产环境用 Rollup，会不会有问题？”</em><br>你可以回答：<strong>“确实存在开发与生产构建不一致的风险（如某些 API 表现不同）。但在实践中，Vite 团队一直在做抹平差异的工作，且 Rollup 的产物更干净、Tree-shaking 更强，这种取舍在大型项目中是合理且收益最大的。”</strong> 这会极大体现你的技术深度和批判性思维。</p>
+<h2 id="Vite-的-HMR更快"><a href="#Vite-的-HMR更快" class="headerlink" title="Vite 的 HMR更快"></a>Vite 的 HMR更快</h2><p><strong>1.定义</strong></p>
+<p>Vite 的 HMR 速度极快是因为它不需要像 Webpack 那样重新编译模块依赖图，而是直接通过 WebSocket 通知浏览器去单独请求那个被修改的文件。</p>
+<p><strong>2.核心原理</strong></p>
+<ul>
+<li><strong>精确通知</strong>：当文件被修改时，Vite 服务端找到受影响的模块，通过 WebSocket 发送一个消息，里面只包含修改文件的绝对路径。</li>
+<li><strong>按需拉取</strong>：浏览器端的 HMR 客户端收到消息后，直接通过动态 <code>import()</code> 重新请求该文件的最新版本（带时间戳防缓存）。</li>
+<li><strong>无依赖重编</strong>：因为原生 ESM 天然支持按需加载，Vite 完全不需要把其他未修改的关联模块重新打包。</li>
+</ul>
+<p><strong>3.对比延伸</strong></p>
+<ul>
+<li><strong>Webpack 的 HMR 痛点</strong>：Webpack 修改一个文件后，需要从该文件向上追溯到受影响的 Chunk，重新编译这个 Chunk 及其依赖图，然后将整个 Chunk 的 JS 推送到浏览器替换。项目越大，重编译耗时越长。</li>
+<li><strong>Vite 的优势</strong>：Vite 的 HMR 耗时只取决于单文件的编译时间（通常几毫秒），与项目整体规模完全解耦。</li>
+</ul>
+<p><strong>4.总结</strong></p>
+<p>Vite 的 HMR 充分发挥了 No-Bundle 架构的优势，将热更新粒度精细到了单文件级别，实现了修改即生效的丝滑体验，彻底摆脱了大型项目中 Webpack 热更新卡顿的顽疾。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2021/03/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_Vite/" title="前端工程化_Vite" target="_blank" rel="external">https://fuyunjinglong.github.io/2021/03/01/C_高级_前端工程化_Vite/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/04/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_Monorepo/" title="前端工程化_Monorepo"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2021/02/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96_webpack/" title="前端工程化_webpack"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <!-- <script src="//cdn.jsdelivr.net/npm/valine"></script> -->
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

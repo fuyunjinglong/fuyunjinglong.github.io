@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>智泊-大模型应用开发  </title>
+  <meta name="description" content="测试大纲大模型开发基础主要内容 · 人工智能发展史 · 大模型发展现状 · 机器学习 · 深度学习 · 算力 · Transformer · python基础 · pycharm · Prompt · CoT · Self-Consistency · ToT · Prompt Engineering实战 · python编程技能预科学习 · Prompt项目实战集 特色亮点 1.适合零基础、微基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="智泊-大模型应用开发">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2002/02/01/A1_LLM_%E6%99%BA%E6%B3%8A/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="测试大纲大模型开发基础主要内容 · 人工智能发展史 · 大模型发展现状 · 机器学习 · 深度学习 · 算力 · Transformer · python基础 · pycharm · Prompt · CoT · Self-Consistency · ToT · Prompt Engineering实战 · python编程技能预科学习 · Prompt项目实战集 特色亮点 1.适合零基础、微基础">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2002-02-01T00:33:16.000Z">
+<meta property="article:modified_time" content="2026-10-19T13:41:36.292Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2002/02/01/A1_LLM_%E6%99%BA%E6%B3%8A/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A1-LLM/">A1_LLM</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E5%88%9D%E7%BA%A7/">A_初级</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-%E4%B8%AD%E7%BA%A7/">B_中级</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E9%AB%98%E7%BA%A7/">C_高级</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E8%A7%84%E5%88%92/">D_规划</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/04/">四月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/01/">一月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2098/01/">一月 2098</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">七月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">一月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/03/">三月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/02/">二月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/01/">一月 2004</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/06/">六月 2003</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/01/">一月 2003</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/06/">六月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/02/">二月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/01/">一月 2002</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/06/">六月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/03/">三月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/02/">二月 2001</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/01/">一月 2001</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/06/">六月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/03/">三月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/02/">二月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/01/">一月 2000</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/04/04/%E6%A8%A1%E6%9D%BFX/" class="title">模板X</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-04-04T00:33:16.000Z" itemprop="datePublished">2099-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/03/29/Z_%E5%90%8E%E7%AB%AF_Java/" class="title">Java</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-03-28T23:33:16.000Z" itemprop="datePublished">2099-03-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/01/01/G_%E5%85%B6%E4%BB%96_%E4%B9%A6%E5%8D%95/" class="title">书单</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-01-01T00:33:16.000Z" itemprop="datePublished">2099-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A1-LLM/">A1_LLM</a>
+              </p>
+              <p class="item-title">
+                <a href="/2098/01/01/A1_LLM_windows%E5%AE%89%E8%A3%85%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="title">LLM_windows安装大模型</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2097-12-31T22:33:16.000Z" itemprop="datePublished">2098-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2026/07/18/Test%20copy/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2026-07-18T02:11:18.292Z" itemprop="datePublished">2026-07-18</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-number">1.</span> <span class="toc-text">测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%A7%E7%BA%B2"><span class="toc-number">2.</span> <span class="toc-text">大纲</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80"><span class="toc-number">2.1.</span> <span class="toc-text">大模型开发基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E6%A8%A1%E5%9E%8BRAG%E5%BA%94%E7%94%A8%E5%B7%A5%E7%A8%8B"><span class="toc-number">2.2.</span> <span class="toc-text">大模型RAG应用工程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Agent%E6%99%BA%E8%83%BD%E4%BD%93%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="toc-number">2.3.</span> <span class="toc-text">Agent智能体架构设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LLM%E5%BE%AE%E8%B0%83%E4%B8%8E%E7%A7%81%E6%9C%89%E5%8C%96%E9%83%A8%E7%BD%B2"><span class="toc-number">2.4.</span> <span class="toc-text">LLM微调与私有化部署</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RAG%E7%9F%A5%E8%AF%86%E5%BA%93%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98"><span class="toc-number">2.5.</span> <span class="toc-text">RAG知识库开发实战</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Agent%E6%99%BA%E8%83%BD%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98"><span class="toc-number">2.6.</span> <span class="toc-text">Agent智能开发实战</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%AE%E8%B0%83%E4%B8%8E%E7%A7%81%E6%9C%89%E5%8C%96%E9%83%A8%E7%BD%B2%E5%AE%9E%E6%88%98"><span class="toc-number">2.7.</span> <span class="toc-text">微调与私有化部署实战</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DeepResearch%E5%AE%9E%E6%88%98%E8%AF%BE"><span class="toc-number">2.8.</span> <span class="toc-text">DeepResearch实战课</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E7%94%B5%E5%95%86%E7%B3%BB%E7%BB%9F%E5%B9%B3%E5%8F%B0%E7%9A%84%E5%85%A8%E6%B5%81%E7%A8%8B%E4%BB%BB%E5%8A%A1%E8%A7%84%E5%88%92%E7%9A%84Agent-Copilot%E5%B7%A5%E5%85%B7"><span class="toc-number">2.9.</span> <span class="toc-text">基于电商系统平台的全流程任务规划的Agent Copilot工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%81%E4%B8%9A%E7%BA%A7HR%E6%99%BA%E8%83%BD%E4%BD%93%E5%B9%B3%E5%8F%B0%EF%BC%9A%E4%BB%8E%E8%87%AA%E5%8A%A8%E5%8C%96%E5%88%B0%E6%99%BA%E8%83%BD%E5%8C%96%E7%9A%84%E5%85%A8%E6%A0%88%E5%AE%9E%E6%88%98"><span class="toc-number">2.10.</span> <span class="toc-text">企业级HR智能体平台：从自动化到智能化的全栈实战</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-A1_LLM_智泊" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      智泊-大模型应用开发
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2002/02/01/A1_LLM_%E6%99%BA%E6%B3%8A/" class="article-date">
+	  <time datetime="2002-02-01T00:33:16.000Z" itemprop="datePublished">2002-02-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/A1-LLM/">A1_LLM</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2002/02/01/A1_LLM_%E6%99%BA%E6%B3%8A/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><h1 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h1><h2 id="大模型开发基础"><a href="#大模型开发基础" class="headerlink" title="大模型开发基础"></a>大模型开发基础</h2><p><strong>主要内容</strong></p>
+<p>· 人工智能发展史 · 大模型发展现状 · 机器学习 · 深度学习 · 算力 · Transformer · python基础 · pycharm · Prompt · CoT · Self-Consistency · ToT · Prompt Engineering实战 · python编程技能预科学习 · Prompt项目实战集</p>
+<p><strong>特色亮点</strong></p>
+<p>1.适合零基础、微基础学员，从基础开始构建AI的知识体系；<br>2.更实用，AI时代，对代码能力要求降低，更多的是编程思维的培养，利用AI解决实际问题<br>3.更高效，把更多精力用在实战上,彻底掌握提示词工程所需要具备的基础技能；<br>4.重思维培养，让思维跟上大模型的技术发展，进行同频。</p>
+<p><strong>掌握能力</strong></p>
+<p>1.掌握大模型到底是什么，原理是怎样的，费用消耗的基本计算逻辑；<br>2.掌握Pyhton编程的基本流程；<br>3.掌握Prompt Engineer的基本方案，设计高效创新的Prompt方案，提升AI模型的质量;<br>4.结合行业需求，研究并应用Prompt策略，推动智能客服、内容生成、营销等业务场景的方案落地;<br>5.跟踪AI生成式技术最新进展，持续探索Prompt工程技术的新方法和新思路</p>
+<h2 id="大模型RAG应用工程"><a href="#大模型RAG应用工程" class="headerlink" title="大模型RAG应用工程"></a>大模型RAG应用工程</h2><p><strong>主要内容</strong></p>
+<p>· RAG三大范式、文档切片、chunks、Embedding技术、Top-K、向量数据库、Langchain 应用及原理、Document loaders、Retrievers检索、向量存储方案、Memory、Tools/Toolkits、chain、文档切分粒度、Reranking、T- RAG、CRAG、self-RAG、GraphRAG、RAG-Fusion、R-R-R RAG、Pre-Retrieval预检索、检索优化、摘要检索、 父子索引、假设性问题索引、元数据索引、Enrich完善问题、Multi-Query、Decomposition 问题分解、混合检索、重排序、Reranker模型、 LongContextReorder、RAG-Fusion、RRF、上下文压缩、RAG评估、人工评估、自动化评估、检索评估、响应评估、Ragas、QAnything、 FastGPT、Dify、Docker部署、Ollama、多模态RAG、RAG项目实战集</p>
+<p><strong>特色亮点</strong></p>
+<p>\1. 从RAG基础入门，全面掌握RAG的技术边界，相关的算法思路，及优化方向；<br>\2. 从实战入手，每一个技术方案都通过实战进行落地，从工程维度全面完成掌握技术落地全流程；<br>\3. 技术内容是否有编程经验都可以进行学习，侧重技术思想的落地思路及方案设计；<br>\4. 多模态RAG，全面提升知识库准确率，为实际场景中的大量不规则数据的落地实现提供实际经验；</p>
+<p><strong>掌握能力</strong></p>
+<p>1.熟练掌握大模型的技术边界，知道RAG全流程以及什么可以做什么不可以做，技术落地方案等细节；<br>2.熟悉ragﬂow框架，精通LangChain和LlamaIndex框架开发，掌握向量数据库的嵌入优化技术；<br>3.熟悉文档分块、查询扩展、相关性排序等RAG全链路技术；<br>4.完成典型RAG场景下的链路构建与部署优化，包括通过内容抽取、文本切片进行知识库构建；<br>5.熟练掌握优化检索、重排序、生成模型的部署方式，提升推理效率；<br>6.与系统部分配合进行RAG模块的快速部署与迭代；<br>7.完成 RAG 相关的数据工程和文档数据处理能力建设；</p>
+<h2 id="Agent智能体架构设计"><a href="#Agent智能体架构设计" class="headerlink" title="Agent智能体架构设计"></a>Agent智能体架构设计</h2><p><strong>主要内容</strong></p>
+<p>Agent原理、Planing规划、子任务分解方案、CoT、ToT、反思与改进、ReAct架构、Memory机制、 Tools/Toolkits、 Single-Agent、Multi-Agent、Function Calling工具应用、Auto_functions、Plan-and-Execute架构、Self-Ask架构解析、Thinking and Self-Reﬂection架构解析、AutoGen、AssistantAgent架构实践、AutoGen Studio、CrewAI、LangGraph专题、MCP专题、LlamaIndex、Agent项目实战集</p>
+<p><strong>特色亮点</strong></p>
+<p>1.从Agent基础入门，全面掌握Agent的技术边界，项目难点和亮点评估；<br>2.从实战入手，全面实践国内外主流Agent平台和应用的开发；<br>3.从实战入手，逐步掌握Agent的迭代分析，并能够不断的优化Agent的效果；<br>4.从产品的需求拆解出发，设计相关的技术方案确保业务系统的研发落地；<br>5.从产品出发，提供全链路解决方案：企业知识库构建、工作流设计、智能体落地，能力评估等全流程解决方案；</p>
+<p><strong>掌握能力</strong></p>
+<p>1.熟练掌握Agent技术的迭代分析能力；<br>2.熟悉coze、dify等智能体开发框架、掌握AutoGen、AssistantAgent等Agent搭建架构并能够付诸实践；<br>3.熟悉实现基于LLM的Agent架构，包括工作流框架、自主规划框架(规划、反思、记忆、执行)、对话管理、向量检索的能力；<br>4.掌握Agent引擎以及记忆相关模块的设计和开发；<br>5.理解Agent场景下模型能力提升，优化模型对指令的遵循能力；</p>
+<h2 id="LLM微调与私有化部署"><a href="#LLM微调与私有化部署" class="headerlink" title="LLM微调与私有化部署"></a>LLM微调与私有化部署</h2><p><strong>主要内容</strong></p>
+<p>·Transformer架构详解、大模型开源生态、Fine-Tuning、数据集收集、数据集清洗、PEFT、LoRA微调、Adapter Tuning、Prompt Tuning、P-Tuning、Freeze微调、QLoRA、AdaLoRA、LongLoRA、LLM性能和能力评估、大模型 量化算法、AWQ、GPTQ、MoPaaS算力平台解析、Multi-Model，多模态大模型架构流程解析，多模态核心标准交 叉注意力原理、多模态融合层技术原理，不同多模态大模架构选择场景解析、多模态模型训练样例解析、私有化本地 化部署DeepSeek实战，医疗行业为例的微调实战，多模型实例解析。</p>
+<p><strong>特色亮点</strong></p>
+<p>1.博士专家授课，实战和理论相结合，从原理层面彻底理解微调的方式和方法；<br>2.实战演练，从商业级实战项目中深入理解主流大模型的原理，结构以及微调相关的技术；<br>3.自主研发多机多卡算力平台，无缝对接国产算力与NVIDIA算力，大幅减少学员学习研究所需算力成本；<br>4.跟随大模型专家，时刻跟进世界最前沿大模型技术，掌握最新大模型动态；<br>5.重思维培养，包括大模型构建的基本逻辑，深入思考大模型发展动向，跟随大模型技术迭代发展方向；</p>
+<p><strong>掌握能力</strong></p>
+<p>1.熟悉大模型微调流程，并掌握主要模型微调技术手段，例如LoRA、Adapter Tuning、Prompt Tuning等；<br>2.掌握大模型微调的策略，包括选择合适的预训练模型、微调的数据集、以及微调的深度和范围等技术；<br>3.理解大模型相关的训练&amp;推理技术，包括多机多卡、全参微调、PEFT、加速、蒸馏、高质量数据构建；<br>4.熟悉多模态大模型原理；<br>5.掌握算力平台的并发和开发环境搭建和运维工作，熟练掌握显卡的并发部署相关的技能；<br>6.掌握微调过程中的数据进行预处理和分析，确保数据集的质量和适用性，评估和分析微调结果，调整模型以提高其性能；<br>7.熟悉掌握大模型的量化和服务部署相关的技术；</p>
+<h2 id="RAG知识库开发实战"><a href="#RAG知识库开发实战" class="headerlink" title="RAG知识库开发实战"></a>RAG知识库开发实战</h2><p><strong>主要内容</strong></p>
+<p>·四大AI实战项目为学习者提供了从数据采集到智能应用的完整技术闭环：</p>
+<p> 1）微博舆情系统【热搜洞察】通过 FastGPT工作流+Function Calling机制，教会你如何用爬虫抓取实时数据并转化为语义洞察； 2）医疗混合检索系统 创新性地融合Elasticsearch关键词检索与FAISS向量搜索，是学习专业领域语义理解的典型案例； 3）LangChain文档 助手采用BM25+BGE模型混合检索+RAGAS评估框架，展示了企业知识管理的全流程解决方案； 4）多模态RAG系统 突破性地整合图文摘要技术，为处理复杂文档提供了两种可复用的技术路径。每个项目都包含数据处理、模型选型、 系统集成等关键环节，是掌握AI工程化的优质学习素材。</p>
+<p><strong>特色亮点</strong></p>
+<p>1.前沿技术融合，微博系统创新性采用FastGPT工作流+Function Calling机制实现动态语义分析；<br>2.混合检索突破，医疗系统首创Elasticsearch关键词检索与FAISS向量搜索双引擎架构；<br>3.全流程解决方案，LangChain项目集成BM25/BGE/重排序技术链+RAGAS评估体系；<br>4.多模态创新实践，图文问答系统开创摘要生成与多模态向量双路径RAG策略；<br>5.工业级落地能力，所有项目均配备Gradio交互界面并支持主流数据库和文档格式。</p>
+<p><strong>掌握能力</strong></p>
+<p>1.掌握实时数据采集与结构化处理能力，包括微博爬虫开发、MySQL数据库设计与知识库构建技术；<br>2.具备RAG全流程实现经验，涵盖文档解析、多模态嵌入、重排序优化及RAGAS评估体系搭建；<br>3.掌握多模态处理核心技术，包括图文摘要生成、跨模态向量对齐及多模态大模型交互方案设计；<br>4.具备工业级AI系统交付能力，尤其是在提升RAG知识库准确率，召回率方面有实际的优化能力；<br>5.掌握典型RAG场景下的链路构建与部署优化，包括通过内容抽取、文本切片进行知识库构建，混合检索的实际项目落地经验。</p>
+<h2 id="Agent智能开发实战"><a href="#Agent智能开发实战" class="headerlink" title="Agent智能开发实战"></a>Agent智能开发实战</h2><p><strong>主要内容</strong></p>
+<p>·Agent案例：探索AI交互与个性化服务的创新边界 ·1）命理Agent机器人融合LangChain与FastAPI，以独特人设驱动对话，实践情绪识别与长期记忆管理，打造沉浸式 AI交互体验； ·2）AI模拟面试机器人通过Gradio+Flask框架，集成LLM、STT、TTS技术，提供真实面试模拟，助力面试技巧提升； ·3）AI虚拟面试官结合虚拟形象与RAG技术，实现多模态交互与情绪自适应反馈，构建高效备考工具； ·4）多代理协作短视频生成利用AutoGen框架，自动化生成高质量短视频，展现AI内容创作的无限可能。每个项目均 涵盖数据采集、模型集成、系统部署等关键步骤，是学习AI工程化、构建创新应用的绝佳素材。</p>
+<p><strong>特色亮点</strong></p>
+<p>1.技术闭环构建：从感知-规划-行动基础框架到混合检索（Elasticsearch+FAISS）、RAGAS评估等进阶方案，系 统掌握Agent的”神经感官系统”设计方法论；<br>2.场景化实战：覆盖命理对话、模拟面试等交互场景，结合LangChain/FastAPI等技术栈实现记忆管理、多模态响 应等核心能力；<br>3.动态优化体系：通过Function Calling机制实现工具调用扩展，配合强化学习框架完成决策策略的持续迭代；<br>4.商业级交付：参考企业级案例（如实在Agent），学习从需求分析到工作流编排的全链路解决方案，包括知识库 构建、API集成等关键环节；<br>5.行业前沿适配：吸收医疗、金融等领域的321个落地案例经验，掌握不同场景下的技术选型与效果评估方法论。</p>
+<p><strong>掌握能力</strong></p>
+<p>1）智能体开发全流程：熟练运用Coze/Dify等低代码平台及AutoGen框架，完成从原型设计到生产部署的全链路开 发；<br>2）架构设计能力：构建包含工作流引擎、记忆管理、自主规划（Plan-Reflect-Act循环）的完整Agent系统；<br>3）关键技术实现：掌握混合检索（BM25+向量库）、多轮对话状态跟踪、工具调用（Function Calling）等核心模 块开发；<br>4）效果优化方法论：通过RAGAS评估框架持续优化响应质量，提升指令遵循度与领域适应性；<br>5）工程化思维：学习如何将多个行业案例经验转化为可落地的技术方案，涵盖金融、医疗等垂直领域。这些能力形 成AI工程师的竞争力闭环，助你从理论研究者蜕变为产业级解决方案提供者。</p>
+<h2 id="微调与私有化部署实战"><a href="#微调与私有化部署实战" class="headerlink" title="微调与私有化部署实战"></a>微调与私有化部署实战</h2><p><strong>主要内容</strong></p>
+<p>·1）医疗领域大模型微调与评估：通过监督微调（SFT）技术，本项目以Qwen2.5为基座模型，针对医疗问答、术语 规范化等任务进行优化，展示了从数据准备到效果评估的完整流程。学习者将掌握大模型在垂直领域的应用潜力，以 及如何通过微调提升模型的专业性和准确性。 ·2）医疗影像多模态智能分析系统：基于多模态大模型Qwen2-VL，通过LoRA微调技术构建智能辅助诊断系统，实现 医学影像与自然语言的跨模态理解。该项目不仅教会学习者如何对多模态模型进行微调，还涵盖了数据预处理、模型 部署及API接口构建等关键环节，是探索AI在医疗影像分析领域应用的绝佳实践。 ·3）DeepSeek-R1-Distill-Qwen 私有化部署：本项目以DeepSeek-R1模型为例，利用vLLM框架进行高效快速部 署，并考虑模型性能与资源占用影响。学习者将全面了解从模型微调、轻量化到部署的全流程，为构建高效、实用的 AI应用打下坚实基础。每个项目均包含数据处理、模型选型、系统集成等关键环节，是掌握AI工程化技能的优质学习 素材。</p>
+<p><strong>特色亮点</strong></p>
+<p>1.专家级知识传承：由大模型领域博士团队亲自授课，采用”理论推演+代码实操”双轨模式，带您深入理解LoRA、 Adapter等前沿微调技术的数学原理与工程实现；<br>2.真实商业场景复现：基于医疗问答、金融风控等真实业务场景设计实验，使用Qwen、GLM等主流开源模型， 让学员在复现行业解决方案的过程中掌握微调核心技术；<br>3.国产化算力解决方案：提供自主搭建的分布式训练平台，支持曙光/NVIDIA多卡并行，配套完善的监控系统，使 单卡训练成本降低70%；<br>4.技术前瞻性培养：课程内容每月更新，涵盖模型量化、多模态对齐等最新技术动向，培养学员持续跟踪arXiv论 文的技术嗅觉；<br>5.系统思维塑造：通过”数据清洗-模型选型-效果评估”全流程实战，帮助学员建立从实验室到生产环境的完整技术 思维框架。</p>
+<p><strong>掌握能力</strong></p>
+<p>1）垂直领域模型优化能力，包括监督微调（SFT）、LoRA等主流微调技术，以及医疗、金融等专业场景的适配方 法；<br>2）多模态模型处理能力，学会对视觉-语言模型进行联合微调，实现跨模态理解与生成；<br>3）量化部署全流程，从量化压缩到API接口开发，掌握生产环境部署关键技能；<br>4）效果评估体系，构建包括准确率、响应速度、资源占用等维度的完整评估方案；<br>5）工程化思维，通过DeepSeek等项目的完整开发链路，培养从数据准备到上线运维的全局视角。这些能力将帮助 您突破”只会调参”的局限，真正具备打造行业级AI解决方案的实力。</p>
+<h2 id="DeepResearch实战课"><a href="#DeepResearch实战课" class="headerlink" title="DeepResearch实战课"></a>DeepResearch实战课</h2><p><strong>项目亮点</strong></p>
+<p>1.业务价值驱动：解决“信息过载+决策风险”两大痛点，覆盖科研、金融、法律、商业等高频场景<br>2.技术栈前沿：LangGraph+多智能体+阿里云MCP，构建可落地的DeepResearch系统<br>3.系统化实战：从RAG演进到DeepResearch，从状态图设计到部署上线，全程代码实操<br>4.企业级优化：支持研究计划生成、稳定性保障、多轮反思、可信溯源，具备工业级可靠性</p>
+<p><strong>项目目标</strong></p>
+<p>1.构建自主规划、多轮检索、带反思能力的AI研究Agent<br>2.使用StateGraph设计复杂推理流程<br>3.集成Qwen+阿里云MCP实现高性能Web检索<br>4.部署具备前端界面的完整DeepResearch系统</p>
+<p><strong>技术栈清单</strong></p>
+<p>1.框架：LangGraph, LangChain, FastAPI, React,TypeScript<br>2.模型：Qwen系列（通义千问）<br>3.云服务：阿里云百炼平台、MCP工具中心<br>4.工具:Miniconda,Vite, Tailwind CSS, Radix Ul</p>
+<h2 id="基于电商系统平台的全流程任务规划的Agent-Copilot工具"><a href="#基于电商系统平台的全流程任务规划的Agent-Copilot工具" class="headerlink" title="基于电商系统平台的全流程任务规划的Agent Copilot工具"></a>基于电商系统平台的全流程任务规划的Agent Copilot工具</h2><p><strong>项目亮点</strong></p>
+<p>1.真实业务场景：基于电商订单处理全流程，覆盖OMS、WMS、TMS多系统协同（仿真系统）<br>2.全栈技术实战：Python+Flask+React+Milvus+MongoDB，从后端到前端完整实现<br>3.工业级架构思维：重点解决Bad Case、边缘场景、系统稳定性等实际问题</p>
+<p><strong>项目目标</strong></p>
+<p>1.掌握Agent任务分解、工具选择、动态调整的核心算法<br>2.构建可处理复杂业务流程的智能Copilot系统<br>3.获得处理真实业务场景中BadCase的系统化方法论<br>4.建立AI应用架构思维，具备设计企业级智能体能力</p>
+<p><strong>技术栈清单</strong></p>
+<p>1.核心框架：Agent任务规划、工具选择、参数提取、工具调用、响应生成<br>2.数据层：MongoDB数据库+Milvus向量数据库+向量召回模型<br>3.服务层：Flask API服务+React交互界面<br>4.模型层：大语言模型API深度集成与优化</p>
+<h2 id="企业级HR智能体平台：从自动化到智能化的全栈实战"><a href="#企业级HR智能体平台：从自动化到智能化的全栈实战" class="headerlink" title="企业级HR智能体平台：从自动化到智能化的全栈实战"></a>企业级HR智能体平台：从自动化到智能化的全栈实战</h2><p><strong>项目亮点</strong></p>
+<p>1.真实业务痛点驱动：精准解决招聘效率低、培训成本高、知识分散、系统割裂四大HR核心痛点<br>2.全栈技术深度融合：Dify工作流+FastAPI &amp; LangChain后端+Vue3前端+PostgreSQL，掌握完整技术链<br>3.企业级架构思维：设计AI大脑+业务系统+自动化的端到端架构，具备工业级系统搭建能力<br>4.核心技术全覆盖：RAG、工作流编排、多路召回、向量数据库等前沿技术深度应用</p>
+<p><strong>项目目标</strong></p>
+<p>1.架构设计能力：企业级AI应用架构思维<br>2.全栈开发能力：前后端+数据库+AI集成<br>3.工程化思维：效果评估、性能优化、成本控制<br>4.技术整合能力：多技术栈协同与调试</p>
+<p><strong>技术栈清单</strong></p>
+<p>1.应用框架：Dify(私有化部署）|后端：FastAPI+PostgreSQL+pgvector<br>2.前端：Vue3<br>3.核心算法：RAG、向量检索、BM25、多路召回</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2002/02/01/A1_LLM_%E6%99%BA%E6%B3%8A/" title="智泊-大模型应用开发" target="_blank" rel="external">https://fuyunjinglong.github.io/2002/02/01/A1_LLM_智泊/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2002/06/01/B_%E4%B8%AD%E7%BA%A7_TypeScript/" title="TypeScript"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2002/01/01/B_%E4%B8%AD%E7%BA%A7_%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86_pinia/" title="状态管理_pinia"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <!-- <script src="//cdn.jsdelivr.net/npm/valine"></script> -->
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

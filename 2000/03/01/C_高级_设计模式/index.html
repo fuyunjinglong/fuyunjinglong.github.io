@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>设计模式  </title>
+  <meta name="description" content="大纲 快速掌握前端必会的 7 种设计模式-video-mk  创建型工厂模式小结： 构造函数和创建对象分离，符合开放封闭原则。 使用场景： 比如根据权限生成不同用户。 工厂模式根据抽象程度可分为三种，分别为简单工厂、工厂方法和抽象工厂。其核心在于将创建对象的过程封装其他，然后通过同一个接口创建新的对象。 简单工厂模式又叫静态工厂方法，用来创建某一种产品对象的实例，用来创建单一对象。 1234567">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2000/03/01/C_%E9%AB%98%E7%BA%A7_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="大纲 快速掌握前端必会的 7 种设计模式-video-mk  创建型工厂模式小结： 构造函数和创建对象分离，符合开放封闭原则。 使用场景： 比如根据权限生成不同用户。 工厂模式根据抽象程度可分为三种，分别为简单工厂、工厂方法和抽象工厂。其核心在于将创建对象的过程封装其他，然后通过同一个接口创建新的对象。 简单工厂模式又叫静态工厂方法，用来创建某一种产品对象的实例，用来创建单一对象。 1234567">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220514122304792.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220514122436666.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220514122551211.png">
+<meta property="article:published_time" content="2000-02-29T22:33:16.000Z">
+<meta property="article:modified_time" content="2026-09-14T11:32:21.307Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/image-20220514122304792.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2000/03/01/C_%E9%AB%98%E7%BA%A7_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A1-LLM/">A1_LLM</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E5%88%9D%E7%BA%A7/">A_初级</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-%E4%B8%AD%E7%BA%A7/">B_中级</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E9%AB%98%E7%BA%A7/">C_高级</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E8%A7%84%E5%88%92/">D_规划</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/04/">四月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/01/">一月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2098/01/">一月 2098</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">七月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">一月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/03/">三月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/02/">二月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/01/">一月 2004</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/06/">六月 2003</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/01/">一月 2003</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/06/">六月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/02/">二月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/01/">一月 2002</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/06/">六月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/03/">三月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/02/">二月 2001</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/01/">一月 2001</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/06/">六月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/03/">三月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/02/">二月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/01/">一月 2000</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/04/04/%E6%A8%A1%E6%9D%BFX/" class="title">模板X</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-04-04T00:33:16.000Z" itemprop="datePublished">2099-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/03/29/Z_%E5%90%8E%E7%AB%AF_Java/" class="title">Java</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-03-28T23:33:16.000Z" itemprop="datePublished">2099-03-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/01/01/G_%E5%85%B6%E4%BB%96_%E4%B9%A6%E5%8D%95/" class="title">书单</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-01-01T00:33:16.000Z" itemprop="datePublished">2099-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A1-LLM/">A1_LLM</a>
+              </p>
+              <p class="item-title">
+                <a href="/2098/01/01/A1_LLM_windows%E5%AE%89%E8%A3%85%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="title">LLM_windows安装大模型</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2097-12-31T22:33:16.000Z" itemprop="datePublished">2098-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2026/07/18/Test%20copy/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2026-07-18T02:11:18.292Z" itemprop="datePublished">2026-07-18</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A4%A7%E7%BA%B2"><span class="toc-number">1.</span> <span class="toc-text">大纲</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%9E%8B"><span class="toc-number">1.1.</span> <span class="toc-text">创建型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.1.1.</span> <span class="toc-text">工厂模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.1.2.</span> <span class="toc-text">单例模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.1.3.</span> <span class="toc-text">原型模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E6%9E%84%E5%9E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">结构型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.2.1.</span> <span class="toc-text">装饰器模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.2.2.</span> <span class="toc-text">适配器模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.2.3.</span> <span class="toc-text">代理模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%8C%E4%B8%BA%E5%9E%8B"><span class="toc-number">1.3.</span> <span class="toc-text">行为型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.3.1.</span> <span class="toc-text">策略模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.3.2.</span> <span class="toc-text">观察者模式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%BA%90%E7%A0%81%E5%BA%94%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">设计模式的源码应用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E7%BA%B2-1"><span class="toc-number">2.1.</span> <span class="toc-text">大纲</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F-%E9%97%AD%E5%8C%85%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">2.2.</span> <span class="toc-text">单例模式(闭包的应用)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ES6-Promise%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.3.</span> <span class="toc-text">ES6-Promise观察者模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue3-Proxy%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.4.</span> <span class="toc-text">Vue3-Proxy策略模式+代理模式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">3.</span> <span class="toc-text">概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-number">3.1.</span> <span class="toc-text">软件设计模式的概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E8%A6%81%E7%B4%A0"><span class="toc-number">3.2.</span> <span class="toc-text">基本要素</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MV%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.</span> <span class="toc-text">MV模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MVC%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.1.</span> <span class="toc-text">MVC模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MVP%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.2.</span> <span class="toc-text">MVP模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MVVM%E6%A8%A1%E5%BC%8F-vue%E4%BD%BF%E7%94%A8%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.3.</span> <span class="toc-text">MVVM模式-vue使用模式</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GoF-%E7%9A%84-23-%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-number">5.</span> <span class="toc-text">GoF 的 23 种设计模式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%94%E5%A4%A7%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="toc-number">6.</span> <span class="toc-text">五大设计原则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SOLID%E5%8E%9F%E5%88%99"><span class="toc-number">6.0.1.</span> <span class="toc-text">SOLID原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DRY%E5%8E%9F%E5%88%99"><span class="toc-number">6.0.2.</span> <span class="toc-text">DRY原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#KISS%E5%8E%9F%E5%88%99"><span class="toc-number">6.0.3.</span> <span class="toc-text">KISS原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#YAGNI%E5%8E%9F%E5%88%99"><span class="toc-number">6.0.4.</span> <span class="toc-text">YAGNI原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LOD%E5%8E%9F%E5%88%99-%E8%BF%AA%E7%B1%B3%E7%89%B9%E6%B3%95%E5%88%99"><span class="toc-number">6.0.5.</span> <span class="toc-text">LOD原则&#x2F;迪米特法则</span></a></li></ol></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-C_高级_设计模式" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      设计模式
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2000/03/01/C_%E9%AB%98%E7%BA%A7_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="article-date">
+	  <time datetime="2000-02-29T22:33:16.000Z" itemprop="datePublished">2000-03-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/C-%E9%AB%98%E7%BA%A7/">C_高级</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2000/03/01/C_%E9%AB%98%E7%BA%A7_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://pan.baidu.com/disk/main?from=homeFlow#/index?category=all&path=%2F%E5%AD%A6%E4%B9%A0%E7%A7%91%E7%A0%94%2F200%E5%B7%A5%E4%BD%9C%2F%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%2FJS">快速掌握前端必会的 7 种设计模式-video-mk</a></li>
+</ul>
+<h2 id="创建型"><a href="#创建型" class="headerlink" title="创建型"></a>创建型</h2><h3 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h3><p><strong>小结：</strong> 构造函数和创建对象分离，符合开放封闭原则。</p>
+<p><strong>使用场景：</strong> 比如根据权限生成不同用户。</p>
+<p>工厂模式根据抽象程度可分为三种，分别为简单工厂、工厂方法和抽象工厂。其核心在于将创建对象的过程封装其他，然后通过同一个接口创建新的对象。 简单工厂模式又叫静态工厂方法，用来创建某一种产品对象的实例，用来创建单一对象。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// 简单工厂</span><br><span class="line">class Factory &#123;</span><br><span class="line">  constructor (username, pwd, role) &#123;</span><br><span class="line">   this.username = username;</span><br><span class="line">    this.pwd = pwd;</span><br><span class="line">    this.role = role;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class CreateRoleFactory &#123;</span><br><span class="line"> static create (username, pwd, role) &#123;</span><br><span class="line">   return new Factory(username, pwd, role);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const admin = CreateRoleFactory.create(&#x27;张三&#x27;, &#x27;222&#x27;, &#x27;admin&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>在实际工作中，各用户角色所具备的能力是不同的,可以考虑使用工厂方法来代替。工厂方法的本意是将实际创建对象的工作推迟到子类中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">class User &#123;</span><br><span class="line">constructor (name, menuAuth) &#123;</span><br><span class="line">   if (new.target === User) throw new Error(&#x27;User 不能被实例化&#x27;);</span><br><span class="line">    this.name = name;</span><br><span class="line">    this.menuAuth = menuAuth;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class UserFactory extends User &#123;</span><br><span class="line">constructor (...props) &#123;</span><br><span class="line">   super(...props);</span><br><span class="line">  &#125;</span><br><span class="line">  static create (role) &#123;</span><br><span class="line">   const roleCollection = new Map([</span><br><span class="line">     [&#x27;admin&#x27;, () =&gt; new UserFactory(&#x27;管理员&#x27;, [&#x27;首页&#x27;, &#x27;个人中心&#x27;])],</span><br><span class="line">      [&#x27;user&#x27;, () =&gt; new UserFactory(&#x27;普通用户&#x27;, [&#x27;首页&#x27;])]</span><br><span class="line">    ])</span><br><span class="line">   </span><br><span class="line">    return roleCollection.get(role)();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const admin = UserFactory.create(&#x27;admin&#x27;);</span><br><span class="line">console.log(admin); // &#123;name: &quot;管理员&quot;, menuAuth: Array(2)&#125;</span><br><span class="line">const user = UserFactory.create(&#x27;user&#x27;);</span><br><span class="line">console.log(user); // &#123;name: &quot;普通用户&quot;, menuAuth: Array(1)&#125;</span><br></pre></td></tr></table></figure>
+
+<p>随着业务形态的变化，一个用户可能在多个平台上同时存在，显然工厂方法也不再满足了，这时候就要用到抽象工厂。抽象工厂模式是对类的工厂抽象用来创建产品类簇，不负责创建某一类产品的实例。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">class User &#123;</span><br><span class="line">  constructor (hospital) &#123;</span><br><span class="line">    if (new.target === User) throw new Error(&#x27;抽象类不能实例化!&#x27;);</span><br><span class="line">    this.hospital = hospital;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 浙一</span><br><span class="line">class ZheYiUser extends User &#123;</span><br><span class="line">  constructor(name, departmentsAuth) &#123;</span><br><span class="line">    super(&#x27;zheyi_hospital&#x27;);</span><br><span class="line">    this.name = name;</span><br><span class="line">    this.departmentsAuth = departmentsAuth;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 萧山医院</span><br><span class="line">class XiaoShanUser extends User &#123;</span><br><span class="line">  constructor(name, departmentsAuth) &#123;</span><br><span class="line">    super(&#x27;xiaoshan_hospital&#x27;);</span><br><span class="line">    this.name = name;</span><br><span class="line">    this.departmentsAuth = departmentsAuth;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const getAbstractUserFactory = (hospital) =&gt; &#123;</span><br><span class="line">  switch (hospital) &#123;</span><br><span class="line">    case &#x27;zheyi_hospital&#x27;:</span><br><span class="line">      return ZheYiUser;</span><br><span class="line">      break;</span><br><span class="line">    case &#x27;xiaoshan_hospital&#x27;:</span><br><span class="line">      return XiaoShanUser;</span><br><span class="line">      break;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const ZheYiUserClass = getAbstractUserFactory(&#x27;zheyi_hospital&#x27;);</span><br><span class="line">const XiaoShanUserClass = getAbstractUserFactory(&#x27;xiaoshan_hospital&#x27;);</span><br><span class="line"></span><br><span class="line">const user1 = new ZheYiUserClass(&#x27;王医生&#x27;, [&#x27;外科&#x27;, &#x27;骨科&#x27;, &#x27;神经外科&#x27;]);</span><br><span class="line">console.log(user1);</span><br><span class="line">const user2 = newXiaoShanUserClass(&#x27;王医生&#x27;, [&#x27;外科&#x27;, &#x27;骨科&#x27;]);</span><br><span class="line">console.log(user2);</span><br></pre></td></tr></table></figure>
+
+<h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><p><strong>小结：</strong> 实例如果存在，直接返回已创建的，符合开放封闭原则。</p>
+<p><strong>使用场景：</strong> Redux、Vuex 等状态管理工具，还有我们常用的 window 对象、全局缓存等。</p>
+<p>单例模式，就是保证一个类只能存在一个实例，并提供一个访问它的全局接口。单例模式又分懒汉式和饿汉式两种，其区别在于懒汉式在调用的时候创建实例，而饿汉式则是在初始化就创建好实例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 懒汉式</span><br><span class="line">class Single &#123;</span><br><span class="line">static getInstance () &#123;</span><br><span class="line">   if (!Single.instance) &#123;</span><br><span class="line">     Single.instance = new Single();</span><br><span class="line">    &#125;</span><br><span class="line">    return Single.instance;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">const test1 = Single.getInstance();</span><br><span class="line">const test2 = Single.getInstance();</span><br><span class="line">console.log(test1 === test2); // true</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 饿汉式</span><br><span class="line">class Single &#123;</span><br><span class="line">static instance = new Single();</span><br><span class="line"></span><br><span class="line">  static getInstance () &#123;</span><br><span class="line">    return Single.instance;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">const test1 = Single.getInstance();</span><br><span class="line">const test2 = Single.getInstance();</span><br><span class="line">console.log(test1 === test2); // true</span><br></pre></td></tr></table></figure>
+
+<h3 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h3><p><strong>小结：</strong> 原型模式最简单的实现方式—Object.create()。</p>
+<p><strong>使用场景：</strong> 新创建对象和已有对象无较大差别时，可以使用原型模式来减少创建新对象的成本。</p>
+<p>当新创建的对象和已有对象存在较大共性时，可以通过对象的复制来达到创建新的对象，这就是原型模式。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">// Object.create()实现原型模式</span><br><span class="line">const user = &#123;</span><br><span class="line">name: &#x27;zhangsan&#x27;,</span><br><span class="line">  age: 18</span><br><span class="line">&#125;;</span><br><span class="line">let userOne = Object.create(user);</span><br><span class="line">console.log(userOne.__proto__); // &#123;name: &quot;zhangsan&quot;, age: 18&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 原型链继承实现原型模式</span><br><span class="line">class User &#123;</span><br><span class="line">constructor (name) &#123;</span><br><span class="line">   this.name = name;</span><br><span class="line">  &#125;</span><br><span class="line">  getName () &#123;</span><br><span class="line">   return this.name;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Admin extends User &#123;</span><br><span class="line">constructor (name) &#123;</span><br><span class="line">   super(name);</span><br><span class="line">  &#125;</span><br><span class="line">  setName (_name) &#123;</span><br><span class="line">   return this.name = _name;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const admin = new Admin(&#x27;zhangsan&#x27;);</span><br><span class="line">console.log(admin.getName());</span><br><span class="line">console.log(admin.setName(&#x27;lisi&#x27;));</span><br></pre></td></tr></table></figure>
+
+<h2 id="结构型"><a href="#结构型" class="headerlink" title="结构型"></a>结构型</h2><h3 id="装饰器模式"><a href="#装饰器模式" class="headerlink" title="装饰器模式"></a>装饰器模式</h3><p><strong>小结：</strong> 装饰器模式将现有对象和装饰器进行分离，两者独立存在，符合开放封闭原则和单一职责模式。</p>
+<p><strong>使用场景：</strong> es7 装饰器、vue mixins、core-decorators 等。</p>
+<p>讲装饰器模式之前，先聊聊高阶函数。高阶函数就是一个函数就可以接收另一个函数作为参数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const add = (x, y, f) =&gt; &#123;</span><br><span class="line"> return f(x) + f(y);</span><br><span class="line">&#125;</span><br><span class="line">const num = add(2, -2, Math.abs);</span><br></pre></td></tr></table></figure>
+
+<p>add 相对于 Math.abs 来说相当于一个装饰器，因此这个例子也可以理解为一个简单的装饰器模式。在 react 中，高阶组件(HOC)也是装饰器模式的一种体现，通常用来不改变原来组件的情况下添加一些属性，达到组件复用的功能。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import React from &#x27;react&#x27;;</span><br><span class="line">const BgHOC = WrappedComponent =&gt; class extends React.Component &#123;</span><br><span class="line"> render () &#123;</span><br><span class="line">   return (</span><br><span class="line">     &lt;div style=&#123;&#123; background: &#x27;blue&#x27; &#125;&#125;&gt;</span><br><span class="line">       &lt;WrappedComponent /&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="适配器模式"><a href="#适配器模式" class="headerlink" title="适配器模式"></a>适配器模式</h3><p><strong>小结：</strong> 不改变原有接口的情况下，统一接口、统一入参、统一出参、统一规则，符合开发封闭原则。</p>
+<p><strong>使用场景</strong> ：拥抱变化，兼容代码。</p>
+<p>适配器别名包装器，其作用是解决两个软件实体间的接口不兼容的问题。以 axios 源码为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">function getDefaultAdapter() &#123;</span><br><span class="line">  var adapter;</span><br><span class="line">  // 判断当前是否是 node 环境</span><br><span class="line">  if (typeof process !== &#x27;undefined&#x27; &amp;&amp; Object.prototype.toString.call(process) === &#x27;[object process]&#x27;) &#123;</span><br><span class="line">    // 如果是 node 环境，调用 node 专属的 http 适配器</span><br><span class="line">    adapter = require(&#x27;./adapters/http&#x27;);</span><br><span class="line">  &#125; else if (typeof XMLHttpRequest !== &#x27;undefined&#x27;) &#123;</span><br><span class="line">    // 如果是浏览器环境，调用基于 xhr 的适配器</span><br><span class="line">    adapter = require(&#x27;./adapters/xhr&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">  return adapter;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// http adapter</span><br><span class="line">module.exports = function httpAdapter(config) &#123;</span><br><span class="line">  return new Promise(function dispatchHttpRequest(resolvePromise, rejectPromise) &#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// xhr adapter</span><br><span class="line">module.exports = function xhrAdapter(config) &#123;</span><br><span class="line">  return new Promise(function dispatchXhrRequest(resolve, reject) &#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h3><p><strong>小结：</strong> 通过修改代理类来增加功能，符合开放封闭模式。</p>
+<p><strong>使用场景：</strong> 图片预加载、缓存服务器、处理跨域以及拦截器等。</p>
+<p>代理模式就是为对象提供一个代理，用来控制对这个对象的访问。在我们业务开发中最常见的有四种代理类型：事件代理，虚拟代理、缓存代理和保护代理。</p>
+<p>虚拟代理，其最具代表性的例子就是图片预加载。解决方案是先给 img 标签展示一个占位图，然后创建一个 Image 实例，让这个实例的 src 指向真实的默认图片地址，当默认图片加载完成之后，再将 DOM 上的 img 标签的 src 属性指向真实图片地址。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class ProxyImg &#123;</span><br><span class="line">constructor (imgELe) &#123;</span><br><span class="line">   this.imgELe = imgELe;</span><br><span class="line">    this.DEFAULT_URL = &#x27;xxx&#x27;;</span><br><span class="line">  &#125;</span><br><span class="line">  setUrl (targetUrl) &#123;</span><br><span class="line">   this.imgEle.src = this.DEFAULT_URL;</span><br><span class="line">    const image = new Image();</span><br><span class="line">   </span><br><span class="line">    image.onload = () =&gt; &#123;</span><br><span class="line">     this.imgEle.src = targetUrl;</span><br><span class="line">    &#125;</span><br><span class="line">    image.src = targetUrl;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>缓存代理常用于一些计算量较大的场景。当计算的值已经被出现过的时候，不需要进行第二次重复计算。以传参求和为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">const countSum = (...arg) =&gt; &#123;</span><br><span class="line">console.log(&#x27;count...&#x27;);</span><br><span class="line">  let result = 0;</span><br><span class="line">  arg.forEach(v =&gt; result += v);</span><br><span class="line">  return result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const proxyCountSum = (() =&gt; &#123;</span><br><span class="line">const cache = &#123;&#125;;</span><br><span class="line">  return (...arg) =&gt; &#123;</span><br><span class="line">   const args = arg.join(&#x27;,&#x27;);</span><br><span class="line">    if (args in cache) return cache[args];</span><br><span class="line">    return cache[args] = countSum(...arg);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;)()</span><br><span class="line"></span><br><span class="line">proxyCountSum(1,2,3,4); // count...  10</span><br><span class="line">proxyCountSum(1,2,3,4); // 10</span><br></pre></td></tr></table></figure>
+
+<h2 id="行为型"><a href="#行为型" class="headerlink" title="行为型"></a>行为型</h2><h3 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h3><p><strong>小结：</strong> 定义一系列算法，将其一一封装起来，并且使它们可相互替换。符合开放封闭原则。</p>
+<p><strong>使用场景：</strong> 表单验证、存在大量 if-else 场景、各种重构等。</p>
+<p>介绍策略模式之前，简单实现一个常见的促销活动规则：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 人人喊打的ifelse</span><br><span class="line">const activity = (type, price) =&gt; &#123;</span><br><span class="line"> if (type === &#x27;pre&#x27;) &#123;</span><br><span class="line">   return price * 0.95;</span><br><span class="line">  &#125; else if (type === &#x27;onSale&#x27;) &#123;</span><br><span class="line">   return price * 0.9;</span><br><span class="line">  &#125; else if (type === &#x27;back&#x27;) &#123;</span><br><span class="line">   return price * 0.85;</span><br><span class="line">  &#125; else if (type === &#x27;limit&#x27;) &#123;</span><br><span class="line">   return price * 0.8;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 优雅的扩展性</span><br><span class="line">const activity = new Map([</span><br><span class="line">[&#x27;pre&#x27;, (price) =&gt; price * 0.95],</span><br><span class="line">  [&#x27;onSale&#x27;, (price) =&gt; price * 0.9],</span><br><span class="line">  [&#x27;back&#x27;, (price) =&gt; price * 0.85],</span><br><span class="line">  [&#x27;limit&#x27;, (price) =&gt; price * 0.8]</span><br><span class="line">]);</span><br><span class="line"></span><br><span class="line">const getActivityPrice = (type, price) =&gt; activity.get(type)(price);</span><br><span class="line"></span><br><span class="line">// 新增新手活动</span><br><span class="line">activity.set(&#x27;newcomer&#x27;, (price) =&gt; price * 0.7);</span><br></pre></td></tr></table></figure>
+
+<h3 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h3><p><strong>小结：</strong> 为解耦而生，为事件而生，符合开放封闭原则。</p>
+<p><strong>使用场景：</strong> 跨层级通信、事件绑定等。</p>
+<p>观察者模式又叫发布-订阅模式，其用来定义对象之间的一对多依赖关系，以便当一个对象更改状态时，将通知其所有依赖关系。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">// 定义发布者类</span><br><span class="line">class Publisher &#123;</span><br><span class="line">  constructor () &#123;</span><br><span class="line">    this.observers = [];</span><br><span class="line">    this.prdState = null;</span><br><span class="line">  &#125;</span><br><span class="line">  // 增加订阅者</span><br><span class="line">  add (observer) &#123;</span><br><span class="line">    this.observers.push(observer);</span><br><span class="line">  &#125;</span><br><span class="line">  // 通知所有订阅者</span><br><span class="line">  notify () &#123;</span><br><span class="line">    this.observers.forEach((observer) =&gt; &#123;</span><br><span class="line">      observer.update(this);</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  // 该方法用于获取当前的 prdState</span><br><span class="line">  getState () &#123;</span><br><span class="line">    return this.prdState;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // 该方法用于改变 prdState 的值</span><br><span class="line">  setState (state) &#123;</span><br><span class="line">    // prd 的值发生改变</span><br><span class="line">    this.prdState = state;</span><br><span class="line">    // 需求文档变更，立刻通知所有开发者</span><br><span class="line">    this.notify();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 定义订阅者类</span><br><span class="line">class Observer &#123;</span><br><span class="line">  constructor () &#123;</span><br><span class="line">  this.prdState = &#123;&#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  update (publisher) &#123;</span><br><span class="line">    // 更新需求文档</span><br><span class="line">    this.prdState = publisher.getState();</span><br><span class="line">    // 调用工作函数</span><br><span class="line">    this.work();</span><br><span class="line">  &#125;</span><br><span class="line">  // work 方法，一个专门搬砖的方法</span><br><span class="line">  work () &#123;</span><br><span class="line">    // 获取需求文档</span><br><span class="line">    const prd = this.prdState;</span><br><span class="line">    console.log(prd);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 创建订阅者：前端开发小王</span><br><span class="line">const wang = new Observer();</span><br><span class="line">// 创建订阅者：后端开发小张</span><br><span class="line">const zhang = new Observer();</span><br><span class="line">// 创建发布者：产品经理小曾</span><br><span class="line">const zeng = new Publisher();</span><br><span class="line">// 需求文档</span><br><span class="line">const prd = &#123;</span><br><span class="line">  url: &#x27;xxxxxxx&#x27;</span><br><span class="line">&#125;;</span><br><span class="line">// 小曾开始拉人入群</span><br><span class="line">zeng.add(wang);</span><br><span class="line">zeng.add(zhang);</span><br><span class="line">// 小曾发布需求文档并通知所有人</span><br><span class="line">zeng.setState(prd);</span><br></pre></td></tr></table></figure>
+
+<h1 id="设计模式的源码应用"><a href="#设计模式的源码应用" class="headerlink" title="设计模式的源码应用"></a>设计模式的源码应用</h1><h2 id="大纲-1"><a href="#大纲-1" class="headerlink" title="大纲"></a>大纲</h2><blockquote>
+<p>观察者模式：Vue使用观察者模式实现了响应式系统，即当数据发生变化时，会通知相关的观察者更新视图。</p>
+<p>发布订阅模式：Vue使用发布订阅模式解耦了不同模块之间的依赖关系，使得代码的扩展性更强。</p>
+<p>工厂模式：Vue使用工厂模式创建组件实例，使得组件的创建变得更加简单和灵活。</p>
+<p>代理模式：Vue使用了代理模式实现了对虚拟DOM的操作，使得从应用层操作虚拟DOM变得更加便捷和高效。</p>
+<p>适配器模式：Vue使用了适配器模式来兼容不同种类的浏览器和平台，以确保Vue能够在不同的环境中稳定运行。</p>
+<p>责任链模式：在Vue的事件机制中，通过事件捕获和冒泡来实现事件的传递和处理，这就是一种典型的责任链模式。</p>
+<p>装饰器模式：Vue中的computed和watch属性就是通过装饰器模式实现的，通过getters和setters对数据进行修饰和监测。</p>
+<p>策略模式：Vue中的指令和过滤器都使用了策略模式，根据不同的需求使用不同的策略。</p>
+<p>命令模式：Vue使用命令模式来处理指令的执行，将指令抽象成命令对象，执行时统一调用命令对象的执行方法，实现了指令的可撤销和重做。</p>
+<p>组合模式：Vue使用组合模式来实现组件的嵌套和组合，每个组件都可以作为容器，包含自身的子组件，形成树形结构。</p>
+</blockquote>
+<h2 id="单例模式-闭包的应用"><a href="#单例模式-闭包的应用" class="headerlink" title="单例模式(闭包的应用)"></a>单例模式(闭包的应用)</h2><blockquote>
+<p>点击登录，弹出登录弹窗</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 基础版</span></span><br><span class="line"><span class="keyword">let</span> createLogin = (<span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">let</span> div = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!div)&#123;</span><br><span class="line">            div = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;div&#x27;</span>);</span><br><span class="line">            div.<span class="property">innerHTML</span> = <span class="string">&#x27;我是登录的弹窗&#x27;</span>;</span><br><span class="line">            div.<span class="property">style</span>.<span class="property">display</span> = <span class="string">&#x27;none&#x27;</span>;</span><br><span class="line">            <span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">append</span>(div);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> div</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)()</span><br><span class="line"></span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;login&#x27;</span>).<span class="property">onclick</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">let</span> login = <span class="title function_">createLogin</span>();</span><br><span class="line">    login.<span class="property">style</span>.<span class="property">display</span> = <span class="string">&#x27;block&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">改进：单一职责的闭包</span><br><span class="line"><span class="comment">// 最经典的闭包</span></span><br><span class="line"><span class="keyword">let</span> getSingle = <span class="keyword">function</span>(<span class="params">fn</span>)&#123;</span><br><span class="line">    <span class="keyword">let</span> result = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> result||(result = <span class="title function_">fn</span>());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 单一职责</span></span><br><span class="line"><span class="keyword">let</span> createLogin = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">   <span class="keyword">let</span> div = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;div&#x27;</span>);</span><br><span class="line">   div.<span class="property">innerHTML</span> = <span class="string">&#x27;我是登录的弹窗&#x27;</span>;</span><br><span class="line">   div.<span class="property">style</span>.<span class="property">display</span> = <span class="string">&#x27;none&#x27;</span>;</span><br><span class="line">   <span class="variable language_">document</span>.<span class="property">body</span>.<span class="title function_">append</span>(div);</span><br><span class="line">   <span class="keyword">return</span> div</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 还可以创建createIframe等等</span></span><br><span class="line"><span class="keyword">const</span> singleLogin = <span class="title function_">getSingle</span>(createLogin);</span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;login&#x27;</span>).<span class="property">onclick</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="keyword">let</span> login = <span class="title function_">singleLogin</span>();</span><br><span class="line">    login.<span class="property">style</span>.<span class="property">display</span> = <span class="string">&#x27;block&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="ES6-Promise观察者模式"><a href="#ES6-Promise观察者模式" class="headerlink" title="ES6-Promise观察者模式"></a><strong>ES6-Promise观察者模式</strong></h2><blockquote>
+<ul>
+<li><p>通过 Promise.prototype.then 和 Promise.prototype.catch 方法将观察者方法注册到被观察者 Promise 对象中，同时返回一个新的 Promise 对象，以便可以链式调用。</p>
+</li>
+<li><p>被观察者管理内部 pending、fulfilled 和 rejected 的状态转变，同时通过构造函数中传递的 resolve 和 reject 方法以主动触发状态转变和通知观察者。</p>
+</li>
+</ul>
+</blockquote>
+<h2 id="Vue3-Proxy策略模式-代理模式"><a href="#Vue3-Proxy策略模式-代理模式" class="headerlink" title="Vue3-Proxy策略模式+代理模式"></a><strong>Vue3-Proxy策略模式+代理模式</strong></h2><blockquote>
+<ul>
+<li>Proxy的表单验证，使用各种策略校验数据类型</li>
+<li>Proxy代理原始数据，进行数据劫持和代理</li>
+</ul>
+</blockquote>
+<p>参考</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/jawil/blog/issues/19">探索两种优雅的表单验证</a></li>
+</ul>
+<p><strong>场景：前端表单校验</strong></p>
+<ul>
+<li>所有选项不能为空</li>
+<li>用户名长度不能少于6位</li>
+<li>密码长度不能少于6位</li>
+<li>手机号码必须符合格式</li>
+<li>邮箱地址必须符合格式</li>
+</ul>
+<p><strong>常规校验</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">let registerForm = document.querySelector(&#x27;#registerForm&#x27;)</span><br><span class="line">registerForm.addEventListener(&#x27;submit&#x27;, function() &#123;</span><br><span class="line">    if (registerForm.userName.value === &#x27;&#x27;) &#123;</span><br><span class="line">        alert(&#x27;用户名不能为空！&#x27;)</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line">    if (registerForm.userName.length &lt; 6) &#123;</span><br><span class="line">        alert(&#x27;用户名长度不能少于6位！&#x27;)</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line">    if (registerForm.passWord.value === &#x27;&#x27;) &#123;</span><br><span class="line">        alert(&#x27;密码不能为空！&#x27;)</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line">    if (registerForm.passWord.value.length &lt; 6) &#123;</span><br><span class="line">        alert(&#x27;密码长度不能少于6位！&#x27;)</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line">    if (registerForm.phoneNumber.value === &#x27;&#x27;) &#123;</span><br><span class="line">        alert(&#x27;手机号码不能为空！&#x27;)</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line">    if (!/^1(3|5|7|8|9)[0-9]&#123;9&#125;$/.test(registerForm.phoneNumber.value)) &#123;</span><br><span class="line">        alert(&#x27;手机号码格式不正确！&#x27;)</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line">    if (registerForm.emailAddress.value === &#x27;&#x27;) &#123;</span><br><span class="line">        alert(&#x27;邮箱地址不能为空！&#x27;)</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line">    if (!/^\w+([+-.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*</span><br><span class="line">    $/.test(registerForm.emailAddress.value)) &#123;</span><br><span class="line">        alert(&#x27;邮箱地址格式不正确！&#x27;)</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line">&#125;, false)</span><br></pre></td></tr></table></figure>
+
+<p>但存在很多问题，比如：</p>
+<blockquote>
+<ul>
+<li><code>registerForm.addEventListener</code>绑定的函数比较庞大，包含了很多的<code>if-else</code>语句，看着都恶心，这些语句需要覆盖所有的校验规则。</li>
+<li><code>registerForm.addEventListener</code>绑定的函数缺乏弹性，如果增加了一种新的校验规则，或者想要把密码的长度校验从6改成8，我们都必须深入<code>registerForm.addEventListener</code>绑定的函数的内部实现，这是违反了开放-封闭原则的。</li>
+<li>算法的复用性差，如果程序中增加了另一个表单，这个表单也需要进行一些类似的校验，那我们很可能将这些校验逻辑复制得漫天遍野。</li>
+</ul>
+</blockquote>
+<p><strong>用策略模式重构表单校验</strong></p>
+<blockquote>
+<p>思路：一键验证，使用策略模式，核心思想:将做什么和谁去做相分离</p>
+</blockquote>
+<p>策略模式的组成</p>
+<ul>
+<li>抽象策略角色：策略类，通常由一个接口或者抽象类实现。</li>
+<li>具体策略角色：包装了相关的算法和行为。</li>
+<li>环境角色：持有一个策略类的引用，最终给客户端用的。</li>
+</ul>
+<p>具体策略角色——编写策略类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">/*策略对象*/</span><br><span class="line">const strategies = &#123;</span><br><span class="line">        isNonEmpty(value, errorMsg) &#123;</span><br><span class="line">            return value === &#x27;&#x27; ?</span><br><span class="line">                errorMsg : false</span><br><span class="line">        &#125;,</span><br><span class="line">        minLength(value, length, errorMsg) &#123;</span><br><span class="line">            return value.length &lt; length ?</span><br><span class="line">                errorMsg : false</span><br><span class="line">        &#125;,</span><br><span class="line">        isMoblie(value, errorMsg) &#123;</span><br><span class="line">            return !/^1(3|5|7|8|9)[0-9]&#123;9&#125;$/.test(value) ?</span><br><span class="line">                errorMsg : false</span><br><span class="line">        &#125;,</span><br><span class="line">        isEmail(value, errorMsg) &#123;</span><br><span class="line">            return !/^\w+([+-.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(value) ?</span><br><span class="line">                errorMsg : false</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>抽象策略角色——编写Validator类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/*Validator类*/</span><br><span class="line">class Validator &#123;</span><br><span class="line">    constructor() &#123;</span><br><span class="line">        this.cache = [] //保存校验规则</span><br><span class="line">    &#125;</span><br><span class="line">    add(value,name,...other) &#123;</span><br><span class="line">        this.cache.push(strategies[name])</span><br><span class="line">    &#125;</span><br><span class="line">    start() &#123;</span><br><span class="line">        for (let validatorFunc of this.cache) &#123;</span><br><span class="line">            let errorMsg = validatorFunc()//开始校验，并取得校验后的返回信息</span><br><span class="line">            if (errorMsg) &#123;//r如果有确切返回值，说明校验没有通过</span><br><span class="line">                return errorMsg</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>环境角色——客户端调用代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 获取表单form元素</span><br><span class="line">let registerForm = document.querySelector(&#x27;#registerForm&#x27;)</span><br><span class="line">function validatorFunc()&#123;</span><br><span class="line">    // 创建表单校验实例</span><br><span class="line">    let validator = new Validator();</span><br><span class="line">    // 编写校验配置</span><br><span class="line">    validator.add(registerForm.userName, &#x27;isNonEmpty&#x27;, &#x27;用户名不能为空&#x27;)</span><br><span class="line">    validator.add(registerForm.userName, &#x27;minLength&#x27;, &#x27;用户名长度不能小于6&#x27;)</span><br><span class="line">    // 开始校验，并接收错误信息</span><br><span class="line">    let errorMsg = validator.start()</span><br><span class="line">    // 如果有错误信息输出，说明校验未通过</span><br><span class="line">    if(errorMsg)&#123;</span><br><span class="line">        alert(errorMsg)</span><br><span class="line">        return false//阻止表单提交</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">validatorFunc()</span><br></pre></td></tr></table></figure>
+
+<p><strong>策略模式的优缺点</strong></p>
+<ul>
+<li>策略模式利用组合、委托和多态等技术思想，可以有效的避免多种条件选择语句；</li>
+<li>策略模式提供了对开放-封闭原则的完美支持，将算法封装在独立的strategy中，使得它易于切换，易于理解，易于拓展；</li>
+<li>策略模式中的算法也可以复用在系统的其它地方，从而避免了许多重复的复制黏贴的工作；</li>
+<li>在策略模式利用组合和委托来让Context拥有执行算法的能力，这也是继承一种更轻便的替代方案。</li>
+</ul>
+<p>当然，策略模式也有一些缺点，但掌握了策略模式，这些缺点并不严重。</p>
+<ul>
+<li>编写难度加大，代码量变多了，这是最直观的一个缺点，也算不上缺点，毕竟不能完全以代码多少来衡量优劣。</li>
+<li>首先，使用策略模式会在程序中增加许多策略类或者策略对象，但实际上这比把它们负责的逻辑堆砌在Context中要好。</li>
+<li>其次，要使用策略模式，必须了解所有的strategy，必须了解各个strategy之间的不同点，这样才能选择一个合适的strategy。比如，我们要选择一种合适的旅游出行路线，必须先了解选择飞机、火车、自行车等方案的细节。此时strategy要向客户暴露它的所有实现，这是违反最少知识原则的。</li>
+</ul>
+<p><strong>参考</strong></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903734091186189#heading-1">16种JavaScript设计模式（中）</a></p>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>“设计模式”这个术语最初并不是出现在软件设计中，而是被用于建筑领域的设计中。</p>
+<p>1977 年，美国著名建筑大师、加利福尼亚大学伯克利分校环境结构中心主任克里斯托夫·亚历山大（Christopher Alexander）在他的著作《建筑模式语言：城镇、建筑、构造（A Pattern Language: Towns Building Construction）中描述了一些常见的建筑设计问题，并提出了 253 种关于对城镇、邻里、住宅、花园和房间等进行设计的基本模式。</p>
+<p>1995 年，艾瑞克·伽马（ErichGamma）、理査德·海尔姆（Richard Helm）、拉尔夫·约翰森（Ralph Johnson）、约翰·威利斯迪斯（John Vlissides）等 4 位作者合作出版了《设计模式：可复用面向对象软件的基础》，在软件开发领域里也以他们的“四人组”（Gang of Four，GoF）匿名著称。</p>
+<p>设计模式说白了就是“封装变化”。比如“创建型”封装了创建对象的变化过程，“结构型”将对象之间组合的变化封装，“行为型”则是抽离对象的变化行为。</p>
+<p>SOLID 可以简单概括为六个字，即“高内聚，低耦合”：</p>
+<ul>
+<li><strong>高</strong>层模块不依赖底层模块，即为依赖反转原则。</li>
+<li><strong>内</strong>部修改关闭，外部扩展开放，即为开放封闭原则。</li>
+<li><strong>聚</strong>合单一功能，即为单一功能原则。</li>
+<li><strong>低</strong>知识要求，对外接口简单，即为迪米特法则。</li>
+<li><strong>耦</strong>合多个接口，不如独立拆分，即为接口隔离原则。</li>
+<li><strong>合</strong>成复用，子类继承可替换父类，即为里式替换原则。</li>
+</ul>
+<h2 id="软件设计模式的概念"><a href="#软件设计模式的概念" class="headerlink" title="软件设计模式的概念"></a><strong>软件设计模式的概念</strong></h2><p>软件设计模式（Software Design Pattern），又称设计模式，是一套被<strong>反复使用、分类编目、代码设计经验</strong>的总结。其目的是为了提高代码的可<strong>复用性、可读性和可靠性</strong>。</p>
+<p>设计模式的本质是面向对象设计原则的实际运用，是对类的<strong>封装性、继承性和多态性</strong>以及类的<strong>关联关系和组合关系</strong>的充分理解。</p>
+<p>优点：</p>
+<ul>
+<li>可以提高程序员的<strong>思维</strong>能力、<strong>编程</strong>能力和<strong>设计</strong>能力。</li>
+<li>使程序设计更加<strong>标准化</strong>、代码编制更加<strong>工程化</strong>，使软件开发效率大大提高，从而缩短软件的开发周期。</li>
+<li>使设计的代码可<strong>复用性</strong>高、<strong>可读性</strong>强、<strong>可靠性</strong>高、<strong>灵活性</strong>好、<strong>可维护性</strong>强。</li>
+</ul>
+<h2 id="基本要素"><a href="#基本要素" class="headerlink" title="基本要素"></a><strong>基本要素</strong></h2><ol>
+<li>模式名称</li>
+</ol>
+<p>每一个模式都有自己的名字，通常用一两个词来描述，可以根据模式的问题、特点、解决方案、功能和效果来命名。模式名称（PatternName）有助于我们理解和记忆该模式，也方便我们来讨论自己的设计。</p>
+<ol start="2">
+<li>问题</li>
+</ol>
+<p>问题（Problem）描述了该模式的应用环境，即何时使用该模式。它解释了设计问题和问题存在的前因后果，以及必须满足的一系列先决条件。</p>
+<ol start="3">
+<li>解决方案</li>
+</ol>
+<p>模式问题的解决方案（Solution）包括设计的组成成分、它们之间的相互关系及各自的职责和协作方式。因为模式就像一个模板，可应用于多种不同场合，所以解决方案并不描述一个特定而具体的设计或实现，而是提供设计问题的抽象描述和怎样用一个具有一般意义的元素组合（类或对象的 组合）来解决这个问题。</p>
+<ol start="4">
+<li>效果</li>
+</ol>
+<p>描述了模式的应用效果以及使用该模式应该权衡的问题，即模式的优缺点。主要是对时间和空间的衡量，以及该模式对系统的灵活性、扩充性、可移植性的影响，也考虑其实现问题。显式地列出这些效果（Consequence）对理解和评价这些模式有很大的帮助。</p>
+<h1 id="MV模式"><a href="#MV模式" class="headerlink" title="MV模式"></a><strong>MV模式</strong></h1><h2 id="MVC模式"><a href="#MVC模式" class="headerlink" title="MVC模式"></a><strong>MVC模式</strong></h2><ul>
+<li>Model（模型）表示应用程序核心（如数据库）。</li>
+<li>View（视图）显示效果（HTML页面）。</li>
+<li>Controller（控制器）处理输入（业务逻辑）。</li>
+</ul>
+<img src="/img/image-20220514122304792.png" alt="image-20220514122304792" style="zoom:67%;" />
+
+<p>流程：</p>
+<ul>
+<li>View传送指令到Controller</li>
+<li>Controller完成业务逻辑后，要求Model改变状态</li>
+<li>Model将新的数据发送到View，用户得到反馈</li>
+</ul>
+<h2 id="MVP模式"><a href="#MVP模式" class="headerlink" title="MVP模式"></a><strong>MVP模式</strong></h2><ul>
+<li>模型(Model)：提供数据</li>
+<li>视图(View)：用户界面</li>
+<li>表示器(Presenter)：逻辑的处理</li>
+</ul>
+<img src="/img/image-20220514122436666.png" alt="image-20220514122436666" style="zoom:67%;" />
+
+<p>流程：</p>
+<ul>
+<li>View与Model<strong>无联系</strong>，都通过Presenter传递</li>
+<li>View中<strong>不部署任何业务逻辑</strong> - 被动视图</li>
+<li>所有逻辑都部署在Presenter</li>
+</ul>
+<p>与MVC的区别，View不能直接从Model中读取数据</p>
+<h2 id="MVVM模式-vue使用模式"><a href="#MVVM模式-vue使用模式" class="headerlink" title="MVVM模式-vue使用模式"></a><strong>MVVM模式</strong>-vue使用模式</h2><ul>
+<li>模型(Model)：保存数据</li>
+<li>视图(View)：用户界面</li>
+<li>数据驱动(View-Model)：业务逻辑</li>
+</ul>
+<img src="/img/image-20220514122551211.png" alt="image-20220514122551211" style="zoom:67%;" />
+
+<p>流程：</p>
+<ul>
+<li>操作View时，ViewModel感知变化，通知Model发生相应的变化，若Model改变时，ViewModel感知变化，通知View进行更新</li>
+<li>ViewModel与View双向数据绑定，Model通过接口请求数据交互，承上启下。</li>
+</ul>
+<h1 id="GoF-的-23-种设计模式"><a href="#GoF-的-23-种设计模式" class="headerlink" title="GoF 的 23 种设计模式"></a>GoF 的 23 种设计模式</h1><p><strong>根据目的来分</strong></p>
+<p>根据模式是用来完成什么工作来划分，这种方式可分为创建型模式、结构型模式和行为型模式 3 种。</p>
+<ol>
+<li>创建型模式：用于描述“怎样创建对象”，它的主要特点是“将对象的创建与使用分离”。GoF 中提供了单例、原型、工厂方法、抽象工厂、建造者等 5 种创建型模式。</li>
+<li>结构型模式：用于描述如何将类或对象按某种布局组成更大的结构，GoF 中提供了代理、适配器、桥接、装饰、外观、享元、组合等 7 种结构型模式。</li>
+<li>行为型模式：用于描述类或对象之间怎样相互协作共同完成单个对象都无法单独完成的任务，以及怎样分配职责。GoF 中提供了模板方法、策略、命令、职责链、状态、观察者、中介者、迭代器、访问者、备忘录、解释器等 11 种行为型模式。</li>
+</ol>
+<p> <strong>根据作用范围来分</strong></p>
+<p>根据模式是主要用于类上还是主要用于对象上来分，这种方式可分为类模式和对象模式两种。</p>
+<ol>
+<li>类模式：用于处理类与子类之间的关系，这些关系通过继承来建立，是静态的，在编译时刻便确定下来了。GoF中的工厂方法、（类）适配器、模板方法、解释器属于该模式。</li>
+<li>对象模式：用于处理对象之间的关系，这些关系可以通过组合或聚合来实现，在运行时刻是可以变化的，更具动态性。GoF 中除了以上 4 种，其他的都是对象模式。</li>
+</ol>
+<p><strong>各个模式的功能</strong></p>
+<ol>
+<li><strong>单例（Singleton）模式</strong>：某个类只能生成一个实例，该类提供了一个全局访问点供外部获取该实例，其拓展是有限多例模式。</li>
+<li><strong>原型（Prototype）模式</strong>：将一个对象作为原型，通过对其进行复制而克隆出多个和原型类似的新实例。</li>
+<li>工厂方法（Factory Method）模式：定义一个用于创建产品的接口，由子类决定生产什么产品。</li>
+<li><strong>抽象工厂（AbstractFactory）模式</strong>：提供一个创建产品族的接口，其每个子类可以生产一系列相关的产品。</li>
+<li>建造者（Builder）模式：将一个复杂对象分解成多个相对简单的部分，然后根据不同需要分别创建它们，最后构建成该复杂对象。</li>
+<li><strong>代理（Proxy）模式</strong>：为某对象提供一种代理以控制对该对象的访问。即客户端通过代理间接地访问该对象，从而限制、增强或修改该对象的一些特性。</li>
+<li>适配器（Adapter）模式：将一个类的接口转换成客户希望的另外一个接口，使得原本由于接口不兼容而不能一起工作的那些类能一起工作。</li>
+<li>桥接（Bridge）模式：将抽象与实现分离，使它们可以独立变化。它是用组合关系代替继承关系来实现，从而降低了抽象和实现这两个可变维度的耦合度。</li>
+<li>装饰（Decorator）模式：动态的给对象增加一些职责，即增加其额外的功能。</li>
+<li>外观（Facade）模式：为多个复杂的子系统提供一个一致的接口，使这些子系统更加容易被访问。</li>
+<li>享元（Flyweight）模式：运用共享技术来有效地支持大量细粒度对象的复用。</li>
+<li>组合（Composite）模式：将对象组合成树状层次结构，使用户对单个对象和组合对象具有一致的访问性。</li>
+<li>模板方法（TemplateMethod）模式：定义一个操作中的算法骨架，而将算法的一些步骤延迟到子类中，使得子类可以不改变该算法结构的情况下重定义该算法的某些特定步骤。</li>
+<li>策略（Strategy）模式：定义了一系列算法，并将每个算法封装起来，使它们可以相互替换，且算法的改变不会影响使用算法的客户。</li>
+<li>命令（Command）模式：将一个请求封装为一个对象，使发出请求的责任和执行请求的责任分割开。</li>
+<li>职责链（Chain of Responsibility）模式：把请求从链中的一个对象传到下一个对象，直到请求被响应为止。通过这种方式去除对象之间的耦合。</li>
+<li>状态（State）模式：允许一个对象在其内部状态发生改变时改变其行为能力。</li>
+<li><strong>观察者（Observer）模式</strong>：多个对象间存在一对多关系，当一个对象发生改变时，把这种改变通知给其他多个对象，从而影响其他对象的行为。</li>
+<li>中介者（Mediator）模式：定义一个中介对象来简化原有对象之间的交互关系，降低系统中对象间的耦合度，使原有对象之间不必相互了解。</li>
+<li>迭代器（Iterator）模式：提供一种方法来顺序访问聚合对象中的一系列数据，而不暴露聚合对象的内部表示。</li>
+<li>访问者（Visitor）模式：在不改变集合元素的前提下，为一个集合中的每个元素提供多种访问方式，即每个元素有多个访问者对象访问。</li>
+<li>备忘录（Memento）模式：在不破坏封装性的前提下，获取并保存一个对象的内部状态，以便以后恢复它。</li>
+<li>解释器（Interpreter）模式：提供如何定义语言的文法，以及对语言句子的解释方法，即解释器。</li>
+</ol>
+<h1 id="五大设计原则"><a href="#五大设计原则" class="headerlink" title="五大设计原则"></a>五大设计原则</h1><p>原则的目的只有一个：降低对象之间的耦合，增加程序的可复用性、可扩展性和可维护性。</p>
+<p>核心五大原则：SOLID、DRY、KISS、YAGNI、LOD</p>
+<h3 id="SOLID原则"><a href="#SOLID原则" class="headerlink" title="SOLID原则"></a><strong>SOLID</strong>原则</h3><ul>
+<li>SRP(Single Responsibility Principle) 单一职责</li>
+<li>OCP(Open Closed Principle) 开闭原则</li>
+<li>LSP(Liskov Substitution Principle) 里氏替换</li>
+<li>ISO(Interface Segregation Principle) 接口隔离</li>
+<li>DIP(Dependency Inversion Principle) 依赖倒置/依赖反转</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>设计原则</th>
+<th>一句话归纳</th>
+<th>目的</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>开闭原则</td>
+<td>对扩展开放，对修改关闭</td>
+<td>降低维护带来的新风险</td>
+</tr>
+<tr>
+<td>依赖倒置原则</td>
+<td>高层不应该依赖低层，要面向接口编程</td>
+<td>更利于代码结构的升级扩展</td>
+</tr>
+<tr>
+<td>单一职责原则</td>
+<td>一个类只干一件事，实现类要单一</td>
+<td>便于理解，提高代码的可读性</td>
+</tr>
+<tr>
+<td>接口隔离原则</td>
+<td>一个接口只干一件事，接口要精简单一</td>
+<td>功能解耦，高聚合、低耦合</td>
+</tr>
+<tr>
+<td>迪米特法则</td>
+<td>不该知道的不要知道，一个类应该保持对其它对象最少的了解，降低耦合度</td>
+<td>只和朋友交流，不和陌生人说话，减少代码臃肿</td>
+</tr>
+<tr>
+<td>里氏替换原则</td>
+<td>不要破坏继承体系，子类重写方法功能发生改变，不应该影响父类方法的含义</td>
+<td>防止继承泛滥</td>
+</tr>
+<tr>
+<td>合成复用原则</td>
+<td>尽量使用组合或者聚合关系实现代码复用，少使用继承</td>
+<td>降低代码耦合</td>
+</tr>
+</tbody></table>
+<p><strong>一、SRP(Single Responsibility Principle) 单一职责</strong></p>
+<p>定义：一个类或模块只负责完成一个功能</p>
+<p>理解：不要设计大而全的类，要设计粒度小、高性能单一的类。该原则的目的是为了实现代码高内聚、低耦合、提高代码复用性、可读性以及可维护性。</p>
+<p>补充：在保证单一职责时，要避免过分拆分，否则会降低内聚性，影响代码可维护性。</p>
+<p>以下场景可能会出现类没有指责单一：</p>
+<blockquote>
+<ul>
+<li>类中的代码行数、函数、属性是否过多。可以考虑对该类进行拆分；</li>
+<li>类依赖的其他类过多，或者依赖类的其他类过多，不符合高内聚、低耦合的设计思想；</li>
+<li>私有方法过多，可以考虑将私有方法独立到新类中，设置为 public 方法，提高代码复用性；</li>
+<li>当发现类名比较难命名或类名笼统、冗长时，说明该类职责定义不够清晰；</li>
+<li>类中大量方法集中操作某几个属性时，可以考虑将这几个属性和方法拆分出去；</li>
+</ul>
+</blockquote>
+<p>举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 如果下面的用户信息类仅在一个场景中使用，则没有什么问题；</span><br><span class="line">* 如果后面用户的地址信息在其他模块中使用时，就可以将地址信息进行拆分。</span><br><span class="line">* 以及各个属性的操作方法都要进行聚合到一个类中，提高代码的维护性。</span><br><span class="line">*/</span><br><span class="line">data class UserData(val userId:Long, </span><br><span class="line">                    val userName:String, </span><br><span class="line">                    val email:String,</span><br><span class="line">                    val telephone:String,</span><br><span class="line">                    val provinceOfAddress:String,</span><br><span class="line">                    val cityOfAddress:String,</span><br><span class="line">                    val regionOfAddress:String,</span><br><span class="line">                    //.....其他属性</span><br><span class="line">                   )</span><br></pre></td></tr></table></figure>
+
+<p><strong>二、OCP(Open Closed Principle) 开闭原则</strong></p>
+<p>定义：(模块、类、方法)对拓展开放，对修改关闭。</p>
+<p>理解：对于新功能尽量通过拓展已有代码而非修改的方式完成。</p>
+<p>补充：在开发中不需要识别、预留所有拓展点，切勿过度设计。最合理的做法是，保证短期内、可确定的部分进行拓展设计。做常用的代码扩展性的方法：多态、依赖注入、基于接口开发，以及部分设计模式(装饰、策略、模板、责任链、状态等)</p>
+<p>举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 基于接口开发。对于外部调用者，内部逻辑是无感知的，方便后面进行逻辑拓展，例如国内更新逻辑后面可能会支持跳转指定应用商店、H5链接等。</span><br><span class="line">*/</span><br><span class="line">interface IUpgradeService&#123;</span><br><span class="line">  fun checkUpgrade(ctx:Activity)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">abstract class BaseUpgradeService : IUpgradeService&#123;</span><br><span class="line">  override fun checkUpgrade(ctx:Activity)&#123;</span><br><span class="line">    //网络请求</span><br><span class="line">    //....</span><br><span class="line">    //执行需要更新</span><br><span class="line">    startUpgrade()</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  fun startUpgrade()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class CnUpgradeService : BaseUpgradeService&#123;</span><br><span class="line">  override fun startUpgrade()&#123;</span><br><span class="line">    //国内执行更新逻辑。例如应用内下载安装等</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class I18nUpgradeService : BaseUpgradeService&#123;</span><br><span class="line">  override fun startUpgrade()&#123;</span><br><span class="line">    //海外执行更新逻辑。例如跳转google play</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//实际执行Activity</span><br><span class="line">class MainActivity : AppCompactActivity&#123;</span><br><span class="line">  override fun onCreate(savedInstanceState : Bundle)&#123;</span><br><span class="line">    super.onCreate(savedInstanceState);</span><br><span class="line">    setContentView(R.layout.activity_main);</span><br><span class="line">    //执行更新逻辑</span><br><span class="line">    ServiceLoader.instance.load(IUpgradeService::class.java).checkUpgrade(this)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>三、LSP(Liskov Substitution Principle) 里氏替换</strong></p>
+<p>定义：子类对象能够替换程序中父类对象出现的任何地方，并保证原来程序的逻辑行为不变及正确性不被破坏。</p>
+<p>理解：在代码中可以用子类来替换父类，和多态类似，区别在于“里氏替换原则”是子类不能违背父类的协议，如父类要实现的功能、入参、出参、异常情况等。</p>
+<p>举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 下面代码违反里氏替换原则。因为父类并没有对参数进行校验和抛异常，子类违背了父类的协议(入参判断、异常情况)。</span><br><span class="line">*/</span><br><span class="line">class UpgradeService&#123;</span><br><span class="line">  fun checkUpgrade(ctx: Activity, appId:Int, channelId:Int)&#123;</span><br><span class="line">    //... 检查逻辑</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class CnUpgradeService : UpgradeService&#123;</span><br><span class="line">  override fun checkUpgrade(ctx: Activity, appId:Int, channelId:Int)&#123;</span><br><span class="line">    if(appId == 0 || channelId == 0)&#123;</span><br><span class="line">      throw Exception(...);</span><br><span class="line">    &#125;</span><br><span class="line">    //...国内检测逻辑</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>四、ISO(Interface Segregation Principle) 接口隔离</strong></p>
+<p>定义：客户端(接口调用者)不应该被强迫依赖它不需要的接口。</p>
+<p>理解：与“单一职责”类似，区别在于“单一职责”针对的是模块、类、接口的设计，“接口隔离”一方面更侧重于接口的设计，另一方面思考的角度不同。</p>
+<p>补充：这里的“接口”可以理解为：①一组API接口集合；②单个API接口或函数；③OOP中的接口概念</p>
+<p>举例:</p>
+<ul>
+<li>一组API接口集合</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 下面代码违背了接口隔离原则。</span><br><span class="line">* 因为后期新增的删除接口，对外所有服务都可以调用，非常容易导致误操作场景。</span><br><span class="line">* 在没有做鉴权时，建议将删除接口单独做一个接口服务，供特殊场景使用。</span><br><span class="line">*/</span><br><span class="line">interface UserService&#123;</span><br><span class="line">  fun register(userName:String, password:String):Boolean</span><br><span class="line">  fun login(userName:String, password:String):Boolean</span><br><span class="line">  </span><br><span class="line">  //后期新增了删除用户信息的接口</span><br><span class="line">  fun deleteUserById(userId:Long):Boolean</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>单个API接口或函数</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">enum class ComputeType&#123;</span><br><span class="line">    ADD,</span><br><span class="line">    SUBTRACT, </span><br><span class="line">    MULTIPLY , </span><br><span class="line">    DIVIDE</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">* 假设下面代码每一种计算方式都比较复杂，则违背了接口隔离原则。</span><br><span class="line">* 如果逻辑复杂的情况下，建议将每种情况作为一个单独的接口或函数进行处理。</span><br><span class="line">* 例如:</span><br><span class="line">* fun dataAdd()&#123;&#125;</span><br><span class="line">* fun dataSubtract()&#123;&#125;</span><br><span class="line">*/</span><br><span class="line">fun dataCompute(firstNum:Int, secondNum:Int, computeType:ComputeType): Int&#123;</span><br><span class="line">  retrun when(computeType)&#123;</span><br><span class="line">    ComputeType.ADD -&gt; //....</span><br><span class="line">    //....</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>OOP中的接口概念</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* 尽量避免设计大而全的接口，大而全会导致强迫调用者依赖不必要的接口</span><br><span class="line">* 例如下面接口，如果调用者只是想配置监控和更新，还必须空实现配置日志数据。推荐根据功能进行拆分。</span><br><span class="line">*/</span><br><span class="line">interface IConfig&#123;</span><br><span class="line">  //更新配置信息</span><br><span class="line">  fun update()</span><br><span class="line">  //配置日志输出</span><br><span class="line">  fun outputLog():String</span><br><span class="line">  //配置监控</span><br><span class="line">  fun monitorConfig()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>五、DIP(Dependency Inversion Principle) 依赖倒置/依赖反转</strong></p>
+<p>定义：高层模块不依赖低层模块，它们共同依赖同一个抽象，抽象不要依赖具体实现细节，具体实现细节依赖抽象。</p>
+<p>理解：该原则用于指导框架层面的设计，调用者与被调用者没有直接依赖关系，而是通过一个抽象(规范)来建立关系，同时抽象(规范)不依赖具体的调用者和被调用者的实现细节，而调用者和被调用者需要依赖抽象(规范)。例如，暴露请求参数，由调用者来实现具体的请求，并将结果再返回。</p>
+<p><strong>控制反转(IOC)、依赖反转(DIP)、依赖注入(DI)的区别与联系</strong></p>
+<ul>
+<li>控制反转：提供一个可拓展的代码骨架，用来组装对象、管理整个执行流程。不是一种具体的实现技巧，而是一种设计思想，一般用于指导框架层面的设计，具体的方式有很多，例如依赖注入、模板模式等。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">abstract class TestCase&#123;</span><br><span class="line">  fun run()&#123;</span><br><span class="line">    if(doTest())&#123;</span><br><span class="line">      println(&quot;Test success&quot;)</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">      println(&quot;Test failed&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  abstract fun doTest():Boolean</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class UserServiceTest: TestCase&#123;</span><br><span class="line">  override doTest():Boolean&#123;</span><br><span class="line">    //....控制逻辑</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main()&#123;</span><br><span class="line">  UserServiceTest().run()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>依赖注入：不通过 new()方式在类内部创建依赖类对象，而是将依赖的类对象在外部创建好后，通过构造函数、函数参数等方式传递(或注入)给类使用。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">//Notification类使用通过构造函数传入的类对象messageSender调用发送逻辑</span><br><span class="line">class Notification(val messageSender: MessageSender)&#123;</span><br><span class="line">  fun sendMessage(cellphone: String, message: String)&#123;</span><br><span class="line">    messageSender.send(cellphone, message)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">interface MessageSender&#123;</span><br><span class="line">  fun send(cellphone: String, message: String)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class SmsSender: MessgeSender&#123;</span><br><span class="line">  override fun send(cellphone: String, message: String)&#123;</span><br><span class="line">    //...短信通知逻辑</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class EmailSender: MessageSender&#123;</span><br><span class="line">  override fun send(cellphone: String, message: String)&#123;</span><br><span class="line">    //...邮件通知逻辑</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main()&#123;</span><br><span class="line">  val messageSender = SmsSender()</span><br><span class="line">  val notification = Notification(messageSender)</span><br><span class="line">  notification.sendMessage(&quot;xxxxx&quot;,&quot;xxxxx&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>依赖反转：高层模块(调用者)不要依赖底层模块(被调用者代码)。高层模块和底层模块赢通过抽象来互相依赖。除此之外，抽象不要依赖具体实现细节，具体实现细节依赖抽象。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">//抽象层</span><br><span class="line">interface ISendTypeConfig&#123;</span><br><span class="line">    fun httpRequest(params: String)</span><br><span class="line">    fun socketRequest(params: String)</span><br><span class="line">&#125;</span><br><span class="line">//底层模块逻辑</span><br><span class="line">class SendTypeManager(private val config: ISendTypeConfig)&#123;</span><br><span class="line">    fun sendMessage(sendByHttp:Boolean, params: String)&#123;</span><br><span class="line">        if (sendByHttp)&#123;</span><br><span class="line">            config.httpRequest(params)</span><br><span class="line">            return</span><br><span class="line">        &#125;</span><br><span class="line">        //使用socket进行消息发送</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//高层模块逻辑</span><br><span class="line">class SendTypeConfig: ISendTypeConfig&#123;</span><br><span class="line">    override fun httpRequest(params: String) &#123;</span><br><span class="line">        //使用http请求</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    override fun socketRequest(params: String) &#123;</span><br><span class="line">        //使用socket请求</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fun main()&#123;</span><br><span class="line">    //这段代码属于[底层模块]逻辑。高层模块只需关注消息发送方式的具体实现，然后调用底层模块的发送消息即可，不会关注底层模块的具体实现。</span><br><span class="line">    SendTypeManager(SendTypeConfig()).sendMessage(true, &quot;这是一条http发送的消息&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="DRY原则"><a href="#DRY原则" class="headerlink" title="DRY原则"></a>DRY原则</h3><p>(Don’t Repeat Yourself)原则，不要重复自己</p>
+<p>理解：不要开发重复代码，可以复用或提取公共代码，同时也要注意遵守“单一职责”和“接口隔离”原则。</p>
+<p>提升代码复用性的方法：</p>
+<ul>
+<li>减少代码耦合</li>
+<li>满足单一职责原则</li>
+<li>模块化</li>
+<li>业务与非业务逻辑分离</li>
+<li>通用代码下沉</li>
+<li>继承、抽象、多态、封装</li>
+<li>应用模板等设计模式</li>
+</ul>
+<h3 id="KISS原则"><a href="#KISS原则" class="headerlink" title="KISS原则"></a>KISS原则</h3><p>(Keep It Simple And Stupid)原则</p>
+<p>理解：尽量保证代码简洁，使用通用技术(同事都懂的技术)、不重复造轮子、不过度优化。</p>
+<p>举例：对于某个数值的提取或者匹配判断，使用正则表达式可以使代码行数更少，看似更简单，但其实并不是所有同事都熟悉正则表达式，而且在编写正则规则时易出现bug，所以可以采用通用技术来实现。</p>
+<h3 id="YAGNI原则"><a href="#YAGNI原则" class="headerlink" title="YAGNI原则"></a>YAGNI原则</h3><p>(You Aint’t Gonna Need It)原则，你不会用到它的</p>
+<p>理解：不去设计与开发当前功能用不到的代码，但并不意味着不考虑拓展性，可以预留好拓展点，后面需要时再开发。</p>
+<p>举例：目前项目只对国内市场，未来将会面向国内海外同时使用。所以在开发中不需要提前编写海外部分代码，但是在国内海外有差异的逻辑上要预留好拓展点，方便后面对海外逻辑进行补充。</p>
+<h3 id="LOD原则-迪米特法则"><a href="#LOD原则-迪米特法则" class="headerlink" title="LOD原则/迪米特法则"></a>LOD原则/迪米特法则</h3><p>(Law of Demeter)原则/迪米特法则</p>
+<p>理解：不该有直接依赖关系的类之间，不要有依赖；有依赖关系的类之间，尽量只依赖必要的接口。</p>
+<p>举例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* NetworkTransporter 类负责底层网络通信，根据请求获取数据。</span><br><span class="line">*</span><br><span class="line">* 该类的入参类型为 HtmlRequest 对象，作为底层类，应保证通用性，而不是仅服务于下载HTML。所以违反了迪米特法则，依赖了不该有直接依赖的 HtmlRequest 类。</span><br><span class="line">*/</span><br><span class="line">public class NetworkTransporter &#123;</span><br><span class="line">    // 省略属性和其他方法...</span><br><span class="line">    public Byte[] send(HtmlRequest htmlRequest) &#123;</span><br><span class="line">      //...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class HtmlDownloader &#123;</span><br><span class="line">  private NetworkTransporter transporter;//通过构造函数或IOC注入</span><br><span class="line">  </span><br><span class="line">  public Html downloadHtml(String url) &#123;</span><br><span class="line">    Byte[] rawHtml = transporter.send(new HtmlRequest(url));</span><br><span class="line">    return new Html(rawHtml);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">* Document 表示网页文档，后续的网页内容抽取、分词、索引都是以此为处理对象。</span><br><span class="line">*</span><br><span class="line">* 该类总有如下3个问题:</span><br><span class="line">* 1. 构造函数中的 downloader.downloadHtml() 逻辑复杂，耗时长，不应该放到构造函数中，会影响代码的可测试性。</span><br><span class="line">* 2. HtmlDownloader 对象在构造函数中通过 new 来创建，违反了基于接口而非实现编程的设计思想，也会影响到代码的可测试性。</span><br><span class="line">* 3. 从业务含义上来讲，Document 网页文档没必要依赖 HtmlDownloader 类，违背了迪米特法则。</span><br><span class="line">*/</span><br><span class="line">public class Document &#123;</span><br><span class="line">  private Html html;</span><br><span class="line">  private String url;</span><br><span class="line">  </span><br><span class="line">  public Document(String url) &#123;</span><br><span class="line">    this.url = url;</span><br><span class="line">    HtmlDownloader downloader = new HtmlDownloader();</span><br><span class="line">    this.html = downloader.downloadHtml(url);</span><br><span class="line">  &#125;</span><br><span class="line">  //...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2000/03/01/C_%E9%AB%98%E7%BA%A7_%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" title="设计模式" target="_blank" rel="external">https://fuyunjinglong.github.io/2000/03/01/C_高级_设计模式/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2000/06/01/B_%E4%B8%AD%E7%BA%A7__Vue3/" title="Vue3"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2000/02/01/A0_%E9%9D%A2%E8%AF%95_%E9%9D%A2%E7%BB%8F/" title="面经"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <!-- <script src="//cdn.jsdelivr.net/npm/valine"></script> -->
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

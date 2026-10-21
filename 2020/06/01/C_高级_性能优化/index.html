@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>性能优化  </title>
+  <meta name="description" content="参考：  Web Vitals 工作中如何进行前端性能优化(23 种优化+10 种定位方式 前端性能优化 24 条建议（2020） 写在 2021 的前端性能优化指南 前端性能优化实践  性能优化(最新)大纲123456789101112131415161718192021222324前端性能优化│├── 度量基准：LCP≤2.5s &#x2F; INP≤200ms &#x2F; CLS≤0.1（P75）│">
+<meta property="og:type" content="article">
+<meta property="og:title" content="性能优化">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2020/06/01/C_%E9%AB%98%E7%BA%A7_%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="参考：  Web Vitals 工作中如何进行前端性能优化(23 种优化+10 种定位方式 前端性能优化 24 条建议（2020） 写在 2021 的前端性能优化指南 前端性能优化实践  性能优化(最新)大纲123456789101112131415161718192021222324前端性能优化│├── 度量基准：LCP≤2.5s &#x2F; INP≤200ms &#x2F; CLS≤0.1（P75）│">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211219215308332.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211107232411254.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211107232617810.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20211107232703176.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2024-03-22_072758.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2024-03-29_065127.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2024-03-22_073105.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2024-03-30_112159.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2024-03-30_112520.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/20240322_1.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/20240322_2.png">
+<meta property="article:published_time" content="2020-06-01T08:33:16.000Z">
+<meta property="article:modified_time" content="2026-09-15T10:12:03.136Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/image-20211219215308332.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2020/06/01/C_%E9%AB%98%E7%BA%A7_%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A1-LLM/">A1_LLM</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E5%88%9D%E7%BA%A7/">A_初级</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-%E4%B8%AD%E7%BA%A7/">B_中级</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E9%AB%98%E7%BA%A7/">C_高级</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E8%A7%84%E5%88%92/">D_规划</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/04/">四月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/01/">一月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2098/01/">一月 2098</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">七月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">一月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/03/">三月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/02/">二月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/01/">一月 2004</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/06/">六月 2003</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/01/">一月 2003</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/06/">六月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/02/">二月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/01/">一月 2002</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/06/">六月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/03/">三月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/02/">二月 2001</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/01/">一月 2001</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/06/">六月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/03/">三月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/02/">二月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/01/">一月 2000</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/04/04/%E6%A8%A1%E6%9D%BFX/" class="title">模板X</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-04-04T00:33:16.000Z" itemprop="datePublished">2099-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/03/29/Z_%E5%90%8E%E7%AB%AF_Java/" class="title">Java</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-03-28T23:33:16.000Z" itemprop="datePublished">2099-03-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/01/01/G_%E5%85%B6%E4%BB%96_%E4%B9%A6%E5%8D%95/" class="title">书单</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-01-01T00:33:16.000Z" itemprop="datePublished">2099-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A1-LLM/">A1_LLM</a>
+              </p>
+              <p class="item-title">
+                <a href="/2098/01/01/A1_LLM_windows%E5%AE%89%E8%A3%85%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="title">LLM_windows安装大模型</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2097-12-31T22:33:16.000Z" itemprop="datePublished">2098-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2026/07/18/Test%20copy/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2026-07-18T02:11:18.292Z" itemprop="datePublished">2026-07-18</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96-%E6%9C%80%E6%96%B0"><span class="toc-number">1.</span> <span class="toc-text">性能优化(最新)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E7%BA%B2"><span class="toc-number">1.1.</span> <span class="toc-text">大纲</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%A6%E9%87%8F%EF%BC%88Core-Web-Vitals%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">度量（Core Web Vitals）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%EF%BC%88%E5%8A%A0%E8%BD%BD-%E6%B8%B2%E6%9F%93%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">优化（加载 + 渲染）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BD%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-number">1.3.1.</span> <span class="toc-text">加载性能优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-number">1.3.2.</span> <span class="toc-text">渲染性能优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%91%E6%8E%A7%EF%BC%88RUM-%E5%AE%9E%E9%AA%8C%E5%AE%A4%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">监控（RUM + 实验室）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E6%A0%87%E9%87%87%E9%9B%86"><span class="toc-number">1.4.1.</span> <span class="toc-text">指标采集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8A%E6%8A%A5"><span class="toc-number">1.4.2.</span> <span class="toc-text">上报</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E9%93%BE%E4%B8%8E%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="toc-number">1.4.3.</span> <span class="toc-text">工具链与工作流</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%91%E6%8E%A7-ChromeDevTools"><span class="toc-number">2.</span> <span class="toc-text">监控-ChromeDevTools</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Performance"><span class="toc-number">2.1.</span> <span class="toc-text">Performance</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Memory"><span class="toc-number">2.2.</span> <span class="toc-text">Memory</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-C_高级_性能优化" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      性能优化
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/06/01/C_%E9%AB%98%E7%BA%A7_%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="article-date">
+	  <time datetime="2020-06-01T08:33:16.000Z" itemprop="datePublished">2020-06-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/C-%E9%AB%98%E7%BA%A7/">C_高级</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/06/01/C_%E9%AB%98%E7%BA%A7_%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://web.dev/learn-web-vitals/">Web Vitals</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6904517485349830670">工作中如何进行前端性能优化(23 种优化+10 种定位方式</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6892994632968306702">前端性能优化 24 条建议（2020）</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7020212914020302856">写在 2021 的前端性能优化指南</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000041753539">前端性能优化实践</a></li>
+</ul>
+<h1 id="性能优化-最新"><a href="#性能优化-最新" class="headerlink" title="性能优化(最新)"></a>性能优化(最新)</h1><h2 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">前端性能优化</span><br><span class="line">│</span><br><span class="line">├── 度量基准：<span class="variable constant_">LCP</span>≤<span class="number">2.</span>5s / <span class="variable constant_">INP</span>≤200ms / <span class="variable constant_">CLS</span>≤<span class="number">0.1</span>（<span class="variable constant_">P75</span>）</span><br><span class="line">│             辅助：<span class="variable constant_">TTFB</span>、<span class="variable constant_">FCP</span>、<span class="variable constant_">TBT</span></span><br><span class="line">│</span><br><span class="line">├── 加载优化</span><br><span class="line">│   ├── 构建：<span class="title class_">Vite</span>/esbuild/<span class="title class_">Rolldown</span>、代码分割、<span class="title class_">Tree</span>-<span class="title class_">Shaking</span>、持久化缓存</span><br><span class="line">│   ├── 资源：<span class="variable constant_">AVIF</span>/<span class="title class_">WebP</span>、fetchpriority、srcset、preload、font-display</span><br><span class="line">│   ├── 传输：<span class="variable constant_">HTTP</span>/<span class="number">2</span>/<span class="number">3</span> 细化拆分、<span class="title class_">Brotli</span>、<span class="number">103</span> <span class="title class_">Early</span> <span class="title class_">Hints</span>、<span class="variable constant_">CDN</span> + 边缘</span><br><span class="line">│   ├── 缓存：<span class="variable constant_">HTML</span> 协商 + 静态资源 immutable + s-maxage</span><br><span class="line">│   └── 导航：<span class="title class_">Speculation</span> <span class="title class_">Rules</span> 预渲染、preconnect</span><br><span class="line">│</span><br><span class="line">├── 渲染优化</span><br><span class="line">│   ├── <span class="variable constant_">CSS</span>：transform/opacity 动画、content-visibility、contain</span><br><span class="line">│   ├── <span class="variable constant_">DOM</span>：读写分离防布局抖动、批量更新、虚拟列表</span><br><span class="line">│   ├── <span class="variable constant_">JS</span>：消灭长任务（scheduler.<span class="property">yield</span>）、<span class="title class_">Partytown</span>、<span class="title class_">Worker</span></span><br><span class="line">│   └── 框架：<span class="variable constant_">SSR</span>/流式/<span class="variable constant_">RSC</span>/<span class="title class_">Islands</span>、懒加载、响应式精简</span><br><span class="line">│</span><br><span class="line">├── 监控采集</span><br><span class="line">│   ├── 指标：web-vitals 库（onCLS/onLCP/onINP）</span><br><span class="line">│   ├── <span class="variable constant_">API</span>：<span class="title class_">PerformanceNavigationTiming</span> + <span class="title class_">PerformanceObserver</span></span><br><span class="line">│   └── 上报：navigator.<span class="property">sendBeacon</span></span><br><span class="line">│</span><br><span class="line">└── 工作流：<span class="title class_">DevTools</span> 定位 → <span class="title class_">Lighthouse</span> 评分 → <span class="variable constant_">PSI</span>/<span class="title class_">CrUX</span> 验证 → <span class="variable constant_">RUM</span> 追踪</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="度量（Core-Web-Vitals）"><a href="#度量（Core-Web-Vitals）" class="headerlink" title="度量（Core Web Vitals）"></a><strong>度量（Core Web Vitals）</strong></h2><p><strong>一、定义</strong></p>
+<p>三大核心指标衡量页面在 <strong>P75 分位</strong>下真实用户的表现，是 SEO 排名信号和业务体验基线：</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>含义</th>
+<th>良好阈值</th>
+<th>优化抓手</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>LCP</strong></td>
+<td>最大内容绘制，衡量加载性能</td>
+<td><strong>≤ 2.5s</strong></td>
+<td>TTFB、资源优先级、图片优化、SSR</td>
+</tr>
+<tr>
+<td><strong>INP</strong></td>
+<td>交互到下次绘制，衡量交互响应性（2024-03-12 起取代 FID）</td>
+<td><strong>≤ 200ms</strong></td>
+<td>减少长任务、拆分事件处理器、延迟非关键 JS</td>
+</tr>
+<tr>
+<td><strong>CLS</strong></td>
+<td>累积布局偏移，衡量视觉稳定性（取最大会话窗口分数）</td>
+<td><strong>≤ 0.1</strong></td>
+<td>给媒体设置尺寸、预留动态内容空间、用 transform 做动画</td>
+</tr>
+</tbody></table>
+<p><strong>二、核心</strong></p>
+<p><strong>关键区别</strong>：FID 只测首次交互的输入延迟；INP 统计<strong>整个生命周期内所有交互</strong>，取最差值，且覆盖从事件触发到绘制下一帧的完整时长。INP 严苛得多——目前仍是三个指标中最容易不合格的一个。</p>
+<p><strong>辅助指标</strong>：<strong>TTFB</strong>（服务器响应速度，LCP 前置）、<strong>FCP</strong>（首屏内容出现）、<strong>TBT</strong>（实验室环境衡量主线程阻塞，与线上 INP 对应）。TTI 已逐步淡出推荐，由 TBT + INP 组合替代。</p>
+<h2 id="优化（加载-渲染）"><a href="#优化（加载-渲染）" class="headerlink" title="优化（加载 + 渲染）"></a><strong>优化（加载 + 渲染）</strong></h2><h3 id="加载性能优化"><a href="#加载性能优化" class="headerlink" title="加载性能优化"></a>加载性能优化</h3><p><strong>1.构建层</strong></p>
+<blockquote>
+<ul>
+<li><strong>编译器与工具链</strong>：优先使用 <strong>Vite / esbuild / swc / Rolldown</strong>，构建速度和产物优化远超传统 Webpack 配置调优。</li>
+<li><strong>代码分割</strong>：路由级懒加载为默认做法；结合 <code>splitChunks</code>/<code>manualChunks</code> 抽离 vendor；动态 <code>import()</code> 拆分非关键路径。</li>
+<li><strong>摇树与压缩</strong>：Tree-Shaking、Scope Hoisting 开启；生产环境用 Terser/SWC 压缩 JS，CSS 用 lightningcss/cssnano。</li>
+<li><strong>持久化缓存</strong>：构建工具的 persistent cache（Vite/Webpack 5 原生支持），二次构建提速显著。</li>
+<li><strong>按需引入</strong>：UI 库（如 antd/element-plus）使用自动导入插件，避免全量打包。</li>
+</ul>
+</blockquote>
+<p><strong>2. 资源层</strong></p>
+<p><strong>图片</strong>是 LCP 的首要瓶颈：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>适用场景</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>AVIF</strong></td>
+<td>照片类首选</td>
+<td>比 WebP 再省 20-30% 体积，通过 <code>&lt;picture&gt;</code> 降级</td>
+</tr>
+<tr>
+<td><strong>WebP</strong></td>
+<td>通用替代 JPG/PNG</td>
+<td>全平台兼容，不是问题</td>
+</tr>
+<tr>
+<td><strong>SVG</strong></td>
+<td>图标/矢量</td>
+<td>无损缩放，可内联</td>
+</tr>
+<tr>
+<td><strong>JPG/PNG</strong></td>
+<td>兜底</td>
+<td>仅在格式不支持时使用</td>
+</tr>
+</tbody></table>
+<p>图片优化要点：</p>
+<blockquote>
+<ul>
+<li>使用 <code>srcset</code> + <code>sizes</code> 做响应式图片；<code>&lt;picture&gt;</code> 处理格式降级</li>
+<li><strong>LCP 图片</strong>加 <code>fetchpriority=&quot;high&quot;</code> 提升加载优先级openreplay.com+1，并 <code>loading=&quot;eager&quot;</code>（不要懒加载 LCP 图）</li>
+<li>非首屏图片 <code>loading=&quot;lazy&quot;</code> + <code>decoding=&quot;async&quot;</code></li>
+<li>始终设置 <code>width</code>/<code>height</code> 或 CSS <code>aspect-ratio</code> 防止 CLS</li>
+</ul>
+</blockquote>
+<p>字体：</p>
+<blockquote>
+<ul>
+<li><code>font-display: swap</code> 避免 FOIT；关键字体 <code>preload</code></li>
+<li>使用 <code>size-adjust</code> / 可变字体减少多字重请求数</li>
+</ul>
+</blockquote>
+<p>JS/CSS 加载：</p>
+<blockquote>
+<ul>
+<li>关键 CSS 内联，其余异步加载；<code>&lt;script defer&gt;</code>（保序、DOM 解析后执行）为默认，独立脚本用 <code>async</code></li>
+<li><code>preload</code> 加载当前页关键资源；<code>prefetch</code> 空闲时加载下一页可能用的资源</li>
+</ul>
+</blockquote>
+<p><strong>3.传输与协议层</strong></p>
+<blockquote>
+<ul>
+<li><strong>HTTP/2/3</strong>：多路复用让”合并文件、雪碧图”失去必要性。HTTP/2 下应<strong>细化拆分模块</strong>获得更优缓存粒度；HTTP/3（QUIC）进一步降低连接建立延迟，尤其改善弱网和移动端。</li>
+<li><strong>Brotli 压缩</strong>：静态资源优先用 <code>br</code>（比 gzip 小 15-25%），gzip 作为降级。</li>
+<li><strong>103 Early Hints</strong>：服务器在最终响应前先发送预加载提示，让浏览器在源站准备 HTML 的同时就开始加载 CSS/JS，对 TTFB 较长的场景提升明显。</li>
+<li><strong>CDN + 边缘</strong>：静态资源全量走 CDN；配合边缘计算（Edge SSR / Edge Function）把动态渲染也推向用户附近。</li>
+</ul>
+</blockquote>
+<p><strong>4.缓存层</strong></p>
+<blockquote>
+<ul>
+<li><strong>HTML</strong>：<code>Cache-Control: no-cache</code>（每次协商），保证用户能拿到新版本入口。</li>
+<li><strong>带 hash 的静态资源</strong>：<code>Cache-Control: max-age=31536000, immutable</code>，文件内容变化时改文件名即可。</li>
+<li><strong>CDN 边缘缓存</strong>：用 <code>s-maxage</code> 与 <code>stale-while-revalidate</code> 提升命中率。</li>
+<li>协商缓存依赖 <code>ETag</code>/<code>Last-Modified</code>。</li>
+</ul>
+</blockquote>
+<p><strong>5.导航加速（现代新增）</strong></p>
+<blockquote>
+<ul>
+<li><strong>Speculation Rules API</strong>：声明式指定预取或预渲染下一页导航，Chrome 支持后对多页应用和电商站点的 LCP 提升可达数百毫秒</li>
+<li><strong>preconnect / dns-prefetch</strong>：对关键第三方域名提前建立连接。</li>
+</ul>
+</blockquote>
+<h3 id="渲染性能优化"><a href="#渲染性能优化" class="headerlink" title="渲染性能优化"></a>渲染性能优化</h3><p><strong>1. CSS</strong></p>
+<blockquote>
+<ul>
+<li>动画只用 <code>transform</code> 和 <code>opacity</code>（走合成层，跳过 layout/paint）</li>
+<li>长列表/复杂区块使用 <code>content-visibility: auto</code> + <code>contain-intrinsic-size</code> 跳过屏外渲染</li>
+<li>控制选择器嵌套层级，避免通配符；利用可继承属性减少重复声明</li>
+<li><code>will-change</code> 谨慎使用，只在动画前提示，动画后移除</li>
+</ul>
+</blockquote>
+<p><strong>2. DOM 与布局</strong></p>
+<blockquote>
+<ul>
+<li><strong>避免布局抖动</strong>：读写分离——先批量读取布局属性（<code>offsetHeight</code> 等），再批量写入；或使用 <code>requestAnimationFrame</code> 分帧</li>
+<li>批量 DOM 修改用 <code>DocumentFragment</code> 或框架的批量更新机制</li>
+<li>大列表用虚拟滚动</li>
+</ul>
+</blockquote>
+<p><strong>3. JavaScript 与主线程</strong></p>
+<blockquote>
+<ul>
+<li>INP 优化的核心是消灭长任务（&gt;50ms 的任务）：<ul>
+<li>把大任务拆小块，用 <code>scheduler.yield()</code> 或 <code>setTimeout</code> 让出主线程</li>
+<li>事件处理器只做同步必要工作，昂贵部分用 <code>requestAnimationFrame</code> 或 <code>requestIdleCallback</code> 延后</li>
+<li>用 <code>isInputPending()</code> 在处理队列时优先响应输入</li>
+</ul>
+</li>
+<li>第三方脚本：分析必要性、按需加载、<code>async</code>/<code>defer</code>、放在页面底部；用 <strong>Partytown</strong> 把第三方 JS 跑在 Web Worker</li>
+<li>Web Worker 处理计算密集型任务，避免阻塞主线程</li>
+</ul>
+</blockquote>
+<p><strong>4. 框架层</strong></p>
+<blockquote>
+<ul>
+<li><strong>React</strong>：<code>React.lazy</code> + Suspense、<code>useMemo</code>/<code>useCallback</code> 按需、React 19 的 Server Components 减少客户端 bundle、<code>useTransition</code> 降低更新优先级</li>
+<li><strong>Vue 3</strong>：<code>defineAsyncComponent</code>、<code>shallowRef</code>/<code>markRaw</code> 减少响应式开销、<code>v-memo</code> 缓存大块节点、<code>v-for</code> 加唯一 key</li>
+<li><strong>SSR / 流式 SSR / RSC / Islands</strong>：首屏由服务端渲染 + 流式传输，LCP 大幅改善；静态内容用 Islands 架构（Astro）只激活必要交互</li>
+<li><code>v-show</code> vs <code>v-if</code>：高频切换用 v-show，低频大块用 v-if</li>
+</ul>
+</blockquote>
+<h2 id="监控（RUM-实验室）"><a href="#监控（RUM-实验室）" class="headerlink" title="监控（RUM + 实验室）"></a><strong>监控（RUM + 实验室）</strong></h2><h3 id="指标采集"><a href="#指标采集" class="headerlink" title="指标采集"></a>指标采集</h3><p>使用 <strong>web-vitals 库</strong>（v4+）获取标准化指标：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; onCLS, onLCP, onINP, onFCP, onTTFB &#125; <span class="keyword">from</span> <span class="string">&#x27;web-vitals&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">report</span> = (<span class="params">metric</span>) =&gt;</span><br><span class="line">  navigator.<span class="title function_">sendBeacon</span>(<span class="string">&#x27;/analytics&#x27;</span>, <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(metric));</span><br><span class="line"></span><br><span class="line"><span class="title function_">onCLS</span>(report); <span class="title function_">onLCP</span>(report); <span class="title function_">onINP</span>(report);</span><br><span class="line"><span class="title function_">onFCP</span>(report); <span class="title function_">onTTFB</span>(report);</span><br></pre></td></tr></table></figure>
+
+<p>底层 API（用于深度分析或自研 SDK）：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 导航计时：替代已弃用的 performance.timing</span></span><br><span class="line"><span class="keyword">const</span> [nav] = performance.<span class="title function_">getEntriesByType</span>(<span class="string">&#x27;navigation&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> ttfb = nav.<span class="property">responseStart</span> - nav.<span class="property">requestStart</span>;</span><br><span class="line"><span class="keyword">const</span> load = nav.<span class="property">loadEventEnd</span> - nav.<span class="property">startTime</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// LCP（用户首次交互前持续更新，取最后一个）</span></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">PerformanceObserver</span>(<span class="function">(<span class="params">list, obs</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> entries = list.<span class="title function_">getEntries</span>();</span><br><span class="line">  <span class="keyword">const</span> lcp = entries[entries.<span class="property">length</span> - <span class="number">1</span>];</span><br><span class="line">  obs.<span class="title function_">disconnect</span>();</span><br><span class="line">&#125;).<span class="title function_">observe</span>(&#123; <span class="attr">type</span>: <span class="string">&#x27;largest-contentful-paint&#x27;</span>, <span class="attr">buffered</span>: <span class="literal">true</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// INP / CLS 通过 Event Timing API 与 Layout Shift API 观察</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="上报"><a href="#上报" class="headerlink" title="上报"></a>上报</h3><blockquote>
+<ul>
+<li>首选 **<code>navigator.sendBeacon</code>**：异步、unload 时也能发送、可被浏览器合并请求</li>
+<li>兜底 <code>fetch(url, &#123; keepalive: true &#125;)</code>；<code>&lt;img&gt;</code> 上报仅作极简兜底</li>
+</ul>
+</blockquote>
+<h3 id="工具链与工作流"><a href="#工具链与工作流" class="headerlink" title="工具链与工作流"></a>工具链与工作流</h3><p>推荐工作流：<strong>Lighthouse/DevTools 本地定位 → 优化上线 → PSI/CrUX 验证 P75 → RUM 持续追踪回归</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>工具</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>开发</td>
+<td>Chrome DevTools Performance/Memory</td>
+<td>瀑布图 + 火焰图定位长任务、内存泄漏</td>
+</tr>
+<tr>
+<td>构建/发布前</td>
+<td>Lighthouse（CI 集成）</td>
+<td>实验室评分与优化建议</td>
+</tr>
+<tr>
+<td>线上验证</td>
+<td>PageSpeed Insights</td>
+<td>同时给出实验室 + CrUX 真实数据</td>
+</tr>
+<tr>
+<td>真实用户监控（RUM）</td>
+<td>CrUX / 自建 web-vitals SDK</td>
+<td>P75 分位数据，反映真实体验</td>
+</tr>
+<tr>
+<td>持续监控</td>
+<td>Search Console CWV 报告</td>
+<td>全站趋势与异常预警</td>
+</tr>
+</tbody></table>
+<h1 id="监控-ChromeDevTools"><a href="#监控-ChromeDevTools" class="headerlink" title="监控-ChromeDevTools"></a>监控-ChromeDevTools</h1><h2 id="Performance"><a href="#Performance" class="headerlink" title="Performance"></a>Performance</h2><p><img src="/img/image-20211219215308332.png" alt="image-20211219215308332"></p>
+<p><strong>一、Personmance面板简介</strong><br>三大区域：网页性能(总览图);网络面板(瀑布图)，主线程(火焰图)等。熟语：总览在瀑布下用火焰烤饼</p>
+<blockquote>
+<p>总览图：<strong>蓝色</strong>：解析htmlLoading；<strong>黄色</strong>：js相关；<strong>紫色</strong>：渲染相关；绿色：绘制相关；</p>
+<p>瀑布图：<strong>蓝色</strong>：html加载；<strong>黄色</strong>：js脚本资源加载；<strong>紫色</strong>：css资源加载；<strong>绿色</strong>：img等资源加载；<strong>灰色</strong>：api接口请求</p>
+<p>火焰图：红色标记的为长任务</p>
+</blockquote>
+<p>瀑布图</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">一个请求分为4段：</span><br><span class="line">浅色线段：请求建立连接时间，从客户端发送请求到建立tcp连接，比如网络问题，nginx转发问题</span><br><span class="line">浅色柱子TTFB：客户端请求第一个字节到客户端收到第一个字节的时间，比如：后台处理任务时间过长</span><br><span class="line">深色柱子：客户端下载第一个字节到最后一个字节的时间</span><br><span class="line">浅色线段：等待主线程处理时间即浏览器拿到所有资源到交给主线程处理的等待时间，比如：主线程有很多任务，某些js脚本执行时间过长</span><br></pre></td></tr></table></figure>
+
+<p>火焰图</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">脚本执行、样式计算、布局计算、绘制等等。</span><br><span class="line">任务队列，每个任务又分为若然子任务，有红色箭头标记长任务，run time。找到最长的长任务，可能就是存在性能瓶颈的地方。</span><br><span class="line">这个Task还不是Event Loop，表示当前主线程忙碌，无法响应用户交互。Run Microtasks 则确实是在一次任务的末尾执行的微任务。</span><br><span class="line">Task之间的白色就是Idle空闲时间,可能是资源加载时间过长引起的。</span><br><span class="line">当我们点开调用栈观察时，可以看到源码中的回调函数以及对应的源码位置。</span><br><span class="line">比如：LongTask里有一个二维码绘制的函数drawQrCode。耗时比较久，但是其实只需要鼠标移入才需要显示的，没必要做到首页加载。</span><br></pre></td></tr></table></figure>
+
+<p><strong>二、面板详解</strong></p>
+<p><img src="/img/image-20211107232411254.png" alt="image-20211107232411254"></p>
+<p><strong>区域1：网页性能总览图</strong><br>总览图包含 FPS（每秒帧数情况，越大越好）、CPU（CPU占用情况）、NET（网络资源情况）、HEAP（JS占用情况）一共四项指标。</p>
+<p><strong>区域2：各项指标的区块图</strong></p>
+<p><img src="/img/image-20211107232617810.png" alt="image-20211107232617810"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1Network：表示每个服务器资源的加载情况，**瀑布图**。</span><br><span class="line">main:表示每个task执行的时间，以及子任务的执行时间，**火焰图**，x轴表示时间轴，每个条形代表一个事件，越宽代表花费时间越长。y轴表示调用堆栈，高的事件调用低的事件。</span><br><span class="line">2Frames：表示每幅帧的运行情况。</span><br><span class="line">3Timings：上图中有 4 条虚线，分别表示如下。</span><br><span class="line">（1）DCL（DOMContentLoaded）表示 HTML 文档加载完成事件。当初始 HTML 文档完全加载并解析之后触发，无需等待样式、图片、子 frame 结束。作为明显的对比，load 事件是当个页面完全被加载时才触发。</span><br><span class="line">（2）FP（First Paint）首屏绘制，页面刚开始渲染的时间。</span><br><span class="line">（3）FCP（First Contentful Paint）首屏内容绘制，首次绘制任何文本，图像，非空白canvas 或 SVG 的时间点。</span><br><span class="line">（4）FMP（First Meaningful Paint）首屏有意义的内容绘制，这个“有意义”没有权威的规定，本质上是通过一种算法来猜测某个时间点可能是 FMP。有的理解为是最大元素绘制的时间，即同LCP（Largest Contentful Paint ）。</span><br><span class="line">其中 FP、FCP、FMP 是同一条虚线，三者时间不一致。比如首次渲染过后，有可能出现 JS 阻塞，这种情况下 FCP 就会大于 FP。</span><br><span class="line">（5）L（Onload）页面所有资源加载完成事件。</span><br><span class="line">（6）LCP（Largest Contentful Paint ）最大内容绘制，页面上尺寸最大的元素绘制时间。</span><br></pre></td></tr></table></figure>
+
+<p><strong>区域3：数据统计与汇总</strong></p>
+<p><strong>bottom-up</strong></p>
+<p>执行的事件，可以看到各活动占用的时间。<strong>Self Time</strong> 表示直接花费的时间，<strong>Total Time</strong>表示在该活动和其所有子活动花费的时间。可以看到该事件是执行的微任务，包含了重新计算样式+布局+调用方法+<a target="_blank" rel="noopener" href="https://www.w3school.com.cn/ajax/ajax_xmlhttprequest_onreadystatechange.asp">请求状态改变</a>+解析html。</p>
+<p><img src="/img/image-20211107232703176.png" alt="image-20211107232703176"></p>
+<p><strong>Call Tree</strong></p>
+<p>调用树，查看<a target="_blank" rel="noopener" href="https://developer.chrome.com/docs/devtools/evaluate-performance/reference/#root-activities">根活动</a>（根活动是那些导致浏览器做一些工作的活动。例如，当单击一个页面时，浏览器会触发一个<code>Event</code>作为根 Activity 的 Activity。这<code>Event</code>可能会导致处理程序执行，等等。其在Main,call Tree 、Event Log都是最高级）。</p>
+<p><strong>Event log</strong></p>
+<p>浏览器在每一帧里，都会执行：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Schedule</span> <span class="title class_">Style</span> <span class="title class_">Recalculation</span><span class="string">` -&gt; `</span><span class="title class_">Recalculate</span> <span class="title class_">Style</span><span class="string">` -&gt; `</span><span class="title class_">Update</span> <span class="title class_">Layer</span> <span class="title class_">Tree</span><span class="string">` -&gt; `</span><span class="title class_">Paint</span><span class="string">` -&gt; `</span><span class="title class_">Composite</span> <span class="title class_">Layers</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- JavaScipt：JavaScript 实现动画效果，DOM 元素操作等。（Demo 3没有 js ，故这一步没有）</span><br><span class="line">- Style（Schedule Style Recalculation、Recalculate Style）：确定每个 DOM 元素应该应用什么 CSS 规则，重新计算样式。</span><br><span class="line">- Layout（Update Layer Tree）：计算每个 DOM 元素在最终屏幕上显示的大小和位置。由于 web 页面的元素布局是相对的，所以其中任意一个元素的位置发生变化，都会联动的引起其他元素发生变化，这个过程叫 reflow，即回流</span><br><span class="line">- Paint（绘制）：在多个层上绘制 DOM 元素的的文字、颜色、图像、边框和阴影等。这个过程会触发对元素的绘制，rePaint，即重绘</span><br><span class="line">- Composite（渲染层合并，Composite Layers）：按照合理的顺序合并图层然后显示到屏幕上。</span><br></pre></td></tr></table></figure>
+
+<p><strong>案例分析</strong></p>
+<p><a target="_blank" rel="noopener" href="https://googlechrome.github.io/devtools-samples/jank/">google官方推出的性能案例</a></p>
+<p><img src="/img/2024-03-22_072758.png" alt="image-20211012230610276"></p>
+<p>a.打开性能面板，进行录制</p>
+<p><img src="/img/2024-03-29_065127.png" alt="image"></p>
+<p>b.开始分析</p>
+<p><img src="/img/2024-03-22_073105.png" alt="image"></p>
+<p>根据调用时间，推断代码入口</p>
+<p><img src="/img/2024-03-30_112159.png" alt="image"></p>
+<p>根据具体某个阶段，推断代码入口</p>
+<p><img src="/img/2024-03-30_112520.png" alt="image"></p>
+<h2 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a>Memory</h2><p><strong>案例分析</strong></p>
+<p>主要查看程序是否存在内存泄漏情况</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">    &lt;head&gt;</span><br><span class="line">    &lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;h1&gt;内存泄漏案例分析&lt;/h1&gt;</span><br><span class="line">    &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">        &lt;button id=&quot;run&quot;&gt;运行&lt;/button&gt;</span><br><span class="line">        &lt;button id=&quot;stop&quot;&gt;停止&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;script &gt;</span><br><span class="line">    const arr =[]</span><br><span class="line">    for(let i=0;i&lt;200000;i++)&#123;</span><br><span class="line">        arr.push(i)</span><br><span class="line">    &#125;</span><br><span class="line">// let arr = new Array(20000).fill(1)</span><br><span class="line">    let newArr=[]</span><br><span class="line">    function run()&#123;</span><br><span class="line">        newArr = newArr.concat(arr)</span><br><span class="line">    &#125; </span><br><span class="line">    </span><br><span class="line">    let clearRun</span><br><span class="line">    document.querySelector(&#x27;#run&#x27;).onclick=function()&#123;</span><br><span class="line">        clearRun=setInterval(()=&gt;&#123;</span><br><span class="line">            run()</span><br><span class="line">        &#125;,1000)</span><br><span class="line">    &#125;</span><br><span class="line">    document.querySelector(&#x27;#stop&#x27;).onclick=function()&#123;</span><br><span class="line">        clearInterval(clearRun)</span><br><span class="line">    &#125;</span><br><span class="line"> &lt;/script&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>a.打开内存面板，进行录制</p>
+<p><img src="/img/20240322_1.png" alt="image"></p>
+<p>b.分析面板</p>
+<p><img src="/img/20240322_2.png" alt="image"></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2020/06/01/C_%E9%AB%98%E7%BA%A7_%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" title="性能优化" target="_blank" rel="external">https://fuyunjinglong.github.io/2020/06/01/C_高级_性能优化/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2021/01/01/C_%E9%AB%98%E7%BA%A7_%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/" title="前端工程化"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/05/05/A_%E5%88%9D%E7%BA%A7_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84_JS/" title="数据结构_JS"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <!-- <script src="//cdn.jsdelivr.net/npm/valine"></script> -->
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

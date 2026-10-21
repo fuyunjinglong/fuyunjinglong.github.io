@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Agent  </title>
+  <meta name="description" content="参考  吴恩达大佬-AI入门    初级Agent厂商一、选型建议   零成本个人&#x2F;小团队入门：国内选 Dify 或 FastGPT 自部署 + 硅基流动 2000 万免费 Token；国外选 LangChain + AutoGPT + Gemini API 免费层 业务人员快速做 Bot：国内扣子 SaaS 免费版够用，国外 ChatGPT GPTs 最简单，但需订阅 Plusc 企业私有化部署">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Agent">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2003/01/01/A1_LLM_Agent/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="参考  吴恩达大佬-AI入门    初级Agent厂商一、选型建议   零成本个人&#x2F;小团队入门：国内选 Dify 或 FastGPT 自部署 + 硅基流动 2000 万免费 Token；国外选 LangChain + AutoGPT + Gemini API 免费层 业务人员快速做 Bot：国内扣子 SaaS 免费版够用，国外 ChatGPT GPTs 最简单，但需订阅 Plusc 企业私有化部署">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2026-10-17_11-55-40.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-20_12-36-56.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-20_12-45-16.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-20_12-54-48.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-20_11-56-31.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-20_11-57-47.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/2025-12-20_12-09-58.png">
+<meta property="article:published_time" content="2002-12-31T22:33:16.000Z">
+<meta property="article:modified_time" content="2026-10-18T09:48:50.611Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/2026-10-17_11-55-40.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2003/01/01/A1_LLM_Agent/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A1-LLM/">A1_LLM</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E5%88%9D%E7%BA%A7/">A_初级</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-%E4%B8%AD%E7%BA%A7/">B_中级</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E9%AB%98%E7%BA%A7/">C_高级</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E8%A7%84%E5%88%92/">D_规划</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/04/">四月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/01/">一月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2098/01/">一月 2098</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">七月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">一月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/03/">三月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/02/">二月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/01/">一月 2004</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/06/">六月 2003</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/01/">一月 2003</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/06/">六月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/02/">二月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/01/">一月 2002</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/06/">六月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/03/">三月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/02/">二月 2001</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/01/">一月 2001</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/06/">六月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/03/">三月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/02/">二月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/01/">一月 2000</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/04/04/%E6%A8%A1%E6%9D%BFX/" class="title">模板X</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-04-04T00:33:16.000Z" itemprop="datePublished">2099-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/03/29/Z_%E5%90%8E%E7%AB%AF_Java/" class="title">Java</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-03-28T23:33:16.000Z" itemprop="datePublished">2099-03-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/01/01/G_%E5%85%B6%E4%BB%96_%E4%B9%A6%E5%8D%95/" class="title">书单</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-01-01T00:33:16.000Z" itemprop="datePublished">2099-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A1-LLM/">A1_LLM</a>
+              </p>
+              <p class="item-title">
+                <a href="/2098/01/01/A1_LLM_windows%E5%AE%89%E8%A3%85%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="title">LLM_windows安装大模型</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2097-12-31T22:33:16.000Z" itemprop="datePublished">2098-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2026/07/18/Test%20copy/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2026-07-18T02:11:18.292Z" itemprop="datePublished">2026-07-18</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">1.</span> <span class="toc-text">参考</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9D%E7%BA%A7"><span class="toc-number">2.</span> <span class="toc-text">初级</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Agent%E5%8E%82%E5%95%86"><span class="toc-number">2.1.</span> <span class="toc-text">Agent厂商</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#AI%E7%BC%96%E7%A8%8B%E5%8A%A9%E6%89%8B"><span class="toc-number">2.1.1.</span> <span class="toc-text">AI编程助手</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BD%E5%86%85-%E5%AE%8C%E5%85%A8%E5%85%8D%E8%B4%B9-%E5%BC%80%E6%BA%90"><span class="toc-number">2.1.2.</span> <span class="toc-text">国内-完全免费&#x2F;开源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BD%E5%86%85-%E6%8F%90%E4%BE%9B%E5%85%8D%E8%B4%B9%E9%A2%9D%E5%BA%A6-%E6%8E%A8%E8%8D%90"><span class="toc-number">2.1.3.</span> <span class="toc-text">国内-提供免费额度(推荐)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BD%E5%86%85-%E5%AE%8C%E5%85%A8%E5%95%86%E4%B8%9A%E6%94%B6%E8%B4%B9-%E4%BC%81%E4%B8%9A%E5%AE%9A%E5%88%B6"><span class="toc-number">2.1.4.</span> <span class="toc-text">国内-完全商业收费&#x2F;企业定制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BD%E5%A4%96-%E5%AE%8C%E5%85%A8%E5%85%8D%E8%B4%B9-%E5%BC%80%E6%BA%90"><span class="toc-number">2.1.5.</span> <span class="toc-text">国外-完全免费&#x2F;开源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BD%E5%A4%96-%E6%8F%90%E4%BE%9B%E5%85%8D%E8%B4%B9%E9%A2%9D%E5%BA%A6"><span class="toc-number">2.1.6.</span> <span class="toc-text">国外-提供免费额度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BD%E5%A4%96-%E5%AE%8C%E5%85%A8%E5%95%86%E4%B8%9A%E6%94%B6%E8%B4%B9-%E4%BC%81%E4%B8%9A%E5%AE%9A%E5%88%B6"><span class="toc-number">2.1.7.</span> <span class="toc-text">国外-完全商业收费&#x2F;企业定制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Agent%E7%9A%84CLI-TUI-GUI"><span class="toc-number">2.2.</span> <span class="toc-text">Agent的CLI&#x2F;TUI&#x2F;GUI</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%AD%E7%BA%A7"><span class="toc-number">3.</span> <span class="toc-text">中级</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7"><span class="toc-number">4.</span> <span class="toc-text">高级</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%99%BA%E6%B3%8A-Agent%E5%BC%80%E5%8F%91"><span class="toc-number">5.</span> <span class="toc-text">智泊-Agent开发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-number">5.1.</span> <span class="toc-text">环境准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B"><span class="toc-number">5.2.</span> <span class="toc-text">提示词工程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">5.3.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%90%86%E8%AE%BA%E7%9A%84%E5%BC%80%E5%8F%91%E8%8C%83%E5%BC%8F"><span class="toc-number">5.4.</span> <span class="toc-text">理论的开发范式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E9%80%89%E5%9E%8B%E5%8F%8A%E8%8C%83%E5%BC%8F"><span class="toc-number">5.5.</span> <span class="toc-text">开发选型及范式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E5%A4%A7%E5%9F%BA%E5%BB%BA"><span class="toc-number">5.5.1.</span> <span class="toc-text">三大基建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E5%A4%A7%E6%9E%B6%E6%9E%84%E8%8C%83%E5%BC%8F"><span class="toc-number">5.5.2.</span> <span class="toc-text">五大架构范式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E6%AD%A5%E6%B3%95%E9%80%89%E5%9E%8B"><span class="toc-number">5.5.3.</span> <span class="toc-text">五步法选型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AA%E6%9D%A5%E8%B6%8B%E5%8A%BF"><span class="toc-number">5.5.4.</span> <span class="toc-text">未来趋势</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E4%BA%A7%E9%83%A8%E7%BD%B2"><span class="toc-number">5.6.</span> <span class="toc-text">生产部署</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E6%8A%80%E6%9C%AF"><span class="toc-number">5.7.</span> <span class="toc-text">关键技术</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">5.8.</span> <span class="toc-text">最佳实践</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Agent"><span class="toc-number">6.</span> <span class="toc-text">Agent</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-number">6.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">6.2.</span> <span class="toc-text">工作原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ReAct%E6%A8%A1%E5%BC%8F"><span class="toc-number">6.2.1.</span> <span class="toc-text">ReAct模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%A8%A1%E5%BC%8F"><span class="toc-number">6.2.2.</span> <span class="toc-text">其他模式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#A2A%E5%8D%8F%E8%AE%AE"><span class="toc-number">7.</span> <span class="toc-text">A2A协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-1"><span class="toc-number">7.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8EMCP%E7%AD%89%E5%8D%8F%E8%AE%AE%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="toc-number">7.2.</span> <span class="toc-text">与MCP等协议的对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#A2A%E7%9A%84%E6%A0%B8%E5%BF%83%E9%93%BE%E8%B7%AF"><span class="toc-number">7.3.</span> <span class="toc-text">A2A的核心链路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#A2A%E7%9A%84%E6%B5%81%E5%BC%8F%E8%BF%94%E5%9B%9E"><span class="toc-number">7.4.</span> <span class="toc-text">A2A的流式返回</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#A2A%E7%9A%84%E5%A4%9AAgent%E5%8D%8F%E4%BD%9C"><span class="toc-number">7.5.</span> <span class="toc-text">A2A的多Agent协作</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%89%8B%E5%86%99-Agent"><span class="toc-number">8.</span> <span class="toc-text">手写-Agent</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-A1_LLM_Agent" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Agent
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2003/01/01/A1_LLM_Agent/" class="article-date">
+	  <time datetime="2002-12-31T22:33:16.000Z" itemprop="datePublished">2003-01-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/A1-LLM/">A1_LLM</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2003/01/01/A1_LLM_Agent/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://datawhalechina.github.io/llm-cookbook/#/">吴恩达大佬-AI入门</a></li>
+<li></li>
+</ul>
+</blockquote>
+<h1 id="初级"><a href="#初级" class="headerlink" title="初级"></a>初级</h1><h2 id="Agent厂商"><a href="#Agent厂商" class="headerlink" title="Agent厂商"></a>Agent厂商</h2><p><strong>一、选型建议</strong></p>
+<blockquote>
+<ul>
+<li><strong>零成本个人/小团队入门</strong>：国内选 Dify 或 FastGPT 自部署 + 硅基流动 2000 万免费 Token；国外选 LangChain + AutoGPT + Gemini API 免费层</li>
+<li><strong>业务人员快速做 Bot</strong>：国内扣子 SaaS 免费版够用，国外 ChatGPT GPTs 最简单，但需订阅 Plusc</li>
+<li><strong>企业私有化部署</strong>：国内 Dify/毕昇/MaxKB 开源自部署；国外 AutoGen/LangGraph 开源 + 云服务</li>
+<li><strong>大型企业开箱即用</strong>：国内阿里百炼/百度千帆；国外 Salesforce Agentforce、ServiceNow Now Assist、Microsoft Copilot Studio</li>
+</ul>
+</blockquote>
+<p><strong>二、国内/国外</strong></p>
+<blockquote>
+<ul>
+<li>完全免费/开源</li>
+<li>提供免费额度</li>
+<li>完全商业收费</li>
+</ul>
+</blockquote>
+<h3 id="AI编程助手"><a href="#AI编程助手" class="headerlink" title="AI编程助手"></a>AI编程助手</h3><blockquote>
+<p>CLI工具推荐</p>
+<ul>
+<li>Gemini CLI（1000 次/天免费）&gt; Qoder CLI 社区版 &gt; Qwen Code + DeepSeek API</li>
+<li>Claude Code</li>
+</ul>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>产品/项目</th>
+<th>范围</th>
+<th>形态</th>
+<th>使用门槛与获取方式</th>
+<th>链接</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Trae（字节跳动）</strong></td>
+<td>国内</td>
+<td>IDE（国内版 + 海外版 trae.ai）</td>
+<td>国内版完全免费、无需科学上网，官网下载安装包（Win/macOS），手机号/微信登录即可；海外版 Pro 按订阅付费</td>
+<td><a target="_blank" rel="noopener" href="https://www.trae.com.cn/">https://www.trae.com.cn</a></td>
+</tr>
+<tr>
+<td><strong>通义灵码（Qoder CN）</strong></td>
+<td>国内</td>
+<td>IDE + 插件（VS Code、JetBrains 全家桶、Visual Studio）</td>
+<td>零门槛：官网下载 IDE，或在插件市场搜”TONGYI Lingma”一键安装，登录阿里云账号即可；个人版免费，企业版按席位付费；国内网络直连</td>
+<td><a target="_blank" rel="noopener" href="https://lingma.aliyun.com/download">https://lingma.aliyun.com/download</a></td>
+</tr>
+<tr>
+<td><strong>CodeGeeX（智谱 AI）</strong></td>
+<td>国内</td>
+<td>插件（VS Code、JetBrains 全家桶、Vim、HBuilderX 等）</td>
+<td>零门槛且个人永久免费：官网或 IDE 插件市场安装插件，注册账号即可；企业支持私有化部署；模型已开源</td>
+<td><a target="_blank" rel="noopener" href="https://codegeex.cn/downloadGuide">https://codegeex.cn/downloadGuide</a></td>
+</tr>
+<tr>
+<td><strong>CodeBuddy（腾讯云）</strong></td>
+<td>国内</td>
+<td>IDE + 插件（VS Code、JetBrains）+ CLI（CodeBuddy Code）</td>
+<td>低门槛：官网下载 IDE，或插件市场安装；个人版支持微信/手机号登录，含免费额度；CLI 通过 <code>npm install -g @tencent-ai/codebuddy-code</code> 安装</td>
+<td><a target="_blank" rel="noopener" href="https://www.codebuddy.cn/ide">https://www.codebuddy.cn/ide</a></td>
+</tr>
+<tr>
+<td><strong>Cursor</strong></td>
+<td>国外</td>
+<td>IDE（基于 VS Code）</td>
+<td>门槛低：官网下载安装包（Win/macOS/Linux），注册账号即可；免费档可用，Pro $20/月解锁高级模型与高配额；国内访问需代理</td>
+<td><a target="_blank" rel="noopener" href="https://www.cursor.com/download">https://www.cursor.com/download</a></td>
+</tr>
+<tr>
+<td><strong>Claude Code</strong></td>
+<td>国外</td>
+<td>终端 CLI Agent（亦提供 VS Code/JetBrains 插件）</td>
+<td>需命令行：<code>npm install -g @anthropic-ai/claude-code</code> 或 <code>brew install --cask claude-code</code>；需登录 Claude Pro（$20/月）或绑定 Anthropic API Key；国内网络需代理</td>
+<td><a target="_blank" rel="noopener" href="https://code.claude.com/docs/en/setup">https://code.claude.com/docs/en/setup</a></td>
+</tr>
+<tr>
+<td><strong>GitHub Copilot</strong></td>
+<td>国外</td>
+<td>插件（VS Code、JetBrains 全家桶、Neovim、Xcode、Visual Studio 等）</td>
+<td>门槛最低：在 IDE 插件市场搜索安装，用 GitHub 账号登录即可；Free 档每月 2000 次补全，Pro $10/月；学生/教师/开源维护者免费</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/features/copilot">https://github.com/features/copilot</a></td>
+</tr>
+<tr>
+<td><strong>Windsurf</strong></td>
+<td>国外</td>
+<td>IDE（VS Code 分叉）+ JetBrains 插件</td>
+<td>官网下载安装包，邮箱或 GitHub 注册；Free 档每月 25 credits + 无限补全，Pro $20/月；国内使用需代理</td>
+<td><a target="_blank" rel="noopener" href="https://windsurf.com/download">https://windsurf.com/download</a></td>
+</tr>
+<tr>
+<td><strong>Gemini Code Assist</strong></td>
+<td>国外</td>
+<td>插件（VS Code、JetBrains、Android Studio）+ Gemini CLI</td>
+<td>免费：用个人 Google 账号登录，插件市场安装即可；个人版每天 6000 次补全 + 240 次对话，额度慷慨；国内访问需代理</td>
+<td><a target="_blank" rel="noopener" href="https://codeassist.google/">https://codeassist.google</a></td>
+</tr>
+<tr>
+<td><strong>Amazon Q Developer</strong></td>
+<td>国外</td>
+<td>插件（VS Code、JetBrains、AWS Toolkit、CLI）</td>
+<td>AWS Builder ID 免费注册即可用基础版，Pro $19/月；深度绑定 AWS 生态，非 AWS 用户价值有限；国内访问需代理</td>
+<td><a target="_blank" rel="noopener" href="https://aws.amazon.com/q/developer/">https://aws.amazon.com/q/developer/</a></td>
+</tr>
+</tbody></table>
+<h3 id="国内-完全免费-开源"><a href="#国内-完全免费-开源" class="headerlink" title="国内-完全免费/开源"></a>国内-完全免费/开源</h3><table>
+<thead>
+<tr>
+<th>产品/项目</th>
+<th>使用场景</th>
+<th>形态</th>
+<th>使用门槛与获取方式</th>
+<th>链接</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Dify 社区版</strong></td>
+<td>企业知识库问答、RAG 应用、复杂工作流编排</td>
+<td>Web 平台（可视化编排）+ API</td>
+<td>开源免费，Docker 一键部署，需自备大模型 API；中文文档完善</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/langgenius/dify">github.com/langgenius/dify</a></td>
+</tr>
+<tr>
+<td><strong>FastGPT</strong></td>
+<td>知识库问答、自动化数据预处理、Flow 可视化编排</td>
+<td>Web 平台（可视化编排）+ API</td>
+<td>开源免费（GitHub 20k+ Star），Docker 自部署，OpenAI 兼容 API</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/labring/FastGPT">github.com/labring/FastGPT</a></td>
+</tr>
+<tr>
+<td><strong>MetaGPT</strong></td>
+<td>多角色协作模拟软件开发全流程、报告撰写</td>
+<td>Python 框架 + CLI</td>
+<td>开源免费，pip 安装即可，需自行接入 LLM API</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/geekan/MetaGPT">github.com/geekan/MetaGPT</a></td>
+</tr>
+<tr>
+<td><strong>AgentScope</strong>（阿里）</td>
+<td>多智能体对话/协作应用研发</td>
+<td>Python 框架 + Studio 可视化面板</td>
+<td>开源，Python 框架，面向开发者</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/modelscope/agentscope">github.com/modelscope/agentscope</a></td>
+</tr>
+<tr>
+<td><strong>毕昇 BISHENG</strong></td>
+<td>文档审核、报告生成、企业级多 Agent 协作</td>
+<td>Web 平台（私有化部署）</td>
+<td>开源免费，支持私有化部署与 RBAC 权限</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/dataelement/bisheng">github.com/dataelement/bisheng</a></td>
+</tr>
+<tr>
+<td><strong>JoyAgent-JDGenie</strong>（京东）</td>
+<td>零售场景智能客服、自动生成 PPT/报表</td>
+<td>Web 平台（端到端产品级开源，前后端+引擎全开源）</td>
+<td>开源，<code>pip install joyagent-jdgenie</code> 即用，内置零售模板</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/jd-opensource/joyagent-jdgenie">github.com/jd-opensource/joyagent-jdgenie</a></td>
+</tr>
+<tr>
+<td><strong>MaxKB</strong></td>
+<td>企业级知识库智能问答</td>
+<td>Web 平台（Docker 部署），支持零代码嵌入</td>
+<td>开源免费，5 分钟 Docker 部署，零代码嵌入</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/1Panel-dev/MaxKB">github.com/1Panel-dev/MaxKB</a></td>
+</tr>
+<tr>
+<td><strong>扣子 Coze Studio 开源版</strong></td>
+<td>低代码 Bot 搭建、插件编排</td>
+<td>Web 平台（可视化低代码，自部署）+ OpenAPI/Chat SDK</td>
+<td>核心引擎已开源，可自部署；SaaS 版另算</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/coze-dev/coze-studio">github.com/coze-dev/coze-studio</a></td>
+</tr>
+</tbody></table>
+<h3 id="国内-提供免费额度-推荐"><a href="#国内-提供免费额度-推荐" class="headerlink" title="国内-提供免费额度(推荐)"></a>国内-提供免费额度(推荐)</h3><table>
+<thead>
+<tr>
+<th>产品/项目</th>
+<th>适用人群</th>
+<th>使用场景</th>
+<th>形态</th>
+<th>使用门槛与获取方式</th>
+<th>链接</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Trae</strong>（字节跳动）</td>
+<td>编程</td>
+<td>AI 原生 IDE，Chat/Builder 双模式，一句话生成完整项目，多模型（Claude、GPT-4o、DeepSeek、豆包）</td>
+<td>IDE（兼容 VS Code 插件迁移）</td>
+<td>注册登录即可免费使用，支持 macOS/Windows</td>
+<td><a target="_blank" rel="noopener" href="https://www.trae.cn/">https://www.trae.cn</a></td>
+</tr>
+<tr>
+<td><strong>通义灵码</strong>（阿里云）</td>
+<td>编程</td>
+<td>代码补全、智能注释、单测生成、自然语言生成代码，支持 Java/Python/Go/TS 等</td>
+<td>IDE 插件（VS Code / JetBrains）+ IDE</td>
+<td>个人版免费不限量，IDE 插件市场搜索安装，或下载IDE。IDE没有内置模型可用</td>
+<td><a target="_blank" rel="noopener" href="https://tongyi.aliyun.com/lingma">https://tongyi.aliyun.com/lingma</a></td>
+</tr>
+<tr>
+<td><strong>CodeGeeX</strong>（智谱，不推荐）</td>
+<td>编程</td>
+<td>代码补全、跨语言翻译、错误检测，支持 100+ 语言，可本地部署</td>
+<td>IDE 插件（VS Code / JetBrains），支持本地部署</td>
+<td>完全免费且开源，VS Code/JetBrains 插件市场直接安装。vscode 提示报错 <code>&lt;&gt;frontend_server.view_file&lt;/&gt;</code></td>
+<td><a target="_blank" rel="noopener" href="https://codegeex.cn/">https://codegeex.cn</a></td>
+</tr>
+<tr>
+<td><strong>腾讯云 CodeBuddy</strong>（腾讯）</td>
+<td>编程</td>
+<td>Craft 智能体一键全栈项目生成，深度集成微信/腾讯云生态，等保三级合规</td>
+<td>IDE 插件（VS Code / JetBrains）+ IDE</td>
+<td>个人版永久免费（约 2000 次/月额度），VS Code 插件或IDE</td>
+<td><a target="_blank" rel="noopener" href="https://copilot.tencent.com/">https://copilot.tencent.com</a></td>
+</tr>
+<tr>
+<td><strong>DeepSeek</strong>（深度求索）</td>
+<td>编程</td>
+<td>代码生成、逻辑推理、技术问答；日常问答写作亦可用</td>
+<td>Web / App / API</td>
+<td>网页/App 完全免费；API 注册即送额度，定价极低</td>
+<td><a target="_blank" rel="noopener" href="https://www.deepseek.com/">https://www.deepseek.com</a></td>
+</tr>
+<tr>
+<td><strong>快手 CodeFlicker</strong>（快手）</td>
+<td>编程</td>
+<td>独立 AI IDE，免费使用 Kimi-K2、DeepSeek、GLM 等多款模型</td>
+<td>IDE</td>
+<td>下载IDE 注册即用，当前免费</td>
+<td><a target="_blank" rel="noopener" href="https://codeflicker.kuaishou.com/">https://codeflicker.kuaishou.com</a></td>
+</tr>
+<tr>
+<td><strong>iFlow CLI</strong>（心流）</td>
+<td>编程</td>
+<td>终端 AI 编程助手，支持项目分析、文件管理、工作流自动化</td>
+<td>CLI（终端形态）</td>
+<td>完全免费，命令行安装，支持 Kimi K2、Qwen Coder 等模型</td>
+<td><a target="_blank" rel="noopener" href="https://iflow.cn/">https://iflow.cn</a></td>
+</tr>
+<tr>
+<td><strong>扣子 Coze</strong>（字节跳动）</td>
+<td>非编程</td>
+<td>零代码搭建智能体，100+ 插件，可发布到豆包/微信小程序</td>
+<td>Web SaaS（零代码低代码平台）</td>
+<td>免费，网页注册即用，适合无编程经验用户</td>
+<td><a target="_blank" rel="noopener" href="https://www.coze.cn/">https://www.coze.cn</a></td>
+</tr>
+<tr>
+<td><strong>豆包</strong>（字节跳动）</td>
+<td>非编程</td>
+<td>日常问答、写作、PPT、图片生成、AI 智能体调用</td>
+<td>App / Web / 浏览器插件</td>
+<td>免费，手机 App/网页/浏览器插件</td>
+<td><a target="_blank" rel="noopener" href="https://www.doubao.com/">https://www.doubao.com</a></td>
+</tr>
+<tr>
+<td><strong>Kimi</strong>（月之暗面）</td>
+<td>非编程</td>
+<td>长文档分析（200 万字）、深度思考、一键 PPT、智能体广场</td>
+<td>Web / App / 小程序</td>
+<td>免费，网页/App/小程序</td>
+<td><a target="_blank" rel="noopener" href="https://kimi.moonshot.cn/">https://kimi.moonshot.cn</a></td>
+</tr>
+<tr>
+<td><strong>智谱清言</strong>（智谱 AI）</td>
+<td>非编程</td>
+<td>复杂问题推理、联网搜索、AutoGLM 沉思、Agent 广场</td>
+<td>Web / App（另提供 GLM API）</td>
+<td>免费，网页/App；开发者可申请 GLM API 免费额度</td>
+<td><a target="_blank" rel="noopener" href="https://chatglm.cn/">https://chatglm.cn</a></td>
+</tr>
+<tr>
+<td><strong>腾讯元宝</strong>（腾讯）</td>
+<td>非编程</td>
+<td>内容生成、知识检索、接入满血 DeepSeek R1，微信生态联动</td>
+<td>App / Web / 小程序 / 微信好友入口</td>
+<td>免费，网页/App/小程序/微信好友</td>
+<td><a target="_blank" rel="noopener" href="https://yuanbao.tencent.com/">https://yuanbao.tencent.com</a></td>
+</tr>
+<tr>
+<td><strong>文心智能体平台</strong>（百度）</td>
+<td>非编程</td>
+<td>低代码搭建智能体，模板丰富，支持发布到百度系流量入口</td>
+<td>Web SaaS（零代码平台）</td>
+<td>免费，百度账号登录即用</td>
+<td><a target="_blank" rel="noopener" href="https://agents.baidu.com/">https://agents.baidu.com</a></td>
+</tr>
+<tr>
+<td><strong>腾讯元器</strong>（腾讯）</td>
+<td>非编程</td>
+<td>智能体深度集成微信小程序/公众号，社交属性强</td>
+<td>Web 平台（一键发布至微信生态）</td>
+<td>免费，微信/QQ 账号登录</td>
+<td><a target="_blank" rel="noopener" href="https://yuanqi.tencent.com/">https://yuanqi.tencent.com</a></td>
+</tr>
+<tr>
+<td><strong>通义千问</strong>（阿里）</td>
+<td>非编程</td>
+<td>日常办公、会议纪要、PPT 创作、文档分析、代码辅助</td>
+<td>Web / App</td>
+<td>免费，网页/App</td>
+<td><a target="_blank" rel="noopener" href="https://tongyi.aliyun.com/">https://tongyi.aliyun.com</a></td>
+</tr>
+<tr>
+<td><strong>秘塔 AI 搜索</strong>（秘塔）</td>
+<td>非编程</td>
+<td>无广告 AI 搜索、学术检索、复杂内容结构化讲解</td>
+<td>Web / App / 小程序</td>
+<td>免费，网页/App/小程序</td>
+<td><a target="_blank" rel="noopener" href="https://metaso.cn/">https://metaso.cn</a></td>
+</tr>
+<tr>
+<td><strong>夸克 AI</strong>（阿里）</td>
+<td>非编程</td>
+<td>AI 搜索、PPT 生成、搜题解题、网盘+浏览器整合</td>
+<td>App / 桌面客户端 / 浏览器</td>
+<td>基础功能免费，App/客户端</td>
+<td><a target="_blank" rel="noopener" href="https://www.quark.cn/">https://www.quark.cn</a></td>
+</tr>
+</tbody></table>
+<h3 id="国内-完全商业收费-企业定制"><a href="#国内-完全商业收费-企业定制" class="headerlink" title="国内-完全商业收费/企业定制"></a>国内-完全商业收费/企业定制</h3><table>
+<thead>
+<tr>
+<th>产品/项目</th>
+<th>使用场景</th>
+<th>形态</th>
+<th>使用门槛与获取方式</th>
+<th>链接</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>阿里云百炼企业版</strong></td>
+<td>大型企业 Agent 落地、私有化部署</td>
+<td>云平台（企业版）+ API + 私有化部署</td>
+<td>按调用 token 计费 + 企业套餐，需商务对接</td>
+<td><a target="_blank" rel="noopener" href="https://www.aliyun.com/product/bailian">https://www.aliyun.com/product/bailian</a></td>
+</tr>
+<tr>
+<td><strong>百度千帆·文心企业版</strong></td>
+<td>政务/国企 Agent、知识图谱问答、信创适配</td>
+<td>云平台 + 私有化一体机</td>
+<td>企业套餐付费，需企业资质，支持私有化一体机</td>
+<td><a target="_blank" rel="noopener" href="https://cloud.baidu.com/product/qianfan">https://cloud.baidu.com/product/qianfan</a></td>
+</tr>
+<tr>
+<td><strong>腾讯云大模型知识引擎</strong></td>
+<td>企业微信生态 Agent、私域运营</td>
+<td>云平台（企业版，深度打通微信/企微）</td>
+<td>企业版付费，深度打通微信/企微</td>
+<td><a target="_blank" rel="noopener" href="https://cloud.tencent.com/product/lke">https://cloud.tencent.com/product/lke</a></td>
+</tr>
+<tr>
+<td><strong>智谱 AI 企业服务</strong></td>
+<td>金融/政务行业 Agent 定制</td>
+<td>API + 行业定制服务</td>
+<td>按项目报价，提供 AutoGLM 商业授权</td>
+<td><a target="_blank" rel="noopener" href="https://www.zhipuai.cn/">https://www.zhipuai.cn</a></td>
+</tr>
+<tr>
+<td><strong>火山方舟（字节）</strong></td>
+<td>豆包系列 Agent 企业落地、多模态应用</td>
+<td>云平台 + API（按量计费）</td>
+<td>按量计费，企业客户商务对接</td>
+<td><a target="_blank" rel="noopener" href="https://www.volcengine.com/product/ark">https://www.volcengine.com/product/ark</a></td>
+</tr>
+<tr>
+<td><strong>扣子企业版</strong></td>
+<td>组织级 Agent 统一管理、权限与数据治理</td>
+<td>Web SaaS（企业旗舰版）</td>
+<td>企业旗舰版 8980 元/月起，含积分池</td>
+<td><a target="_blank" rel="noopener" href="https://www.coze.cn/">https://www.coze.cn</a></td>
+</tr>
+</tbody></table>
+<h3 id="国外-完全免费-开源"><a href="#国外-完全免费-开源" class="headerlink" title="国外-完全免费/开源"></a>国外-完全免费/开源</h3><table>
+<thead>
+<tr>
+<th>产品/项目</th>
+<th>使用场景</th>
+<th>形态</th>
+<th>使用门槛与获取方式</th>
+<th>链接</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>AutoGPT</strong></td>
+<td>全自主任务执行、探索性自动化</td>
+<td>Python 框架 + CLI（可搭建 Web 前端）</td>
+<td>开源（GitHub 182k+ Star），需 Python 环境 + 自备 LLM API</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/Significant-Gravitas/AutoGPT">github.com/Significant-Gravitas/AutoGPT</a></td>
+</tr>
+<tr>
+<td><strong>LangChain / LangGraph</strong></td>
+<td>复杂状态工作流、生产级 Agent 应用</td>
+<td>Python/JS SDK 框架（托管版 LangGraph Platform 另付费）</td>
+<td>MIT 开源免费，Python SDK，托管版 LangGraph Platform 另付费</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/langchain-ai/langchain">github.com/langchain-ai/langchain</a> / <a target="_blank" rel="noopener" href="https://github.com/langchain-ai/langgraph">github.com/langchain-ai/langgraph</a></td>
+</tr>
+<tr>
+<td><strong>CrewAI</strong></td>
+<td>角色分工多 Agent 协作（调研、报告）</td>
+<td>Python 框架 + CLI</td>
+<td>MIT 开源，pip 安装，企业托管版另付费</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/crewAIInc/crewAI">github.com/crewAIInc/crewAI</a></td>
+</tr>
+<tr>
+<td><strong>AutoGen（微软）</strong></td>
+<td>多 Agent 对话协作、企业工作流自动化</td>
+<td>Python 框架（另提供 AutoGen Studio Web 界面）</td>
+<td>MIT 开源，微软官方维护，需自备模型 API</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/microsoft/autogen">github.com/microsoft/autogen</a></td>
+</tr>
+<tr>
+<td><strong>OpenHands（原 OpenDevin）</strong></td>
+<td>自主编程 Agent、代码任务自动化</td>
+<td>Web 平台（Docker 部署，内含代码编辑器/终端）</td>
+<td>开源，GitHub 获取，Docker 部署</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/All-Hands-AI/OpenHands">github.com/All-Hands-AI/OpenHands</a></td>
+</tr>
+<tr>
+<td><strong>AgentGPT</strong></td>
+<td>零代码自主智能体、原型验证</td>
+<td>Web 平台（浏览器内运行，Docker 一键启动）</td>
+<td>开源，<code>docker run -p 3000:3000 reworkd/agentgpt</code> 一键启动</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/reworkd/AgentGPT">github.com/reworkd/AgentGPT</a></td>
+</tr>
+<tr>
+<td><strong>LlamaIndex Agent</strong></td>
+<td>私有文档问答、RAG Agent</td>
+<td>Python/TS SDK 框架（另提供 LlamaCloud 托管服务）</td>
+<td>开源免费，Python 包，需自备 LLM</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/run-llama/llama_index">github.com/run-llama/llama_index</a></td>
+</tr>
+</tbody></table>
+<h3 id="国外-提供免费额度"><a href="#国外-提供免费额度" class="headerlink" title="国外-提供免费额度"></a>国外-提供免费额度</h3><table>
+<thead>
+<tr>
+<th>产品/项目</th>
+<th>使用场景</th>
+<th>形态</th>
+<th>使用门槛与获取方式</th>
+<th>链接</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ChatGPT（GPTs + Tasks）</strong></td>
+<td>个人定制助手、定时任务</td>
+<td>Web / App（另提供 API）</td>
+<td>网页免费层 GPT-4o Mini 无限用，GPT-4o 约 80 条/3 小时；Plus 20 美元/月解锁 GPTs 创建与 Tasks</td>
+<td><a target="_blank" rel="noopener" href="https://chatgpt.com/">https://chatgpt.com</a></td>
+</tr>
+<tr>
+<td><strong>Claude（Projects + Computer Use）</strong></td>
+<td>长文档分析、编程 Agent、桌面操作</td>
+<td>Web / 桌面 App / CLI（Claude Code）/ API</td>
+<td>网页有免费额度，Pro 20 美元/月解锁更多；Claude Code 需订阅</td>
+<td><a target="_blank" rel="noopener" href="https://claude.ai/">https://claude.ai</a></td>
+</tr>
+<tr>
+<td><strong>Gemini（Google）</strong></td>
+<td>长上下文问答、轻量 Agent</td>
+<td>Web / App / API</td>
+<td>网页免费层 Flash 模型可用，API 免费层 Gemini 2.5 Flash 每日 250 次请求</td>
+<td><a target="_blank" rel="noopener" href="https://gemini.google.com/">https://gemini.google.com</a></td>
+</tr>
+<tr>
+<td><strong>Manus</strong></td>
+<td>全自主任务交付（报告、网站、PPT）</td>
+<td>Web 云端 Agent（云端虚拟机执行，异步交付）</td>
+<td>免费层每日 300 积分；Pro 20 美元/月起（4000 积分/月），复杂任务可能烧 500-900 积分</td>
+<td><a target="_blank" rel="noopener" href="https://manus.im/">https://manus.im</a></td>
+</tr>
+<tr>
+<td><strong>Grok（xAI）</strong></td>
+<td>X 平台内 AI 对话、轻 Agent</td>
+<td>Web / App（深度集成 X 平台）</td>
+<td>X 免费用户每日有消息上限</td>
+<td><a target="_blank" rel="noopener" href="https://grok.com/">https://grok.com</a></td>
+</tr>
+<tr>
+<td><strong>Zapier Agents</strong></td>
+<td>SaaS 串联 + AI 自动化</td>
+<td>Web SaaS（8k+ 应用串联的自动化平台内嵌 Agent）</td>
+<td>有免费额度起步，Pro 79 美元/月（1000 次 AI run）</td>
+<td><a target="_blank" rel="noopener" href="https://zapier.com/agents">https://zapier.com/agents</a></td>
+</tr>
+<tr>
+<td><strong>Lindy</strong></td>
+<td>团队 AI 同事、跨工具自动化</td>
+<td>Web SaaS（可视化工作流 + AI 员工模板）</td>
+<td>7 天免费试用，之后 Plus/Pro/Max 按席位订阅</td>
+<td><a target="_blank" rel="noopener" href="https://www.lindy.ai/">https://www.lindy.ai</a></td>
+</tr>
+</tbody></table>
+<h3 id="国外-完全商业收费-企业定制"><a href="#国外-完全商业收费-企业定制" class="headerlink" title="国外-完全商业收费/企业定制"></a>国外-完全商业收费/企业定制</h3><table>
+<thead>
+<tr>
+<th>产品/项目</th>
+<th>使用场景</th>
+<th>形态</th>
+<th>使用门槛与获取方式</th>
+<th>链接</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Salesforce Agentforce</strong></td>
+<td>销售/客服/营销 Agentic CRM</td>
+<td>SaaS（CRM 平台内嵌 Agent）</td>
+<td>约 0.1 美元/动作 或 2 美元/次会话，按用户许可约 125 美元/月起；中型团队落地成本 1.5 万-10 万+ 美元/年</td>
+<td><a target="_blank" rel="noopener" href="https://www.salesforce.com/agentforce/">https://www.salesforce.com/agentforce/</a></td>
+</tr>
+<tr>
+<td><strong>ServiceNow Now Assist / AI Agents</strong></td>
+<td>ITSM/CSM/HRSD 内部服务自动化</td>
+<td>SaaS（ServiceNow 平台内嵌，模块化按需启用）</td>
+<td>未公开定价，第三方估算 70-200 美元/用户/月 + AI 消耗计费，需已有 ServiceNow 平台</td>
+<td><a target="_blank" rel="noopener" href="https://www.servicenow.com/products/ai-agents.html">https://www.servicenow.com/products/ai-agents.html</a></td>
+</tr>
+<tr>
+<td><strong>Microsoft Copilot Studio</strong></td>
+<td>M365 生态 Agent 搭建（Teams/Excel/SharePoint）</td>
+<td>Web SaaS（低代码 Agent 构建器，深度集成 M365）</td>
+<td>按 Microsoft 365 许可订阅，无独立免费层，少量试用</td>
+<td><a target="_blank" rel="noopener" href="https://www.microsoft.com/microsoft-copilot/microsoft-copilot-studio">https://www.microsoft.com/microsoft-copilot/microsoft-copilot-studio</a></td>
+</tr>
+<tr>
+<td><strong>OpenAI Agents Platform</strong></td>
+<td>生产级 Agent SDK、代码开发</td>
+<td>Python SDK 框架（开源）+ Responses API（按量计费）+ 可视化 Traces</td>
+<td>框架开源，但按 GPT-4o/5 调用量计费（约 12 美元/千次查询），企业套餐另议</td>
+<td><a target="_blank" rel="noopener" href="https://github.com/openai/openai-agents-python">github.com/openai/openai-agents-python</a></td>
+</tr>
+<tr>
+<td><strong>Intercom Fin</strong></td>
+<td>客服 Agent、按结果计费</td>
+<td>SaaS（客服平台内嵌 AI Agent）</td>
+<td>约 0.99 美元/次成功解决，叠加席位订阅费</td>
+<td><a target="_blank" rel="noopener" href="https://www.intercom.com/fin">https://www.intercom.com/fin</a></td>
+</tr>
+<tr>
+<td><strong>CrewAI 企业托管版</strong></td>
+<td>企业级多 Agent 平台服务</td>
+<td>云托管平台（基于开源框架，企业版控制台）</td>
+<td>开源框架免费，企业托管/定制服务付费</td>
+<td><a target="_blank" rel="noopener" href="https://www.crewai.com/">https://www.crewai.com</a></td>
+</tr>
+<tr>
+<td><strong>Google ADK + Vertex AI</strong></td>
+<td>多模态 Agent、GCP 企业级部署</td>
+<td>Python/Java SDK 框架（开源）+ GCP 云平台（另提供 Agent Builder）</td>
+<td>云服务按使用量计费，需 GCP 账户</td>
+<td><a target="_blank" rel="noopener" href="https://google.github.io/adk-docs/">google.github.io/adk-docs</a> / <a target="_blank" rel="noopener" href="https://cloud.google.com/products/agent-builder">https://cloud.google.com/products/agent-builder</a></td>
+</tr>
+</tbody></table>
+<h2 id="Agent的CLI-TUI-GUI"><a href="#Agent的CLI-TUI-GUI" class="headerlink" title="Agent的CLI/TUI/GUI"></a>Agent的CLI/TUI/GUI</h2><table>
+<thead>
+<tr>
+<th>交互形态</th>
+<th>核心特征</th>
+<th>典型代表</th>
+<th>痛点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CLI 命令行界面</td>
+<td><strong>全文本、纯流水式</strong>。输入一行命令，输出一堆文本，通过滚动查看，没有固定布局。</td>
+<td><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/2029164197653541886">Claude Code</a>、<a target="_blank" rel="noopener" href="https://post.m.smzdm.com/p/al329kre/">Aider</a>、<code>codex-cli</code></td>
+<td>信息一滚而过，很难一眼看出 Agent 到底修改了当前文件的哪一行，无法进行直观的视察。</td>
+</tr>
+<tr>
+<td>TUI 文本用户界面</td>
+<td><strong>运行在终端里的“伪图形界面”</strong>。利用字符画出面板、菜单、进度条，支持键盘方向键快捷操作。</td>
+<td><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/2026125412049101416">Claude Code</a> 的交互面板、高级终端 Agent 工具</td>
+<td>目前 <strong>AI 编程 Agent 的绝对主流</strong>。因为它既保留了命令行直接亲近代码库、运行快的优势，又提供了如同现代编辑器一般的“实时区域刷新”和“语法高亮”。</td>
+</tr>
+<tr>
+<td>GUI 图形用户界面</td>
+<td><strong>原生窗口、纯图形化</strong>。包含传统的网页（Web）或桌面软件，拥有复杂的按钮、图表和弹窗。</td>
+<td>Cursor、<a target="_blank" rel="noopener" href="https://juejin.cn/post/7604697194795040778">Artifacts</a>、Bolt.new、v0</td>
+<td>渲染重、启动慢，且难以脱离特定软件生态实现纯键盘的极客流操作。</td>
+</tr>
+</tbody></table>
+<h1 id="中级"><a href="#中级" class="headerlink" title="中级"></a>中级</h1><h1 id="高级"><a href="#高级" class="headerlink" title="高级"></a>高级</h1><h1 id="智泊-Agent开发"><a href="#智泊-Agent开发" class="headerlink" title="智泊-Agent开发"></a>智泊-Agent开发</h1><h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p><strong>Gradio</strong></p>
+<blockquote>
+<p>定义：方便用界面展示调用大模型的结果</p>
+</blockquote>
+<blockquote>
+<p>安装 pip install gradio openai</p>
+<p>查看版本 pip show gradio</p>
+</blockquote>
+<p>test.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 步骤1：导入 gradio 库</span></span><br><span class="line"><span class="keyword">import</span> gradio <span class="keyword">as</span> gr</span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤2：定义处理函数，拼接问候语并计算长度</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">greet</span>(<span class="params">name</span>):</span><br><span class="line">    res = <span class="string">&quot;Hello,&quot;</span> + name</span><br><span class="line">    length = <span class="built_in">len</span>(res)</span><br><span class="line">    <span class="keyword">return</span> res,length</span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤3：创建界面，绑定函数与输入输出类型</span></span><br><span class="line">demo = gr.Interface(</span><br><span class="line">    fn=greet,            <span class="comment"># 要包装的函数</span></span><br><span class="line">    inputs=[<span class="string">&quot;text&quot;</span>],     <span class="comment"># 输入类型：文本框</span></span><br><span class="line">    outputs=[<span class="string">&quot;text&quot;</span>,<span class="string">&quot;number&quot;</span>]  <span class="comment"># 输出类型：文本和长度</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤4：启动 Web 服务</span></span><br><span class="line">demo.launch()</span><br></pre></td></tr></table></figure>
+
+<p>chat.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gradio <span class="keyword">as</span> gr  <span class="comment"># 步骤 1：导入 gradio 网页界面库</span></span><br><span class="line"><span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI  <span class="comment"># DeepSeek 兼容 OpenAI 协议，复用其 SDK</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 2：创建 DeepSeek 客户端（密钥建议改用环境变量）</span></span><br><span class="line"><span class="comment"># https://platform.deepseek.com/api_keys</span></span><br><span class="line">client = OpenAI(api_key=<span class="string">&quot;sk-28e63a85283342b6882d967b8fd4a7ea&quot;</span>, base_url=<span class="string">&quot;https://api.deepseek.com&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 3：聊天回调函数（message=本次输入，history=历史对话）</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">chat</span>(<span class="params">message, history</span>):</span><br><span class="line">    <span class="comment"># 3.1 拼接历史消息和本次输入</span></span><br><span class="line">    messages = history + [&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: message&#125;]</span><br><span class="line">    <span class="comment"># 3.2 调用模型，取出回复文本并返回</span></span><br><span class="line">    <span class="keyword">return</span> client.chat.completions.create(</span><br><span class="line">        model=<span class="string">&quot;deepseek-chat&quot;</span>, messages=messages</span><br><span class="line">    ).choices[<span class="number">0</span>].message.content</span><br><span class="line"></span><br><span class="line"><span class="comment"># 步骤 4：启动界面，访问 http://127.0.0.1:7860 对话</span></span><br><span class="line">gr.ChatInterface(fn=chat).launch()</span><br></pre></td></tr></table></figure>
+
+<h2 id="提示词工程"><a href="#提示词工程" class="headerlink" title="提示词工程"></a>提示词工程</h2><blockquote>
+<p>是最简单的<strong>RAG雏形</strong></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">prompt = fn(instruction指示,content内容或样例,query问题)</span><br><span class="line">instruction = &quot;根据上下文回答问题，如果不确定，则回答不确定&quot;</span><br><span class="line">content = &quot;当前是AI爆炸的新时代&quot;</span><br><span class="line">query = &quot;qwen是什么&quot;</span><br></pre></td></tr></table></figure>
+
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><strong>一、定义</strong></p>
+<blockquote>
+<p>Agent是具备<strong>自主规划、环境感知、记忆检索、工具调用与反思迭代</strong>能力的智能系统。</p>
+<p><strong>Agent = LLM + Planning（规划）+ Memory（记忆）+ Tools（工具）+ 动作（Action）</strong>。</p>
+</blockquote>
+<p><strong>二、四层架构</strong></p>
+<p>主流框架（LangGraph、CrewAI、Dify、Coze）本质上都是对这套架构的封装。</p>
+<blockquote>
+<ul>
+<li><strong>规划（Planning）</strong>：任务分解、自我反思（Reflection/ReAct）</li>
+<li><strong>记忆（Memory）</strong>：上下文窗口 + 外部记忆（RAG、向量数据库）</li>
+<li><strong>工具（Tools）</strong>：函数调用、浏览器、代码执行、检索</li>
+<li><strong>动作（Action）</strong>：执行</li>
+</ul>
+</blockquote>
+<h2 id="理论的开发范式"><a href="#理论的开发范式" class="headerlink" title="理论的开发范式"></a>理论的开发范式</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/2044794782246073710">https://zhuanlan.zhihu.com/p/2044794782246073710</a></p>
+<img src="/img/2026-10-17_11-55-40.png" style="zoom:50%;" />
+
+<p><strong>一、四阶段</strong></p>
+<blockquote>
+<ul>
+<li>早期 Agent（被动式ReAct）：基于ReAct范式</li>
+<li>工作流 Agent（结构化与可控性）：引入工作流/状态机</li>
+<li>自主 Agent（复杂规划与长任务）：具备自主规划决策与自我改进</li>
+<li>自进化 Agent（持续学习与自我升级）：持续学习与自我改进</li>
+</ul>
+</blockquote>
+<p><strong>二、详细对比</strong></p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>早期 Agent</th>
+<th>工作流 Agent</th>
+<th>自主 Agent</th>
+<th>自进化 Agent</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>核心思想</td>
+<td>推理与行动交替的循环</td>
+<td>显式图状态机编排</td>
+<td>模型在运行时决策控制流</td>
+<td>系统从经验中持续学习与自我改进</td>
+</tr>
+<tr>
+<td>控制流</td>
+<td>Prompt 循环（线性）</td>
+<td>预定义边，路径可枚举</td>
+<td>LLM 动态选路，路径不可枚举</td>
+<td>系统级闭环：执行→反思→沉淀→增强</td>
+</tr>
+<tr>
+<td>记忆形态</td>
+<td>上下文即记忆（易污染）</td>
+<td>状态变量 + 检查点</td>
+<td>短期/长期/工作记忆分层</td>
+<td>终身记忆 + 经验固化为技能</td>
+</tr>
+<tr>
+<td>规划方式</td>
+<td>逐步 Thought</td>
+<td>节点即步骤</td>
+<td>Plan-and-Execute + 反思</td>
+<td>规划策略本身可被进化</td>
+</tr>
+<tr>
+<td>可控性</td>
+<td>低</td>
+<td>最高（可审计、可回放）</td>
+<td>中（需护栏约束）</td>
+<td>中（进化需评估门控）</td>
+</tr>
+<tr>
+<td>典型代表</td>
+<td>LangChain Agent、基础 ReAct 实现</td>
+<td>LangGraph、Dify 画布、Coze 工作流</td>
+<td>AutoGen、CrewAI、Deep Research 类</td>
+<td>In-Situ Self-Evolving、CMA、MemSkill、Voyager</td>
+</tr>
+<tr>
+<td>适用任务</td>
+<td>单点问答、简单工具调用</td>
+<td>流程固定、需合规审计</td>
+<td>开放式长任务</td>
+<td>持续交互、个性化、能力需积累的场景</td>
+</tr>
+<tr>
+<td>主要瓶颈</td>
+<td>上下文污染、易循环、失败恢复弱</td>
+<td>流程外无法应对</td>
+<td>成本高、评估难</td>
+<td>进化稳定性、灾难性遗忘、评估标准</td>
+</tr>
+</tbody></table>
+<p><strong>三、Agent类型分类</strong></p>
+<p>按照场景</p>
+<blockquote>
+<ul>
+<li>Action</li>
+<li>Simulation</li>
+<li>Autonomous</li>
+</ul>
+</blockquote>
+<p>按智能</p>
+<blockquote>
+<ul>
+<li>Simple Reflex（简单反射型智能体）</li>
+<li>Model-based Reflex（基于模型的反射型）</li>
+<li>Goal-based（基于目标的）</li>
+<li>Utility-based（基于效用的）</li>
+<li>Learning（学习型的）</li>
+</ul>
+</blockquote>
+<p>按技术</p>
+<table>
+<thead>
+<tr>
+<th>Agent类型(基于技术实现)</th>
+<th>子类型</th>
+<th>应用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Chatbots（对话机器人）</td>
+<td>客服机器人、代码辅助助手</td>
+<td>聊天辅助</td>
+</tr>
+<tr>
+<td>Multi-Agent Systems（多智能体系统）</td>
+<td></td>
+<td>多个智能体协助长任务</td>
+</tr>
+<tr>
+<td>RAG（检索增强生成）</td>
+<td>graph RAG</td>
+<td>私有知识库</td>
+</tr>
+<tr>
+<td>Planning Agents（规划智能体）</td>
+<td></td>
+<td>规划与执行智能体</td>
+</tr>
+<tr>
+<td>Reflection &amp; Critique（反思与批判）</td>
+<td></td>
+<td>反思和激励驱动智能体</td>
+</tr>
+<tr>
+<td>Evaluation（评估）</td>
+<td></td>
+<td>通过模拟用户交互评估</td>
+</tr>
+</tbody></table>
+<h2 id="开发选型及范式"><a href="#开发选型及范式" class="headerlink" title="开发选型及范式"></a>开发选型及范式</h2><h3 id="三大基建"><a href="#三大基建" class="headerlink" title="三大基建"></a>三大基建</h3><blockquote>
+<ul>
+<li>MCP协议</li>
+<li>A2A协议</li>
+<li>Context Engineering 理念普及</li>
+</ul>
+</blockquote>
+<p><strong>MCP协议（Model Context Protocol）</strong></p>
+<blockquote>
+<ul>
+<li>定义：由Anthropic在2024年底提出的标准化协议，定义了大模型与外部工具和数据源的交互标准</li>
+<li>重要性：可将其理解为Agent工具调用领域的USB接口。</li>
+<li>历史对比：<ul>
+<li>MCP之前：每个框架都有自己的工具接口定义方式，工具跨框架使用需要重写</li>
+<li>2026年现状：十个主流框架中至少八个已原生支持MCP</li>
+</ul>
+</li>
+<li>影响：工具生态壁垒正在消失，MCP标准封装的工具几乎可在任何框架中直接使用。工具支持数量不再是选框架的<br>关键维度。</li>
+</ul>
+</blockquote>
+<p><strong>A2A协议(Agent to Agent Protocol）</strong></p>
+<blockquote>
+<ul>
+<li>定义：由Google在2025年提出的协议，定义了不同框架构建的Agent之间的通信方式</li>
+<li>解决的问题：<ul>
+<li>MCP解决Agent如何使用工具</li>
+<li>A2A解决Agent如何与其他Agent通信</li>
+</ul>
+</li>
+<li>支持现状：<ul>
+<li>原生支持：Microsoft Agent Framework、Google ADK、AgentScope</li>
+<li>社区插件支持：CrewAI、LangGraph</li>
+</ul>
+</li>
+<li>发展趋势：Agent生态正在从框架孤岛走向互操作网络，尽管采纳周期较长，但方向确定。</li>
+</ul>
+</blockquote>
+<p><strong>Context Engineering 理念普及</strong></p>
+<blockquote>
+<ul>
+<li>定义：2025年兴起的新共识-仅做PromptEngineering已不够，需要进行Context Engineering。</li>
+<li>核心要求：精心管理送进大模型上下文窗口的信息质量和结构。主要包括Instructions、Knowledge、Tools。</li>
+<li>技术影响：推动了框架在以下方面的创新<ul>
+<li>记忆压缩</li>
+<li>上下文过滤</li>
+<li>动态工具选择</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="五大架构范式"><a href="#五大架构范式" class="headerlink" title="五大架构范式"></a>五大架构范式</h3><p><strong>范式一：图状态机</strong></p>
+<blockquote>
+<ul>
+<li>代表框架：LangGraph</li>
+<li>核心哲学：少抽象，多控制</li>
+<li>核心原理：Node节点、Edge边、State状态</li>
+<li>设计理念：提供最基础的构建块，让开发者自行搭建任意复杂的执行图。灵感来自Google</li>
+<li>特点：<ul>
+<li>不做任何架构决策预设</li>
+<li>不预设Agent的思考和协作方式</li>
+<li>开发者需要自行设计状态模式、编排逻辑、错误处理</li>
+</ul>
+</li>
+<li>官方理念：“当我们必须在易用性和生产就绪性之间做取舍时，我们选择了生产就绪性。</li>
+<li>优势：<ul>
+<li>灵活性极高</li>
+<li>内置checkpointer支持状态持久化</li>
+<li>支持时间旅行调试</li>
+<li>内置interrupt函数支持人工审批</li>
+<li>token级流式传输，零额外开销</li>
+</ul>
+</li>
+<li>应用场景：<ul>
+<li>Klarna：客户服务Agent</li>
+<li>Vodafone：数据工程AI助手</li>
+<li>Replit：代码生成工作流编排</li>
+</ul>
+</li>
+<li>能力评分：<ul>
+<li>多Agent编排：⭐⭐⭐⭐⭐</li>
+<li>生产部署成熟度：⭐⭐⭐⭐⭐</li>
+<li>生态丰富程度：可观测性：⭐⭐⭐⭐⭐</li>
+<li>灵活可定制性：⭐⭐⭐⭐⭐</li>
+<li>上手难度：⭐⭐</li>
+</ul>
+</li>
+<li>定位：Agent框架中的Linux-—强大，但需要技术深度。</li>
+</ul>
+</blockquote>
+<p><strong>范式二：角色驱动</strong></p>
+<blockquote>
+<ul>
+<li><p>代表框架CrewAI</p>
+</li>
+<li><p>核心哲学：像组建真实团队一样组建Agent团队</p>
+</li>
+<li><p>核心概念：</p>
+<ul>
+<li>Role（角色）</li>
+<li>Goal（目标）</li>
+<li>Backstory（背景故事）</li>
+</ul>
+</li>
+<li><p>使用流程：</p>
+<ol>
+<li>定义角色</li>
+<li>分配任务</li>
+<li>启动团队</li>
+</ol>
+</li>
+<li><p>技术特点：</p>
+<ul>
+<li>完全独立于Langchain，从零构建</li>
+<li>无外部依赖</li>
+<li>提供两种编排方式：<ul>
+<li>Crews：强调自主协作，Agent可自主委派任务</li>
+<li>Flows：提供事件驱动的精确控制路径</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>社区规模：45900+GitHubstars，超过10万开发者通过官方课程完成认证</p>
+</li>
+<li><p>能力评分</p>
+<ul>
+<li>上手难度：⭐⭐⭐⭐⭐</li>
+<li>API稳定性：⭐⭐⭐</li>
+<li>底层控制力：⭐⭐⭐</li>
+<li>复杂逻辑表达：⭐⭐⭐</li>
+</ul>
+</li>
+<li><p>适用场景：</p>
+<p>✅️内容创作管线<br>✅️市场调研<br>✅️快速原型开发</p>
+</li>
+<li><p>不适用场景：</p>
+<p>❌️极致状态控制的金融交易系统<br>❌️需要精确错误恢复的长时间运行工作流</p>
+</li>
+</ul>
+</blockquote>
+<p><strong>范式三：事件驱动</strong><br>代表框架：LlamaIndex、AgentScope<br>LlamaIndex</p>
+<blockquote>
+<ul>
+<li>核心理念：数据是Agent智能的基石</li>
+<li>核心优势：<ul>
+<li>数据层有300多个连接器</li>
+<li>LlamaParse文档解析引擎支持130+文件格式</li>
+<li>支持复杂嵌套表格和手写笔记解析</li>
+<li>编排层使用Workflows1.0：事件驱动、异步优先、步骤化执行</li>
+</ul>
+</li>
+<li>应用场景：<ul>
+<li>私募基金：复杂金融文档处理</li>
+<li>保险公司：保单分析</li>
+<li>制造业：技术规格书洞察提取</li>
+</ul>
+</li>
+<li>市场地位：数据密集型Agent领域的护城河极深，几乎没有替代品。</li>
+</ul>
+</blockquote>
+<p>AgentScope</p>
+<blockquote>
+<ul>
+<li>来源：阿里巴巴通义实验室</li>
+<li>核心理念：透明可控</li>
+<li>独特优势：<ol>
+<li>内置模型微调支持，可直接在框架内做Agent强化学习微调</li>
+<li>Python+java双版本</li>
+<li>原生适配国内生态（通义干问、阿里云函数计算、钉钉）</li>
+</ol>
+</li>
+</ul>
+</blockquote>
+<p><strong>范式四SDK封装</strong></p>
+<p>代表框架：OpepAI Agents SDK、PydanticAI</p>
+<p>OpenAI Agents SDK</p>
+<blockquote>
+<ul>
+<li>核心概念：仅包含三个核心概念<ul>
+<li>Agent</li>
+<li>Handoff</li>
+<li>Guardrail</li>
+</ul>
+</li>
+<li>核心创新：Handoff机制，Agent完成任务后可将控制权移交给更合适的Agent。</li>
+<li>技术优势：<ul>
+<li>上手门槛极低：5行代码即可启动</li>
+<li>与OpenAI生态深度集成</li>
+<li>原生支持RealtimeVoiceAgent，包括中断检测、实时流式语音</li>
+</ul>
+</li>
+<li>局限性：<ul>
+<li>缺乏持久化执行和检查点机制</li>
+<li>编排模式有限</li>
+<li>不支持并行和循环</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>PydanticAI</p>
+<blockquote>
+<ul>
+<li>核心理念：把FastAPI的体验带给Agent开发</li>
+<li>核心优势：<ul>
+<li>所有输入输出通过Pydantic模型验证</li>
+<li>结构化输出自动解析</li>
+<li>失败自动重试</li>
+<li>支持25+模型提供商，切换模型无需重写业务逻辑</li>
+<li>内置TestMode和mock工具，支持确定性测试</li>
+</ul>
+</li>
+<li>行业评价：可能成为类型安全Agent基础设施层的事实标准</li>
+</ul>
+</blockquote>
+<p><strong>范式五：低代码平台</strong></p>
+<blockquote>
+<ul>
+<li>代表框架：Dify</li>
+<li>核心数据：131,000+GitHubstars，全球排名第51位</li>
+<li>技术特点：<ul>
+<li>非Python库，是完整的Web平台</li>
+<li>提供拖搜式工作流编辑器</li>
+<li>支持模型管理、知识库管理</li>
+<li>API一键发布、日志监控</li>
+<li>全在浏览器中操作，非技术人员也能使用</li>
+</ul>
+</li>
+<li>应用场景：<ul>
+<li>Maersk（全球航运巨头）</li>
+<li>Novartis（制药公司)</li>
+</ul>
+</li>
+<li>商业进展：2026年3月完成3000万美元Pre-A轮融资，估值1.8亿美元</li>
+<li>核心价值：让AI应用开发民主化</li>
+<li>局限性：灵活性受限于可视化编辑器的表达能力</li>
+</ul>
+</blockquote>
+<p><strong>另外两大企业级框架</strong></p>
+<p>Microsoft Agent Framework</p>
+<blockquote>
+<ul>
+<li>背景：2025年10月，微软宣布合并AutoGen和SemanticKernel</li>
+<li>合并背景：<ul>
+<li>AutoGen：学术界最前沿的多Agent研究框架（50,400+stars）</li>
+<li>SemanticKernel：企业级稳定的AI编排引擎（21,000+sstars）</li>
+</ul>
+</li>
+<li>技术优势：<ol>
+<li>唯一同时原生支持.NET和Python的主流框架</li>
+<li>原生支持A2A、AG-UI、MCP三大标准</li>
+<li>与AzureAIFoundry深度集成</li>
+</ol>
+</li>
+<li>发展状态：2026年2月达到Release candidate状态，预计2026年Q1未发布</li>
+</ul>
+</blockquote>
+<p>GoogleADK</p>
+<blockquote>
+<ul>
+<li>技术特点：多语言路线，同时覆盖Python、TypeScript，Java、Go也在开发中</li>
+<li>Agent类型：<ul>
+<li>LlmAgent：智能推理</li>
+<li>SequentialAgent:顺序编排</li>
+<li>ParallelAgent:并行编排</li>
+<li>LoopAgent:循环编排</li>
+<li>BaseAgent:自定义扩展</li>
+</ul>
+</li>
+<li>云集成：与VertexAI和CloudRun原生集成</li>
+<li>局限性：框架仍为0.×版本，社区规模不及Langchain</li>
+</ul>
+</blockquote>
+<h3 id="五步法选型"><a href="#五步法选型" class="headerlink" title="五步法选型"></a><strong>五步法选型</strong></h3><p><strong>第一步：技术栈匹配</strong></p>
+<blockquote>
+<ul>
+<li>NET/C#技术栈→Microsoft Agent Framework</li>
+<li>Java技术栈→Gooqle ADK或AgentScope Java版</li>
+<li>Typescript全栈→OpenAI Agents SDKJS/TS版 或 LangGraph.js</li>
+<li>多语言混合团队→Google ADK</li>
+<li>纯Python团队→选择最多</li>
+</ul>
+</blockquote>
+<p><strong>第二步：场景匹配</strong></p>
+<blockquote>
+<ul>
+<li>数据密集型RAG/文档问答→LlamaIndex</li>
+<li>角色化多Agent协作→CrewAI</li>
+<li>复杂有状态工作流→LangGraph</li>
+<li>决速原型/MVP→CrewAI或OpenAI Agents SDK</li>
+<li>企业低代码平台→Dify</li>
+<li>国内企业私有化部署→AgentScope或Dify</li>
+</ul>
+</blockquote>
+<p><strong>第三步：云平台匹配</strong></p>
+<blockquote>
+<ul>
+<li>Azure→Microsoft Agent Framework</li>
+<li>GoogleCloud→Google ADK</li>
+<li>阿里云→AgentScope</li>
+<li>自托管/私有化→Dify</li>
+<li>无特定偏好→根据场景选择</li>
+</ul>
+</blockquote>
+<p><strong>第四步：模型偏好匹配</strong></p>
+<blockquote>
+<ul>
+<li>深度依赖OpenAI→OpenAI Agents SDK</li>
+<li>依赖Gemini→GoogleADK</li>
+<li>使用国内模型→Agentscope或Dify</li>
+<li>追求模型无关性→PydanticAI（支持25+提供商）</li>
+</ul>
+</blockquote>
+<p><strong>第五步：成本分析</strong></p>
+<blockquote>
+<ol>
+<li><p>开源与生产可用性的差异<br>许多框架在GitHub上免费，但进入生产环境时往往伴随着隐性成本。</p>
+<ul>
+<li>LangGraph:开源免费，但生产部署几乎必须使用付费的LangGraph Platform以获得状态持久化等关键能力。</li>
+<li>LlamaIndex:核心库免费，但其核心优势—高质量文档解析依赖付费的LlamaParse服务。</li>
+<li>Dify：开源版功能有限，企业级功能（如SSO、高级日志）需购买商业版或承担高昂的自行维护成本</li>
+<li>Microsoft/Google框架：虽然框架本身免费，但深度绑定各自云服务的付费组件，迁移成本高。</li>
+<li>PydanticAI:隐性成本最低，无强制绑定的付费平台，是真正轻量的选择。</li>
+</ul>
+</li>
+<li><p>运行时的Token经济学<br>架构选型直接决定了Token的消耗效率，低效的框架可能成为预算的黑洞”</p>
+<ul>
+<li><p>警惕Token黑洞”：根据2026年的最新数据，类似Openclaw等第三方框架因上下文管理低效（如频繁的心跳</p>
+<p>机制、重复计算），可能导致API调用量是原生框架的数倍。Anthropic已切断此类订阅套利通道，强制按量付</p>
+<p>费，使得低效框架的成本风险剧增。</p>
+</li>
+<li><p>架构选型影响：</p>
+<ul>
+<li>图状态机（LangGraph）：控制力最强，可精细化裁剪上下文，Token利用率最高，</li>
+<li>角色驱动（CrewAI）：自主协作可能导致冗余对话，Token消耗相对不可控。</li>
+</ul>
+</li>
+<li><p>端云协同趋势：对于高频、重复性任务（如客服、数据录入），可考虑AgentComputer或Tiny Box等本地化</p>
+<p>部署方案。通过一次性硬件投入（约1-2万元）替代持续的Token支出，可将长期TCO（总拥有成本）降低</p>
+<p>90%以上。</p>
+</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<h3 id="未来趋势"><a href="#未来趋势" class="headerlink" title="未来趋势"></a><strong>未来趋势</strong></h3><p><strong>行业趋势</strong></p>
+<blockquote>
+<ol>
+<li>框架数量减少：微软合并AutoGen和SemanticKernel，预示未来框架数量将继续减少</li>
+<li>核心能力模块化：LlamaIndex将Workflows独立，反映核心能力可独立复用的趋势</li>
+<li>多模态成为标配：语音和视觉正在成为Agent的基本要求</li>
+<li>国内生态发展：Dify和AgentScope展现国内框架的独特优势</li>
+</ol>
+</blockquote>
+<p><strong>对三类人群的建议</strong></p>
+<p>1.独立开发者和技术探索者</p>
+<blockquote>
+<ul>
+<li>推荐路径：从PydanticAI或OpenAI Agents SDK起步</li>
+<li>优势：学习曲线最平缓，能最快建立Agent开发的核心认知</li>
+<li>进阶方案：需要复杂编排时再使用LangGraph</li>
+</ul>
+</blockquote>
+<p>2.初创公司技术团队</p>
+<blockquote>
+<ul>
+<li>推荐路径：用CrewAI快速验证想法做原型</li>
+<li>生产方案：验证通过后迁移到LangGraph做生产系统</li>
+<li>备选方案：考虑Agno的全栈方案，一站式解决从原型到部署</li>
+</ul>
+</blockquote>
+<p>3.大型企业技术委员会<br>云战略优先</p>
+<blockquote>
+<ul>
+<li>Azure→微软框架</li>
+<li>GoogleCloud→Google框架</li>
+<li>多云混合→LangGraph+Dify组合</li>
+</ul>
+</blockquote>
+<p>技术考量：</p>
+<blockquote>
+<ol>
+<li>优先考虑MCP和A2A协议支持</li>
+<li>确保未来的互操作能力</li>
+<li>建立长期技术路线图</li>
+</ol>
+</blockquote>
+<h2 id="生产部署"><a href="#生产部署" class="headerlink" title="生产部署"></a>生产部署</h2><h2 id="关键技术"><a href="#关键技术" class="headerlink" title="关键技术"></a>关键技术</h2><h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><h1 id="Agent"><a href="#Agent" class="headerlink" title="Agent"></a>Agent</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p><strong>Agent（智能体，AI Agent）</strong> 是一种能够自主感知环境、做出决策并执行动作以实现特定目标的人工智能系统。它超越了传统AI“被动回答”的局限，能够像人类一样主动规划、行动、协作，在数字或物理世界完成复杂任务。</p>
+<blockquote>
+<p>简单比喻：如果说大语言模型（LLM）是“超级大脑”，那么 Agent 就是给大脑装上了“手脚”和“工具”，让AI能主动行动、完成实际任务。</p>
+</blockquote>
+<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><h3 id="ReAct模式"><a href="#ReAct模式" class="headerlink" title="ReAct模式"></a>ReAct模式</h3><p>Reasoning and Acting即推理和行动。是目前比较主流的模式。</p>
+<ol>
+<li>思考（Thought）<ul>
+<li>分析当前状态和任务目标，规划下一步行动。</li>
+</ul>
+</li>
+<li>行动（Action）<ul>
+<li>调用外部工具、API、数据库等，执行实际操作。</li>
+</ul>
+</li>
+<li>观察（Observation）<ul>
+<li>收集行动结果，评估是否符合预期。</li>
+</ul>
+</li>
+<li>循环（Loop）<ul>
+<li>若未完成，返回思考阶段，根据结果调整策略；若达成目标，输出最终答案。</li>
+</ul>
+</li>
+<li>最终答案(Final Answer)</li>
+</ol>
+<blockquote>
+<p>示例：查询天气</p>
+<ul>
+<li>Thought：用户问今天某城市天气，需实时数据。</li>
+<li>Action：调用天气API。</li>
+<li>Observation：返回晴天，25°C。</li>
+<li>Thought：结果准确，可输出答案。</li>
+<li>Final Answer：今天某城市晴天，温度25°C，适合外出。</li>
+</ul>
+</blockquote>
+<p>Agent内部工作流程如下图：</p>
+<img src="/img/2025-12-20_12-36-56.png" style="zoom:50%;" />
+
+<p>完整的Agent的问答流程如下图：</p>
+<img src="/img/2025-12-20_12-45-16.png" style="zoom:50%;" />
+
+<h3 id="其他模式"><a href="#其他模式" class="headerlink" title="其他模式"></a>其他模式</h3><p>如先规划-再执行，比如Manus。其中最著名的又langchain提出的plan-and-execute模式，只是其中引入了动态规划，动态修改规划。</p>
+<p><strong>Plan-and-Execute模式</strong>（先规划后执行模式）是一种用于AI智能体（Agent）的架构范式，其核心思想是：先对复杂任务进行全局分解，制定多步骤计划，然后逐一执行这些子任务，并在执行过程中根据实际情况动态调整计划。</p>
+<ol>
+<li>规划阶段（Planning）</li>
+</ol>
+<ul>
+<li><strong>任务分析</strong>：理解用户目标、上下文、约束条件。</li>
+<li><strong>任务分解</strong>：将复杂任务拆解为有序的、原子性的子任务（Subtasks）。</li>
+<li><strong>生成计划</strong>：输出一个可执行的计划清单（如JSON或自然语言列表）。</li>
+</ul>
+<ol start="2">
+<li>执行阶段（Execution）</li>
+</ol>
+<ul>
+<li><strong>逐项执行</strong>：按顺序调用Agent或工具，完成每个子任务。</li>
+<li><strong>动态调整</strong>：根据执行结果或环境变化，可触发“重新规划（Replan）”机制，更新后续计划。</li>
+<li><strong>汇总结果</strong>：所有子任务完成后，整合输出最终结果。</li>
+</ul>
+<blockquote>
+<p>示例：视频转音频任务</p>
+<ol>
+<li>规划：分解为“读取视频→提取音频→保存文件”。</li>
+<li>执行：按顺序调用相关工具，若某步失败则重新规划后续步骤。</li>
+</ol>
+</blockquote>
+<img src="/img/2025-12-20_12-54-48.png" style="zoom:50%;" />
+
+<h1 id="A2A协议"><a href="#A2A协议" class="headerlink" title="A2A协议"></a>A2A协议</h1><h2 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a><strong>定义</strong></h2><p>是由Google于2025年4月开源发布的首个标准化智能体交互协议，旨在让不同框架和供应商构建的AI智能体（Agent）能够安全、高效地互相通信、协作与任务委派。A2A协议解决了AI智能体生态中的“巴别塔困境”——即不同智能体之间缺乏统一通信标准、难以互通协作的问题</p>
+<h2 id="与MCP等协议的对比"><a href="#与MCP等协议的对比" class="headerlink" title="与MCP等协议的对比"></a><strong>与MCP等协议的对比</strong></h2><p>A2A与MCP并非替代关系，而是互补：MCP解决智能体与工具的连接，A2A解决智能体与智能体的协作，两者共同构成AI智能体的完整技术栈。</p>
+<table>
+<thead>
+<tr>
+<th align="left">对比维度</th>
+<th align="left">A2A协议</th>
+<th align="left">MCP协议（Model Context Protocol）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>核心目标</strong></td>
+<td align="left">智能体之间的任务协作与通信</td>
+<td align="left">智能体与外部工具/数据源的连接（Model→Tool）</td>
+</tr>
+<tr>
+<td align="left"><strong>交互模式</strong></td>
+<td align="left">多智能体间协作、任务委派</td>
+<td align="left">单智能体调用外部工具、获取数据</td>
+</tr>
+<tr>
+<td align="left"><strong>协议层次</strong></td>
+<td align="left">高层协作框架</td>
+<td align="left">底层资源接口</td>
+</tr>
+<tr>
+<td align="left"><strong>标准化程度</strong></td>
+<td align="left">基于HTTP/JSON-RPC，开放标准</td>
+<td align="left">基于JSON-RPC 2.0，标准化</td>
+</tr>
+<tr>
+<td align="left"><strong>安全机制</strong></td>
+<td align="left">内置企业级认证、加密、审计</td>
+<td align="left">依赖开发者实现</td>
+</tr>
+<tr>
+<td align="left"><strong>适用场景</strong></td>
+<td align="left">跨系统、跨智能体协作</td>
+<td align="left">单智能体工具调用、数据获取</td>
+</tr>
+<tr>
+<td align="left"><strong>生态支持</strong></td>
+<td align="left">Google、Salesforce、SAP等50+企业</td>
+<td align="left">Anthropic、OpenAI、微软等</td>
+</tr>
+</tbody></table>
+<h2 id="A2A的核心链路"><a href="#A2A的核心链路" class="headerlink" title="A2A的核心链路"></a><strong>A2A的核心链路</strong></h2><p>举例1个Agent,也支持多个Agent</p>
+<ul>
+<li>Agent注册阶段</li>
+<li>用户问答阶段</li>
+</ul>
+<img src="/img/2025-12-20_11-56-31.png" style="zoom:50%;" />
+
+<img src="/img/2025-12-20_11-57-47.png" style="zoom:50%;" />
+
+<h2 id="A2A的流式返回"><a href="#A2A的流式返回" class="headerlink" title="A2A的流式返回"></a>A2A的流式返回</h2><img src="/img/2025-12-20_12-09-58.png" style="zoom:50%;" />
+
+<h2 id="A2A的多Agent协作"><a href="#A2A的多Agent协作" class="headerlink" title="A2A的多Agent协作"></a>A2A的多Agent协作</h2><h1 id="手写-Agent"><a href="#手写-Agent" class="headerlink" title="手写-Agent"></a>手写-Agent</h1><p>agent.py:核心流程</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ast</span><br><span class="line"><span class="keyword">import</span> inspect</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">from</span> string <span class="keyword">import</span> Template</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">List</span>, <span class="type">Callable</span>, <span class="type">Tuple</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> click</span><br><span class="line"><span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv</span><br><span class="line"><span class="keyword">from</span> openai <span class="keyword">import</span> OpenAI</span><br><span class="line"><span class="keyword">import</span> platform</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> prompt_template <span class="keyword">import</span> react_system_prompt_template</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ReActAgent</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, tools: <span class="type">List</span>[<span class="type">Callable</span>], model: <span class="built_in">str</span>, project_directory: <span class="built_in">str</span></span>):</span><br><span class="line">        self.tools = &#123; func.__name__: func <span class="keyword">for</span> func <span class="keyword">in</span> tools &#125;</span><br><span class="line">        self.model = model</span><br><span class="line">        self.project_directory = project_directory</span><br><span class="line">        self.client = OpenAI(</span><br><span class="line">            base_url=<span class="string">&quot;https://openrouter.ai/api/v1&quot;</span>,</span><br><span class="line">            api_key=ReActAgent.get_api_key(),</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self, user_input: <span class="built_in">str</span></span>):</span><br><span class="line">        messages = [</span><br><span class="line">            &#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;system&quot;</span>, <span class="string">&quot;content&quot;</span>: self.render_system_prompt(react_system_prompt_template)&#125;,</span><br><span class="line">            &#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">f&quot;&lt;question&gt;<span class="subst">&#123;user_input&#125;</span>&lt;/question&gt;&quot;</span>&#125;</span><br><span class="line">        ]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 请求模型</span></span><br><span class="line">            content = self.call_model(messages)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 检测 Thought</span></span><br><span class="line">            thought_match = re.search(<span class="string">r&quot;&lt;thought&gt;(.*?)&lt;/thought&gt;&quot;</span>, content, re.DOTALL)</span><br><span class="line">            <span class="keyword">if</span> thought_match:</span><br><span class="line">                thought = thought_match.group(<span class="number">1</span>)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;\n\n💭 Thought: <span class="subst">&#123;thought&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 检测模型是否输出 Final Answer，如果是的话，直接返回</span></span><br><span class="line">            <span class="keyword">if</span> <span class="string">&quot;&lt;final_answer&gt;&quot;</span> <span class="keyword">in</span> content:</span><br><span class="line">                final_answer = re.search(<span class="string">r&quot;&lt;final_answer&gt;(.*?)&lt;/final_answer&gt;&quot;</span>, content, re.DOTALL)</span><br><span class="line">                <span class="keyword">return</span> final_answer.group(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 检测 Action</span></span><br><span class="line">            action_match = re.search(<span class="string">r&quot;&lt;action&gt;(.*?)&lt;/action&gt;&quot;</span>, content, re.DOTALL)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> action_match:</span><br><span class="line">                <span class="keyword">raise</span> RuntimeError(<span class="string">&quot;模型未输出 &lt;action&gt;&quot;</span>)</span><br><span class="line">            action = action_match.group(<span class="number">1</span>)</span><br><span class="line">            tool_name, args = self.parse_action(action)</span><br><span class="line"></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;\n\n🔧 Action: <span class="subst">&#123;tool_name&#125;</span>(<span class="subst">&#123;<span class="string">&#x27;, &#x27;</span>.join(args)&#125;</span>)&quot;</span>)</span><br><span class="line">            <span class="comment"># 只有终端命令才需要询问用户，其他的工具直接执行</span></span><br><span class="line">            should_continue = <span class="built_in">input</span>(<span class="string">f&quot;\n\n是否继续？（Y/N）&quot;</span>) <span class="keyword">if</span> tool_name == <span class="string">&quot;run_terminal_command&quot;</span> <span class="keyword">else</span> <span class="string">&quot;y&quot;</span></span><br><span class="line">            <span class="keyword">if</span> should_continue.lower() != <span class="string">&#x27;y&#x27;</span>:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;\n\n操作已取消。&quot;</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;操作被用户取消&quot;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                observation = self.tools[tool_name](*args)</span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">                observation = <span class="string">f&quot;工具执行错误：<span class="subst">&#123;<span class="built_in">str</span>(e)&#125;</span>&quot;</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;\n\n🔍 Observation：<span class="subst">&#123;observation&#125;</span>&quot;</span>)</span><br><span class="line">            obs_msg = <span class="string">f&quot;&lt;observation&gt;<span class="subst">&#123;observation&#125;</span>&lt;/observation&gt;&quot;</span></span><br><span class="line">            messages.append(&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: obs_msg&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_tool_list</span>(<span class="params">self</span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;生成工具列表字符串，包含函数签名和简要说明&quot;&quot;&quot;</span></span><br><span class="line">        tool_descriptions = []</span><br><span class="line">        <span class="keyword">for</span> func <span class="keyword">in</span> self.tools.values():</span><br><span class="line">            name = func.__name__</span><br><span class="line">            signature = <span class="built_in">str</span>(inspect.signature(func))</span><br><span class="line">            doc = inspect.getdoc(func)</span><br><span class="line">            tool_descriptions.append(<span class="string">f&quot;- <span class="subst">&#123;name&#125;</span><span class="subst">&#123;signature&#125;</span>: <span class="subst">&#123;doc&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;\n&quot;</span>.join(tool_descriptions)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">render_system_prompt</span>(<span class="params">self, system_prompt_template: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;渲染系统提示模板，替换变量&quot;&quot;&quot;</span></span><br><span class="line">        tool_list = self.get_tool_list()</span><br><span class="line">        file_list = <span class="string">&quot;, &quot;</span>.join(</span><br><span class="line">            os.path.abspath(os.path.join(self.project_directory, f))</span><br><span class="line">            <span class="keyword">for</span> f <span class="keyword">in</span> os.listdir(self.project_directory)</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">return</span> Template(system_prompt_template).substitute(</span><br><span class="line">            operating_system=self.get_operating_system_name(),</span><br><span class="line">            tool_list=tool_list,</span><br><span class="line">            file_list=file_list</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_api_key</span>() -&gt; <span class="built_in">str</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Load the API key from an environment variable.&quot;&quot;&quot;</span></span><br><span class="line">        load_dotenv()</span><br><span class="line">        api_key = os.getenv(<span class="string">&quot;OPENROUTER_API_KEY&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> api_key:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&quot;未找到 OPENROUTER_API_KEY 环境变量，请在 .env 文件中设置。&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> api_key</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call_model</span>(<span class="params">self, messages</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;\n\n正在请求模型，请稍等...&quot;</span>)</span><br><span class="line">        response = self.client.chat.completions.create(</span><br><span class="line">            model=self.model,</span><br><span class="line">            messages=messages,</span><br><span class="line">        )</span><br><span class="line">        content = response.choices[<span class="number">0</span>].message.content</span><br><span class="line">        messages.append(&#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;assistant&quot;</span>, <span class="string">&quot;content&quot;</span>: content&#125;)</span><br><span class="line">        <span class="keyword">return</span> content</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">parse_action</span>(<span class="params">self, code_str: <span class="built_in">str</span></span>) -&gt; <span class="type">Tuple</span>[<span class="built_in">str</span>, <span class="type">List</span>[<span class="built_in">str</span>]]:</span><br><span class="line">        <span class="keyword">match</span> = re.<span class="keyword">match</span>(<span class="string">r&#x27;(\w+)\((.*)\)&#x27;</span>, code_str, re.DOTALL)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">match</span>:</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&quot;Invalid function call syntax&quot;</span>)</span><br><span class="line"></span><br><span class="line">        func_name = <span class="keyword">match</span>.group(<span class="number">1</span>)</span><br><span class="line">        args_str = <span class="keyword">match</span>.group(<span class="number">2</span>).strip()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 手动解析参数，特别处理包含多行内容的字符串</span></span><br><span class="line">        args = []</span><br><span class="line">        current_arg = <span class="string">&quot;&quot;</span></span><br><span class="line">        in_string = <span class="literal">False</span></span><br><span class="line">        string_char = <span class="literal">None</span></span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        paren_depth = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> i &lt; <span class="built_in">len</span>(args_str):</span><br><span class="line">            char = args_str[i]</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> in_string:</span><br><span class="line">                <span class="keyword">if</span> char <span class="keyword">in</span> [<span class="string">&#x27;&quot;&#x27;</span>, <span class="string">&quot;&#x27;&quot;</span>]:</span><br><span class="line">                    in_string = <span class="literal">True</span></span><br><span class="line">                    string_char = char</span><br><span class="line">                    current_arg += char</span><br><span class="line">                <span class="keyword">elif</span> char == <span class="string">&#x27;(&#x27;</span>:</span><br><span class="line">                    paren_depth += <span class="number">1</span></span><br><span class="line">                    current_arg += char</span><br><span class="line">                <span class="keyword">elif</span> char == <span class="string">&#x27;)&#x27;</span>:</span><br><span class="line">                    paren_depth -= <span class="number">1</span></span><br><span class="line">                    current_arg += char</span><br><span class="line">                <span class="keyword">elif</span> char == <span class="string">&#x27;,&#x27;</span> <span class="keyword">and</span> paren_depth == <span class="number">0</span>:</span><br><span class="line">                    <span class="comment"># 遇到顶层逗号，结束当前参数</span></span><br><span class="line">                    args.append(self._parse_single_arg(current_arg.strip()))</span><br><span class="line">                    current_arg = <span class="string">&quot;&quot;</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    current_arg += char</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                current_arg += char</span><br><span class="line">                <span class="keyword">if</span> char == string_char <span class="keyword">and</span> (i == <span class="number">0</span> <span class="keyword">or</span> args_str[i-<span class="number">1</span>] != <span class="string">&#x27;\\&#x27;</span>):</span><br><span class="line">                    in_string = <span class="literal">False</span></span><br><span class="line">                    string_char = <span class="literal">None</span></span><br><span class="line">            </span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 添加最后一个参数</span></span><br><span class="line">        <span class="keyword">if</span> current_arg.strip():</span><br><span class="line">            args.append(self._parse_single_arg(current_arg.strip()))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> func_name, args</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">_parse_single_arg</span>(<span class="params">self, arg_str: <span class="built_in">str</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;解析单个参数&quot;&quot;&quot;</span></span><br><span class="line">        arg_str = arg_str.strip()</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 如果是字符串字面量</span></span><br><span class="line">        <span class="keyword">if</span> (arg_str.startswith(<span class="string">&#x27;&quot;&#x27;</span>) <span class="keyword">and</span> arg_str.endswith(<span class="string">&#x27;&quot;&#x27;</span>)) <span class="keyword">or</span> \</span><br><span class="line">           (arg_str.startswith(<span class="string">&quot;&#x27;&quot;</span>) <span class="keyword">and</span> arg_str.endswith(<span class="string">&quot;&#x27;&quot;</span>)):</span><br><span class="line">            <span class="comment"># 移除外层引号并处理转义字符</span></span><br><span class="line">            inner_str = arg_str[<span class="number">1</span>:-<span class="number">1</span>]</span><br><span class="line">            <span class="comment"># 处理常见的转义字符</span></span><br><span class="line">            inner_str = inner_str.replace(<span class="string">&#x27;\\&quot;&#x27;</span>, <span class="string">&#x27;&quot;&#x27;</span>).replace(<span class="string">&quot;\\&#x27;&quot;</span>, <span class="string">&quot;&#x27;&quot;</span>)</span><br><span class="line">            inner_str = inner_str.replace(<span class="string">&#x27;\\n&#x27;</span>, <span class="string">&#x27;\n&#x27;</span>).replace(<span class="string">&#x27;\\t&#x27;</span>, <span class="string">&#x27;\t&#x27;</span>)</span><br><span class="line">            inner_str = inner_str.replace(<span class="string">&#x27;\\r&#x27;</span>, <span class="string">&#x27;\r&#x27;</span>).replace(<span class="string">&#x27;\\\\&#x27;</span>, <span class="string">&#x27;\\&#x27;</span>)</span><br><span class="line">            <span class="keyword">return</span> inner_str</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 尝试使用 ast.literal_eval 解析其他类型</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">return</span> ast.literal_eval(arg_str)</span><br><span class="line">        <span class="keyword">except</span> (SyntaxError, ValueError):</span><br><span class="line">            <span class="comment"># 如果解析失败，返回原始字符串</span></span><br><span class="line">            <span class="keyword">return</span> arg_str</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_operating_system_name</span>(<span class="params">self</span>):</span><br><span class="line">        os_map = &#123;</span><br><span class="line">            <span class="string">&quot;Darwin&quot;</span>: <span class="string">&quot;macOS&quot;</span>,</span><br><span class="line">            <span class="string">&quot;Windows&quot;</span>: <span class="string">&quot;Windows&quot;</span>,</span><br><span class="line">            <span class="string">&quot;Linux&quot;</span>: <span class="string">&quot;Linux&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> os_map.get(platform.system(), <span class="string">&quot;Unknown&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read_file</span>(<span class="params">file_path</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;用于读取文件内容&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&quot;r&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">return</span> f.read()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">write_to_file</span>(<span class="params">file_path, content</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;将指定内容写入指定文件&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&quot;w&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(content.replace(<span class="string">&quot;\\n&quot;</span>, <span class="string">&quot;\n&quot;</span>))</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;写入成功&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run_terminal_command</span>(<span class="params">command</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;用于执行终端命令&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">import</span> subprocess</span><br><span class="line">    run_result = subprocess.run(command, shell=<span class="literal">True</span>, capture_output=<span class="literal">True</span>, text=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;执行成功&quot;</span> <span class="keyword">if</span> run_result.returncode == <span class="number">0</span> <span class="keyword">else</span> run_result.stderr</span><br><span class="line"></span><br><span class="line"><span class="meta">@click.command()</span></span><br><span class="line"><span class="meta">@click.argument(<span class="params"><span class="string">&#x27;project_directory&#x27;</span>,</span></span></span><br><span class="line"><span class="params"><span class="meta">                <span class="built_in">type</span>=click.Path(<span class="params">exists=<span class="literal">True</span>, file_okay=<span class="literal">False</span>, dir_okay=<span class="literal">True</span></span>)</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>(<span class="params">project_directory</span>):</span><br><span class="line">    project_dir = os.path.abspath(project_directory)</span><br><span class="line"></span><br><span class="line">    tools = [read_file, write_to_file, run_terminal_command]</span><br><span class="line">    agent = ReActAgent(tools=tools, model=<span class="string">&quot;openai/gpt-4o&quot;</span>, project_directory=project_dir)</span><br><span class="line"></span><br><span class="line">    task = <span class="built_in">input</span>(<span class="string">&quot;请输入任务：&quot;</span>)</span><br><span class="line"></span><br><span class="line">    final_answer = agent.run(task)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;\n\n✅ Final Answer：<span class="subst">&#123;final_answer&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p>prompt_template.py：系统提示词，规范输入和输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">react_system_prompt_template = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">你需要解决一个问题。为此，你需要将问题分解为多个步骤。对于每个步骤，首先使用 &lt;thought&gt; 思考要做什么，然后使用可用工具之一决定一个 &lt;action&gt;。接着，你将根据你的行动从环境/工具中收到一个 &lt;observation&gt;。持续这个思考和行动的过程，直到你有足够的信息来提供 &lt;final_answer&gt;。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">所有步骤请严格使用以下 XML 标签格式输出：</span></span><br><span class="line"><span class="string">- &lt;question&gt; 用户问题</span></span><br><span class="line"><span class="string">- &lt;thought&gt; 思考</span></span><br><span class="line"><span class="string">- &lt;action&gt; 采取的工具操作</span></span><br><span class="line"><span class="string">- &lt;observation&gt; 工具或环境返回的结果</span></span><br><span class="line"><span class="string">- &lt;final_answer&gt; 最终答案</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">⸻</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">例子 1:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&lt;question&gt;埃菲尔铁塔有多高？&lt;/question&gt;</span></span><br><span class="line"><span class="string">&lt;thought&gt;我需要找到埃菲尔铁塔的高度。可以使用搜索工具。&lt;/thought&gt;</span></span><br><span class="line"><span class="string">&lt;action&gt;get_height(&quot;埃菲尔铁塔&quot;)&lt;/action&gt;</span></span><br><span class="line"><span class="string">&lt;observation&gt;埃菲尔铁塔的高度约为330米（包含天线）。&lt;/observation&gt;</span></span><br><span class="line"><span class="string">&lt;thought&gt;搜索结果显示了高度。我已经得到答案了。&lt;/thought&gt;</span></span><br><span class="line"><span class="string">&lt;final_answer&gt;埃菲尔铁塔的高度约为330米。&lt;/final_answer&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">⸻</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">例子 2:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&lt;question&gt;帮我找一个简单的番茄炒蛋食谱，并看看家里的冰箱里有没有西红柿。&lt;/question&gt;</span></span><br><span class="line"><span class="string">&lt;thought&gt;这个任务分两步。第一步，找到番茄炒蛋的食谱。第二步，检查冰箱里是否有西红柿。我先用 find_recipe 工具找食谱。&lt;/thought&gt;</span></span><br><span class="line"><span class="string">&lt;action&gt;find_recipe(dish=&quot;番茄炒蛋&quot;)&lt;/action&gt;</span></span><br><span class="line"><span class="string">&lt;observation&gt;简单的番茄炒蛋食谱：将2个鸡蛋打散，2个番茄切块。热油，先炒鸡蛋，盛出。再热油，炒番茄至软烂，加入鸡蛋，放盐调味即可。&lt;/observation&gt;</span></span><br><span class="line"><span class="string">&lt;thought&gt;好的，我已经有食谱了。食谱需要西红柿。现在我需要用 check_fridge 工具看看冰箱里有没有西红柿。&lt;/thought&gt;</span></span><br><span class="line"><span class="string">&lt;action&gt;check_fridge(item=&quot;西红柿&quot;)&lt;/action&gt;</span></span><br><span class="line"><span class="string">&lt;observation&gt;冰箱检查结果：有3个西红柿。&lt;/observation&gt;</span></span><br><span class="line"><span class="string">&lt;thought&gt;我找到了食谱，并且确认了冰箱里有西红柿。可以回答问题了。&lt;/thought&gt;</span></span><br><span class="line"><span class="string">&lt;final_answer&gt;简单的番茄炒蛋食谱是：鸡蛋打散，番茄切块。先炒鸡蛋，再炒番茄，混合后加盐调味。冰箱里有3个西红柿。&lt;/final_answer&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">⸻</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">请严格遵守：</span></span><br><span class="line"><span class="string">- 你每次回答都必须包括两个标签，第一个是 &lt;thought&gt;，第二个是 &lt;action&gt; 或 &lt;final_answer&gt;</span></span><br><span class="line"><span class="string">- 输出 &lt;action&gt; 后立即停止生成，等待真实的 &lt;observation&gt;，擅自生成 &lt;observation&gt; 将导致错误</span></span><br><span class="line"><span class="string">- 如果 &lt;action&gt; 中的某个工具参数有多行的话，请使用 \n 来表示，如：&lt;action&gt;write_to_file(&quot;/tmp/test.txt&quot;, &quot;a\nb\nc&quot;)&lt;/action&gt;</span></span><br><span class="line"><span class="string">- 工具参数中的文件路径请使用绝对路径，不要只给出一个文件名。比如要写 write_to_file(&quot;/tmp/test.txt&quot;, &quot;内容&quot;)，而不是 write_to_file(&quot;test.txt&quot;, &quot;内容&quot;)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">⸻</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">本次任务可用工具：</span></span><br><span class="line"><span class="string">$&#123;tool_list&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">⸻</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">环境信息：</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">操作系统：$&#123;operating_system&#125;</span></span><br><span class="line"><span class="string">当前目录下文件列表：$&#123;file_list&#125;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2003/01/01/A1_LLM_Agent/" title="Agent" target="_blank" rel="external">https://fuyunjinglong.github.io/2003/01/01/A1_LLM_Agent/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2003/01/01/B_%E4%B8%AD%E7%BA%A7_CSS_Taiwind/" title="CSS_Taiwind"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2002/06/01/B_%E4%B8%AD%E7%BA%A7_TypeScript/" title="TypeScript"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <!-- <script src="//cdn.jsdelivr.net/npm/valine"></script> -->
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Hexo  </title>
+  <meta name="description" content="认识HexoHexo 使用 Node.js 编写。得益于 Node.js，使得 Hexo 生成上百个页面游刃有余。 只需要一条指令就可以部署到 GitHub Pages、Heroku、Coding Pages 等其他网站。 准备工作安装Node.js见本博客相关文档 安装Gityum install -y git 安装Nginx 在线下载解压 12wget http:&#x2F;&#x2F;nginx.org&#x2F;dow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://fuyunjinglong.github.io/2020/01/01/G_%E5%85%B6%E4%BB%96_Hexo/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="认识HexoHexo 使用 Node.js 编写。得益于 Node.js，使得 Hexo 生成上百个页面游刃有余。 只需要一条指令就可以部署到 GitHub Pages、Heroku、Coding Pages 等其他网站。 准备工作安装Node.js见本博客相关文档 安装Gityum install -y git 安装Nginx 在线下载解压 12wget http:&#x2F;&#x2F;nginx.org&#x2F;dow">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220912120301069.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220503153102827.png">
+<meta property="og:image" content="https://fuyunjinglong.github.io/img/image-20220503154055374.png">
+<meta property="article:published_time" content="2019-12-31T22:33:16.000Z">
+<meta property="article:modified_time" content="2026-10-18T03:48:00.323Z">
+<meta property="article:author" content="Elven">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://fuyunjinglong.github.io/img/image-20220912120301069.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://fuyunjinglong.github.io/2020/01/01/G_%E5%85%B6%E4%BB%96_Hexo/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A1-LLM/">A1_LLM</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/A-%E5%88%9D%E7%BA%A7/">A_初级</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/B-%E4%B8%AD%E7%BA%A7/">B_中级</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/C-%E9%AB%98%E7%BA%A7/">C_高级</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/D-%E8%A7%84%E5%88%92/">D_规划</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+
+    
+      
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/04/">四月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/03/">三月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2099/01/">一月 2099</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2098/01/">一月 2098</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/07/">七月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/01/">一月 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">三月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">十二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/03/">三月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/02/">二月 2004</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2004/01/">一月 2004</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/06/">六月 2003</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2003/01/">一月 2003</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/06/">六月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/02/">二月 2002</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2002/01/">一月 2002</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/06/">六月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/03/">三月 2001</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/02/">二月 2001</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/01/">一月 2001</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/06/">六月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/03/">三月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/02/">二月 2000</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2000/01/">一月 2000</a><span class="archive-list-count">6</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A0-%E9%9D%A2%E8%AF%95/">A0_面试</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/04/04/%E6%A8%A1%E6%9D%BFX/" class="title">模板X</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-04-04T00:33:16.000Z" itemprop="datePublished">2099-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Z-%E5%90%8E%E7%AB%AF/">Z_后端</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/03/29/Z_%E5%90%8E%E7%AB%AF_Java/" class="title">Java</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-03-28T23:33:16.000Z" itemprop="datePublished">2099-03-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a>
+              </p>
+              <p class="item-title">
+                <a href="/2099/01/01/G_%E5%85%B6%E4%BB%96_%E4%B9%A6%E5%8D%95/" class="title">书单</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2099-01-01T00:33:16.000Z" itemprop="datePublished">2099-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/A1-LLM/">A1_LLM</a>
+              </p>
+              <p class="item-title">
+                <a href="/2098/01/01/A1_LLM_windows%E5%AE%89%E8%A3%85%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="title">LLM_windows安装大模型</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2097-12-31T22:33:16.000Z" itemprop="datePublished">2098-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2026/07/18/Test%20copy/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2026-07-18T02:11:18.292Z" itemprop="datePublished">2026-07-18</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+  <aside class="sidebar sidebar-toc collapse   in  " id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A4%E8%AF%86Hexo"><span class="toc-number">1.</span> <span class="toc-text">认识Hexo</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Node-js"><span class="toc-number">2.1.</span> <span class="toc-text">安装Node.js</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Git"><span class="toc-number">2.2.</span> <span class="toc-text">安装Git</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Nginx"><span class="toc-number">2.3.</span> <span class="toc-text">安装Nginx</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Hexo"><span class="toc-number">3.</span> <span class="toc-text">安装Hexo</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEHexo"><span class="toc-number">4.</span> <span class="toc-text">配置Hexo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E4%B8%BB%E9%A2%98"><span class="toc-number">4.1.</span> <span class="toc-text">下载主题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PM2%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="toc-number">4.2.</span> <span class="toc-text">PM2进程管理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2Github-Page"><span class="toc-number">5.</span> <span class="toc-text">部署Github Page</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E8%BF%9E%E6%8E%A5"><span class="toc-number">5.1.</span> <span class="toc-text">创建远程仓库连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%85%A5deployer%E6%8F%92%E4%BB%B6"><span class="toc-number">5.2.</span> <span class="toc-text">引入deployer插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#github%E5%8D%9A%E5%AE%A2%E4%BB%93%E5%BA%93%E8%AE%BE%E7%BD%AE"><span class="toc-number">5.3.</span> <span class="toc-text">github博客仓库设置</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Hexo%E5%91%BD%E4%BB%A4"><span class="toc-number">6.</span> <span class="toc-text">Hexo命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%88%86%E7%B1%BB"><span class="toc-number">6.1.</span> <span class="toc-text">创建分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%85%E7%90%86%E7%BC%93%E5%AD%98"><span class="toc-number">6.2.</span> <span class="toc-text">清理缓存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E5%90%AF%E6%9C%8D%E5%8A%A1"><span class="toc-number">6.3.</span> <span class="toc-text">重启服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-server"><span class="toc-number">6.4.</span> <span class="toc-text">hexo server</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-generate"><span class="toc-number">6.5.</span> <span class="toc-text">hexo generate</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-deploy"><span class="toc-number">6.6.</span> <span class="toc-text">hexo deploy</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#hexo%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">7.</span> <span class="toc-text">hexo常见问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Hexo%E5%8E%9F%E7%90%86"><span class="toc-number">8.</span> <span class="toc-text">Hexo原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">8.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo%E5%91%BD%E4%BB%A4%E6%80%BB%E8%A7%88"><span class="toc-number">8.2.</span> <span class="toc-text">Hexo命令总览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo%E7%9A%84%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E"><span class="toc-number">8.3.</span> <span class="toc-text">Hexo的模板引擎</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8Emarkdown%E5%88%B0html%E7%9A%84%E6%97%85%E7%A8%8B"><span class="toc-number">8.4.</span> <span class="toc-text">从markdown到html的旅程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hexo-%E6%AF%8F%E6%AC%A1%E9%83%A8%E7%BD%B2%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="toc-number">8.5.</span> <span class="toc-text">Hexo 每次部署的流程</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-G_其他_Hexo" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Hexo
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/01/01/G_%E5%85%B6%E4%BB%96_Hexo/" class="article-date">
+	  <time datetime="2019-12-31T22:33:16.000Z" itemprop="datePublished">2020-01-01</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/G-%E5%85%B6%E4%BB%96/">G_其他</a>
+  </span>
+
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/01/01/G_%E5%85%B6%E4%BB%96_Hexo/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="认识Hexo"><a href="#认识Hexo" class="headerlink" title="认识Hexo"></a>认识Hexo</h1><p>Hexo 使用 Node.js 编写。得益于 Node.js，使得 Hexo 生成上百个页面游刃有余。</p>
+<p>只需要一条指令就可以部署到 GitHub Pages、Heroku、Coding Pages 等其他网站。</p>
+<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><h2 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h2><p>见本博客相关文档</p>
+<h2 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h2><p>yum install -y git</p>
+<h2 id="安装Nginx"><a href="#安装Nginx" class="headerlink" title="安装Nginx"></a>安装Nginx</h2><ul>
+<li><p>在线下载解压</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget http://nginx.org/download/nginx-1.5.9.tar.gz</span><br><span class="line">tar -zxvf nginx-1.5.9.tar.gz</span><br></pre></td></tr></table></figure></li>
+<li><p>安装</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure></li>
+<li><p>配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/nginx/conf目录下的nginx.conf文件</span><br><span class="line">upstream  myserver&#123;        #定义upstream名字，下面会引用</span><br><span class="line">        server 120.79.33.76:5000 weight=3;        #指定后端服务器地址</span><br><span class="line">        server 123.206.218.36:5000 weight=2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  anandasuper.top;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">            root   html;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">      proxy_pass http://myserver; </span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>启动</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./sbin/nginx 初次启动</span><br><span class="line">./sbin/nginx -s reload 重启</span><br><span class="line">./sbin/nginx -s stop 停止</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h1><ul>
+<li><p>1.全局安装依赖</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure></li>
+<li><p>配置hexo软连接到全局</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -snf /newen/programfiles/node-v10.16.0-linux-x64/lib/node_modules/hexo-cli/bin/hexo   /usr/local/bin/hexo</span><br></pre></td></tr></table></figure></li>
+<li><p>初始化工程目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir hexo2022</span><br><span class="line">cd hexo2022</span><br><span class="line">hexo init</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="配置Hexo"><a href="#配置Hexo" class="headerlink" title="配置Hexo"></a>配置Hexo</h1><h2 id="下载主题"><a href="#下载主题" class="headerlink" title="下载主题"></a>下载主题</h2><ul>
+<li><p>1.将主题git到themes目录下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/cofess/hexo-theme-pure.git themes/pure</span><br></pre></td></tr></table></figure></li>
+<li><p>2.修改博客根目录的config配置，theme更改为pure</p>
+</li>
+<li><p>3.如果使用后台启动，建议使用js脚本;如果调试的话，hexo s即可。在博客根目录下面创建一个hexo_run.js</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//run</span><br><span class="line">const &#123; exec &#125; = require(&#x27;child_process&#x27;)</span><br><span class="line">exec(&#x27;hexo server -p 5001&#x27;,(error, stdout, stderr) =&gt; &#123;</span><br><span class="line">        if(error)&#123;</span><br><span class="line">                console.log(&#x27;exec error: $&#123;error&#125;&#x27;)</span><br><span class="line">                return</span><br><span class="line">        &#125;</span><br><span class="line">        console.log(&#x27;stdout: $&#123;stdout&#125;&#x27;);</span><br><span class="line">        console.log(&#x27;stderr: $&#123;stderr&#125;&#x27;);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+<li><p>4.安装依赖</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="PM2进程管理"><a href="#PM2进程管理" class="headerlink" title="PM2进程管理"></a>PM2进程管理</h2><p> PM2 是一个带有负载均衡功能的 Node 应用的进程管理器。我们都知道nodejs是单进程执行的，当程序出现错误死掉之后需要能够自动，这时候就需要PM2了。</p>
+<ul>
+<li><p>安装pm2</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g pm2</span><br></pre></td></tr></table></figure></li>
+<li><p>配置软连接到全局</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -snf /newen/programfiles/node-v10.16.0-linux-x64/lib/node_modules/pm2/bin/pm2     /usr/local/bin/</span><br></pre></td></tr></table></figure></li>
+<li><p>启动进程</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pm2 start hexo_run.js</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>常用命令</strong></p>
+<p>查看所有任务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pm2 list</span><br></pre></td></tr></table></figure>
+
+<p>停止所有任务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pm2 stop all或pm2 delete all</span><br></pre></td></tr></table></figure>
+
+<p>停止某个任务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pm2 stop 1 </span><br></pre></td></tr></table></figure>
+
+<h1 id="部署Github-Page"><a href="#部署Github-Page" class="headerlink" title="部署Github Page"></a>部署Github Page</h1><h2 id="创建远程仓库连接"><a href="#创建远程仓库连接" class="headerlink" title="创建远程仓库连接"></a><strong>创建远程仓库连接</strong></h2><p>详情见Github入门的ssh秘钥</p>
+<h2 id="引入deployer插件"><a href="#引入deployer插件" class="headerlink" title="引入deployer插件"></a><strong>引入deployer插件</strong></h2><p>要将hexo生成的文章部署到GitHub上，首先要编辑<strong>站点配置文件</strong>，将hexo和GitHub关联起来，其中<code>username</code>为GitHub用户名。<br>在博客文件夹里，修改<strong>站点配置文件</strong><code>_config.yml</code>，在文件最后加上（已有则修改）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git # 提交类型git</span><br><span class="line">  repo: git@github.com:fuyunjinglong/fuyunjinglong.github.io.git # 提交仓库地址</span><br><span class="line">  branch: hexoPage # 分支GitHub的默认分支是main Gitee的分支是master 可以填branch让hexo默认提交</span><br><span class="line">  message: &#x27;初始化博客&#x27; # 提交信息</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>需要先安装Git部署插件，才能用命令部署到GitHub，输入以下命令安装<code>hexo-deployer-git</code>插件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean    #清除缓存和已生成的静态文件</span><br><span class="line">$ hexo generate #等于hexo g</span><br><span class="line">$ hexo deploy   #等于hexo d</span><br><span class="line"></span><br><span class="line"># 可将上述命令合并为“一键三连”</span><br><span class="line">package.json配置</span><br><span class="line">&quot;deployGithub&quot;: &quot;hexo clean &amp;&amp; hexo g &amp;&amp; hexo d&quot;</span><br><span class="line">一键部署github page</span><br><span class="line">npm run deployGithub</span><br></pre></td></tr></table></figure>
+
+<h2 id="github博客仓库设置"><a href="#github博客仓库设置" class="headerlink" title="github博客仓库设置"></a>github博客仓库设置</h2><p><strong>博客仓库-settings-Pages,选择对应分支和访问目录</strong></p>
+<img src="/img/image-20220912120301069.png" alt="image-20220912120301069" style="zoom:67%;" />
+
+<p>浏览器中访问**<code>https://&lt;username&gt;.github.io</code>**即可看到你的博客了！！</p>
+<h1 id="Hexo命令"><a href="#Hexo命令" class="headerlink" title="Hexo命令"></a>Hexo命令</h1><h2 id="创建分类"><a href="#创建分类" class="headerlink" title="创建分类"></a>创建分类</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page categories自动生成目录结构</span><br></pre></td></tr></table></figure>
+
+<p>categories/index.md 设置分类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 分类</span><br><span class="line">date: 2019-09-04 07:13:04</span><br><span class="line">layout: categories</span><br><span class="line">type: categories</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<h2 id="清理缓存"><a href="#清理缓存" class="headerlink" title="清理缓存"></a>清理缓存</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br></pre></td></tr></table></figure>
+
+<h2 id="重启服务"><a href="#重启服务" class="headerlink" title="重启服务"></a>重启服务</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo s -p 5001或者</span><br><span class="line">pm2 stop all和pm2 start hexo_run.js</span><br></pre></td></tr></table></figure>
+
+<h2 id="hexo-server"><a href="#hexo-server" class="headerlink" title="hexo server"></a><code>hexo server</code></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s -p 端口号,也可不加端口</span><br></pre></td></tr></table></figure>
+
+<h2 id="hexo-generate"><a href="#hexo-generate" class="headerlink" title="hexo generate"></a><code>hexo generate</code></h2><p>这个命令是生成网站静态文件的时候用的，生成后网页将会放在根目录下面的 <code>public</code> 文件夹里。</p>
+<h2 id="hexo-deploy"><a href="#hexo-deploy" class="headerlink" title="hexo deploy"></a><code>hexo deploy</code></h2><p>这个命令用来部署网站，使用此命令将会把生成好的页面（即 <code>public</code> 文件夹里的内容）部署到指定的地方上。</p>
+<h1 id="hexo常见问题"><a href="#hexo常见问题" class="headerlink" title="hexo常见问题"></a>hexo常见问题</h1><p><strong>基本</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">0.目录结构</span><br><span class="line">    可展示的大纲目录采用：</span><br><span class="line">    一级标题</span><br><span class="line">    二级标题</span><br><span class="line">    ...</span><br><span class="line">    不需要展示的大纲目录采用：</span><br><span class="line">    一、加粗</span><br><span class="line">    1.加粗</span><br><span class="line">    1.1不加粗</span><br><span class="line"></span><br><span class="line">1.代码段</span><br><span class="line">&#123;% codeblock %&#125;</span><br><span class="line">&#123;% endcodeblock %&#125;</span><br><span class="line">2.图片</span><br><span class="line">&lt;img src=&quot;/img/2026-01-18_18-09-01.png&quot; style=&quot;zoom:50%;&quot; /&gt;</span><br><span class="line">或</span><br><span class="line">C:\Users\fuyunjinglong\AppData\Roaming\Typora\typora-user-images\</span><br><span class="line">/img/</span><br><span class="line">3.加粗</span><br><span class="line">**加粗**</span><br><span class="line">4.链接</span><br><span class="line">&#123;% link 深入理解分布式事务 http://wwwe/distributed-transaction.html [external] [title] %&#125;</span><br><span class="line">5.点点li</span><br><span class="line">- 风格1</span><br><span class="line">- 风格2</span><br><span class="line">6.emoji</span><br><span class="line">https://www.emojiall.com/zh-hans/sub-categories/F11</span><br></pre></td></tr></table></figure>
+
+<p><strong>高级</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">1.页面内跳转</span><br><span class="line">i.跳转到任意位置</span><br><span class="line">[跳转到指定锚点上面](#锚点)</span><br><span class="line">&lt;a name=&quot;锚点&quot;&gt; &lt;/a&gt;</span><br><span class="line"></span><br><span class="line">ii.跳转到标题位置</span><br><span class="line">[跳转到标题](#任意标题名)</span><br><span class="line"></span><br><span class="line">2.页面外跳转</span><br><span class="line">内部跳转页面</span><br><span class="line">&#123;% post_link E_数据结构_0基础 可点击%&#125;</span><br><span class="line">内部跳转页面锚点</span><br><span class="line">&lt;a target=&quot;_blank&quot; href=&quot;&#123;% post_path &#x27;E_数据结构_0基础&#x27; %&#125;#LRU-K&quot;&gt;LRU-K&lt;/a&gt;</span><br><span class="line"></span><br><span class="line">3.取消文章目录的自动编号</span><br><span class="line">./node_modules/hexo/lib/plugins/helper/toc.js</span><br><span class="line">list_number: false</span><br><span class="line"></span><br><span class="line">4.页面外跳转定位锚点过慢</span><br><span class="line">删除av-min.js无效cdn</span><br></pre></td></tr></table></figure>
+
+<p><strong>魔改</strong></p>
+<blockquote>
+<p>1.取消右侧目录下的序号</p>
+<p>./node_modules/hexo/lib/plugins/helper/toc.js</p>
+<p>list_number: true  // 自行修改，true/false</p>
+</blockquote>
+<h1 id="Hexo原理"><a href="#Hexo原理" class="headerlink" title="Hexo原理"></a>Hexo原理</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">├── node_modules：             #依赖包-安装插件及所需nodejs模块。</span><br><span class="line">├── public          #最终网页信息。即存放被解析markdown、html文件。</span><br><span class="line">├── scaffolds         #模板文件夹。即当您新建文章时，根据 scaffold生成文件。</span><br><span class="line">├── source          #资源文件夹。即存放用户资源。</span><br><span class="line">|   └── _posts         #博客文章目录。</span><br><span class="line">└── themes             #存放主题。Hexo根据主题生成静态页面。</span><br><span class="line">├── _config.yml       #网站的配置信息。标题、网站名称等。</span><br><span class="line">├── db.json：        #source解析所得到的缓存文件。</span><br><span class="line">├── package.json      # 应用程序信息。即配置Hexo运行需要js包。</span><br></pre></td></tr></table></figure>
+
+<p>主题内的结构</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">├── LICENSE</span><br><span class="line">├── README.en.md       // READEME 英文版</span><br><span class="line">├── README.md          // READEME 中文文件</span><br><span class="line">├── _config.yml        // 主题配置文件</span><br><span class="line">├── bower.json</span><br><span class="line">├── gulpfile.coffee</span><br><span class="line">├── languages         // 多语言配置文件</span><br><span class="line">├── layout            // 模板文件</span><br><span class="line">├── package.json      // 项目的依赖文件</span><br><span class="line">├── scripts           // 主题的脚本文件</span><br><span class="line">├── source            // 主题的资源文件 CSS IMG</span><br><span class="line">└── test</span><br></pre></td></tr></table></figure>
+
+<h2 id="Hexo命令总览"><a href="#Hexo命令总览" class="headerlink" title="Hexo命令总览"></a>Hexo命令总览</h2><ul>
+<li>hexo-cli</li>
+<li>hexo core</li>
+<li>hexo plugins</li>
+</ul>
+<img src="/img/image-20220503153102827.png" alt="image-20220503153102827" style="zoom:67%;" />
+
+<p><strong>hexo-cli</strong>作用：</p>
+<ul>
+<li>启动hexo命令进程和参数解析机制</li>
+<li>实现hexo命令的三个初始参数：init/version/plugins</li>
+<li>加载hexo核心模块，并初始化</li>
+</ul>
+<p><strong>hexo core</strong>作用：</p>
+<ul>
+<li>实现hexo的new、generate、publish等功能</li>
+</ul>
+<p><strong>hexo plugins</strong>扩展hexo的插件</p>
+<ul>
+<li>扩展hexo命令的参数，如<code>hexo-server</code></li>
+<li>扩展hexo解析文件的”能力”，如增加jade模版解析功能的hexo-render-jade插件</li>
+</ul>
+<h2 id="Hexo的模板引擎"><a href="#Hexo的模板引擎" class="headerlink" title="Hexo的模板引擎"></a>Hexo的模板引擎</h2><p>模板引擎的作用，就是将界面与数据分离。最简单的原理是将模板内容中指定的地方替换成数据，实现业务代码与逻辑代码分离。</p>
+<p>我们就可以将source文件夹理解为数据库，而主题文件夹相当于界面。</p>
+<p>Hexo 的模板引擎是默认使用 ejs 编写的。hexo首先会解析 md 文件，然后根据 layout 判断布局类型，再调用其他的文件，这样每一块的内容都是独立的，提高代码的复用性。最终会生成一个 html 页面。</p>
+<p><code>layout</code> 文件文档结构如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">├── _custom                           // 通用布局</span><br><span class="line">├── _layout.swig                      // 默认布局布局</span><br><span class="line">├── _macro                            // 插件模板</span><br><span class="line">├── _partials                         // 局部布局</span><br><span class="line">├── _scripts                          // script模板</span><br><span class="line">├── _third-party                      // 第三方插件模板</span><br><span class="line">├── archive.swig                      // 归档模板</span><br><span class="line">├── category.swig                     // 分类模板</span><br><span class="line">├── index.swig                        // 首页模板</span><br><span class="line">├── page.swig                         // 其他模板</span><br><span class="line">├── photo.swig                        // 照片模板（自定义）</span><br><span class="line">├── post.swig                         // 文章模板</span><br><span class="line">├── schedule.swig                     // 归档模板</span><br><span class="line">└── tag.swig                          // 标签模板</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="从markdown到html的旅程"><a href="#从markdown到html的旅程" class="headerlink" title="从markdown到html的旅程"></a>从markdown到html的旅程</h2><p>hexo中，从markdown到html的generate过程中做了两件事：模板渲染和模板渲染。</p>
+<img src="/img/image-20220503154055374.png" alt="image-20220503154055374" style="zoom:67%;" />
+
+<p>第一次渲染:主要目的就是给这个对象添加title,content等属性</p>
+<p>第二次渲染:需要引入对应模板文件格式的插件，如.ejs文件就需要使用hexo-render-ejs插件，.jade文件需要使用hexo-render-jade插件，而.sass文件则需要hexo-render-sass插件来转换成css文件。hexo的这一设计有点类似webpack中的loader。</p>
+<h2 id="Hexo-每次部署的流程"><a href="#Hexo-每次部署的流程" class="headerlink" title="Hexo 每次部署的流程"></a>Hexo 每次部署的流程</h2><ol>
+<li>hexo g：生成静态文件。将我们的数据和界面相结合生成静态文件的过程。会遍历主题文件中的 <code>source</code> 文件夹（js、css、img 等静态资源），然后建立索引，然后根据索引生成 <code>pubild</code> 文件夹中，此时的 <code>publid</code> 文件是由 html、 js、css、img 建立的纯静态文件可以通过 <code>index.html</code> 作为入口访问你的博客。</li>
+<li>hexo d：部署文件。部署主要是根据在 <code>_config.yml</code> 中配置的 <code>git</code> 仓库或者 <code>coding</code> 的地址，将 <code>public</code> 文件上传至 github 或者 coding 中。然后再根据上面的 github 提供的 pages 服务呈现出页面。当然你也可以直接将你生成的 <code>public</code> 文件上传至你自己的服务器上。</li>
+</ol>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://fuyunjinglong.github.io/2020/01/01/G_%E5%85%B6%E4%BB%96_Hexo/" title="Hexo" target="_blank" rel="external">https://fuyunjinglong.github.io/2020/01/01/G_其他_Hexo/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/01/01/A_%E5%88%9D%E7%BA%A7_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="数据结构"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2019/01/01/A_%E5%88%9D%E7%BA%A7_%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" title="计算机网络"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn " data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">    <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/fuyunjinglong" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script> -->
+  <!-- <script src="//cdn.jsdelivr.net/npm/valine"></script> -->
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
