@@ -6,137 +6,24 @@ categories:
 toc: true # 是否启用内容索引
 ---
 
-# 基本概念
+# 测试模式
 
-**单元测试的上下文就是存在于「敏捷」当中**。敏捷为的是更快地交付有价值的可工作的软件。为此，它有一个指标来度量这个「更快」，那就是 lead time，它度量的是一个 idea 从提出被验证，到最终上生产环境面对用户的时间。显然，这个时间越短，软件获得反馈的时间就越短，对价值的验证就越快发生。
+比如顶流框架：Vue,React,Element,Echarts
 
-## 前言
+开发模式：Test-last（后置测试）与TDD（测试驱动开发）
 
-> 我从不觉得自己是一个好的程序员，甚至可能连合格都谈不上，不过在内心深处我却渴望着在编程这件事上获得成功。
->
-> 可惜每次审视自己写的暂且称之为代码的东西，都会有挫折感，想重构却又感觉盘根错节，难以下手;想重写却又感觉自己好不容易写出来的，也花了不少心思，就这样丢弃心有不甘。
->
-> 也曾思考过如何才能写好代码，有段时间觉得只有严格符合编程规范的代码才是好代码进而如同遵守戒律一样地字字斟酌，还有段时间觉得只有用上设计模式才能称之优秀代码进而非模式不用，一切套用模式。不过这些都没有让我走出开发的迷雾，永远是加不完的班，修不完的bug。
->
-> 先测试后开发，小步迭代，持续集成。
->
-> **测试先行**，其实讲的是需求边界，测试不是漫无目的而是精确计算成本的一项活动。测试从何而来，从需求来，需求推演出测试，也规划出产品边界，不能反映需求的测试是一种浪费，因此引申出开发需要讲求适当。开发是一项功利性的活动，永远都在追求盈利，而测试就一条红线，一旦跨过就意味着亏损。
->
-> **小步迭代**，“让子弹飞”中有句话很经典:步子要一步一步迈，一步迈大了，咔，容易扯着蛋。代码堆叠的后遗症是复杂，复杂到没人愿意触碰，且不停地咒骂这代码有多烂，这是步子迈太大的真实写照。TDD讲求的小步迭代是写完一个测试再去写完一个实现，每个实现都是通过测试的，如此累加小胜为大胜，最后所有代码的收尾也不过是让最后一个测试通过而已，就是这样简单。
->
-> **重构**，这是我最喜欢的部分，为啥？因为这里面所有的活动都会要求你去思考，且看上去都像是让你的代码向着大师级代码前进。漂亮的代码并不是堆砌各种技巧，而是在正确的时间，正确的地点做正确的事，重构很容易实现这个目标。重构是一件让人一旦开始就会欲罢不能的事，会让开发者在整个开发阶段都能够不停地去思考、实践再思考，直到无法再添加或删除一个字母。
->
-> **持续集成**，你终究是需要交付产品的，产品就是客户需要的价值，就如同厨师终究会端出客人点的大餐一样，没有哪个厨师是把所有食材罗列着呈现给你的，而是混合在一起，蒸煮炖烧，有些食材需要先处理，这样吃起来才软硬适中，而有些则是最后下锅，这样吃起来才鲜嫩多汁，厨师就是这样一步步将食材集成起来，每一步的处理都是可用都是有价值的，都是为后续进行的铺垫。软件开发也一样，持续集成就要保证每一次的完成都是有价值都可以为后续提供支撑。
->
-> TDD是一个很好的思维框架，如果非要教人一个思维框架的话就得教TDD， 不然人会瞎碰，不思考，不总结，不结果导向，靠灵感编程，凭直觉设计，撞大运修bug。最糟糕的是因为没有好的习惯 会接二连三的发生灵异现象。同一道题，习惯不好的人做，总能做出无数种新问题来。而且问题套问题，给他解决要浪费 我半天时间，如果他学会了TDD出的错只在最近一个引入的变化里，就好纠正多了。甚至他自己都能纠正。
->
-> TDD重要的不是测试代码本身，是解决问题的思维，也许可以泛化，哪怕没测试，如果能够做到快速验证，反馈，价值的 稳定叠加，有足够信心，也未尝不可。也许你会说测试可以cover功能，那么如果只有这一点的话，我更喜欢BDD (behavior-driven development)，因为这具有用户最终的使用价值。如果你说快速定位bug，我们我更倾向于BDD (bug-driven development，自创的)。这写都是TDD的结果导致的好处所在，而价值反馈思维才是实现TDD背后原理。 TDD驱使我们以结果导向，使得我们简单设计(并不是无设计)，日常重构我们的代码库，注重交付价值流稳定叠加。
+三维保障：TestHost 绑定驱动 + Harness 交互验证 + 因果断言强制
 
-以下几种情况可以不写单元测试：
+# 测试分类
 
-- 业务部门不需要频繁上线，并且我有足够的人力来覆盖手工测试
-- 不在意代码腐化，并且我也不做重构
-- 不在意代码质量，好几个没有测试保护的 `if-else` 裸奔也不在话下，脑不好还做什么程序员
-- 确有快速部署的需求，但我们不 care 质量问题，出回归问题就修
+- 单元测试：Vitest（Vue/Vite生态首选）与 Jest（React经典）
+- 组件/集成测试：@vue/test-utils，React Testing Library，以及Cypress/Playwright的组件测试模式
+- E2E（端到端）测试：Playwright（微软出品，跨浏览器并行）与Cypress（SPA友好）
 
-除此之外，你就需要写单元测试。如果你想随时整理重构代码，那么你需要写单元测试；如果你想有自动化的测试套件来帮你快速验证提交的完整性，那么你需要写单元测试。
+**E2E最佳实践**
 
-## 测试分类
-
-- 静态测试：在编写代码逻辑阶段时进行报错提示。(代表库: ESLint、Flow、TypeScript)
-- 单元测试Unit：在奖杯模型中, 单元测试的职责是对一些边界情况或者特定的算法进行测试。(代表库: [Jest](https://github.com/facebook/jest)、[Mocha](https://github.com/mochajs/mocha))
-- 集成测试Integration：模拟用户的行为进行测试，对网络请求、获取数据库的数据等依赖第三方环境的行为进行 Mock。（代表库: [Jest](https://github.com/facebook/jest)、[react-testing-library](https://github.com/testing-library/react-testing-library)、[Vue Testing Library](https://github.com/testing-library/vue-testing-library) 等）
-- 端到端测试E2E：模拟用户在真实环境上操作行为（包括网络请求、获取数据库数据等）的测试。（代表库: [Cypress](https://github.com/cypress-io/cypress)）
-
-其它的功能测试、UI 测试、界面测试只是它们中里面的一种。
-
-- [前端测试一共有哪几种？](https://www.51cto.com/article/707816.html)
-- [前端测试](https://www.yuque.com/lipengzhou/frontend-testing/gg965i#e8JOr)
-
-## 选择测试框架
-
-**A.远古测试框架**
-
-> Jest 是一个“零配置”的前端测试工具，具有诸如模拟和代码覆盖之类的开箱即用特性
-
-我们团队对采用 JEST 做前端测试的结果非常满意。它提供了一种“零配置”的开发体验，并具备诸多开箱即用的功能，比如 Mock 和代码覆盖率等。你不仅可以将此测试框架应用于 React.js 应用程序，也可以应用于其他 JavaScript 框架。Jest 经常被炒作的功能之一是用户界面的快照测试。快照测试可以作为测试金字塔上层一个很好的补充，但请记住，单元测试仍然是坚实的基础。
-
-Jest几大好处：
-
-- Fast 天下武功，唯快不破。确实很快，虽然实测下来跟 [Mocha 新版本](https://github.com/mochajs/mocha/blob/master/CHANGELOG.md)还是慢了些，以后找个机会再测一次。
-- Opinionated 不需要你做出选择和配置，就能提供所有的东西，比如 Mock（干掉 Sinon）、Test Runner（干掉 Karma）、Matcher（干掉 Chai）、Test Coverage（内置 istanbul）
-- Watch Mode 守护模式。非常注重开发者体验，能够在编码的时候帮助我们快速获得测试结果的反馈。
-- Snapshot Testing 快照测试。这是值得争议的一点，前文也提到过会专门开个 issue 来讨论，在此不再赘述。
-
-测试框架比较：
-
-**Jest**
-
-> Jest 基于 Jasmine, 做了大量修改并添加了很多特性，同样开箱即用，但异步测试支持良好。
->
-> Jest === Mocha + Chai + Sinon + mockserver + istanbul
-
-**Mocha**
-
-> Mocha 是生态最好，使用最广泛的单测框架，但是他需要较多的配置来实现它的高扩展性。
-
-**Ava**
-
-> Ava 是更轻量高效简单的单测框架，但是自身不够稳定，并发运行文件多的时候会撑爆 CPU。
-
-**Jasmine**
-
-> Jasmine 是单测框架的“元老”，开箱即用，但是异步测试支持较弱。
-
-**Karma**
-
-> Karma 能在真实的浏览器中测试，强大适配器，可配置其他单测框架，一般会配合 Mocha 或 Jasmine 等一起使用。
-
-每个框架都有自己的优缺点，没有最好的框架，只有最适合的框架。
-
-Vue和React 的默认测试框架是 Jest，Augular 的默认测试框架就是 Karma + Jasmine
-
-**B.现代测试框架**
-
-- vitest
-- Jest
-- Cypress
-- WebdriverIO
-- Web Test Runner
-- uvu
-
-**Jest**
-
-[Jest](https://jestjs.io/) 通过为大多数 JavaScript 项目提供开箱即用的支持、舒适的 API（`it` 和 `expect`）以及大多数设置所需的完整测试功能（快照、模拟和覆盖率），在测试框架领域占据了主导地位。
-
-**Cypress**
-
-[Cypress](https://www.cypress.io/) 是基于浏览器的测试工具，是 Vitest 的补充工具之一。如果你想使用 Cypress，建议将 Vitest 用于测试项目中非浏览器逻辑，将 Cypress 用于测试依赖浏览器的逻辑。
-
-Cypress 是著名的端到端测试工具，他们[最新的组件测试运行器](https://on.cypress.io/component) 对测试 Vite 组件有很好的支持，是测试任何在浏览器中渲染的东西的理想选择。
-
-基于浏览器运行测试的框架，例如 Cypress, WebdriverIO 和 Web Test Runner，会捕获到 Vitest 无法捕获的问题，因为他们都是使用真实的浏览器和 APIs。
-
-Cypress 的测试更加专注于确定元素是否可见，是否可以访问和交互。
-
-**WebdriverIO**
-
-[WebdriverIO](https://webdriver.io/) 类似于 Cypress，一个基于浏览器的替代测试运行器和 Vitest 的补充工具。它可以用作端到端测试工具以及测试 [web 组件](https://webdriver.io/docs/component-testing)。它甚至在底层使用了 Vitest 的组件，例如对于组件测试中的 [mocking and stubing](https://webdriver.io/docs/mocksandspies/)。
-
-WebdriverIO 具有与 Cypress 相同的优点，允许你在真实浏览器中测试逻辑。然而，它使用实际的[ web 标准](https://w3c.github.io/webdriver/)进行自动化，在运行 Cypress 测试时克服了一些权衡和限制。此外，它还允许你在移动设备上运行测试，使你可以在更多环境中测试应用程序。
-
-**Web Test Runner**
-
-[@web/test-runner](https://modern-web.dev/docs/test-runner/overview/) 在无头浏览器中进行测试，提供与你的 Web 应用程序相同的运行环境，而不需要模拟浏览器的 API 和 DOM。虽然没有像 Cypress 那样显示用于单步执行测试的 UI，但也使得我们可以使用 devtools 在浏览器中进行调试。
-
-**uvu**
-
-[uvu](https://github.com/lukeed/uvu) 是一个适用于 Node.js 和浏览器的测试运行器。
-
-## 参考
-
-- [Vue 应用单元测试的策略与实践 01 - 前言和目标](https://blog.jimmylv.info/2018-09-19-vue-application-unit-test-strategy-and-practice-01-introduction/)
-- [测试框架比较](https://cn.vitest.dev/guide/comparisons.html#webdriverio)
+> - 模板式生成(CAPPortal Website)：配置驱动(Deep-Engine/Rules)。采用Vitest + JSDOM进行HTTP Mock测试
+> - 知识库式生成(CB)
 
 # TDD
 
