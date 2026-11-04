@@ -1,5 +1,5 @@
 ---
-title: 聚客(第4期)
+title: 培训聚客(第4期)
 date: 2002-01-01 06:33:16
 categories:
 - A1_LLM

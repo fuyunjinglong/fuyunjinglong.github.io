@@ -1,12 +1,10 @@
 ---
-title: 智泊-大模型应用开发
+title: 培训智泊
 date: 2002-02-01 08:33:16
 categories:
 - A1_LLM
 toc: true # 是否启用内容索引
 ---
-
-# 测试
 
 # 大纲
 
