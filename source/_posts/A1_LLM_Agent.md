@@ -594,6 +594,5 @@ GoogleADK
 
 > - 免费的：[阿里云百练](https://bailian.console.aliyun.com/cn-beijing/costing-balance/quota-managements)
 > - 收费的：deepseek API
-> - 阿里云百练API：sk-ws-H.YRHYPPL.TjvV.MEQCIAhjOWCTKhD6bBt0VE8ERdmSvnnaTZhSDXwXMUieEGCAAiBEB1oiSYqZfi0K1kp5subktvpdVzlIL9cmN7nN8ddU4Q
 
 [在线postman](https://hoppscotch.io/)测试curl api。
