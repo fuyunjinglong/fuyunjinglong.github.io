@@ -13,6 +13,10 @@ toc: true # 是否启用内容索引
 > - [黑马程序员]Python数据分析三剑客(Numpy，Pandas，Matplotlib)，《2026/最新AkShare/Tushare金融数据获取极速上手》
 > - 聚宽账号注册，去聚宽的"策略学院"。《聚宽joinQuant》或《同花顺MindGo量化交易入门》
 > - 《陈卓清华大学五道口金融学院：量化投资(公开课)》，《[QuantLabs]量化策略回测与实盘避坑指南》
+> - [开源-Vibe-Trading](https://github.com/HKUDS/Vibe-Trading/blob/main/README_zh.md)
+> - 闭源-国金证券QMT
+> - [世界交易大赛冠军 chris Creamer](https://www.youtube.com/watch?v=PL7LKUsCgIQ)
+> - [Words of Rizdom 访谈](https://www.youtube.com/watch?v=1NhqL2i5WkM&list=PL6OFPkfvvWybZH4qoUSjIV2xRJqv9qkz6&index=1)
 
 ## 策略
 

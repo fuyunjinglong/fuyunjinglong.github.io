@@ -588,11 +588,3 @@ GoogleADK
 
 # 高级
 
-# 黑马
-
-## 大模型API
-
-> - 免费的：[阿里云百练](https://bailian.console.aliyun.com/cn-beijing/costing-balance/quota-managements)
-> - 收费的：deepseek API
-
-[在线postman](https://hoppscotch.io/)测试curl api。

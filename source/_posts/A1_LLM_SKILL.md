@@ -169,7 +169,10 @@ description: Office 文档处理工具集：创建/编辑 Excel、转换 PDF、�
 
 # 高级
 
-## 经典SKILL合集
+## SKILL合集
 
-> - [女娲.skill](https://github.com/alchaincyf/nuwa-skill)
+> - **[nuwa-skill](https://github.com/alchaincyf/nuwa-skill)**: 蒸馏人 (思维方式 / 表达 DNA)
+> - **[cangjie-skill](https://github.com/kangarooking/cangjie-skill/blob/main/SKILL.md)** (本 skill): 蒸馏书 (方法论 / 框架 / 原则)
+> - **[darwin-skill](https://github.com/alchaincyf/darwin-skill)**: 进化任意 skill
+> - **[huashu-design](https://github.com/alchaincyf/huashu-design)**：生成UI交付件
 
