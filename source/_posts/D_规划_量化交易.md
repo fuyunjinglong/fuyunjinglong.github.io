@@ -13,24 +13,14 @@ toc: true # 是否启用内容索引
 > - [黑马程序员]Python数据分析三剑客(Numpy，Pandas，Matplotlib)，《2026/最新AkShare/Tushare金融数据获取极速上手》
 > - 聚宽账号注册，去聚宽的"策略学院"。《聚宽joinQuant》或《同花顺MindGo量化交易入门》
 > - 《陈卓清华大学五道口金融学院：量化投资(公开课)》，《[QuantLabs]量化策略回测与实盘避坑指南》
-> - [开源-Vibe-Trading](https://github.com/HKUDS/Vibe-Trading/blob/main/README_zh.md)
-> - 闭源-国金证券QMT
-> - [世界交易大赛冠军 chris Creamer](https://www.youtube.com/watch?v=PL7LKUsCgIQ)
-> - [Words of Rizdom 访谈](https://www.youtube.com/watch?v=1NhqL2i5WkM&list=PL6OFPkfvvWybZH4qoUSjIV2xRJqv9qkz6&index=1)
+> - [开源量化工具-Vibe-Trading](https://github.com/HKUDS/Vibe-Trading/blob/main/README_zh.md)
+> - 闭源量化工具-国金证券QMT
+> - [访谈-世界交易大赛冠军 chris Creamer](https://www.youtube.com/watch?v=PL7LKUsCgIQ)
+> - [访谈-Words of Rizdom](https://www.youtube.com/watch?v=1NhqL2i5WkM&list=PL6OFPkfvvWybZH4qoUSjIV2xRJqv9qkz6&index=1)
 
 ## 策略
 
 核心：盈亏比+胜率+仓位管理
-
-**1.海龟交易法则**
-
-核心：低胜率+高盈亏比+分散不加杠杆
-
-**2.微盘股多因子策略**
-
-核心：高胜率+地盈亏比+分散不加杠杆
-
-每天代码选出50-100只符合因子的股票，将资金分为100份，平均分给每个股票
 
 **3.终极数学控仓-凯利公式**
 
@@ -44,21 +34,20 @@ toc: true # 是否启用内容索引
 > - 盈亏比：在代码中写死，单只股票亏算达到5%，立刻无条件割肉，盈利达到15%或均线死叉卖出(确保盈亏比至少3：1)
 > - 胜率：哪怕胜率只有35%，你在数学上也立于不败之地
 
-## 历史经典选股策略
+个人策略案例
 
 > - 换手率>5%，开盘30分钟内量比>2，股价放量冲过20或60天平台最高点，市值在30-100亿
 > - 股价>5日线>20日线>60日线>120日线
 > - 近3天或近5天内，龙虎榜上榜且知名游资买入
 > - Beta>1.2或者RS指标在全市场排名10%
 
-## 海归交易法
+## 经典策略
 
-> - 每次只卖1分单位，即当前总量的10%仓位
-> - 买入：价格突破20天最高点【上涨看量，下跌看线】
-> - 卖出：跌破过去10天最低点【上涨看量，下跌看线】
-> - 加仓：每上涨0.5N，买入1分单位
-> - 止损：下跌2N清仓
-> - N值：过去20天TR的移动平均值
+> - [四大投资流派之吉姆·西蒙斯](https://quant-wiki.com/industry/master/Jim-Simons/)
+> - 四大投资流派之索罗斯的宏观对冲
+> - 四大投资流派之巴菲特的价值投资
+> - 四大投资流派之利弗莫尔的趋势交易
+> - [凯利公式](https://zhuanlan.zhihu.com/p/38279377)
 
 # 中级
 
