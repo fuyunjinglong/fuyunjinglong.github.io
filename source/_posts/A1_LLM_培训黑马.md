@@ -433,8 +433,10 @@ iHRM是一款基于SaaS平台的人力资源管理平台，企业通过该平台
 >   - [深度求索-deepseek](https://platform.deepseek.com/)
 >   - [月之暗面-kimi](https://www.moonshot.cn/)
 >   - [智谱-glm](https://open.bigmodel.cn/)
->
 > - 私有化部署：ollama
+>   - 安装：先手动下载OllamaSetup.exe到本地，然后在OllamaSetup.exe文件夹打开cmd,执行命令：OllamaSetup.exe /DIR=D:\profilegram\ollama
+>   - 配置：打开ollama的setting，更改model位置为D盘
+>   - 拉取模型：ollama pull qwen3.5:4b
 
 > 大模型API服务
 >
