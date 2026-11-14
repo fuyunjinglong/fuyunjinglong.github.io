@@ -10,7 +10,7 @@ toc: true # 是否启用内容索引
 
 > - [黑马程序员大模型](https://www.bilibili.com/read/readlist/rl997851?spm_id_from=333.1369.opus.module_collection.click)
 
-# 大模型开发大纲
+# 大纲-大模型开发
 
 ## **第一阶段：Python+AI大模型开发入门**
 
@@ -196,7 +196,7 @@ Coze 平台作为字节跳动推出的低门槛AI Agent开发引擎，正成为�
 
 [![黑马程序员多模态AIGC图像生成_大模型开发全套视频教程，零基础玩转Stable Diffusion+腾讯混元生图实现企业级AI绘画小程序实战项目 多模态AIGC图像生成课程导学](http://i0.hdslb.com/bfs/archive/09cb117c7d1955c087b00d553bf1c2e599123ebe.jpg)11:01黑马程序员多模态AIGC图像生成_大模型开发全套视频教程，零基础玩转Stable Diffusion+腾讯混元生图实现企业级AI绘画小程序实战项目 多模态AIGC图像生成课程导学11.3万观看142弹幕](https://www.bilibili.com/video/BV1sMk6BtE3f?cid=33912587323&p=1&spm_id_from=333.1369.0.0)
 
-# Agent开发大纲
+# 大纲-Agent开发
 
 ## **一、AI编程基础（适合零基础学习）**
 
