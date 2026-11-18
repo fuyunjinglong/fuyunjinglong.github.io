@@ -8,7 +8,7 @@ toc: true # 是否启用内容索引
 
 # 黑马python教程
 
-**参考**
+**参考**-37
 
 > - [python语法基础](https://www.bilibili.com/video/BV1sHU9BmEne/?cid=34278674060&spm_id_from=333.788.videopod.episodes&vd_source=bd4c7d99d71adf64d6e88c65370e0247&p=4)
 
@@ -63,7 +63,7 @@ s=input('请输入金额:') # 默认输入都是字符串类型
 print(f"结果：{total- float(s)}") # 注意int('0.3')会报错,所以float更好
 ```
 
-5.运算符
+**5.运算符**
 
 ```
 # 注意int('0.3')会报错，只能是float('0.3')，要么只能是int('3')
@@ -83,7 +83,14 @@ and or not
 
 **二、逻辑处理**
 
-> debug调试：F8单步执行
+> - debug调试：F8单步执行
+> - range语句：生成自然数数列，且不包括end本身
+>   - range(end)：从0开始的自然数数列，range(5)是0，1，2，3，4
+>   - range(start,end)：range(1,3)是1，2
+>   - range(start,end,step)：range(1,8,2)是1,3,5,7
+> - break：跳出所有循环，else中的代码不会执行。
+> - continue：跳出当次循环
+> - random随机数：import random; random_num = random.randint(1,100)
 
 ```python
 # 1.条件判断
@@ -110,13 +117,28 @@ match a:
     case _:
         print('其他')
 
-
 # 3.循环
+while a<3:
+    print('循环1')
+    print('循环2')
+    a+=1
+else:# 可选
+    print('循环结束')
+    
+for s in a:
+    print(s)
+else:# 可选
+    print('循环结束',end='')# 默认end是\n即换行符，如果想不换行，则设置为空
+    print('循环结束')
 ```
 
+**三、数据容器**
 
-
-**三、存储容器**
+> - 列表（list）
+> - 字符串（str）
+> - 元组（tuple）
+> - 集合（set）
+> - 字典（dict）
 
 **四、函数**
 
