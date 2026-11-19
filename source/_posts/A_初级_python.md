@@ -8,7 +8,7 @@ toc: true # 是否启用内容索引
 
 # 黑马python教程
 
-**参考**-37
+**参考**-44
 
 > - [python语法基础](https://www.bilibili.com/video/BV1sHU9BmEne/?cid=34278674060&spm_id_from=333.788.videopod.episodes&vd_source=bd4c7d99d71adf64d6e88c65370e0247&p=4)
 
@@ -134,10 +134,44 @@ else:# 可选
 
 **三、数据容器**
 
-> - 列表（list）
+> - 列表（list）：s=['A','B','C','D','E']
+>
+>   - 修改：s[1]='X'
+>   - 删除：del s[3]
+>   - 切片：s[startX:endX:stepX]，比如s[0:3:2]  得到['A', 'C']。s[:3]可以省略后面的引号
+>   - 添加到最后：s.append('F') 
+>     索引2前添加：s.insert(2,'A') 
+>     移除第一个匹配值：s.remove('A') 
+>     移除索引处的值：s.pop()/s.pop(0)
+>     排序或反转：s.sort()/s.reverse()
+>   - 判断元素是否存在列表中：a in s  或 a not in s
+>   - 合并列表：通过解包和组包方式实现，s3=[\*s1,\*s2]
+>   - 列表推导式：按照一定规则生成列表，if语法式可选，[插入的值 for语法 if语法]。比如：s=[[i*2 for i in range(1,5) if i>2]
+>
 > - 字符串（str）
+>
+>   - 不可变，有序，可迭代：不能该值，顺序的，for a in s
+>
+>   - 切片：同list
+>
+>   - 查找子串索引：
+>
+>     统计字串出现次数：
+>
+>     转换大小写：
+>
+>     按分隔符分割列表
+>
+>     去除前后空格或指定字符：
+>
+>     替换子串：
+>
+>     检查是否子串开头：
+>
 > - 元组（tuple）
+>
 > - 集合（set）
+>
 > - 字典（dict）
 
 **四、函数**
