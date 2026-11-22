@@ -65,7 +65,16 @@ toc: true # 是否启用内容索引
 
 本地生态组合
 
-> - 数据抓取：AkShare或Tushare（提供基础与）
-> - 因子计算：
-> - 极速回测：
-> - 生成报告：
+> - 数据抓取：AkShare或Tushare（提供基础与行情数据）
+> - 因子计算：TA-Lib/Pandas-TA（技术指标）或MyTT（国内指标库）
+> - 极速回测：vectorbt（基于NumPy/Numba的极速矢量回测）或Backtrader（经典事件驱动回测）
+> - 生成报告：pyfolio（专业的风险与绩效归因分析）
+
+其他定制工具
+
+> - 微软Qlib：适合深度学习/AI驱动的重型量化框架
+> - vn.py：适合实盘交易，但高度依赖券商接口
+
+**运行环境**
+
+> 部署架构：本地物理机+原生windows系统+Anaconda虚拟环境
