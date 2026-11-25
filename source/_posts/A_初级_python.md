@@ -8,7 +8,7 @@ toc: true # 是否启用内容索引
 
 # 黑马python教程
 
-**参考**-53
+**参考**-77
 
 > - [python语法基础](https://www.bilibili.com/video/BV1sHU9BmEne/?cid=34278674060&spm_id_from=333.788.videopod.episodes&vd_source=bd4c7d99d71adf64d6e88c65370e0247&p=4)
 
@@ -32,7 +32,7 @@ toc: true # 是否启用内容索引
 
 **1.字面量与变量**
 
-> - 字面量：写死的数据，即常量。
+> - 字面量：写死的数据，即常量，全大写。
 >   - 整数int,小数float：10，3.14。f"{a:0.1f}"保留一位小数
 >   - 字符串str：'wo'
 >   - 布尔值：True False。运算时自动转为1和0
@@ -61,6 +61,7 @@ toc: true # 是否启用内容索引
 ```
 s=input('请输入金额:') # 默认输入都是字符串类型
 print(f"结果：{total- float(s)}") # 注意int('0.3')会报错,所以float更好
+print('-'*30) # 重复输出30个-
 ```
 
 **5.运算符**
@@ -203,11 +204,9 @@ else:# 可选
 >
 >   - 访问：d['tom']
 >
->   - 新增：d['xx'] = 1
+>   - 新增/修改：d['xx'] = 1
 >
 >     删除：d.pop('tom')或del d['tom']
->
->     修改：d['tom'] = 2
 >
 >     查询-key：d.keys()
 >
@@ -219,7 +218,111 @@ else:# 可选
 
 **四、函数**
 
-**五、面向对象基础**
+```python
+# 1.定义：先定义再使用，多个返回值是元组类型。良好的函数要有函数说明
+num = 0
+def test(a,b):
+    """
+    该函数用于xx
+    :param a:入参1
+    :param b:入参2
+    :return:响应值
+    """
+    global num # global关键字，使用之前声明的全局变量
+    num =1000
+    return a+1,b+1
+# 2.位置参数与关键字参数：如果混用，位置参数在前，关键字参数在后
+def test(a,b):
+    return a+b
+# 关键字参数采用key-value方式赋值，可以乱序
+test(b=1,a=2)
+# 3.入参默认值：有默认值的参数要放到后面
+def test(a,b=5):
+    return a+b
+# 4.不定长参数：基于位置参数与关键字参数。args是元组类型，kwargs是字典类型
+def test(*args,**kwargs):
+    print(f"{args}-{kwargs}")
+    return 1
+test(1, 2, 3,a=1,b=3)
+# 5.匿名函数,语法是 lambda 参数列表:单行函数体
+test= lambda x,y:x+y
+print(test(1,2))
+```
+
+**五、类型注解**
+
+```python
+# 1.类型注解：python是动态类型语言，类型注解只是提示。如果不写类型注解，python也会进行类型推断。
+a: int = 1
+b: float=1.1
+c: str = 'xx'
+d: bool = True
+f: None = None
+
+name1s: list[int|str] =[1,2,3]
+name2s: set[str] ={'1','2','3'}
+name3s: dict[str,int] ={'age':1,'count':2}
+name4s: tuple[str,int,float] =('a',1,1.1)
+name1s.append('a')
+# 2.函数的参数类型注解：入参和返回值
+def test(names:list[str])->float:
+    return 1.1
+```
+
+**六、导入模块**
+
+模块名也叫文件名
+
+**1.默认模块导入**
+
+全局查找同名文件的第一个文件
+
+| 导入形式                            | 代码样例                             | 调用方式模板  | 调用示例                  |
+| ----------------------------------- | ------------------------------------ | ------------- | ------------------------- |
+| `import 模块名`                     | `import my_fun`                      | 模块名.功能名 | `random.randint(10, 100)` |
+| `import 模块名 as 别名`             | `import my_fun as rd`                | 别名.功能名   | `rd.randint(10, 100)`     |
+| `from 模块名 import 功能名`         | `from my_fun import randint, choice` | 功能名        | `randint(10, 100)`        |
+| `from 模块名 import 功能名 as 别名` | `from my_fun import randint as rint` | 别名          | `rint(10, 100)`           |
+| `from 模块名 import *`              | `from my_fun import *`               | 功能名        | `randint(10, 100)`        |
+
+内置变量
+
+```
+# 内置变量__all__，在使用from x import * 时，只能使用__all__暴露的属性和方法
+__all__=['test']
+PI=3.14
+def test():
+    print(1)
+
+# 内置变量__name__在直接运行时，值是'__main__'。在模块被导入时，值是模块名。所以可以放测试代码
+if __name__ == '__main__':
+    test()
+```
+
+**2.包的导入方式**
+
+包也是文件夹，文件夹下必须有\__init__.py，内容可以为空。
+
+| 导入形式                         | 代码样例                                  | 调用方式模板       | 调用示例                        |
+| -------------------------------- | ----------------------------------------- | ------------------ | ------------------------------- |
+| `import 包名.模块名`             | `import utils.my_fun`                     | 包名.模块名.功能名 | `utils.my_fun.log_separator1()` |
+| `from 包名 import 模块名`        | `from utils import my_fun`                | 模块名.功能名      | `my_fun.log_separator1()`       |
+| `from 包名 import *`             | `from utils import *`                     | 模块名.功能名      | `my_fun.log_separator1()`       |
+| `from 包名.模块名 import 功能名` | `from utils.my_fun import log_separator1` | 功能名             | `log_separator1()`              |
+| `from 包名.模块名 import *`      | `from utils.my_fun import *`              | 功能名             | `log_separator1()`              |
+
+注意
+
+```
+# 1.__all__
+在使用from x import * 时，只能使用__all__暴露的属性和方法,所以__init__.py中一定要声明暴露__all__=['test']
+# 2.包名尽量采用绝对路径（如果是同级目录，可以省掉前缀路径）
+`import a.utils.my_fun`# a为项目根目录下的目录
+```
+
+
+
+**六、面向对象基础**
 
 ## AI应用
 
